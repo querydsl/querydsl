@@ -25,13 +25,13 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimplePath;
 
 /**
- * JPACollectionAnyVisitor extends the {@link CollectionAnyVisitor} class with module specific
+ * {@code JPACollectionAnyVisitor} extends the {@link CollectionAnyVisitor} class with module specific
  * extensions
  *
  * @author tiwe
  *
  */
-public final class JPACollectionAnyVisitor extends CollectionAnyVisitor {
+class JPACollectionAnyVisitor extends CollectionAnyVisitor {
 
     @SuppressWarnings("unchecked")
     @Override

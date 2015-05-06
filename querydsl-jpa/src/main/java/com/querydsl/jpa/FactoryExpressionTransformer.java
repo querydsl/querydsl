@@ -20,7 +20,8 @@ import org.hibernate.transform.ResultTransformer;
 import com.querydsl.core.types.FactoryExpression;
 
 /**
- * FactoryExpressionTransformer is a ResultTransformer implementation using FactoryExpression for transformation
+ * {@code FactoryExpressionTransformer} is a ResultTransformer implementation using
+ * FactoryExpression instances for transformation
  *
  * @author tiwe
  *

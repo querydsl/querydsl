@@ -12,7 +12,7 @@ import javax.persistence.metamodel.Metamodel;
 import com.querydsl.jpa.codegen.JPADomainExporter;
 
 /**
- * AntJPADomainExporter exports JPA 2 metamodels to Querydsl expression types
+ * {@code AntJPADomainExporter} exports JPA 2 metamodels to Querydsl expression types
  *
  * @author 200003548
  */

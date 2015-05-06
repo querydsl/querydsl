@@ -17,7 +17,7 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.PathType;
 
 /**
- * OpenJPATemplates extends JPQLTemplates with OpenJPA specific extensions
+ * {@code OpenJPATemplates} extends {@link JPQLTemplates} with OpenJPA specific extensions
  *
  * @author tiwe
  *

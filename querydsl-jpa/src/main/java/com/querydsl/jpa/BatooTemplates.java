@@ -15,7 +15,10 @@ package com.querydsl.jpa;
 
 import com.querydsl.core.types.Ops;
 
-
+/**
+ * {@code BatooTemplates} extends {@link JPQLTemplates} with Batoo specific extensions
+ *
+ */
 public class BatooTemplates extends JPQLTemplates {
 
     public static final BatooTemplates DEFAULT = new BatooTemplates();

@@ -35,7 +35,7 @@ import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.dsl.Param;
 
 /**
- * HibernateUtil provides static utility methods for Hibernate
+ * {@code HibernateUtil} provides static utility methods for Hibernate
  *
  * @author tiwe
  *

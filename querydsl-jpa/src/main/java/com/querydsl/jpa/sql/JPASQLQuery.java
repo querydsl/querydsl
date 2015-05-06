@@ -23,7 +23,7 @@ import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * JPASQLQuery is an SQLQuery implementation that uses JPA Native SQL functionality
+ * {@code JPASQLQuery} is an SQLQuery implementation that uses JPA Native SQL functionality
  * to execute queries
  *
  * @author tiwe

@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Ops;
 
 /**
- * EclipseLinkTemplates extends JPQLTemplates with EclipseLink specific extensions
+ * {@code EclipseLinkTemplates} extends {@link JPQLTemplates} with EclipseLink specific extensions
  *
  * @author tiwe
  *

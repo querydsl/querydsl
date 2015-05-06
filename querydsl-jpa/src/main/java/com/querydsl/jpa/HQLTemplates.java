@@ -25,7 +25,7 @@ import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
 
 /**
- * HQLTemplates extends JPQLTemplates with Hibernate specific extensions
+ * HQLTemplates extends {@link JPQLTemplates} with Hibernate specific extensions
  *
  * @author tiwe
  *

@@ -26,7 +26,7 @@ import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.OpenJPATemplates;
 
 /**
- * JPAProvider provides detection of the JPA provider based on the EntityManager instance
+ * {@code JPAProvider} provides detection of the JPA provider based on the EntityManager instance
  *
  * @author tiwe
  *

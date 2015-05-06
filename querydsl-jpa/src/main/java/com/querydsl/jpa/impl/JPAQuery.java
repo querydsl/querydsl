@@ -20,9 +20,10 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.JPQLTemplates;
+import com.querydsl.jpa.JPQLQuery;
 
 /**
- * JPAQuery is the default implementation of the JPQLQuery interface for JPA
+ * {@code JPAQuery} is the default implementation of the {@link JPQLQuery} interface for JPA
  *
  * @author tiwe
  *
@@ -40,7 +41,7 @@ public class JPAQuery<T> extends AbstractJPAQuery<T, JPAQuery<T>> {
     /**
      * Creates a new EntityManager bound query
      *
-     * @param em
+     * @param em entity manager
      */
     public JPAQuery(EntityManager em) {
         super(em, JPAProvider.getTemplates(em), new DefaultQueryMetadata());
@@ -49,7 +50,8 @@ public class JPAQuery<T> extends AbstractJPAQuery<T, JPAQuery<T>> {
     /**
      * Creates a new EntityManager bound query
      *
-     * @param em
+     * @param em entity manager
+     * @param metadata query metadata
      */
     public JPAQuery(EntityManager em, QueryMetadata metadata) {
         super(em, JPAProvider.getTemplates(em), metadata);
@@ -58,8 +60,8 @@ public class JPAQuery<T> extends AbstractJPAQuery<T, JPAQuery<T>> {
     /**
      * Creates a new query
      *
-     * @param em
-     * @param templates
+     * @param em entity manager
+     * @param templates templates
      */
     public JPAQuery(EntityManager em, JPQLTemplates templates) {
         super(em, templates, new DefaultQueryMetadata());
@@ -68,9 +70,9 @@ public class JPAQuery<T> extends AbstractJPAQuery<T, JPAQuery<T>> {
     /**
      * Creates a new query
      *
-     * @param em
-     * @param templates
-     * @param metadata
+     * @param em entity manager
+     * @param templates temoplates
+     * @param metadata query metadata
      */
     public JPAQuery(EntityManager em, JPQLTemplates templates, QueryMetadata metadata) {
         super(em, templates, metadata);

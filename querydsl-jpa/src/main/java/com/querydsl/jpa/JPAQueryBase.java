@@ -19,7 +19,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 
 /**
- * JPAQueryBase is a base Query class for JPA queries
+ * {@code JPAQueryBase} is a base Query class for JPA queries
  *
  * @author tiwe
  */

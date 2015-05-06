@@ -46,6 +46,7 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
         this.templates = templates;
     }
 
+    @Override
     public HibernateDeleteClause delete(EntityPath<?> path) {
         return new HibernateDeleteClause(session.get(), path, templates);
     }
@@ -85,14 +86,17 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
         return select(from).from(from);
     }
 
+    @Override
     public HibernateQuery<?> from(EntityPath<?> from) {
         return query().from(from);
     }
 
+    @Override
     public HibernateUpdateClause update(EntityPath<?> path) {
         return new HibernateUpdateClause(session.get(), path, templates);
     }
 
+    @Override
     public HibernateQuery<?> query() {
         return new HibernateQuery<Void>(session.get(), templates);
     }

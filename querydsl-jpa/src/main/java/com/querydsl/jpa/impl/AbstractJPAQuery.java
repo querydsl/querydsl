@@ -87,7 +87,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     /**
      * Expose the original JPA query for the given projection
      *
-     * @return
+     * @return query
      */
     public Query createQuery() {
         return createQuery(getMetadata().getModifiers(), false);
@@ -136,8 +136,8 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     /**
      * Transforms results using FactoryExpression if ResultTransformer can't be used
      *
-     * @param query
-     * @return
+     * @param query query
+     * @return results
      */
     private List<?> getResultList(Query query) {
         // TODO : use lazy fetch here?
@@ -163,8 +163,8 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     /**
      * Transforms results using FactoryExpression if ResultTransformer can't be used
      *
-     * @param query
-     * @return
+     * @param query query
+     * @return single result
      */
     @Nullable
     private Object getSingleResult(Query query) {
@@ -293,8 +293,8 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     /**
      * Clone the state of this query to a new instance with the given EntityManager
      *
-     * @param entityManager
-     * @return
+     * @param entityManager entity manager
+     * @return cloned query
      */
     public abstract Q clone(EntityManager entityManager);
 
@@ -302,16 +302,16 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
      * Clone the state of this query to a new instance with the given EntityManager
      * and the specified templates
      *
-     * @param entityManager
-     * @param templates
-     * @return
+     * @param entityManager entity manager
+     * @param templates templates
+     * @return cloned query
      */
     public abstract Q clone(EntityManager entityManager, JPQLTemplates templates);
 
     /**
      * Clone the state of this query to a new instance
      *
-     * @return
+     * @return cloned query
      */
     public Q clone() {
         return clone(entityManager, getTemplates());

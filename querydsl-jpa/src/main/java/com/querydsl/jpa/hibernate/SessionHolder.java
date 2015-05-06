@@ -27,16 +27,16 @@ public interface SessionHolder {
     /**
      * Create a JPQL query for the given query string
      * 
-     * @param queryString
-     * @return
+     * @param queryString JPQL query string
+     * @return query
      */
     Query createQuery(String queryString);
 
     /**
      * Create an SQL query for the given query string
      * 
-     * @param queryString
-     * @return
+     * @param queryString JPQL query string
+     * @return query
      */
     SQLQuery createSQLQuery(String queryString);
 

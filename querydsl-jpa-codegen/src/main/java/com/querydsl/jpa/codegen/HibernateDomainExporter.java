@@ -13,12 +13,19 @@
  */
 package com.querydsl.jpa.codegen;
 
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.nio.charset.Charset;
 import java.util.Iterator;
+
+import javax.xml.stream.XMLStreamException;
+
+import org.hibernate.MappingException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -27,14 +34,9 @@ import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.codegen.SerializerConfig;
 import com.querydsl.codegen.SimpleSerializerConfig;
-import org.hibernate.MappingException;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * HibernateDomainExporter exports Hibernate XML configuration files to Querydsl expression types
+ * {@code HibernateDomainExporter} exports Hibernate XML configuration files to Querydsl expression types
  *
  * @author tiwe
  *
@@ -48,8 +50,8 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
     /**
      * Create a new HibernateDomainExporter instance
      *
-     * @param targetFolder
-     * @param configuration
+     * @param targetFolder target folder
+     * @param configuration configuration
      */
     public HibernateDomainExporter(File targetFolder, Configuration configuration) {
         this("Q", "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration,
@@ -59,9 +61,9 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
     /**
      * Create a new HibernateDomainExporter instance
      *
-     * @param namePrefix
-     * @param targetFolder
-     * @param configuration
+     * @param namePrefix name prefix (default: Q)
+     * @param targetFolder target folder
+     * @param configuration configuration
      */
     public HibernateDomainExporter(String namePrefix, File targetFolder, Configuration configuration) {
         this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration,
@@ -71,10 +73,10 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
     /**
      * Create a new HibernateDomainExporter instance
      *
-     * @param namePrefix
-     * @param targetFolder
-     * @param configuration
-     * @param charset
+     * @param namePrefix name prefix (default: Q)
+     * @param targetFolder target folder
+     * @param configuration configuration
+     * @param charset charset (default: system charset)
      */
     public HibernateDomainExporter(String namePrefix, File targetFolder, Configuration configuration,
             Charset charset) {
@@ -84,10 +86,10 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
     /**
      * Create a new HibernateDomainExporter instance
      *
-     * @param namePrefix
-     * @param nameSuffix
-     * @param targetFolder
-     * @param configuration
+     * @param namePrefix name prefix (default: Q)
+     * @param nameSuffix name suffix (default: empty)
+     * @param targetFolder target folder
+     * @param configuration configuration
      */
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             Configuration configuration) {
@@ -98,10 +100,10 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
     /**
      * Create a new HibernateDomainExporter instance
      *
-     * @param namePrefix
-     * @param targetFolder
-     * @param serializerConfig
-     * @param configuration
+     * @param namePrefix name prefix (default Q)
+     * @param targetFolder target golder
+     * @param serializerConfig serializer config
+     * @param configuration configuration
      */
     public HibernateDomainExporter(String namePrefix, File targetFolder,
             SerializerConfig serializerConfig, Configuration configuration) {
@@ -111,11 +113,11 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
     /**
      * Create a new HibernateDomainExporter instance
      *
-     * @param namePrefix
-     * @param targetFolder
-     * @param serializerConfig
-     * @param configuration
-     * @param charset
+     * @param namePrefix name prefix (default: Q)
+     * @param targetFolder target folder
+     * @param serializerConfig serializer config
+     * @param configuration configuration
+     * @param charset charset (default: system charset)
      */
     public HibernateDomainExporter(String namePrefix, File targetFolder,
             SerializerConfig serializerConfig, Configuration configuration, Charset charset) {
@@ -125,12 +127,12 @@ public class HibernateDomainExporter extends AbstractDomainExporter{
     /**
      * Create a new HibernateDomainExporter instance
      *
-     * @param namePrefix
-     * @param nameSuffix
-     * @param targetFolder
-     * @param serializerConfig
-     * @param configuration
-     * @param charset
+     * @param namePrefix name prefix (default: Q)
+     * @param nameSuffix name suffix (default: empty)
+     * @param targetFolder target folder
+     * @param serializerConfig serializer config
+     * @param configuration configuration
+     * @param charset charset (default: system charset)
      */
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             SerializerConfig serializerConfig, Configuration configuration, Charset charset) {

@@ -28,10 +28,12 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
 
 /**
+ * {@code HibernateHandler} is the {@link QueryHandler} implementation for Hibernate
+ *
  * @author tiwe
  *
  */
-public class HibernateHandler implements QueryHandler {
+class HibernateHandler implements QueryHandler {
 
     @Override
     public void addEntity(Query query, String alias, Class<?> type) {

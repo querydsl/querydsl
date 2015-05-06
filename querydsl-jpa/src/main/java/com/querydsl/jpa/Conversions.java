@@ -26,7 +26,7 @@ import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLOps;
 
 /**
- * Conversions provides module specific projection conversion functionality
+ * {@code Conversions} provides module specific projection conversion functionality
  *
  * @author tiwe
  *

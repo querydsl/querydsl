@@ -44,7 +44,7 @@ import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLSerializer;
 
 /**
- * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
+ * {@code AbstractHibernateSQLQuery} is the base class for Hibernate Native SQL queries
  *
  * @author tiwe
  *

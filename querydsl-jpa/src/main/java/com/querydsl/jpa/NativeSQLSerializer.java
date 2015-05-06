@@ -31,7 +31,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.sql.*;
 
 /**
- * NativeSQLSerializer extends the SQLSerializer class to extract referenced entity paths and change
+ * {@code NativeSQLSerializer} extends {@link SQLSerializer} to extract referenced entity paths and change
  * some serialization formats
  *
  * @author tiwe

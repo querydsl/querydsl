@@ -23,6 +23,8 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
 
 /**
+ * {@code DefaultQueryHandler} is the default implementation of the {@link QueryHandler} interface
+ *
  * @author tiwe
  *
  */

@@ -18,7 +18,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 /**
- * DefaultSessionHolder is the default implementation of the {@link SessionHolder} interface
+ * {@code DefaultSessionHolder} is the default implementation of the {@link SessionHolder} interface
  * 
  * @author tiwe
  *
