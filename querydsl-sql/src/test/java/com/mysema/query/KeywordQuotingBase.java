@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Timo Westkämper.
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,10 @@ package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
 import com.mysema.query.sql.ColumnMetadata;
@@ -26,8 +30,6 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.StringPath;
-
-import org.junit.*;
 
 public class KeywordQuotingBase extends AbstractBaseTest {
 

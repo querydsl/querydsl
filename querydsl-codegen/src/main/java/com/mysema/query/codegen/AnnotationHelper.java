@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, Timo Westkämper
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,9 @@
  */
 package com.mysema.query.codegen;
 
-import com.mysema.codegen.model.TypeCategory;
 import java.lang.annotation.Annotation;
+
+import com.mysema.codegen.model.TypeCategory;
 
 /**
  * AnnotationHelper defines a interface to provide custom annotation processing
