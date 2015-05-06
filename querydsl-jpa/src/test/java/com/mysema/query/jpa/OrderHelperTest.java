@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
+import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.path.PathBuilder;
 
 public class OrderHelperTest {
@@ -21,7 +22,7 @@ public class OrderHelperTest {
         order.add("previousProject.customer.company.name");
         order.add("department.name");
 
-        JPASubQuery query = new JPASubQuery();
+        JPAQuery query = new JPAQuery();
         query.from(entity);
         OrderHelper.orderBy(query, entity, order);
         assertEquals("select project\n" +
