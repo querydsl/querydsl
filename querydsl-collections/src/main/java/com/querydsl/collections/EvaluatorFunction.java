@@ -34,7 +34,7 @@ public class EvaluatorFunction<S, T> implements Function<S, T> {
         if (input.getClass().isArray()) {
             return ev.evaluate((Object[]) input);
         } else {
-            return ev.evaluate(new Object[]{input});
+            return ev.evaluate(input);
         }
     }
 }

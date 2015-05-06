@@ -24,7 +24,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.util.BeanMap;
 
 /**
- * CollUpdateClause is an implementation of the UpdateClause interface for Querydsl Collections
+ * {@code CollUpdateClause} is an implementation of the {@link UpdateClause} interface for Querydsl Collections
  *
  * @author tiwe
  *
@@ -32,15 +32,12 @@ import com.querydsl.core.util.BeanMap;
  */
 public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
 
-    private final Path<T> expr;
-
     private final Map<Path<?>, Object> paths = new HashMap<Path<?>, Object>();
 
     private final CollQuery<T> query;
 
     public CollUpdateClause(QueryEngine qe, Path<T> expr, Iterable<? extends T> col) {
         this.query = new CollQuery<Void>(qe).from(expr, col).select(expr);
-        this.expr = expr;
     }
 
     public CollUpdateClause(Path<T> expr, Iterable<? extends T> col) {

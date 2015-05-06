@@ -24,7 +24,7 @@ import com.querydsl.core.types.PathExtractor;
 import com.querydsl.core.types.Predicate;
 
 /**
- * GuavaHelpers provides functionality to wrap Querydsl {@link Predicate} instances to Guava predicates
+ * {@code GuavaHelpers} provides functionality to wrap Querydsl {@link Predicate} instances to Guava predicates
  * and Querydsl {@link Expression} instances to Guava functions 
  * 
  * @author tiwe
@@ -38,8 +38,8 @@ public final class GuavaHelpers {
     /**
      * Wrap a Querydsl predicate into a Guava predicate
      * 
-     * @param predicate
-     * @return
+     * @param predicate predicate to wrapped
+     * @return Guava predicate
      */
     public static <T> com.google.common.base.Predicate<T> wrap(Predicate predicate) {        
         Path<?> path = predicate.accept(PathExtractor.DEFAULT, null);
@@ -59,8 +59,8 @@ public final class GuavaHelpers {
     /**
      * Wrap a Querydsl expression into a Guava function
      * 
-     * @param projection
-     * @return
+     * @param projection projection to wrap
+     * @return Guava function
      */
     public static <F,T> Function<F,T> wrap(Expression<T> projection) {        
         Path<?> path = projection.accept(PathExtractor.DEFAULT, null);

@@ -43,7 +43,7 @@ import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.Predicate;
 
 /**
- * DefaultEvaluatorFactory provides Java source templates for evaluation of CollQuery queries
+ * {@code DefaultEvaluatorFactory} provides Java source templates for evaluation of {@link CollQuery} queries
  *
  * @author tiwe
  *
@@ -86,9 +86,10 @@ public class DefaultEvaluatorFactory {
      * Create an Evaluator for the given query sources and projection
      *
      * @param <T>
-     * @param sources
-     * @param projection
-     * @return
+     * @param metadata query metadata
+     * @param sources sources of the query
+     * @param projection projection of the query
+     * @return evaluator
      */
     public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expression<?>> sources,
             Expression<T> projection) {
@@ -129,9 +130,9 @@ public class DefaultEvaluatorFactory {
      * Create an Evaluator for the given source and filter
      *
      * @param <T>
-     * @param source
-     * @param filter
-     * @return
+     * @param source source of the query
+     * @param filter filter of the query
+     * @return evaluator
      */
     public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata,
             Expression<? extends T> source, Predicate filter) {
@@ -165,9 +166,10 @@ public class DefaultEvaluatorFactory {
     /**
      * Create an Evaluator for the given sources and the given optional filter
      *
-     * @param joins
-     * @param filter
-     * @return
+     * @param metadata query metadata
+     * @param joins joins
+     * @param filter where condition
+     * @return evaluator
      */
     public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata,
             List<JoinExpression> joins, @Nullable Predicate filter) {

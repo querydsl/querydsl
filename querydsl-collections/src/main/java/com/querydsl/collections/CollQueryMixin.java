@@ -22,7 +22,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 
 /**
- * CollQueryMixin extends {@link QueryMixin} to provide normalization logic specific to this module
+ * {@code CollQueryMixin} extends {@link QueryMixin} to provide normalization logic specific to this module
  *
  * @author tiwe
  *

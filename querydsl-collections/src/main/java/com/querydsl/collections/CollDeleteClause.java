@@ -20,7 +20,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 
 /**
- * CollDeleteClause is an implementation of the {@link DeleteClause} interface for the Querydsl 
+ * {@code CollDeleteClause} is an implementation of the {@link DeleteClause} interface for the Querydsl
  * Collections module
  *
  * @author tiwe
@@ -31,13 +31,10 @@ public class CollDeleteClause<T> implements DeleteClause<CollDeleteClause<T>> {
 
     private final Collection<? extends T> col;
 
-    private final Path<T> expr;
-
     private final CollQuery<T> query;
 
     public CollDeleteClause(QueryEngine qe, Path<T> expr, Collection<? extends T> col) {
         this.query = new CollQuery<Void>(qe).from(expr, col).select(expr);
-        this.expr = expr;
         this.col = col;
     }
 

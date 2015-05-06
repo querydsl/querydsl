@@ -20,7 +20,7 @@ import com.mysema.codegen.Evaluator;
 import com.querydsl.core.util.NullSafeComparableComparator;
 
 /**
- * MultiComparator compares arrays
+ * {@code MultiComparator} compares arrays
  *
  * @author tiwe
  */
