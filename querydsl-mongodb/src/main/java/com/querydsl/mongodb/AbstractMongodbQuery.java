@@ -31,7 +31,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.CollectionPathBase;
 
 /**
- * AbstractMongodbQuery provides a base class for general Querydsl query implementation with a
+ * {@code AbstractMongodbQuery} provides a base class for general Querydsl query implementation with a
  * pluggable DBObject to Bean transformation
  *
  * @author laimw
@@ -57,9 +57,9 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
     /**
      * Create a new MongodbQuery instance
      *
-     * @param collection
-     * @param transformer
-     * @param serializer
+     * @param collection collection
+     * @param transformer result transformer
+     * @param serializer serializer
      */
     public AbstractMongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
         this.queryMixin = new QueryMixin<Q>((Q)this, new DefaultQueryMetadata(), false);
@@ -71,9 +71,9 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
     /**
      * Define a join
      *
-     * @param ref
-     * @param target
-     * @return
+     * @param ref reference
+     * @param target join target
+     * @return join builder
      */
     public <T> JoinBuilder<Q, K,T> join(Path<T> ref, Path<T> target) {
         return new JoinBuilder<Q, K,T>(queryMixin, ref, target);
@@ -82,9 +82,9 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
     /**
      * Define a join
      *
-     * @param ref
-     * @param target
-     * @return
+     * @param ref reference
+     * @param target join target
+     * @return join builder
      */
     public <T> JoinBuilder<Q, K,T> join(CollectionPathBase<?,T,?> ref, Path<T> target) {
         return new JoinBuilder<Q, K,T>(queryMixin, ref, target);
@@ -93,9 +93,9 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
     /**
      * Define a constraint for an embedded object
      *
-     * @param collection
-     * @param target
-     * @return
+     * @param collection collection
+     * @param target target
+     * @return builder
      */
     public <T> AnyEmbeddedBuilder<Q, K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
         return new AnyEmbeddedBuilder<Q, K>(queryMixin, collection);
@@ -198,6 +198,12 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         return queryMixin.set(param, value);
     }
 
+    /**
+     * Iterate with the specific fields
+     *
+     * @param paths fields to return
+     * @return iterator
+     */
     public CloseableIterator<K> iterate(Path<?>... paths) {
         queryMixin.setProjection(paths);
         return iterate();
@@ -227,6 +233,12 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         };
     }
 
+    /**
+     * Fetch with the specific fields
+     *
+     * @param paths fields to return
+     * @return results
+     */
     public List<K> fetch(Path<?>... paths) {
         queryMixin.setProjection(paths);
         return fetch();
@@ -285,6 +297,12 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         return null;
     }
 
+    /**
+     * Fetch first with the specific fields
+     *
+     * @param paths fields to return
+     * @return first result
+     */
     public K fetchFirst(Path<?>...paths) {
         queryMixin.setProjection(paths);
         return fetchFirst();
@@ -304,6 +322,12 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         }
     }
 
+    /**
+     * Fetch one with the specific fields
+     *
+     * @param paths fields to return
+     * @return first result
+     */
     public K fetchOne(Path<?>... paths) {
         queryMixin.setProjection(paths);
         return fetchOne();
@@ -331,6 +355,12 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         }
     }
 
+    /**
+     * Fetch results with the specific fields
+     *
+     * @param paths fields to return
+     * @return results
+     */
     public QueryResults<K> fetchResults(Path<?>... paths) {
         queryMixin.setProjection(paths);
         return fetchResults();
@@ -368,6 +398,11 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         }
     }
 
+    /**
+     * Sets the read preference for this query
+     *
+     * @param readPreference read preference
+     */
     public void setReadPreference(ReadPreference readPreference) {
         this.readPreference = readPreference;
     }

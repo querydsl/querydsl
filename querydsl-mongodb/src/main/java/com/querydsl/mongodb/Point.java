@@ -19,7 +19,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ArrayPath;
 
 /**
- * Point is an adapter type for Double[] arrays to use geo spatial querying features of Mongodb
+ * {@code Point} is an adapter type for Double[] arrays to use geo spatial querying features of Mongodb
  *
  * @author tiwe
  *
@@ -45,7 +45,7 @@ public class Point extends ArrayPath<Double[], Double> {
      *
      * @param latVal latitude
      * @param longVal longitude
-     * @return
+     * @return predicate
      */
     public BooleanExpression near(double latVal, double longVal) {
         return MongodbExpressions.near(this, latVal, longVal);

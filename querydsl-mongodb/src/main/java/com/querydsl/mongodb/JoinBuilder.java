@@ -20,7 +20,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 
 /**
- * JoinBuilder is a builder for join constraints
+ * {@code JoinBuilder} is a builder for join constraints
  *
  * @author tiwe
  *

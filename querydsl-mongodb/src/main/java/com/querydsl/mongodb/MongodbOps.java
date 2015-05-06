@@ -16,6 +16,8 @@ package com.querydsl.mongodb;
 import com.querydsl.core.types.Operator;
 
 /**
+ * MongoDB specific operators
+ *
  * @author tiwe
  *
  */
