@@ -35,7 +35,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.sql.types.Type;
 
 /**
- * SQLTemplates extends Templates to provides SQL specific extensions
+ * {@code SQLTemplates} extends {@link Templates} to provides SQL specific extensions
  * and acts as database specific Dialect for Querydsl SQL
  *
  * @author tiwe
@@ -527,14 +527,6 @@ public class SQLTemplates extends Templates {
 
     protected void addTableOverride(SchemaAndTable from, SchemaAndTable to) {
         tableOverrides.put(from, to);
-    }
-
-    /**
-     * Use customTypes instead
-     */
-    @Deprecated
-    public final boolean isBigDecimalSupported() {
-        return false;
     }
 
     public final List<Type<?>> getCustomTypes() {

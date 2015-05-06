@@ -13,13 +13,13 @@
  */
 package com.querydsl.sql.types;
 
+import java.sql.*;
+
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalTime;
 
-import java.sql.*;
-
 /**
- * LocalTimeType maps LocalTime to Time on the JDBC level
+ * {@code LocalTimeType} maps LocalTime to Time on the JDBC level
  *
  * @author tiwe
  *

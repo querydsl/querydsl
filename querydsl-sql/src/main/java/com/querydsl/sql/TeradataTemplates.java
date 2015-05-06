@@ -21,7 +21,7 @@ import com.querydsl.core.types.Ops;
 
 
 /**
- * TeradataTemplates is a SQL dialect for Teradata
+ * {@code TeradataTemplates} is a SQL dialect for Teradata
  *
  * @author tiwe
  *

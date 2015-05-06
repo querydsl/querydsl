@@ -20,7 +20,7 @@ import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.dsl.Expressions;
 
 /**
- * SQLServer2012Templates is an SQL dialect for Microsoft SQL Server 2012 and later
+ * {@code SQLServer2012Templates} is an SQL dialect for Microsoft SQL Server 2012 and later
  *
  * @author tiwe
  *

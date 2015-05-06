@@ -16,7 +16,7 @@ package com.querydsl.sql;
 import com.google.common.collect.ImmutableList;
 
 /**
- * SQLBindings provides the SQL query string and bindings
+ * {@code SQLBindings} provides the SQL query string and bindings
  *
  * @author tiwe
  *

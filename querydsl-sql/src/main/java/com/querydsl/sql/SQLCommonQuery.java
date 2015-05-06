@@ -23,7 +23,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.SubQueryExpression;
 
 /**
- * SQLCommonQuery is a common interface for SQLQuery and SQLSubQuery
+ * {@code SQLCommonQuery} is a common interface for SQLQuery and SQLSubQuery
  *
  * @author tiwe
  *
@@ -34,18 +34,18 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     /**
      * Add the given Expression as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     Q addFlag(Position position, Expression<?> flag);
 
     /**
      * Add the given String literal as query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     Q addFlag(Position position, String flag);
 
@@ -55,7 +55,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param position position of the flag
      * @param prefix prefix for the flag
      * @param expr expression of the flag
-     * @return
+     * @return the current object
      */
     Q addFlag(Position position, String prefix, Expression<?> expr);
 
@@ -63,42 +63,42 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Add the given String literal as a join flag to the last added join with the
      * position BEFORE_TARGET
      *
-     * @param flag
-     * @return
+     * @param flag join flag
+     * @return the current object
      */
     Q addJoinFlag(String flag);
 
     /**
      * Add the given String literal as a join flag to the last added join
      *
-     * @param flag
-     * @param position
-     * @return
+     * @param flag join flag
+     * @param position position
+     * @return the current object
      */
     Q addJoinFlag(String flag, JoinFlag.Position position);
 
     /**
      * Defines the sources of the query
      *
-     * @param o
-     * @return
+     * @param o from
+     * @return the current object
      */
     Q from(Expression<?>... o);
 
     /**
      * Adds a sub query source
      *
-     * @param subQuery
-     * @param alias
-     * @return
+     * @param subQuery sub query
+     * @param alias alias
+     * @return the current object
      */
     Q from(SubQueryExpression<?> subQuery, Path<?> alias);
 
     /**
      * Adds a full join to the given target
      *
-     * @param o
-     * @return
+     * @param o full join target
+     * @return the current object
      */
     Q fullJoin(EntityPath<?> o);
 
@@ -106,9 +106,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a full join to the given target
      *
      * @param <E>
-     * @param o
-     * @param alias
-     * @return
+     * @param o full join target
+     * @param alias alias
+     * @return the current object
      */
     <E> Q fullJoin(RelationalFunctionCall<E> o, Path<E> alias);
 
@@ -116,18 +116,18 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a full join to the given target
      *
      * @param <E>
-     * @param key
-     * @param entity
-     * @return
+     * @param key foreign key for join
+     * @param entity join target
+     * @return the current object
      */
     <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity);
 
     /**
      * Adds a full join to the given target
      *
-     * @param o
-     * @param alias
-     * @return
+     * @param o subquery
+     * @param alias alias
+     * @return the current object
      */
     Q fullJoin(SubQueryExpression<?> o, Path<?> alias);
 
@@ -135,7 +135,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds an inner join to the given target
      *
      * @param o
-     * @return
+     * @return the current object
      */
     Q innerJoin(EntityPath<?> o);
 
@@ -143,9 +143,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a full join to the given target
      *
      * @param <E>
-     * @param o
-     * @param alias
-     * @return
+     * @param o relational function call
+     * @param alias alias
+     * @return the current object
      */
     <E> Q innerJoin(RelationalFunctionCall<E> o, Path<E> alias);
 
@@ -153,26 +153,26 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds an inner join to the given target
      *
      * @param <E>
-     * @param foreign
-     * @param entity
-     * @return
+     * @param foreign foreign key to use for join
+     * @param entity join target
+     * @return the current object
      */
     <E> Q innerJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds an inner join to the given target
      *
-     * @param o
-     * @param alias
-     * @return
+     * @param o subquery
+     * @param alias alias
+     * @return the current object
      */
     Q innerJoin(SubQueryExpression<?> o, Path<?> alias);
 
     /**
      * Adds a join to the given target
      *
-     * @param o
-     * @return
+     * @param o join target
+     * @return the current object
      */
     Q join(EntityPath<?> o);
 
@@ -180,9 +180,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a full join to the given target
      *
      * @param <E>
-     * @param o
-     * @param alias
-     * @return
+     * @param o join target
+     * @param alias alias
+     * @return the current object
      */
     <E> Q join(RelationalFunctionCall<E> o, Path<E> alias);
 
@@ -190,26 +190,26 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a join to the given target
      *
      * @param <E>
-     * @param foreign
-     * @param entity
-     * @return
+     * @param foreign foreign key to use for join
+     * @param entity join target
+     * @return the current object
      */
     <E> Q join(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds a join to the given target
      *
-     * @param o
-     * @param alias
-     * @return
+     * @param o subquery
+     * @param alias alias
+     * @return the current object
      */
     Q join(SubQueryExpression<?> o, Path<?> alias);
 
     /**
      * Adds a left join to the given target
      *
-     * @param o
-     * @return
+     * @param o join target
+     * @return the current object
      */
     Q leftJoin(EntityPath<?> o);
 
@@ -217,9 +217,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a full join to the given target
      *
      * @param <E>
-     * @param o
-     * @param alias
-     * @return
+     * @param o relational function call
+     * @param alias alias
+     * @return the current object
      */
     <E> Q leftJoin(RelationalFunctionCall<E> o, Path<E> alias);
 
@@ -227,34 +227,34 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a left join to the given target
      *
      * @param <E>
-     * @param foreign
-     * @param entity
-     * @return
+     * @param foreign foreign key to use for join
+     * @param entity join target
+     * @return the current object
      */
     <E> Q leftJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds a left join to the given target
      *
-     * @param o
-     * @param alias
-     * @return
+     * @param o subquery
+     * @param alias alias
+     * @return the current object
      */
     Q leftJoin(SubQueryExpression<?> o, Path<?> alias);
 
     /**
      * Defines a filter to the last added join
      *
-     * @param conditions
-     * @return
+     * @param conditions join conditions
+     * @return the current object
      */
     Q on(Predicate... conditions);
 
     /**
      * Adds a right join to the given target
      *
-     * @param o
-     * @return
+     * @param o join target
+     * @return the current object
      */
     Q rightJoin(EntityPath<?> o);
 
@@ -262,9 +262,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a full join to the given target
      *
      * @param <E>
-     * @param o
-     * @param alias
-     * @return
+     * @param o relational function call
+     * @param alias alias
+     * @return the current object
      */
     <E> Q rightJoin(RelationalFunctionCall<E> o, Path<E> alias);
 
@@ -272,18 +272,18 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a right join to the given target
      *
      * @param <E>
-     * @param foreign
-     * @param entity
-     * @return
+     * @param foreign foreign key to use for join
+     * @param entity join target
+     * @return the current object
      */
     <E> Q rightJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds a right join to the given target
      *
-     * @param o
-     * @param alias
-     * @return
+     * @param o subquery
+     * @param alias alias
+     * @return the current object
      */
     Q rightJoin(SubQueryExpression<?> o, Path<?> alias);
 
@@ -296,9 +296,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      *      .from(...)
      * </pre>
      *
-     * @param alias
-     * @param o
-     * @return
+     * @param alias alias for query
+     * @param o subquery
+     * @return the current object
      */
     Q with(Path<?> alias, SubQueryExpression<?> o);
 
@@ -311,9 +311,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      *      .from(...)
      * </pre>
      *
-     * @param alias
-     * @param query
-     * @return
+     * @param alias alias for query
+     * @param query subquery
+     * @return the current object
      */
     Q with(Path<?> alias, Expression<?> query);
 
@@ -326,9 +326,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      *      .from(...)
      * </pre>
      *
-     * @param alias
-     * @param columns
-     * @return
+     * @param alias alias for query
+     * @param columns columns to use
+     * @return the current object
      */
     WithBuilder<Q> with(Path<?> alias, Path<?>... columns);
 
@@ -341,9 +341,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      *      .from(...)
      * </pre>
      *
-     * @param alias
-     * @param o
-     * @return
+     * @param alias alias for query
+     * @param o subquery
+     * @return the current object
      */
     Q withRecursive(Path<?> alias, SubQueryExpression<?> o);
 
@@ -356,9 +356,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      *      .from(...)
      * </pre>
      *
-     * @param alias
-     * @param query
-     * @return
+     * @param alias alias for query
+     * @param query subquery
+     * @return the current object
      */
     Q withRecursive(Path<?> alias, Expression<?> query);
 
@@ -371,9 +371,9 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      *      .from(...)
      * </pre>
      *
-     * @param alias
-     * @param columns
-     * @return
+     * @param alias alias for query
+     * @param columns columns to use
+     * @return builder for with part
      */
     WithBuilder<Q> withRecursive(Path<?> alias, Path<?>... columns);
 }

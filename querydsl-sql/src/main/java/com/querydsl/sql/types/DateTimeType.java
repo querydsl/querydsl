@@ -13,12 +13,12 @@
  */
 package com.querydsl.sql.types;
 
-import org.joda.time.DateTime;
-
 import java.sql.*;
 
+import org.joda.time.DateTime;
+
 /**
- * DateTimeType maps DateTime to Timestamp on the JDBC level
+ * {@code DateTimeType} maps DateTime to Timestamp on the JDBC level
  *
  * @author tiwe
  *

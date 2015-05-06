@@ -18,7 +18,7 @@ import com.querydsl.sql.SQLServer2008Templates;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * SQLServer2008SpatialTemplates is a spatial enabled SQL dialect for SQL Server 2008
+ * {@code SQLServer2008SpatialTemplates} is a spatial enabled SQL dialect for SQL Server 2008
  *
  * @author tiwe
  *

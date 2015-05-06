@@ -19,7 +19,7 @@ import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.dsl.SimpleOperation;
 
 /**
- * WindowOver is the first part of a WindowFunction construction
+ * {@code WindowOver} is the first part of a WindowFunction construction
  *
  * @author tiwe
  *
@@ -41,23 +41,14 @@ public class WindowOver<T> extends SimpleOperation<T> {
         super(type, op, ImmutableList.of(arg1, arg2));
     }
 
-    /**
-     * @return
-     */
     public WindowFirstLast<T> keepFirst() {
         return new WindowFirstLast<T>(this, true);
     }
 
-    /**
-     * @return
-     */
     public WindowFirstLast<T> keepLast() {
         return new WindowFirstLast<T>(this, false);
     }
 
-    /**
-     * @return
-     */
     public WindowFunction<T> over() {
         return new WindowFunction<T>(this);
     }

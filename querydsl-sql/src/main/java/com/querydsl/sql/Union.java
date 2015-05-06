@@ -19,7 +19,7 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.types.*;
 
 /**
- * Union defines an interface for Union queries
+ * {@code Union} defines an interface for Union queries
  *
  * @author tiwe
  *
@@ -30,31 +30,30 @@ public interface Union<RT> extends SubQueryExpression<RT> {
     /**
      * Get the projection as a typed List
      *
-     * @return
+     * @return results
      */
     List<RT> list();
-    
-    
+
     /**
      * Get the projection as a typed Iterator
      *
-     * @return
+     * @return result iterator
      */
     CloseableIterator<RT> iterate();
     
     /**
      * Defines the grouping/aggregation expressions
      *
-     * @param o
-     * @return
+     * @param o group by
+     * @return the current object
      */
     Union<RT> groupBy(Expression<?>... o);
 
     /**
      * Defines the filters for aggregation
      *
-     * @param o
-     * @return
+     * @param o having conditions
+     * @return the current object
      */
     Union<RT> having(Predicate... o);
     
@@ -62,22 +61,24 @@ public interface Union<RT> extends SubQueryExpression<RT> {
     /**
      * Define the ordering of the query results
      *
-     * @param o
-     * @return
+     * @param o order
+     * @return the current object
      */
     Union<RT> orderBy(OrderSpecifier<?>... o);
 
     /**
+     * Create an alias for the expression
      *
-     * @param alias
-     * @return
+     * @param alias alias
+     * @return this as alias
      */
     Expression<RT> as(String alias);
 
     /**
+     * Create an alias for the expression
      *
-     * @param alias
-     * @return
+     * @param alias alias
+     * @return this as alias
      */
     Expression<RT> as(Path<RT> alias);
 }

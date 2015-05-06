@@ -13,13 +13,13 @@
  */
 package com.querydsl.sql.spatial;
 
-import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import com.querydsl.sql.types.AbstractType;
+import javax.annotation.Nullable;
+
 import org.geolatte.geom.ByteBuffer;
 import org.geolatte.geom.ByteOrder;
 import org.geolatte.geom.Geometry;
@@ -28,11 +28,9 @@ import org.geolatte.geom.codec.WkbDecoder;
 import org.geolatte.geom.codec.WkbEncoder;
 import org.geolatte.geom.codec.Wkt;
 
-/**
- * @author tiwe
- *
- */
-public class MySQLWkbType extends AbstractType<Geometry> {
+import com.querydsl.sql.types.AbstractType;
+
+class MySQLWkbType extends AbstractType<Geometry> {
 
     public static final MySQLWkbType DEFAULT = new MySQLWkbType();
 

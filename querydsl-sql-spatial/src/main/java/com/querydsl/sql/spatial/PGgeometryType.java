@@ -26,11 +26,7 @@ import org.postgis.PGgeometry;
 
 import com.querydsl.sql.types.AbstractType;
 
-/**
- * @author tiwe
- *
- */
-public class PGgeometryType extends AbstractType<Geometry> {
+class PGgeometryType extends AbstractType<Geometry> {
 
     public static final PGgeometryType DEFAULT = new PGgeometryType();
 

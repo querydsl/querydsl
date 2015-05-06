@@ -37,8 +37,8 @@ import com.querydsl.sql.codegen.support.KeyData;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
 
 /**
- * MetaDataSerializer defines the Query type serialization logic for MetaDataExporter.
- * Subclass this class for customization.
+ * {@code MetaDataSerializer} defines the Query type serialization logic for {@link MetaDataExporter}.
+ * Extend this class for customization.
  *
  * @author tiwe
  *
@@ -71,7 +71,7 @@ public class MetaDataSerializer extends EntitySerializer {
     private final Class<?> entityPathType;
 
     /**
-     * Create a new MetaDataSerializer instance
+     * Create a new {@code MetaDataSerializer} instance
      *
      * @param namingStrategy naming strategy for table to class and column to property conversion
      * @param innerClassesForKeys wrap key properties into inner classes (default: false)

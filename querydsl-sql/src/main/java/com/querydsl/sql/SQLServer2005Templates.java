@@ -24,7 +24,7 @@ import com.querydsl.core.types.*;
 
 
 /**
- * SQLServer2005Templates is an SQL dialect for Microsoft SQL Server 2005
+ * {@code SQLServer2005Templates} is an SQL dialect for Microsoft SQL Server 2005
  *
  * @author tiwe
  */

@@ -20,7 +20,7 @@ import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.types.Ops;
 
 /**
- * PostgreSQLTemplates is an SQL dialect for PostgreSQL
+ * {@code PostgreSQLTemplates} is an SQL dialect for PostgreSQL
  *
  * <p>tested with PostgreSQL 8.4 and 9.1</p>
  *

@@ -94,9 +94,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     /**
      * Add the given String literal at the given position as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     public SQLInsertClause addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
@@ -106,9 +106,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     /**
      * Add the given Expression at the given position as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     public SQLInsertClause addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
@@ -118,7 +118,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     /**
      * Add the current state of bindings as a batch item
      *
-     * @return
+     * @return the current object
      */
     public SQLInsertClause addBatch() {
         if (subQueryBuilder != null) {
@@ -144,8 +144,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * of the first row is returned.
      *
      * @param <T>
-     * @param path
-     * @return
+     * @param path path for key
+     * @return generated key
      */
     @SuppressWarnings("unchecked")
     @Nullable
@@ -159,8 +159,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * row is returned.
      *
      * @param <T>
-     * @param type
-     * @return
+     * @param type type of key
+     * @return generated key
      */
     public <T> T executeWithKey(Class<T> type) {
         return executeWithKey(type, null);
@@ -192,8 +192,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * returned.
      *
      * @param <T>
-     * @param path
-     * @return
+     * @param path path for key
+     * @return generated keys
      */
     @SuppressWarnings("unchecked")
     public <T> List<T> executeWithKeys(Path<T> path) {
@@ -321,7 +321,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     /**
      * Execute the clause and return the generated keys as a ResultSet
      *
-     * @return
+     * @return result set with generated keys
      */
     public ResultSet executeWithKeys() {
         context = startContext(connection, metadata, entity);
@@ -484,8 +484,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * Populate the INSERT clause with the properties of the given bean. The
      * properties need to match the fields of the clause's entity instance.
      *
-     * @param bean
-     * @return
+     * @param bean bean to use for population
+     * @return the current object
      */
     public SQLInsertClause populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
@@ -495,9 +495,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * Populate the INSERT clause with the properties of the given bean using
      * the given Mapper.
      *
-     * @param obj
-     * @param mapper
-     * @return
+     * @param obj object to use for population
+     * @param mapper mapper to use
+     * @return the current object
      */
     @SuppressWarnings("rawtypes")
     public <T> SQLInsertClause populate(T obj, Mapper<T> mapper) {

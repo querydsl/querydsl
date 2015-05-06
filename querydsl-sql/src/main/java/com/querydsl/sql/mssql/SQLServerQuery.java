@@ -23,7 +23,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.sql.*;
 
 /**
- * SQLServerQuery provides SQL Server related extensions to SQLQuery
+ * {@code SQLServerQuery} provides SQL Server related extensions to SQLQuery
  *
  * @author tiwe
  *
@@ -51,8 +51,10 @@ public class SQLServerQuery<T> extends AbstractSQLQuery<T, SQLServerQuery<T>> {
     }
 
     /**
-     * @param tableHints
-     * @return
+     * Set the table hints
+     *
+     * @param tableHints table hints
+     * @return the current object
      */
     public SQLServerQuery<T> tableHints(SQLServerTableHints... tableHints) {
         if (tableHints.length > 0) {

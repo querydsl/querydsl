@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * BooleanType maps Boolean to Boolean on the JDBC level
+ * {@code BooleanType} maps Boolean to Boolean on the JDBC level
  *
  * @author tiwe
  *

@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * EnumByOrdinalType maps Enum types to their Integer ordinals on the JDBC level
+ * {@code EnumByOrdinalType} maps Enum types to their Integer ordinals on the JDBC level
  *
  * @author tiwe
  *

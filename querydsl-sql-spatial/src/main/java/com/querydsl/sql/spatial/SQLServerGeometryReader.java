@@ -39,11 +39,7 @@ import com.vividsolutions.jts.io.ByteOrderDataInStream;
 import com.vividsolutions.jts.io.ByteOrderValues;
 import com.vividsolutions.jts.io.InStream;
 
-/**
- * @author tiwe
- *
- */
-public class SQLServerGeometryReader {
+class SQLServerGeometryReader {
 
     private static class Figure {
         int attributes;

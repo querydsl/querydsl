@@ -24,6 +24,8 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimpleExpression;
 
 /**
+ * {@code WindowFirstLast} is a builder for window function expressions
+ *
  * @author tiwe
  *
  * @param <T>

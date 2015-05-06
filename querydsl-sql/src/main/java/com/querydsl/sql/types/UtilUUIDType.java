@@ -20,7 +20,7 @@ import java.sql.Types;
 import java.util.UUID;
 
 /**
- * UtilUUIDType maps UUID to String on the JDBC level
+ * {@code UtilUUIDType} maps UUID to String on the JDBC level
  *
  * @author tiwe
  *

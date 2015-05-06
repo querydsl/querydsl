@@ -27,7 +27,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 
 /**
- * ForeignKey defines a foreign key on a table to another table
+ * {@code ForeignKey} defines a foreign key on a table to another table
  *
  * @author tiwe
  *

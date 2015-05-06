@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * BigIntegerType maps BigInteger to Long on the JDBC level
+ * {@code BigIntegerType} maps BigInteger to Long on the JDBC level
  *
  * @author tiwe
  *

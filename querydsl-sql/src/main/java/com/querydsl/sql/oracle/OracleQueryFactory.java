@@ -42,6 +42,7 @@ public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery<?>> 
         this(new Configuration(templates), connection);
     }
 
+    @Override
     public OracleQuery<?> query() {
         return new OracleQuery<Void>(connection.get(), configuration);
     }

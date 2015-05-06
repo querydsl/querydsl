@@ -20,7 +20,7 @@ import java.sql.Types;
 import java.util.Date;
 
 /**
- * UtilDateType maps Date to Timestamp on the JDBC level
+ * {@code UtilDateType} maps Date to Timestamp on the JDBC level
  *
  * @author tiwe
  *

@@ -16,6 +16,8 @@ package com.querydsl.sql.codegen;
 import static com.querydsl.core.util.JavaSyntaxUtils.isReserved;
 
 /**
+ * {@code Naming} provides name normalization functionality
+ *
  * @author tiwe
  *
  */

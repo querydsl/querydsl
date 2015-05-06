@@ -16,6 +16,8 @@ package com.querydsl.sql.types;
 import java.sql.Types;
 
 /**
+ * {@code LongVarBinaryBytesType} uses {@code LONGVARBINARY} as the JDBC type
+ *
  * @author tiwe
  *
  */

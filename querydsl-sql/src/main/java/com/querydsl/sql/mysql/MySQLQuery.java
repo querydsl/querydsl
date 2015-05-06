@@ -30,7 +30,7 @@ import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * MySQLQuery provides MySQL related extensions to SQLQuery
+ * {@code MySQLQuery} provides MySQL related extensions to SQLQuery
  *
  * @author tiwe
  * @see SQLQuery
@@ -77,120 +77,170 @@ public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
     }
 
     /**
-     * @return
+     * For SQL_BIG_RESULT, MySQL directly uses disk-based temporary tables if needed, and prefers
+     * sorting to using a temporary table with a key on the GROUP BY elements.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> bigResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BIG_RESULT);
     }
 
     /**
-     * @return
+     * SQL_BUFFER_RESULT forces the result to be put into a temporary table. This helps MySQL free
+     * the table locks early and helps in cases where it takes a long time to send the result set
+     * to the client. This option can be used only for top-level SELECT statements, not for
+     * subqueries or following UNION.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> bufferResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BUFFER_RESULT);
     }
 
     /**
-     * @return
+     * SQL_CACHE tells MySQL to store the result in the query cache if it is cacheable and the value
+     * of the query_cache_type system variable is 2 or DEMAND.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> cache() {
         return addFlag(Position.AFTER_SELECT, SQL_CACHE);
     }
 
     /**
-     * @return
+     * SQL_CALC_FOUND_ROWS tells MySQL to calculate how many rows there would be in the result set,
+     * disregarding any LIMIT clause. The number of rows can then be retrieved with SELECT FOUND_ROWS().
+     *
+     * @return the current object
      */
     public MySQLQuery<T> calcFoundRows() {
         return addFlag(Position.AFTER_SELECT, SQL_CALC_FOUND_ROWS);
     }
 
     /**
-     * @return
+     * HIGH_PRIORITY gives the SELECT higher priority than a statement that updates a table.
+     * You should use this only for queries that are very fast and must be done at once.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> highPriority() {
         return addFlag(Position.AFTER_SELECT, HIGH_PRIORITY);
     }
 
     /**
-     * @param var
-     * @return
+     * SELECT ... INTO var_list selects column values and stores them into variables.
+     *
+     * @param var variable name
+     * @return the current object
      */
     public MySQLQuery<T> into(String var) {
         return addFlag(Position.END, "\ninto " + var);
     }
 
     /**
-     * @param file
-     * @return
+     * SELECT ... INTO DUMPFILE writes a single row to a file without any formatting.
+     *
+     * @param file file to write to
+     * @return the current object
      */
     public MySQLQuery<T> intoDumpfile(File file) {
         return addFlag(Position.END, "\ninto dumpfile '" + file.getPath() + "'" );
     }
 
     /**
-     * @param file
-     * @return
+     * SELECT ... INTO OUTFILE writes the selected rows to a file. Column and line terminators c
+     * an be specified to produce a specific output format.
+     *
+     * @param file file to write to
+     * @return the current object
      */
     public MySQLQuery<T> intoOutfile(File file) {
         return addFlag(Position.END, "\ninto outfile '" + file.getPath() + "'" );
     }
 
     /**
-     * @return
+     * Using LOCK IN SHARE MODE sets a shared lock that permits other transactions to read the examined
+     * rows but not to update or delete them.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> lockInShareMode() {
         return addFlag(Position.END, LOCK_IN_SHARE_MODE);
     }
 
     /**
-     * @return
+     * With SQL_NO_CACHE, the server does not use the query cache. It neither checks the query cache
+     * to see whether the result is already cached, nor does it cache the query result.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> noCache() {
         return addFlag(Position.AFTER_SELECT, SQL_NO_CACHE);
     }
 
     /**
-     * @return
+     * For SQL_SMALL_RESULT, MySQL uses fast temporary tables to store the resulting table instead
+     * of using sorting. This should not normally be needed.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> smallResult() {
         return addFlag(Position.AFTER_SELECT, SQL_SMALL_RESULT);
     }
 
     /**
-     * @return
+     * STRAIGHT_JOIN forces the optimizer to join the tables in the order in which they are listed
+     * in the FROM clause. You can use this to speed up a query if the optimizer joins the tables
+     * in nonoptimal order. STRAIGHT_JOIN also can be used in the table_references list.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> straightJoin() {
         return addFlag(Position.AFTER_SELECT, STRAIGHT_JOIN);
     }
 
     /**
-     * @param indexes
-     * @return
+     * You can use FORCE INDEX, which acts like USE INDEX (index_list) but with the addition that a
+     * table scan is assumed to be very expensive. In other words, a table scan is used only if there
+     * is no way to use one of the given indexes to find rows in the table.
+     *
+     * @param indexes index names
+     * @return the current object
      */
     public MySQLQuery<T> forceIndex(String... indexes) {
         return addJoinFlag(" force index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
 
     /**
-     * @param indexes
-     * @return
+     * The alternative syntax IGNORE INDEX (index_list) can be used to tell MySQL to not use some
+     * particular index or indexes.
+     *
+     * @param indexes index names
+     * @return the current object
      */
     public MySQLQuery<T> ignoreIndex(String... indexes) {
         return addJoinFlag(" ignore index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
 
-
     /**
-     * @param indexes
-     * @return
+     * By specifying USE INDEX (index_list), you can tell MySQL to use only one of the named indexes
+     * to find rows in the table.
+     *
+     * @param indexes index names
+     * @return the current object
      */
     public MySQLQuery<T> useIndex(String... indexes) {
         return addJoinFlag(" use index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
 
-
     /**
-     * @return
+     * The GROUP BY clause permits a WITH ROLLUP modifier that causes extra rows to be added to the
+     * summary output. These rows represent higher-level (or super-aggregate) summary operations.
+     * ROLLUP thus enables you to answer questions at multiple levels of analysis with a single query.
+     * It can be used, for example, to provide support for OLAP (Online Analytical Processing) operations.
+     *
+     * @return the current object
      */
     public MySQLQuery<T> withRollup() {
         return addFlag(Position.AFTER_GROUP_BY, WITH_ROLLUP);

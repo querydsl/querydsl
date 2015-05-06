@@ -19,12 +19,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * IntegerType maps Integer to Integer on the JDBC level
+ * {@code IntegerType} maps Integer to Integer on the JDBC level
  *
  * @author tiwe
  *
  */
-public class IntegerType extends AbstractNumberType<Integer> {
+public class IntegerType extends AbstractType<Integer> {
 
     public IntegerType() {
         super(Types.INTEGER);

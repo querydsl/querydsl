@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * EnumByNameType maps Enum types to their String names on the JDBC level
+ * {@code EnumByNameType} maps Enum types to their String names on the JDBC level
  *
  * @author tiwe
  *

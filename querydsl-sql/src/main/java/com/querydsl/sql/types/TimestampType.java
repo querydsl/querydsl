@@ -16,7 +16,7 @@ package com.querydsl.sql.types;
 import java.sql.*;
 
 /**
- * TimestampType maps Timestamp to Timestamp on the JDBC level
+ * {@code TimestampType} maps Timestamp to Timestamp on the JDBC level
  *
  * @author tiwe
  *

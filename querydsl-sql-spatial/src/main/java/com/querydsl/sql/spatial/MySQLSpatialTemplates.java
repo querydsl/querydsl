@@ -18,7 +18,7 @@ import com.querydsl.sql.MySQLTemplates;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * MySQLSpatialTemplates is a spatial enabled SQL dialect for MySQL
+ * {@code MySQLSpatialTemplates} is a spatial enabled SQL dialect for MySQL
  *
  * @author tiwe
  *

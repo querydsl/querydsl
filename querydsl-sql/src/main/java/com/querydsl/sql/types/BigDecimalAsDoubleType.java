@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * BigDecimalAsDoubleType maps BigDecimal to Double on the JDBC level
+ * {@code BigDecimalAsDoubleType} maps BigDecimal to Double on the JDBC level
  *
  * @author tiwe
  *

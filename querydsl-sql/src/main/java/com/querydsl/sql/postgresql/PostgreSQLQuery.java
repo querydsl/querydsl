@@ -29,7 +29,7 @@ import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * PostgreSQLQuery provides PostgreSQL related extensions to SQLQuery
+ * {@code PostgreSQLQuery} provides PostgreSQL related extensions to SQLQuery
  *
  * @author tiwe
  * @see SQLQuery
@@ -54,22 +54,29 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
     }
 
     /**
-     * @return
+     * FOR SHARE causes the rows retrieved by the SELECT statement to be locked as though for update.
+     *
+     * @return the current object
      */
     public PostgreSQLQuery<T> forShare() {
         return addFlag(SQLOps.FOR_SHARE_FLAG);
     }
 
     /**
-     * @return
+     * With NOWAIT, the statement reports an error, rather than waiting, if a selected row cannot
+     * be locked immediately.
+     *
+     * @return the current object
      */
     public PostgreSQLQuery<T> noWait() {
         return addFlag(SQLOps.NO_WAIT_FLAG);
     }
 
     /**
-     * @param paths
-     * @return
+     * FOR UPDATE / FOR SHARE OF tables
+     *
+     * @param paths tables
+     * @return the current object
      */
     public PostgreSQLQuery<T> of(RelationalPath<?>... paths) {
         StringBuilder builder = new StringBuilder(" of ");

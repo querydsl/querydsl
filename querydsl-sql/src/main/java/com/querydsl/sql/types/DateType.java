@@ -16,7 +16,7 @@ package com.querydsl.sql.types;
 import java.sql.*;
 
 /**
- * DateType maps Date to Date on the JDBC level
+ * {@code DateType} maps Date to Date on the JDBC level
  *
  * @author tiwe
  *

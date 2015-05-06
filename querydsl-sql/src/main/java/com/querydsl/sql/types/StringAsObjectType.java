@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * StringAsObjectType maps String to String on the JDBC level
+ * {@code StringAsObjectType} maps String to String on the JDBC level
  *
  * @author tiwe
  *

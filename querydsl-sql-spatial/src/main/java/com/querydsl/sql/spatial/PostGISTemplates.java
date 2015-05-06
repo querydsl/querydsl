@@ -18,7 +18,7 @@ import com.querydsl.sql.PostgreSQLTemplates;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * PostGISTemplates is a spatial enabled SQL dialect for PostGIS
+ * {@code PostGISTemplates} is a spatial enabled SQL dialect for PostGIS
  *
  * @author tiwe
  *

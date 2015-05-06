@@ -32,7 +32,7 @@ import com.querydsl.core.types.TemplateExpression;
 import com.querydsl.core.types.Visitor;
 
 /**
- * RelationalPathExtractor extracts RelationalPath instances from expressions and queries
+ * {@code RelationalPathExtractor} extracts {@link RelationalPath} instances from expressions and queries
  *
  * @author tiwe
  *

@@ -20,18 +20,14 @@ import java.sql.Types;
 
 import javax.annotation.Nullable;
 
-import oracle.spatial.geometry.JGeometry;
-import oracle.sql.STRUCT;
-
 import org.geolatte.geom.Geometry;
 
 import com.querydsl.sql.types.AbstractType;
 
-/**
- * @author tiwe
- *
- */
-public class JGeometryType extends AbstractType<Geometry> {
+import oracle.spatial.geometry.JGeometry;
+import oracle.sql.STRUCT;
+
+class JGeometryType extends AbstractType<Geometry> {
 
     public static final JGeometryType DEFAULT = new JGeometryType();
 

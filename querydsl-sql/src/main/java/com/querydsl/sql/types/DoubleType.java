@@ -19,12 +19,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * DoubleType maps Double to Double on the JDBC level
+ * {@code DoubleType} maps Double to Double on the JDBC level
  *
  * @author tiwe
  *
  */
-public class DoubleType extends AbstractNumberType<Double> {
+public class DoubleType extends AbstractType<Double> {
 
     public DoubleType() {
         super(Types.DOUBLE);

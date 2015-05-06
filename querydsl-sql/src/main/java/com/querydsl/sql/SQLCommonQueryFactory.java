@@ -45,57 +45,57 @@ public interface SQLCommonQueryFactory<Q extends SQLCommonQuery<?>, // extends A
     /**
      * Create a new DELETE clause
      *
-     * @param path
-     * @return
+     * @param path table to delete from
+     * @return delete clause
      */
     D delete(RelationalPath<?> path);
 
     /**
      * Create a new SELECT query
      *
-     * @param from
-     * @return
+     * @param from query source
+     * @return query
      */
     Q from(Expression<?> from);
 
     /**
      * Create a new SELECT query
      *
-     * @param from
-     * @return
+     * @param from query sources
+     * @return query
      */
     Q from(Expression<?>... from);
 
     /**
      * Create a new SELECT query
      *
-     * @param subQuery
-     * @param alias
-     * @return
+     * @param subQuery query source
+     * @param alias alias
+     * @return query
      */
     Q from(SubQueryExpression<?> subQuery, Path<?> alias);
 
     /**
      * Create a new INSERT INTO clause
      *
-     * @param path
-     * @return
+     * @param path table to insert to
+     * @return insert clause
      */
     I insert(RelationalPath<?> path);
 
     /**
      * Create a new MERGE clause
      *
-     * @param path
-     * @return
+     * @param path table to merge into
+     * @return merge clause
      */
     M merge(RelationalPath<?> path);
 
     /**
      * Create a new UPDATE clause
      *
-     * @param path
-     * @return
+     * @param path table to update
+     * @return update clause
      */
     U update(RelationalPath<?> path);
 

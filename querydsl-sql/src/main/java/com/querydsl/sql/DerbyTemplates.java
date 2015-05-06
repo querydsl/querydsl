@@ -20,7 +20,7 @@ import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.Ops;
 
 /**
- * DerbyTemplates is an SQL dialect for Derby
+ * {@code DerbyTemplates} is an SQL dialect for Derby
  *
  * @author tiwe
  *

@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * EnumAsObjectType maps Enum types to Object on the JDBC level
+ * {@code EnumAsObjectType} maps Enum types to Object on the JDBC level
  *
  * @author tiwe
  *

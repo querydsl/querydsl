@@ -21,7 +21,7 @@ import com.querydsl.sql.types.NumericBooleanType;
 import com.querydsl.core.types.Ops;
 
 /**
- * CUBRIDTemplates is a SQL dialect for CUBRID
+ * {@code CUBRIDTemplates} is a SQL dialect for CUBRID
  *
  * @author tiwe
  *

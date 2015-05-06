@@ -23,7 +23,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
 
 /**
- * SQLInsertBatch defines the state of an SQL INSERT batch item
+ * {@code SQLInsertBatch} defines the state of an SQL INSERT batch item
  * 
  * @author tiwe
  *

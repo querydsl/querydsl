@@ -13,6 +13,9 @@
  */
 package com.querydsl.sql;
 
+/**
+ * {@code DatePart} defines date parts for various date/time operations
+ */
 public enum DatePart {
     year,
     month,

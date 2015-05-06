@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * BigDecimalType maps BigDecimal to BigDecimal on the JDBC level
+ * {@code BigDecimalType} maps BigDecimal to BigDecimal on the JDBC level
  *
  * @author tiwe
  *

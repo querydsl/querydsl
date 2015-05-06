@@ -1,11 +1,13 @@
 package com.querydsl.sql.types;
 
-import javax.annotation.Nullable;
 import java.sql.*;
+
+import javax.annotation.Nullable;
 
 import com.google.common.primitives.Primitives;
 
 /**
+ *{@code ArrayType} maps Java arrays to JDBC arrays
  *
  * @param <T>
  */

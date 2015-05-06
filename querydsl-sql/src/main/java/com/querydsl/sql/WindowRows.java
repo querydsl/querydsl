@@ -20,7 +20,7 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 
 /**
- * WindowRows provides the building of the rows/range part of the window function expression
+ * {@code WindowRows} provides the building of the rows/range part of the window function expression
  *
  * @author tiwe
  *

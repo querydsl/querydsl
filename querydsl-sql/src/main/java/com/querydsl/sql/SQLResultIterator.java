@@ -24,7 +24,7 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.QueryException;
 
 /**
- * SQLResultIterator is an Iterator adapter for JDBC result sets with customizable projections
+ * {@code SQLResultIterator} is an Iterator adapter for JDBC result sets with customizable projections
  *
  * @author tiwe
  *

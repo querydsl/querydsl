@@ -20,7 +20,7 @@ package com.querydsl.sql.mssql;
  * @author tiwe
  *
  */
-public final class SQLServerGrammar {
+final class SQLServerGrammar {
 
     private SQLServerGrammar() {}
 

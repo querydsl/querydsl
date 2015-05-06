@@ -20,7 +20,7 @@ import com.querydsl.sql.TeradataTemplates;
 import com.querydsl.sql.types.StringAsObjectType;
 
 /**
- * TeradataSpatialTemplates is a spatial enabled SQL dialect for Teradata
+ * {@code TeradataSpatialTemplates} is a spatial enabled SQL dialect for Teradata
  *
  * @author tiwe
  *

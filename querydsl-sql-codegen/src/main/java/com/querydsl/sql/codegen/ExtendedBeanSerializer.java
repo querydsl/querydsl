@@ -30,7 +30,8 @@ import com.querydsl.sql.Column;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
 
 /**
- * ExtendedBeanSerializer outputs primary key based equals, hashCode and toString implementations
+ * {@code ExtendedBeanSerializer} outputs primary key based {@code equals}, {@code hashCode} and
+ * {@code toString} implementations
  * 
  * @author tiwe
  *

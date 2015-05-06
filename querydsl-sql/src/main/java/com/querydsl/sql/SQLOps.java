@@ -21,7 +21,7 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operator;
 
 /**
- * SQLOps provides SQL specific operators
+ * {@code SQLOps} provides SQL specific operators
  *
  * @author tiwe
  *

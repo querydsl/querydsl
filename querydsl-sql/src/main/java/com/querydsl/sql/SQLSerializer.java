@@ -33,7 +33,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.types.Null;
 
 /**
- * SqlSerializer serializes Querydsl queries into SQL
+ * {@code SqlSerializer} serializes SQL clauses into SQL
  *
  * @author tiwe
  */
@@ -41,7 +41,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS}
 
-    private static final Expression Q = Expressions.template(Object.class, "?");
+    private static final Expression<?> Q = Expressions.template(Object.class, "?");
 
     private static final String COMMA = ", ";
 
@@ -113,7 +113,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
      * Return a list of expressions that can be used to uniquely define the query sources
      *
      * @param joins
-     * @return
+     * @return identifier columns
      */
     @SuppressWarnings("unchecked")
     private List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins, boolean alias) {

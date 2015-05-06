@@ -36,7 +36,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 /**
- * Empty implementation of the ResulSet interface
+ * Empty implementation of the ResultSet interface
  *
  * @author tiwe
  *

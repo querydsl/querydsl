@@ -40,7 +40,7 @@ import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.core.util.ResultSetAdapter;
 
 /**
- * AbstractSQLQuery is the base type for SQL query implementations
+ * {@code AbstractSQLQuery} is the base type for SQL query implementations
  *
  * @author tiwe
  *
@@ -75,25 +75,29 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     /**
+     * Create an alias for the expression
      *
-     * @param alias
-     * @return
+     * @param alias alias
+     * @return this as alias
      */
     public SimpleExpression<T> as(String alias) {
         return Expressions.as(this, alias);
     }
 
     /**
+     * Create an alias for the expression
      *
-     * @param alias
-     * @return
+     * @param alias alias
+     * @return this as alias
      */
     public SimpleExpression<T> as(Path<?> alias) {
         return Expressions.as(this, (Path)alias);
     }
 
     /**
-     * @param listener
+     * Add a listener
+     *
+     * @param listener listener to add
      */
     public void addListener(SQLListener listener) {
         listeners.add(listener);
@@ -116,7 +120,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      *
      * Not supported for SQLite and CUBRID
      *
-     * @return
+     * @return the current object
      */
     public Q forUpdate() {
         return addFlag(SQLOps.FOR_UPDATE_FLAG);
@@ -133,7 +137,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         return configuration.get(rs, expr instanceof Path ? (Path<?>)expr : null, i, type);
     }
 
-    private void set(PreparedStatement stmt, Path<?> path, int i, Object value) throws SQLException{
+    private void set(PreparedStatement stmt, Path<?> path, int i, Object value) throws SQLException {
         configuration.set(stmt, path, i, value);
     }
 
@@ -176,7 +180,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      * Get the results as an JDBC result set
      *
      * @param exprs the expression arguments to retrieve
-     * @return
+     * @return results as ResultSet
      */
     public ResultSet getResults(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

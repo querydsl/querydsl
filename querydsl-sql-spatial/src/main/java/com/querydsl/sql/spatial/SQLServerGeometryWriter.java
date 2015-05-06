@@ -30,11 +30,7 @@ import org.geolatte.geom.Polygon;
 
 import com.google.common.collect.Lists;
 
-/**
- * @author tiwe
- *
- */
-public class SQLServerGeometryWriter {
+class SQLServerGeometryWriter {
 
     private static final int POINT = 1;
 

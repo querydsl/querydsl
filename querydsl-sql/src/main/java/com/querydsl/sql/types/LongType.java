@@ -19,12 +19,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * LongType maps Long to Long on the JDBC level
+ * {@code LongType} maps Long to Long on the JDBC level
  *
  * @author tiwe
  *
  */
-public class LongType extends AbstractNumberType<Long> {
+public class LongType extends AbstractType<Long> {
 
     public LongType() {
         super(Types.BIGINT);

@@ -67,7 +67,7 @@ public final class Configuration {
     /**
      * Create a new Configuration instance
      *
-     * @param templates
+     * @param templates templates for SQL serialization
      */
     public Configuration(SQLTemplates templates) {
         this.templates = templates;
@@ -101,8 +101,8 @@ public final class Configuration {
     /**
      * Get the literal representation of the given constant
      *
-     * @param o
-     * @return
+     * @param o object
+     * @return literal representation
      */
     public String asLiteral(Object o) {
         if (Null.class.isInstance(o)) {
@@ -124,13 +124,13 @@ public final class Configuration {
     /**
      * Get the java type for the given jdbc type, table name and column name
      *
-     * @param sqlType
-     * @param typeName
-     * @param size
-     * @param digits
-     * @param tableName
-     * @param columnName
-     * @return
+     * @param sqlType JDBC type
+     * @param typeName JDBC type name
+     * @param size size
+     * @param digits digits
+     * @param tableName table name
+     * @param columnName column name
+     * @return Java type
      */
     public Class<?> getJavaType(int sqlType, String typeName, int size, int digits, String tableName, String columnName) {
         // table.column mapped class
@@ -171,12 +171,14 @@ public final class Configuration {
     }
 
     /**
-     * @param <T>
-     * @param rs
-     * @param path
-     * @param i
-     * @param clazz
-     * @return
+     * Get the value at the given index from the result set
+     *
+     * @param <T> type to return
+     * @param rs result set
+     * @param path path
+     * @param i one based index in result set row
+     * @param clazz type
+     * @return value
      * @throws SQLException
      */
     @Nullable
@@ -187,8 +189,8 @@ public final class Configuration {
     /**
      * Get the schema/table override
      *
-     * @param key
-     * @return
+     * @param key schema and table
+     * @return overridden schema and table
      */
     @Nullable
     public SchemaAndTable getOverride(SchemaAndTable key) {
@@ -198,20 +200,22 @@ public final class Configuration {
     /**
      * Get the column override
      *
-     * @param key
-     * @param column
-     * @return
+     * @param key schema and table
+     * @param column column
+     * @return overriden column
      */
     public String getColumnOverride(SchemaAndTable key, String column) {
         return nameMapping.getColumnOverride(key, column);
     }
 
     /**
+     * Set the value at the given index in the statement
+     *
      * @param <T>
-     * @param stmt
-     * @param path
-     * @param i
-     * @param value
+     * @param stmt statement
+     * @param path path
+     * @param i one based index in statement
+     * @param value value to bind
      * @throws SQLException
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -245,8 +249,8 @@ public final class Configuration {
     /**
      * Get the SQL type name for the given java type
      *
-     * @param type
-     * @return
+     * @param type java type
+     * @return SQL type name
      */
     public String getTypeName(Class<?> type) {
         Integer jdbcType = jdbcTypeMapping.get(type);
@@ -257,9 +261,10 @@ public final class Configuration {
     }
 
     /**
+     * Get the SQL type name for a cast operation
      *
-     * @param type
-     * @return
+     * @param type java type
+     * @return SQL type name
      */
     public String getTypeNameForCast(Class<?> type) {
         Integer jdbcType = jdbcTypeMapping.get(type);
@@ -272,9 +277,9 @@ public final class Configuration {
     /**
      * Register a schema override
      *
-     * @param oldSchema
-     * @param newSchema
-     * @return
+     * @param oldSchema schema to override
+     * @param newSchema override
+     * @return previous override value
      */
     public String registerSchemaOverride(String oldSchema, String newSchema) {
         return nameMapping.registerSchemaOverride(oldSchema, newSchema);
@@ -283,9 +288,9 @@ public final class Configuration {
     /**
      * Register a table override
      *
-     * @param oldTable
-     * @param newTable
-     * @return
+     * @param oldTable table to override
+     * @param newTable override
+     * @return previous override value
      */
     public String registerTableOverride(String oldTable, String newTable) {
         return nameMapping.registerTableOverride(oldTable, newTable);
@@ -294,10 +299,10 @@ public final class Configuration {
     /**
      * Register a schema specific table override
      *
-     * @param schema
-     * @param oldTable
-     * @param newTable
-     * @return
+     * @param schema schema of table
+     * @param oldTable table to override
+     * @param newTable override
+     * @return previous override value
      */
     public String registerTableOverride(String schema, String oldTable, String newTable) {
         SchemaAndTable st = registerTableOverride(schema, oldTable, schema, newTable);
@@ -307,11 +312,11 @@ public final class Configuration {
     /**
      * Register a schema specific table override
      *
-     * @param schema
-     * @param oldTable
-     * @param newSchema
-     * @param newTable
-     * @return
+     * @param schema schema of table
+     * @param oldTable table to override
+     * @param newSchema override schema
+     * @param newTable override table
+     * @return previous override value
      */
     public SchemaAndTable registerTableOverride(String schema, String oldTable, String newSchema, String newTable) {
         return registerTableOverride(new SchemaAndTable(schema, oldTable), new SchemaAndTable(newSchema, newTable));
@@ -320,9 +325,9 @@ public final class Configuration {
     /**
      * Register a schema specific table override
      *
-     * @param from
-     * @param to
-     * @return
+     * @param from schema and table to override
+     * @param to override
+     * @return previous override
      */
     public SchemaAndTable registerTableOverride(SchemaAndTable from, SchemaAndTable to) {
         return nameMapping.registerTableOverride(from, to);
@@ -331,11 +336,11 @@ public final class Configuration {
     /**
      * Register a column override
      *
-     * @param schema
-     * @param table
-     * @param oldColumn
-     * @param newColumn
-     * @return
+     * @param schema schema
+     * @param table table
+     * @param oldColumn column
+     * @param newColumn override
+     * @return previous override
      */
     public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
         return nameMapping.registerColumnOverride(schema, table, oldColumn, newColumn);
@@ -344,10 +349,10 @@ public final class Configuration {
     /**
      * Register a column override
      *
-     * @param table
-     * @param oldColumn
-     * @param newColumn
-     * @return
+     * @param table table
+     * @param oldColumn column
+     * @param newColumn override
+     * @return previous override
      */
     public String registerColumnOverride(String table, String oldColumn, String newColumn) {
         return nameMapping.registerColumnOverride(table, oldColumn, newColumn);
@@ -356,7 +361,7 @@ public final class Configuration {
     /**
      * Register the given {@link Type} converter
      *
-     * @param type
+     * @param type type
      */
     public void register(Type<?> type) {
         jdbcTypeMapping.register(type.getSQLTypes()[0], type.getReturnedClass());
@@ -366,8 +371,8 @@ public final class Configuration {
     /**
      * Register a typeName to Class mapping
      *
-     * @param typeName
-     * @param clazz
+     * @param typeName SQL type name
+     * @param clazz java type
      */
     public void registerType(String typeName, Class<?> clazz) {
         typeToName.put(typeName.toLowerCase(), clazz);
@@ -378,7 +383,7 @@ public final class Configuration {
      *
      * @param total total amount of digits
      * @param decimal amount of fractional digits
-     * @param javaType
+     * @param javaType java type
      */
     public void registerNumeric(int total, int decimal, Class<?> javaType) {
         jdbcTypeMapping.registerNumeric(total, decimal, javaType);
@@ -387,11 +392,11 @@ public final class Configuration {
     /**
      * Override multiple numeric bindings, both begin and end are inclusive
      *
-     * @param beginTotal
-     * @param endTotal
-     * @param beginDecimal
-     * @param endDecimal
-     * @param javaType
+     * @param beginTotal inclusive start of range
+     * @param endTotal inclusive end of range
+     * @param beginDecimal inclusive start of range
+     * @param endDecimal inclusive end of range
+     * @param javaType java type
      */
     public void registerNumeric (int beginTotal, int endTotal, int beginDecimal, int endDecimal, Class <?> javaType) {
         for (int total = beginTotal; total <= endTotal; total++) {
@@ -404,9 +409,9 @@ public final class Configuration {
     /**
      * Register the given javaType for the given table and column
      *
-     * @param table
-     * @param column
-     * @param javaType
+     * @param table table
+     * @param column column
+     * @param javaType java type
      */
     public void register(String table, String column, Class<?> javaType) {
         register(table, column, javaTypeMapping.getType(javaType));
@@ -415,9 +420,9 @@ public final class Configuration {
     /**
      * Register the given {@link Type} converter for the given table and column
      *
-     * @param table
-     * @param column
-     * @param type
+     * @param table table
+     * @param column column
+     * @param type type
      */
     public void register(String table, String column, Type<?> type) {
         javaTypeMapping.setType(table, column, type);
@@ -427,8 +432,8 @@ public final class Configuration {
     /**
      * Translate the given SQLException
      *
-     * @param ex
-     * @return
+     * @param ex SQLException to translate
+     * @return translated exception
      */
     public RuntimeException translate(SQLException ex) {
         return exceptionTranslator.translate(ex);
@@ -437,51 +442,64 @@ public final class Configuration {
     /**
      * Translate the given SQLException
      *
-     * @param sql
-     * @param ex
-     * @return
+     * @param sql SQL string
+     * @param bindings bindings
+     * @param ex SQLException to translate
+     * @return translated exception
      */
     public RuntimeException translate(String sql, List<Object> bindings, SQLException ex) {
         return exceptionTranslator.translate(sql, bindings, ex);
     }
 
     /**
-     * @param listener
+     * Add a listener
+     *
+     * @param listener listener
      */
     public void addListener(SQLListener listener) {
         listeners.add(listener);
     }
 
     /**
-     * @return
+     * Get the registered listener
+     *
+     * @return listeners as single listener instance
      */
     public SQLListeners getListeners() {
         return listeners;
     }
 
     /**
-     * @return
+     * Get whether literals are serialized or prepared statement bindings are used
+     *
+     * @return true for literals and false for bindings
      */
     public boolean getUseLiterals() {
         return useLiterals;
     }
 
     /**
-     * @param useLiterals
+     * Set whether literals are used
+     *
+     * @param useLiterals true for literals and false for bindings
      */
     public void setUseLiterals(boolean useLiterals) {
         this.useLiterals = useLiterals;
     }
 
     /**
-     * @param exceptionTranslator
+     * Set the exception translator
+     *
+     * @param exceptionTranslator exception translator
      */
     public void setExceptionTranslator(SQLExceptionTranslator exceptionTranslator) {
         this.exceptionTranslator = exceptionTranslator;
     }
 
     /**
-     * @param templates
+     * Set the templates to use for serialization
+     *
+     * @param templates templates
      */
     public void setTemplates(SQLTemplates templates) {
         this.templates = templates;

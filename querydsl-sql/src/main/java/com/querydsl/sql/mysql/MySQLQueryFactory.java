@@ -43,24 +43,45 @@ public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<?>> {
         this(new Configuration(templates), connection);
     }
 
+    /**
+     * Create a INSERT IGNORE INTO clause
+     *
+     * @param entity table to insert to
+     * @return insert clause
+     */
     public SQLInsertClause insertIgnore(RelationalPath<?> entity) {
         SQLInsertClause insert = insert(entity);
         insert.addFlag(Position.START_OVERRIDE, "insert ignore into ");
         return insert;
     }
 
+    /**
+     * Create a INSERT ... ON DUPLICATE KEY UPDATE clause
+     *
+     * @param entity table to insert to
+     * @param clause clause
+     * @return insert clause
+     */
     public SQLInsertClause insertOnDuplicateKeyUpdate(RelationalPath<?> entity, String clause) {
         SQLInsertClause insert = insert(entity);
         insert.addFlag(Position.END, " on duplicate key update " + clause);
         return insert;
     }
-    
+
+    /**
+     * Create a INSERT ... ON DUPLICATE KEY UPDATE clause
+     *
+     * @param entity table to insert to
+     * @param clause clause
+     * @return insert clause
+     */
     public SQLInsertClause insertOnDuplicateKeyUpdate(RelationalPath<?> entity, Expression<?> clause) {
         SQLInsertClause insert = insert(entity);
         insert.addFlag(Position.END, ExpressionUtils.template(String.class, " on duplicate key update {0}", clause));
         return insert;
     }
-    
+
+    @Override
     public MySQLQuery<?> query() {
         return new MySQLQuery<Void>(connection.get(), configuration);
     }

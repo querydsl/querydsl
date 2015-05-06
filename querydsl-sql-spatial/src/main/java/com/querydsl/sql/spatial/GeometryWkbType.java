@@ -30,11 +30,7 @@ import org.geolatte.geom.codec.Wkt;
 
 import com.querydsl.sql.types.AbstractType;
 
-/**
- * @author tiwe
- *
- */
-public class GeometryWkbType extends AbstractType<Geometry> {
+class GeometryWkbType extends AbstractType<Geometry> {
 
     public static final GeometryWkbType NDR = new GeometryWkbType(ByteOrder.NDR);
 

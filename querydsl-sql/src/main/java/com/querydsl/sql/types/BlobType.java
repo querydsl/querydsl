@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 /**
- * BlobType maps Blob to Blob on the JDBC level
+ * {@code BlobType} maps Blob to Blob on the JDBC level
  *
  * @author tiwe
  *

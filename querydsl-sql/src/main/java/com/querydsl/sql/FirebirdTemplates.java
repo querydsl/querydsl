@@ -6,6 +6,9 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.Ops;
 
+/**
+ * {@code FirebirdTemplates} is an SQL dialect for Firebird
+ */
 public class FirebirdTemplates extends SQLTemplates {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional

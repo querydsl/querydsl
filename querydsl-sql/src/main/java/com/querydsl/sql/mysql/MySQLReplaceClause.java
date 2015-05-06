@@ -22,6 +22,11 @@ import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.dml.SQLInsertClause;
 
 /**
+ * {@code MySQLReplaceClause} is a REPLACE INTO clause
+ *
+ * <p>REPLACE works exactly like INSERT, except that if an old row in the table has the same value
+ * as a new row for a PRIMARY KEY or a UNIQUE index, the old row is deleted before the new row is inserted.</p>
+ *
  * @author tiwe
  *
  */

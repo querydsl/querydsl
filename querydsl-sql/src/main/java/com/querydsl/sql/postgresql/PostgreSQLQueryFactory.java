@@ -39,6 +39,7 @@ public class PostgreSQLQueryFactory extends AbstractSQLQueryFactory<PostgreSQLQu
         this(new Configuration(templates), connection);
     }
 
+    @Override
     public PostgreSQLQuery<?> query() {
         return new PostgreSQLQuery<Void>(connection.get(), configuration);
     }

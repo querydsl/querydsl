@@ -13,7 +13,6 @@
  */
 package com.querydsl.sql.dml;
 
-import javax.annotation.Nonnegative;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -22,20 +21,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnegative;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.DeleteClause;
-import com.querydsl.sql.*;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.ValidatingVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.querydsl.sql.*;
 
 /**
- * SQLDeleteClause defines a DELETE clause
+ * {@code SQLDeleteClause} defines a DELETE clause
  *
  * @author tiwe
  *
@@ -75,9 +77,9 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     /**
      * Add the given String literal at the given position as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     public SQLDeleteClause addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
@@ -87,9 +89,9 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     /**
      * Add the given Expression at the given position as a query flag
      *
-     * @param position
-     * @param flag
-     * @return
+     * @param position position
+     * @param flag query flag
+     * @return the current object
      */
     public SQLDeleteClause addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
@@ -99,7 +101,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     /**
      * Add current state of bindings as a batch item
      *
-     * @return
+     * @return the current object
      */
     public SQLDeleteClause addBatch() {
         batches.add(metadata);

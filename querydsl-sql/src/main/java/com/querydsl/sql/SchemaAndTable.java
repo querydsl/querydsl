@@ -18,7 +18,7 @@ import java.io.Serializable;
 import com.google.common.base.Objects;
 
 /**
- *
+ * {@code SchemaAndTable} combines schema and table into a single value type
  */
 public class SchemaAndTable implements Serializable {
 

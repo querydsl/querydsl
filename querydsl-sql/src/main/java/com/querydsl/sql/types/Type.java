@@ -13,10 +13,11 @@
  */
 package com.querydsl.sql.types;
 
-import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.annotation.Nullable;
 
 /**
  * Defines the de/serialization of a typed Java object from a ResultSet or to a PreparedStatement
@@ -28,28 +29,27 @@ import java.sql.SQLException;
  *
  * @param <T>
  */
-// TODO : rename this since it clashes with com.mysema.codegen.model.Type
 public interface Type<T> {
 
     /**
      * Get the SQL supported SQL types
      *
-     * @return
+     * @return sql types
      */
     int[] getSQLTypes();
 
     /**
      * Get the returned type
      *
-     * @return
+     * @return returned class
      */
     Class<T> getReturnedClass();
 
     /**
      * Get the literal representation
      *
-     * @param value
-     * @return
+     * @param value value
+     * @return literal representation
      */
     String getLiteral(T value);
 
@@ -58,7 +58,7 @@ public interface Type<T> {
      *
      * @param rs result set
      * @param startIndex column index in result set
-     * @return
+     * @return value
      * @throws SQLException
      */
     @Nullable

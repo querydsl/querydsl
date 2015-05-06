@@ -17,7 +17,7 @@ import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * GeoDBTemplates is a spatial enabled SQL dialect for GeoDB
+ * {@code GeoDBTemplates} is a spatial enabled SQL dialect for GeoDB
  *
  * @author tiwe
  *

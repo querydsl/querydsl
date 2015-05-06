@@ -13,14 +13,15 @@
  */
 package com.querydsl.sql.spring;
 
+import java.sql.Connection;
+
 import javax.inject.Provider;
 import javax.sql.DataSource;
-import java.sql.Connection;
 
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 /**
- * SpringConnectionProvider is a Provider implementation which provides a transactionally bound connection
+ * {@code SpringConnectionProvider} is a Provider implementation which provides a transactionally bound connection
  *
  * <p>Usage example</p>
  * <pre>

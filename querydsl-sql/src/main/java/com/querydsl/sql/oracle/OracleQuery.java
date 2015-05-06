@@ -25,10 +25,9 @@ import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.OracleTemplates;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.sql.mysql.MySQLQuery;
 
 /**
- * OracleQuery provides Oracle specific extensions to the base SQL query type
+ * {@code OracleQuery} provides Oracle specific extensions to the base SQL query type
  *
  * @author tiwe
  */
@@ -65,40 +64,51 @@ public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
     }
 
     /**
-     * @param cond
-     * @return
+     * CONNECT BY specifies the relationship between parent rows and child rows of the hierarchy.
+     *
+     * @param cond condition
+     * @return the current object
      */
     public OracleQuery<T> connectByPrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }
 
     /**
-     * @param cond
-     * @return
+     * CONNECT BY specifies the relationship between parent rows and child rows of the hierarchy.
+     *
+     * @param cond condition
+     * @return the current object
      */
     public OracleQuery<T> connectBy(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY, cond);
     }
 
     /**
-     * @param cond
-     * @return
+     * CONNECT BY specifies the relationship between parent rows and child rows of the hierarchy.
+     *
+     * @param cond condition
+     * @return the current object
      */
     public OracleQuery<T> connectByNocyclePrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
     }
 
     /**
-     * @param cond
-     * @return
+     * START WITH specifies the root row(s) of the hierarchy.
+     *
+     * @param cond condition
+     * @return the current object
      */
     public <A> OracleQuery<T> startWith(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
     }
 
     /**
-     * @param path
-     * @return
+     * ORDER SIBLINGS BY preserves any ordering specified in the hierarchical query clause and then
+     * applies the order_by_clause to the siblings of the hierarchy.
+     *
+     * @param path path
+     * @return the current object
      */
     public OracleQuery<T> orderSiblingsBy(Expression<?> path) {
         return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
@@ -106,7 +116,7 @@ public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
     
     @Override
     public OracleQuery<T> clone(Connection conn) {
-        OracleQuery q = new OracleQuery(conn, getConfiguration(), getMetadata().clone());
+        OracleQuery<T> q = new OracleQuery<T>(conn, getConfiguration(), getMetadata().clone());
         q.clone(this);
         return q;
     }

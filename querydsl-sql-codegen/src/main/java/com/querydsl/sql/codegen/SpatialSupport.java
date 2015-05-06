@@ -49,6 +49,8 @@ import com.querydsl.sql.Configuration;
 import com.querydsl.sql.spatial.RelationalPathSpatial;
 
 /**
+ * {@code SpatialSupport} provides support for spatial types in code generation
+ *
  * @author tiwe
  *
  */
@@ -100,6 +102,11 @@ public final class SpatialSupport {
         module.bind(CodegenModule.IMPORTS, imports);
     }
 
+    /**
+     * Register spatial types to the given codegen module
+     *
+     * @param module module to be customized for spatial support
+     */
     public static void addSupport(AbstractModule module) {
         module.bindInstance(SQLCodegenModule.ENTITYPATH_TYPE, RelationalPathSpatial.class);
         registerTypes(module.get(Configuration.class));
