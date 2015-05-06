@@ -26,7 +26,7 @@ import com.google.common.collect.Maps;
 import com.querydsl.core.Tuple;
 
 /**
- * QTuple represents a projection of type Tuple
+ * {@code QTuple} represents a projection of type {@link Tuple}
  *
  * <p>Usage example:</p>
  * <pre>

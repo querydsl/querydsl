@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * SimpleOperation represents a simple operation expression
+ * {@code SimpleOperation} represents a simple operation expression
  *
  * @author tiwe
  *

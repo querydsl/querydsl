@@ -25,7 +25,7 @@ public interface DMLClause<C extends DMLClause<C>> {
     /**
      * Execute the clause and return the amount of affected rows
      *
-     * @return
+     * @return amount of affected rows
      */
     long execute();
 }

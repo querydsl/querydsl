@@ -14,7 +14,7 @@
 package com.querydsl.core.types;
 
 /**
- * Defines a custom projection for an Expression type. This interface can be used for Expressions which 
+ * Defines a custom projection for an {@link Expression} type. This interface can be used for Expressions which
  * behave in a different way when used as part of the projection.
  * 
  * <p>Usually FactoryExpression instances are used as the custom projection.</p>
@@ -27,7 +27,7 @@ public interface ProjectionRole<T> {
     /**
      * Return the custom projection
      * 
-     * @return
+     * @return custom projection
      */
     Expression<T> getProjection();
     

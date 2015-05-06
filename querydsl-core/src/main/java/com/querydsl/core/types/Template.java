@@ -22,7 +22,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Template for {@link Operation}, {@link TemplateExpression} and {@link Path} serialization
+ * {@code Template} provides serialization templates for {@link Operation},
+ * {@link TemplateExpression} and {@link Path} serialization
  *
  * @author tiwe
  *

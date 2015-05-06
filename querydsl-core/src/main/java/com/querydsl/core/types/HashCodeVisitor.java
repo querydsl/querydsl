@@ -2,7 +2,7 @@ package com.querydsl.core.types;
 
 
 /**
- * HashCodeVisitor is used for hashCode generation in {@link Expression} implementations.
+ * {@code HashCodeVisitor} is used for hashCode generation in {@link Expression} implementations.
  *
  * @author tiwe
  */

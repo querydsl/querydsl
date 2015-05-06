@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * SetPath represents set paths
+ * {@code SetPath} represents set paths
  *
  * @author tiwe
  *

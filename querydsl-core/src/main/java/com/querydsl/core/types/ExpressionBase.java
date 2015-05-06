@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import javax.annotation.Nullable;
 
 /**
- * ExpressionBase is the base class for immutable {@link Expression} implementations
+ * {@code ExpressionBase} is the base class for immutable {@link Expression} implementations
  * 
  * @author tiwe
  *

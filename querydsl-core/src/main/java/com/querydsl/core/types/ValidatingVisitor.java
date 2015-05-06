@@ -22,7 +22,7 @@ import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
 
 /**
- * ValidatingVisitor visits expressions and ensures that only known path instances are used
+ * {@code ValidatingVisitor} visits expressions and ensures that only known path instances are used
  *
  * @author tiwe
  *

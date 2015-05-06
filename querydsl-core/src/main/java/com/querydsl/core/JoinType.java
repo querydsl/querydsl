@@ -14,7 +14,7 @@
 package com.querydsl.core;
 
 /**
- * JoinType defines the supported join types
+ * {@code JoinType} defines the supported join types
  *
  * @author tiwe
  */
@@ -46,7 +46,7 @@ public enum JoinType {
 
     private final boolean inner, outer;
     
-    JoinType(boolean inner, boolean outer) {
+    private JoinType(boolean inner, boolean outer) {
         this.inner = inner;
         this.outer = outer;
     }

@@ -17,7 +17,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 
 /**
- * Query defines the main query interface of the fluent query language.
+ * {@code Query} defines the main query interface of the fluent query language.
  *
  * <p>Note that the from method has been left out, since there are implementation
  * specific variants of it.</p>
@@ -30,16 +30,16 @@ public interface Query<Q extends Query<Q>> extends SimpleQuery<Q> {
     /**
      * Add grouping/aggregation expressions
      *
-     * @param o
-     * @return
+     * @param o group by expressions
+     * @return the current object
      */
     Q groupBy(Expression<?>... o);
 
     /**
      * Add filters for aggregation
      *
-     * @param o
-     * @return
+     * @param o having conditions
+     * @return the current object
      */
     Q having(Predicate... o);
    

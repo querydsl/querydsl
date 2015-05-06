@@ -24,7 +24,7 @@ import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Ops;
 
 /**
- * CaseForEqBuilder enables the construction of typesafe case-when-then-else constructs
+ * {@code CaseForEqBuilder} enables the construction of typesafe case-when-then-else constructs
  * for equals-operations :
  * e.g.
  *

@@ -18,7 +18,7 @@ import java.io.Serializable;
 import javax.annotation.Nullable;
 
 /**
- * Expression defines a general typed expression in a Query instance. The generic type parameter
+ * {@code Expression} defines a general typed expression in a Query instance. The generic type parameter
  * is a reference to the type the expression is bound to.
  * 
  * <p>The central Expression subinterfaces are</p>
@@ -46,7 +46,7 @@ public interface Expression<T> extends Serializable {
      * @param <C> context type
      * @param v visitor
      * @param context context of visit
-     * @return
+     * @return result of visit
      */
     @Nullable
     <R,C> R accept(Visitor<R,C> v, @Nullable C context);
@@ -54,7 +54,7 @@ public interface Expression<T> extends Serializable {
     /**
      * Get the java type for this expression
      *
-     * @return
+     * @return type of expression
      */
     Class<? extends T> getType();
 

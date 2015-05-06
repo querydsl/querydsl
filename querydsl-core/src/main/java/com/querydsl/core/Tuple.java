@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.Expression;
 
 /**
- * Tuple defines an interface for generic query result projection
+ * {@code Tuple} defines an interface for generic query result projection
  * 
  * <p>Usage example:</p>
  * <pre>
@@ -39,10 +39,10 @@ public interface Tuple {
     /**
      * Get a Tuple element by index
      *
-     * @param <T>
-     * @param index
-     * @param type
-     * @return
+     * @param <T> type of element
+     * @param index zero based index
+     * @param type type of element
+     * @return element in array
      */
     @Nullable
     <T> T get(int index, Class<T> type);
@@ -50,9 +50,9 @@ public interface Tuple {
     /**
      * Get a tuple element by expression
      *
-     * @param <T>
-     * @param expr
-     * @return
+     * @param <T> type of element
+     * @param expr expression key
+     * @return result element that matches the expression
      */
     @Nullable
     <T> T get(Expression<T> expr);
@@ -60,14 +60,14 @@ public interface Tuple {
     /**
      * Get the size of the Tuple
      * 
-     * @return 
+     * @return row element count
      */
     int size();
     
     /**
      * Get the content as an Object array
      *
-     * @return
+     * @return tuple in array form
      */
     Object[] toArray();
     

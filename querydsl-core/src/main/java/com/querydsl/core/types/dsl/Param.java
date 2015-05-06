@@ -18,7 +18,7 @@ import com.querydsl.core.types.ParamExpressionImpl;
 import com.querydsl.core.types.Visitor;
 
 /**
- * Param defines a parameter in a query with an optional name
+ * {@code Param} defines a parameter in a query with an optional name
  *
  * @author tiwe
  *
@@ -45,14 +45,17 @@ public class Param<T> extends SimpleExpression<T> implements ParamExpression<T> 
         return v.visit(this, context);
     }
 
+    @Override
     public String getName() {
         return paramMixin.getName();
     }
 
+    @Override
     public boolean isAnon() {
         return paramMixin.isAnon();
     }
 
+    @Override
     public String getNotSetMessage() {
         return paramMixin.getNotSetMessage();
     }

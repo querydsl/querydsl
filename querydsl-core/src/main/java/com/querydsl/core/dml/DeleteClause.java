@@ -17,7 +17,7 @@ import com.querydsl.core.FilteredClause;
 
 
 /**
- * DeleteClause defines a generic interface for Delete clauses
+ * {@code DeleteClause} defines a generic interface for Delete clauses
  *
  * @author tiwe
  *

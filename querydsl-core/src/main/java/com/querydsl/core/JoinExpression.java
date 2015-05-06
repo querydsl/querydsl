@@ -25,7 +25,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 
 /**
- * JoinExpression is a join element in a {@link Query} instance.
+ * {@code JoinExpression} is a join element in a {@link Query} instance.
  *
  * @author tiwe
  */
@@ -46,8 +46,8 @@ public final class JoinExpression implements Serializable {
     /**
      * Create a new JoinExpression instance
      * 
-     * @param type
-     * @param target
+     * @param type type of join
+     * @param target target of join
      */
     public JoinExpression(JoinType type, Expression<?> target) {
         this(type, target, null, ImmutableSet.<JoinFlag>of());
@@ -57,10 +57,10 @@ public final class JoinExpression implements Serializable {
     /**
      * Create a new JoinExpression instance
      * 
-     * @param type
-     * @param target
-     * @param condition
-     * @param flags
+     * @param type type of join
+     * @param target target of join
+     * @param condition join condition or null, if none is used
+     * @param flags join flags
      */
     public JoinExpression(JoinType type, Expression<?> target, @Nullable Predicate condition, 
             Set<JoinFlag> flags) {

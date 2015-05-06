@@ -26,7 +26,7 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Predicate;
 
 /**
- * QueryMetadata defines query metadata such as query sources, filtering
+ * {@code QueryMetadata} defines query metadata such as query sources, filtering
  * conditions and the projection
  *
  * @author tiwe
@@ -36,50 +36,50 @@ public interface QueryMetadata extends Serializable {
     /**
      * Add the given group by expressions
      *
-     * @param o
+     * @param o group by expressions
      */
     void addGroupBy(Expression<?> o);
 
     /**
      * Add the given having expressions
      *
-     * @param o
+     * @param o having conditions
      */
     void addHaving(Predicate o);
 
     /**
      * Add the given query join
      *
-     * @param joinType
-     * @param expr
+     * @param joinType type of join
+     * @param expr join target
      */
     void addJoin(JoinType joinType, Expression<?> expr);
 
     /**
      * Add the given join flag to the last given join
      *
-     * @param flag
+     * @param flag join flag
      */
     void addJoinFlag(JoinFlag flag);
 
     /**
      * Add the given join condition to the last given join
      *
-     * @param o
+     * @param o join condition
      */
     void addJoinCondition(Predicate o);
 
     /**
      * Add the given order specifiers
      *
-     * @param o
+     * @param o order
      */
     void addOrderBy(OrderSpecifier<?> o);
 
     /**
      * Add the given where expressions
      *
-     * @param o
+     * @param o where condition
      */
     void addWhere(Predicate o);
 
@@ -96,21 +96,21 @@ public interface QueryMetadata extends Serializable {
     /**
      * Clone this QueryMetadata instance
      *
-     * @return
+     * @return new QueryMetadata instance with cloned state
      */
     QueryMetadata clone();
 
     /**
      * Get the group by expressions
      *
-     * @return
+     * @return group by
      */
     List<Expression<?>> getGroupBy();
 
     /**
      * Get the having expressions
      *
-     * @return
+     * @return having condition, or null if none set
      */
     @Nullable
     Predicate getHaving();
@@ -118,36 +118,36 @@ public interface QueryMetadata extends Serializable {
     /**
      * Get the query joins
      *
-     * @return
+     * @return joins
      */
     List<JoinExpression> getJoins();
 
     /**
      * Get the QueryModifiers
      *
-     * @return
+     * @return modifiers
      */
     QueryModifiers getModifiers();
 
     /**
      * Get the OrderSpecifiers
      *
-     * @return
+     * @return order by
      */
     List<OrderSpecifier<?>> getOrderBy();
 
     /**
      * Get the projection
      *
-     * @return
+     * @return projection
      */
     @Nullable
     Expression<?> getProjection();
 
     /**
-     * Get the parameters
+     * Get the parameter bindings
      *
-     * @return
+     * @return parameteter bindings
      */
     Map<ParamExpression<?>,Object> getParams();
 
@@ -155,7 +155,7 @@ public interface QueryMetadata extends Serializable {
      * Get the expressions aggregated into a single boolean expression or null,
      * if none where defined
      *
-     * @return
+     * @return where condition or null, if none set
      */
     @Nullable
     Predicate getWhere();
@@ -163,14 +163,14 @@ public interface QueryMetadata extends Serializable {
     /**
      * Get whether the projection is distinct
      *
-     * @return
+     * @return distinct
      */
     boolean isDistinct();
 
     /**
      * Get whether the projection is unique
      *
-     * @return
+     * @return unique
      */
     boolean isUnique();
 
@@ -180,65 +180,87 @@ public interface QueryMetadata extends Serializable {
     void reset();
 
     /**
-     * @param distinct
+     * Set the distinct flag
+     *
+     * @param distinct distinct
      */
     void setDistinct(boolean distinct);
 
     /**
-     * @param limit
+     * Set the maxmium amount of rows
+     *
+     * @param limit limit
      */
     void setLimit(@Nullable Long limit);
 
     /**
-     * @param restriction
+     * Set the query modifiers limit and offset
+     *
+     * @param restriction restriction
      */
     void setModifiers(QueryModifiers restriction);
 
     /**
-     * @param offset
+     * Set the amount of skipped rows
+     *
+     * @param offset offset
      */
     void setOffset(@Nullable Long offset);
 
     /**
-     * @param unique
+     * @param unique unique
      */
     void setUnique(boolean unique);
 
     /**
+     * Bind the value for the given parameter expression
+     *
      * @param <T>
-     * @param param
-     * @param value
+     * @param param parameter
+     * @param value binding
      */
     <T> void setParam(ParamExpression<T> param, T value);
 
     /**
-     * @param o
+     * Set the projection
+     *
+     * @param o projection
      */
     void setProjection(Expression<?> o);
 
     /**
-     * @param flag
+     * Add the given query flag
+     *
+     * @param flag query flag
      */
     void addFlag(QueryFlag flag);
 
     /**
-     * @param flag
-     * @return
+     * Return whether the given query flag is applied
+     *
+     * @param flag query flag
+     * @return true, if present, false, if not
      */
     boolean hasFlag(QueryFlag flag);
 
     /**
-     * @param flag
+     * Remove the given query flag
+     *
+     * @param flag query flag
      */
     void removeFlag(QueryFlag flag);
 
     /**
-     * @return
+     * Get all query flags
+     *
+     * @return all used query flags
      */
     Set<QueryFlag> getFlags();
 
     /**
-     * @param v
+     * Set the validate flag
+     *
+     * @param v validate
      */
     void setValidate(boolean v);
 }

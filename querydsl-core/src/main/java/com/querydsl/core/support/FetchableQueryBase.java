@@ -26,7 +26,7 @@ import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.types.SubQueryExpression;
 
 /**
- * ProjectableQuery extends the {@link QueryBase} class to provide default
+ * {@code FetchableQueryBase} extends the {@link QueryBase} class to provide default
  * implementations of the methods of the {@link com.querydsl.core.Fetchable} interface
  *
  * @author tiwe

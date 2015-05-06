@@ -14,46 +14,73 @@
 package com.querydsl.core.types;
 
 /**
- * Visitor defines a Visitor signature for {@link Expression} instances.
+ * {@code Visitor} defines a visitor signature for {@link Expression} instances.
  *
  * @author tiwe
  */
 public interface Visitor<R,C> {
 
     /**
-     * @param expr
+     * Visit a Contant instance with the given context
+     *
+     * @param expr expression to visit
+     * @param context context of the visit or null, if not used
+     * @return visit result
      */
     R visit(Constant<?> expr, C context);
 
     /**
-     * @param expr
+     * Visit a FactoryExpression instance with the given context
+     *
+     * @param expr expression to visit
+     * @param context context of the visit or null, if not used
+     * @return visit result
      */
     R visit(FactoryExpression<?> expr, C context);
 
     /**
-     * @param expr
+     * Vist a Operation instance with the given context
+     *
+     * @param expr expression to visit
+     * @param context context of the visit or null, if not used
+     * @return visit result
      */
     R visit(Operation<?> expr, C context);
 
     /**
-     * @param expr
+     * Visit a ParamExpression instance with the given context
+     *
+     * @param expr expression to visit
+     * @param context context of the visit or null, if not used
+     * @return visit result
      */
     R visit(ParamExpression<?> expr, C context);
 
     /**
-     * @param expr
+     * Visit a Path instance with the given context
+     *
+     * @param expr expression to visit
+     * @param context context of the visit or null, if not used
+     * @return visit result
      */
     R visit(Path<?> expr, C context);
 
     /**
-     * @param expr
+     * Visit a SubQueryExpression instance with the given context
+     *
+     * @param expr expression to visit
+     * @param context context of the visit or null, if not used
+     * @return visit result
      */
     R visit(SubQueryExpression<?> expr, C context);
 
     /**
-     * @param expr
+     * Visit a TemplateExpression instance with the given context
+     *
+     * @param expr expression to visit
+     * @param context context of the visit or null, if not used
+     * @return visit result
      */
-
     R visit(TemplateExpression<?> expr, C context);
 
 }

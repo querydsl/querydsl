@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * BeanPath represents bean paths
+ * {@code BeanPath} represents bean paths
  *
  * @author tiwe
  *
@@ -68,8 +68,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Cast the path to a subtype querytype
      *
      * @param <U>
-     * @param clazz
-     * @return
+     * @param clazz subtype class
+     * @return subtype instance with the same identity
      */
     @SuppressWarnings("unchecked")
     public <U extends BeanPath<? extends T>> U as(Class<U> clazz) {
@@ -109,8 +109,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Template method for tracking child path creation
      *
      * @param <P>
-     * @param path
-     * @return
+     * @param path path to be tracked
+     * @return path
      */
     protected <P extends Path<?>> P add(P path) {
         return path;
@@ -120,9 +120,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new array path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     protected <A, E> ArrayPath<A, E> createArray(String property, Class<? super A> type) {
         return add(new ArrayPath<A, E>(type, forProperty(property)));
@@ -131,8 +131,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     /**
      * Create a new Boolean path
      *
-     * @param property
-     * @return
+     * @param property property name
+     * @return property path
      */
     protected BooleanPath createBoolean(String property) {
         return add(new BooleanPath(forProperty(property)));
@@ -142,9 +142,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new Collection typed path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A, Q extends SimpleExpression<? super A>> CollectionPath<A, Q> createCollection(String property, Class<? super A> type, Class<? super Q> queryType, PathInits inits) {
@@ -155,9 +155,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new Comparable typed path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> ComparablePath<A> createComparable(String property, Class<? super A> type) {
@@ -166,9 +166,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
 
     /**
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     protected <A extends Enum<A>> EnumPath<A> createEnum(String property, Class<A> type) {
         return add(new EnumPath<A>(type, forProperty(property)));
@@ -179,9 +179,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new Date path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> DatePath<A> createDate(String property, Class<? super A> type) {
@@ -192,9 +192,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new DateTime path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> DateTimePath<A> createDateTime(String property, Class<? super A> type) {
@@ -206,10 +206,10 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      *
      * @param <A>
      * @param <E>
-     * @param property
-     * @param type
-     * @param queryType
-     * @return
+     * @param property property name
+     * @param type property type
+     * @param queryType expression type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A, E extends SimpleExpression<? super A>> ListPath<A, E> createList(String property, Class<? super A> type, Class<? super E> queryType, PathInits inits) {
@@ -222,11 +222,11 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @param <K>
      * @param <V>
      * @param <E>
-     * @param property
-     * @param key
-     * @param value
-     * @param queryType
-     * @return
+     * @param property property name
+     * @param key key type
+     * @param value value type
+     * @param queryType expression type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <K, V, E extends SimpleExpression<? super V>> MapPath<K, V, E> createMap(String property, Class<? super K> key, Class<? super V> value, Class<? super E> queryType) {
@@ -237,9 +237,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new Number path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A extends Number & Comparable<?>> NumberPath<A> createNumber(String property, Class<? super A> type) {
@@ -250,9 +250,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new Set typed path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A, E extends SimpleExpression<? super A>> SetPath<A, E> createSet(String property, Class<? super A> type, Class<? super E> queryType, PathInits inits) {
@@ -263,9 +263,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new Simpe path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A> SimplePath<A> createSimple(String property, Class<? super A> type) {
@@ -275,8 +275,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     /**
      * Create a new String path
      *
-     * @param property
-     * @return
+     * @param property property name
+     * @return property path
      */
     protected StringPath createString(String property) {
         return add(new StringPath(forProperty(property)));
@@ -286,9 +286,9 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create a new Time path
      *
      * @param <A>
-     * @param property
-     * @param type
-     * @return
+     * @param property property name
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> TimePath<A> createTime(String property, Class<? super A> type) {
@@ -313,8 +313,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * Create an {@code this instanceOf type} expression
      *
      * @param <B>
-     * @param type
-     * @return
+     * @param type rhs of the expression
+     * @return instanceof expression
      */
     public <B extends T> BooleanExpression instanceOf(Class<B> type) {
         return Expressions.booleanOperation(Ops.INSTANCE_OF, pathMixin, ConstantImpl.create(type));
@@ -326,7 +326,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
         for (int i = 0; i < types.length; i++) {
             exprs[i] = this.instanceOf(types[i]);
         }
-        return BooleanExpression.anyOf(exprs);
+        return Expressions.anyOf(exprs);
     }
 
     @Override

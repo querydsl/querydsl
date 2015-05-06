@@ -14,7 +14,7 @@
 package com.querydsl.core.types;
 
 /**
- * EntityPath is the common interface for entity path expressions
+ * {@code EntityPath} is the common interface for entity path expressions
  *
  * @author tiwe
  *
@@ -25,8 +25,8 @@ public interface EntityPath<T> extends Path<T> {
     /**
      * Returns additional metadata for the given property path or null if none is available
      *
-     * @param property
-     * @return
+     * @param property property path
+     * @return metadata for property or null
      */
     Object getMetadata(Path<?> property);
 

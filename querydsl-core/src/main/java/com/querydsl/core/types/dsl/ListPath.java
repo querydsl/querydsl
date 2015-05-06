@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * ListPath represents list paths
+ * {@code ListPath} represents list paths
  *
  * @author tiwe
  *

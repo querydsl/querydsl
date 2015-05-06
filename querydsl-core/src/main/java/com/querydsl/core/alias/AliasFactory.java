@@ -30,11 +30,11 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
 /**
- * AliasFactory is a factory class for alias creation
+ * {@code AliasFactory} is a factory class for alias creation
  *
  * @author tiwe
  */
-public class AliasFactory {
+class AliasFactory {
 
     private final ThreadLocal<Expression<?>> current = new ThreadLocal<Expression<?>>();
 
@@ -72,9 +72,9 @@ public class AliasFactory {
      * Create an alias instance for the given class and Expression
      * 
      * @param <A>
-     * @param cl
-     * @param expr
-     * @return
+     * @param cl type for alias
+     * @param expr underlying expression
+     * @return alias instance
      */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForExpr(Class<A> cl, Expression<? extends A> expr) {
@@ -89,9 +89,9 @@ public class AliasFactory {
      * Create an alias instance for the given class, parent and path
      * 
      * @param <A>
-     * @param cl
-     * @param path
-     * @return
+     * @param cl type for alias
+     * @param path underlying expression
+     * @return alias instance
      */
     public <A> A createAliasForProperty(Class<A> cl, Expression<?> path) {
         return createProxy(cl, path);
@@ -101,9 +101,9 @@ public class AliasFactory {
      * Create an alias instance for the given class and variable name
      * 
      * @param <A>
-     * @param cl
-     * @param var
-     * @return
+     * @param cl type for alias
+     * @param var variable name for the underyling expression
+     * @return alias instance
      */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForVariable(Class<A> cl, String var) {
@@ -119,9 +119,9 @@ public class AliasFactory {
      * Create a proxy instance for the given class and path
      * 
      * @param <A>
-     * @param cl
-     * @param path
-     * @return
+     * @param cl type of the proxy
+     * @param path underlying expression
+     * @return proxy instance
      */
     @SuppressWarnings("unchecked")
     protected <A> A createProxy(Class<A> cl, Expression<?> path) {
@@ -143,7 +143,7 @@ public class AliasFactory {
      * Get the current thread bound expression without resetting it
      * 
      * @param <A>
-     * @return
+     * @return expression
      */
     @SuppressWarnings("unchecked")
     @Nullable
@@ -155,7 +155,7 @@ public class AliasFactory {
      * Get the current thread bound expression and reset it
      * 
      * @param <A>
-     * @return
+     * @return expression
      */
     @Nullable
     public <A extends Expression<?>> A getCurrentAndReset() {
@@ -174,7 +174,7 @@ public class AliasFactory {
     /**
      * Set the thread bound expression to the given value
      * 
-     * @param expr
+     * @param expr expression to be set to current
      */
     public void setCurrent(Expression<?> expr) {
         current.set(expr);

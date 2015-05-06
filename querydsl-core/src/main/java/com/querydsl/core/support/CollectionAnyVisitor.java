@@ -20,7 +20,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimplePath;
 
 /**
- * CollectionAnyVisitor is an expression visitor which transforms any() path expressions which are
+ * {@code CollectionAnyVisitor} is an expression visitor which transforms any() path expressions which are
  * often transformed into subqueries
  *
  * @author tiwe

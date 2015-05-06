@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * ComparableTemplate defines custom comparable expressions
+ * {@code ComparableTemplate} defines custom comparable expressions
  *
  * @author tiwe
  *

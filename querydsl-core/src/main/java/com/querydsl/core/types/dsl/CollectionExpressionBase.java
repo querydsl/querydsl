@@ -24,7 +24,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
 
 /**
- * CollectionExpressionBase is an abstract base class for {@link CollectionExpression} implementations
+ * {@code CollectionExpressionBase} is an abstract base class for {@link CollectionExpression} implementations
  *
  * @author tiwe
  *
@@ -49,16 +49,44 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
         return Expressions.dslOperation(getElementType(), Ops.ALIAS, mixin, alias);
     }
 
+    /**
+     * Create a {@code this.contains(child)} expression
+     *
+     * <p>Evaluates to true, if child is contained in this</p>
+     *
+     * @param child element to check
+     * @return this.contains(child)
+     */
     public final BooleanExpression contains(E child) {
         return contains(ConstantImpl.create(child));
     }
 
+    /**
+     * Create a {@code this.contains(child)} expression
+     *
+     * <p>Evaluates to true, if child is contained in this</p>
+     *
+     * @param child element to check
+     * @return this.contains(child)
+     */
     public final BooleanExpression contains(Expression<E> child) {
         return Expressions.booleanOperation(Ops.IN, child, mixin);
     }
 
+    /**
+     * Get the element type
+     *
+     * @return element type
+     */
     public abstract Class<E> getElementType();
 
+    /**
+     * Create a {@code this.isEmpty()} expression
+     *
+     * <p>Evaluates to true, if this has no elements.</p>
+     *
+     * @return this.isEmpty()
+     */
     public final BooleanExpression isEmpty() {
         if (empty == null) {
             empty = Expressions.booleanOperation(Ops.COL_IS_EMPTY, mixin);
@@ -66,10 +94,24 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
         return empty;
     }
 
+    /**
+     * Create a {@code !this.isEmpty()} expression
+     *
+     * <p>Evaluates to true, if this has elements</p>
+     *
+     * @return !this.isEmpty()
+     */
     public final BooleanExpression isNotEmpty() {
         return isEmpty().not();
     }
 
+    /**
+     * Create a {@code this.size()} expression
+     *
+     * <p>Gets the amounnt of elements in this collection</p>
+     *
+     * @return this.size()
+     */
     public final NumberExpression<Integer> size() {
         if (size == null) {
             size = Expressions.numberOperation(Integer.class, Ops.COL_SIZE, mixin);

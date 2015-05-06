@@ -13,14 +13,15 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.concurrent.Immutable;
 import java.lang.reflect.Array;
 import java.util.List;
+
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 
 /**
- * ArrayConstructorExpression extends {@link ExpressionBase} to represent array initializers
+ * {@code ArrayConstructorExpression} extends {@link FactoryExpressionBase} to represent array initializers
  *
  * @author tiwe
  *

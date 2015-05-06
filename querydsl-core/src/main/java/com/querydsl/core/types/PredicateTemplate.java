@@ -19,7 +19,7 @@ import javax.annotation.concurrent.Immutable;
 import com.google.common.collect.ImmutableList;
 
 /**
- * PredicateTemplate provides a Boolean typed TemplateExpression implementation 
+ * {@code PredicateTemplate} provides a Boolean typed {@link TemplateExpression} implementation
  * 
  * @author tiwe
  *

@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
 public @interface QueryType {
 
     /**
-     * @return
+     * property type override
      */
     PropertyType value();
 }

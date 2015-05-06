@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * TimeOperation represents Time operations
+ * {@code TimeOperation} represents Time operations
  *
  * @author tiwe
  *

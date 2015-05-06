@@ -22,7 +22,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 
 /**
- * PathFactory defines a factory interface for Path creation
+ * {@code PathFactory} defines a factory interface for {@link Path} creation
  * 
  * @author tiwe
  *
@@ -30,106 +30,136 @@ import com.querydsl.core.types.PathMetadata;
 public interface PathFactory {
         
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create an array path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T> Path<T[]> createArrayPath(Class<T[]> type, PathMetadata metadata);
     
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create an entity path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T> Path<T> createEntityPath(Class<T> type, PathMetadata metadata);
 
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create a simple path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T> Path<T> createSimplePath(Class<T> type, PathMetadata metadata);
     
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create a comparable path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T extends Comparable<?>> Path<T> createComparablePath(Class<T> type, PathMetadata metadata);
     
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create an enum path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T extends Enum<T>> Path<T> createEnumPath(Class<T> type, PathMetadata metadata);
     
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create a date path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T extends Comparable<?>> Path<T> createDatePath(Class<T> type, PathMetadata metadata);
     
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create a time path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T extends Comparable<?>> Path<T> createTimePath(Class<T> type, PathMetadata metadata);
     
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create a datetime path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T extends Comparable<?>> Path<T> createDateTimePath(Class<T> type, PathMetadata metadata);
     
     /**
-     * @param type
-     * @param metadata
-     * @return
+     * Create a number path
+     *
+     * @param type type of the path
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <T extends Number & Comparable<T>> Path<T> createNumberPath(Class<T> type, PathMetadata metadata);
     
     /**
-     * @param metadata
-     * @return
+     * Create a boolean path
+     *
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     Path<Boolean> createBooleanPath(PathMetadata metadata);
     
     /**
-     * @param metadata
-     * @return
+     * Create a string path
+     *
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     Path<String> createStringPath(PathMetadata metadata);
 
     /**
-     * @param elementType
-     * @param metadata
-     * @return
+     * Create a list path
+     *
+     * @param elementType element type
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <E> Path<List<E>> createListPath(Class<E> elementType, PathMetadata metadata);
     
     /**
-     * @param elementType
-     * @param metadata
-     * @return
+     * Create a set path
+     *
+     * @param elementType element type
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <E> Path<Set<E>> createSetPath(Class<E> elementType, PathMetadata metadata);
     
     /**
-     * @param elementType
-     * @param metadata
-     * @return
+     * Create a collection path
+     *
+     * @param elementType element type
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <E> Path<Collection<E>> createCollectionPath(Class<E> elementType, PathMetadata metadata);
     
     /**
-     * @param keyType
-     * @param valueType
-     * @param metadata
-     * @return
+     * Create a map path
+     *
+     * @param keyType key type
+     * @param valueType value type
+     * @param metadata metadata of the path
+     * @return new path instance
      */
     <K,V> Path<Map<K,V>> createMapPath(Class<K> keyType, Class<V> valueType, PathMetadata metadata);
 }

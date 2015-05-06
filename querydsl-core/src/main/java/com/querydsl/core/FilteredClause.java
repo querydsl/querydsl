@@ -16,7 +16,7 @@ package com.querydsl.core;
 import com.querydsl.core.types.Predicate;
 
 /**
- * FilteredClause is an interface for clauses with a filter condition
+ * {@code FilteredClause} is an interface for clauses with a filter condition
  *
  * @author tiwe
  *
@@ -30,7 +30,7 @@ public interface FilteredClause<C extends FilteredClause<C>> {
      * <p>Skips null arguments</p>
      *
      * @param o filter conditions to be added
-     * @return
+     * @return the current object
      */
     C where(Predicate... o);
 

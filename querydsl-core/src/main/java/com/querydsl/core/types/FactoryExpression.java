@@ -18,7 +18,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 /**
- * FactoryExpression represents factory expressions such as JavaBean or 
+ * {@code FactoryExpression} represents factory expressions such as JavaBean or
  * Constructor projections
  * 
  * @author tiwe
@@ -30,15 +30,15 @@ public interface FactoryExpression<T> extends Expression<T> {
     /**
      * Get the invocation arguments
      *
-     * @return
+     * @return argument expressions
      */
     List<Expression<?>> getArgs();
 
     /**
      * Create a projection with the given arguments
      *
-     * @param args
-     * @return
+     * @param args row arguments
+     * @return constructed value
      */
     @Nullable
     T newInstance(Object... args);

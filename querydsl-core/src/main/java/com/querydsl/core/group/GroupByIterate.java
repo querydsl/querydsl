@@ -39,7 +39,7 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
     }
 
     @Override
-    public CloseableIterator<V> transform(FetchableQuery query) {
+    public CloseableIterator<V> transform(FetchableQuery<?,?> query) {
         // create groups
         FactoryExpression<Tuple> expr = FactoryExpressionUtils.wrap(Projections.tuple(expressions));
         boolean hasGroups = false;

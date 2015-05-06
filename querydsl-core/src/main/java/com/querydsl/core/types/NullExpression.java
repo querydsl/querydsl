@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import com.google.common.collect.ImmutableList;
 
 /**
- * NullExpression defines a general null expression
+ * {@code NullExpression} defines a general null expression
  *
  * @author tiwe
  *

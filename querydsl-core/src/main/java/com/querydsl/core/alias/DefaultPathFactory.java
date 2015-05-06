@@ -23,7 +23,7 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
 
 /**
- * DefaultPathFactory is the default implementation of the {@link PathFactory} interface
+ * {@code DefaultPathFactory} is the default implementation of the {@link PathFactory} interface
  *
  * @author tiwe
  *

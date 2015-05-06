@@ -28,7 +28,10 @@ import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.types.*;
 
 /**
- * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
+ * {@code DefaultQueryMetadata} is the default implementation of the {@link QueryMetadata} interface.
+ *
+ * <p>{@code DefaultQueryMetadata} is mutable, but {@link DefaultQueryMetadata#clone()} can be used to
+ * created deep copies to refine the state without modifying the initial instance.</p>
  *
  * @author tiwe
  */
@@ -95,7 +98,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     /**
      * Disable validation
      *
-     * @return
+     * @return the current object
      */
     public DefaultQueryMetadata noValidate() {
         validate = false;

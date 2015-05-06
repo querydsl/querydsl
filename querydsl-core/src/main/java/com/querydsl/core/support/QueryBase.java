@@ -22,7 +22,7 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Predicate;
 
 /**
- * QueryBase provides a stub for Query implementations
+ * {@code QueryBase} provides a stub for Query implementations
  *
  * @author tiwe
  */
@@ -41,7 +41,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Set the Query to return distinct results
      * 
-     * @return
+     * @return the current object
      */
     public Q distinct() {
         return queryMixin.distinct();
@@ -50,8 +50,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Add a single grouping expression
      *
-     * @param e
-     * @return
+     * @param e group by expression
+     * @return the current object
      */
     public Q groupBy(Expression<?> e) {
         return queryMixin.groupBy(e);
@@ -60,8 +60,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Add grouping/aggregation expressions
      *
-     * @param o
-     * @return
+     * @param o group by expressions
+     * @return the current object
      */
     public Q groupBy(Expression<?>... o) {
         return queryMixin.groupBy(o);
@@ -70,8 +70,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Add a single filter for aggregation
      *
-     * @param e
-     * @return
+     * @param e having condition
+     * @return the current object
      */
     public Q having(Predicate e) {
         return queryMixin.having(e);
@@ -80,8 +80,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Add filters for aggregation
      *
-     * @param o
-     * @return
+     * @param o having conditions
+     * @return the current object
      */
     public Q having(Predicate... o) {
         return queryMixin.having(o);
@@ -90,8 +90,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Add a single order expression
      * 
-     * @param o
-     * @return
+     * @param o order
+     * @return the current object
      */
     public Q orderBy(OrderSpecifier<?> o) {
         return queryMixin.orderBy(o);
@@ -100,8 +100,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Add order expressions
      *
-     * @param o
-     * @return
+     * @param o order
+     * @return the current object
      */
     public Q orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
@@ -113,7 +113,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
      * <p>Skips null arguments</p>
      *
      * @param o filter conditions to be added
-     * @return
+     * @return the current object
      */
     public Q where(Predicate o) {
         return queryMixin.where(o);
@@ -125,7 +125,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
      * <p>Skips null arguments</p>
      *
      * @param o filter conditions to be added
-     * @return
+     * @return the current object
      */
     public Q where(Predicate... o) {
         return queryMixin.where(o);
@@ -134,8 +134,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Defines the limit / max results for the query results
      *
-     * @param limit
-     * @return
+     * @param limit max rows
+     * @return the current object
      */
     public Q limit(@Nonnegative long limit) {
         return queryMixin.limit(limit);
@@ -144,8 +144,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     /**
      * Defines the offset for the query results
      *
-     * @param offset
-     * @return
+     * @param offset row offset
+     * @return the current object
      */
     public Q offset(long offset) {
         return queryMixin.offset(offset);
@@ -155,8 +155,8 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
      * Defines both limit and offset of the query results,
      * use {@link QueryModifiers#EMPTY} to apply no paging.
      *
-     * @param modifiers
-     * @return
+     * @param modifiers query modifiers
+     * @return the current object
      */
     public Q restrict(QueryModifiers modifiers) {
         return queryMixin.restrict(modifiers);
@@ -166,9 +166,9 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
      * Set the given parameter to the given value
      *
      * @param <P>
-     * @param param
-     * @param value
-     * @return
+     * @param param param
+     * @param value binding
+     * @return the current object
      */
     public <P> Q set(ParamExpression<P> param, P value) {
         return queryMixin.set(param, value);

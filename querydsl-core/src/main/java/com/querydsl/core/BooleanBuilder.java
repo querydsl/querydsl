@@ -17,14 +17,16 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Visitor;
 
 /**
- * BooleanBuilder is a cascading builder for {@link Predicate} expressions. BooleanBuilder is a mutable
- * Expression implementation.
+ * {@code BooleanBuilder} is a cascading builder for {@link Predicate} expressions.
+ * {@code BooleanBuilder} is a mutable {@link Expression} implementation.
  * 
  * <p>Usage example:</p>
+ *
  * <pre>
  * QEmployee employee = QEmployee.employee;
  * BooleanBuilder builder = new BooleanBuilder();
@@ -50,7 +52,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     /**
      * Create a BooleanBuilder with the given initial value
      * 
-     * @param initial
+     * @param initial initial value
      */
     public BooleanBuilder(Predicate initial) {
         predicate = (Predicate)ExpressionUtils.extract(initial);
@@ -66,10 +68,10 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     }
 
     /**
-     * Create the insertion of this and the given predicate
+     * Create the intersection of this and the given predicate
      *
-     * @param right
-     * @return
+     * @param right right hand side of {@code and} operation
+     * @return the current object
      */
     public BooleanBuilder and(@Nullable Predicate right) {
         if (right != null) {
@@ -86,8 +88,8 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
      * Create the intersection of this and the union of the given args
      * {@code (this && (arg1 || arg2 ... || argN))}
      *
-     * @param args
-     * @return
+     * @param args union of predicates
+     * @return the current object
      */
     public BooleanBuilder andAnyOf(Predicate... args) {
         if (args.length > 0) {
@@ -99,8 +101,8 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     /**
      * Create the insertion of this and the negation of the given predicate
      *
-     * @param right
-     * @return
+     * @param right predicate to be negated
+     * @return the current object
      */
     public BooleanBuilder andNot(Predicate right) {
         return and(right.not());
@@ -135,7 +137,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     /**
      * Returns true if the value is set, and false, if not
      *
-     * @return
+     * @return true if initialized and false if not
      */
     public boolean hasValue() {
         return predicate != null;
@@ -152,8 +154,8 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     /**
      * Create the union of this and the given predicate
      *
-     * @param right
-     * @return
+     * @param right right hand side of {@code or} operation
+     * @return the current object
      */
     public BooleanBuilder or(@Nullable Predicate right) {
         if (right != null) {
@@ -170,8 +172,8 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
      * Create the union of this and the intersection of the given args
      * {@code (this || (arg1 && arg2 ... && argN))}
      *
-     * @param args
-     * @return
+     * @param args intersection of predicates
+     * @return the current object
      */
     public BooleanBuilder orAllOf(Predicate... args) {
         if (args.length > 0) {
@@ -183,8 +185,8 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     /**
      * Create the union of this and the negation of the given predicate
      *
-     * @param right
-     * @return
+     * @param right predicate to be negated
+     * @return the current object
      */
     public BooleanBuilder orNot(Predicate right) {
         return or(right.not());

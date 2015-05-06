@@ -19,7 +19,7 @@ import javax.annotation.concurrent.Immutable;
 import com.google.common.collect.ImmutableList;
 
 /**
- * PredicateOperation provides a Boolean typed Operation implementation 
+ * {@code PredicateOperation} provides a Boolean typed {@link Operation} implementation
  * 
  * @author tiwe
  *
@@ -35,7 +35,7 @@ public final class PredicateOperation extends OperationImpl<Boolean> implements 
     protected PredicateOperation(Operator operator, ImmutableList<Expression<?>> args) {
         super(Boolean.class, operator, args);
     }
-    
+
     @Override
     public Predicate not() {
         if (not == null) {

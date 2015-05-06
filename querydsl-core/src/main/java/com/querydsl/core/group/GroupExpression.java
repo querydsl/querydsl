@@ -29,12 +29,16 @@ import com.querydsl.core.types.Expression;
 public interface GroupExpression<T,R> extends Expression<R> {
 
     /**
-     * @return Expression wrapped by this group definition
+     * Get the expression wrapped by this group definition
+     *
+     * @return wrapped expression
      */
     Expression<T> getExpression();
     
     /**
-     * @return a new GroupCollector to collect values belonging to this group.
+     * Create a new GroupCollector to collect values belonging to this group.
+     *
+     * @return new GroupCollector
      */
     GroupCollector<T, R> createGroupCollector();
     

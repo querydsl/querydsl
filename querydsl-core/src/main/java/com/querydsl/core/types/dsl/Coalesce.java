@@ -19,7 +19,7 @@ import java.util.List;
 import com.querydsl.core.types.*;
 
 /**
- * Coalesce defines a coalesce function invocation. The coalesce function
+ * {@code Coalesce} defines a coalesce function invocation. The coalesce function
  * returns null if all arguments are null and the first non-null argument
  * otherwise
  *
@@ -67,7 +67,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return this as alias
      */
     public DslExpression<T> as(Path<T> alias) {
         return Expressions.dslOperation(getType(),Ops.ALIAS, this, alias);
@@ -76,7 +76,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return this as alias
      */
     public DslExpression<T> as(String alias) {
         return as(ExpressionUtils.path(getType(), alias));

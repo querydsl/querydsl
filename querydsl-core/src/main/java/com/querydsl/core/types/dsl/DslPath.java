@@ -16,10 +16,9 @@ package com.querydsl.core.types.dsl;
 import java.lang.reflect.AnnotatedElement;
 
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.DslExpression;
 
 /**
- * DslPath represents simple paths
+ * {@code DslPath} represents simple paths
  *
  * @author tiwe
  *

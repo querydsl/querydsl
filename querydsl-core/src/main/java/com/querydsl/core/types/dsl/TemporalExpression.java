@@ -16,7 +16,7 @@ package com.querydsl.core.types.dsl;
 import com.querydsl.core.types.Expression;
 
 /**
- * TemporalExpression is a supertype for Date/Time related types
+ * {@code TemporalExpression} is a supertype for Date/Time related types
  *
  * @author tiwe
  *
@@ -32,40 +32,40 @@ public abstract class TemporalExpression<T extends Comparable> extends LiteralEx
     }
 
     /**
-     * Get a {@code this > right} expression
+     * Create a {@code this > right} expression
      *
-     * @param right
-     * @return
+     * @param right rhs of the comparison
+     * @return this &gt; right
      */
     public BooleanExpression after(T right) {
         return gt(right);
     }
 
     /**
-     * Get a {@code this > right} expression
+     * Create a {@code this > right} expression
      *
-     * @param right
-     * @return
+     * @param right rhs of the comparison
+     * @return this &gt; right
      */
     public BooleanExpression after(Expression<T> right) {
         return gt(right);
     }
 
     /**
-     * Get a {@code this < right} expression
+     * Create a {@code this < right} expression
      *
-     * @param right
-     * @return
+     * @param right rhs of the comparison
+     * @return this &lt; right
      */
     public BooleanExpression before(T right) {
         return lt(right);
     }
 
     /**
-     * Get a {@code this < right} expression
+     * Create a {@code this < right} expression
      *
-     * @param right
-     * @return
+     * @param right rhs of the comparison
+     * @return this &lt; right
      */
     public BooleanExpression before(Expression<T> right) {
         return lt(right);

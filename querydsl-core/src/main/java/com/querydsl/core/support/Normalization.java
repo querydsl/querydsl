@@ -18,7 +18,7 @@ import java.math.RoundingMode;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class Normalization {
+final class Normalization {
 
     private static final String WS = "\\s*";
 
@@ -36,8 +36,7 @@ public final class Normalization {
     };
 
     private static String normalizeOperation(String queryString) {
-        for (int i = 0; i < OPERATIONS.length; i++) {
-            Pattern operation = OPERATIONS[i];
+        for (Pattern operation : OPERATIONS) {
             Matcher matcher;
             while ((matcher = operation.matcher(queryString)).find()) {
                 char operator = matcher.group(2).charAt(0);
@@ -45,11 +44,20 @@ public final class Normalization {
                 BigDecimal second = new BigDecimal(matcher.group(3));
                 BigDecimal result;
                 switch (operator) {
-                    case '*': result = first.multiply(second); break;
-                    case '/': result = first.divide(second, 10, RoundingMode.HALF_UP); break;
-                    case '+': result = first.add(second); break;
-                    case '-': result = first.subtract(second); break;
-                    default: throw new IllegalStateException();
+                    case '*':
+                        result = first.multiply(second);
+                        break;
+                    case '/':
+                        result = first.divide(second, 10, RoundingMode.HALF_UP);
+                        break;
+                    case '+':
+                        result = first.add(second);
+                        break;
+                    case '-':
+                        result = first.subtract(second);
+                        break;
+                    default:
+                        throw new IllegalStateException();
                 }
                 StringBuffer buffer = new StringBuffer();
                 matcher.appendReplacement(buffer, result.stripTrailingZeros().toPlainString())

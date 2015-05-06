@@ -21,9 +21,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;
 
-
 /**
- * OperationImpl is the default implementation of the Operation interface
+ * {@code OperationImpl} is the default implementation of the {@link Operation} interface
  *
  * @author tiwe
  *

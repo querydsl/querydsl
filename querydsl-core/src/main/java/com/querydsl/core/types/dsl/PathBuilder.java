@@ -26,9 +26,10 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 
 /**
- * PathBuilder is an extension to EntityPathBase for dynamic path construction
+ * {@code PathBuilder} is an extension to {@link EntityPathBase} for dynamic path construction
  *
  * <p>Usage example:</p>
+ *
  * <pre>{@code
  * PathBuilder<User> user = new PathBuilder<User>(User.class, "user");
  * Predicate filter = user.getString("firstName").eq("Bob");
@@ -52,9 +53,9 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     /**
      * Creates a new PathBuilder instance
      *
-     * @param type
-     * @param pathMetadata
-     * @param validator
+     * @param type type of the expression
+     * @param pathMetadata path metadata
+     * @param validator validator for property creation
      */
     public PathBuilder(Class<? extends T> type, PathMetadata pathMetadata, PathBuilderValidator validator) {
         super(type, pathMetadata);
@@ -64,8 +65,8 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     /**
      * Creates a new PathBuilder instance
      *
-     * @param type
-     * @param pathMetadata
+     * @param type type of the expression
+     * @param pathMetadata path metadata
      */
     public PathBuilder(Class<? extends T> type, PathMetadata pathMetadata) {
         this(type, pathMetadata, PathBuilderValidator.DEFAULT);
@@ -75,9 +76,9 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     /**
      * Creates a new PathBuilder instance
      *
-     * @param type
-     * @param variable
-     * @param validator
+     * @param type type of the expression
+     * @param variable variable name
+     * @param validator validator for property creation
      */
     public PathBuilder(Class<? extends T> type, String variable, PathBuilderValidator validator) {
         this(type, PathMetadataFactory.forVariable(variable), validator);
@@ -86,18 +87,13 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     /**
      * Creates a new PathBuilder instance
      *
-     * @param type
-     * @param variable
+     * @param type type of the expression
+     * @param variable variable name
      */
     public PathBuilder(Class<? extends T> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable), PathBuilderValidator.DEFAULT);
     }
 
-    /**
-     * @param newPath
-     * @param path
-     * @return
-     */
     private <P extends Path<?>> P  addMetadataOf(P newPath, Path<?> path) {
         if (path.getMetadata().getParent() instanceof EntityPath) {
             EntityPath<?> parent = (EntityPath)path.getMetadata().getParent();
@@ -121,10 +117,10 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a PathBuilder instance for the given property
+     * Create a PathBuilder instance for the given property
      *
      * @param property property name
-     * @return
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public PathBuilder<Object> get(String property) {
@@ -138,12 +134,12 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a PathBuilder for the given property with the given type
+     * Create a PathBuilder for the given property with the given type
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public <A> PathBuilder<A> get(String property, Class<A> type) {
@@ -157,13 +153,13 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a PArray instance for the given property and the given array type
+     * Create a ArrayPath instance for the given property and the given array type
      *
      * @param <A>
      * @param <E>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A, E> ArrayPath<A, E> getArray(String property, Class<A> type) {
         validate(property, Array.newInstance(type, 0).getClass());
@@ -171,8 +167,10 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * @param path
-     * @return
+     * Create a new Boolean typed path
+     *
+     * @param path existing path
+     * @return property path
      */
     public BooleanPath get(BooleanPath path) {
         BooleanPath newPath = getBoolean(toString(path));
@@ -180,10 +178,10 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Boolean typed path
+     * Create a new Boolean typed path
      *
      * @param propertyName property name
-     * @return
+     * @return property path
      */
     public BooleanPath getBoolean(String propertyName) {
         validate(propertyName, Boolean.class);
@@ -191,26 +189,26 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Collection typed path
+     * Create a new Collection typed path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A> CollectionPath<A, PathBuilder<A>> getCollection(String property, Class<A> type) {
         return this.<A, PathBuilder<A>>getCollection(property, type, PathBuilder.class);
     }
 
     /**
-     * Get a new Collection typed path
+     * Create a new Collection typed path
      *
      * @param <A>
      * @param <E>
      * @param property property name
-     * @param type
-     * @param queryType
-     * @return
+     * @param type property type
+     * @param queryType expression type
+     * @return property path
      */
     public <A, E extends SimpleExpression<A>> CollectionPath<A, E> getCollection(String property, Class<A> type, Class<? super E> queryType) {
         validate(property, Collection.class);
@@ -218,9 +216,11 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
+     * Create a new Comparable typed path
+     *
      * @param <A>
-     * @param path
-     * @return
+     * @param path existing path
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> ComparablePath<A> get(ComparablePath<A> path) {
@@ -229,12 +229,12 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Comparable typed path
+     * Create a new Comparable typed path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A extends Comparable<?>> ComparablePath<A> getComparable(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
@@ -242,9 +242,11 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
+     * Create a new Date path
+     *
      * @param <A>
-     * @param path
-     * @return
+     * @param path existing path
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> DatePath<A> get(DatePath<A> path) {
@@ -253,12 +255,12 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Date path
+     * Create a new Date path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A extends Comparable<?>> DatePath<A> getDate(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
@@ -266,9 +268,11 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
+     * Create a new DateTime path
+     *
      * @param <A>
-     * @param path
-     * @return
+     * @param path existing path
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> DateTimePath<A> get(DateTimePath<A> path) {
@@ -277,12 +281,12 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new DateTime path
+     * Create a new DateTime path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A extends Comparable<?>> DateTimePath<A> getDateTime(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
@@ -290,12 +294,12 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Enum path
+     * Create a new Enum path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A extends Enum<A>> EnumPath<A> getEnum(String property, Class<A> type) {
         validate(property, type);
@@ -303,9 +307,11 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
+     * Create a new Enum path
+     *
      * @param <A>
-     * @param path
-     * @return
+     * @param path existing path
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public <A extends Enum<A>> EnumPath<A> get(EnumPath<A> path) {
@@ -314,26 +320,26 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new List typed path
+     * Create a new List typed path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A> ListPath<A, PathBuilder<A>> getList(String property, Class<A> type) {
         return this.<A, PathBuilder<A>>getList(property, type, PathBuilder.class);
     }
 
     /**
-     * Get a new List typed path
+     * Create a new List typed path
      *
      * @param <A>
      * @param <E>
      * @param property property name
-     * @param type
-     * @param queryType
-     * @return
+     * @param type property type
+     * @param queryType expression type
+     * @return property path
      */
     public <A, E extends SimpleExpression<A>> ListPath<A, E> getList(String property, Class<A> type, Class<? super E> queryType) {
         validate(property, List.class);
@@ -341,30 +347,30 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Map typed path
+     * Create a new Map typed path
      *
      * @param <K>
      * @param <V>
      * @param property property name
-     * @param key
-     * @param value
-     * @return
+     * @param key key type
+     * @param value value type
+     * @return property path
      */
     public <K, V> MapPath<K, V, PathBuilder<V>> getMap(String property, Class<K> key, Class<V> value) {
         return this.<K, V, PathBuilder<V>>getMap(property, key, value, PathBuilder.class);
     }
 
     /**
-     * Get a new Map typed path
+     * Create a new Map typed path
      *
      * @param <K>
      * @param <V>
      * @param <E>
      * @param property property name
-     * @param key
-     * @param value
-     * @param queryType
-     * @return
+     * @param key key type
+     * @param value value type
+     * @param queryType vaue expression type
+     * @return property path
      */
     public <K, V, E extends SimpleExpression<V>> MapPath<K, V, E> getMap(String property, Class<K> key, Class<V> value, Class<? super E> queryType) {
         validate(property, Map.class);
@@ -372,9 +378,11 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
+     * Create a new Number typed path
+     *
      * @param <A>
-     * @param path
-     * @return
+     * @param path existing path
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<?>> NumberPath<A> get(NumberPath<A> path) {
@@ -383,12 +391,12 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Number typed path
+     * Create a new Number typed path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A extends Number & Comparable<?>> NumberPath<A> getNumber(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
@@ -396,26 +404,26 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Set typed path
+     * Create a new Set typed path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A> SetPath<A, PathBuilder<A>> getSet(String property, Class<A> type) {
         return this.<A, PathBuilder<A>>getSet(property, type, PathBuilder.class);
     }
 
     /**
-     * Get a new Set typed path
+     * Create a new Set typed path
      *
      * @param <A>
      * @param <E>
      * @param property property name
-     * @param type
-     * @param queryType
-     * @return
+     * @param type property type
+     * @param queryType expression type
+     * @return property path
      */
     public <A, E extends SimpleExpression<A>> SetPath<A, E> getSet(String property, Class<A> type, Class<? super E> queryType) {
         validate(property, Set.class);
@@ -423,9 +431,11 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
+     * Create a new Simple path
+     *
      * @param <A>
-     * @param path
-     * @return
+     * @param path existing path
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public <A> SimplePath<A> get(Path<A> path) {
@@ -434,12 +444,12 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Simple path
+     * Create a new Simple path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A> SimplePath<A> getSimple(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
@@ -447,8 +457,10 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * @param path
-     * @return
+     * Create a new String typed path
+     *
+     * @param path existing path
+     * @return property path
      */
     public StringPath get(StringPath path) {
         StringPath newPath = getString(toString(path));
@@ -456,10 +468,10 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new String typed path
+     * Create a new String typed path
      *
      * @param property property name
-     * @return
+     * @return property path
      */
     public StringPath getString(String property) {
         validate(property, String.class);
@@ -467,8 +479,11 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
+     * Create a new Time typed path
+     *
      * @param <A>
-     * @param path
+     * @param path existing path
+     * @return property path
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> TimePath<A> get(TimePath<A> path) {
@@ -477,12 +492,12 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * Get a new Time typed path
+     * Create a new Time typed path
      *
      * @param <A>
      * @param property property name
-     * @param type
-     * @return
+     * @param type property type
+     * @return property path
      */
     public <A extends Comparable<?>> TimePath<A> getTime(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
@@ -490,8 +505,10 @@ public class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
-     * @param path
-     * @return
+     * Get the String representation of the last path element
+     *
+     * @param path path
+     * @return String representation
      */
     private String toString(Path<?> path) {
         return path.getMetadata().getElement().toString();

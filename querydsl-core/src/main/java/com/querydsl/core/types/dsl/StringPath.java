@@ -18,7 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.querydsl.core.types.*;
 
 /**
- * StringPath represents String typed paths
+ * {@code StringPath} represents String typed paths
  *
  * @author tiwe
  *

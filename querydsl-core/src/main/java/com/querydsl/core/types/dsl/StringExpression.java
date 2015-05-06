@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * StringExpression represents {@link java.lang.String} expressions
+ * {@code StringExpression} represents {@link java.lang.String} expressions
  *
  * @author tiwe
  * @see java.lang.String
@@ -54,9 +54,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the concatenation of this and str
+     * Create a {@code concat(this, str)} expression
      *
-     * @param str
+     * <p>Get the concatenation of this and str</p>
+     *
+     * @param str string to append
      * @return this + str
      */
     public StringExpression append(Expression<String> str) {
@@ -64,9 +66,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the concatenation of this and str
+     * Create a {@code concat(this, str)} expression
      *
-     * @param str
+     * <p>Get the concatenation of this and str</p>
+     *
+     * @param str string to append
      * @return this + str
      */
     public StringExpression append(String str) {
@@ -74,9 +78,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the character at the given index
+     * Create a {@code this.charAt(i)} expression
      *
-     * @param i
+     * <p>Get the character at the given index</p>
+     *
+     * @param i zero based index
      * @return this.charAt(i)
      * @see java.lang.String#charAt(int)
      */
@@ -85,9 +91,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the character at the given index
+     * Create a {@code this.charAt(i)} expression
      *
-     * @param i
+     * <p>Get the character at the given index</p>
+     *
+     * @param i zero based index
      * @return this.charAt(i)
      * @see java.lang.String#charAt(int)
      */
@@ -96,9 +104,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Get the concatenation of this and str
+     * Create a {@code concat(this, str)} expression
      *
-     * @param str
+     * <p>Get the concatenation of this and str</p>
+     *
+     * @param str string to append
      * @return this + str
      */
     public StringExpression concat(Expression<String> str) {
@@ -106,9 +116,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the concatenation of this and str
+     * Create a {@code concat(this, str)} expression
      *
-     * @param str
+     * <p>Get the concatenation of this and str</p>
+     *
+     * @param str string to append
      * @return this + str
      */
     public StringExpression concat(String str) {
@@ -116,9 +128,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Returns true if the given String is contained
+     * Create a {@code this.contains(str)} expression
      *
-     * @param str
+     * <p>Returns true if the given String is contained</p>
+     *
+     * @param str string
      * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
@@ -127,9 +141,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Returns true if the given String is contained
+     * Create a {@code this.contains(str)} expression
      *
-     * @param str
+     * <p>Returns true if the given String is contained</p>
+     *
+     * @param str string
      * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
@@ -138,25 +154,35 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * @param str
-     * @return
+     * Create a {@code this.containsIgnoreCase(str)} expression
+     *
+     * <p>Returns true if the given String is contained, compare case insensitively</p>
+     *
+     * @param str string
+     * @return this.containsIgnoreCase(str) expression
      */
     public BooleanExpression containsIgnoreCase(Expression<String> str) {
         return Expressions.booleanOperation(Ops.STRING_CONTAINS_IC, mixin, str);
     }
 
     /**
-     * @param str
-     * @return
+     * Create a {@code this.containsIgnoreCase(str)} expression
+     *
+     * <p>Returns true if the given String is contained, compare case insensitively</p>
+     *
+     * @param str string
+     * @return this.containsIgnoreCase(str)
      */
     public BooleanExpression containsIgnoreCase(String str) {
         return containsIgnoreCase(ConstantImpl.create(str));
     }
 
     /**
-     * Returns true if this ends with str
+     * Create a {@code this.endsWith(str)} expression
      *
-     * @param str
+     * <p>Returns true if this ends with str</p>
+     *
+     * @param str string
      * @return this.endsWith(str)
      * @see java.lang.String#endsWith(String)
      */
@@ -165,17 +191,23 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * @param str
-     * @return
+     * Create a {@code this.endsWithIgnoreCase(str)} expression
+     *
+     * <p>Returns true if this ends with str, compares case insensitively</p>
+     *
+     * @param str string
+     * @return this.endsWithIgnoreCase(str)
      */
     public BooleanExpression endsWithIgnoreCase(Expression<String> str) {
         return Expressions.booleanOperation(Ops.ENDS_WITH_IC, mixin, str);
     }
 
     /**
-     * Returns true if this ends with str
+     * Create a {@code this.endsWith(str)} expression
      *
-     * @param str
+     * <p>Returns true if this ends with str</p>
+     *
+     * @param str string
      * @return this.endsWith(str)
      * @see java.lang.String#endsWith(String)
      */
@@ -184,18 +216,24 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * @param str
-     * @return
+     * Create a {@code this.endsWithIgnoreCase(str)} expression
+     *
+     * <p>Returns true if this ends with str, compares case insensitively</p>
+     *
+     * @param str string
+     * @return this.endsWithIgnoreCase(str)
      */
     public BooleanExpression endsWithIgnoreCase(String str) {
         return endsWithIgnoreCase(ConstantImpl.create(str));
     }
 
     /**
-     * Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
-     * considerations.
+     * Create a {@code this.equalsIgnoreCase(str)} expression
      *
-     * @param str
+     * <p>Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
+     * considerations.</p>
+     *
+     * @param str string
      * @return this.equalsIgnoreCase(str)
      * @see java.lang.String#equalsIgnoreCase(String)
      */
@@ -204,10 +242,12 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
-     * considerations.
+     * Create a {@code this.equalsIgnoreCase(str)} expression
      *
-     * @param str
+     * <p>Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
+     * considerations.</p>
+     *
+     * @param str string
      * @return this.equalsIgnoreCase(str)
      * @see java.lang.String#equalsIgnoreCase(String)
      */
@@ -216,9 +256,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the index of the given substring in this String
+     * Create a {@code this.indexOf(str)} expression
      *
-     * @param str
+     * <p>Get the index of the given substring in this String</p>
+     *
+     * @param str string
      * @return this.indexOf(str)
      * @see java.lang.String#indexOf(String)
      */
@@ -227,9 +269,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the index of the given substring in this String
+     * Create a {@code this.indexOf(str)} expression
      *
-     * @param str
+     * <p>Get the index of the given substring in this String</p>
+     *
+     * @param str string
      * @return this.indexOf(str)
      * @see java.lang.String#indexOf(String)
      */
@@ -238,10 +282,12 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the index of the given substring in this String, starting from the given index
+     * Create a {@code this.indexOf(str, i)} expression
      *
-     * @param str
-     * @param i
+     * <p>Get the index of the given substring in this String, starting from the given index</p>
+     *
+     * @param str string
+     * @param i zero based index
      * @return this.indexOf(str, i)
      * @see java.lang.String#indexOf(String, int)
      */
@@ -250,18 +296,22 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the index of the given substring in this String, starting from the given index
+     * Create a {@code this.indexOf(str)} expression
      *
-     * @param str
-     * @param i
-     * @return
+     * <p>Get the index of the given substring in this String, starting from the given index</p>
+     *
+     * @param str string
+     * @param i zero based index
+     * @return this.indexOf(str)
      */
     public NumberExpression<Integer> indexOf(Expression<String> str, int i) {
         return Expressions.numberOperation(Integer.class, Ops.INDEX_OF_2ARGS, mixin, str, ConstantImpl.create(i));
     }
 
     /**
-     * Return true if this String is empty
+     * Create a {@code this.isEmpty()} expression
+     *
+     * <p>Return true if this String is empty</p>
      *
      * @return this.isEmpty()
      * @see java.lang.String#isEmpty()
@@ -274,7 +324,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Return true if this String is not empty
+     * Create a {@code !this.isEmpty()} expression
+     *
+     * <p>Return true if this String is not empty</p>
      *
      * @return !this.isEmpty()
      * @see java.lang.String#isEmpty()
@@ -284,7 +336,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Return the length of this String
+     * Create a {@code this.length()} expression
+     *
+     * <p>Return the length of this String</p>
      *
      * @return this.length()
      * @see java.lang.String#length()
@@ -297,49 +351,51 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Expr: {@code this like str}
+     * Create a {@code this like str} expression
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return this like str
      */
     public BooleanExpression like(String str) {
         return Expressions.booleanOperation(Ops.LIKE, this, ConstantImpl.create(str));
     }
 
     /**
-     * Expr: {@code this like str}
+     * Create a {@code this like str} expression
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return this like str
      */
     public BooleanExpression like(Expression<String> str) {
         return Expressions.booleanOperation(Ops.LIKE, mixin, str);
     }
     
     /**
-     * Expr: {@code this like str}
+     * Create a {@code this like str} expression
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return this like str
      */
     public BooleanExpression like(String str, char escape) {
         return Expressions.booleanOperation(Ops.LIKE_ESCAPE, mixin, ConstantImpl.create(str), ConstantImpl.create(escape));
     }
 
     /**
-     * Expr: {@code this like str}
+     * Create a {@code this like str} expression
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return this like str
      */
     public BooleanExpression like(Expression<String> str, char escape) {
         return Expressions.booleanOperation(Ops.LIKE_ESCAPE, mixin, str, ConstantImpl.create(escape));
     }
 
     /**
-     * Get the position of the given String in this String, the first position is 1
+     * Create a {@code locate(str, this)} expression
+     *
+     * <p>Get the position of the given String in this String, the first position is 1</p>
      * 
-     * @param str
+     * @param str string
      * @return locate(str, this)
      */
     public NumberExpression<Integer> locate(Expression<String> str) {
@@ -347,9 +403,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Get the position of the given String in this String, the first position is 1
+     * Create a {@code locate(str, this)} expression
+     *
+     * <p>Get the position of the given String in this String, the first position is 1</p>
      * 
-     * @param str
+     * @param str string
      * @return locate(str, this)
      */
     public NumberExpression<Integer> locate(String str) {
@@ -357,9 +415,12 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Get the position of the given String in this String, the first position is 1
+     * Create a {@code locate(str, this, start)} expression
+     *
+     * <p>Get the position of the given String in this String, the first position is 1</p>
      * 
-     * @param str
+     * @param str string
+     * @param start start
      * @return locate(str, this, start)
      */
     public NumberExpression<Integer> locate(Expression<String> str, NumberExpression<Integer> start) {
@@ -367,9 +428,12 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Get the position of the given String in this String, the first position is 1
+     * Create a {@code locate(str, this, start)} expression
+     *
+     * <p>Get the position of the given String in this String, the first position is 1</p>
      * 
-     * @param str
+     * @param str string
+     * @param start start
      * @return locate(str, this, start)
      */
     public NumberExpression<Integer> locate(String str, int start) {
@@ -377,7 +441,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Get the lower case form
+     * Create a {@code this.toLowerCase()} expression
+     *
+     * <p>Get the lower case form</p>
      *
      * @return this.toLowerCase()
      * @see java.lang.String#toLowerCase()
@@ -390,12 +456,14 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Return true if this String matches the given regular expression
+     * Create a {@code this.matches(regex)} expression
+     *
+     * <p>Return true if this String matches the given regular expression</p>
      * 
      * <p>Some implementations such as Querydsl JPA will try to convert a regex expression into like
      * form and will throw an Exception when this fails</p>
      *
-     * @param regex
+     * @param regex regular expression
      * @return this.matches(right)
      * @see java.lang.String#matches(String)
      */
@@ -404,12 +472,14 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Return true if this String matches the given regular expression
+     * Create a {@code this.matches(regex)} expression
+     *
+     * <p>Return true if this String matches the given regular expression</p>
      * 
      * <p>Some implementations such as Querydsl JPA will try to convert a regex expression into like
      * form and will throw an Exception when this fails</p>
      *
-     * @param regex
+     * @param regex regular expression
      * @return this.matches(regex)
      * @see java.lang.String#matches(String)
      */
@@ -418,7 +488,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the maximum value of this expression (aggregation)
+     * Create a {@code max(this)} expression
+     *
+     * <p>Get the maximum value of this expression (aggregation)</p>
      *
      * @return max(this)
      */
@@ -430,7 +502,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the minimum value of this expression (aggregation)
+     * Create a {@code min(this)} expression
+     *
+     * <p>Get the minimum value of this expression (aggregation)</p>
      *
      * @return min(this)
      */
@@ -442,10 +516,12 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
-     * considerations.
+     * Create a {@code !this.equalsIgnoreCase(str)} expression
      *
-     * @param str
+     * <p>Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
+     * considerations.</p>
+     *
+     * @param str string
      * @return !this.equalsIgnoreCase(str)
      * @see java.lang.String#equalsIgnoreCase(String)
      */
@@ -455,10 +531,12 @@ public abstract class StringExpression extends LiteralExpression<String> {
 
 
     /**
-     * Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
-     * considerations.
+     * Create a {@code !this.equalsIgnoreCase(str)} expression
      *
-     * @param str
+     * <p>Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
+     * considerations.</p>
+     *
+     * @param str string
      * @return !this.equalsIgnoreCase(str)
      * @see java.lang.String#equalsIgnoreCase(String)
      */
@@ -467,49 +545,51 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Expr: {@code this not like str}
+     * Create a {@code this not like str} expression
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return this not like str
      */
     public BooleanExpression notLike(String str) {
         return like(str).not();
     }
 
     /**
-     * Expr: {@code this not like str}
+     * Create a {@code this not like str} expression
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return this not like str
      */
     public BooleanExpression notLike(Expression<String> str) {
         return like(str).not();
     }
         
     /**
-     * Expr: {@code this not like str}
+     * Create a {@code this not like str} expression
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return this not like str
      */
     public BooleanExpression notLike(String str, char escape) {
         return like(str, escape).not();
     }
 
     /**
-     * Expr: {@code this not like str}
+     * Create a {@code this not like str} expression
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return this not like str
      */
     public BooleanExpression notLike(Expression<String> str, char escape) {
         return like(str, escape).not();
     }
     
     /**
-     * Prepend the given String and return the result
+     * Create a {@code concat(str, this)} expression
      *
-     * @param str
+     * <p>Prepend the given String and return the result</p>
+     *
+     * @param str string
      * @return str + this
      */
     public StringExpression prepend(Expression<String> str) {
@@ -517,9 +597,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Prepend the given String and return the result
+     * Create a {@code concat(str, this)} expression
      *
-     * @param str
+     * <p>Prepend the given String and return the result</p>
+     *
+     * @param str string
      * @return str + this
      */
     public StringExpression prepend(String str) {
@@ -527,9 +609,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Return true if this starts with str
+     * Create a {@code this.startsWith(str)} expression
      *
-     * @param str
+     * <p>Return true if this starts with str</p>
+     *
+     * @param str string
      * @return this.startsWith(str)
      * @see java.lang.String#startsWith(String)
      */
@@ -538,17 +622,21 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * @param str
-     * @return
+     * Create a {@code this.startsWithIgnoreCase(str)} expression
+     *
+     * @param str string
+     * @return this.startsWithIgnoreCase(str)
      */
     public BooleanExpression startsWithIgnoreCase(Expression<String> str) {
         return Expressions.booleanOperation(Ops.STARTS_WITH_IC, mixin, str);
     }
 
     /**
-     * Return true if this starts with str
+     * Create a {@code this.startsWith(str)} expression
      *
-     * @param str
+     * <p>Return true if this starts with str</p>
+     *
+     * @param str string
      * @return this.startsWith(str)
      * @see java.lang.String#startsWith(String)
      */
@@ -557,8 +645,10 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * @param str
-     * @return
+     * Create a {@code this.startsWithIgnoreCase(str)} expression
+     *
+     * @param str string
+     * @return this.startsWithIgnoreCase(str)
      */
     public BooleanExpression startsWithIgnoreCase(String str) {
         return startsWithIgnoreCase(ConstantImpl.create(str));
@@ -570,9 +660,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the given substring
+     * Create a {@code this.substring(beginIndex)} expression
      *
-     * @param beginIndex
+     * @param beginIndex inclusive start index
      * @return this.substring(beginIndex)
      * @see java.lang.String#substring(int)
      */
@@ -581,10 +671,10 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the given substring
+     * Create a {@code this.substring(beginIndex, endIndex)} expression
      *
-     * @param beginIndex
-     * @param endIndex
+     * @param beginIndex inclusive start index
+     * @param endIndex exclusive end index
      * @return this.substring(beginIndex, endIndex)
      * @see java.lang.String#substring(int, int)
      */
@@ -593,10 +683,10 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Get the given substring
+     * Create a {@code this.substring(beginIndex, endIndex)} expression
      *
-     * @param beginIndex
-     * @param endIndex
+     * @param beginIndex inclusive start index
+     * @param endIndex exclusive end index
      * @return this.substring(beginIndex, endIndex)
      * @see java.lang.String#substring(int, int)
      */
@@ -605,10 +695,10 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Get the given substring
+     * Create a {@code this.substring(beginIndex, endIndex)} expression
      *
-     * @param beginIndex
-     * @param endIndex
+     * @param beginIndex inclusive start index
+     * @param endIndex exclusive end index
      * @return this.substring(beginIndex, endIndex)
      * @see java.lang.String#substring(int, int)
      */
@@ -617,9 +707,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the given substring
+     * Create a {@code this.substring(beginIndex)} expression
      *
-     * @param beginIndex
+     * @param beginIndex inclusive start index
      * @return this.substring(beginIndex)
      * @see java.lang.String#substring(int)
      */
@@ -628,10 +718,10 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the given substring
+     * Create a {@code this.substring(beginIndex, endIndex)} expression
      *
-     * @param beginIndex
-     * @param endIndex
+     * @param beginIndex inclusive start index
+     * @param endIndex exclusive end index
      * @return this.substring(beginIndex, endIndex)
      * @see java.lang.String#substring(int, int)
      */
@@ -640,7 +730,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
     
     /**
-     * Get the lower case form
+     * Create a {@code this.toLowerCase()} expression
+     *
+     * <p>Get the lower case form</p>
      *
      * @return this.toLowerCase()
      * @see java.lang.String#toLowerCase()
@@ -650,9 +742,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the upper case form
+     * Create a {@code this.toUpperCase()} expression
      *
-     * @return
+     * <p>Get the upper case form</p>
+     *
+     * @return this.toUpperCase()
      * @see java.lang.String#toUpperCase()
      */
     public StringExpression toUpperCase() {
@@ -660,10 +754,12 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get a copy of the string, with leading and trailing whitespace
-     * omitted.
+     * Create a {@code this.trim()} expression
      *
-     * @return
+     * <p>Create a copy of the string, with leading and trailing whitespace
+     * omitted.</p>
+     *
+     * @return this.trim()
      * @see java.lang.String#trim()
      */
     public StringExpression trim() {
@@ -674,9 +770,11 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
-     * Get the upper case form
+     * Create a {@code this.toUpperCase()} expression
      *
-     * @return
+     * <p>Get the upper case form</p>
+     *
+     * @return this.toUpperCase()
      * @see java.lang.String#toUpperCase()
      */
     public StringExpression upper() {

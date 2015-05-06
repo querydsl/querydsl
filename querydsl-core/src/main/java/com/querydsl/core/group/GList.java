@@ -18,11 +18,6 @@ import java.util.List;
 
 import com.querydsl.core.types.Expression;
 
-/**
- * @author tiwe
- *
- * @param <T>
- */
 class GList<T> extends AbstractGroupExpression<T, List<T>> {
     
     private static final long serialVersionUID = -5613861506383727078L;

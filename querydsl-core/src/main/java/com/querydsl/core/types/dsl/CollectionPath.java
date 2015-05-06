@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * CollectionPath represents collection paths
+ * {@code CollectionPath} represents collection paths
  *
  * @author tiwe
  *
@@ -74,6 +74,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
         return any;
     }
 
+    @Override
     public Class<E> getElementType() {
         return elementType;
     }

@@ -18,7 +18,7 @@ import java.io.Serializable;
 import javax.annotation.concurrent.Immutable;
 
 /**
- * OrderSpecifier represents an order-by-element in a Query instance
+ * {@code OrderSpecifier} represents an order-by-element in a Query instance
  *
  * @param <T> related expression type
  * @author tiwe
@@ -49,7 +49,7 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     /**
      * Get the order of this specifier
      *
-     * @return
+     * @return order
      */
     public Order getOrder() {
         return order;
@@ -58,7 +58,7 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     /**
      * Get whether the order is ascending or not
      *
-     * @return
+     * @return ascending order
      */
     public boolean isAscending() {
         return order == Order.ASC;
@@ -67,28 +67,34 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     /**
      * Get the target expression of this OrderSpecifier
      *
-     * @return
+     * @return target expression
      */
     public Expression<T> getTarget() {
         return target;
     }
 
     /**
-     * @return
+     * Get the null handling
+     *
+     * @return null handling
      */
     public NullHandling getNullHandling() {
         return nullHandling;
     }
     
     /**
-     * @return
+     * Create a new OrderSpecifier instance with null first enabled
+     *
+     * @return new instance with null first enabled
      */
     public OrderSpecifier<T> nullsFirst() {
         return new OrderSpecifier<T>(order, target, NullHandling.NullsFirst);
     }
     
     /**
-     * @return
+     * Create a new OrderSpecifier instance with nulls last enabled
+     *
+     * @return new instance with nulls last enabled
      */
     public OrderSpecifier<T> nullsLast() {
         return new OrderSpecifier<T>(order, target, NullHandling.NullsLast);

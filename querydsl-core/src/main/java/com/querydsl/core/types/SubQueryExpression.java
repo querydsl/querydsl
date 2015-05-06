@@ -16,8 +16,7 @@ package com.querydsl.core.types;
 import com.querydsl.core.QueryMetadata;
 
 /**
- *
- * SubQueryExpression represents a sub query.
+ * {@code SubQueryExpression} represents a sub query.
  *
  * @author tiwe
  *
@@ -28,7 +27,7 @@ public interface SubQueryExpression<T> extends Expression<T> {
     /**
      * Get the query metadata for the subquery
      *
-     * @return
+     * @return metadata
      */
     QueryMetadata getMetadata();
 

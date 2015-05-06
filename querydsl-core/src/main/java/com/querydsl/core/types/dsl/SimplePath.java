@@ -18,7 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.querydsl.core.types.*;
 
 /**
- * SimplePath represents simple paths
+ * {@code SimplePath} represents simple paths
  *
  * @author tiwe
  *

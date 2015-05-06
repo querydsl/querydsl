@@ -21,6 +21,8 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code CollectionOperation} is a collection typed operation
+ *
  * @author tiwe
  *
  */

@@ -17,11 +17,6 @@ import java.util.*;
 
 import com.querydsl.core.types.Expression;
 
-/**
- * @author tiwe
- *
- * @param <T>
- */
 abstract class GSet<T, S extends Set<T>> extends AbstractGroupExpression<T, S> {
     
     private static final long serialVersionUID = -1575808026237160843L;

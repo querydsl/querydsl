@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Objects;
 
 /**
- * QueryModifiers combines limit and offset info into a single type.
+ * {@code QueryModifiers} combines limit and offset info into a single immutable value type.
  *
  * @author tiwe
  */
@@ -108,8 +108,8 @@ public final class QueryModifiers implements Serializable{
      * Get a sublist based on the restriction of limit and offset
      *
      * @param <T>
-     * @param list
-     * @return
+     * @param list list to be handled
+     * @return sublist with limit and offset applied
      */
     public <T> List<T> subList(List<T> list) {
         if (!list.isEmpty()) {

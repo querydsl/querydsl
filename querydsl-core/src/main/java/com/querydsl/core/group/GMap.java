@@ -17,10 +17,6 @@ import java.util.*;
 
 import com.mysema.commons.lang.Pair;
 
-/**
- * @param <K>
- * @param <V>
- */
 abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pair<K, V>, M> {
 
     private static final long serialVersionUID = 7106389414200843920L;

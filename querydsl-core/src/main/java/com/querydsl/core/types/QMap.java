@@ -22,7 +22,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
 /**
- * QMap represents a projection of type Map
+ * {@code QMap} represents a projection of type Map
  * 
  * <p>Usage example</p>
  * <pre>

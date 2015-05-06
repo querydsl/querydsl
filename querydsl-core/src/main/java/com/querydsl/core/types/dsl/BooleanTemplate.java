@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
- * BooleanTemplate is a custom boolean expression
+ * {@code BooleanTemplate} is a custom boolean expression
  *
  * @author tiwe
  *

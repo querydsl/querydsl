@@ -20,7 +20,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 
 /**
- * ComparableExpressionBase represents comparable expressions
+ * {@code ComparableExpressionBase} represents comparable expressions
  *
  * @author tiwe
  *
@@ -39,9 +39,9 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     }
 
     /**
-     * Get an OrderSpecifier for ascending order of this expression
+     * Create an OrderSpecifier for ascending order of this expression
      *
-     * @return
+     * @return ascending order by this
      */
     public final OrderSpecifier<T> asc() {
         if (asc == null) {
@@ -50,6 +50,12 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
         return asc;
     }
 
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
     public final Coalesce<T> coalesce(Expression<?>...exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (Expression expr : exprs) {
@@ -58,6 +64,12 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
         return coalesce;
     }
 
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additonal arguments
+     * @return coalesce
+     */
     public final Coalesce<T> coalesce(T... args) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (T arg : args) {
@@ -67,9 +79,9 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     }
 
     /**
-     * Get an OrderSpecifier for descending order of this expression
+     * Create an OrderSpecifier for descending order of this expression
      *
-     * @return
+     * @return descending order by this
      */
     public final OrderSpecifier<T> desc() {
         if (desc == null) {

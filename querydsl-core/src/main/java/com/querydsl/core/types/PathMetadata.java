@@ -21,7 +21,7 @@ import javax.annotation.concurrent.Immutable;
 import com.google.common.base.Objects;
 
 /**
- * PathMetadata provides metadata for {@link Path} expressions.
+ * {@code PathMetadata} provides metadata for {@link Path} expressions.
  *
  * @author tiwe
  */

@@ -29,7 +29,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Primitives;
 
 /**
- * QBean is a JavaBean populating projection type
+ * {@code QBean} is a JavaBean populating projection type
  *
  * <p>Example</p>
  *
@@ -88,8 +88,8 @@ public class QBean<T> extends FactoryExpressionBase<T> {
     /**
      * Create a new QBean instance
      *
-     * @param type
-     * @param bindings
+     * @param type type of bean
+     * @param bindings bindings
      */
     protected QBean(Class<? extends T> type, Map<String, ? extends Expression<?>> bindings) {
         this(type, false, bindings);
@@ -98,8 +98,8 @@ public class QBean<T> extends FactoryExpressionBase<T> {
     /**
      * Create a new QBean instance
      *
-     * @param type
-     * @param args
+     * @param type type of bean
+     * @param args properties to be populated
      */
     protected QBean(Class<? extends T> type, Expression<?>... args) {
         this(type, false, args);
@@ -108,9 +108,9 @@ public class QBean<T> extends FactoryExpressionBase<T> {
     /**
      * Create a new QBean instance
      *
-     * @param type
-     * @param fieldAccess
-     * @param args
+     * @param type type of bean
+     * @param fieldAccess true, for field access and false, for property access
+     * @param args fields or properties to be populated
      */
     protected QBean(Class<? extends T> type, boolean fieldAccess, Expression<?>... args) {
         this(type, fieldAccess, createBindings(args));
@@ -119,9 +119,9 @@ public class QBean<T> extends FactoryExpressionBase<T> {
     /**
      * Create a new QBean instance
      *
-     * @param type
-     * @param fieldAccess
-     * @param bindings
+     * @param type type of bean
+     * @param fieldAccess true, for field access and false, for property access
+     * @param bindings bindings
      */
     protected QBean(Class<? extends T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
         super(type);
@@ -241,7 +241,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return this as alias
      */
     @SuppressWarnings("unchecked")
     public Expression<T> as(Path<T> alias) {
@@ -251,7 +251,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @return this as alias
      */
     public Expression<T> as(String alias) {
         return as(ExpressionUtils.path(getType(), alias));

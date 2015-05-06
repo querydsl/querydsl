@@ -24,7 +24,7 @@ import com.querydsl.core.alias.Alias;
 import com.querydsl.core.domain.QCommonPersistence;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class QueryMixinTest {
 
@@ -45,7 +45,7 @@ public class QueryMixinTest {
         assertEquals(1, mixin.getMetadata().getJoins().size());
         JoinExpression je = mixin.getMetadata().getJoins().get(0);
         assertEquals(entity, je.getTarget());
-        assertEquals(BooleanExpression.allOf(entity.version.isNull(), entity.version.isNotNull()), je.getCondition());
+        assertEquals(Expressions.allOf(entity.version.isNull(), entity.version.isNotNull()), je.getCondition());
     }
 
     @Test

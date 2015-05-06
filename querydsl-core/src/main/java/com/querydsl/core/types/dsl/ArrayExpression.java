@@ -18,7 +18,7 @@ import javax.annotation.Nonnegative;
 import com.querydsl.core.types.Expression;
 
 /**
- * ArrayExpression defines an interface for array typed expression
+ * {@code ArrayExpression} defines an interface for array typed expression
  *
  * @author tiwe
  *
@@ -28,25 +28,31 @@ import com.querydsl.core.types.Expression;
 public interface ArrayExpression<A, T> extends Expression<A> {
 
     /**
-     * Get the size of the array
+     * Create a {@code this.size()} expression
      *
-     * @return
+     * <p>Returns the size of the array as an expression</p>
+     *
+     * @return size of array
      */
     NumberExpression<Integer> size();
 
     /**
-     * Get the element at the given index
+     * Create a {@code this[index]} expression
      *
-     * @param index
-     * @return
+     * <p>Returns the element at the given index</p>
+     *
+     * @param index zero based index
+     * @return element at index
      */
     SimpleExpression<T> get(Expression<Integer> index);
 
     /**
-     * Get the element at the given index
+     * Create a {@code this[index]} expression
      *
-     * @param index
-     * @return
+     * <p>Returns the element at the given index</p>
+     *
+     * @param index zero based index
+     * @return element at index
      */
     SimpleExpression<T> get(@Nonnegative int index);
 

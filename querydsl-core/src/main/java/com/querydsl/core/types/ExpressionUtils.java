@@ -24,9 +24,8 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryException;
 
-
 /**
- * ExpressionUtils provides utilities for constructing common operation instances. This class is
+ * {@code ExpressionUtils} provides utilities for constructing common operation instances. This class is
  * used internally in Querydsl and is not suitable to be used in cases where DSL methods are needed,
  * since the Expression implementations used in this class are minimal internal implementations.
  *
@@ -49,10 +48,10 @@ public final class ExpressionUtils {
     /**
      * Create a new Operation expression
      *
-     * @param type
-     * @param operator
-     * @param args
-     * @return
+     * @param type type of expression
+     * @param operator operator
+     * @param args operation arguments
+     * @return operation expression
      */
     public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
                                              Expression<?>... args) {
@@ -62,10 +61,10 @@ public final class ExpressionUtils {
     /**
      * Create a new Operation expression
      *
-     * @param type
-     * @param operator
-     * @param args
-     * @return
+     * @param type type of expression
+     * @param operator operator
+     * @param args operation arguments
+     * @return operation expression
      */
     public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
                                              ImmutableList<Expression<?>> args) {
@@ -79,9 +78,9 @@ public final class ExpressionUtils {
     /**
      * Create a new Operation expression
      *
-     * @param operator
-     * @param args
-     * @return
+     * @param operator operator
+     * @param args operation arguments
+     * @return operation expression
      */
     public static PredicateOperation predicate(Operator operator, Expression<?>... args) {
         return predicate(operator, ImmutableList.copyOf(args));
@@ -90,9 +89,9 @@ public final class ExpressionUtils {
     /**
      * Create a new Operation expression
      *
-     * @param operator
-     * @param args
-     * @return
+     * @param operator operator
+     * @param args operation arguments
+     * @return operation expression
      */
     public static PredicateOperation predicate(Operator operator, ImmutableList<Expression<?>> args) {
         return new PredicateOperation(operator, args);
@@ -101,9 +100,9 @@ public final class ExpressionUtils {
     /**
      * Create a new Path expression
      *
-     * @param type
-     * @param variable
-     * @return
+     * @param type type of expression
+     * @param variable variable name
+     * @return path expression
      */
     public static <T> Path<T> path(Class<? extends T> type, String variable) {
         return new PathImpl<T>(type, variable);
@@ -112,10 +111,10 @@ public final class ExpressionUtils {
     /**
      * Create a new Path expression
      *
-     * @param type
-     * @param parent
-     * @param property
-     * @return
+     * @param type type of expression
+     * @param parent parent path
+     * @param property property name
+     * @return property path
      */
     public static <T> Path<T> path(Class<? extends T> type, Path<?> parent, String property) {
         return new PathImpl<T>(type, parent, property);
@@ -124,10 +123,10 @@ public final class ExpressionUtils {
     /**
      * Create a new Path expression
      *
-     * @param type
-     * @param metadata
-     * @param <T>
-     * @return
+     * @param type type of expression
+     * @param metadata path metadata
+     * @param <T> type of expression
+     * @return path expression
      */
     public static <T> Path<T> path(Class<? extends T> type, PathMetadata metadata) {
         return new PathImpl<T>(type, metadata);
@@ -136,9 +135,9 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
-     * @param template
-     * @param args
-     * @return
+     * @param template template
+     * @param args template parameters
+     * @return template expression
      */
     public static PredicateTemplate predicateTemplate(String template, Object... args) {
         return predicateTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
@@ -147,9 +146,9 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
-     * @param template
-     * @param args
-     * @return
+     * @param template template
+     * @param args template parameters
+     * @return template expression
      */
     public static PredicateTemplate predicateTemplate(String template, ImmutableList<?> args) {
         return predicateTemplate(TemplateFactory.DEFAULT.create(template), args);
@@ -158,9 +157,9 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
-     * @param template
-     * @param args
-     * @return
+     * @param template template
+     * @param args template parameters
+     * @return template expression
      */
     public static PredicateTemplate predicateTemplate(Template template, Object... args) {
         return predicateTemplate(template, ImmutableList.copyOf(args));
@@ -169,9 +168,9 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
-     * @param template
-     * @param args
-     * @return
+     * @param template template
+     * @param args template parameters
+     * @return template expression
      */
     public static PredicateTemplate predicateTemplate(Template template, ImmutableList<?> args) {
         return new PredicateTemplate(template, args);
@@ -181,10 +180,10 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
-     * @param cl
-     * @param template
-     * @param args
-     * @return
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
      */
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, Object... args) {
         return template(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
@@ -193,10 +192,10 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
-     * @param cl
-     * @param template
-     * @param args
-     * @return
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
      */
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, ImmutableList<?> args) {
         return template(cl, TemplateFactory.DEFAULT.create(template), args);
@@ -205,10 +204,10 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
-     * @param cl
-     * @param template
-     * @param args
-     * @return
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
      */
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, Object... args) {
         return template(cl, template, ImmutableList.copyOf(args));
@@ -217,10 +216,10 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
-     * @param cl
-     * @param template
-     * @param args
-     * @return
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
      */
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, ImmutableList<?> args) {
         if (cl.equals(Boolean.class)) {
@@ -231,8 +230,10 @@ public final class ExpressionUtils {
     }
 
     /**
-     * @param col
-     * @return
+     * Create a {@code all col} expression
+     *
+     * @param col collection expression
+     * @return all col
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> all(CollectionExpression<?, ? super T> col) {
@@ -241,8 +242,10 @@ public final class ExpressionUtils {
     }
 
     /**
-     * @param col
-     * @return
+     * Create a {@code any col} expression
+     *
+     * @param col collection expression
+     * @return any col
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> any(CollectionExpression<?, ? super T> col) {
@@ -251,8 +254,10 @@ public final class ExpressionUtils {
     }
 
     /**
-     * @param col
-     * @return
+     * Create a {@code all col} expression
+     *
+     * @param col subquery expression
+     * @return all col
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> all(SubQueryExpression<? extends T> col) {
@@ -260,8 +265,10 @@ public final class ExpressionUtils {
     }
 
     /**
-     * @param col
-     * @return
+     * Create a {@code any col} expression
+     *
+     * @param col subquery expression
+     * @return any col
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> any(SubQueryExpression<? extends T> col) {
@@ -271,8 +278,8 @@ public final class ExpressionUtils {
     /**
      * Create the intersection of the given arguments
      *
-     * @param exprs
-     * @return
+     * @param exprs predicates
+     * @return intersection
      */
     @Nullable
     public static Predicate allOf(Collection<Predicate> exprs) {
@@ -288,8 +295,8 @@ public final class ExpressionUtils {
     /**
      * Create the intersection of the given arguments
      *
-     * @param exprs
-     * @return
+     * @param exprs predicates
+     * @return intersection
      */
     @Nullable
     public static Predicate allOf(Predicate... exprs) {
@@ -305,9 +312,9 @@ public final class ExpressionUtils {
     /**
      * Create the intersection of the given arguments
      *
-     * @param left
-     * @param right
-     * @return
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left and right
      */
     public static Predicate and(Predicate left, Predicate right) {
         left = (Predicate) extract(left);
@@ -325,8 +332,8 @@ public final class ExpressionUtils {
     /**
      * Create the union of the given arguments
      *
-     * @param exprs
-     * @return
+     * @param exprs predicate
+     * @return union
      */
     @Nullable
     public static Predicate anyOf(Collection<Predicate> exprs) {
@@ -342,8 +349,8 @@ public final class ExpressionUtils {
     /**
      * Create the union of the given arguments
      *
-     * @param exprs
-     * @return
+     * @param exprs predicates
+     * @return union
      */
     @Nullable
     public static Predicate anyOf(Predicate... exprs) {
@@ -357,80 +364,82 @@ public final class ExpressionUtils {
     }
 
     /**
-     * Create an alias expression (source as alias) with the given source and alias
+     * Create an alias expression with the given source and alias
      *
-     * @param <D>
-     * @param source
-     * @param alias
-     * @return
+     * @param <D> type of expression
+     * @param source source
+     * @param alias alias
+     * @return source as alias
      */
     public static <D> Expression<D> as(Expression<D> source, Path<D> alias) {
         return operation(alias.getType(), Ops.ALIAS, source, alias);
     }
 
     /**
-     * Create an alias expression (source as alias) with the given source and alias
+     * Create an alias expression with the given source and alias
      *
-     * @param <D>
-     * @param source
-     * @param alias
-     * @return
+     * @param <D> type of expression
+     * @param source source
+     * @param alias alias
+     * @return source as alias
      */
     public static <D> Expression<D> as(Expression<D> source, String alias) {
         return as(source, path(source.getType(), alias));
     }
 
     /**
-     * @param source
-     * @return
+     * Create a {@code count(source)} expression
+     *
+     * @param source source
+     * @return count(source)
      */
     public static Expression<Long> count(Expression<?> source) {
         return operation(Long.class, Ops.AggOps.COUNT_AGG, source);
     }
 
     /**
-     * Create an left equals constant expression
+     * Create a {@code left == constant} expression
      *
-     * @param <D>
-     * @param left
-     * @param constant
-     * @return
+     * @param <D> type of expressions
+     * @param left lhs of expression
+     * @param constant rhs of expression
+     * @return left == constant
      */
     public static <D> Predicate eqConst(Expression<D> left, D constant) {
         return eq(left, ConstantImpl.create(constant));
     }
 
     /**
-     * Create an left equals right expression
+     * Create a {@code left == right} expression
      *
-     * @param <D>
-     * @param left
-     * @param right
-     * @return
+     * @param <D> type of expressions
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left == right
      */
     public static <D> Predicate eq(Expression<D> left, Expression<? extends D> right) {
         return predicate(Ops.EQ, left, right);
     }
 
     /**
-     * Create an left in right expression
+     * Create a {@code left in right} expression
      *
-     * @param <D>
-     * @param left
-     * @param right
-     * @return
+     * @param <D> type of expressions
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left in right
      */
     public static <D> Predicate in(Expression<D> left, CollectionExpression<?,? extends D> right) {
         return predicate(Ops.IN, left, right);
     }
 
     /**
-     * Create an left in right expression
+     * Create a {@code left in right} expression
      *
-     * @param <D>
-     * @param left
-     * @param right
-     * @return
+     * @param <D> element type
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left in right
      */
     public static <D> Predicate in(Expression<D> left, Collection<? extends D> right) {
         if (right.size() == 1) {
@@ -443,7 +452,7 @@ public final class ExpressionUtils {
     /**
      * Create a {@code left in right or...} expression for each list
      *
-     * @param <D>
+     * @param <D> element type
      * @param left
      * @param lists
      * @return a {@code left in right or...} expression
@@ -457,20 +466,20 @@ public final class ExpressionUtils {
     }
 
     /**
-     * Create a left is null expression
+     * Create a {@code left is null} expression
      *
-     * @param left
-     * @return
+     * @param left operation argument
+     * @return left is null
      */
     public static Predicate isNull(Expression<?> left) {
         return predicate(Ops.IS_NULL, left);
     }
 
     /**
-     * Create a left is not null expression
+     * Create a {@code left is not null} expression
      *
-     * @param left
-     * @return
+     * @param left operation argument
+     * @return left is null
      */
     public static Predicate isNotNull(Expression<?> left) {
         return predicate(Ops.IS_NOT_NULL, left);
@@ -479,14 +488,20 @@ public final class ExpressionUtils {
     /**
      * Convert the given like pattern to a regex pattern
      *
-     * @param expr
-     * @return
+     * @param expr expression to convert
+     * @return converted expression
      */
     public static Expression<String> likeToRegex(Expression<String> expr) {
         return likeToRegex(expr, true);
     }
 
-
+    /**
+     * Convert the given like pattern to a regex pattern
+     *
+     * @param expr expression to be converted
+     * @param matchStartAndEnd if start and end should be matched as well
+     * @return converted expression
+     */
     @SuppressWarnings("unchecked")
     public static Expression<String> likeToRegex(Expression<String> expr, boolean matchStartAndEnd) {
         // TODO : this should take the escape character into account
@@ -529,8 +544,10 @@ public final class ExpressionUtils {
     }
 
     /**
-     * @param exprs
-     * @return
+     * Creat a list expression for the given arguments
+     *
+     * @param exprs list elements
+     * @return list expression
      */
     public static <T> Expression<T> list(Class<T> clazz, Expression<?>... exprs) {
         return list(clazz, ImmutableList.copyOf(exprs));
@@ -538,8 +555,10 @@ public final class ExpressionUtils {
 
 
     /**
-     * @param exprs
-     * @return
+     * Create a list expression for the given arguments
+     *
+     * @param exprs list elements
+     * @return list expression
      */
     public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {
         Expression<T> rv = (Expression<T>)exprs.get(0);
@@ -554,6 +573,12 @@ public final class ExpressionUtils {
         return rv;
     }
 
+    /**
+     * Convert the given expression from regex form to like
+     *
+     * @param expr expression to convert
+     * @return converted expression
+     */
     @SuppressWarnings("unchecked")
     public static Expression<String> regexToLike(Expression<String> expr) {
         if (expr instanceof Constant<?>) {
@@ -598,48 +623,48 @@ public final class ExpressionUtils {
     }
 
     /**
-     * Create a left not equals constant expression
+     * Create a {@code left != constant} expression
      *
-     * @param <D>
-     * @param left
-     * @param constant
-     * @return
+     * @param <D> type of expression
+     * @param left lhs of expression
+     * @param constant rhs of expression
+     * @return left != constant
      */
     public static <D> Predicate neConst(Expression<D> left, D constant) {
         return ne(left, ConstantImpl.create(constant));
     }
 
     /**
-     * Create a left not equals right expression
+     * Create a {@code left != right} expression
      *
-     * @param <D>
-     * @param left
-     * @param right
-     * @return
+     * @param <D> type of expressions
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left != right
      */
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {
         return predicate(Ops.NE, left, right);
     }
 
     /**
-     * Create an left not in right expression
+     * Create a {@code left not in right} expression
      *
-     * @param <D>
-     * @param left
-     * @param right
-     * @return
+     * @param <D> type of epressions
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left not in right
      */
     public static <D> Predicate notIn(Expression<D> left, CollectionExpression<?,? extends D> right) {
         return predicate(Ops.NOT_IN, left, right);
     }
 
     /**
-     * Create an left not in right expression
+     * Create a {@code left not in right} expression
      *
-     * @param <D>
-     * @param left
-     * @param right
-     * @return
+     * @param <D> tyoe of expressions
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left not in right
      */
     public static <D> Predicate notIn(Expression<D> left, Collection<? extends D> right) {
         if (right.size() == 1) {
@@ -666,11 +691,11 @@ public final class ExpressionUtils {
     }
 
     /**
-     * Create a left or right expression
+     * Create a {@code left or right} expression
      *
-     * @param left
-     * @param right
-     * @return
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left or right
      */
     public static Predicate or(Predicate left, Predicate right) {
         left = (Predicate) extract(left);
@@ -685,10 +710,10 @@ public final class ExpressionUtils {
     }
 
     /**
-     * Get a distinct list of the given args
+     * Create a distinct list of the given args
      *
-     * @param args
-     * @return
+     * @param args elements
+     * @return list with distinct elements
      */
     public static ImmutableList<Expression<?>> distinctList(Expression<?>... args) {
         final ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
@@ -702,10 +727,10 @@ public final class ExpressionUtils {
     }
 
     /**
-     * Get a distinct list of the concatenated array contents
+     * Create a distinct list of the concatenated array contents
      *
-     * @param args
-     * @return
+     * @param args elements
+     * @return list with distinct elements
      */
     public static ImmutableList<Expression<?>> distinctList(Expression<?>[]... args) {
         final ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
@@ -723,8 +748,8 @@ public final class ExpressionUtils {
     /**
      * Get the potentially wrapped expression
      *
-     * @param expr
-     * @return
+     * @param expr expression to analyze
+     * @return inner expression
      */
     public static <T> Expression<T> extract(Expression<T> expr) {
         if (expr != null) {
@@ -742,9 +767,9 @@ public final class ExpressionUtils {
     /**
      * Create a new root variable based on the given path and suffix
      *
-     * @param path
-     * @param suffix
-     * @return
+     * @param path base path
+     * @param suffix suffix for variable name
+     * @return path expression
      */
     public static String createRootVariable(Path<?> path, int suffix) {
         String variable = path.accept(ToStringVisitor.DEFAULT, TEMPLATES);
@@ -754,8 +779,8 @@ public final class ExpressionUtils {
     /**
      * Create a new root variable based on the given path
      *
-     * @param path
-     * @return
+     * @param path base path
+     * @return variable name
      */
     public static String createRootVariable(Path<?> path) {
         return path.accept(ToStringVisitor.DEFAULT, TEMPLATES);
@@ -764,8 +789,10 @@ public final class ExpressionUtils {
     /**
      * Converts the given object to an Expression
      *
-     * @param o
-     * @return
+     * <p>Casts expressions and wraps everything else into co</p>
+     *
+     * @param o object to convert
+     * @return converted argument
      */
     public static Expression<?> toExpression(Object o) {
         if (o instanceof Expression) {
@@ -778,8 +805,8 @@ public final class ExpressionUtils {
     /**
      * Create an expression out of the given order specifiers
      *
-     * @param args
-     * @return
+     * @param args order
+     * @return expression for order
      */
     public static Expression<?> orderBy(List<OrderSpecifier<?>> args) {
         return operation(Object.class, Ops.ORDER, ConstantImpl.create(args));

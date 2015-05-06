@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import java.io.Serializable;
 
 /**
- * Operator represents operator symbols.
+ * {@code Operator} represents operator symbols.
  * <p>Implementations should be enums for automatic instance management.</p>
  *
  * @author tiwe
@@ -26,14 +26,14 @@ public interface Operator extends Serializable{
     /**
      * Get the unique id for this Operator
      *
-     * @return
+     * @return name
      */
     String name();
 
     /**
      * Get the result type of the operator
      *
-     * @return
+     * @return type
      */
     Class<?> getType();
     

@@ -61,9 +61,9 @@ public class ConstructorUtils {
      * {@link #getConstructorParameters(java.lang.Class, java.lang.Class[])}
      * to get the parameters.
      *
-     * @param type
-     * @param givenTypes
-     * @return
+     * @param type type
+     * @param givenTypes parameter types
+     * @return matching constructor
      * @throws NoSuchMethodException
      */
     public static <C> Constructor<C> getConstructor(Class<C> type, Class<?>[] givenTypes) throws NoSuchMethodException {
@@ -73,9 +73,9 @@ public class ConstructorUtils {
     /**
      * Returns the parameters for the constructor that matches the given types.
      *
-     * @param type
-     * @param givenTypes
-     * @return
+     * @param type type
+     * @param givenTypes parameter types
+     * @return constructor parameters
      */
     public static Class<?>[] getConstructorParameters(Class<?> type, Class<?>[] givenTypes) {
         next_constructor:
@@ -119,8 +119,8 @@ public class ConstructorUtils {
     /**
      * Returns a fetch of transformers applicable to the given constructor.
      *
-     * @param constructor
-     * @return
+     * @param constructor constructor
+     * @return transformers
      */
     public static Iterable<Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
         Iterable<ArgumentTransformer> transformers = Lists.newArrayList(

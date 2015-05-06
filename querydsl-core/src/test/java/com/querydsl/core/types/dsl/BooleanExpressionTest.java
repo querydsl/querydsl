@@ -25,26 +25,26 @@ public class BooleanExpressionTest {
 
     @Test
     public void AnyOf() {
-        assertEquals(a.or(b).or(c), BooleanExpression.anyOf(a, b, c));
+        assertEquals(a.or(b).or(c), Expressions.anyOf(a, b, c));
     }
 
     @Test
     public void AllOf() {
-        assertEquals(a.and(b).and(c), BooleanExpression.allOf(a, b, c));
+        assertEquals(a.and(b).and(c), Expressions.allOf(a, b, c));
     }
     
     @Test
     public void AllOf_With_Nulls() {
-        assertEquals("a && b", BooleanExpression.allOf(a, b, null).toString());        
-        assertEquals("a", BooleanExpression.allOf(a, null).toString());
-        assertEquals("a", BooleanExpression.allOf(null, a).toString());
+        assertEquals("a && b", Expressions.allOf(a, b, null).toString());
+        assertEquals("a", Expressions.allOf(a, null).toString());
+        assertEquals("a", Expressions.allOf(null, a).toString());
     }
     
     @Test
     public void AnyOf_With_Nulls() {
-        assertEquals("a || b", BooleanExpression.anyOf(a, b, null).toString());       
-        assertEquals("a", BooleanExpression.anyOf(a, null).toString());
-        assertEquals("a", BooleanExpression.anyOf(null, a).toString());
+        assertEquals("a || b", Expressions.anyOf(a, b, null).toString());
+        assertEquals("a", Expressions.anyOf(a, null).toString());
+        assertEquals("a", Expressions.anyOf(null, a).toString());
     }
 
     @Test

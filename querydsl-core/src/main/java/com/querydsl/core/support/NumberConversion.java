@@ -22,7 +22,7 @@ import com.querydsl.core.types.Visitor;
 import com.querydsl.core.util.MathUtils;
 
 /**
- * NumberConversion ensures that the results of a numeric projection confirm to the type of the
+ * {@code NumberConversion} ensures that the results of a numeric projection confirm to the type of the
  * projection expression
  *
  * @author tiwe

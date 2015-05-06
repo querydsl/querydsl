@@ -26,7 +26,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 
 /**
- * PathInits defines path initializations that can be attached to
+ * {@code PathInits} defines path initializations that can be attached to
  * properties via QueryInit annotations
  *
  * @author tiwe

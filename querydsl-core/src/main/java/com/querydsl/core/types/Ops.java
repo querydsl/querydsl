@@ -18,7 +18,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 /**
- * Ops provides the operators for the fluent query grammar.
+ * {@code Ops} provides the operators for the fluent query grammar.
  *
  * @author tiwe
  */

@@ -38,11 +38,7 @@ import org.junit.Test;
 
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CollectionPath;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * Tests for LuceneSerializer
@@ -155,9 +151,9 @@ public class LuceneSerializerTest {
         Query query1 = serializer.toQuery(author.like("Michael"), metadata);
         Query query2 = serializer.toQuery(text.like("Text"), metadata);
 
-        BooleanExpression query = BooleanExpression.anyOf(
-            new QueryElement(query1),
-            new QueryElement(query2)
+        BooleanExpression query = Expressions.anyOf(
+                new QueryElement(query1),
+                new QueryElement(query2)
         );
         testQuery(query, "author:michael text:text", 1);
     }

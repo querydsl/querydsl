@@ -32,7 +32,7 @@ public class QueryFlag implements Serializable{
     public enum Position {
 
         /**
-         *
+         * WITH part (used in SQL)
          */
         WITH,
 

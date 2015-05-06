@@ -22,12 +22,12 @@ import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.*;
 
 /**
- * ArrayPath represents an array typed path
+ * {@code ArrayPath} represents an array typed path
  *
  * @author tiwe
  * 
  * @param <A> array type
- * @param <E> component type
+ * @param <E> array element type
  */
 public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, ArrayExpression<A, E> {
 
@@ -60,23 +60,13 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
         return v.visit(pathMixin, context);
     }
     
-    /**
-     * Create a expression for indexed access
-     *
-     * @param index
-     * @return
-     */
+    @Override
     public SimplePath<E> get(Expression<Integer> index) {
         PathMetadata md = PathMetadataFactory.forArrayAccess(pathMixin, index);
         return Expressions.path(componentType, md);
     }
 
-    /**
-     * Create a expression for indexed access
-     *
-     * @param index
-     * @return
-     */
+    @Override
     public SimplePath<E> get(@Nonnegative int index) {
         PathMetadata md = PathMetadataFactory.forArrayAccess(pathMixin, index);
         return Expressions.path(componentType, md);
@@ -101,11 +91,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
         return pathMixin.getAnnotatedElement();
     }
 
-    /**
-     * Create an expression for the array size
-     *
-     * @return
-     */
+    @Override
     public NumberExpression<Integer> size() {
         if (size == null) {
             size = Expressions.numberOperation(Integer.class, Ops.ARRAY_SIZE, pathMixin);

@@ -44,8 +44,8 @@ public abstract class GroupByProjection<K,V> extends GroupByMap<K,V> {
     /**
      * Creates a result object from the given group
      *
-     * @param group
-     * @return
+     * @param group group instance to transform
+     * @return transformed group
      */
     protected abstract V transform(Group group);
 }

@@ -20,7 +20,7 @@ import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
 
 /**
- * Copies ParameterExpression bindings from subexpressions to QueryMetadata in the context
+ * Copies {@code ParameterExpression} bindings from subexpressions to {@link QueryMetadata} in the context
  * 
  * @author tiwe
  *
