@@ -44,7 +44,7 @@ public abstract class GeometryCollectionExpression<T extends GeometryCollection>
     /**
      * Returns the number of geometries in this GeometryCollection.
      *
-     * @return
+     * @return number of geometries
      */
     public NumberExpression<Integer> numGeometries() {
         if (numGeometries == null) {
@@ -56,8 +56,8 @@ public abstract class GeometryCollectionExpression<T extends GeometryCollection>
     /**
      * Returns the Nth geometry in this GeometryCollection.
      *
-     * @param n
-     * @return
+     * @param n one based index
+     * @return matching geometry
      */
     public GeometryExpression<Geometry> geometryN(Integer n) {
         return GeometryExpressions.geometryOperation(SpatialOps.GEOMETRYN, mixin, ConstantImpl.create(n));

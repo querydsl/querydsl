@@ -20,6 +20,9 @@ import org.geolatte.geom.MultiLineString;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code MultiLineStringPath} extends {@link MultiLineStringExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>
@@ -51,13 +54,13 @@ public class MultiLineStringPath<T extends MultiLineString> extends MultiLineStr
         this((Class<? extends T>) MultiLineString.class, PathMetadataFactory.forVariable(var));
     }
 
+    public MultiLineStringPath(Class<? extends T> type, String var) {
+        this(type, PathMetadataFactory.forVariable(var));
+    }
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(pathMixin, context);
-    }
-
-    public MultiLineStringPath(Class<? extends T> type, String var) {
-        this(type, PathMetadataFactory.forVariable(var));
     }
 
     @Override

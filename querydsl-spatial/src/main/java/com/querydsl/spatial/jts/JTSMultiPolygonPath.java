@@ -19,6 +19,9 @@ import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 /**
+ * {@code JTSMultiPolygonPath} extends {@link JTSMultiPolygonExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

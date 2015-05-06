@@ -52,7 +52,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
     /**
      * The length of this Curve in its associated spatial reference.
      *
-     * @return
+     * @return length
      */
     public NumberExpression<Double> length() {
         if (length == null) {
@@ -64,7 +64,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
     /**
      * The start Point of this Curve.
      *
-     * @return
+     * @return start point
      */
     public JTSPointExpression<Point> startPoint() {
         if (startPoint == null) {
@@ -76,7 +76,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
     /**
      * The end Point of this Curve.
      *
-     * @return
+     * @return end point
      */
     public JTSPointExpression<Point> endPoint() {
         if (endPoint == null) {
@@ -88,7 +88,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
     /**
      * Returns 1 (TRUE) if this Curve is closed [StartPoint ( ) = EndPoint ( )].
      *
-     * @return
+     * @return closed
      */
     public BooleanExpression isClosed() {
         if (closed == null) {
@@ -101,7 +101,7 @@ public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometry
      * Returns 1 (TRUE) if this Curve is closed [StartPoint ( ) = EndPoint ( )] and this Curve is
      * simple (does not pass through the same Point more than once).
      *
-     * @return
+     * @return ring
      */
     public BooleanExpression isRing() {
         if (ring == null) {

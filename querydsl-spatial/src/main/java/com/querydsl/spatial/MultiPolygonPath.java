@@ -20,6 +20,9 @@ import org.geolatte.geom.MultiPolygon;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code MultiPolygonPath} extends {@link MultiPolygonExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

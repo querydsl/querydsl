@@ -21,6 +21,9 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.google.common.collect.ImmutableList;
 
 /**
+ * {@code JTSGeometryOperation} extends {@link JTSGeometryExpression} to implement the
+ * {@link Operation} interface
+ *
  * @author tiwe
  *
  * @param <T>

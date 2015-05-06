@@ -20,6 +20,9 @@ import org.geolatte.geom.LinearRing;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code LinearRingPath} extends {@link LinearRingExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

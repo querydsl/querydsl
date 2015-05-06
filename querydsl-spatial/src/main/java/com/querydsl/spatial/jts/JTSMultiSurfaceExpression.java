@@ -50,7 +50,7 @@ public abstract class JTSMultiSurfaceExpression<T extends GeometryCollection> ex
     /**
      * The area of this MultiSurface, as measured in the spatial reference system of this MultiSurface.
      *
-     * @return
+     * @return area
      */
     public NumberExpression<Double> area() {
         if (area == null) {
@@ -63,7 +63,7 @@ public abstract class JTSMultiSurfaceExpression<T extends GeometryCollection> ex
      * The mathematical centroid for this MultiSurface. The result is not guaranteed to be on
      * this MultiSurface.
      *
-     * @return
+     * @return centroid
      */
     public JTSPointExpression<Point> centroid() {
         if (centroid == null) {
@@ -75,7 +75,7 @@ public abstract class JTSMultiSurfaceExpression<T extends GeometryCollection> ex
     /**
      * A Point guaranteed to be on this MultiSurface.
      *
-     * @return
+     * @return point on surface
      */
     public JTSPointExpression<Point> pointOnSurface() {
         if (pointOnSurface == null) {

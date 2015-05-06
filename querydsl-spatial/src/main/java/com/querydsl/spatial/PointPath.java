@@ -20,6 +20,9 @@ import org.geolatte.geom.Point;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code PointPath} extends {@link PointExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

@@ -19,6 +19,9 @@ import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.GeometryCollection;
 
 /**
+ * {@code JTSGeometryCollectionPath} extends {@link JTSGeometryCollectionExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

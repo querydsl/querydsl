@@ -21,6 +21,9 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code PointOperation} extends {@link PointExpression} to implement the
+ * {@link Operation} interface
+ *
  * @author tiwe
  *
  * @param <T>

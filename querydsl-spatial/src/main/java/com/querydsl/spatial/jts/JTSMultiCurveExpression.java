@@ -47,7 +47,7 @@ public abstract class JTSMultiCurveExpression<T extends GeometryCollection> exte
      * Returns 1 (TRUE) if this MultiCurve is closed [StartPoint ( ) = EndPoint ( ) for each
      * Curve in this MultiCurve].
      *
-     * @return
+     * @return closed
      */
     public BooleanExpression isClosed() {
         if (closed == null) {
@@ -60,7 +60,7 @@ public abstract class JTSMultiCurveExpression<T extends GeometryCollection> exte
      * The Length of this MultiCurve which is equal to the sum of the lengths of the element
      * Curves.
      *
-     * @return
+     * @return length
      */
     public NumberExpression<Double> length() {
         if (length == null) {

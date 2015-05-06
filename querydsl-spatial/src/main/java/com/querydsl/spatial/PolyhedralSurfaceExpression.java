@@ -50,7 +50,7 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
     /**
      * Returns the number of including polygons
      *
-     * @return
+     * @return number of polygons
      */
     public NumberExpression<Integer> numPatches() {
         if (numPatches == null) {
@@ -62,8 +62,8 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
     /**
      * Returns a polygon in this surface, the order is arbitrary.
      *
-     * @param n
-     * @return
+     * @param n one based index
+     * @return polygon at index
      */
     public PolygonExpression<?> patchN(int n) {
         return GeometryExpressions.polygonOperation(SpatialOps.SURFACE, mixin, ConstantImpl.create(n));
@@ -73,7 +73,7 @@ public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> e
      * Returns 1 (True) if the polygon closes on itself, and thus has no boundary and
      * encloses a solid
      *
-     * @return
+     * @return closed
      */
     public BooleanExpression isClosed() {
         if (closed == null) {

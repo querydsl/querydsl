@@ -20,6 +20,9 @@ import org.geolatte.geom.PolyHedralSurface;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code PolyhedralSurfacePath} extends {@link PolyhedralSurfaceExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

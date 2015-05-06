@@ -18,8 +18,8 @@ public final class GeometryExpressions {
     /**
      * Return a specified ST_Geometry value from Extended Well-Known Text representation (EWKT).
      *
-     * @param expr
-     * @return
+     * @param expr geometry
+     * @return serialized form
      */
     public static StringExpression asEWKT(GeometryExpression<?> expr) {
         return Expressions.stringOperation(SpatialOps.AS_EWKT, expr);
@@ -28,8 +28,8 @@ public final class GeometryExpressions {
     /**
      * Return a specified ST_Geometry value from Well-Known Text representation (WKT).
      *
-     * @param text
-     * @return
+     * @param text WKT form
+     * @return geometry
      */
     public static GeometryExpression<?> fromText(String text) {
         return geometryOperation(SpatialOps.GEOM_FROM_TEXT, ConstantImpl.create(text));
@@ -38,8 +38,8 @@ public final class GeometryExpressions {
     /**
      * Return a specified ST_Geometry value from Well-Known Text representation (WKT).
      *
-     * @param text
-     * @return
+     * @param text WKT form
+     * @return geometry
      */
     public static GeometryExpression<?> fromText(Expression<String> text) {
         return geometryOperation(SpatialOps.GEOM_FROM_TEXT, text);
@@ -48,10 +48,10 @@ public final class GeometryExpressions {
     /**
      * Sets the SRID on a geometry to a particular integer value.
      *
-     * @param expr
-     * @param srid
+     * @param expr geometry
+     * @param srid SRID
      * @param <T>
-     * @return
+     * @return converted geometry
      */
     public static <T extends Geometry> GeometryExpression<T> setSRID(Expression<T> expr, int srid) {
         return geometryOperation(expr.getType(), SpatialOps.SET_SRID, expr, ConstantImpl.create(srid));
@@ -60,8 +60,8 @@ public final class GeometryExpressions {
     /**
      * Returns X minima of a bounding box 2d or 3d or a geometry.
      *
-     * @param expr
-     * @return
+     * @param expr geometry
+     * @return x minima
      */
     public static NumberExpression<Double> xmin(GeometryExpression<?> expr) {
         return Expressions.numberOperation(Double.class, SpatialOps.XMIN, expr);
@@ -70,8 +70,8 @@ public final class GeometryExpressions {
     /**
      * Returns X maxima of a bounding box 2d or 3d or a geometry.
      *
-     * @param expr
-     * @return
+     * @param expr geometry
+     * @return x maxima
      */
     public static NumberExpression<Double> xmax(GeometryExpression<?> expr) {
         return Expressions.numberOperation(Double.class, SpatialOps.XMAX, expr);
@@ -80,8 +80,8 @@ public final class GeometryExpressions {
     /**
      * Returns Y minima of a bounding box 2d or 3d or a geometry.
      *
-     * @param expr
-     * @return
+     * @param expr geometry
+     * @return y minima
      */
     public static NumberExpression<Double> ymin(GeometryExpression<?> expr) {
         return Expressions.numberOperation(Double.class, SpatialOps.YMIN, expr);
@@ -90,8 +90,8 @@ public final class GeometryExpressions {
     /**
      * Returns Y maxima of a bounding box 2d or 3d or a geometry.
      *
-     * @param expr
-     * @return
+     * @param expr geometry
+     * @return y maxima
      */
     public static NumberExpression<Double> ymax(GeometryExpression<?> expr) {
         return Expressions.numberOperation(Double.class, SpatialOps.YMAX, expr);
@@ -101,10 +101,10 @@ public final class GeometryExpressions {
      * Returns true if the geometries are within the specified distance of one another.
      * For geometry units are in those of spatial reference and For geography units are in meters.
      *
-     * @param expr1
-     * @param expr2
-     * @param distance
-     * @return
+     * @param expr1 geometry
+     * @param expr2 other geometry
+     * @param distance distance
+     * @return true, if within distance of each other
      */
     public static BooleanExpression dwithin(Expression<? extends Geometry> expr1,
                                             Expression<? extends Geometry> expr2, Expression<Double> distance) {
@@ -115,10 +115,10 @@ public final class GeometryExpressions {
      * Returns true if the geometries are within the specified distance of one another.
      * For geometry units are in those of spatial reference and For geography units are in meters.
      *
-     * @param expr1
-     * @param expr2
-     * @param distance
-     * @return
+     * @param expr1 geometry
+     * @param expr2 other geometry
+     * @param distance distance
+     * @return true, if within distance of each other
      */
     public static BooleanExpression dwithin(Expression<? extends Geometry> expr1,
                                             Expression<? extends Geometry> expr2, double distance) {
@@ -128,8 +128,8 @@ public final class GeometryExpressions {
     /**
      *  Returns the bounding box that bounds rows of geometries.
      *
-     * @param collection
-     * @return
+     * @param collection geometry collection
+     * @return bounding box
      */
     public static GeometryExpression<?> extent(Expression<? extends GeometryCollection> collection) {
         return geometryOperation(SpatialOps.EXTENT, collection);
@@ -138,8 +138,8 @@ public final class GeometryExpressions {
     /**
      * Return a specified ST_Geometry value from a collection of other geometries.
      *
-     * @param collection
-     * @return
+     * @param collection geometry collection
+     * @return geometry collection
      */
     public static GeometryExpression<?> collect(Expression<? extends GeometryCollection> collection) {
         return geometryOperation(SpatialOps.COLLECT, collection);
@@ -148,9 +148,9 @@ public final class GeometryExpressions {
     /**
      * Return a specified ST_Geometry value from a collection of other geometries.
      *
-     * @param expr1
-     * @param expr2
-     * @return
+     * @param expr1 geometry
+     * @param expr2 other geometry
+     * @return  geometry collection
      */
     public static GeometryExpression<?> collect(Expression<? extends Geometry> expr1, Expression<? extends Geometry> expr2) {
         return geometryOperation(SpatialOps.COLLECT2, expr1, expr2);
@@ -159,11 +159,11 @@ public final class GeometryExpressions {
     /**
      * Translates the geometry to a new location using the numeric parameters as offsets.
      *
-     * @param expr
-     * @param deltax
-     * @param deltay
+     * @param expr geometry
+     * @param deltax x offset
+     * @param deltay y offset
      * @param <T>
-     * @return
+     * @return geometry
      */
     public static <T extends Geometry> GeometryExpression<T> translate(Expression<T> expr, float deltax, float deltay) {
         return geometryOperation(expr.getType(), SpatialOps.TRANSLATE,
@@ -173,12 +173,12 @@ public final class GeometryExpressions {
     /**
      * Translates the geometry to a new location using the numeric parameters as offsets.
      *
-     * @param expr
-     * @param deltax
-     * @param deltay
-     * @param deltaz
+     * @param expr geometry
+     * @param deltax x offset
+     * @param deltay y offset
+     * @param deltaz z offset
      * @param <T>
-     * @return
+     * @return geometry
      */
     public static <T extends Geometry> GeometryExpression<T> translate(Expression<T> expr, float deltax, float deltay, float deltaz) {
         return geometryOperation(expr.getType(), SpatialOps.TRANSLATE2,
@@ -188,9 +188,9 @@ public final class GeometryExpressions {
     /**
      * Create a new Geometry operation expression
      *
-     * @param op
-     * @param args
-     * @return
+     * @param op operator
+     * @param args arguments
+     * @return operation expression
      */
     public static GeometryExpression<Geometry> geometryOperation(Operator op, Expression<?>... args) {
         return new GeometryOperation<Geometry>(Geometry.class, op, args);
@@ -199,9 +199,9 @@ public final class GeometryExpressions {
     /**
      * Create a new Geometry operation expression
      *
-     * @param op
-     * @param args
-     * @return
+     * @param op operator
+     * @param args arguments
+     * @return operation expression
      */
     public static <T extends Geometry> GeometryExpression<T> geometryOperation(Class<? extends T> type,
                                                                                Operator op, Expression<?>... args) {
@@ -211,9 +211,9 @@ public final class GeometryExpressions {
     /**
      * Create a new LineString operation expression
      *
-     * @param op
-     * @param args
-     * @return
+     * @param op operator
+     * @param args arguments
+     * @return operation expression
      */
     public static LineStringExpression<LineString> lineStringOperation(Operator op, Expression<?>... args) {
         return new LineStringOperation<LineString>(LineString.class, op, args);
@@ -222,9 +222,9 @@ public final class GeometryExpressions {
     /**
      * Create a new Point operation expression
      *
-     * @param op
-     * @param args
-     * @return
+     * @param op operator
+     * @param args arguments
+     * @return operation expression
      */
     public static PointExpression<Point> pointOperation(Operator op, Expression<?>... args) {
         return new PointOperation<Point>(Point.class, op, args);
@@ -233,9 +233,9 @@ public final class GeometryExpressions {
     /**
      * Create a new Polygon operation expression
      *
-     * @param op
-     * @param args
-     * @return
+     * @param op operator
+     * @param args arguments
+     * @return operation expression
      */
     public static PolygonExpression<Polygon> polygonOperation(Operator op, Expression<?>... args) {
         return new PolygonOperation<Polygon>(Polygon.class, op, args);

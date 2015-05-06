@@ -24,7 +24,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 
 /**
- * A GeometryCollection is a geometric object that is a collection of some number of geometric objects.
+ * A Geometry collection is a geometric object that is a collection of some number of geometric objects.
  *
  * @author tiwe
  *
@@ -44,7 +44,7 @@ public abstract class JTSGeometryCollectionExpression<T extends GeometryCollecti
     /**
      * Returns the number of geometries in this GeometryCollection.
      *
-     * @return
+     * @return numbers of geometries
      */
     public NumberExpression<Integer> numGeometries() {
         if (numGeometries == null) {
@@ -56,8 +56,8 @@ public abstract class JTSGeometryCollectionExpression<T extends GeometryCollecti
     /**
      * Returns the Nth geometry in this GeometryCollection.
      *
-     * @param n
-     * @return
+     * @param n one based index
+     * @return matching geometry
      */
     public JTSGeometryExpression<Geometry> geometryN(Integer n) {
         return JTSGeometryExpressions.geometryOperation(SpatialOps.GEOMETRYN, mixin, ConstantImpl.create(n));

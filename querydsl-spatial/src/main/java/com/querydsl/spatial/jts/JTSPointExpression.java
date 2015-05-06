@@ -44,7 +44,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
     /**
      * The x-coordinate value for this Point.
      *
-     * @return
+     * @return x-coordinate
      */
     public NumberExpression<Double> x() {
         if (x == null) {
@@ -56,7 +56,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
     /**
      * The y-coordinate value for this Point.
      *
-     * @return
+     * @return y-coordinate
      */
     public NumberExpression<Double> y() {
         if (y == null) {
@@ -68,7 +68,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
     /**
      * The z-coordinate value for this Point, if it has one. Returns NIL otherwise.
      *
-     * @return
+     * @return z-coordinate
      */
     public NumberExpression<Double> z() {
         if (z == null) {
@@ -80,7 +80,7 @@ public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExp
     /**
      * The m-coordinate value for this Point, if it has one. Returns NIL otherwise.
      *
-     * @return
+     * @return m-coordinate
      */
     public NumberExpression<Double> m() {
         if (m == null) {

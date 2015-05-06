@@ -20,6 +20,9 @@ import org.geolatte.geom.Polygon;
 import com.querydsl.core.types.*;
 
 /**
+ * {@code PolygonPath} extends {@link PolygonExpression} to implement the
+ * {@link Path} interface
+ *
  * @author tiwe
  *
  * @param <T>

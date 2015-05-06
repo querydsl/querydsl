@@ -25,6 +25,8 @@ import org.geolatte.geom.PolyHedralSurface;
 import org.geolatte.geom.Polygon;
 
 /**
+ * {@code GeometryPaths} provides factory methods for {@link GeometryExpression} creation
+ *
  * @author tiwe
  *
  */
