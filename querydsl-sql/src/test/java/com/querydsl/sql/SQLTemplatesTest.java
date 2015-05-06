@@ -19,7 +19,6 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -70,9 +69,15 @@ public class SQLTemplatesTest {
 
     @Test
     public void Quote() {
-        Pattern pattern = Pattern.compile("[a-zA-Z0-9_\\-]+");
-        assertTrue(pattern.matcher("a1").matches());
-        assertTrue(pattern.matcher("a").matches());
+        SQLTemplates templates = SQLTemplates.DEFAULT;
+        // non quoted
+        assertEquals("employee", templates.quoteIdentifier("employee"));
+        assertEquals("Employee", templates.quoteIdentifier("Employee"));
+        assertEquals("employee1", templates.quoteIdentifier("employee1"));
+        assertEquals("employee_", templates.quoteIdentifier("employee_"));
+        // quoted
+        assertEquals("\"e e\"", templates.quoteIdentifier("e e"));
+        assertEquals("\"1phoenix2\"", templates.quoteIdentifier("1phoenix2"));
     }
 
     @Test
