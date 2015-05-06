@@ -434,8 +434,8 @@ public class LuceneSerializer {
     /**
      * template method, override to customize
      *
-     * @param path
-     * @return
+     * @param path path
+     * @return field name
      */
     protected String toField(Path<?> path) {
         PathMetadata md = path.getMetadata();
@@ -469,9 +469,9 @@ public class LuceneSerializer {
     /**
      * template method
      *
-     * @param leftHandSide
-     * @param rightHandSide
-     * @return
+     * @param leftHandSide left hand side
+     * @param rightHandSide right hand side
+     * @return results
      */
     protected String[] convert(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
         if (rightHandSide instanceof Operation) {
@@ -500,9 +500,9 @@ public class LuceneSerializer {
     /**
      * template method
      *
-     * @param leftHandSide
-     * @param rightHandSide
-     * @return
+     * @param leftHandSide left hand side
+     * @param rightHandSide right hand side
+     * @return results
      */
     protected String[] convert(Path<?> leftHandSide, Object rightHandSide) {
         String str = rightHandSide.toString();

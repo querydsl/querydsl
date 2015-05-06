@@ -19,17 +19,32 @@ import org.apache.lucene.search.IndexSearcher;
 import com.google.common.base.Function;
 
 /**
- * TypedQuery is a typed query implementation for Lucene queries.
+ * {@code TypedQuery} is a typed query implementation for Lucene queries.
+ *
+ * <p>Converts Lucene documents to typed results via a constructor supplied transformer</p>
  * 
  * @author laim
  * @author tiwe
  */
 public class TypedQuery<T> extends AbstractLuceneQuery<T, TypedQuery<T>> {
 
+    /**
+     * Create a new TypedQuery instance
+     *
+     * @param searcher index searcher
+     * @param transformer transformer to transform Lucene documents to result objects
+     */
     public TypedQuery(IndexSearcher searcher, Function<Document, T> transformer) {
         super(searcher, transformer);
     }
 
+    /**
+     * Create a new TypedQuery instance
+     *
+     * @param serializer serializer
+     * @param searcher index searcher
+     * @param transformer transformer to transform Lucene documents to result objects
+     */
     public TypedQuery(LuceneSerializer serializer, IndexSearcher searcher, Function<Document, T> transformer) {
         super(serializer, searcher, transformer);
     }

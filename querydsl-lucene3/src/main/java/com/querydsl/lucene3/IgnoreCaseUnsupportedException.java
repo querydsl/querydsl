@@ -14,6 +14,8 @@
 package com.querydsl.lucene3;
 
 /**
+ * Thrown for case ignore usage
+ *
  * @author tiwe
  *
  */

@@ -13,21 +13,23 @@
  */
 package com.querydsl.lucene3;
 
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.types.*;
+import javax.annotation.Nullable;
+
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.NumericUtils;
+
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.types.*;
 
 /**
  * Serializes Querydsl queries to Lucene queries.
@@ -431,8 +433,8 @@ public class LuceneSerializer {
     /**
      * template method, override to customize
      *
-     * @param path
-     * @return
+     * @param path path
+     * @return field name
      */
     protected String toField(Path<?> path) {
         PathMetadata md = path.getMetadata();
@@ -466,9 +468,9 @@ public class LuceneSerializer {
     /**
      * template method
      *
-     * @param leftHandSide
-     * @param rightHandSide
-     * @return
+     * @param leftHandSide left hand side
+     * @param rightHandSide right hand side
+     * @return results
      */
     protected String[] convert(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
         if (rightHandSide instanceof Operation) {
@@ -497,9 +499,9 @@ public class LuceneSerializer {
     /**
      * template method
      *
-     * @param leftHandSide
-     * @param rightHandSide
-     * @return
+     * @param leftHandSide left hand side
+     * @param rightHandSide right hand side
+     * @return results
      */
     protected String[] convert(Path<?> leftHandSide, Object rightHandSide) {
         String str = rightHandSide.toString();
@@ -510,7 +512,6 @@ public class LuceneSerializer {
             if (str.equals("")) {
                 return new String[] { str };
             } else {
-//                return StringUtils.split(str);
                 return Iterables.toArray(WS_SPLITTER.split(str), String.class);
             }
         } else {

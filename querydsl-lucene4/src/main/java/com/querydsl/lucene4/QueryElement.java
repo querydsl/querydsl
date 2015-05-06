@@ -19,7 +19,7 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.BooleanOperation;
 
 /**
- * QueryElement wraps a Lucene Query
+ * {@code QueryElement} wraps a Lucene Query
  *
  * @author tiwe
  *
