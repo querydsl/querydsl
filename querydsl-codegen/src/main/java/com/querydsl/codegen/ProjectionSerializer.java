@@ -13,10 +13,11 @@
  */
 package com.querydsl.codegen;
 
-import javax.annotation.Generated;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Set;
+
+import javax.annotation.Generated;
+import javax.inject.Inject;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
@@ -27,7 +28,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
- * ProjectionSerializer is a {@link Serializer} implementation for projection types
+ * {@code ProjectionSerializer} is a {@link Serializer} implementation for projection types
  *
  * @author tiwe
  *
@@ -37,9 +38,9 @@ public final class ProjectionSerializer implements Serializer{
     private final TypeMappings typeMappings;
 
     /**
-     * Create a new ProjectionSerializer instance
+     * Create a new {@code ProjectionSerializer} instance
      *
-     * @param typeMappings
+     * @param typeMappings type mappings to be used
      */
     @Inject
     public ProjectionSerializer(TypeMappings typeMappings) {

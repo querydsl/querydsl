@@ -16,7 +16,7 @@ package com.querydsl.codegen;
 import com.mysema.codegen.model.Type;
 
 /**
- * QueryTypeFactory defines an interface for mapping domain types to Querydsl expression types
+ * {@code QueryTypeFactory} defines an interface for mapping domain types to Querydsl expression types
  *
  * @author tiwe
  *
@@ -24,8 +24,10 @@ import com.mysema.codegen.model.Type;
 public interface QueryTypeFactory {
 
     /**
-     * @param type
-     * @return
+     * Create an expression type based on the given actual type
+     *
+     * @param type actual type
+     * @return expression type
      */
     Type create(Type type);
 

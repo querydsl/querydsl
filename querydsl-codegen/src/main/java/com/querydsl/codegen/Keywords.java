@@ -18,7 +18,8 @@ import java.util.Collection;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Keywords sets in capitalized form to be used in GenericExporter and the APT processors
+ * {@code Keywords} provides keywords sets in capitalized form to
+ * be used in {@link GenericExporter} and the APT processors
  * 
  * @author tiwe
  *

@@ -20,7 +20,7 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 
 /**
- * QueryTypeFactoryImpl is the default implementation of the {@link QueryTypeFactory} interface 
+ * {@code QueryTypeFactoryImpl} is the default implementation of the {@link QueryTypeFactory} interface
  * 
  * @author tiwe
  *

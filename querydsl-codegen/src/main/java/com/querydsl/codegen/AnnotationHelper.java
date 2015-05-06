@@ -13,11 +13,12 @@
  */
 package com.querydsl.codegen;
 
-import com.mysema.codegen.model.TypeCategory;
 import java.lang.annotation.Annotation;
 
+import com.mysema.codegen.model.TypeCategory;
+
 /**
- * AnnotationHelper defines a interface to provide custom annotation processing
+ * {@code AnnotationHelper} defines a interface to provide custom annotation processing
  * for {@link TypeFactory}.
  * 
  * @author dyorgio

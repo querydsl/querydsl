@@ -33,7 +33,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 
 /**
- * EntitySerializer is a {@link Serializer} implementation for entity types
+ * {@code EntitySerializer} is a {@link Serializer} implementation for entity types
  *
  * @author tiwe
  *
@@ -53,10 +53,10 @@ public class EntitySerializer implements Serializer {
     protected final Collection<String> keywords;
 
     /**
-     * Create a new EntitySerializer instance
+     * Create a new {@code EntitySerializer} instance
      *
-     * @param mappings
-     * @param keywords
+     * @param mappings type mappings to be used
+     * @param keywords keywords to be used
      */
     @Inject
     public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords) {

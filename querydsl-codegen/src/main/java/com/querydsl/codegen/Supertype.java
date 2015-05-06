@@ -18,8 +18,8 @@ import javax.annotation.Nullable;
 import com.mysema.codegen.model.Type;
 
 /**
- * Supertype defines a tuple of a {@link Type} and an optional {@link EntityType} instance used for 
- * supertype references in EntityType instances
+ * {@code Supertype} defines a tuple of a {@link Type} and an optional {@link EntityType} instance used for
+ * supertype references in {@link EntityType} instances
  * 
  * @author tiwe
  *

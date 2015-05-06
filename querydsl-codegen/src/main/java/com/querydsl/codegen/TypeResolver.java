@@ -20,21 +20,21 @@ import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.TypeSuper;
 
 /**
- * TypeResolver provides type resolving functionality for resolving generic type variables to 
+ * {@code TypeResolver} provides type resolving functionality for resolving generic type variables to
  * concrete types
  * 
  * @author tiwe
  *
  */
-public final class TypeResolver {
+final class TypeResolver {
 
     /**
      * Resolve type declared in declaringType for context
      * 
-     * @param type type
-     * @param declaringType
-     * @param context
-     * @return
+     * @param type type to be resolved
+     * @param declaringType declaration context of type
+     * @param context target context of type
+     * @return resolved type
      */
     public static Type resolve(Type type, Type declaringType, EntityType context) {         
         Type resolved = unwrap(type);
@@ -59,13 +59,6 @@ public final class TypeResolver {
         return resolved;
     }
 
-    /**
-     * @param resolved
-     * @param varName
-     * @param declaringType
-     * @param context
-     * @return
-     */
     private static Type resolveVar(Type resolved, String varName, Type declaringType, EntityType context) {
         // get parameter index of var in declaring type
         int index = -1;
@@ -93,12 +86,6 @@ public final class TypeResolver {
         }        
     }
 
-    /**
-     * @param type
-     * @param declaringType
-     * @param context
-     * @return
-     */
     private static Type resolveWithParameters(Type type, Type declaringType, EntityType context) {
         Type[] params = new Type[type.getParameters().size()];
         boolean transformed = false;
@@ -117,11 +104,7 @@ public final class TypeResolver {
             return type;
         }
     }
-    
-    /**
-     * @param type
-     * @return
-     */
+
     private static String getVarName(Type type) {
         if (type instanceof TypeExtends) {
             return ((TypeExtends)type).getVarName();
@@ -131,11 +114,7 @@ public final class TypeResolver {
             return null;
         }
     }
-         
-    /**
-     * @param type
-     * @return
-     */
+
     private static Type unwrap(Type type) {
         if (type instanceof EntityType) {
             return ((EntityType)type).getInnerType();

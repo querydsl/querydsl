@@ -13,9 +13,10 @@
  */
 package com.querydsl.codegen;
 
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.*;
+
+import javax.annotation.Nullable;
 
 import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.Constructor;
@@ -25,7 +26,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.querydsl.core.util.JavaSyntaxUtils;
 
 /**
- * EntityType represents a model of a query domain type with properties
+ * {@code EntityType} represents a model of a query domain type with properties
  *
  * @author tiwe
  */
@@ -52,7 +53,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     private String uncapSimpleName;
     
     /**
-     * Create a new EntityType instance for the given type
+     * Create a new {@code EntityType} instance for the given type
      * 
      * @param type
      */
@@ -61,7 +62,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
     
     /**
-     * Create a new EntityType instance for the given type and superTypes
+     * Create a new {@code EntityType} instance for the given type and superTypes
      * 
      * @param type
      * @param superTypes

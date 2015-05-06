@@ -26,7 +26,7 @@ import com.mysema.codegen.model.*;
 import com.querydsl.core.util.BeanUtils;
 
 /**
- * BeanSerializer is a {@link Serializer} implementation which serializes {@link EntityType}
+ * {@code BeanSerializer} is a {@link Serializer} implementation which serializes {@link EntityType}
  * instances into JavaBean classes
  *
  * @author tiwe
@@ -61,7 +61,7 @@ public class BeanSerializer implements Serializer{
     /**
      * Create a new BeanSerializer with the given javadoc suffix
      *
-     * @param javadocSuffix
+     * @param javadocSuffix suffix to be used after the simple name in class level javadoc
      */
     public BeanSerializer(String javadocSuffix) {
         this(true, javadocSuffix);
@@ -70,7 +70,7 @@ public class BeanSerializer implements Serializer{
     /**
      * Create a new BeanSerializer
      *
-     * @param propertyAnnotations
+     * @param propertyAnnotations true, to serialize property annotations
      */
     public BeanSerializer(boolean propertyAnnotations) {
         this(propertyAnnotations, " is a Querydsl bean type");
@@ -79,8 +79,8 @@ public class BeanSerializer implements Serializer{
     /**
      * Create a new BeanSerializer
      *
-     * @param propertyAnnotations
-     * @param javadocSuffix
+     * @param propertyAnnotations true, to serialize property annotations
+     * @param javadocSuffix suffix to be used after the simple name in class level javadoc
      */
     public BeanSerializer(boolean propertyAnnotations, String javadocSuffix) {
         this.propertyAnnotations = propertyAnnotations;

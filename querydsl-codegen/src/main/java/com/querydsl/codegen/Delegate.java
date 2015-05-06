@@ -20,7 +20,7 @@ import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 
 /**
- * Delegate defines a delegate method which dispatches to an external static method
+ * {@code Delegate} defines a delegate method which dispatches to an external static method
  * 
  * @author tiwe
  *

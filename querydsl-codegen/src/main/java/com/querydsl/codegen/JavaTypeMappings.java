@@ -19,7 +19,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
 
 /**
- * JavaTypeMappings defines mappings from {@link TypeCategory} instances to {@link Expression} types
+ * {@code JavaTypeMappings} defines mappings from {@link TypeCategory} instances to {@link Expression} types
  *
  * @author tiwe
  *

@@ -16,7 +16,7 @@ package com.querydsl.codegen;
 import com.querydsl.core.annotations.Config;
 
 /**
- * SimpleSerializerConfig is the default implementation of the {@link SerializerConfig} interface
+ * {@code SimpleSerializerConfig} is the default implementation of the {@link SerializerConfig} interface
  * 
  * @author tiwe
  *
@@ -35,6 +35,7 @@ public final class SimpleSerializerConfig implements SerializerConfig{
     }
 
     private final boolean entityAccessors, listAccessors, mapAccessors, createDefaultVariable;
+
     private final String defaultVariableName;
 
     public SimpleSerializerConfig(

@@ -18,6 +18,8 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 
 /**
+ * {@code ParameterizedTypeImpl} provides an implementation of the {@link ParameterizedType} interface
+ *
  * @author tiwe
  *
  */
