@@ -1,7 +1,7 @@
 /*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -14,21 +14,16 @@
 
 package com.querydsl.scala
 
-import com.querydsl.codegen._
-import com.mysema.codegen.{ CodeWriter, ScalaWriter }
-import com.mysema.codegen.model.{ Parameter, Type }
-import com.querydsl
-
+import java.util._
 import javax.inject.Inject
 
-import java.util._
-import java.io.IOException
+import com.mysema.codegen.model.Parameter
+import com.mysema.codegen.{CodeWriter, ScalaWriter}
+import com.querydsl.codegen._
+import com.querydsl.scala.Serializer._
 
-import scala.beans.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
-
-import Serializer._
 
 /**
  * Serializer contains common functionality used in the Serializer implementations
