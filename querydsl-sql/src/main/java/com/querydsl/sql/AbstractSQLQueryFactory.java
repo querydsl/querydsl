@@ -53,10 +53,12 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
         return (Q) query().from(from);
     }
 
+    @Override
     public final Q from(Expression<?>... args) {
         return (Q) query().from(args);
     }
 
+    @Override
     public final Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return (Q) query().from(subQuery, alias);
     }

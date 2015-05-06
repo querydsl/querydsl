@@ -13,9 +13,10 @@
  */
 package com.querydsl.core.types;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import java.util.List;
 
 import com.querydsl.core.Tuple;
 
@@ -66,6 +67,7 @@ public abstract class MappingProjection<T> extends FactoryExpressionBase<T> {
         qTuple = new QTuple(ExpressionUtils.distinctList(args));
     }
 
+    @Override
     public T newInstance(Object... values) {
         return map(qTuple.newInstance(values));
     }
@@ -78,10 +80,12 @@ public abstract class MappingProjection<T> extends FactoryExpressionBase<T> {
      */
     protected abstract T map(Tuple row);
 
+    @Override
     public List<Expression<?>> getArgs() {
         return qTuple.getArgs();
     }
 
+    @Override
     public <R, C> R accept(Visitor<R, C> v, @Nullable C context) {
         return v.visit(this, context);
     }

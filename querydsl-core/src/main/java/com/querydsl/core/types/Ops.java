@@ -123,6 +123,7 @@ public enum Ops implements Operator {
         this.type = type;
     }
 
+    @Override
     public Class<?> getType() {
         return type;
     }
@@ -162,6 +163,7 @@ public enum Ops implements Operator {
             this.type = type;
         }
 
+        @Override
         public Class<?> getType() {
             return type;
         }
@@ -183,6 +185,7 @@ public enum Ops implements Operator {
             this.type = type;
         }
 
+        @Override
         public Class<?> getType() {
             return type;
         }
@@ -237,6 +240,7 @@ public enum Ops implements Operator {
             this.type = type;
         }
 
+        @Override
         public Class<?> getType() {
             return type;
         }
@@ -282,6 +286,7 @@ public enum Ops implements Operator {
             this.type = type;
         }
 
+        @Override
         public Class<?> getType() {
             return type;
         }
@@ -308,6 +313,7 @@ public enum Ops implements Operator {
             this.type = type;
         }
 
+        @Override
         public Class<?> getType() {
             return type;
         }

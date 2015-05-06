@@ -246,6 +246,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
 
     @Nullable
     @SuppressWarnings("unchecked")
+    @Override
     public T fetchOne() {
         try{
             Query query = createQuery(getMetadata().getModifiers(), false);
@@ -313,6 +314,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
      *
      * @return cloned query
      */
+    @Override
     public Q clone() {
         return clone(entityManager, getTemplates());
     }

@@ -52,6 +52,7 @@ public class InverseForeignKeyData implements KeyData{
         parentColumns.add(parentColumn);
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -61,19 +62,23 @@ public class InverseForeignKeyData implements KeyData{
         return schema;
     }
 
+    @Override
     public String getTable() {
         return table;
     }
-    
+
+    @Override
     public List<String> getForeignColumns() {
         return foreignColumns;
     }
 
+    @Override
     public List<String> getParentColumns() {
         return parentColumns;
     }
 
     @Nullable
+    @Override
     public Type getType() {
         return type;
     }

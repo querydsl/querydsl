@@ -74,6 +74,7 @@ public class SetPath<E, Q extends SimpleExpression<? super E>> extends Collectio
         return any;
     }
 
+    @Override
     public Class<E> getElementType() {
         return elementType;
     }

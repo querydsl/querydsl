@@ -52,9 +52,11 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     private final JPACollectionAnyVisitor collectionAnyVisitor;
 
     private final ReplaceVisitor<Void> replaceVisitor =  new ReplaceVisitor<Void>() {
+        @Override
         public Expression<?> visit(Path<?> expr, Void context) {
             return convertPathForOrder(expr);
         }
+        @Override
         public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
             // don't shorten paths inside subquery expressions
             return expr;

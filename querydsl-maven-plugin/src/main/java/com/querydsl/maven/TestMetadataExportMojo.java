@@ -24,6 +24,7 @@ import com.querydsl.sql.codegen.MetaDataExporter;
  */
 public class TestMetadataExportMojo extends AbstractMetaDataExportMojo{
 
+    @Override
     protected boolean isForTest() {
         return true;
     }

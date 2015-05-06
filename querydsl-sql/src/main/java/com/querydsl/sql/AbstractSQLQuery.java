@@ -126,6 +126,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         return addFlag(SQLOps.FOR_UPDATE_FLAG);
     }
 
+    @Override
     protected SQLSerializer createSerializer() {
         SQLSerializer serializer = new SQLSerializer(configuration);
         serializer.setUseLiterals(useLiterals);

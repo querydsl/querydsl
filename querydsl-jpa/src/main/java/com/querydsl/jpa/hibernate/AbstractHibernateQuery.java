@@ -210,6 +210,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
         MDC.remove(MDC_PARAMETERS);
     }
 
+    @Override
     protected void reset() {
         super.reset();
         cleanupMDC();
@@ -333,7 +334,8 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
             reset();
         }
     }
-    
+
+    @Override
     protected JPQLSerializer createSerializer() {
         return new JPQLSerializer(getTemplates());
     }
@@ -375,6 +377,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
      *
      * @return closed query
      */
+    @Override
     public Q clone() {
         return this.clone(this.session);
     }

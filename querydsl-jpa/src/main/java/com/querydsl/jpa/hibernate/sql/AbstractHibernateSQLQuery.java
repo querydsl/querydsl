@@ -280,7 +280,8 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
         this.timeout = timeout;
         return (Q)this;
     }
-    
+
+    @Override
     protected void clone(Q query) {
         super.clone(query);
         cacheable = query.cacheable;
@@ -289,13 +290,13 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
         readOnly = query.readOnly;
         timeout = query.timeout;
     }
-    
+
     protected abstract Q clone(SessionHolder session);
 
     public Q clone(Session session) {
         return this.clone(new DefaultSessionHolder(session));
-    }   
-    
+    }
+
     public Q clone(StatelessSession statelessSession) {
         return this.clone(new StatelessSessionHolder(statelessSession));
     }

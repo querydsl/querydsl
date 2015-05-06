@@ -30,11 +30,13 @@ public abstract class MutableExpressionBase<T> implements Expression<T> {
     public MutableExpressionBase(Class<? extends T> type) {
         this.type = type;
     }
-    
+
+    @Override
     public final Class<? extends T> getType() {
         return type;
     }
-    
+
+    @Override
     public final int hashCode() {
         return accept(HashCodeVisitor.DEFAULT, null);
     }

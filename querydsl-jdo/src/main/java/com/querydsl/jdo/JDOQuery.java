@@ -87,6 +87,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
      * @param persistenceManager PersistenceManager instance to use
      * @return cloned query
      */
+    @Override
     public JDOQuery<T> clone(PersistenceManager persistenceManager) {
         JDOQuery<T> query = new JDOQuery<T>(persistenceManager, getTemplates(),
                 getMetadata().clone(), isDetach());

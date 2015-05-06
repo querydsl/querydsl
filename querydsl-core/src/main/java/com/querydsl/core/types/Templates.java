@@ -60,6 +60,7 @@ public class Templates {
     protected Templates(char escape) {
         this.escape = escape;
         templateFactory = new TemplateFactory(escape) {
+            @Override
             public String escapeForLike(String str) {
                 return Templates.this.escapeForLike(str);
             }

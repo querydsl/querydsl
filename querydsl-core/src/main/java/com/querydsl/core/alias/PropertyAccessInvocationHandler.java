@@ -66,6 +66,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
     }
 
     //CHECKSTYLE:OFF
+    @Override
     public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
     //CHECKSTYLE:ON
         Object rv = null;

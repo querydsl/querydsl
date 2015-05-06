@@ -37,11 +37,13 @@ public abstract class ExpressionBase<T> implements Expression<T> {
     public ExpressionBase(Class<? extends T> type) {
         this.type = type;
     }
-    
+
+    @Override
     public final Class<? extends T> getType() {
         return type;
     }
-    
+
+    @Override
     public final int hashCode() {
         if (hashCode == null) {
             hashCode = accept(HashCodeVisitor.DEFAULT, null);

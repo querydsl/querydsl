@@ -116,6 +116,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
         return query().from(from);
     }
 
+    @Override
     public JDOQuery<?> query() {
         return new JDOQuery<Void>(persistenceManager.get());
     }

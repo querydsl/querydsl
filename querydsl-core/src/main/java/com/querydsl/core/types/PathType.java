@@ -67,6 +67,7 @@ public enum PathType implements Operator {
      */
     VARIABLE;
 
+    @Override
     public Class<?> getType() {
         return Object.class;
     }

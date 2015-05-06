@@ -109,6 +109,7 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
         }
     }
 
+    @Override
     public Class<E> getElementType() {
         return elementType;
     }
