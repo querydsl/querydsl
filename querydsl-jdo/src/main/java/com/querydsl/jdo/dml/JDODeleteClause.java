@@ -30,7 +30,7 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
 
 /**
- * DeleteClause implementation for JDO
+ * {@link DeleteClause} implementation for JDO
  *
  * @author tiwe
  *

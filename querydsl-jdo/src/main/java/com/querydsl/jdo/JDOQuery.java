@@ -21,15 +21,16 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 
 /**
- * JDOQuery is the default implementation of the JDOQLQuery interface
+ * {@code JDOQuery} is the default implementation of the {@link JDOQLQuery} interface
  *
  * @author tiwe
  *
+ * @param <T> result type
  */
 public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
 
     /**
-     * Create a detached JDOQuery instance
+     * Create a detached {@link JDOQuery} instance
      * The query can be attached via the clone method
      *
      */
@@ -38,7 +39,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Create a new JDOQuery instance
+     * Create a new {@link JDOQuery} instance
      *
      * @param persistenceManager PersistenceManager instance to use
      * @param templates JDOQLTemplates to use
@@ -49,7 +50,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Create a new JDOQuery instance
+     * Create a new {@link JDOQuery} instance
      *
      * @param persistenceManager PersistenceManager instance to use
      * @param detach detached results or not
@@ -59,7 +60,7 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Create a new JDOQuery instance
+     * Create a new {@link JDOQuery} instance
      *
      * @param persistenceManager PersistenceManager instance to use
      */
@@ -68,12 +69,12 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Create a new JDOQuery instance
+     * Create a new {@link JDOQuery} instance
      * 
-     * @param persistenceManager
-     * @param templates
-     * @param metadata
-     * @param detach
+     * @param persistenceManager PersistenceManager instance to use
+     * @param templates templates to use
+     * @param metadata query metadata
+     * @param detach detached results or not
      */
     protected JDOQuery(PersistenceManager persistenceManager, JDOQLTemplates templates, 
             QueryMetadata metadata, boolean detach) {
@@ -81,10 +82,10 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
     }
 
     /**
-     * Clone the state of this query to a new JDOQuery instance with the given PersistenceManager
+     * Clone the state of this query to a new {@link JDOQuery} instance with the given {@link PersistenceManager}
      *
-     * @param persistenceManager
-     * @return
+     * @param persistenceManager PersistenceManager instance to use
+     * @return cloned query
      */
     public JDOQuery<T> clone(PersistenceManager persistenceManager) {
         JDOQuery<T> query = new JDOQuery<T>(persistenceManager, getTemplates(),

@@ -27,7 +27,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Param;
 
 /**
- * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings
+ * {@code JDOQLSerializer} serializes Querydsl queries and expressions into JDOQL strings
  *
  * @author tiwe
  *
@@ -273,7 +273,6 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         return null;
     }
 
-//    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         if (operator == Ops.INSTANCE_OF) {

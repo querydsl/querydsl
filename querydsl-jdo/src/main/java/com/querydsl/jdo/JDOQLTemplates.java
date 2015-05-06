@@ -17,7 +17,7 @@ import com.querydsl.core.types.JavaTemplates;
 import com.querydsl.core.types.Ops;
 
 /**
- * JDOQLTemplates provides patterns for JDOQL serialization
+ * {@code JDOQLTemplates} provides patterns for JDOQL serialization
  *
  * @author tiwe
  *

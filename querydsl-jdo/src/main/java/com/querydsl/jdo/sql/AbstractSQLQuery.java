@@ -36,14 +36,16 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.ProjectableSQLQuery;
+import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLSerializer;
 
 /**
- * Base class for JDO based SQLQuery implementations
+ * Base class for JDO-based {@link SQLQuery} implementations
  *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> result type
+ * @param <Q> concrete subclass
  */
 @SuppressWarnings("rawtypes")
 public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
@@ -81,6 +83,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         this.detach = detach;
     }
 
+    /**
+     * Close the query and related resources
+     */
     public void close() {
         for (Query query : queries) {
             query.closeAll();
@@ -113,7 +118,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         if (logger.isDebugEnabled()) {
             logger.debug(serializer.toString());
         }
-        Query query = persistenceManager.newQuery("javax.jdo.query.SQL",serializer.toString());
+        Query query = persistenceManager.newQuery("javax.jdo.query.SQL", serializer.toString());
         orderedConstants = serializer.getConstants();
         queries.add(query);
 
@@ -144,7 +149,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         } else if (row.getClass().isArray()) {
             return expr.newInstance((Object[])row);
         } else {
-            return expr.newInstance(new Object[]{row});
+            return expr.newInstance(row);
         }
     }
 
