@@ -45,7 +45,7 @@ public final class ForeignKey<E> implements Serializable, ProjectionRole<Tuple> 
     private final ImmutableList<String> foreignColumns;
 
     @Nullable
-    private volatile Expression<Tuple> mixin;
+    private transient volatile Expression<Tuple> mixin;
 
     public ForeignKey(RelationalPath<?> entity, Path<?> localColumn, String foreignColumn) {
         this(entity, ImmutableList.of(localColumn), ImmutableList.of(foreignColumn));

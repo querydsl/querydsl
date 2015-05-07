@@ -38,7 +38,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
     private final PathImpl<A> pathMixin;
 
     @Nullable
-    private volatile NumberExpression<Integer> size;
+    private transient volatile NumberExpression<Integer> size;
 
     protected ArrayPath(Class<? super A> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable));

@@ -40,7 +40,7 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
     @Nullable
     private transient volatile Constructor<?> constructor;
     
-    private volatile boolean usePathInits = false;
+    private transient volatile boolean usePathInits = false;
 
     private final PathInits inits;
     

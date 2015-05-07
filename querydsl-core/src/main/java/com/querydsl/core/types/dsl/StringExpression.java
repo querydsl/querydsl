@@ -28,16 +28,16 @@ public abstract class StringExpression extends LiteralExpression<String> {
     private static final long serialVersionUID = 1536955079961023361L;
 
     @Nullable
-    private volatile NumberExpression<Integer> length;
+    private transient volatile NumberExpression<Integer> length;
 
     @Nullable
-    private volatile StringExpression lower, trim, upper;
+    private transient volatile StringExpression lower, trim, upper;
 
     @Nullable
-    private volatile StringExpression min, max;
+    private transient volatile StringExpression min, max;
 
     @Nullable
-    private volatile BooleanExpression isempty;
+    private transient volatile BooleanExpression isempty;
 
     public StringExpression(Expression<String> mixin) {
         super(mixin);

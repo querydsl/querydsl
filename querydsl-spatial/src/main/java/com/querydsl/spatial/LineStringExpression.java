@@ -36,7 +36,7 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
     private static final long serialVersionUID = -6572984614863252657L;
 
     @Nullable
-    private volatile NumberExpression<Integer> numPoints;
+    private transient volatile NumberExpression<Integer> numPoints;
 
     public LineStringExpression(Expression<T> mixin) {
         super(mixin);

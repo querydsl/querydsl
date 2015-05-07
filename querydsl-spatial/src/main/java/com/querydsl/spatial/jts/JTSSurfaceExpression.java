@@ -34,10 +34,10 @@ public abstract class JTSSurfaceExpression<T extends Geometry> extends JTSGeomet
     private static final long serialVersionUID = 3534197011234723698L;
 
     @Nullable
-    private volatile JTSPointExpression<Point> centroid, pointOnSurface;
+    private transient volatile JTSPointExpression<Point> centroid, pointOnSurface;
 
     @Nullable
-    private volatile NumberExpression<Double> area;
+    private transient volatile NumberExpression<Double> area;
 
     public JTSSurfaceExpression(Expression<T> mixin) {
         super(mixin);

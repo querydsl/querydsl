@@ -35,7 +35,7 @@ public abstract class GeometryCollectionExpression<T extends GeometryCollection>
     private static final long serialVersionUID = 8874174644259834690L;
 
     @Nullable
-    private volatile NumberExpression<Integer> numGeometries;
+    private transient volatile NumberExpression<Integer> numGeometries;
 
     public GeometryCollectionExpression(Expression<T> mixin) {
         super(mixin);

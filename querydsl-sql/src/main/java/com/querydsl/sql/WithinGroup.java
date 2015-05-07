@@ -16,6 +16,8 @@ package com.querydsl.sql;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
@@ -46,7 +48,8 @@ public class WithinGroup<T> extends SimpleOperation<T> {
 
         private static final String ORDER_BY = "order by ";
 
-        private volatile SimpleExpression<T> value;
+        @Nullable
+        private transient volatile SimpleExpression<T> value;
 
         private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 

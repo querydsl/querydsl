@@ -32,21 +32,21 @@ public class JTSGeometryPath<T extends Geometry> extends JTSGeometryExpression<T
 
     private final PathImpl<T> pathMixin;
 
-    private volatile JTSGeometryCollectionPath<GeometryCollection> collection;
+    private transient volatile JTSGeometryCollectionPath<GeometryCollection> collection;
 
-    private volatile JTSLinearRingPath<LinearRing> linearRing;
+    private transient volatile JTSLinearRingPath<LinearRing> linearRing;
 
-    private volatile JTSLineStringPath<LineString> lineString;
+    private transient volatile JTSLineStringPath<LineString> lineString;
 
-    private volatile JTSMultiLineStringPath<MultiLineString> multiLineString;
+    private transient volatile JTSMultiLineStringPath<MultiLineString> multiLineString;
 
-    private volatile JTSMultiPointPath<MultiPoint> multiPoint;
+    private transient volatile JTSMultiPointPath<MultiPoint> multiPoint;
 
-    private volatile JTSMultiPolygonPath<MultiPolygon> multiPolygon;
+    private transient volatile JTSMultiPolygonPath<MultiPolygon> multiPolygon;
 
-    private volatile JTSPointPath<Point> point;
+    private transient volatile JTSPointPath<Point> point;
 
-    private volatile JTSPolygonPath<Polygon> polygon;
+    private transient volatile JTSPolygonPath<Polygon> polygon;
 
     public JTSGeometryPath(Path<?> parent, String property) {
         this((Class<? extends T>) Geometry.class, parent, property);

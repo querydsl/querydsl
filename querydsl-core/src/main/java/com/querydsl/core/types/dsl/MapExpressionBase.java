@@ -35,10 +35,10 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     private static final long serialVersionUID = 2856001983312366841L;
 
     @Nullable
-    private volatile NumberExpression<Integer> size;
+    private transient volatile NumberExpression<Integer> size;
 
     @Nullable
-    private volatile BooleanExpression empty;
+    private transient volatile BooleanExpression empty;
 
     public MapExpressionBase(Expression<Map<K, V>> mixin) {
         super(mixin);

@@ -33,7 +33,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     private static final TimeExpression<Time> CURRENT_TIME = currentTime(Time.class);
 
     @Nullable
-    private volatile NumberExpression<Integer> hours, minutes, seconds, milliseconds;
+    private transient volatile NumberExpression<Integer> hours, minutes, seconds, milliseconds;
 
     public TimeExpression(Expression<T> mixin) {
         super(mixin);

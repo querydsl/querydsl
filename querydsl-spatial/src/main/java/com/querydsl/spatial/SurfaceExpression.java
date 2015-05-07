@@ -34,10 +34,10 @@ public abstract class SurfaceExpression<T extends Geometry> extends GeometryExpr
     private static final long serialVersionUID = 3534197011234723698L;
 
     @Nullable
-    private volatile PointExpression<Point> centroid, pointOnSurface;
+    private transient volatile PointExpression<Point> centroid, pointOnSurface;
 
     @Nullable
-    private volatile NumberExpression<Double> area;
+    private transient volatile NumberExpression<Double> area;
 
     public SurfaceExpression(Expression<T> mixin) {
         super(mixin);

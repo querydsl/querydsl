@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -43,7 +45,8 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
 
     private final Expression<A> target;
 
-    private volatile SimpleExpression<A> value;
+    @Nullable
+    private transient volatile SimpleExpression<A> value;
 
     private String rowsOrRange;
 

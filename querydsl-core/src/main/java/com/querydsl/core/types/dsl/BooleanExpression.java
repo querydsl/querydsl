@@ -29,10 +29,10 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
     private static final long serialVersionUID = 3797956062512074164L;
 
     @Nullable
-    private volatile BooleanExpression eqTrue, eqFalse;
+    private transient volatile BooleanExpression eqTrue, eqFalse;
 
     @Nullable
-    private volatile BooleanExpression not;
+    private transient volatile BooleanExpression not;
 
     public BooleanExpression(Expression<Boolean> mixin) {
         super(mixin);

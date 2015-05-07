@@ -71,16 +71,16 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     @Nullable
-    private volatile NumberExpression<T> abs, sum, min, max, floor, ceil, round;
+    private transient volatile NumberExpression<T> abs, sum, min, max, floor, ceil, round;
 
     @Nullable
-    private volatile NumberExpression<Double> avg, sqrt;
+    private transient volatile NumberExpression<Double> avg, sqrt;
 
     @Nullable
-    private volatile NumberExpression<T> negation;
+    private transient volatile NumberExpression<T> negation;
 
     @Nullable
-    private volatile StringExpression stringCast;
+    private transient volatile StringExpression stringCast;
 
     public NumberExpression(Expression<T> mixin) {
         super(mixin);

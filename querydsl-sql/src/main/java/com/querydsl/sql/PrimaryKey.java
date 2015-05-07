@@ -40,7 +40,7 @@ public final class PrimaryKey<E> implements Serializable, ProjectionRole<Tuple> 
     private final ImmutableList<? extends Path<?>> localColumns;
     
     @Nullable
-    private volatile Expression<Tuple> mixin;
+    private transient volatile Expression<Tuple> mixin;
 
     public PrimaryKey(RelationalPath<?> entity, Path<?>... localColumns) {
         this(entity, ImmutableList.copyOf(localColumns));

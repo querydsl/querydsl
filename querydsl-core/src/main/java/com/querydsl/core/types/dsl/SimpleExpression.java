@@ -32,13 +32,13 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     private static final long serialVersionUID = -4405387187738167105L;
 
     @Nullable
-    private volatile NumberExpression<Long> count;
+    private transient volatile NumberExpression<Long> count;
 
     @Nullable
-    private volatile NumberExpression<Long> countDistinct;
+    private transient volatile NumberExpression<Long> countDistinct;
 
     @Nullable
-    private volatile BooleanExpression isnull, isnotnull;
+    private transient volatile BooleanExpression isnull, isnotnull;
 
     public SimpleExpression(Expression<T> mixin) {
         super(mixin);

@@ -37,10 +37,10 @@ public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurface
     private static final long serialVersionUID = 7544382956232485312L;
 
     @Nullable
-    private volatile NumberExpression<Integer> numInteriorRing;
+    private transient volatile NumberExpression<Integer> numInteriorRing;
 
     @Nullable
-    private volatile JTSLineStringExpression<LineString> exteriorRing;
+    private transient volatile JTSLineStringExpression<LineString> exteriorRing;
 
     public JTSPolygonExpression(Expression<T> mixin) {
         super(mixin);
