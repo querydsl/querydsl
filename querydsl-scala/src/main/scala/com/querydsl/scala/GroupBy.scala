@@ -1,7 +1,7 @@
 /*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -14,10 +14,10 @@
 
 package com.querydsl.scala
 
-import com.querydsl.core.types._
 import com.querydsl.core.group._
+import com.querydsl.scala.GroupBy._
+
 import scala.collection.mutable.Builder
-import GroupBy._
 
 /**
  * Group by result transforming functionality

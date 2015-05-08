@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,13 @@
 
 package com.querydsl.scala
 
-import com.querydsl.core.alias.ManagedObject
-
-import com.querydsl.core.types._
-import com.querydsl.core.types.PathMetadataFactory._
-import com.querydsl.core.types.Ops._
-
-import java.util.Collection
 import java.util.Arrays._
+import java.util.Collection
 
-import Constants._
-import Operations._
-//import Conversions.aliasFactory;
+import com.querydsl.core.types.Ops._
+import com.querydsl.core.types._
+import com.querydsl.scala.Constants._
+import com.querydsl.scala.Operations._
 
 object Constants {
 

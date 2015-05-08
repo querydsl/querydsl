@@ -1,7 +1,7 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -14,18 +14,18 @@
 
 package com.querydsl.scala.sql
 
-import com.querydsl
-import com.mysema.codegen.{ScalaWriter, CodeWriter}
+import java.util._
+import javax.inject.Inject
+
 import com.mysema.codegen.model._
+import com.mysema.codegen.{CodeWriter, ScalaWriter}
 import com.querydsl.codegen._
 import com.querydsl.scala.ScalaEntitySerializer
 import com.querydsl.sql._
 import com.querydsl.sql.codegen._
 import com.querydsl.sql.codegen.support._
-import java.util._
-import scala.collection.JavaConversions._
 
-import javax.inject.Inject
+import scala.collection.JavaConversions._
 
 /**
  * MetaDataSerializer implementation for Scala

@@ -1,7 +1,7 @@
 /*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -14,23 +14,19 @@
 
 package com.querydsl.scala
 
-import com.mysema.codegen.CodeWriter
-import com.mysema.codegen.ScalaWriter
-import com.mysema.codegen.model._
-import com.mysema.codegen.model.TypeCategory._
-import com.mysema.codegen.support.ScalaSyntaxUtils
-import com.querydsl
-import com.querydsl.codegen._
-import com.querydsl.sql._
-import com.querydsl.sql.codegen.support._
-import com.querydsl.core.types._
 import java.util._
-import java.io.IOException
-import scala.beans.BeanProperty
-import scala.collection.JavaConversions._
-import scala.collection.mutable.Set
-import scala.collection.immutable.Map
 import javax.inject.Inject
+
+import com.mysema.codegen.{CodeWriter, ScalaWriter}
+import com.mysema.codegen.model.TypeCategory._
+import com.mysema.codegen.model._
+import com.mysema.codegen.support.ScalaSyntaxUtils
+import com.querydsl.codegen._
+import com.querydsl.core.types._
+
+import scala.collection.JavaConversions._
+import scala.collection.immutable.Map
+import scala.collection.mutable.Set
 
 /**
  * EntitySerializer for Scala
