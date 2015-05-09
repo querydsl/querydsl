@@ -13,21 +13,7 @@
  */
 package com.querydsl.sql.spatial;
 
-import org.geolatte.geom.DimensionalFlag;
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.GeometryCollection;
-import org.geolatte.geom.LineString;
-import org.geolatte.geom.LinearRing;
-import org.geolatte.geom.MultiLineString;
-import org.geolatte.geom.MultiPoint;
-import org.geolatte.geom.MultiPolygon;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.PointCollectionFactory;
-import org.geolatte.geom.PointSequence;
-import org.geolatte.geom.PointSequenceBuilder;
-import org.geolatte.geom.PointSequenceBuilders;
-import org.geolatte.geom.PolyHedralSurface;
-import org.geolatte.geom.Polygon;
+import org.geolatte.geom.*;
 import org.geolatte.geom.crs.CrsId;
 
 
