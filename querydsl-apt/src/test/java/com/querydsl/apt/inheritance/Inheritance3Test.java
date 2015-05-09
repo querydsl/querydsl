@@ -20,8 +20,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.apt.domain.AbstractTest;
+import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.core.types.dsl.StringPath;
 

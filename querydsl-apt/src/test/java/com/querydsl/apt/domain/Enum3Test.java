@@ -1,8 +1,9 @@
 package com.querydsl.apt.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import java.io.Serializable;
 
 import org.junit.Test;
 

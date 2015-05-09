@@ -19,12 +19,7 @@ import java.util.Collections;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 
-import com.querydsl.core.annotations.QueryEmbeddable;
-import com.querydsl.core.annotations.QueryEmbedded;
-import com.querydsl.core.annotations.QueryEntities;
-import com.querydsl.core.annotations.QueryEntity;
-import com.querydsl.core.annotations.QuerySupertype;
-import com.querydsl.core.annotations.QueryTransient;
+import com.querydsl.core.annotations.*;
 
 /**
  * Default annotation processor for Querydsl which handles {@link QueryEntity}, {@link QuerySupertype}, 

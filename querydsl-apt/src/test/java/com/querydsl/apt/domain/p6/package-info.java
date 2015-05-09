@@ -2,4 +2,4 @@
 package com.querydsl.apt.domain.p6;
 
 
-import com.querydsl.core.annotations.*;
+import com.querydsl.core.annotations.QueryEntities;

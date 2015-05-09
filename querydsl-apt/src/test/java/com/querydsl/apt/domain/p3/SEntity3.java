@@ -13,8 +13,8 @@
  */
 package com.querydsl.apt.domain.p3;
 
-import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.apt.domain.p2.SEntity2;
+import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class SEntity3 extends SEntity2 {

@@ -13,12 +13,7 @@
  */
 package com.querydsl.apt.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import org.junit.Ignore;
 

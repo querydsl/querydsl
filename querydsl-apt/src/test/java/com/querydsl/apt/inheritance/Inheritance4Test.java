@@ -15,8 +15,8 @@ package com.querydsl.apt.inheritance;
 
 import org.junit.Test;
 
-import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.apt.domain.AbstractTest;
+import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.core.types.dsl.StringPath;

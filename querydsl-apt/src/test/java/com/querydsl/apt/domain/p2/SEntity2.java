@@ -13,8 +13,8 @@
  */
 package com.querydsl.apt.domain.p2;
 
-import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.apt.domain.p4.SSupertype;
+import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class SEntity2 extends SSupertype {

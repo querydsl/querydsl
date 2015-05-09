@@ -13,13 +13,7 @@
  */
 package com.querydsl.apt;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -33,13 +27,13 @@ import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.querydsl.core.annotations.PropertyType;
-import com.querydsl.core.annotations.QueryInit;
-import com.querydsl.core.annotations.QueryType;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.codegen.QueryTypeFactory;
 import com.querydsl.codegen.TypeMappings;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryInit;
+import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
 
