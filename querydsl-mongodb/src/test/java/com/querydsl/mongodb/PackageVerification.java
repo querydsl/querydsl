@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,11 +31,11 @@ import com.querydsl.core.Entity;
 import com.querydsl.core.types.Expression;
 
 public class PackageVerification {
-    
+
     @Test
     public void Verify_Package() throws Exception{
         String version = System.getProperty("version");
-        verify(new File("target/querydsl-mongodb-"+version+"-apt-one-jar.jar"));        
+        verify(new File("target/querydsl-mongodb-"+version+"-apt-one-jar.jar"));
     }
 
     private void verify(File oneJar) throws Exception {
@@ -51,5 +51,5 @@ public class PackageVerification {
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
         assertEquals(MorphiaAnnotationProcessor.class.getName(), Resources.toString(oneJarClassLoader.findResource(resourceKey), Charsets.UTF_8));
     }
-    
+
 }

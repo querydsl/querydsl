@@ -19,5 +19,5 @@ public class MapEntity extends AbstractEntity {
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,17 +17,17 @@ package com.querydsl.mongodb.domain;
 public final class City {
 
     public City() {}
-    
+
     public City(String name, Double latitude, Double longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
     }
-    
+
     public String name;
-    
+
     public Double latitude;
-    
+
     public Double longitude;
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,18 +18,18 @@ import org.mongodb.morphia.annotations.Embedded;
 public final class Address {
 
     public Address() {
-        
+
     }
-    
+
     public Address(String street, String postCode, City city) {
         this.street = street; this.postCode = postCode; this.city = city;
     }
-    
+
     public String street;
-    
+
     public String postCode;
-    
+
     @Embedded
     public City city;
-    
+
 }
