@@ -152,6 +152,13 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>johnktims</id>
+      <name>John Tims</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <licenses>
