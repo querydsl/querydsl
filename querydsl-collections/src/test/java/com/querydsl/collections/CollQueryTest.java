@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ public class CollQueryTest extends AbstractQueryTest {
         }};
         new CollQuery(templates);
     }
-    
+
     @Test
     public void InstanceOf() {
         assertEquals(
@@ -57,7 +57,7 @@ public class CollQueryTest extends AbstractQueryTest {
         query().from(cat, Arrays.asList(c1, c2))
             .where(
                 cat.birthdate.lt(new Date()),
-                cat.birthdate.loe(new Date()), 
+                cat.birthdate.loe(new Date()),
                 cat.birthdate.gt(new Date()),
                 cat.birthdate.goe(new Date()))
             .select(cat).fetch();
@@ -83,7 +83,7 @@ public class CollQueryTest extends AbstractQueryTest {
         }
 
     }
-    
+
     @Test
     public void Clone() {
         CollQuery<?> query = new CollQuery<Void>().from(cat, Collections.<Cat>emptyList()).where(cat.isNotNull()).clone();

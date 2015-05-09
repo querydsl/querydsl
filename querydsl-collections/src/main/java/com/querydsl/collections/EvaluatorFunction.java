@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,7 @@ import com.mysema.codegen.Evaluator;
 
 /**
  * Function implementation which uses an {@link Evaluator} for transformation
- * 
+ *
  * @author tiwe
  */
 public class EvaluatorFunction<S, T> implements Function<S, T> {

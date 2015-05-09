@@ -27,7 +27,7 @@ public class EntityWithLongIdTest {
         assertNotNull(found);
         assertEquals(found.longValue(), 1000);
     }
-    
+
     @Test
     public void CartesianEquals() {
         QEntityWithLongId root = new QEntityWithLongId("root1");
@@ -37,7 +37,7 @@ public class EntityWithLongIdTest {
             .where(root2.id.eq(root.id))
             .fetchCount());
     }
-    
+
     @Test
     public void CartesianPlus1() {
         QEntityWithLongId root = new QEntityWithLongId("root1");

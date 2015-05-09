@@ -8,14 +8,14 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 
 public class GuavaHelpersTest {
-    
+
     @Test
     public void Predicate() {
         Predicate<Cat> predicate = GuavaHelpers.wrap(QCat.cat.name.startsWith("Ann"));
         assertTrue(predicate.apply(new Cat("Ann")));
         assertFalse(predicate.apply(new Cat("Bob")));
     }
-    
+
     @Test
     public void Function() {
         Function<Cat, String> function = GuavaHelpers.wrap(QCat.cat.name);

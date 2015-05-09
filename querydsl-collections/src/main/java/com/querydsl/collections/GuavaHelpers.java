@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,23 +25,23 @@ import com.querydsl.core.types.Predicate;
 
 /**
  * {@code GuavaHelpers} provides functionality to wrap Querydsl {@link Predicate} instances to Guava predicates
- * and Querydsl {@link Expression} instances to Guava functions 
- * 
+ * and Querydsl {@link Expression} instances to Guava functions
+ *
  * @author tiwe
  *
  */
 public final class GuavaHelpers {
-    
-    private static final DefaultEvaluatorFactory evaluatorFactory = 
+
+    private static final DefaultEvaluatorFactory evaluatorFactory =
             new DefaultEvaluatorFactory(CollQueryTemplates.DEFAULT);
-    
+
     /**
      * Wrap a Querydsl predicate into a Guava predicate
-     * 
+     *
      * @param predicate predicate to wrapped
      * @return Guava predicate
      */
-    public static <T> com.google.common.base.Predicate<T> wrap(Predicate predicate) {        
+    public static <T> com.google.common.base.Predicate<T> wrap(Predicate predicate) {
         Path<?> path = predicate.accept(PathExtractor.DEFAULT, null);
         if (path != null) {
             final Evaluator<Boolean> ev = createEvaluator(path.getRoot(), predicate);
@@ -49,20 +49,20 @@ public final class GuavaHelpers {
                 @Override
                 public boolean apply(T input) {
                     return ev.evaluate(input);
-                }                
+                }
             };
         } else {
             throw new IllegalArgumentException("No path in " + predicate);
         }
     }
-    
+
     /**
      * Wrap a Querydsl expression into a Guava function
-     * 
+     *
      * @param projection projection to wrap
      * @return Guava function
      */
-    public static <F,T> Function<F,T> wrap(Expression<T> projection) {        
+    public static <F,T> Function<F,T> wrap(Expression<T> projection) {
         Path<?> path = projection.accept(PathExtractor.DEFAULT, null);
         if (path != null) {
             final Evaluator<T> ev = createEvaluator(path.getRoot(), projection);
@@ -70,18 +70,18 @@ public final class GuavaHelpers {
                 @Override
                 public T apply(F input) {
                     return ev.evaluate(input);
-                }                
+                }
             };
         } else {
             throw new IllegalArgumentException("No path in " + projection);
         }
     }
-    
+
     private static <F,T> Evaluator<T> createEvaluator(Path<F> path, Expression<T> projection) {
-        return evaluatorFactory.create(EmptyMetadata.DEFAULT, 
+        return evaluatorFactory.create(EmptyMetadata.DEFAULT,
                 Collections.singletonList(path), projection);
     }
-    
+
     private GuavaHelpers() {  }
 
 }

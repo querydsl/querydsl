@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -46,7 +46,7 @@ public class CollQueryStandardTest {
     );
 
     private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
-    
+
     private QueryExecution standardTest = new QueryExecution(Module.COLLECTIONS, Target.MEM) {
         @Override
         protected Fetchable<?> createQuery() {
@@ -88,7 +88,7 @@ public class CollQueryStandardTest {
             assertNotNull(tuple.get(cat.birthdate));
         }
     }
-    
+
     @Test
     public void Nested_TupleProjection() {
         Concatenation concat = new Concatenation(cat.name, cat.name);
@@ -121,7 +121,7 @@ public class CollQueryStandardTest {
             assertNotNull(projection);
         }
     }
-    
+
     @Test
     public void Params() {
         Param<String> name = new Param<String>(String.class,"name");
@@ -139,10 +139,10 @@ public class CollQueryStandardTest {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).select(cat.name).fetchOne());
     }
-    
+
     @Test
     public void Limit() {
         CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).fetch();
     }
-   
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,40 +23,40 @@ import java.util.List;
 import org.junit.Test;
 
 public class IterationTest {
-    
+
     public static class Data {
-        
+
         private String data = "data";
 
         public String getData() {
             return data;
         }
-        
+
     }
-    
+
     private List<Data> allData = Arrays.asList(new Data(), new Data());
-    
+
     private Data lt = alias(Data.class,"Data");
-    
+
     private List<String> expected = Arrays.asList("data","data");
-    
+
     @Test
-    public void test() {                
+    public void test() {
         assertEquals(expected, CollQueryFactory.from ($(lt), allData).select($(lt.getData())).fetch());
     }
 
     @Test
-    public void test2() {        
+    public void test2() {
         assertEquals(expected, CollQueryFactory.from ($(lt), Arrays.asList(allData.toArray())).select($(lt.getData())).fetch());
     }
-    
+
     @Test
-    public void test3() {                
+    public void test3() {
         assertEquals(expected, CollQueryFactory.from (lt, allData).select($(lt.getData())).fetch());
     }
 
     @Test
-    public void test4() {        
+    public void test4() {
         assertEquals(expected, CollQueryFactory.from (lt, Arrays.asList(allData.toArray())).select($(lt.getData())).fetch());
     }
 }

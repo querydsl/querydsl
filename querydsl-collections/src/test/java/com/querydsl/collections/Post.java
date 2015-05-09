@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,24 +20,24 @@ import com.querydsl.core.annotations.QueryProjection;
 
 @QueryEntity
 public class Post {
-    
+
     private int id;
-    
+
     private String name;
-    
+
     private User user;
-    
+
     private Set<Comment> comments;
-    
+
     public Post() {}
-    
+
     @QueryProjection
     public Post(int id, String name, User user) {
         this.id = id;
         this.name = name;
         this.user = user;
     }
-    
+
     @QueryProjection
     public Post(int id, String name, Set<Comment> comments) {
         this.id = id;
@@ -76,7 +76,7 @@ public class Post {
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
     }
-    
-    
-    
+
+
+
 }

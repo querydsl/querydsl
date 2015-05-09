@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,13 +24,13 @@ import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 
 public class QueryMetadataTest extends AbstractQueryTest {
-    
+
     @Test
     public void Reusage() {
         QueryMetadata metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, cat);
         metadata.addWhere(cat.name.startsWith("A"));
-        
+
         CollQuery query = new CollQuery(metadata);
         query.bind(cat, cats);
         assertEquals(Arrays.asList(c3), query.select(cat).fetch());

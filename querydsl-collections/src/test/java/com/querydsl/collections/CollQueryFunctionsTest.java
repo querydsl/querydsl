@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,7 @@ public class CollQueryFunctionsTest {
         assertNull(CollQueryFunctions.coalesce(null,null));
     }
 
-    @Test 
+    @Test
     @Ignore
     public void LikeSpeed() {
         // 3015
@@ -41,14 +41,14 @@ public class CollQueryFunctionsTest {
         long duration = System.currentTimeMillis() - start;
         System.err.println(duration);
     }
-    
+
     @Test
     public void Like() {
         assertTrue(CollQueryFunctions.like("abcDOG", "%DOG"));
         assertTrue(CollQueryFunctions.like("DOGabc", "DOG%"));
-        assertTrue(CollQueryFunctions.like("abcDOGabc", "%DOG%"));        
+        assertTrue(CollQueryFunctions.like("abcDOGabc", "%DOG%"));
     }
-    
+
     @Test
     public void Like_With_Special_Chars() {
         assertTrue(CollQueryFunctions.like("$DOG", "$DOG"));

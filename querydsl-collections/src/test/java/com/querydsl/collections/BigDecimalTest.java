@@ -19,5 +19,5 @@ public class BigDecimalTest {
         query.select(num.multiply(BigDecimal.ONE)).fetch();
         query.select(num.divide(BigDecimal.ONE)).fetch();
     }
-    
+
 }

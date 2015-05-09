@@ -12,7 +12,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimplePath;
 
 public class MockTest {
-    
+
     @Test
     public void test() {
         List<MockTest> tests = Lists.newArrayList(new MockTest(), new MockTest(), new MockTest());

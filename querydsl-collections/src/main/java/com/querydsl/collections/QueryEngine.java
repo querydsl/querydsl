@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ public interface QueryEngine {
      * @param iterables source contents
      * @return matching rows
      */
-    <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, 
+    <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables,
             Expression<T> projection);
 
     /**

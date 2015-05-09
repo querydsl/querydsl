@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,17 +28,17 @@ import com.querydsl.core.types.Path;
  * @param <V> type of value being matched
  */
 public class PathComparator<T, V extends Comparable<V>> implements Comparator<T> {
-    
+
     private final Function<T,V> accessor;
-    
+
     public PathComparator(Path<V> comparingPath) {
         this(comparingPath, GuavaHelpers.<T,V>wrap(comparingPath));
     }
-    
+
     public PathComparator(Path<V> comparingPath, Function<T,V> accessor) {
         this.accessor = accessor;
     }
-    
+
     public static <T, V extends Comparable<V>> PathComparator<T, V> pathComparator(Path<V> comparingPath) {
         return new PathComparator<T,V>(comparingPath);
     }
@@ -56,7 +56,7 @@ public class PathComparator<T, V extends Comparable<V>> implements Comparator<T>
         }
         return comparePathValues(leftBean, rightBean);
     }
-    
+
     private int comparePathValues(T leftBean, T rightBean) {
         V left = accessor.apply(leftBean);
         V right = accessor.apply(rightBean);

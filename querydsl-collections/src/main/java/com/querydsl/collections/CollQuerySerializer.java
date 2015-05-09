@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,11 +41,11 @@ import com.querydsl.core.types.*;
 public final class CollQuerySerializer extends SerializerBase<CollQuerySerializer> {
 
     private static final Set<Class<?>> WRAPPER_TYPES = ImmutableSet.copyOf(Primitives.allWrapperTypes());
-    
+
     private static final Map<Operator, String> OPERATOR_SYMBOLS = Maps.newIdentityHashMap();
-    
+
     private static final Map<Class<?>, String> CAST_SUFFIXES = Maps.newHashMap();
-    
+
     static {
         OPERATOR_SYMBOLS.put(Ops.EQ, " == ");
         OPERATOR_SYMBOLS.put(Ops.NE, " != ");
@@ -53,12 +53,12 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         OPERATOR_SYMBOLS.put(Ops.LT, " < ");
         OPERATOR_SYMBOLS.put(Ops.GOE, " >= ");
         OPERATOR_SYMBOLS.put(Ops.LOE, " <= ");
-        
+
         OPERATOR_SYMBOLS.put(Ops.ADD, " + ");
         OPERATOR_SYMBOLS.put(Ops.SUB, " - ");
         OPERATOR_SYMBOLS.put(Ops.MULT, " * ");
         OPERATOR_SYMBOLS.put(Ops.DIV, " / ");
-        
+
         CAST_SUFFIXES.put(Boolean.class, ".booleanValue()");
         CAST_SUFFIXES.put(Byte.class, ".byteValue()");
         CAST_SUFFIXES.put(Character.class, ".charValue()");
@@ -69,7 +69,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         CAST_SUFFIXES.put(Short.class, ".shortValue()");
         CAST_SUFFIXES.put(String.class, ".toString()");
     }
-    
+
     public CollQuerySerializer(CollQueryTemplates templates) {
         super(templates);
     }
@@ -79,14 +79,14 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         final PathType pathType = path.getMetadata().getPathType();
         if (pathType == PathType.PROPERTY) {
             final Path<?> parent = path.getMetadata().getParent();
-            final String property = path.getMetadata().getName();      
+            final String property = path.getMetadata().getName();
             final Class<?> parentType = parent.getType();
             try {
                 // getter
                 Method m = getAccessor(parentType, property);
-                if (m != null && Modifier.isPublic(m.getModifiers())) {                    
+                if (m != null && Modifier.isPublic(m.getModifiers())) {
                     handle(parent);
-                    append(".").append(m.getName()).append("()");    
+                    append(".").append(m.getName()).append("()");
                 } else {
                     // field
                     Field f = getField(parentType, property);
@@ -100,11 +100,11 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
                         handle(parent);
                         append(", \""+property+"\")");
                     }
-                }                
+                }
             } catch (Exception e) {
                 throw new QueryException(e);
             }
-            
+
         } else if (pathType == PathType.DELEGATE) {
             append("(");
             append("(").append(path.getType().getName()).append(")");
@@ -120,9 +120,9 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             final Template template = getTemplate(pathType);
             for (Template.Element element : template.getElements()) {
                 Object rv = element.convert(args);
-                if (rv instanceof Expression) {                    
+                if (rv instanceof Expression) {
                     ((Expression<?>)rv).accept(this, context);
-                } else if (element.isString()) {    
+                } else if (element.isString()) {
                     append(rv.toString());
                 } else {
                     visitConstant(rv);
@@ -132,7 +132,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         return null;
 
     }
-    
+
     private Method getAccessor(Class<?> owner, String property) {
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(owner);
@@ -145,7 +145,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             return null;
         } catch (IntrospectionException e) {
             return null;
-        }        
+        }
     }
 
     private Field getField(Class<?> owner, String field) {
@@ -155,7 +155,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             return null;
         }
     }
-    
+
     @Override
     public Void visit(SubQueryExpression<?> expr, Void context) {
         throw new IllegalArgumentException("Not supported");
@@ -169,7 +169,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         } else {
             handle(source);
         }
-        
+
         if (CAST_SUFFIXES.containsKey(targetType)) {
             append(CAST_SUFFIXES.get(targetType));
         } else {
@@ -182,7 +182,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         if (Ops.aggOps.contains(operator)) {
             throw new UnsupportedOperationException("Aggregation operators are only supported as single expressions");
         }
-        if (args.size() == 2 && OPERATOR_SYMBOLS.containsKey(operator) 
+        if (args.size() == 2 && OPERATOR_SYMBOLS.containsKey(operator)
              && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())) {
             handle(args.get(0));
             append(OPERATOR_SYMBOLS.get(operator));
@@ -192,7 +192,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             }
             return;
         }
-        
+
         if (operator == Ops.STRING_CAST) {
             visitCast(operator, args.get(0), String.class);
         } else if (operator == Ops.NUMCAST) {
@@ -204,7 +204,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             super.visitOperation(type, operator, args);
         }
     }
-    
+
     private static boolean isPrimitive(Class<?> type) {
         return type.isPrimitive() || WRAPPER_TYPES.contains(type);
     }

@@ -5,13 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class CastTest extends AbstractQueryTest {
-    
+
     @Test
     public void Parents() {
         QCat cat = QAnimal.animal.as(QCat.class);
         assertEquals(QAnimal.animal, cat.getMetadata().getParent());
     }
-    
+
     @Test
     public void Cast() {
         query().from(QAnimal.animal, cats)
@@ -23,10 +23,10 @@ public class CastTest extends AbstractQueryTest {
     public void PropertyDereference() {
          Cat cat = new Cat();
          cat.setEyecolor(Color.TABBY);
-         assertEquals(Color.TABBY, 
+         assertEquals(Color.TABBY,
              CollQueryFactory.from(QAnimal.animal, cat)
                  .where(QAnimal.animal.instanceOf(Cat.class))
                  .select(QAnimal.animal.as(QCat.class).eyecolor).fetchFirst());
     }
-    
+
 }

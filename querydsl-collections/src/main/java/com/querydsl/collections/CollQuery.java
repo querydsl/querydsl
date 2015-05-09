@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,13 +36,13 @@ public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements 
 
     /**
      * Creates a new CollQuery instance
-     * 
+     *
      * @param templates serialization templates
      */
     public CollQuery(CollQueryTemplates templates) {
         this(new DefaultQueryEngine(new DefaultEvaluatorFactory(templates)));
     }
-    
+
     /**
      * Create a new CollQuery instance
      *
@@ -51,7 +51,7 @@ public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements 
     public CollQuery(QueryEngine queryEngine) {
         super(new DefaultQueryMetadata(), queryEngine);
     }
-    
+
 
     /**
      * Create a new CollQuery instance
