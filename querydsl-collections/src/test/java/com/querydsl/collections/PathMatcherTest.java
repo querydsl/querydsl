@@ -1,7 +1,7 @@
 package com.querydsl.collections;
 
-import static org.hamcrest.core.IsEqual.equalTo;
 import static com.querydsl.collections.PathMatcher.hasValue;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 

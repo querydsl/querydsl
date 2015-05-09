@@ -1,11 +1,12 @@
 package com.querydsl.collections;
 
+import static com.querydsl.core.alias.Alias.$;
+
 import java.util.Collections;
 
 import org.junit.Test;
 
 import com.querydsl.core.alias.Alias;
-import static com.querydsl.core.alias.Alias.*;
 
 public class BooleanTest {
     

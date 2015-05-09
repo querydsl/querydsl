@@ -28,18 +28,10 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
-import com.querydsl.core.QueryException;
 import com.querydsl.codegen.Serializer;
+import com.querydsl.core.QueryException;
 import com.querydsl.core.support.SerializerBase;
-import com.querydsl.core.types.Constant;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathType;
-import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.Template;
+import com.querydsl.core.types.*;
 
 /**
  * {@code CollQuerySerializer} is a {@link Serializer} implementation for the Java language

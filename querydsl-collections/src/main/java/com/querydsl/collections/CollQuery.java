@@ -13,7 +13,10 @@
  */
 package com.querydsl.collections;
 
-import com.querydsl.core.*;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.FetchableQuery;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 
 /**
