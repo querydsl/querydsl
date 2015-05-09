@@ -21,9 +21,16 @@ import org.junit.Test;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.SimplePath;
 
 public class UnionSubQueryTest {
+
+    private static final SimpleExpression<Integer> one = Expressions.numberTemplate(Integer.class, "1");
+
+    private static final SimpleExpression<Integer> two = Expressions.numberTemplate(Integer.class, "2");
+
+    private static final SimpleExpression<Integer> three = Expressions.numberTemplate(Integer.class,"3");
 
     private SQLTemplates templates = H2Templates.builder().newLineToSingleSpace().build();
 
@@ -31,10 +38,7 @@ public class UnionSubQueryTest {
 
     @Test
     public void In_Union() {
-        SimplePath<Integer> one = Expressions.path(Integer.class, "1");
-        SimplePath<Integer> two = Expressions.path(Integer.class,"2");
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
-
         Expression<?> expr = intPath.in(union(
                 select(one),
                 select(two)));
@@ -48,9 +52,6 @@ public class UnionSubQueryTest {
 
     @Test
     public void Union_SubQuery() {
-        SimplePath<Integer> one = Expressions.path(Integer.class,"1");
-        SimplePath<Integer> two = Expressions.path(Integer.class,"2");
-        SimplePath<Integer> three = Expressions.path(Integer.class,"3");
         SimplePath<Integer> col1 = Expressions.path(Integer.class, "col1");
         Expression<?> union = union(
                 select(one.as(col1)),
@@ -68,9 +69,6 @@ public class UnionSubQueryTest {
 
     @Test
     public void UnionAll_SubQuery() {
-        SimplePath<Integer> one = Expressions.path(Integer.class,"1");
-        SimplePath<Integer> two = Expressions.path(Integer.class,"2");
-        SimplePath<Integer> three = Expressions.path(Integer.class,"3");
         SimplePath<Integer> col1 = Expressions.path(Integer.class,"col1");
         Expression<?> union = unionAll(
                 select(one.as(col1)),
