@@ -17,11 +17,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name="simpletypes_")

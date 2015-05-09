@@ -13,9 +13,10 @@
  */
 package com.querydsl.jpa.impl;
 
+import java.util.Map;
+
 import javax.persistence.Parameter;
 import javax.persistence.Query;
-import java.util.Map;
 
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;

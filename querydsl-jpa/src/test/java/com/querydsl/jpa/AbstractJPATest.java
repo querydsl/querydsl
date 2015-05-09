@@ -41,7 +41,6 @@ import com.querydsl.jpa.domain.*;
 import com.querydsl.jpa.domain.Company.Rating;
 import com.querydsl.jpa.domain4.QBookMark;
 import com.querydsl.jpa.domain4.QBookVersion;
-import com.querydsl.jpa.hibernate.HibernateQuery;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;

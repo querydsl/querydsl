@@ -16,20 +16,21 @@ package com.querydsl.jpa.hibernate;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.querydsl.core.JoinType;
-import com.querydsl.core.dml.DeleteClause;
-import com.querydsl.jpa.HQLTemplates;
-import com.querydsl.jpa.JPAQueryMixin;
-import com.querydsl.jpa.JPQLSerializer;
-import com.querydsl.jpa.JPQLTemplates;
-import com.querydsl.core.support.QueryMixin;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Predicate;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
+
+import com.querydsl.core.JoinType;
+import com.querydsl.core.dml.DeleteClause;
+import com.querydsl.core.support.QueryMixin;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.HQLTemplates;
+import com.querydsl.jpa.JPAQueryMixin;
+import com.querydsl.jpa.JPQLSerializer;
+import com.querydsl.jpa.JPQLTemplates;
 
 /**
  * DeleteClause implementation for Hibernate

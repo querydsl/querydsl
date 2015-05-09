@@ -35,7 +35,6 @@ import com.querydsl.jpa.domain.JobFunction;
 import com.querydsl.jpa.domain.Location;
 import com.querydsl.jpa.domain.QDomesticCat;
 import com.querydsl.jpa.domain.QEmployee;
-import com.querydsl.jpa.impl.JPAQuery;
 
 public class JPQLSerializerTest {
 

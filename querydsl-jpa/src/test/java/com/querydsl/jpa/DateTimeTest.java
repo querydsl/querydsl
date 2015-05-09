@@ -17,7 +17,10 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.TimeExpression;
 
 public class DateTimeTest extends AbstractQueryTest {
 

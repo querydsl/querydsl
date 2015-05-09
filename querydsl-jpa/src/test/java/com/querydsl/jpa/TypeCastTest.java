@@ -17,13 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.jpa.domain.Animal;
-import com.querydsl.jpa.domain.Cat;
-import com.querydsl.jpa.domain.InheritedProperties;
-import com.querydsl.jpa.domain.QAnimal;
-import com.querydsl.jpa.domain.QCat;
-import com.querydsl.jpa.domain.QInheritedProperties;
-import com.querydsl.jpa.domain.QSuperclass;
+import com.querydsl.jpa.domain.*;
 
 public class TypeCastTest {
 

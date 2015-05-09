@@ -2,14 +2,8 @@ package com.querydsl.jpa.suites;
 
 import org.junit.BeforeClass;
 
-import com.querydsl.jpa.HibernateBase;
-import com.querydsl.jpa.HibernateSQLBase;
-import com.querydsl.jpa.JPABase;
-import com.querydsl.jpa.JPASQLBase;
-import com.querydsl.jpa.Mode;
 import com.querydsl.core.Target;
-import com.querydsl.jpa.JPAIntegrationBase;
-import com.querydsl.jpa.SerializationBase;
+import com.querydsl.jpa.*;
 
 public class HSQLDBSuiteTest extends AbstractSuite {
 

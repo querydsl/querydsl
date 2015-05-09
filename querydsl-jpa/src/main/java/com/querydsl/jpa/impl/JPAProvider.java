@@ -18,12 +18,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import com.google.common.collect.Maps;
-import com.querydsl.jpa.BatooTemplates;
-import com.querydsl.jpa.DataNucleusTemplates;
-import com.querydsl.jpa.EclipseLinkTemplates;
-import com.querydsl.jpa.HQLTemplates;
-import com.querydsl.jpa.JPQLTemplates;
-import com.querydsl.jpa.OpenJPATemplates;
+import com.querydsl.jpa.*;
 
 /**
  * {@code JPAProvider} provides detection of the JPA provider based on the EntityManager instance

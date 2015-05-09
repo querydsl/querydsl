@@ -13,20 +13,21 @@
  */
 package com.querydsl.jpa.impl;
 
+import java.util.Map;
+
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-import java.util.Map;
 
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.DeleteClause;
-import com.querydsl.jpa.JPAQueryMixin;
-import com.querydsl.jpa.JPQLSerializer;
-import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.JPAQueryMixin;
+import com.querydsl.jpa.JPQLSerializer;
+import com.querydsl.jpa.JPQLTemplates;
 
 /**
  * DeleteClause implementation for JPA

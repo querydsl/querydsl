@@ -13,8 +13,9 @@
  */
 package com.querydsl.jpa.domain;
 
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.*;
 
 import org.batoo.jpa.annotations.Index;
 

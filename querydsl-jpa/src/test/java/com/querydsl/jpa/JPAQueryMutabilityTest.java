@@ -28,9 +28,9 @@ import com.querydsl.core.QueryMutability;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.sql.SAnimal;
 import com.querydsl.jpa.sql.JPASQLQuery;
+import com.querydsl.jpa.testutil.JPATestRunner;
 import com.querydsl.sql.DerbyTemplates;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.jpa.testutil.JPATestRunner;
 
 @Ignore
 @RunWith(JPATestRunner.class)

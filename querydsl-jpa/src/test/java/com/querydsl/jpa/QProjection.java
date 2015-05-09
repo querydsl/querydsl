@@ -1,10 +1,10 @@
 package com.querydsl.jpa;
 
-import com.querydsl.jpa.domain.Cat;
-import com.querydsl.jpa.domain.QCat;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.domain.Cat;
+import com.querydsl.jpa.domain.QCat;
 
 public class QProjection extends ConstructorExpression<Projection>{
 

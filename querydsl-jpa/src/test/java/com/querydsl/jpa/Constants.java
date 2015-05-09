@@ -13,35 +13,8 @@
  */
 package com.querydsl.jpa;
 
-import com.querydsl.jpa.domain.QAccount;
-import com.querydsl.jpa.domain.QAnimal;
-import com.querydsl.jpa.domain.QAuditLog;
-import com.querydsl.jpa.domain.QBar;
-import com.querydsl.jpa.domain.QCalendar;
-import com.querydsl.jpa.domain.QCat;
-import com.querydsl.jpa.domain.QCatalog;
-import com.querydsl.jpa.domain.QCompany;
-import com.querydsl.jpa.domain.QCustomer;
-import com.querydsl.jpa.domain.QDocument;
-import com.querydsl.jpa.domain.QDomesticCat;
-import com.querydsl.jpa.domain.QFoo;
-import com.querydsl.jpa.domain.QFormula;
-import com.querydsl.jpa.domain.QItem;
-import com.querydsl.jpa.domain.QName;
-import com.querydsl.jpa.domain.QNameList;
-import com.querydsl.jpa.domain.QNamed;
-import com.querydsl.jpa.domain.QOrder;
-import com.querydsl.jpa.domain.QParameter;
-import com.querydsl.jpa.domain.QPayment;
+import com.querydsl.jpa.domain.*;
 import com.querydsl.jpa.domain.QPerson;
-import com.querydsl.jpa.domain.QPlayer;
-import com.querydsl.jpa.domain.QPrice;
-import com.querydsl.jpa.domain.QProduct;
-import com.querydsl.jpa.domain.QShow;
-import com.querydsl.jpa.domain.QStatus;
-import com.querydsl.jpa.domain.QStatusChange;
-import com.querydsl.jpa.domain.QStore;
-import com.querydsl.jpa.domain.QUser;
 
 public interface Constants {
 

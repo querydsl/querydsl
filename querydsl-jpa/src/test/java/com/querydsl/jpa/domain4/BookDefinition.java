@@ -16,13 +16,7 @@ package com.querydsl.jpa.domain4;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Basic;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
-import javax.persistence.OrderColumn;
+import javax.persistence.*;
 
 @Embeddable
 @Access(AccessType.PROPERTY)

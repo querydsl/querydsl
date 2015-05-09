@@ -3,12 +3,8 @@ package com.querydsl.jpa.suites;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
-import com.querydsl.jpa.JPABase;
-import com.querydsl.jpa.JPASQLBase;
-import com.querydsl.jpa.Mode;
 import com.querydsl.core.Target;
-import com.querydsl.jpa.JPAIntegrationBase;
-import com.querydsl.jpa.SerializationBase;
+import com.querydsl.jpa.*;
 
 @Ignore
 public class H2OpenJPATest extends AbstractJPASuite {

@@ -1,15 +1,18 @@
 package com.querydsl.jpa.support;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.Collection;
 
-import com.querydsl.jpa.domain.Cat;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+
+import com.querydsl.jpa.domain.Cat;
 
 public class JPAPathBuilderValidatorTest {
 

@@ -16,10 +16,10 @@ package com.querydsl.jpa;
 import org.junit.Test;
 
 import com.querydsl.core.domain.QCat;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
 
 public class StringOperationsTest extends AbstractQueryTest{

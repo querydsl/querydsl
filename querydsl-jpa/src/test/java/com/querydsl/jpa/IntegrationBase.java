@@ -25,13 +25,13 @@ import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
 import com.querydsl.jpa.hibernate.HibernateQuery;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import com.querydsl.jpa.hibernate.HibernateUtil;
-import com.querydsl.core.types.EntityPath;
 import com.querydsl.jpa.testutil.HibernateTestRunner;
 
 import antlr.RecognitionException;
