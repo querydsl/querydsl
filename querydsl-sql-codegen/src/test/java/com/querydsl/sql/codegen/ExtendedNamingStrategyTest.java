@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,14 +26,14 @@ public class ExtendedNamingStrategyTest {
     private NamingStrategy namingStrategy = new ExtendedNamingStrategy();
 
     private EntityType entityModel;
-    
+
     @Before
     public void setUp() {
         entityModel = new EntityType(Types.OBJECT);
         //entityModel.addAnnotation(new TableImpl("OBJECT"));
         entityModel.getData().put("table", "OBJECT");
     }
-    
+
     @Test
     public void GetClassName() {
         assertEquals("UserData", namingStrategy.getClassName("user_data"));
@@ -49,16 +49,16 @@ public class ExtendedNamingStrategyTest {
         assertEquals("name", namingStrategy.getPropertyName("name", entityModel));
         assertEquals("userId", namingStrategy.getPropertyName("user_id", entityModel));
         assertEquals("accountEventId", namingStrategy.getPropertyName("accountEvent_id", entityModel));
-        
+
         assertEquals("_123abc", namingStrategy.getPropertyName("123abc", entityModel));
         assertEquals("_123Abc", namingStrategy.getPropertyName("123 abc", entityModel));
     }
-    
+
     @Test
     public void GetPropertyName_For_Column_With_Spaces() {
         assertEquals("userId", namingStrategy.getPropertyName("user id", entityModel));
     }
-    
+
     @Test
     public void GetPropertyNameForInverseForeignKey() {
         assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
@@ -67,26 +67,26 @@ public class ExtendedNamingStrategyTest {
         // fk_category_events
         assertEquals("events", namingStrategy.getPropertyNameForInverseForeignKey("fk_category_events", entityModel));
     }
-    
+
     @Test
     public void GetPropertyNameForForeignKey() {
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
-        assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));   
+        assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));
         // fk_order_rows
         assertEquals("order", namingStrategy.getPropertyNameForForeignKey("fk_order_rows", entityModel));
         // fk_category_events
         assertEquals("category", namingStrategy.getPropertyNameForForeignKey("fk_category_events", entityModel));
     }
-    
+
     @Test
     public void GetPropertyNameForPrimaryKey() {
         assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("pk_superior", entityModel));
-        assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("PK_SUPERIOR", entityModel));        
+        assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("PK_SUPERIOR", entityModel));
     }
-    
+
     @Test
     public void GetDefaultVariableName() {
         assertEquals("object", namingStrategy.getDefaultVariableName(entityModel));
     }
-    
+
 }

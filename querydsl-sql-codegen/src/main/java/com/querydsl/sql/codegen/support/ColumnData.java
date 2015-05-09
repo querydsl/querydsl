@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,15 +18,15 @@ package com.querydsl.sql.codegen.support;
  *
  */
 public class ColumnData {
-    
+
     private final String name;
-    
+
     private final String type;
-    
+
     private boolean nullAllowed = true;
-    
+
     private boolean autoIncrement;
-    
+
     private Integer size;
 
     public ColumnData(String name, String type) {
@@ -65,5 +65,5 @@ public class ColumnData {
     public void setAutoIncrement(boolean autoIncrement) {
         this.autoIncrement = autoIncrement;
     }
-    
+
 }

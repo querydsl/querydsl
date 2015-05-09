@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,20 +23,20 @@ import com.querydsl.codegen.QueryTypeFactory;
 /**
  * {@code SQLQueryTypeFactory} is a {@link QueryTypeFactory} implementation with configuration
  * data from this module
- * 
+ *
  * @author tiwe
  *
  */
 public final class SQLQueryTypeFactory implements QueryTypeFactory{
 
     private final String packageName, beanPackageName;
-    
+
     private final int stripStart, stripEnd;
 
     private final String prefix, suffix;
-    
+
     private final boolean replacePackage;
-    
+
     @Inject
     public SQLQueryTypeFactory(
             @Named(SQLCodegenModule.PACKAGE_NAME) String packageName,
@@ -60,7 +60,7 @@ public final class SQLQueryTypeFactory implements QueryTypeFactory{
         if (replacePackage) {
             packageName = this.packageName + packageName.substring(beanPackageName.length());
         }
-        String simpleName = type.getSimpleName();        
+        String simpleName = type.getSimpleName();
         simpleName = prefix + simpleName.substring(stripStart, simpleName.length()-stripEnd) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
     }

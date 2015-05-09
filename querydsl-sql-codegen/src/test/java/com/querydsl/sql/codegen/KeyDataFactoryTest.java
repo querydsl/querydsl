@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,7 @@ import com.querydsl.sql.codegen.support.PrimaryKeyData;
 
 
 public class KeyDataFactoryTest extends AbstractJDBCTest{
-        
+
     @Test
     public void test() throws SQLException{
         statement.execute("drop table employee if exists");
@@ -48,13 +48,13 @@ public class KeyDataFactoryTest extends AbstractJDBCTest{
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
-        
+
         KeyDataFactory keyDataFactory = new KeyDataFactory(new DefaultNamingStrategy(), "Q","","test", false);
-        
+
         DatabaseMetaData md = connection.getMetaData();
-        
+
         // EMPLOYEE
-        
+
         // primary key
         Map<String, PrimaryKeyData> primaryKeys = keyDataFactory.getPrimaryKeys(md, null, null, "EMPLOYEE");
         assertFalse(primaryKeys.isEmpty());
@@ -67,9 +67,9 @@ public class KeyDataFactoryTest extends AbstractJDBCTest{
         assertFalse(importedKeys.isEmpty());
         assertTrue(importedKeys.containsKey("FK_SUPERIOR"));
         assertTrue(importedKeys.containsKey("FK_SURVEY"));
-        
+
         // SURVEY
-        
+
         // primary key
         primaryKeys = keyDataFactory.getPrimaryKeys(md, null, null, "SURVEY");
         assertFalse(primaryKeys.isEmpty());
@@ -80,7 +80,7 @@ public class KeyDataFactoryTest extends AbstractJDBCTest{
         // foreign keys
         importedKeys = keyDataFactory.getImportedKeys(md, null, null, "SURVEY");
         assertTrue(importedKeys.isEmpty());
-        
+
     }
 
 }

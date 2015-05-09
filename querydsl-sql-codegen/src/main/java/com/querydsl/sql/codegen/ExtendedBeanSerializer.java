@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,28 +28,28 @@ import com.querydsl.sql.codegen.support.PrimaryKeyData;
 /**
  * {@code ExtendedBeanSerializer} outputs primary key based {@code equals}, {@code hashCode} and
  * {@code toString} implementations
- * 
+ *
  * @author tiwe
  *
  */
 public class ExtendedBeanSerializer extends BeanSerializer {
 
     private static final Parameter o = new Parameter("o", Types.OBJECT);
-    
+
     @SuppressWarnings("unchecked")
     @Override
     protected void bodyEnd(EntityType model, CodeWriter writer) throws IOException {
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
-        
+
         if (primaryKeys == null || primaryKeys.isEmpty()) {
             return;
         }
-        
+
         Map<String, Property> columnToProperty = new HashMap<String, Property>();
         for (Property property : model.getProperties()) {
             columnToProperty.put(property.getAnnotation(Column.class).value(), property);
         }
-        
+
         StringBuilder anyColumnIsNull = new StringBuilder();
         StringBuilder columnEquals = new StringBuilder();
         StringBuilder toString = new StringBuilder();
@@ -71,11 +71,11 @@ public class ExtendedBeanSerializer extends BeanSerializer {
                 properties.add(propName);
             }
         }
-        
+
         // equals
         writer.annotation(Override.class);
         writer.beginPublicMethod(Types.BOOLEAN_P, "equals", o);
-        writer.line("if (", anyColumnIsNull + ") {");        
+        writer.line("if (", anyColumnIsNull + ") {");
         writer.line("    return super.equals(o);");
         writer.line("}");
         writer.line("if (!(o instanceof ", model.getSimpleName(), ")) {");
@@ -84,11 +84,11 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         writer.line(model.getSimpleName(), " obj = (", model.getSimpleName(), ")o;");
         writer.line("return ", columnEquals + ";");
         writer.end();
-        
+
         // hashCode
         writer.annotation(Override.class);
         writer.beginPublicMethod(Types.INT, "hashCode");
-        writer.line("if (", anyColumnIsNull + ") {");        
+        writer.line("if (", anyColumnIsNull + ") {");
         writer.line("    return super.hashCode();");
         writer.line("}");
         writer.line("final int prime = 31;");
@@ -98,16 +98,16 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         }
         writer.line("return result;");
         writer.end();
-        
+
         // toString
         writer.annotation(Override.class);
         writer.beginPublicMethod(Types.STRING, "toString");
-//        writer.line("if (", anyColumnIsNull + ") {");      
+//        writer.line("if (", anyColumnIsNull + ") {");
 //        writer.line("    return super.toString();");
 //        writer.line("}");
         writer.line("return ", toString + ";");
         writer.end();
-        
+
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,11 +20,11 @@ package com.querydsl.sql.codegen.support;
 public class IndexData {
 
     private final String name;
-    
+
     private final String[] columns;
 
     private boolean unique;
-    
+
     public IndexData(String name, String[] columns) {
         this.name = name;
         this.columns = columns.clone();
@@ -45,6 +45,6 @@ public class IndexData {
     public void setUnique(boolean unique) {
         this.unique = unique;
     }
-    
-    
+
+
 }
