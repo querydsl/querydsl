@@ -45,7 +45,7 @@ public class QueryInitTest {
     }
 
     @QueryEntity
-    public static class PEntity2Super{
+    public static class PEntity2Super {
 
         public PEntity3 e333;
 
@@ -54,7 +54,7 @@ public class QueryInitTest {
     }
 
     @QueryEntity
-    public static class PEntity2 extends PEntity2Super{
+    public static class PEntity2 extends PEntity2Super {
 
         public PEntity3 e3;
 
@@ -62,7 +62,7 @@ public class QueryInitTest {
     }
 
     @QueryEntity
-    public static class PEntity3{
+    public static class PEntity3 {
 
         public PEntity4 e4;
 
@@ -70,7 +70,7 @@ public class QueryInitTest {
     }
 
     @QueryEntity
-    public static class PEntity4{
+    public static class PEntity4 {
 
         public PEntity e1;
 

@@ -173,7 +173,7 @@ public class QBeanTest {
 
     @Test
     public void skipNulls() {
-        QBean bean = Projections.bean(Object.class);
+        QBean<Object> bean = Projections.bean(Object.class);
         assertEquals(bean, bean);
         assertEquals(bean.skipNulls(), bean.skipNulls());
         assertFalse(bean.skipNulls().equals(bean));

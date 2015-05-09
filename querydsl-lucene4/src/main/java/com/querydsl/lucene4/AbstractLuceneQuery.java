@@ -63,7 +63,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     private List<Filter> filters = ImmutableList.of();
 
     @Nullable
-    private Filter _filter;
+    private Filter filter;
 
     @Nullable
     private Sort querySort;
@@ -140,10 +140,10 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     @SuppressWarnings("unchecked")
     public Q filter(Filter filter) {
         if (filters.isEmpty()) {
-            this._filter = filter;
+            this.filter = filter;
             filters = ImmutableList.of(filter);
         } else {
-            this._filter = null;
+            this.filter = null;
             if (filters.size() == 1) {
                 filters = new ArrayList<Filter>();
             }
@@ -153,10 +153,10 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     }
 
     private Filter getFilter() {
-        if (_filter == null && !filters.isEmpty()) {
-            _filter = new ChainedFilter(filters.toArray(new Filter[filters.size()]));
+        if (filter == null && !filters.isEmpty()) {
+            filter = new ChainedFilter(filters.toArray(new Filter[filters.size()]));
         }
-        return _filter;
+        return filter;
     }
 
     @Override

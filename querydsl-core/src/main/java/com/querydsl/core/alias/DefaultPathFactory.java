@@ -47,7 +47,7 @@ public class DefaultPathFactory implements PathFactory {
     }
 
     @Override
-    public <T extends Comparable<?>> Path<T> createComparablePath( Class<T> type, PathMetadata metadata) {
+    public <T extends Comparable<?>> Path<T> createComparablePath(Class<T> type, PathMetadata metadata) {
         return Expressions.comparablePath(type, metadata);
     }
 
@@ -71,7 +71,7 @@ public class DefaultPathFactory implements PathFactory {
     }
 
     @Override
-    public <T extends Enum<T>> Path<T> createEnumPath( Class<T> type, PathMetadata metadata) {
+    public <T extends Enum<T>> Path<T> createEnumPath(Class<T> type, PathMetadata metadata) {
         return Expressions.enumPath(type, metadata);
     }
 

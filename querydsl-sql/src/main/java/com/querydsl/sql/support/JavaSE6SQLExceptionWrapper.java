@@ -58,7 +58,7 @@ class JavaSE6SQLExceptionWrapper extends SQLExceptionWrapper {
         return rv;
     }
 
-    private static class WrappedSQLCauseException extends Exception {
+    private static final class WrappedSQLCauseException extends Exception {
 
         private static final long serialVersionUID = 1L;
 

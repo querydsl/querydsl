@@ -23,7 +23,7 @@ import com.querydsl.core.annotations.QueryEntity;
 public class ComparableTest {
 
     @QueryEntity
-    public static class CustomComparable implements Comparable<CustomComparable>{
+    public static class CustomComparable implements Comparable<CustomComparable> {
 
         @Override
         public int compareTo(CustomComparable o) {
@@ -37,7 +37,7 @@ public class ComparableTest {
     }
 
     @QueryEmbeddable
-    public static class CustomComparable2 implements Comparable<CustomComparable2>{
+    public static class CustomComparable2 implements Comparable<CustomComparable2> {
 
         @Override
         public int compareTo(CustomComparable2 o) {

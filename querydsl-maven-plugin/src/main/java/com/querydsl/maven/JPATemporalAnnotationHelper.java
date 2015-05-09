@@ -25,7 +25,7 @@ import com.querydsl.codegen.AnnotationHelper;
  *
  * @author dyorgio
  */
-public class JPATemporalAnnotationHelper implements AnnotationHelper {
+public final class JPATemporalAnnotationHelper implements AnnotationHelper {
 
         public static final JPATemporalAnnotationHelper INSTANCE = new JPATemporalAnnotationHelper();
 

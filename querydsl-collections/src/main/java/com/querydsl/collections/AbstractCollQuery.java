@@ -195,7 +195,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     public QueryResults<T> fetchResults() {
         Expression<T> projection = (Expression<T>)queryMixin.getMetadata().getProjection();
         long count = queryEngine.count(getMetadata(), iterables);
-        if (count > 0l) {
+        if (count > 0L) {
             List<T> list = queryEngine.list(getMetadata(), iterables, projection);
             reset();
             return new QueryResults<T>(list, getMetadata().getModifiers(), count);
@@ -209,7 +209,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     public T fetchOne() {
         queryMixin.setUnique(true);
         if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
-            limit(2l);
+            limit(2L);
         }
         return uniqueResult(iterate());
     }

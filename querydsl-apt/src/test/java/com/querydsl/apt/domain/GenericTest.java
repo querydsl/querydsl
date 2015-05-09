@@ -55,12 +55,12 @@ public class GenericTest extends AbstractTest {
         GenericNumberType<Date> num3;
     }
 
-    public static class GenericSimpleType<T extends GenericSimpleType<T>>{
+    public static class GenericSimpleType<T extends GenericSimpleType<T>> {
 
     }
 
     @SuppressWarnings("unchecked")
-    public static class GenericComparableType<T> implements Comparable<GenericComparableType<T>>{
+    public static class GenericComparableType<T> implements Comparable<GenericComparableType<T>> {
         @Override
         public int compareTo(GenericComparableType<T> o) {
             return 0;
@@ -73,7 +73,7 @@ public class GenericTest extends AbstractTest {
     }
 
     @SuppressWarnings({ "unchecked", "serial" })
-    public static class GenericNumberType<T> extends Number implements Comparable<GenericNumberType<T>>{
+    public static class GenericNumberType<T> extends Number implements Comparable<GenericNumberType<T>> {
         @Override
         public double doubleValue() {
             return 0;

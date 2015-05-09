@@ -161,8 +161,12 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             Set<Expression<?>> exprs = Sets.newHashSet();
             QueryMetadata md = getMetadata();
             exprs.addAll(md.getGroupBy());
-            if (md.getWhere() != null) exprs.add(md.getWhere());
-            if (md.getHaving() != null) exprs.add(md.getHaving());
+            if (md.getWhere() != null) {
+                exprs.add(md.getWhere());
+            }
+            if (md.getHaving() != null) {
+                exprs.add(md.getHaving());
+            }
             List<Path<?>> paths = Lists.newArrayList();
             // extract paths
             PathsExtractor.DEFAULT.visit(exprs, paths);

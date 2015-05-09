@@ -34,7 +34,7 @@ import com.querydsl.core.QueryException;
  */
 public final class ExpressionUtils {
 
-    private static class UnderscoreTemplates extends Templates {
+    private static final class UnderscoreTemplates extends Templates {
         private UnderscoreTemplates() {
             add(PathType.PROPERTY, "{0}_{1}");
             add(PathType.COLLECTION_ANY, "{0}");

@@ -97,7 +97,7 @@ public class InterfaceTypeTest extends AbstractTest {
     }
 
     @Test
-    public void QInterfaceType5() throws SecurityException, NoSuchFieldException{
+    public void QInterfaceType5() throws SecurityException, NoSuchFieldException {
         Class<?> cl = QInterfaceTypeTest_InterfaceType5.class;
         cl.getField("prop");
         cl.getField("prop2");

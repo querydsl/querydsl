@@ -212,7 +212,9 @@ public class QBean<T> extends FactoryExpressionBase<T> {
                     Object value = a[i];
                     if (value != null) {
                         Field field = fields.get(i);
-                        if (field != null) field.set(rv, value);
+                        if (field != null) {
+                            field.set(rv, value);
+                        }
                     }
                 }
             } else {
@@ -220,7 +222,9 @@ public class QBean<T> extends FactoryExpressionBase<T> {
                     Object value = a[i];
                     if (value != null) {
                         Method setter = setters.get(i);
-                        if (setter != null) setter.invoke(rv, value);
+                        if (setter != null) {
+                            setter.invoke(rv, value);
+                        }
                     }
                 }
             }

@@ -23,7 +23,7 @@ public class Generic15Test extends AbstractTest {
     }
 
     @Entity
-    public static class MyCompound extends Compound<MyContainable>{
+    public static class MyCompound extends Compound<MyContainable> {
     }
 
     @Entity

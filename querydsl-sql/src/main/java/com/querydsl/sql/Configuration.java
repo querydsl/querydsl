@@ -398,7 +398,7 @@ public final class Configuration {
      * @param endDecimal inclusive end of range
      * @param javaType java type
      */
-    public void registerNumeric (int beginTotal, int endTotal, int beginDecimal, int endDecimal, Class <?> javaType) {
+    public void registerNumeric(int beginTotal, int endTotal, int beginDecimal, int endDecimal, Class <?> javaType) {
         for (int total = beginTotal; total <= endTotal; total++) {
             for (int decimal = beginDecimal; decimal <= endDecimal; decimal++) {
                 registerNumeric(total, decimal, javaType);

@@ -30,7 +30,7 @@ public final class QueryResults<T> implements Serializable {
     private static final long serialVersionUID = -4591506147471300909L;
 
     private static final QueryResults<Object> EMPTY = new QueryResults<Object>(
-            ImmutableList.of(), Long.MAX_VALUE, 0l, 0l);
+            ImmutableList.of(), Long.MAX_VALUE, 0L, 0L);
 
     @SuppressWarnings("unchecked")
     public static <T> QueryResults<T> emptyResults() {
@@ -51,7 +51,7 @@ public final class QueryResults<T> implements Serializable {
      */
     public QueryResults(List<T> results, @Nullable Long limit, @Nullable Long offset, long total) {
         this.limit = limit != null ? limit : Long.MAX_VALUE;
-        this.offset = offset != null ? offset : 0l;
+        this.offset = offset != null ? offset : 0L;
         this.total = total;
         this.results = results;
     }

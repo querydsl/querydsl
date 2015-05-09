@@ -9,7 +9,7 @@ import org.junit.Ignore;
 public class Enum4Test {
 
     @Entity
-    public static class Product{
+    public static class Product {
         @Id
         long objectId;
 

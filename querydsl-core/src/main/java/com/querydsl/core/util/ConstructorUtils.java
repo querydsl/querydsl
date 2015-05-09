@@ -34,7 +34,9 @@ import com.querydsl.core.types.ExpressionException;
  *
  * @author Shredder121
  */
-public class ConstructorUtils {
+public final class ConstructorUtils {
+
+    private ConstructorUtils() {}
 
     /**
      * The parameter list for the default constructor;
@@ -153,7 +155,7 @@ public class ConstructorUtils {
                 }
             };
 
-    protected static abstract class ArgumentTransformer implements Function<Object[], Object[]> {
+    protected abstract static class ArgumentTransformer implements Function<Object[], Object[]> {
 
         @Nullable
         protected Constructor<?> constructor;
@@ -171,7 +173,7 @@ public class ConstructorUtils {
         public abstract boolean isApplicable();
     }
 
-    private static class VarArgsTransformer extends ArgumentTransformer {
+    private static final class VarArgsTransformer extends ArgumentTransformer {
 
         protected final Class<?> componentType;
 
@@ -219,7 +221,7 @@ public class ConstructorUtils {
 
     }
 
-    private static class PrimitiveTransformer extends ArgumentTransformer {
+    private static final class PrimitiveTransformer extends ArgumentTransformer {
 
         private final Set<Integer> primitiveLocations;
 

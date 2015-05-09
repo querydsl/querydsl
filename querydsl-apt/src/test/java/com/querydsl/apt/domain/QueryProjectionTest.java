@@ -116,7 +116,7 @@ public class QueryProjectionTest {
     }
 
     @Test
-    public void Dto_Case() throws SecurityException, NoSuchMethodException{
+    public void Dto_Case() throws SecurityException, NoSuchMethodException {
         NumberExpression<Long> longExpr = Expressions.numberPath(Long.class, "x");
         StringExpression stringExpr = Expressions.stringPath("x");
 

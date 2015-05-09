@@ -23,7 +23,9 @@ import com.querydsl.spatial.SpatialOps;
  * {@code HibernateSpatialSupport} provides mappings from operators to serialization templates
  * to be used in Hibernate Spatial
  */
-public class HibernateSpatialSupport {
+public final class HibernateSpatialSupport {
+
+    private HibernateSpatialSupport() { }
 
     public static Map<Operator, String> getSpatialOps() {
         Map<Operator, String> ops = Maps.newHashMap();
