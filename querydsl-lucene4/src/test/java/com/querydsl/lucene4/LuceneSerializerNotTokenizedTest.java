@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -71,7 +71,7 @@ public class LuceneSerializerNotTokenizedTest {
     public void Before() throws Exception {
         serializer = new LuceneSerializer(false, false);
         idx = new RAMDirectory();
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31, 
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31,
                 new StandardAnalyzer(Version.LUCENE_30))
             .setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         writer = new IndexWriter(idx, config);
