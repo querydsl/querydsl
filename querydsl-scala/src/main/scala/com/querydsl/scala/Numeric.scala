@@ -15,22 +15,22 @@
 package com.querydsl.scala
 
 object Numeric {
-  implicit val byte = new Numeric[Byte]   
+  implicit val byte = new Numeric[Byte]
   implicit val byte2 = new Numeric[java.lang.Byte]
-  implicit val double = new Numeric[Double]  
+  implicit val double = new Numeric[Double]
   implicit val double2 = new Numeric[java.lang.Double]
-  implicit val float = new Numeric[Float]  
+  implicit val float = new Numeric[Float]
   implicit val float2 = new Numeric[java.lang.Float]
-  implicit val int = new Numeric[Int]  
+  implicit val int = new Numeric[Int]
   implicit val int2 = new Numeric[java.lang.Integer]
-  implicit val long = new Numeric[Long]  
+  implicit val long = new Numeric[Long]
   implicit val long2 = new Numeric[java.lang.Long]
-  implicit val short = new Numeric[Short]        
+  implicit val short = new Numeric[Short]
   implicit val short2 = new Numeric[java.lang.Short]
-    
+
   implicit val bigDecimal = new Numeric[java.math.BigDecimal]
   implicit val bigInteger = new Numeric[java.math.BigInteger]
-  
+
   implicit val richByte = new Numeric[scala.runtime.RichByte]
   implicit val richChar = new Numeric[scala.runtime.RichChar]
   implicit val richDouble = new Numeric[scala.runtime.RichDouble]
@@ -38,9 +38,9 @@ object Numeric {
   implicit val richInt = new Numeric[scala.runtime.RichInt]
   implicit val richLong = new Numeric[scala.runtime.RichLong]
   implicit val richShort = new Numeric[scala.runtime.RichShort]
-  
+
 }
-  
+
 /**
  * Type class for Number types
  */

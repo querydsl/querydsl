@@ -37,22 +37,22 @@ class JPASuperclass {
 
 @Entity
 class JPAEscapedWords {
-  
-  var `object`: String = _  
-    
+
+  var `object`: String = _
+
   var `type`: String = _
-      
+
   var `var`: String = _
-    
+
   var `val`: String = _
-    
+
 }
 
 @Entity
 class JPAEntityClass extends JPASuperclass {
 
   // FIXME
-  //  var comparable: Comparable[_] = _   
+  //  var comparable: Comparable[_] = _
 
   var code: String = _
 

@@ -19,7 +19,7 @@ class GenericExporterTest {
     val targetFolder = new File("target/gen1")
     CompileTestUtils.assertCompileSuccess(targetFolder)
   }
-  
+
 }
 
 

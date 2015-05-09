@@ -10,7 +10,7 @@ import org.junit._
 class ScalaBeanSerializerTest {
 
   val typeMappings = ScalaTypeMappings.create
-  
+
   var writer = new StringWriter()
 
   val entityType = EntityTypes.entityType
@@ -21,9 +21,9 @@ class ScalaBeanSerializerTest {
     serializer.javaBeanSupport = true
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
-    
+
     //println(writer.toString)
-    
+
     var toMatch = """package com.querydsl
     import scala.beans.BeanProperty
     import java.util.List
@@ -42,14 +42,14 @@ class ScalaBeanSerializerTest {
     @BeanProperty var mapField: Map[DomainClass, DomainClass] = _
     @BeanProperty var setField: java.util.Set[DomainClass] = _
     @BeanProperty var time: java.sql.Time = _"""
-    
+
     val str = writer.toString.replaceAll("\\s+", " ")
     //println(str)
- 
+
     toMatch.split("\\n").map(_.trim).foreach { line =>
       assertTrue(line, str.contains(line))
     }
-    
+
   }
 
   @Test

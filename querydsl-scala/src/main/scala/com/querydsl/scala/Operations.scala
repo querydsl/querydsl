@@ -18,18 +18,18 @@ import com.querydsl.core.types._
 
 /**
  * Factory for Operations
- * 
+ *
  * @author tiwe
  *
  */
 object Operations {
 
   type Op = Operator
-  
+
   def dsl[T](t: Class[_ <: T], op: Op, args: Ex[_]*): DslExpression[T] = {
     new OperationImpl[T](t, op, args: _*) with DslExpression[T]
   }
-  
+
   def simple[T](t: Class[_ <: T], op: Op, args: Ex[_]*): SimpleExpression[T] = {
     new OperationImpl[T](t, op, args: _*) with SimpleExpression[T]
   }
@@ -52,7 +52,7 @@ object Operations {
 
   def number[T : Numeric](t: Class[_ <: T], op: Op, args: Ex[_]*): NumberExpression[T] =
       new OperationImpl[T](t, op, args: _*) with NumberExpression[T] {
-        override def negate = if (getOperator == Ops.NEGATE) getArg(0).asInstanceOf[NumberExpression[T]] else super.negate      
+        override def negate = if (getOperator == Ops.NEGATE) getArg(0).asInstanceOf[NumberExpression[T]] else super.negate
         override def numeric = implicitly[Numeric[T]]
       }
 

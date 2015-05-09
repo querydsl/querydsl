@@ -47,12 +47,12 @@ object CompileTestUtils {
         file.delete()
     }
   }
-  
+
   private def recursiveFileList(file: File): Array[File] = {
     if (file.isDirectory) {
       file.listFiles.flatMap(recursiveFileList)
     } else {
       Array(file)
     }
-  }  
+  }
 }

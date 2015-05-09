@@ -2,7 +2,7 @@ package test
 
 object Employee extends QEmployee("employee") {
   override def as(variable: String) = new QEmployee(variable)
-  
+
 }
 
 class Employee {

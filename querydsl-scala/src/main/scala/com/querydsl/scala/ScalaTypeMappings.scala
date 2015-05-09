@@ -20,14 +20,14 @@ import com.querydsl.core.types.{Expression, Path}
 
 /**
  * Factory for TypeMappings creation
- * 
+ *
  * @author tiwe
  *
  */
 object ScalaTypeMappings {
-  
+
   def create: TypeMappings = new ScalaTypeMappings()
-  
+
 }
 
 class ScalaTypeMappings extends TypeMappings {
@@ -41,11 +41,11 @@ class ScalaTypeMappings extends TypeMappings {
   register(TypeCategory.NUMERIC, classOf[NumberExpression[_]], classOf[NumberPath[_]], classOf[NumberTemplate[_]])
   register(TypeCategory.SIMPLE, classOf[Expression[_]], classOf[SimplePath[_]], classOf[SimpleTemplate[_]])
   register(TypeCategory.ARRAY, classOf[Expression[_]], classOf[ArrayPath[_]], classOf[SimpleTemplate[_]])
-    
+
   register(TypeCategory.COLLECTION, classOf[Expression[_]], classOf[SimplePath[_]], classOf[SimpleTemplate[_]])
   register(TypeCategory.SET, classOf[Expression[_]], classOf[SimplePath[_]], classOf[SimpleTemplate[_]])
   register(TypeCategory.LIST, classOf[Expression[_]], classOf[SimplePath[_]], classOf[SimpleTemplate[_]])
-  register(TypeCategory.MAP, classOf[Expression[_]], classOf[SimplePath[_]], classOf[SimpleTemplate[_]])    
+  register(TypeCategory.MAP, classOf[Expression[_]], classOf[SimplePath[_]], classOf[SimpleTemplate[_]])
   register(TypeCategory.CUSTOM, classOf[Expression[_]], classOf[Path[_]], classOf[SimpleTemplate[_]])
-  register(TypeCategory.ENTITY, classOf[Expression[_]], classOf[Path[_]], classOf[SimpleTemplate[_]]) 
+  register(TypeCategory.ENTITY, classOf[Expression[_]], classOf[Path[_]], classOf[SimpleTemplate[_]])
 }

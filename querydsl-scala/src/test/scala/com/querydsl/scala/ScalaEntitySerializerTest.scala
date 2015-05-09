@@ -36,7 +36,7 @@ class ScalaEntitySerializerTest {
         ("other", entityType))) {
       entityType.addProperty(new Property(entityType, name, t))
     }
-        
+
 
   }
 

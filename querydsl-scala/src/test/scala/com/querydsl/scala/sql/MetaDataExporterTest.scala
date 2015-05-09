@@ -78,7 +78,7 @@ class MetaDataExporterTest {
 
     CompileTestUtils.assertCompileSuccess(directory)
   }
-    
+
   @Test
   def Generate_With_BeanTypes() {
     val directory = new java.io.File("target/jdbcgen2")
@@ -95,7 +95,7 @@ class MetaDataExporterTest {
 
     CompileTestUtils.assertCompileSuccess(directory)
   }
-    
+
   @Test
   def Generate_With_Schema() {
     val directory = new java.io.File("target/jdbcgen3")
@@ -112,7 +112,7 @@ class MetaDataExporterTest {
 
     CompileTestUtils.assertCompileSuccess(directory)
   }
-    
+
   @Test
   def Generate_With_BeanTypes_And_Schema() {
     val directory = new java.io.File("target/jdbcgen4")
@@ -130,5 +130,5 @@ class MetaDataExporterTest {
 
     CompileTestUtils.assertCompileSuccess(directory)
   }
-    
+
 }

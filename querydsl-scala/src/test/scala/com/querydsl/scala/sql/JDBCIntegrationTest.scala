@@ -121,40 +121,40 @@ class JDBCIntegrationTest extends SQLHelpers {
     assertEquals("def", query.from(survey).where(survey.id eq 2).select(survey.name).fetchOne())
     assertEquals("Bob", query.from(employee).where(employee.lastname eq "Smith").select(employee.firstname).fetchOne())
     assertEquals("John", query.from(employee).where(employee.lastname eq "Doe").select(employee.firstname).fetchOne())
-  }  
+  }
 
   @Test
   def Insert {
     val s = new Survey()
     s.name = "XXX"
-          
+
     val id = insert(survey) populate(s) executeWithKey(survey.id)
     val sNew = query from survey where (survey.id === id) select (survey) fetchOne()
     assertEquals(s.name, sNew.name)
   }
-  
+
   @Test
   def Update {
     val s = new Survey()
     s.name = "XXX"
-          
+
     val id = insert(survey) populate(s) executeWithKey(survey.id)
     s.id = id
     s.name = "YYY"
-      
+
     val count = update(survey) populate(s) execute()
     assertTrue(count > 0)
-      
+
     val sNew = query from survey where (survey.id === id) select (survey) fetchOne()
     assertEquals(s.name, sNew.name)
   }
-  
+
   @Test
   def Delete {
     val s = new Survey()
     s.name = "XXX"
-          
-    val id = insert(survey) populate(s) executeWithKey(survey.id)      
+
+    val id = insert(survey) populate(s) executeWithKey(survey.id)
     val count = delete(survey) where(survey.id === id) execute()
     assertTrue(count > 0)
   }
@@ -162,9 +162,9 @@ class JDBCIntegrationTest extends SQLHelpers {
   def query = new SQLQuery[Void](connection, configuration)
 
   def delete(path: RelationalPath[_]) = new SQLDeleteClause(connection, configuration, path)
-  
+
   def insert(path: RelationalPath[_]) = new SQLInsertClause(connection, configuration, path)
-  
+
   def update(path: RelationalPath[_]) = new SQLUpdateClause(connection, configuration, path)
-  
+
 }

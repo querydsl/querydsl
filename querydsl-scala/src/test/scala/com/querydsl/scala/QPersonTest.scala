@@ -5,30 +5,30 @@ import org.junit.{Assert, Test}
 class QPersonTest {
 
   val person = QPerson as "person"
-      
-  @Test 
+
+  @Test
   def EntityPath {
     assertEquals("person.other.firstName", person.other.firstName)
   }
-  
-  @Test 
-  def Collection_Any {  
+
+  @Test
+  def Collection_Any {
     assertEquals("any(person.javaCollection) = Bob", person.javaCollection.any === "Bob")
   }
-  
-  @Test 
+
+  @Test
   def List_Get {
     assertEquals("person.javaList.get(0) = Bob", person.javaList(0) === "Bob")
   }
-  
+
   @Test
   def List_Get_EntityPath {
-    assertEquals("person.listOfPersons.get(0).firstName is not null", 
+    assertEquals("person.listOfPersons.get(0).firstName is not null",
         person.listOfPersons(0).firstName isNotNull)
   }
-    
+
   def assertEquals(expected: String, actual: Any) {
     Assert.assertEquals(expected, actual.toString)
-  }  
+  }
 
 }

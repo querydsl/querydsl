@@ -6,11 +6,11 @@ import org.junit._
 import test._
 
 class PathsTest {
-  
+
   @Test
   def Projection {
     val projection = Employee.getProjection.asInstanceOf[FactoryExpression[_]]
     assertEquals(4, projection.getArgs.size)
   }
-  
-}  
+
+}

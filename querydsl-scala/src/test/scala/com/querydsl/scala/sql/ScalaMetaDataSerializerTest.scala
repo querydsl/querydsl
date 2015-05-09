@@ -20,14 +20,14 @@ class ScalaMetaDataSerializerTest {
   @Before
   def setUp() {
     // type
-    val typeModel = new SimpleType(TypeCategory.ENTITY, 
+    val typeModel = new SimpleType(TypeCategory.ENTITY,
         "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false, false)
     entityType = new EntityType(typeModel)
     //entityType.addAnnotation(new TableImpl("DOMAIN_TYPE"))
     entityType.getData.put("table", "DOMAIN_TYPE")
 
     // properties
-    List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], 
+    List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer],
          classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
       .foreach(cl => {
         val classType = new ClassType(TypeCategory.get(cl.getName), cl)
@@ -47,7 +47,7 @@ class ScalaMetaDataSerializerTest {
     val str = writer.toString
     //System.err.println(str)
     assertTrue("companion object isn't before class", str.indexOf("object") < str.indexOf("class"))
-    //assertTrue("companion object isn't before annotations", str.indexOf("object") < str.indexOf("@Table"))    
+    //assertTrue("companion object isn't before annotations", str.indexOf("object") < str.indexOf("@Table"))
   }
-  
+
 }
