@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,11 +25,11 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 
 public class BeanPathTest {
-    
+
     public static class SubClass extends BeanPathTest {
-        
+
     }
-    
+
     public static class MyBeanPath extends BeanPath<BeanPathTest>{
 
         private static final long serialVersionUID = 6225684967115368814L;
@@ -37,64 +37,64 @@ public class BeanPathTest {
         public MyBeanPath(PathMetadata metadata) {
             super(BeanPathTest.class, metadata);
         }
-        
+
         public MyBeanPath(PathMetadata metadata, @Nullable PathInits inits) {
             super(BeanPathTest.class, metadata);
         }
-        
+
     }
-    
+
     private BeanPath<BeanPathTest> beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, "p");
-    
+
     @Test
-    public void As_Path() {        
+    public void As_Path() {
         SimplePath<BeanPathTest> simplePath = new SimplePath<BeanPathTest>(BeanPathTest.class, "p");
         assertNotNull(beanPath.as(simplePath));
     }
-    
+
     @Test
     @Ignore
-    public void As_Class() {       
+    public void As_Class() {
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
         assertEquals(beanPath, otherPath);
         assertTrue(otherPath.getMetadata().isRoot());
     }
-    
+
     @Test
-    public void As_Class_Cached() {       
+    public void As_Class_Cached() {
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
 //        assertEquals(beanPath, otherPath);
         assertTrue(otherPath == beanPath.as(MyBeanPath.class));
     }
-    
+
     @Test
     @Ignore
-    public void As_Class_with_Inits() {       
-        beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, 
+    public void As_Class_with_Inits() {
+        beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class,
                 PathMetadataFactory.forVariable("p"), PathInits.DEFAULT);
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
         assertEquals(beanPath, otherPath);
     }
-    
+
     @Test
-    public void As_Class_with_Inits_Cached() {       
-        beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, 
+    public void As_Class_with_Inits_Cached() {
+        beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class,
                 PathMetadataFactory.forVariable("p"), PathInits.DEFAULT);
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
 //        assertEquals(beanPath, otherPath);
         assertTrue(otherPath == beanPath.as(MyBeanPath.class));
     }
-    
+
     @Test
     public void CreateEnum() {
         assertNotNull(beanPath.createEnum("property", PropertyType.class));
     }
-    
+
     @Test
     public void InstanceOf() {
         assertNotNull(beanPath.instanceOf(BeanPathTest.class));
     }
-    
+
     @Test
     public void InstanceOfAny() {
         BooleanExpression pred1 = beanPath.instanceOf(BeanPathTest.class).or(beanPath.instanceOf(SubClass.class));

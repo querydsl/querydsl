@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,9 +30,9 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimpleExpression;
 
 public class SignatureTest {
-    
+
     private List<Class<?>> classes = new ArrayList<Class<?>>();
-    
+
     @Before
     public void setUp() throws ClassNotFoundException{
         for (String folder : Arrays.asList("com/querydsl/core/types/dsl")) {
@@ -40,11 +40,11 @@ public class SignatureTest {
                 if (file.endsWith(".java") && !file.equals("package-info.java")) {
                     String className = (folder+"."+file.substring(0, file.length()-5)).replace('/', '.');
                     classes.add(Class.forName(className));
-                }                
+                }
             }
         }
     }
-    
+
     @Test
     public void ReturnType_extends_SimpleExpression() {
         assertFalse(classes.isEmpty());
@@ -62,9 +62,9 @@ public class SignatureTest {
                     errors.add(cl.getSimpleName()+"."+m.getName() + " has illegal return type");
                 }
             }
-        }        
+        }
         for (String error : errors) {
-            System.err.println(error);            
+            System.err.println(error);
         }
         if (!errors.isEmpty()) {
             Assert.fail("Got " + errors.size() +" errors");

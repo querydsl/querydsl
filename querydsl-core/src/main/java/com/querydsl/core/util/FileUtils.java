@@ -18,7 +18,7 @@ import java.io.IOException;
 
 /**
  * FileUtils provides File handling functionality
- * 
+ *
  * @author tiwe
  *
  */
@@ -36,7 +36,7 @@ public final class FileUtils {
             }
         }
     }
-    
+
     private FileUtils() {}
 
 }

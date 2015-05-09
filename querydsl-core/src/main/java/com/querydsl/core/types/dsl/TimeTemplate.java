@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,7 +35,7 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>)mixin;
     }
-    
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(templateMixin, context);

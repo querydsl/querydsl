@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,13 +50,13 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     }
 
     protected ListPath(Class<? super E> elementType, Class<Q> queryType, Path<?> parent, String property) {
-        this(elementType, queryType, PathMetadataFactory.forProperty(parent, property));   
+        this(elementType, queryType, PathMetadataFactory.forProperty(parent, property));
     }
 
     protected ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata metadata) {
         this(elementType, queryType, metadata, PathInits.DIRECT);
     }
-    
+
     @SuppressWarnings("unchecked")
     protected ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata metadata, PathInits inits) {
         super(new ParameterizedPathImpl<List<E>>((Class)List.class, metadata, elementType), inits);
@@ -64,12 +64,12 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
         this.queryType = queryType;
         this.pathMixin = (PathImpl<List<E>>)mixin;
     }
-    
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(pathMixin, context);
     }
-    
+
     @Override
     public Q any() {
         if (any == null) {

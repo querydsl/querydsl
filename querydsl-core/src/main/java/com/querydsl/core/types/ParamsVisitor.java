@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,14 +21,14 @@ import com.querydsl.core.QueryMetadata;
 
 /**
  * Copies {@code ParameterExpression} bindings from subexpressions to {@link QueryMetadata} in the context
- * 
+ *
  * @author tiwe
  *
  */
 public final class ParamsVisitor implements Visitor<Void, QueryMetadata> {
-    
+
     public static final ParamsVisitor DEFAULT = new ParamsVisitor();
-    
+
     private ParamsVisitor() {}
 
     @Override
@@ -64,7 +64,7 @@ public final class ParamsVisitor implements Visitor<Void, QueryMetadata> {
         for (Map.Entry<ParamExpression<?>, Object> entry : md.getParams().entrySet()) {
             context.setParam((ParamExpression)entry.getKey(), entry.getValue());
         }
-        visit(md.getGroupBy(), context);        
+        visit(md.getGroupBy(), context);
         visit(md.getHaving(), context);
         for (JoinExpression join : md.getJoins()) {
             visit(join.getTarget(), context);
@@ -72,7 +72,7 @@ public final class ParamsVisitor implements Visitor<Void, QueryMetadata> {
         }
         visit(md.getProjection(), context);
         visit(md.getWhere(), context);
-        
+
         return null;
     }
 
@@ -85,13 +85,13 @@ public final class ParamsVisitor implements Visitor<Void, QueryMetadata> {
         }
         return null;
     }
-    
+
     private void visit(Expression<?> expr, QueryMetadata context) {
         if (expr != null) {
             expr.accept(this, context);
         }
     }
-    
+
     private void visit(List<Expression<?>> exprs, QueryMetadata context) {
         for (Expression<?> arg : exprs) {
             arg.accept(this, context);

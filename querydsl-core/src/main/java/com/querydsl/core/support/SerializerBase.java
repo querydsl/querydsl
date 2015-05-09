@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         Ops.CASE_WHEN, Ops.CASE_ELSE, Ops.CASE_EQ, Ops.CASE_EQ_WHEN, Ops.CASE_EQ_ELSE);
 
     private final StringBuilder builder = new StringBuilder(128);
-           
+
     private String constantPrefix = "a";
 
     private String paramPrefix = "p";
@@ -47,18 +47,18 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     private final Templates templates;
 
     private boolean normalize = true;
-    
+
     private boolean strict = true;
-    
+
     public SerializerBase(Templates templates) {
         this.templates = templates;
     }
-    
+
     public final S prepend(final String str) {
         builder.insert(0, str);
         return self;
     }
-    
+
     public final S insert(int position, String str) {
         builder.insert(position, str);
         return self;
@@ -75,11 +75,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     public Map<Object,String> getConstantToLabel() {
         if (constantToLabel == null) {
-            constantToLabel = new HashMap<Object,String>(4);   
+            constantToLabel = new HashMap<Object,String>(4);
         }
         return constantToLabel;
     }
-    
+
     protected int getLength() {
         return builder.length();
     }
@@ -92,7 +92,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         expr.accept(this, null);
         return self;
     }
-    
+
     public final S handle(Object arg) {
         if (arg instanceof Expression) {
             ((Expression<?>)arg).accept(this, null);
@@ -124,7 +124,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     protected void handleTemplate(final Template template, final List<?> args) {
         for (final Template.Element element : template.getElements()) {
             final Object rv = element.convert(args);
-            if (rv instanceof Expression) {                    
+            if (rv instanceof Expression) {
                 ((Expression<?>)rv).accept(this, null);
             } else if (element.isString()) {
                 builder.append(rv.toString());
@@ -144,7 +144,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
         return handled;
     }
-    
+
     public final boolean serialize(final JoinFlag.Position position, final Set<JoinFlag> flags) {
         boolean handled = false;
         for (final JoinFlag flag : flags) {
@@ -167,11 +167,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public void setAnonParamPrefix(String prefix) {
         this.anonParamPrefix = prefix;
     }
-    
+
     public void setNormalize(boolean normalize) {
-        this.normalize = normalize;       
+        this.normalize = normalize;
     }
-    
+
     public void setStrict(boolean strict) {
         this.strict = strict;
     }
@@ -190,7 +190,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         visitConstant(expr.getConstant());
         return null;
     }
-    
+
     public void visitConstant(Object constant) {
         if (!getConstantToLabel().containsKey(constant)) {
             final String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
@@ -236,7 +236,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public Void visit(Path<?> path, Void context) {
         final PathType pathType = path.getMetadata().getPathType();
         final Template template = templates.getTemplate(pathType);
-        final Object element = path.getMetadata().getElement();        
+        final Object element = path.getMetadata().getElement();
         List<Object> args;
         if (path.getMetadata().getParent() != null) {
             args = ImmutableList.of(path.getMetadata().getParent(), element);
@@ -246,7 +246,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         handleTemplate(template, args);
         return null;
     }
-    
+
     protected void visitOperation(Class<?> type, Operator operator, final List<? extends Expression<?>> args) {
         final Template template = templates.getTemplate(operator);
         if (template != null) {
@@ -275,7 +275,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 } else {
                     visitConstant(rv);
                 }
-            }    
+            }
         } else if (strict) {
             throw new IllegalArgumentException("No pattern found for " + operator);
         } else {
@@ -283,7 +283,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             append("(");
             handle(", ", args);
             append(")");
-        }        
+        }
     }
 
 }

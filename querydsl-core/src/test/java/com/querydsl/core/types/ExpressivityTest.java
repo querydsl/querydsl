@@ -10,11 +10,11 @@ import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.dsl.*;
 
 public class ExpressivityTest {
-    
+
     private NumberExpression<Integer> num;
-    
+
     private StringExpression str;
-    
+
     private DateExpression<Date> date;
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -27,14 +27,14 @@ public class ExpressivityTest {
         query.from(num, str);
         // TODO sub
     }
-    
+
     @Test
     public void test() {
         //Field<T>               abs()
         num.abs();
         //Field<BigDecimal>      acos()
-        MathExpressions.acos(num);        
-        //Field<T>               add(Field<?> value)        
+        MathExpressions.acos(num);
+        //Field<T>               add(Field<?> value)
         num.add(num);
         //Field<T>               add(Number value)
         num.add(1);
@@ -43,13 +43,13 @@ public class ExpressivityTest {
         //SortField<T>           asc()
         num.asc();
         //Field<Integer>         ascii()
-        
+
         //Field<BigDecimal>      asin()
         MathExpressions.asin(num);
         //Field<BigDecimal>      atan()
         MathExpressions.atan(num);
         //Field<BigDecimal>      atan2(Field<? extends Number> y)
-    
+
         //Field<BigDecimal>      atan2(Number y)
 
         //Field<BigDecimal>      avg()
@@ -60,22 +60,22 @@ public class ExpressivityTest {
         num.between(num, num);
         //Condition              between(T minValue, T maxValue)
         num.between(1,10);
-        // bitAnd        
-        
+        // bitAnd
+
         //Field<Integer>         bitLength()
-        
+
         // bitNand
-        
+
         // bitNor
-        
+
         // bitOr
-        
+
         // bitXnor
-        
+
         // bitXor
 
         //<Z> Field<Z>           cast(Class<? extends Z> type)
-        num.castToNum(Long.class);        
+        num.castToNum(Long.class);
         //<Z> Field<Z>           ast(DataType<Z> type)
 
         //<Z> Field<Z>           cast(Field<Z> field)
@@ -117,9 +117,9 @@ public class ExpressivityTest {
         // currentTimestamp
         Expressions.currentTimestamp();
         // currval
-        
+
         // dateadd
-        
+
         // dateDiff
         // TODO
         //<Z> Field<Z>           decode(Field<T> search, Field<Z> result)
@@ -130,10 +130,10 @@ public class ExpressivityTest {
 
         //<Z> Field<Z>           decode(T search, Z result, Object... more)
 
-        //Field<BigDecimal>      deg() 
+        //Field<BigDecimal>      deg()
         MathExpressions.degrees(num);
         //SortField<T>           desc()
-        num.desc();        
+        num.desc();
         //Field<T>               div(Field<? extends Number> value)
         num.divide(num);
         //Field<T>               div(Number value)
@@ -155,11 +155,11 @@ public class ExpressivityTest {
         //Condition              equalAll(T... array)
 
         //Condition              equalAny(Field<T[]> array) -> in
-        
+
         //Condition              equalAny(Select<?> query) -> in
         //num.eqAny(sub.select(num));
         //Condition              equalAny(T... array) -> in
-        
+
         //Condition              equalIgnoreCase(Field<String> value)
         str.equalsIgnoreCase(str);
         //Condition              equalIgnoreCase(String value)
@@ -219,7 +219,7 @@ public class ExpressivityTest {
         //Condition              in(Collection<T> values)
         num.in(Arrays.asList(1,2,3));
         //Condition              in(Field<?>... values)
-        
+
         //Condition              in(Select<?> query)
         //num.in(sub.select(num));
         //Condition              in(T... values)
@@ -367,7 +367,7 @@ public class ExpressivityTest {
         //Condition              notIn(Collection<T> values)
         num.notIn(Arrays.asList(1,2,3));
         //Condition              notIn(Field<?>... values)
-        
+
         //Condition              notIn(Select<?> query)
         //num.notIn(sub.select(num));
         //Condition              notIn(T... values)
@@ -381,7 +381,7 @@ public class ExpressivityTest {
         //Condition              notLike(String value, char escape)
         str.notLike("a%",'!');
         //Field<T>               nullif(Field<T> other)
-        
+
         //Field<T>               nullif(T other)
 
         //Field<T>               nvl(Field<T> defaultValue)
@@ -395,12 +395,12 @@ public class ExpressivityTest {
         //Field<Integer>         octetLength()
 
         //Field<Integer>         position(Field<String> search)
-        str.locate(str);        
+        str.locate(str);
         //Field<Integer>         position(String search)
         str.locate("a");
         //Field<BigDecimal>      power(Number exponent)
         MathExpressions.power(num, 4);
-        //Field<BigDecimal>      rad() 
+        //Field<BigDecimal>      rad()
         MathExpressions.radians(num);
         //Field<String>          repeat(Field<? extends Number> count)
 
@@ -429,9 +429,9 @@ public class ExpressivityTest {
         //Field<String>          rtrim()
         StringExpressions.rtrim(str);
         // shl (bitwise shift left)
-        
+
         // shr (bitwise shift right)
-        
+
         //Field<Integer>         sign()
         MathExpressions.sign(num);
         //Field<BigDecimal>      sin()

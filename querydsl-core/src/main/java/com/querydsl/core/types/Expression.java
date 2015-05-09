@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 /**
  * {@code Expression} defines a general typed expression in a Query instance. The generic type parameter
  * is a reference to the type the expression is bound to.
- * 
+ *
  * <p>The central Expression subinterfaces are</p>
  * <ul>
  *   <li>{@link Constant} - for constants such as Strings, numbers and entity instances</li>

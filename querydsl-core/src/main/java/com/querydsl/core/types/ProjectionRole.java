@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,9 +16,9 @@ package com.querydsl.core.types;
 /**
  * Defines a custom projection for an {@link Expression} type. This interface can be used for Expressions which
  * behave in a different way when used as part of the projection.
- * 
+ *
  * <p>Usually FactoryExpression instances are used as the custom projection.</p>
- * 
+ *
  * @author tiwe
  *
  */
@@ -26,9 +26,9 @@ public interface ProjectionRole<T> {
 
     /**
      * Return the custom projection
-     * 
+     *
      * @return custom projection
      */
     Expression<T> getProjection();
-    
+
 }

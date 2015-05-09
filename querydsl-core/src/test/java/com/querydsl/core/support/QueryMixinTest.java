@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ public class QueryMixinTest {
     public void Where_Null() {
         mixin.where((Predicate)null);
     }
-    
+
     @Test
     public void GetJoins_with_condition() {
         mixin.innerJoin(entity);
@@ -57,14 +57,14 @@ public class QueryMixinTest {
         assertEquals(entity, je.getTarget());
         assertNull(je.getCondition());
     }
-    
+
     @Test
     public void InnerJoin() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
         DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
-        
+
         // inner join
         mixin.innerJoin($(e));
         mixin.innerJoin($(e.getOther()),$(e2));
@@ -75,14 +75,14 @@ public class QueryMixinTest {
 
         assertEquals(6, mixin.getMetadata().getJoins().size());
     }
-    
+
     @Test
     public void Join() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
         DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
-        
+
         // inner join
         mixin.innerJoin($(e));
         mixin.innerJoin($(e.getOther()),$(e2));
@@ -93,28 +93,28 @@ public class QueryMixinTest {
 
         assertEquals(6, mixin.getMetadata().getJoins().size());
     }
-    
+
     @Test
     public void Joins() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
-        
+
         mixin.join($(e));
         mixin.on($(e).isNotNull());
         mixin.join($(e.getOther()),$(e2));
         mixin.on($(e).isNotNull());
-        
+
         assertEquals(2, mixin.getMetadata().getJoins().size());
-        
+
     }
-    
+
     @Test
     public void LeftJoin() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
         DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
-        
+
         // left join
         mixin.leftJoin($(e));
         mixin.leftJoin($(e.getOther()),$(e2));
@@ -125,7 +125,7 @@ public class QueryMixinTest {
 
         assertEquals(6, mixin.getMetadata().getJoins().size());
     }
-    
+
     @Test
     public void RightJoin() {
         DummyEntity e = Alias.alias(DummyEntity.class);
@@ -144,14 +144,14 @@ public class QueryMixinTest {
 
         assertEquals(6, mixin.getMetadata().getJoins().size());
     }
-    
+
     @Test
     public void FullJoin() {
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
         DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
-        
+
         // full join
         mixin.fullJoin($(e));
         mixin.fullJoin($(e.getOther()),$(e2));
@@ -162,7 +162,7 @@ public class QueryMixinTest {
 
         assertEquals(6, mixin.getMetadata().getJoins().size());
     }
-    
+
 
 }
 

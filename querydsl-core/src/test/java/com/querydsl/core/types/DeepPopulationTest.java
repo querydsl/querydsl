@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -66,7 +66,7 @@ public class DeepPopulationTest {
         StringPath name = Expressions.stringPath("name");
         StringPath id = Expressions.stringPath("id");
         QBean<Entity2> entity2Bean = new QBean<Entity2>(Entity2.class, name, id);
-        QBean<Entity1> entity1Bean = new QBean<Entity1>(Entity1.class, 
+        QBean<Entity1> entity1Bean = new QBean<Entity1>(Entity1.class,
                 Collections.singletonMap("entity2", entity2Bean));
 
         Entity1 entity1 = FactoryExpressionUtils.wrap(entity1Bean).newInstance("nameX","idX");

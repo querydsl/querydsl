@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import java.util.List;
 import com.querydsl.core.types.Expression;
 
 class GList<T> extends AbstractGroupExpression<T, List<T>> {
-    
+
     private static final long serialVersionUID = -5613861506383727078L;
 
     public GList(Expression<T> expr) {
@@ -31,19 +31,19 @@ class GList<T> extends AbstractGroupExpression<T, List<T>> {
         return new GroupCollector<T, List<T>>() {
 
             private final List<T> list = new ArrayList<T>();
-            
+
             @Override
             public void add(T o) {
                 if (o != null) {
-                    list.add(o);    
-                }                
+                    list.add(o);
+                }
             }
 
             @Override
             public List<T> get() {
                 return list;
             }
-            
+
         };
     }
 

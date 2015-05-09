@@ -8,7 +8,7 @@ import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class Superclass {
-    
+
     @QueryEmbedded
     private List<IdNamePair<String>> fooOfSuperclass = new ArrayList<IdNamePair<String>>();
 
@@ -19,6 +19,6 @@ public class Superclass {
     public void setFooOfSuperclass(List<IdNamePair<String>> fooOfSuperclass) {
         this.fooOfSuperclass = fooOfSuperclass;
     }
-    
-    
+
+
 }

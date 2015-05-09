@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,24 +45,24 @@ public final class JoinExpression implements Serializable {
 
     /**
      * Create a new JoinExpression instance
-     * 
+     *
      * @param type type of join
      * @param target target of join
      */
     public JoinExpression(JoinType type, Expression<?> target) {
         this(type, target, null, ImmutableSet.<JoinFlag>of());
     }
-            
-    
+
+
     /**
      * Create a new JoinExpression instance
-     * 
+     *
      * @param type type of join
      * @param target target of join
      * @param condition join condition or null, if none is used
      * @param flags join flags
      */
-    public JoinExpression(JoinType type, Expression<?> target, @Nullable Predicate condition, 
+    public JoinExpression(JoinType type, Expression<?> target, @Nullable Predicate condition,
             Set<JoinFlag> flags) {
         this.type = type;
         this.target = target;
@@ -86,7 +86,7 @@ public final class JoinExpression implements Serializable {
     public boolean hasFlag(JoinFlag flag) {
         return flags.contains(flag);
     }
-    
+
     public Set<JoinFlag> getFlags() {
         return flags;
     }

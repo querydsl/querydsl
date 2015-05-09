@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,14 +24,14 @@ public class PathInitsTest {
     public void Default() {
         assertFalse(PathInits.DEFAULT.isInitialized(""));
     }
-    
+
     @Test
     public void IsInitialized() {
         PathInits inits = new PathInits(".2").get("");
         assertFalse(inits.isInitialized("1"));
         assertTrue(inits.isInitialized("2"));
     }
-        
+
     @Test
     public void Wildcard() {
         assertTrue(new PathInits("*").isInitialized(""));
@@ -39,16 +39,16 @@ public class PathInitsTest {
 
     @Test
     public void Wildcard2() {
-        PathInits inits = new PathInits(".*").get("");        
+        PathInits inits = new PathInits(".*").get("");
         assertTrue(inits.isInitialized("1"));
         assertTrue(inits.isInitialized("2"));
     }
-    
+
     @Test
     public void Deep_Wildcard() {
         PathInits inits = new PathInits("*.*").get("");
         assertTrue(inits.isInitialized("1"));
         assertTrue(inits.isInitialized("2"));
     }
-    
+
 }

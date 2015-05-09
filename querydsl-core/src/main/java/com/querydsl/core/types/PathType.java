@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,47 +21,47 @@ public enum PathType implements Operator {
      * Indexed array access (array[i])
      */
     ARRAYVALUE,
-    
+
     /**
      * Indexed array access with constant (array[i])
      */
-    ARRAYVALUE_CONSTANT,    
-        
+    ARRAYVALUE_CONSTANT,
+
     /**
      * Access of any element in a collection
      */
     COLLECTION_ANY,
-    
+
     /**
      * Delegate to an expression
      */
     DELEGATE,
-    
+
     /**
      * Indexed list access (list.get(index))
      */
     LISTVALUE,
-    
+
     /**
      * Indexed list access with constant (list.get(index))
      */
     LISTVALUE_CONSTANT,
-    
+
     /**
      * Map value access (map.get(key))
      */
     MAPVALUE,
-    
+
     /**
      * Map value access with constant (map.get(key))
      */
     MAPVALUE_CONSTANT,
-    
+
     /**
      * Property of the parent
      */
     PROPERTY,
-    
+
     /**
      * Root path
      */
@@ -71,5 +71,5 @@ public enum PathType implements Operator {
     public Class<?> getType() {
         return Object.class;
     }
-    
+
 }

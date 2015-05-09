@@ -8,11 +8,11 @@ import com.querydsl.core.types.Expression;
 public class MockTuple implements Tuple{
 
     private final Object[] a;
-    
+
     public MockTuple(Object[] a) {
         this.a = a;
     }
-    
+
     @Override
     public <T> T get(int index, Class<T> type) {
         return (T) a[index];
@@ -22,7 +22,7 @@ public class MockTuple implements Tuple{
     public <T> T get(Expression<T> expr) {
         return null;
     }
-    
+
     @Override
     public int size() {
         return a.length;
@@ -48,10 +48,10 @@ public class MockTuple implements Tuple{
     public int hashCode() {
         return Arrays.hashCode(a);
     }
-    
+
     @Override
     public String toString() {
         return Arrays.toString(a);
     }
-    
+
 }

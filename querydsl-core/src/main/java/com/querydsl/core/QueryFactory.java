@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,15 +16,15 @@ package com.querydsl.core;
 
 /**
  * Common interface for QueryFactory implementations
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <Q> Query type
  */
 public interface QueryFactory<Q extends Query<?>> {
     /**
      * Create a new Query
-     * 
+     *
      * @return new query
      */
     Q query();

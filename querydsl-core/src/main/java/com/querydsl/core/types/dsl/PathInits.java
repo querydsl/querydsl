@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,19 +34,19 @@ public class PathInits implements Serializable {
     public static final PathInits DEFAULT = new PathInits();
 
     public static final PathInits DIRECT  = new PathInits("*");
-    
+
     public static final PathInits DIRECT2  = new PathInits("*.*");
-    
+
     private final boolean initAllProps;
-    
+
     private final PathInits defaultValue;
-    
+
     private final Map<String,PathInits> propertyToInits = new HashMap<String,PathInits>();
 
     public PathInits(String... initStrs) {
         boolean _initAllProps = false;
         PathInits _defaultValue = DEFAULT;
-        
+
         Map<String, Collection<String>> properties = Maps.newHashMap();
         for (String initStr : initStrs) {
             if (initStr.equals("*")) {
@@ -69,16 +69,16 @@ public class PathInits implements Serializable {
                 values.addAll(inits);
             }
         }
-        
+
         for (Map.Entry<String, Collection<String>> entry : properties.entrySet()) {
             PathInits inits = new PathInits(Iterables.toArray(entry.getValue(), String.class));
             propertyToInits.put(entry.getKey(), inits);
         }
-        
+
         initAllProps = _initAllProps;
         defaultValue = _defaultValue;
     }
-    
+
     public PathInits get(String property) {
         if (propertyToInits.containsKey(property)) {
             return propertyToInits.get(property);
@@ -92,5 +92,5 @@ public class PathInits implements Serializable {
     public boolean isInitialized(String property) {
         return initAllProps || propertyToInits.containsKey(property);
     }
-    
+
 }

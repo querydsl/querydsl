@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Factory class for {@link FactoryExpression} instances
- * 
+ *
  * @author tiwe
  *
  */
@@ -27,7 +27,7 @@ public final class Projections {
 
     /**
      * Create a typed array projection for the given type and expressions
-     * 
+     *
      * @param <T> type of projection
      * @param type type of the projection
      * @param exprs arguments for the projection
@@ -49,16 +49,16 @@ public final class Projections {
     public static <T> AppendingFactoryExpression<T> appending(Expression<T> base, Expression<?>... rest) {
         return new AppendingFactoryExpression<T>(base, rest);
     }
-    
+
     /**
      * Create a Bean populating projection for the given type and expressions
-     * 
+     *
      * <p>Example</p>
      * <pre>
      * UserDTO dto = query.select(
      *     Projections.bean(UserDTO.class, user.firstName, user.lastName));
      * </pre>
-     * 
+     *
      * @param <T> type of projection
      * @param type type of the projection
      * @param exprs arguments for the projection
@@ -106,13 +106,13 @@ public final class Projections {
 
     /**
      * Create a constructor invocation projection for the given type and expressions
-     * 
+     *
      * <p>Example</p>
      * <pre>
      * UserDTO dto = query.singleResult(
      *     Projections.constructor(UserDTO.class, user.firstName, user.lastName));
      * </pre>
-     * 
+     *
      * @param <T> type projection
      * @param type type of the projection
      * @param exprs arguments for the projection
@@ -150,13 +150,13 @@ public final class Projections {
 
     /**
      * Create a field access based Bean populating projection for the given type and expressions
-     * 
+     *
      * <p>Example</p>
      * <pre>
      * UserDTO dto = query.singleResult(
      *     Projections.fields(UserDTO.class, user.firstName, user.lastName));
      * </pre>
-     * 
+     *
      * @param <T> type of projection
      * @param type type of the projection
      * @param exprs arguments for the projection
@@ -165,10 +165,10 @@ public final class Projections {
     public static <T> QBean<T> fields(Class<? extends T> type, Expression<?>... exprs) {
         return new QBean<T>(type, true, exprs);
     }
-    
+
     /**
      * Create a field access based Bean populating projection for the given type and expressions
-     * 
+     *
      * @param <T> type of projection
      * @param type type of the projection
      * @param exprs arguments for the projection
@@ -234,23 +234,23 @@ public final class Projections {
 
     /**
      * Create a Map typed projection for the given expressions
-     * 
+     *
      * <p>Example</p>
      * <pre>{@code
      * Map<Expression<?>, ?> map = query.select(
      *      Projections.map(user.firstName, user.lastName));
      * }</pre>
-     * 
+     *
      * @param exprs arguments for the projection
      * @return factory expression
      */
     public static QMap map(Expression<?>... exprs) {
         return new QMap(exprs);
     }
-    
+
     /**
      * Create a Tuple typed projection for the given expressions
-     * 
+     *
      * @param exprs arguments for the projection
      * @return factory expression
      */
@@ -277,6 +277,6 @@ public final class Projections {
     public static QTuple tuple(Expression<?>[]... exprs) {
         return new QTuple(exprs);
     }
-    
+
     private Projections() {}
 }

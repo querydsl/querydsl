@@ -3,7 +3,7 @@ package com.querydsl.core.domain;
 public class IdNamePair<Type> {
 
     private String id;
-    
+
     private Type name;
 
     public String getId() {
@@ -21,7 +21,7 @@ public class IdNamePair<Type> {
     public void setName(Type name) {
         this.name = name;
     }
-    
-    
-    
+
+
+
 }

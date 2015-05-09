@@ -4,5 +4,5 @@ import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class AImpl extends ABase {
-    
+
 }

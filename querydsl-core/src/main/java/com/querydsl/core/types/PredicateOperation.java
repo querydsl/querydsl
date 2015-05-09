@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,13 +20,13 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * {@code PredicateOperation} provides a Boolean typed {@link Operation} implementation
- * 
+ *
  * @author tiwe
  *
  */
 @Immutable
 public final class PredicateOperation extends OperationImpl<Boolean> implements Predicate{
-    
+
     private static final long serialVersionUID = -5371430939203772072L;
 
     @Nullable

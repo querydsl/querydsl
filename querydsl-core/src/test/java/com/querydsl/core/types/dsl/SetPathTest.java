@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,25 +20,25 @@ import org.junit.Test;
 import com.querydsl.core.types.PathMetadataFactory;
 
 public class SetPathTest {
-    
+
     private SetPath<String,StringPath> stringPath = new SetPath<String,StringPath>(
-            String.class, StringPath.class, 
+            String.class, StringPath.class,
             PathMetadataFactory.forVariable("stringPath"));
-    
+
     @Test
-    public void ToString() {        
+    public void ToString() {
         assertEquals("stringPath", stringPath.toString());
         assertEquals("any(stringPath)", stringPath.any().toString());
         assertEquals("eqIc(any(stringPath),X)", stringPath.any().equalsIgnoreCase("X").toString());
     }
-    
+
     @Test
     public void GetElementType() {
         assertEquals(String.class, stringPath.getElementType());
     }
-    
+
     @Test
-    public void GetParameter() {        
+    public void GetParameter() {
         assertEquals(String.class, stringPath.getParameter(0));
     }
 

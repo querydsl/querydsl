@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,12 +20,12 @@ import java.util.Set;
 
 /**
  * {@code DefaultTypeSystem} is the default implementation of the {@link TypeSystem} interface
- * 
+ *
  * @author tiwe
  *
  */
 public class DefaultTypeSystem implements TypeSystem{
-    
+
     @Override
     public boolean isCollectionType(Class<?> cl) {
         return Collection.class.isAssignableFrom(cl);
@@ -35,7 +35,7 @@ public class DefaultTypeSystem implements TypeSystem{
     public boolean isListType(Class<?> cl) {
         return List.class.isAssignableFrom(cl);
     }
-    
+
     @Override
     public boolean isSetType(Class<?> cl) {
         return Set.class.isAssignableFrom(cl);

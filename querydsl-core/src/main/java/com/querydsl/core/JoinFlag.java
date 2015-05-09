@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,38 +32,38 @@ import com.querydsl.core.types.ExpressionUtils;
 public class JoinFlag implements Serializable{
 
     public enum Position {
-        
+
         /**
          * before the join
          */
-        START,  
-        
+        START,
+
         /**
          * as a replacement for the join symbol
          */
         OVERRIDE,
-        
+
         /**
          * before the join target
          */
-        BEFORE_TARGET, 
+        BEFORE_TARGET,
 
         /**
          * before the join condition
          */
         BEFORE_CONDITION,
-        
+
         /**
-         * after the join 
+         * after the join
          */
         END
-        
+
     }
-    
+
     private static final long serialVersionUID = -688265393547206465L;
-    
+
     private final Expression<?> flag;
-    
+
     private final Position position;
 
     /**
@@ -106,7 +106,7 @@ public class JoinFlag implements Serializable{
         this.flag = flag;
         this.position = position;
     }
-    
+
     @Override
     public int hashCode() {
         return flag.hashCode();
@@ -135,5 +135,5 @@ public class JoinFlag implements Serializable{
     public Position getPosition() {
         return position;
     }
-    
+
 }

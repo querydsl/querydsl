@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,16 +16,16 @@ package com.querydsl.core.types;
 
 /**
  * {@code ExtractorVisitor} is a {@link Visitor} implementation for {@link Expression} extraction
- * 
+ *
  * @author tiwe
  *
  */
 final class ExtractorVisitor implements Visitor<Expression<?>,Void> {
-    
+
     public static final ExtractorVisitor DEFAULT = new ExtractorVisitor();
-    
+
     private ExtractorVisitor() {}
-    
+
     @Override
     public Expression<?> visit(Constant<?> expr, Void context) {
         return expr;
@@ -60,5 +60,5 @@ final class ExtractorVisitor implements Visitor<Expression<?>,Void> {
     public Expression<?> visit(TemplateExpression<?> expr, Void context) {
         return expr;
     }
-    
+
 }

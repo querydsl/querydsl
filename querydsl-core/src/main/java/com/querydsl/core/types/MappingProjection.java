@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,16 +22,16 @@ import com.querydsl.core.Tuple;
 
 /**
  * Projection template that allows implementing arbitrary mapping of rows to result objects.
- * 
+ *
  * <p>Example</p>
- * 
+ *
  * <pre><code>
  * {@code MappingProjection<Pair<String, String>>} mapping = new {@code MappingProjection<Pair<String, String>>}(Pair.class, str1, str2) {
  *     {@code @Override}
  *     {@code protected Pair<String, String>} map(Tuple row) {
  *          return Pair.of(row.get(str1), row.get(str2));
- *     }            
- * }; 
+ *     }
+ * };
  * </code></pre>
  *
  * @param <T> expression type
@@ -45,7 +45,7 @@ public abstract class MappingProjection<T> extends FactoryExpressionBase<T> {
 
     /**
      * Create a new MappingProjection instance
-     * 
+     *
      * @param type
      * @param args
      */
@@ -57,7 +57,7 @@ public abstract class MappingProjection<T> extends FactoryExpressionBase<T> {
 
     /**
      * Create a new MappingProjection instance
-     * 
+     *
      * @param type
      * @param args
      */
@@ -89,5 +89,5 @@ public abstract class MappingProjection<T> extends FactoryExpressionBase<T> {
     public <R, C> R accept(Visitor<R, C> v, @Nullable C context) {
         return v.visit(this, context);
     }
-    
+
 }

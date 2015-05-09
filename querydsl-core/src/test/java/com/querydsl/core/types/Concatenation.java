@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,12 +25,12 @@ public class Concatenation extends ExpressionBase<String> implements FactoryExpr
     private static final long serialVersionUID = -355693583588722395L;
 
     private final List<Expression<?>> args;
-    
+
     public Concatenation(Expression<?>... args) {
         super(String.class);
         this.args = Arrays.asList(args);
     }
-    
+
     @Override
     public List<Expression<?>> getArgs() {
         return args;

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -69,10 +69,10 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>
      * @return the current object
      */
     <T> Q set(ParamExpression<T> param, T value);
-    
+
     /**
      * Set the Query to return distinct results
-     * 
+     *
      * @return the current object
      */
     Q distinct();

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,9 +50,9 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     }
 
     protected MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, Path<?> parent, String property) {
-        this(keyType, valueType, queryType, PathMetadataFactory.forProperty(parent, property));   
+        this(keyType, valueType, queryType, PathMetadataFactory.forProperty(parent, property));
     }
-    
+
     @SuppressWarnings("unchecked")
     protected MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata metadata) {
         super(new ParameterizedPathImpl<Map<K,V>>((Class)Map.class, metadata, keyType, valueType));
@@ -61,7 +61,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         this.queryType = queryType;
         this.pathMixin = (PathImpl<Map<K,V>>)mixin;
     }
-    
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(pathMixin, context);
@@ -157,12 +157,12 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
             return constructor.newInstance(pm);
         }
     }
-    
+
     @Override
     public Class<?> getParameter(int index) {
         if (index == 0) {
             return keyType;
-        } else if (index == 1) {    
+        } else if (index == 1) {
             return valueType;
         } else {
             throw new IndexOutOfBoundsException(String.valueOf(index));

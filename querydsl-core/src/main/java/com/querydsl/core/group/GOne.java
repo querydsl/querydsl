@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,9 +28,9 @@ class GOne<T> extends AbstractGroupExpression<T, T> {
     public GroupCollector<T,T> createGroupCollector() {
         return new GroupCollector<T,T>() {
             private boolean first = true;
-            
+
             private T val;
-            
+
             @Override
             public void add(T o) {
                 if (first) {
@@ -38,7 +38,7 @@ class GOne<T> extends AbstractGroupExpression<T, T> {
                     first = false;
                 }
             }
-    
+
             @Override
             public T get() {
                 return val;

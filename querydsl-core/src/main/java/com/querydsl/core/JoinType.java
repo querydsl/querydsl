@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,18 +45,18 @@ public enum JoinType {
     FULLJOIN(false, true);
 
     private final boolean inner, outer;
-    
+
     private JoinType(boolean inner, boolean outer) {
         this.inner = inner;
         this.outer = outer;
     }
-    
+
     public boolean isInner() {
         return inner;
     }
-    
+
     public boolean isOuter() {
         return outer;
     }
-    
+
 }

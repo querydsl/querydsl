@@ -177,7 +177,7 @@ public abstract class AbstractGroupByTest {
     public abstract void Map();
 
     public abstract void Map2();
-    
+
     public abstract void Map3();
 
     public abstract void Map4();
@@ -189,7 +189,7 @@ public abstract class AbstractGroupByTest {
     public abstract void Transform_As_Bean();
 
     public abstract void OneToOneToMany_Projection();
-    
+
     public abstract void OneToOneToMany_Projection_As_Bean();
 
     public abstract void OneToOneToMany_Projection_As_Bean_And_Constructor();

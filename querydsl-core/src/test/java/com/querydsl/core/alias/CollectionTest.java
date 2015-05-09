@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import org.junit.Test;
 import com.querydsl.core.types.EntityPath;
 
 public class CollectionTest {
-    
+
     @Test
     public void CollectionUsage() {
         DomainType domainType = Alias.alias(DomainType.class);
@@ -31,11 +31,11 @@ public class CollectionTest {
         assertEquals("domainType.list.get(0) = domainType", $(domainType.getList().get(0)).eq(domainType).toString());
         assertEquals("domainType.list.get(0) = domainType", $(domainType.getList()).get(0).eq(domainType).toString());
         assertEquals("domainType.map.get(key) = domainType", $(domainType.getMap()).get("key").eq(domainType).toString());
-        
+
         EntityPath<DomainType> domainTypePath = $(domainType);
         assertEquals("domainType in domainType.collection", $(domainType.getCollection()).contains(domainTypePath).toString());
     }
-    
+
     @Test
     public void CollectionUsage_Types() {
         DomainType domainType = Alias.alias(DomainType.class);
@@ -44,6 +44,6 @@ public class CollectionTest {
         assertEquals(DomainType.class, $(domainType.getList()).any().getType());
         assertEquals(DomainType.class, $(domainType.getMap()).get("key").getType());
     }
-    
+
 
 }

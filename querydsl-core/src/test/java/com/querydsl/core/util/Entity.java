@@ -3,7 +3,7 @@ package com.querydsl.core.util;
 public class Entity {
 
     private int id;
-    
+
     private String firstName, lastName;
 
     public int getId() {
@@ -29,7 +29,7 @@ public class Entity {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    
-    
-    
+
+
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ package com.querydsl.core;
 /**
  * Executes query on a {@link FetchableQuery} and transforms results into T. This can be used for example
  * to group projected columns or to filter out duplicate results.
- * 
+ *
  * @see com.querydsl.core.group.GroupBy
  * @author sasa
  *
@@ -30,5 +30,5 @@ public interface ResultTransformer<T> {
      * @return transformed results
      */
     T transform(FetchableQuery<?, ?> query);
-    
+
 }

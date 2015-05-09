@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,26 +22,26 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for APT based query type generation. Annotate constructors with this annotation.
- * 
+ *
  * <p>Example</p>
- * 
+ *
  * <pre>
  * class UserInfo {
- * 
+ *
  *     private String firstName, lastName;
- *     
+ *
  *     {@code @QueryProjection}
  *     public UserInfo(String firstName, String lastName) {
  *         this.firstName = firstName;
  *         this.lastName = lastName;
  *     }
- *     
+ *
  *     // getters and setters
- * }  
+ * }
  * </pre>
- * 
+ *
  * <p>The projection can then be used like this</p>
- * 
+ *
  * <pre>
  * {@code
  * QUser user = QUser.user;
@@ -49,7 +49,7 @@ import java.lang.annotation.Target;
  *     .where(user.valid.eq(true))
  *     .select(new QUserInfo(user.firstName, user.lastName))
  *     .fetch();
- * }    
+ * }
  * </pre>
  */
 @Documented

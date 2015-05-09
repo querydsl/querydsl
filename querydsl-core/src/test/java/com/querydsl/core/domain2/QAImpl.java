@@ -38,7 +38,7 @@ public class QAImpl extends EntityPathBase<AImpl> {
     public QAImpl(Path<? extends AImpl> entity) {
         this(entity.getType(), entity.getMetadata(), INITS);
     }
-    
+
     public QAImpl(PathMetadata metadata) {
         this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);
     }

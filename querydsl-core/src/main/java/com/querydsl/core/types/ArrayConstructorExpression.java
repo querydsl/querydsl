@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,7 +40,7 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
     public ArrayConstructorExpression(Expression<?>... args) {
         this((Class)Object[].class, (Expression[])args);
     }
-    
+
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Class<T[]> type, Expression<T>... args) {
         super(type);
@@ -73,7 +73,7 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
     public List<Expression<?>> getArgs() {
         return args;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

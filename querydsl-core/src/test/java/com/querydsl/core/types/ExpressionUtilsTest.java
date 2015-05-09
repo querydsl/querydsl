@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,23 +29,23 @@ import com.querydsl.core.types.dsl.StringPath;
 public class ExpressionUtilsTest {
 
     private static final StringPath str = Expressions.stringPath("str");
-    
+
     private static final StringPath str2 = Expressions.stringPath("str2");
-    
+
     @Test
     public void LikeToRegex() {
         assertEquals(".*", regex(ConstantImpl.create("%")));
         assertEquals("^abc.*", regex(ConstantImpl.create("abc%")));
         assertEquals(".*abc$", regex(ConstantImpl.create("%abc")));
         assertEquals("^.$",  regex(ConstantImpl.create("_")));
-        
+
         StringPath path = Expressions.stringPath("path");
         assertEquals("path + .*", regex(path.append("%")));
         assertEquals(".* + path", regex(path.prepend("%")));
         assertEquals("path + .", regex(path.append("_")));
-        assertEquals(". + path", regex(path.prepend("_")));               
+        assertEquals(". + path", regex(path.prepend("_")));
     }
-    
+
     @Test
     @Ignore
     public void LikeToRegexSpeed() {
@@ -61,87 +61,87 @@ public class ExpressionUtilsTest {
             regex(path.append("%"));
             regex(path.prepend("%"));
             regex(path.append("_"));
-            regex(path.prepend("_"));    
+            regex(path.prepend("_"));
         }
         long duration = System.currentTimeMillis() - start;
         System.err.println(duration);
     }
-    
+
     @Test
-    public void LikeToRegex_Escape() {        
+    public void LikeToRegex_Escape() {
         assertEquals("^\\.$",  regex(ConstantImpl.create(".")));
     }
-    
+
     @Test
     public void RegexToLike() {
         assertEquals("%", like(ConstantImpl.create(".*")));
         assertEquals("_",  like(ConstantImpl.create(".")));
         assertEquals(".", like(ConstantImpl.create("\\.")));
-        
+
         StringPath path = Expressions.stringPath("path");
         assertEquals("path + %", like(path.append(".*")));
         assertEquals("% + path", like(path.prepend(".*")));
         assertEquals("path + _", like(path.append(".")));
         assertEquals("_ + path", like(path.prepend(".")));
     }
-    
+
     @Test(expected=QueryException.class)
     public void RegexToLike_Fail() {
         like(ConstantImpl.create("a*"));
     }
-    
+
     @Test(expected=QueryException.class)
     public void RegexToLike_Fail2() {
         like(ConstantImpl.create("\\d"));
     }
-    
+
     @Test(expected=QueryException.class)
     public void RegexToLike_Fail3() {
         like(ConstantImpl.create("[ab]"));
     }
-    
+
     @Test
     @Ignore
     public void RegexToLikeSpeed() {
         // 3255
-        StringPath path = Expressions.stringPath("path");        
+        StringPath path = Expressions.stringPath("path");
         final int iterations = 1000000;
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             like(ConstantImpl.create(".*"));
-            like(ConstantImpl.create("."));                
+            like(ConstantImpl.create("."));
             like(path.append(".*"));
             like(path.prepend(".*"));
             like(path.append("."));
-            like(path.prepend("."));    
+            like(path.prepend("."));
         }
         long duration = System.currentTimeMillis() - start;
         System.err.println(duration);
     }
-    
+
     private String regex(Expression<String> expr) {
         return ExpressionUtils.likeToRegex(expr).toString();
     }
-    
+
     private String like(Expression<String> expr) {
         return ExpressionUtils.regexToLike(expr).toString();
     }
-    
+
     @Test
     public void Count() {
         assertEquals("count(str)", ExpressionUtils.count(str).toString());
     }
-    
+
     @Test
     public void EqConst() {
         assertEquals("str = X", ExpressionUtils.eqConst(str, "X").toString());
     }
-    
+
     @Test
     public void Eq() {
-        assertEquals("str = str2", ExpressionUtils.eq(str, str2).toString());    
+        assertEquals("str = str2", ExpressionUtils.eq(str, str2).toString());
     }
-    
+
     @Test
     public void In() {
         assertEquals("str in [a, b, c]", ExpressionUtils.in(str, Arrays.asList("a","b","c")).toString());
@@ -158,17 +158,17 @@ public class ExpressionUtilsTest {
     public void IsNull() {
         assertEquals("str is null", ExpressionUtils.isNull(str).toString());
     }
-    
+
     @Test
     public void IsNotNull() {
         assertEquals("str is not null", ExpressionUtils.isNotNull(str).toString());
     }
-    
+
     @Test
     public void NeConst() {
         assertEquals("str != X", ExpressionUtils.neConst(str, "X").toString());
     }
-    
+
     @Test
     public void Ne() {
         assertEquals("str != str2", ExpressionUtils.ne(str, str2).toString());

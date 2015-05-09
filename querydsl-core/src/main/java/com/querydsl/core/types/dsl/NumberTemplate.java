@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,7 +40,7 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(templateMixin, context);
     }
-    
+
     @Override
     public Object getArg(int index) {
         return templateMixin.getArg(index);

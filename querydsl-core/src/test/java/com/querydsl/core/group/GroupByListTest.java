@@ -28,7 +28,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 
 public class GroupByListTest extends AbstractGroupByTest {
-    
+
     @Test
     public void Group_Order() {
         List<Group> results = BASIC_RESULTS
@@ -112,19 +112,19 @@ public class GroupByListTest extends AbstractGroupByTest {
         assertEquals(3, comments.size());
         assertEquals("comment 2", comments.get(2));
     }
- 
+
     @Test
-    public void Map3() {        
+    public void Map3() {
         List<Map<Integer, Map<Integer, String>>> actual = MAP3_RESULTS.transform(
             groupBy(postId).list(map(postId, map(commentId, commentText))));
-        
+
         Object postId = null;
         Map<Integer, Map<Integer, String>> posts = null;
         List<Map<Integer, Map<Integer, String>>> expected = new LinkedList<Map<Integer, Map<Integer, String>>>();
         for (Iterator<Tuple> iterator = MAP3_RESULTS.iterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
-            
+
             if (posts == null || !(postId == array[0] || postId != null && postId.equals(array[0]))) {
                 posts = new LinkedHashMap<Integer, Map<Integer,String>>();
                 expected.add(posts);
@@ -140,23 +140,23 @@ public class GroupByListTest extends AbstractGroupByTest {
             }
             Pair<Integer, String> second = pair.getSecond();
             comments.put(second.getFirst(), second.getSecond());
-        }      
+        }
         assertEquals(expected.toString(), actual.toString());
     }
 
     @Test
-    public void Map4() {    
+    public void Map4() {
         CloseableIterator<Map<Map<Integer, String>, String>> results = MAP4_RESULTS.transform(
             groupBy(postId).iterate(map(map(postId, commentText), postName)));
         List<Map<Map<Integer, String>, String>> actual = IteratorAdapter.asList(results);
-        
+
         Object commentId = null;
         Map<Map<Integer, String>, String> comments = null;
         List<Map<Map<Integer, String>, String>> expected = new LinkedList<Map<Map<Integer, String>, String>>();
         for (Iterator<Tuple> iterator = MAP4_RESULTS.iterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
- 
+
             if (comments == null || !(commentId == array[0] || commentId != null && commentId.equals(array[0]))) {
                 comments = new LinkedHashMap<Map<Integer, String>, String>();
                 expected.add(comments);
@@ -164,10 +164,10 @@ public class GroupByListTest extends AbstractGroupByTest {
             commentId = array[0];
             @SuppressWarnings("unchecked")
             Pair<Pair<Integer, String>, String> pair = (Pair<Pair<Integer, String>, String>) array[1];
-            Pair<Integer, String> first = pair.getFirst(); 
+            Pair<Integer, String> first = pair.getFirst();
             Map<Integer, String> posts = Collections.singletonMap(first.getFirst(), first.getSecond());
             comments.put(posts, pair.getSecond());
-        }      
+        }
         assertEquals(expected.toString(), actual.toString());
     }
 

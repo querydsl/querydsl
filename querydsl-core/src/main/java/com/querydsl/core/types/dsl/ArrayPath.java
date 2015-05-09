@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,7 @@ import com.querydsl.core.types.*;
  * {@code ArrayPath} represents an array typed path
  *
  * @author tiwe
- * 
+ *
  * @param <A> array type
  * @param <E> array element type
  */
@@ -47,7 +47,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
     protected ArrayPath(Class<? super A> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
-    
+
     @SuppressWarnings("unchecked")
     protected ArrayPath(Class<? super A> type, PathMetadata metadata) {
         super(ExpressionUtils.path((Class)type, metadata));
@@ -59,7 +59,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(pathMixin, context);
     }
-    
+
     @Override
     public SimplePath<E> get(Expression<Integer> index) {
         PathMetadata md = PathMetadataFactory.forArrayAccess(pathMixin, index);

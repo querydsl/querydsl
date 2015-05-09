@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,14 +27,14 @@ public class AliasTest {
         DomainType domainType = Alias.alias(DomainType.class);
         Alias.alias(DomainType.class, $(domainType.getCollection()).any());
     }
-    
+
     @Test
     public void ComparableEntity() {
        ComparableEntity entity = Alias.alias(ComparableEntity.class);
        Path<ComparableEntity> path = $(entity);
        assertEquals(ComparableEntity.class, path.getType());
     }
-        
+
     @Test
     public void ComparableEntity_Property() {
        ComparableEntity entity = Alias.alias(ComparableEntity.class);
@@ -42,7 +42,7 @@ public class AliasTest {
        assertEquals(String.class, propertyPath.getType());
        assertEquals("property", propertyPath.getMetadata().getName());
     }
-    
+
     @Test
     public void BasicUsage() {
         DomainType domainType = Alias.alias(DomainType.class);
@@ -65,7 +65,7 @@ public class AliasTest {
         assertEquals("domainType.timestamp", $(domainType.getTimestamp()).toString());
         assertEquals("domainType.gender", $(domainType.getGender()).toString());
     }
-    
+
     @Test
     public void GetAny() {
         DomainType domainType = Alias.alias(DomainType.class);
@@ -87,7 +87,7 @@ public class AliasTest {
         assertEquals("varMALE", Alias.var(Gender.MALE).toString());
         assertEquals("varAliasTest_XXX", Alias.var(new AliasTest()).toString());
     }
-    
+
     @Override
     public String toString() {
         return "XXX";

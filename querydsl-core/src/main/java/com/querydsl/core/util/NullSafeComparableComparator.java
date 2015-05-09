@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,13 +18,13 @@ import java.util.Comparator;
 
 /**
  * NullSafeComparableComparator is a null safe comparator for Comparable objects
- * 
+ *
  * @author tiwe
  *
  * @param <T>
  */
 public class NullSafeComparableComparator<T extends Comparable<T>> implements Comparator<T>, Serializable{
-    
+
     private static final long serialVersionUID = 5681808684776488757L;
 
     @Override
@@ -35,7 +35,7 @@ public class NullSafeComparableComparator<T extends Comparable<T>> implements Co
             return 1;
         } else {
             return obj1.compareTo(obj2);
-        }           
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -120,12 +120,12 @@ public class ProjectionsFactory {
         HashSet<NumberExpression<?>> rv = new HashSet<NumberExpression<?>>();
         rv.add(expr.abs());
         rv.add(expr.add(other));
-        rv.add(expr.divide(other));     
-        
+        rv.add(expr.divide(other));
+
         if (target != Target.HSQLDB) {
-            rv.add(expr.negate());    
-        }        
-        
+            rv.add(expr.negate());
+        }
+
         rv.add(expr.multiply(other));
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
@@ -149,7 +149,7 @@ public class ProjectionsFactory {
                     .when((NumberExpression<A>)other).then(expr)
                     .otherwise((NumberExpression<A>)other));
         }
-        
+
         return ImmutableList.copyOf(rv);
     }
 
@@ -209,11 +209,11 @@ public class ProjectionsFactory {
         rv.add(expr.trim());
 
         rv.add(expr.upper());
-        
+
         if (module != Module.JDO) {
-            rv.add(expr.nullif("xxx"));    
-        }        
-        
+            rv.add(expr.nullif("xxx"));
+        }
+
         return ImmutableList.copyOf(rv);
     }
 

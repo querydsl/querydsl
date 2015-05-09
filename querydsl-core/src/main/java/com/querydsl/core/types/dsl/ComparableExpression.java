@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,12 +31,12 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public ComparableExpression(Expression<T> mixin) {
         super(mixin);
     }
-    
+
     @Override
     public ComparableExpression<T> as(Path<T> alias) {
         return Expressions.comparableOperation(getType(), Ops.ALIAS, mixin, alias);
     }
-    
+
     @Override
     public ComparableExpression<T> as(String alias) {
         return as(ExpressionUtils.path(getType(), alias));
@@ -62,7 +62,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
             return Expressions.booleanOperation(Ops.GOE, mixin, ConstantImpl.create(from));
         } else {
             return Expressions.booleanOperation(Ops.BETWEEN, mixin, ConstantImpl.create(from), ConstantImpl.create(to));
-        }        
+        }
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
         } else {
             return Expressions.booleanOperation(Ops.BETWEEN, mixin, from, to);
         }
-        
+
     }
 
     /**
@@ -136,7 +136,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public BooleanExpression gt(Expression<T> right) {
         return Expressions.booleanOperation(Ops.GT, mixin, right);
     }
-    
+
     /**
      * Create a {@code this > all right} expression
      *
@@ -198,7 +198,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public BooleanExpression goe(Expression<T> right) {
         return Expressions.booleanOperation(Ops.GOE, mixin, right);
     }
-    
+
     /**
      * Create a {@code this >= all right} expression
      *
@@ -208,7 +208,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public BooleanExpression goeAll(CollectionExpression<?, ? super T> right) {
         return goe(ExpressionUtils.all(right));
     }
-    
+
     /**
      * Create a {@code this >= any right} expression
      *
@@ -260,7 +260,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public final BooleanExpression lt(Expression<T> right) {
         return Expressions.booleanOperation(Ops.LT, mixin, right);
     }
-    
+
     /**
      * Create a {@code this < all right} expression
      *
@@ -322,7 +322,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public final BooleanExpression loe(Expression<T> right) {
         return Expressions.booleanOperation(Ops.LOE, mixin, right);
     }
-    
+
     /**
      * Create a {@code this <= all right} expression
      *
@@ -332,7 +332,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public BooleanExpression loeAll(CollectionExpression<?, ? super T> right) {
         return loe(ExpressionUtils.all(right));
     }
-    
+
     /**
      * Create a {@code this <= any right} expression
      *

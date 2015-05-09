@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ import javax.annotation.Nonnegative;
 
 /**
  * {@code PathMetadataFactory} is a factory class for {@link Path} construction
- * 
+ *
  * @author tiwe
  *
  */
@@ -25,7 +25,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for indexed array access
-     * 
+     *
      * @param parent parent path
      * @param index index of element
      * @return array access path
@@ -36,7 +36,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for indexed array access
-     * 
+     *
      * @param parent parent path
      * @param index index of element
      * @return array access path
@@ -44,10 +44,10 @@ public final class PathMetadataFactory {
     public static PathMetadata forArrayAccess(Path<?> parent, @Nonnegative int index) {
         return new PathMetadata(parent, index, PathType.ARRAYVALUE_CONSTANT);
     }
-    
+
     /**
      * Create a new PathMetadata instance for collection any access
-     * 
+     *
      * @param parent parent path
      * @return collection any path
      */
@@ -57,7 +57,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for delegate access
-     * 
+     *
      * @param delegate delegate path
      * @return wrapped path
      */
@@ -67,7 +67,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for indexed list access
-     * 
+     *
      * @param parent parent path
      * @param index index of element
      * @return list access path
@@ -78,7 +78,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for indexed list access
-     * 
+     *
      * @param parent parent path
      * @param index index of element
      * @return list access path
@@ -89,7 +89,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for key based map access
-     * 
+     *
      * @param parent parent path
      * @param key key for map access
      * @return map access path
@@ -100,7 +100,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for for key based map access
-     * 
+     *
      * @param parent parent path
      * @param key key for map access
      * @return map access path
@@ -111,7 +111,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for property access
-     * 
+     *
      * @param parent parent path
      * @param property property name
      * @return property path
@@ -122,7 +122,7 @@ public final class PathMetadataFactory {
 
     /**
      * Create a new PathMetadata instance for a variable
-     * 
+     *
      * @param variable variable name
      * @return variable path
      */

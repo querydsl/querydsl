@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ public class DatePath<T extends Comparable> extends DateExpression<T> implements
     protected DatePath(Class<? extends T> type, String var) {
         this(type, PathMetadataFactory.forVariable(var));
     }
-    
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(pathMixin, context);

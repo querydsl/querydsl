@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,18 +14,18 @@
 package com.querydsl.core.group;
 
 public class Comment {
-    
+
     private  Integer id;
-    
+
     private String text;
 
     public Comment() {}
-    
+
     public Comment(Integer id, String text) {
         this.id = id;
         this.text = text;
     }
-    
+
     public Integer getId() {
         return id;
     }
@@ -58,7 +58,7 @@ public class Comment {
             return false;
         }
     }
-    
+
     @Override
     public String toString() {
         return id + ": " + text;

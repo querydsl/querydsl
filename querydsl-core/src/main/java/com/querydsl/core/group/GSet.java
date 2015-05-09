@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,7 @@ import java.util.*;
 import com.querydsl.core.types.Expression;
 
 abstract class GSet<T, S extends Set<T>> extends AbstractGroupExpression<T, S> {
-    
+
     private static final long serialVersionUID = -1575808026237160843L;
 
     public static <U> GSet<U, Set<U>> createLinked(Expression<U> expr) {
@@ -59,19 +59,19 @@ abstract class GSet<T, S extends Set<T>> extends AbstractGroupExpression<T, S> {
         return new GroupCollector<T, S>() {
 
             private final S set = createSet();
-            
+
             @Override
             public void add(T o) {
                 if (o != null) {
-                    set.add(o);    
-                }                
+                    set.add(o);
+                }
             }
 
             @Override
             public S get() {
                 return set;
             }
-            
+
         };
     }
 }

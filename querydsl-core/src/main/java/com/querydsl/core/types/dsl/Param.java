@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,7 @@ public class Param<T> extends SimpleExpression<T> implements ParamExpression<T> 
     private static final long serialVersionUID = -6872502615009012503L;
 
     private final ParamExpression<T> paramMixin;
-    
+
     public Param(Class<? extends T> type, String name) {
         super(new ParamExpressionImpl<T>(type, name));
         this.paramMixin = (ParamExpression<T>)mixin;
@@ -39,7 +39,7 @@ public class Param<T> extends SimpleExpression<T> implements ParamExpression<T> 
         super(new ParamExpressionImpl<T>(type));
         this.paramMixin = (ParamExpression<T>)mixin;
     }
-    
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
