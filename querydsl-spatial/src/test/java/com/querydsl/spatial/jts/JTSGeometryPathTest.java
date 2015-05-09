@@ -2,16 +2,9 @@ package com.querydsl.spatial.jts;
 
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import org.junit.Test;
+
+import com.vividsolutions.jts.geom.*;
 
 public class JTSGeometryPathTest {
 

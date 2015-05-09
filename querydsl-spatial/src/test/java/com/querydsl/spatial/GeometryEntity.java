@@ -1,7 +1,8 @@
 package com.querydsl.spatial;
 
-import com.querydsl.core.annotations.QueryEntity;
 import org.geolatte.geom.*;
+
+import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class GeometryEntity {
