@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,40 +25,40 @@ import org.junit.Test;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class GenericSignatureTest {
-    
+
     @QueryEntity
     @SuppressWarnings("unchecked")
     public static class Entity<T extends Entity<T>> {
-        
-        // collection        
-        Collection<Entity> rawCollection;       
-        
-        Collection<Entity<T>> genericCollection;        
-        
+
+        // collection
+        Collection<Entity> rawCollection;
+
+        Collection<Entity<T>> genericCollection;
+
         Collection<T> genericCollection2;
-        
+
         // list
-        List<Entity> rawList;        
-        
-        List<Entity<T>> genericList;        
-        
+        List<Entity> rawList;
+
+        List<Entity<T>> genericList;
+
         List<T> genericList2;
-        
+
         // set
-        Set<Entity> rawSet;        
-        
-        Set<Entity<T>> genericSet;        
-        
+        Set<Entity> rawSet;
+
+        Set<Entity<T>> genericSet;
+
         Set<T> genericSet2;
-        
+
         // map
-        Map<String,Entity> rawMap;        
-        
-        Map<String,Entity<T>> genericMap;        
-        
+        Map<String,Entity> rawMap;
+
+        Map<String,Entity<T>> genericMap;
+
         Map<String,T> genericMap2;
     }
-    
+
     @Test
     public void test() {
         QGenericSignatureTest_Entity entity = QGenericSignatureTest_Entity.entity;
@@ -66,17 +66,17 @@ public class GenericSignatureTest {
         assertEquals(Entity.class, entity.rawCollection.getParameter(0));
         assertEquals(Entity.class, entity.genericCollection.getParameter(0));
         assertEquals(Entity.class, entity.genericCollection2.getParameter(0));
-        
+
         // list
         assertEquals(Entity.class, entity.rawList.getParameter(0));
         assertEquals(Entity.class, entity.genericList.getParameter(0));
         assertEquals(Entity.class, entity.genericList2.getParameter(0));
-        
+
         // set
         assertEquals(Entity.class, entity.rawSet.getParameter(0));
         assertEquals(Entity.class, entity.genericSet.getParameter(0));
         assertEquals(Entity.class, entity.genericSet2.getParameter(0));
-        
+
         // map
         assertEquals(Entity.class, entity.rawMap.getParameter(1));
         assertEquals(Entity.class, entity.genericMap.getParameter(1));

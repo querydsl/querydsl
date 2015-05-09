@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,23 +30,23 @@ import com.google.common.io.Files;
 
 @Ignore
 public class EntityExtensionsTest extends AbstractProcessorTest {
-    
+
     private static final String packagePath = "src/test/java/com/querydsl/apt/";
-    
+
     @Test
     public void Handles_Entity_Extensions_Correctly() throws IOException, InterruptedException {
         File source = new File(packagePath,  "EntityWithExtensions.java");
         File source2 = new File(packagePath, "EntityExtensions.java");
         List<String> sources = Arrays.asList(source.getPath(), source2.getPath());
         File qType = new File("target/overwrite2/com/querydsl/apt/QEntityWithExtensions.java");
-        
+
         // QEntityWithExtensions is generated
         process(QuerydslAnnotationProcessor.class, sources, "overwrite2");
         assertTrue(qType.exists());
         long modified = qType.lastModified();
-        Thread.sleep(1000);        
+        Thread.sleep(1000);
         System.out.println(Files.toString(qType, Charsets.UTF_8).contains("extension()"));
-        
+
         // EntityWithExtensions has not changed, QEntityWithExtensions is not overwritten
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite2");
         assertEquals(modified, qType.lastModified());
@@ -56,14 +56,14 @@ public class EntityExtensionsTest extends AbstractProcessorTest {
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite2");
         assertTrue("" + modified + " >= " + qType.lastModified(), modified < qType.lastModified());
         assertTrue(Files.toString(qType, Charsets.UTF_8).contains("extension()"));
-        
-        // QEntityWithExtensions is deleted and regenerated 
+
+        // QEntityWithExtensions is deleted and regenerated
         assertTrue(qType.delete());
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite2");
         assertTrue(qType.exists());
         assertTrue(Files.toString(qType, Charsets.UTF_8).contains("extension()"));
     }
-    
+
     @Override
     protected Collection<String> getAPTOptions() {
         return Arrays.asList("-AdefaultOverwrite=true");

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,29 +24,29 @@ public class QueryEmbeddable2Test {
 
     @QueryEntity
     public static class User {
-    
+
         Complex<String> complex;
     }
-    
+
     @QueryEmbeddable
     public static class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
 
         T a;
-        
+
         @Override
         public int compareTo(Complex<T> arg0) {
             return 0;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }
-        
+
     }
-    
+
     @Test
     public void User_Complex_a() {
         assertNotNull(QQueryEmbeddable2Test_User.user.complex.a);
     }
-    
+
 }

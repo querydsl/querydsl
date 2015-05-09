@@ -5,7 +5,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanPath;
 
 public class BooleanExtensions {
-    
+
     @QueryDelegate(Boolean.class)
     public static Predicate isFalse(BooleanPath path) {
         return path.isNotNull().or(path.eq(false));

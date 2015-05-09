@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,23 +24,23 @@ import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
 
 public class TransientTest {
-    
+
     @Entity
     public static class ExampleEntity {
-        
+
         @QueryType(PropertyType.SIMPLE)
         @Transient
         String property1;
-        
+
         @Transient
         String property2;
-        
+
         @QueryType(PropertyType.SIMPLE)
         transient String property3;
-        
+
         transient String property4;
     }
-    
+
     @Test
     public void test() {
         assertNotNull(QTransientTest_ExampleEntity.exampleEntity.property1);

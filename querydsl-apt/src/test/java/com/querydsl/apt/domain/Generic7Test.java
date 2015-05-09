@@ -30,10 +30,10 @@ public class Generic7Test {
         ListAttribute<String> stringAttributes;
 
     }
-    
+
     @Test
     public void test() {
-        
+
     }
-    
+
 }

@@ -11,7 +11,7 @@ public class AnnotationTypeTest {
 
     @MappedSuperclass
     public static abstract class BaseObject<T extends Annotation> {
-        
+
     }
 
     @Entity
@@ -25,5 +25,5 @@ public class AnnotationTypeTest {
         @EmbeddedId
         private String street;
     }
-    
+
 }

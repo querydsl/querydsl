@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,8 +52,8 @@ public abstract class AbstractProcessorTest {
             Assert.fail("Creation of " + out.getPath() + " failed");
         }
         compile(processorClass, classes, target);
-    } 
-    
+    }
+
     protected void compile(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException {
         List<String> options = new ArrayList<String>(classes.size() + 3);
         options.add("-s");
@@ -65,7 +65,7 @@ public abstract class AbstractProcessorTest {
         options.add("src/test/java");
         options.addAll(getAPTOptions());
         options.addAll(classes);
-        
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ByteArrayOutputStream err = new ByteArrayOutputStream();
         int compilationResult = compiler.run(null, out, err, options.toArray(new String[options.size()]));
@@ -76,7 +76,7 @@ public abstract class AbstractProcessorTest {
             Assert.fail("Compilation Failed:\n " + new String(err.toByteArray(), "UTF-8"));
         }
     }
-    
+
     protected Collection<String> getAPTOptions() {
         return Collections.emptyList();
     }

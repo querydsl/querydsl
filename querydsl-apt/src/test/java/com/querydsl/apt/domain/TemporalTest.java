@@ -14,17 +14,17 @@ import com.querydsl.core.types.dsl.DatePath;
 import com.querydsl.core.types.dsl.TimePath;
 
 public class TemporalTest {
-        
+
     @Entity
     public static class MyEntity {
-        
+
         @Temporal(value=TemporalType.DATE)
         private Date date;
-        
+
         @Temporal(value=TemporalType.TIME)
-        private Date time;        
+        private Date time;
     }
-    
+
     @Test
     public void test() {
         assertEquals(DatePath.class, QTemporalTest_MyEntity.myEntity.date.getClass());

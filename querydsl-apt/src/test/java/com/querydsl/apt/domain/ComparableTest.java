@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import com.querydsl.core.annotations.QueryEmbeddable;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class ComparableTest {
-    
+
     @QueryEntity
     public static class CustomComparable implements Comparable<CustomComparable>{
 
@@ -29,13 +29,13 @@ public class ComparableTest {
         public int compareTo(CustomComparable o) {
             return 0;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }
-        
+
     }
-    
+
     @QueryEmbeddable
     public static class CustomComparable2 implements Comparable<CustomComparable2>{
 
@@ -43,13 +43,13 @@ public class ComparableTest {
         public int compareTo(CustomComparable2 o) {
             return 0;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }
-        
+
     }
-    
+
     @Test
     public void CustomComparable_is_Properly_Handled() {
         assertNotNull(QComparableTest_CustomComparable.customComparable.asc());

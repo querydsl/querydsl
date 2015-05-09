@@ -58,7 +58,7 @@ public class AbstractProperties3Test {
         Containable containable;
 
     }
-    
+
     @Test
     public void test() {
         QAbstractProperties3Test_CompoundContainer.compoundContainer.containable.compound.name.isNotNull();

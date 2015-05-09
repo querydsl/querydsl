@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class InterfaceType3Test {
-    
+
     @QueryEntity
     public interface A {
       String getA();
@@ -22,7 +22,7 @@ public class InterfaceType3Test {
     public interface C extends A, B {
       String getC();
     }
-    
+
     @Test
     public void test() {
         assertNotNull(QInterfaceType3Test_C.c1.a);

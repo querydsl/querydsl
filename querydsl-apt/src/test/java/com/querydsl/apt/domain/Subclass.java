@@ -4,7 +4,7 @@ import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class Subclass extends com.querydsl.core.domain.Superclass {
-    
+
     private int number;
 
     public int getNumber() {
@@ -14,6 +14,6 @@ public class Subclass extends com.querydsl.core.domain.Superclass {
     public void setNumber(int number) {
         this.number = number;
     }
-    
-    
+
+
 }

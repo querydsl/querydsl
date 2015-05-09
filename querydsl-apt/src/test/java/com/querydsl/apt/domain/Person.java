@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,16 +43,16 @@ public class Person implements Serializable {
 
     @Column(name = "person_family", length = 50)
     private String personFamily;
-    
+
     @Column(name = "person_reference")
-    
+
     private Integer personReference;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "person1", fetch = FetchType.LAZY)
-    
+
     private Person person;
     @JoinColumn(name = "person_id", referencedColumnName = "person_id", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    
+
     private Person person1;
 
     public Person() {
@@ -134,7 +134,7 @@ public class Person implements Serializable {
     public String toString() {
         return "newpackage.Person[ personId=" + personId + " ]";
     }
-    
-    
-    
+
+
+
 }

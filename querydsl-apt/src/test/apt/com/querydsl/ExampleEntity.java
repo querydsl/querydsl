@@ -6,9 +6,9 @@ import com.querydsl.core.annotations.QueryEntity;
 public class ExampleEntity {
 
     private boolean booleanProp;
-    
+
     private Boolean booleanProp2;
-    
-    
-    
+
+
+
 }

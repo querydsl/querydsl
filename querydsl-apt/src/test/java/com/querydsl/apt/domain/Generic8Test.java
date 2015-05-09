@@ -9,14 +9,14 @@ import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QuerySupertype;
 
 public class Generic8Test {
-    
+
     @QuerySupertype
     public static class Superclass<T> {
 
         Long id;
-        
+
         List<T> values;
-        
+
         List<? extends T> values2;
 
     }
@@ -25,13 +25,13 @@ public class Generic8Test {
     public static class IntermediateEntity<E> extends Superclass<E> {
 
     }
-    
+
     @QueryEntity
     public static class Entity extends Superclass<String> {
 
     }
 
-    
+
     @QueryEntity
     public static class Entity2 extends Superclass<Integer> {
 

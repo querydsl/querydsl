@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 public class MonitoredCompanyTest {
-    
+
     @Test
     public void test() {
         QMonitoredCompany monitoredCompany = QMonitoredCompany.monitoredCompany;

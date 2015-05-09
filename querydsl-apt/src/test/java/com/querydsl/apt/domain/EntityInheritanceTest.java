@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,23 +20,23 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class EntityInheritanceTest {
-    
+
     @MappedSuperclass
     public static class TreeEntity<T extends TreeEntity<T>> {
-        
+
         Integer id;
-        
+
         T parent;
-        
+
     }
 
     @Entity
     public static class TestEntity extends TreeEntity<TestEntity> {
-        
+
         String name;
-        
+
     }
-    
+
     @Test
     public void test() {
         Assert.assertEquals(

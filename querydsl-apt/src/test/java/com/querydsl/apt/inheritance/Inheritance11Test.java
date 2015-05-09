@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,27 +20,27 @@ import org.junit.Test;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class Inheritance11Test {
-    
+
     @QueryEntity
     public class Foo extends FooBase<Foo> {
-     
+
     }
 
     @QueryEntity
     public class FooBase<T> {
-        
+
     }
 
     @QueryEntity
     public class BarBase<T> {
-        
+
     }
-    
+
     @QueryEntity
     public class Bar extends BarBase<Foo> {
-     
+
     }
-    
+
     @Test
     public void test() {
         assertNotNull(QInheritance11Test_Foo.foo);

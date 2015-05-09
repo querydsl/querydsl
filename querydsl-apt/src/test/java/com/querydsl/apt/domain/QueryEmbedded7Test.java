@@ -18,21 +18,21 @@ public class QueryEmbedded7Test {
 
     @QueryEntity
     public static class Entity {
-        
+
         @QueryEmbedded
         Collection<String> users;
 
         @QueryEmbedded
         Set<Long> productRoles;
-        
+
         // misuse, but shouldn't cause problems
-        @QueryEmbedded 
+        @QueryEmbedded
         Locale locale;
 
         // misuse, but shouldn't cause problems
         @QueryEmbedded
         String string;
-        
+
     }
 
     @Test

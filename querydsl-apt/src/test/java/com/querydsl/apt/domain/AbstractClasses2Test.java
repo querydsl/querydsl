@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,11 +28,11 @@ import com.querydsl.core.types.dsl.NumberPath;
 
 @SuppressWarnings("serial")
 public class AbstractClasses2Test {
-    
+
     public interface Archetype<PK extends Serializable, DO extends Serializable> extends Serializable, Comparable<DO>  {
 
     }
-    
+
     @MappedSuperclass
     public static abstract class BaseArchetype<PK extends Serializable, DO extends Serializable> implements Archetype<PK, DO> {
 
@@ -48,23 +48,23 @@ public class AbstractClasses2Test {
         public int compareTo(BaseArchetype o) {
             return 0;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }
     }
-    
+
     @Entity
     public static class Grant<P extends Party, S extends Party> extends BaseArchetype<P, S> {
         public int compareTo(S o) {
             return 0;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }
     }
-    
+
     @Entity
     public static class Party extends BaseArchetype<Long, Party> {
         @OneToMany()
@@ -76,12 +76,12 @@ public class AbstractClasses2Test {
         public int compareTo(Party o) {
             return 0;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }
     }
-    
+
     @Entity
     public static class PartyRole<P extends Party> extends BaseArchetype<Long, PartyRole<P>> {
         @ManyToOne()
@@ -92,12 +92,12 @@ public class AbstractClasses2Test {
         public int compareTo(PartyRole o) {
             return 0;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }
     }
-    
+
     @Test
     public void Grant_id_Type_And_Class() {
         Assert.assertEquals(QAbstractClasses2Test_Party.class, QAbstractClasses2Test_Grant.grant.id.getClass());

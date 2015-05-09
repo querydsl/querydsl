@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ public class GenericTest extends AbstractTest {
     public static class GenericType2<T extends ItemType> {
         T itemType;
 
-        // simple        
+        // simple
         GenericSimpleType prop1;
         GenericSimpleType<?> prop2;
         GenericSimpleType<? extends GenericSimpleType<?>> prop3;
@@ -110,7 +110,7 @@ public class GenericTest extends AbstractTest {
     @SuppressWarnings("unchecked")
     public static class ItemType {
         Amount<SimpleType> prop;
-        SimpleType2<Amount<SimpleType>> prop2;        
+        SimpleType2<Amount<SimpleType>> prop2;
         SimpleType2<Amount> prop3;
         SimpleType2<?> prop4;
     }

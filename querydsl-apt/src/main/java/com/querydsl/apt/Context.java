@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@ import com.querydsl.codegen.EntityType;
 
 /**
  * Context of handled types used by {@link AbstractQuerydslProcessor}
- * 
+ *
  * @author tiwe
  *
  */
@@ -40,7 +40,7 @@ class Context {
     final Map<String, EntityType> entityTypes = new HashMap<String, EntityType>();
 
     final Map<String, EntityType> extensionTypes = new HashMap<String,EntityType>();
-    
+
     final Map<String, Set<TypeElement>> typeElements = new HashMap<String,Set<TypeElement>>();
 
     public void clean() {
@@ -49,12 +49,12 @@ class Context {
             extensionTypes.remove(key);
             embeddableTypes.remove(key);
         }
-        
+
         for (String key : entityTypes.keySet()) {
             supertypes.remove(key);
             extensionTypes.remove(key);
             embeddableTypes.remove(key);
         }
     }
-    
+
 }

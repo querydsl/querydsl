@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,7 +52,7 @@ public class AbstractProperties2Test {
     public static class User extends AbstractEntity<User> {
 
     }
-    
+
     @Test
     public void GenericEntity_id_Is_Available() {
         assertNotNull(QAbstractProperties2Test_GenericEntity.genericEntity.id);
@@ -62,17 +62,17 @@ public class AbstractProperties2Test {
     public void AbstractEntity_Is_Available() {
         assertNotNull(QAbstractProperties2Test_AbstractEntity.abstractEntity.id);
     }
-    
+
     @Test
     public void AbstractEntity_Super_Is_Available() {
         assertEquals(QAbstractProperties2Test_GenericEntity.class, QAbstractProperties2Test_AbstractEntity.abstractEntity._super.getClass());
     }
-    
+
     @Test
     public void User_Is_Available() {
         assertNotNull(QAbstractProperties2Test_User.user.id);
     }
-    
+
     @Test
     public void User_Super_Is_Available() {
         assertEquals(QAbstractProperties2Test_AbstractEntity.class, QAbstractProperties2Test_User.user._super.getClass());

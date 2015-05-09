@@ -13,7 +13,7 @@ public class Enum3Test {
         String getFoo();
         String getBar();
     }
-    
+
     public enum EnumImplementation implements SpecificInterface {
         FOO,
         BAR;
@@ -28,49 +28,49 @@ public class Enum3Test {
             return name();
         }
     }
-    
+
     public interface SpecificInterface extends BaseInterface {
         EnumImplementation getValue();
     }
-    
+
     @Entity
     public static class Entity1 {
-        
+
         @Enumerated(javax.persistence.EnumType.STRING)
         private EnumImplementation value;
-        
+
         public SpecificInterface getValue() {
             return value;
         }
 
     }
-    
+
     @Entity
     public static class Entity2 {
-        
+
         private EnumImplementation value;
-        
+
         @Enumerated(javax.persistence.EnumType.STRING)
         public SpecificInterface getValue() {
             return value;
         }
 
     }
-    
+
     @Entity
     public static class Entity3 {
-        
+
         private EnumImplementation value;
-        
+
         public SpecificInterface getValue() {
             return value;
         }
 
     }
-    
+
     @Test
     public void test() {
-        
+
     }
-    
+
 }

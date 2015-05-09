@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import java.util.List;
 import org.junit.Test;
 
 public class NameSuffixTest extends AbstractProcessorTest {
-    
+
     private static final String packagePath = "src/test/java/com/querydsl/apt/domain/";
 
     @Test
@@ -34,13 +34,13 @@ public class NameSuffixTest extends AbstractProcessorTest {
 
         // default Processor
         process(QuerydslAnnotationProcessor.class, classes,"suffix");
-        
+
         assertTrue(new File("target/suffix/com/querydsl/apt/domain/query2/QAnimalTest_AnimalType.java").exists());
     }
-    
+
     @Override
     protected Collection<String> getAPTOptions() {
         return Arrays.asList("-Aquerydsl.packageSuffix=.query2", "-Aquerydsl.suffix=Type");
     }
-    
+
 }

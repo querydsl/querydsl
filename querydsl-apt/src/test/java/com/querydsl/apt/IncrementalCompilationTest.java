@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,7 @@ import com.google.common.io.Files;
 
 @Ignore
 public class IncrementalCompilationTest extends AbstractProcessorTest{
-    
+
     private static final String packagePath = "src/test/java/com/querydsl/apt/domain/";
 
     @Test
@@ -35,13 +35,13 @@ public class IncrementalCompilationTest extends AbstractProcessorTest{
         File source = new File(packagePath, "ExampleEntity.java");
         String path = source.getPath();
         File qType = new File("target/overwrite/com/querydsl/apt/domain/QExampleEntity.java");
-        
+
         // QTestEntity is generated
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path), "overwrite");
         assertTrue(qType.exists());
         long modified = qType.lastModified();
         Thread.sleep(1000);
-        
+
         // TestEntity has not changed, QTestEntity is not overwritten
         compile(QuerydslAnnotationProcessor.class, Collections.singletonList(path), "overwrite");
         assertEquals(modified, qType.lastModified());
@@ -50,11 +50,11 @@ public class IncrementalCompilationTest extends AbstractProcessorTest{
         Files.touch(source);
         compile(QuerydslAnnotationProcessor.class, Collections.singletonList(path), "overwrite");
         assertTrue("" + modified + " >= " + qType.lastModified(), modified < qType.lastModified());
-        
-        // QTestEntity is deleted and regenerated 
+
+        // QTestEntity is deleted and regenerated
         assertTrue(qType.delete());
         compile(QuerydslAnnotationProcessor.class, Collections.singletonList(path), "overwrite");
         assertTrue(qType.exists());
     }
-    
+
 }

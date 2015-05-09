@@ -11,15 +11,15 @@ import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryInit;
 
 public class QueryInit4Test {
-    
+
     @QueryEntity
     public static class Organization {
-        
+
     }
-    
+
     @QueryEntity
     public static class Application {
-        
+
     }
 
     @QueryEntity
@@ -34,7 +34,7 @@ public class QueryInit4Test {
 
         @QueryInit({"user.primaryTenant", "tenant"})
         Set<UserTenantApplication> userTenantApplications;
-        
+
         Set<Organization> organizations;
 
         Date lastModifiedDate;
@@ -46,11 +46,11 @@ public class QueryInit4Test {
     public static class UserTenantApplication {
 
         User user;
-        
+
         Tenant tenant;
 
         Application application;
-        
+
         Date lastModifiedDate;
 
         Long lastModifiedUserId;
@@ -65,7 +65,7 @@ public class QueryInit4Test {
         Set<UserTenantApplication> userTenantApplications;
 
     }
-    
+
     @Test
     public void test() {
         QQueryInit4Test_Tenant tenant = QQueryInit4Test_Tenant.tenant;

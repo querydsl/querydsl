@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,12 +24,12 @@ import javax.persistence.*;
 import org.junit.Test;
 
 public class PropertiesTest {
-    
+
     @Entity
     public static abstract class AbstractEntity {
-        
+
     }
-    
+
     @Entity
     @Table(name = "Customer")
     public static class Customer extends AbstractEntity {
@@ -55,7 +55,7 @@ public class PropertiesTest {
             this.pizzas = pizzas;
         }
     }
-    
+
     @Entity
     @Table(name = "Pizza")
     public static class Pizza extends AbstractEntity {
@@ -95,20 +95,20 @@ public class PropertiesTest {
 
     @Entity
     public static class Topping {
-        
+
     }
-    
+
     @Test
     public void Customer() {
         assertNotNull(QPropertiesTest_Customer.customer.name);
         assertNotNull(QPropertiesTest_Customer.customer.pizzas);
     }
-    
+
     @Test
     public void Pizza() {
         assertNotNull(QPropertiesTest_Pizza.pizza.orderTime);
         assertNotNull(QPropertiesTest_Pizza.pizza.customer);
         assertNotNull(QPropertiesTest_Pizza.pizza.toppings);
     }
-    
+
 }

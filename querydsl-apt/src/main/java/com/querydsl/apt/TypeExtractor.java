@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,18 +18,18 @@ import javax.lang.model.type.*;
 
 /**
  * {@code TypeExtractor} is a visitor implementation which extracts a concrete type from a generic {@link TypeElement}
- * 
+ *
  * @author tiwe
  *
  */
 class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
 
     private final boolean skipEnum;
-    
+
     public TypeExtractor(boolean skipEnum) {
         this.skipEnum = skipEnum;
     }
-    
+
     @Override
     public TypeElement visitPrimitive(PrimitiveType t, Void p) {
         return null;
@@ -92,13 +92,13 @@ class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
     @Override
     public TypeElement visitWildcard(WildcardType t, Void p) {
         if (t.getExtendsBound() != null) {
-            return visit(t.getExtendsBound());    
-        } else if (t.getSuperBound() != null) {    
+            return visit(t.getExtendsBound());
+        } else if (t.getSuperBound() != null) {
             return visit(t.getSuperBound());
         } else {
             return null;
         }
-        
+
     }
 
     @Override

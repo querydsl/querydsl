@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,20 +27,20 @@ public class QueryEmbedded6Test {
 
     @QueryEntity
     public static class User {
-        
+
         @QueryEmbedded
         List<User> list;
-        
+
     }
-    
+
     @Test
     public void EntityPathBase_is_SuperClass() {
         assertEquals(EntityPathBase.class, QQueryEmbedded6Test_User.class.getSuperclass());
     }
-    
+
     @Test
     public void User_list_any() {
-        assertEquals(QQueryEmbedded6Test_User.class, QQueryEmbedded6Test_User.user.list.any().getClass());        
+        assertEquals(QQueryEmbedded6Test_User.class, QQueryEmbedded6Test_User.user.list.any().getClass());
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@ import javax.persistence.*;
 import org.junit.Test;
 
 public class Embedded2Test {
-    
+
     @MappedSuperclass
     public static class EntityCode {
 
@@ -28,21 +28,21 @@ public class Embedded2Test {
         String code;
 
     }
-    
+
     @MappedSuperclass
     public static abstract class AbstractEntity<C extends EntityCode> {
 
         @Embedded
         @Column(name = "code", nullable = false, unique = true)
         C code;
-        
+
     }
-    
+
     @MappedSuperclass
     public static class AbstractMultilingualEntity<C extends EntityCode> extends AbstractEntity<C> {
 
     }
-    
+
     @MappedSuperclass
     public static abstract class AbstractNamedEntity<C extends EntityCode> extends AbstractMultilingualEntity<C> {
 
@@ -53,7 +53,7 @@ public class Embedded2Test {
         String nameNl;
 
     }
-        
+
     @javax.persistence.Entity
     public static class Brand extends AbstractNamedEntity<BrandCode> {
 
@@ -63,18 +63,18 @@ public class Embedded2Test {
         Long id;
 
     }
-        
+
     public interface Entity<T> extends Serializable {
 
         boolean sameIdentityAs(T other);
 
     }
-     
+
     @Embeddable
     public static class BrandCode extends EntityCode {
 
     }
-    
+
     @Test
     public void test() {
         // TODO

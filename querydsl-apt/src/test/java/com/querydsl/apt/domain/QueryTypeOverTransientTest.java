@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,30 +23,30 @@ import com.querydsl.core.annotations.QueryTransient;
 import com.querydsl.core.annotations.QueryType;
 
 public class QueryTypeOverTransientTest {
-    
+
     @QueryEntity
     public static class Entity {
-        
+
         @QueryType(PropertyType.ENTITY)
         @QueryTransient
         Entity reference;
-        
+
     }
-    
-    @QueryEntity 
+
+    @QueryEntity
     public static abstract class  Entity2 {
-        
+
         @QueryType(PropertyType.ENTITY)
         @QueryTransient
         public abstract Entity getReference();
-        
+
     }
-    
+
     @Test
     public void Entity_Reference_Is_Available() {
         assertNotNull(QQueryTypeOverTransientTest_Entity.entity.reference);
     }
-    
+
     @Test
     public void Entity2_Reference_Is_Available() {
         assertNotNull(QQueryTypeOverTransientTest_Entity2.entity2.reference);
