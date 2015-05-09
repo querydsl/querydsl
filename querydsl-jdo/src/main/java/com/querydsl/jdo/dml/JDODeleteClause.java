@@ -24,10 +24,10 @@ import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.DeleteClause;
-import com.querydsl.jdo.JDOQLSerializer;
-import com.querydsl.jdo.JDOQLTemplates;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.jdo.JDOQLSerializer;
+import com.querydsl.jdo.JDOQLTemplates;
 
 /**
  * {@link DeleteClause} implementation for JDO

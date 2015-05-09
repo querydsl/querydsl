@@ -18,10 +18,10 @@ import javax.jdo.PersistenceManager;
 
 import com.querydsl.core.QueryFactory;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jdo.dml.JDODeleteClause;
-import com.querydsl.core.types.EntityPath;
 
 /**
  * Factory class for query and DML clause creation

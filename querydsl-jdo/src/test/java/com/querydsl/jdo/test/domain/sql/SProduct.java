@@ -13,17 +13,17 @@
  */
 package com.querydsl.jdo.test.domain.sql;
 
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+
+import java.sql.Date;
+import java.sql.Time;
+
+import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.ForeignKey;
 import com.querydsl.sql.PrimaryKey;
 import com.querydsl.sql.RelationalPathBase;
-import com.querydsl.core.types.PathMetadata;
-
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
-
-import java.sql.Date;
-import java.sql.Time;
 
 
 /**

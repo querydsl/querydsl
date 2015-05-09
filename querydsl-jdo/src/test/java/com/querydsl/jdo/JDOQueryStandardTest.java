@@ -13,9 +13,7 @@
  */
 package com.querydsl.jdo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -29,7 +27,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.querydsl.core.*;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.ArrayConstructorExpression;
+import com.querydsl.core.types.ParamNotSetException;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Param;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;

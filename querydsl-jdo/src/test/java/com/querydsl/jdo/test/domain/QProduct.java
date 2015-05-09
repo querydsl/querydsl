@@ -15,12 +15,7 @@ package com.querydsl.jdo.test.domain;
 
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.dsl.DatePath;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.StringPath;
-import com.querydsl.core.types.dsl.TimePath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * QProduct is a Querydsl query type for Product

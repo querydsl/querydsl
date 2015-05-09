@@ -17,14 +17,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.jdo.JDOQLSerializer;
 import com.querydsl.jdo.JDOQLTemplates;
-import com.querydsl.jdo.test.domain.Book;
-import com.querydsl.jdo.test.domain.Product;
-import com.querydsl.jdo.test.domain.QBook;
-import com.querydsl.jdo.test.domain.QProduct;
-import com.querydsl.jdo.test.domain.QStore;
-import com.querydsl.core.types.Expression;
+import com.querydsl.jdo.test.domain.*;
 
 public class ExprSerializationTest {
 

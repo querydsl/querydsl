@@ -24,12 +24,12 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jdo.dml.JDODeleteClause;
 import com.querydsl.jdo.test.domain.Book;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.Store;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Predicate;
 
 public abstract class AbstractJDOTest {
 
