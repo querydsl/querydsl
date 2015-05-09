@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,11 +13,7 @@
  */
 package com.querydsl.maven;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import com.querydsl.codegen.GenericExporter;
 
@@ -29,7 +25,7 @@ import com.querydsl.codegen.GenericExporter;
  * @author tiwe
  */
 public class JPAExporterMojo extends AbstractExporterMojo {
-    
+
     @Override
     protected void configure(GenericExporter exporter) {
         super.configure(exporter);

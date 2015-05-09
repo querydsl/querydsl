@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,9 +29,9 @@ public class QDocument extends EntityPathBase<Document> {
     }
 
     public final NumberPath<Integer> year = createNumber("year", Integer.class);
-    
+
     public final StringPath title = createString("title");
-    
+
     public final NumberPath<Double> gross = createNumber("gross", Double.class);
-    
+
 }

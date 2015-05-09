@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,12 +16,12 @@ package com.querydsl.core.alias;
 /**
  * {@code TypeSystem} defines an interface for detecting whether a given class confirms to certain Collection
  * contract
- * 
+ *
  * @author tiwe
  *
  */
 public interface TypeSystem {
-    
+
     /**
      * Return whether the given class is a collection class
      *
@@ -29,7 +29,7 @@ public interface TypeSystem {
      * @return true, if argument is a collection type
      */
     boolean isCollectionType(Class<?> cl);
-    
+
     /**
      * Return whether the given class is a set class
      *
@@ -37,7 +37,7 @@ public interface TypeSystem {
      * @return true, if argument is a set type
      */
     boolean isSetType(Class<?> cl);
-    
+
     /**
      * Return whether the given class is a list class
      *
@@ -45,7 +45,7 @@ public interface TypeSystem {
      * @return true, if argument is a list type
      */
     boolean isListType(Class<?> cl);
-    
+
     /**
      * Return whether the given class is a map class
      *

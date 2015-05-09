@@ -23,11 +23,11 @@ import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.querydsl.core.annotations.QueryEntities;
-import com.querydsl.core.annotations.QuerySupertype;
 import com.querydsl.apt.AbstractQuerydslProcessor;
 import com.querydsl.apt.Configuration;
 import com.querydsl.apt.DefaultConfiguration;
+import com.querydsl.core.annotations.QueryEntities;
+import com.querydsl.core.annotations.QuerySupertype;
 
 /**
  * Annotation processor to create Querydsl query types for Morphia annotated classes

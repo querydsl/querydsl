@@ -13,9 +13,9 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.TimePath;
 
 public class JodaTimeTemplatesTest {
-    
+
     private CollQuery<?> query = new CollQuery<Void>(JodaTimeTemplates.DEFAULT);
-    
+
     @Test
     public void DateTime() {
         DateTimePath<DateTime> entity = Expressions.dateTimePath(DateTime.class, "entity");
@@ -25,7 +25,7 @@ public class JodaTimeTemplatesTest {
                    entity.hour(), entity.minute(), entity.second(), entity.milliSecond())
              .fetch();
     }
-    
+
     @Test
     public void LocalDate() {
         DatePath<LocalDate> entity = Expressions.datePath(LocalDate.class, "entity");
@@ -34,7 +34,7 @@ public class JodaTimeTemplatesTest {
                    entity.dayOfMonth(), entity.dayOfWeek(), entity.dayOfYear())
              .fetch();
     }
-    
+
     @Test
     public void LocalTime() {
         TimePath<LocalTime> entity = Expressions.timePath(LocalTime.class, "entity");

@@ -1,6 +1,6 @@
 package com.querydsl.collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -11,18 +11,18 @@ import com.querydsl.core.types.MappingProjection;
 
 @SuppressWarnings("serial")
 public class MappingProjectionTest extends AbstractQueryTest {
-    
+
     public class ResultPart {
-        
+
     }
-    
+
     public class ResultObject {
-        
+
     }
-    
+
     @Test
     public void test() {
-        final MappingProjection<ResultPart> key = new MappingProjection<ResultPart>(ResultPart.class, 
+        final MappingProjection<ResultPart> key = new MappingProjection<ResultPart>(ResultPart.class,
                 cat.name) {
 
             @Override
@@ -31,7 +31,7 @@ public class MappingProjectionTest extends AbstractQueryTest {
             }
 
         };
-        
+
         List<ResultObject> list = query().from(cat, cats).select(
             new MappingProjection<ResultObject>(ResultObject.class, key) {
 
@@ -41,7 +41,7 @@ public class MappingProjectionTest extends AbstractQueryTest {
                     return new ResultObject();
                 }
             }).fetch();
-        
+
         assertEquals(cats.size(), list.size());
     }
 

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,30 +34,30 @@ public class DefaultQueryMetadataTest {
     }
 
     private final StringPath str = Expressions.stringPath("str");
-    
+
     private final StringPath str2 = Expressions.stringPath("str2");
 
     @Test
     public void AddWhere_With_Null() {
         metadata.addWhere(null);
     }
-    
+
     @Test
     public void AddWhere_With_BooleanBuilder() {
         metadata.addWhere(new BooleanBuilder());
     }
-    
+
     @Test
     public void AddHaving_With_Null() {
         metadata.addHaving(null);
     }
-    
+
     @Test
     public void AddHaving_With_BooleanBuilder() {
         metadata.addHaving(new BooleanBuilder());
     }
-    
-    
+
+
     @Test(expected=IllegalArgumentException.class)
     public void Validation() {
         metadata.addWhere(str.isNull());
@@ -72,7 +72,7 @@ public class DefaultQueryMetadataTest {
     public void Validation_No_Error_For_Having() {
         metadata.addHaving(str.isNull());
     }
-    
+
     @Test
     public void GetGroupBy() {
         metadata.addJoin(JoinType.DEFAULT, str);
@@ -92,7 +92,7 @@ public class DefaultQueryMetadataTest {
         metadata.addJoin(JoinType.DEFAULT, str);
         assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
     }
-    
+
     @Test
     public void GetJoins2() {
         metadata.addJoin(JoinType.DEFAULT, str);
@@ -194,7 +194,7 @@ public class DefaultQueryMetadataTest {
         assertEquals(metadata.getProjection(), clone.getProjection());
         assertEquals(metadata.getWhere(), clone.getWhere());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void SetParam() {
@@ -202,14 +202,14 @@ public class DefaultQueryMetadataTest {
         assertEquals(1, metadata.getParams().size());
         assertTrue(metadata.getParams().get(new Param(String.class, "str")).equals(ConstantImpl.create("X")));
     }
-    
+
     @Test
     public void AddFlag() {
         QueryFlag flag = new QueryFlag(Position.START, "X");
         metadata.addFlag(flag);
         assertTrue(metadata.hasFlag(flag));
     }
-    
+
     @Test
     public void Equals() {
         metadata.addJoin(JoinType.DEFAULT, str);
@@ -222,11 +222,11 @@ public class DefaultQueryMetadataTest {
         metadata.setProjection(str.append("abc"));
         metadata.addWhere(str.eq("b"));
         metadata.addWhere(str.isNotEmpty());
-        
+
         QueryMetadata metadata2 = new DefaultQueryMetadata();
-        assertFalse(metadata.equals(metadata2));        
+        assertFalse(metadata.equals(metadata2));
         metadata2.addJoin(JoinType.DEFAULT, str);
-        assertFalse(metadata.equals(metadata2));        
+        assertFalse(metadata.equals(metadata2));
         metadata2.addGroupBy(str);
         assertFalse(metadata.equals(metadata2));
         metadata2.addHaving(str.isNotNull());
@@ -243,7 +243,7 @@ public class DefaultQueryMetadataTest {
         metadata2.addWhere(str.isNotEmpty());
         assertTrue(metadata.equals(metadata2));
     }
-    
+
     @Test
     public void HashCode() {
         metadata.addJoin(JoinType.DEFAULT, str);
@@ -256,9 +256,9 @@ public class DefaultQueryMetadataTest {
         metadata.setProjection(str.append("abc"));
         metadata.addWhere(str.eq("b"));
         metadata.addWhere(str.isNotEmpty());
-        metadata.hashCode();        
+        metadata.hashCode();
     }
-    
+
     @Test
     public void HashCode_Empty_Metadata() {
         metadata.hashCode();

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class QueryHandlerTest {
-    
+
     @Test
     public void Types() {
         assertEquals(EclipseLinkHandler.class, EclipseLinkTemplates.DEFAULT.getQueryHandler().getClass());

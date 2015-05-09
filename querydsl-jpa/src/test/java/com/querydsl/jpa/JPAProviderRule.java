@@ -35,7 +35,7 @@ public class JPAProviderRule implements MethodRule {
             return base;
         }
     }
-    
+
     private <T extends Annotation> boolean hasAnnotation(FrameworkMethod method, Class<T> clazz) {
         return method.getMethod().isAnnotationPresent(clazz)
                 || method.getMethod().getDeclaringClass().isAnnotationPresent(clazz);

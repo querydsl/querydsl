@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,7 @@ package com.querydsl.jdo.test.domain;
 
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.ListPath;
-import com.querydsl.core.types.dsl.MapPath;
-import com.querydsl.core.types.dsl.PathInits;
-import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * QStore is a Querydsl query type for Store
@@ -47,13 +43,13 @@ public class QStore extends EntityPathBase<com.querydsl.jdo.test.domain.Store>{
     public QStore(String path) {
           this(Store.class, path);
     }
-    
+
     public QStore(Class<? extends Store> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
-    
+
     public QStore(PathMetadata metadata) {
          super(Store.class, metadata);
     }
-    
+
 }

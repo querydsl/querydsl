@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,16 +17,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class Domain2 {
-    
+
     private Domain2() {}
 
     public static final List<Class<?>> classes = Arrays.asList(
-            Category.class, 
-            CategoryProp.class, 
+            Category.class,
+            CategoryProp.class,
             Contact.class,
-            Document2.class, 
+            Document2.class,
             DocumentProp.class,
-            User2.class, 
+            User2.class,
             UserProp.class);
 
 }

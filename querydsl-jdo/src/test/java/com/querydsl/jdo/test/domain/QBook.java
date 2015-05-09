@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -48,13 +48,13 @@ public class QBook extends EntityPathBase<com.querydsl.jdo.test.domain.Book>{
     public QBook(String path) {
           this(com.querydsl.jdo.test.domain.Book.class, path);
     }
-    
+
     public QBook(Class<? extends com.querydsl.jdo.test.domain.Book> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
-    
+
     public QBook(PathMetadata metadata) {
          super(com.querydsl.jdo.test.domain.Book.class, metadata);
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ import java.lang.reflect.AnnotatedElement;
 
 /**
  * {@code Path} represents a path expression. Paths refer to variables, properties and collection members access.
- * 
+ *
  * @author tiwe
  */
 public interface Path<T> extends Expression<T> {

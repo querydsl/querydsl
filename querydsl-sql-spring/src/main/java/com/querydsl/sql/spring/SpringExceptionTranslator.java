@@ -35,15 +35,15 @@ import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 public class SpringExceptionTranslator implements com.querydsl.sql.SQLExceptionTranslator {
 
     private final SQLExceptionTranslator translator;
-    
+
     public SpringExceptionTranslator() {
         this.translator = new SQLStateSQLExceptionTranslator();
     }
-    
+
     public SpringExceptionTranslator(SQLExceptionTranslator translator) {
-        this.translator = translator;        
+        this.translator = translator;
     }
-    
+
     @Override
     public RuntimeException translate(String sql, List<Object> bindings, SQLException e) {
         return translator.translate(null, sql, e);

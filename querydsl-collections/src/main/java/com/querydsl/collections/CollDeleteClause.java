@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,7 +51,7 @@ public class CollDeleteClause<T> implements DeleteClause<CollDeleteClause<T>> {
         }
         return rv;
     }
-    
+
     @Override
     public CollDeleteClause<T> where(Predicate... o) {
         query.where(o);

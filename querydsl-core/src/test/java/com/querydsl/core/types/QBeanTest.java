@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -69,9 +69,9 @@ public class QBeanTest {
         }
 
     }
-    
+
     public static class SubEntity extends Entity{
-        
+
     }
 
     private PathBuilder<Entity> entity;
@@ -161,7 +161,7 @@ public class QBeanTest {
         Entity bean = wrappedProjection.newInstance(30, "Fri","tz");
         assertEquals("Fritz", bean.getName());
     }
-    
+
     @Test
     public void Supertype_Population() {
         QBean<SubEntity> beanProjection = new QBean<SubEntity>(SubEntity.class, true, name, age, married);

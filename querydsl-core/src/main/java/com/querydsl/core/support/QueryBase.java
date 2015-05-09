@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,13 +40,13 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
 
     /**
      * Set the Query to return distinct results
-     * 
+     *
      * @return the current object
      */
     public Q distinct() {
         return queryMixin.distinct();
     }
-    
+
     /**
      * Add a single grouping expression
      *
@@ -56,7 +56,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     public Q groupBy(Expression<?> e) {
         return queryMixin.groupBy(e);
     }
-    
+
     /**
      * Add grouping/aggregation expressions
      *
@@ -66,7 +66,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     public Q groupBy(Expression<?>... o) {
         return queryMixin.groupBy(o);
     }
-    
+
     /**
      * Add a single filter for aggregation
      *
@@ -86,10 +86,10 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     public Q having(Predicate... o) {
         return queryMixin.having(o);
     }
-    
+
     /**
      * Add a single order expression
-     * 
+     *
      * @param o order
      * @return the current object
      */
@@ -106,10 +106,10 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     public Q orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
     }
-    
+
     /**
      * Add the given filter condition
-     * 
+     *
      * <p>Skips null arguments</p>
      *
      * @param o filter conditions to be added
@@ -121,7 +121,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
 
     /**
      * Add the given filter conditions
-     * 
+     *
      * <p>Skips null arguments</p>
      *
      * @param o filter conditions to be added
@@ -173,7 +173,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
     public <P> Q set(ParamExpression<P> param, P value) {
         return queryMixin.set(param, value);
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == this) {
@@ -185,12 +185,12 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
             return false;
         }
     }
-  
+
     @Override
     public int hashCode() {
         return queryMixin.hashCode();
     }
-        
+
     @Override
     public String toString() {
         return queryMixin.toString();

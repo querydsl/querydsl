@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,21 +23,21 @@ import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;
 
 public class SubqueriesTest extends AbstractJDOTest {
-    
+
     private QProduct product = QProduct.product;
 
     private QProduct other = new QProduct("other");
-    
+
     @Test
     public void List_Exists() {
         query().from(product).where(query().from(other).select(other).exists()).select(product).fetch();
     }
-    
+
     @Test
     public void List_NotExists() {
         query().from(product).where(query().from(other).select(other).notExists()).select(product).fetch();
     }
-    
+
     @Test
     public void List_Contains() {
         query().from(product).where(product.name.in(query().from(other).select(other.name))).select(product).fetch();
@@ -51,7 +51,7 @@ public class SubqueriesTest extends AbstractJDOTest {
             System.out.println(price);
         }
     }
-    
+
     @Test
     public void Gt_Subquery_with_Condition() {
         for (double price : query().from(product)
@@ -69,7 +69,7 @@ public class SubqueriesTest extends AbstractJDOTest {
             System.out.println(price);
         }
     }
-    
+
 
     @Test
     public void In_Subquery() {
@@ -89,7 +89,7 @@ public class SubqueriesTest extends AbstractJDOTest {
             System.out.println(price);
         }
     }
-    
+
     @Test
     public void Exists() {
         for (double price : query().from(product)
@@ -98,7 +98,7 @@ public class SubqueriesTest extends AbstractJDOTest {
             System.out.println(price);
         }
     }
-    
+
     @Test
     public void Not_Exists() {
         for (double price : query().from(product)
@@ -107,9 +107,9 @@ public class SubqueriesTest extends AbstractJDOTest {
             System.out.println(price);
         }
     }
-    
 
-    
+
+
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

@@ -24,10 +24,10 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.BeanPath;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.BeanPath;
 
 /**
  * {@code RelationalPathBase} is a base class for {@link RelationalPath} implementations

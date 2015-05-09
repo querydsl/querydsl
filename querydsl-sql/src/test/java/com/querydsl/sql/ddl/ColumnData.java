@@ -10,15 +10,15 @@ package com.querydsl.sql.ddl;
 *
 */
 public class ColumnData {
-    
+
     private final String name;
-    
+
     private final String type;
-    
+
     private boolean nullAllowed = true;
-    
+
     private boolean autoIncrement;
-    
+
     private Integer size;
 
     public ColumnData(String name, String type) {
@@ -57,5 +57,5 @@ public class ColumnData {
     public void setAutoIncrement(boolean autoIncrement) {
         this.autoIncrement = autoIncrement;
     }
-    
+
 }

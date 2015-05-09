@@ -39,6 +39,7 @@ class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor6<R, P> {
         } catch (Exception e) {}
     }
 
+    @Override
     public R visitUnknown(TypeMirror t, P p) {
         if (IntersectionTypeClass != null && IntersectionTypeClass.isInstance(t)) {
             try {

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,15 +35,15 @@ public class AntMetaDataExporterTest {
         try {
           Statement stmt = conn.createStatement();
           try {
-              stmt.execute("create table test (id int)");    
+              stmt.execute("create table test (id int)");
           } finally {
               stmt.close();
-          }                           
+          }
         } finally {
-            conn.close();  
+            conn.close();
         }
     }
-    
+
     @Test
     public void Execute() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
@@ -56,7 +56,7 @@ public class AntMetaDataExporterTest {
 
         assertTrue(new File("target/AntMetaDataExporterTest").exists());
     }
-    
+
     @Test
     public void Execute_With_Beans() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,16 +19,16 @@ import com.querydsl.core.types.Expression;
 
 /**
  * {@code Tuple} defines an interface for generic query result projection
- * 
+ *
  * <p>Usage example:</p>
  * <pre>
- * {@code 
+ * {@code
  * List<Tuple> result = query.from(employee).select(employee.firstName, employee.lastName).fetch();
  * for (Tuple row : result) {
  *     System.out.println("firstName " + row.get(employee.firstName));
- *     System.out.println("lastName " + row.get(employee.lastName)); 
+ *     System.out.println("lastName " + row.get(employee.lastName));
  * }
- * } 
+ * }
  * </pre>
  *
  * @author tiwe
@@ -59,18 +59,18 @@ public interface Tuple {
 
     /**
      * Get the size of the Tuple
-     * 
+     *
      * @return row element count
      */
     int size();
-    
+
     /**
      * Get the content as an Object array
      *
      * @return tuple in array form
      */
     Object[] toArray();
-    
+
    /**
     * All Tuples should override equals and hashCode. For compatibility
     * across different Tuple implementations, equality check should use
@@ -79,7 +79,7 @@ public interface Tuple {
     * @see Object#equals(Object)
     */
    boolean equals(Object o);
-        
+
    /**
     * All Tuples should override equals and hashCode. For compatibility
     * across different Tuple implementations, hashCode should use
@@ -88,6 +88,6 @@ public interface Tuple {
     * @see Object#hashCode()
     */
    int hashCode();
-    
+
 
 }

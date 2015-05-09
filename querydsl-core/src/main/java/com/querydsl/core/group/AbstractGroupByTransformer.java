@@ -18,12 +18,7 @@ import java.util.List;
 
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionBase;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * Base class for GroupBy result transformers

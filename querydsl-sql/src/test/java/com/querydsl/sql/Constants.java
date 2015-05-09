@@ -15,9 +15,10 @@ package com.querydsl.sql;
 
 import java.util.Calendar;
 
+import org.joda.time.LocalDate;
+
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
-import org.joda.time.LocalDate;
 
 public final class Constants {
 

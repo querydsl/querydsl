@@ -4,4 +4,5 @@ package com.querydsl.apt.domain;
 import org.hibernate.envers.DefaultRevisionEntity;
 
 import com.querydsl.core.annotations.QueryEntities;
-import com.querydsl.core.domain.*;
+import com.querydsl.core.domain.A;
+import com.querydsl.core.domain.Tenant;

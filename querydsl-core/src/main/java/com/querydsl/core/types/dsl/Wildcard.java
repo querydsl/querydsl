@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,12 +19,12 @@ import com.querydsl.core.types.Ops;
 
 /**
  * {@code Wildcard} provides constant Expressions for general wildcard expressions
- * 
+ *
  * @author tiwe
  *
  */
 public final class Wildcard {
-    
+
     /**
      * Wildcard expression (*) for all columns
      */
@@ -34,7 +34,7 @@ public final class Wildcard {
      * Wildcard count expression (count(*))
      */
     public static final NumberExpression<Long> count = Expressions.numberOperation(Long.class, Ops.AggOps.COUNT_ALL_AGG);
-    
+
     /**
      * Wildcard count distinct expression (count(distinct *))
      */
@@ -46,5 +46,5 @@ public final class Wildcard {
     public static final NumberExpression<Integer> countAsInt = Expressions.numberOperation(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
 
     private Wildcard() {}
-    
+
 }

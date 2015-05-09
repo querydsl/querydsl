@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,23 +19,23 @@ import com.querydsl.core.annotations.QueryEntity;
 
 @Ignore
 public class Enum2Test {
-    
+
     @QueryEntity
     public static abstract class EnumPermissions<P extends Enum<P> & Permission> extends EntityImpl implements Permissions<P> {
-    
+
     }
 
     @QueryEntity
     public static abstract class EntityImpl {
-                
+
     }
 
     public interface Permission {
-        
+
     }
-    
+
     public interface Permissions<P> {
-        
+
     }
-    
+
 }

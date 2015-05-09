@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +30,7 @@ public class QAbstractEntity extends EntityPathBase<AbstractEntity> {
     private static final long serialVersionUID = 781156670;
 
     public static final QAbstractEntity animal = new QAbstractEntity("abstractEntity");
-    
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public QAbstractEntity(String variable) {

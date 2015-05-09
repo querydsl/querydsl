@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -76,7 +76,7 @@ public class QMapTest {
         QMap expr = new QMap(str1, str2);
         assertEquals(expr.newInstance("str1", "str2"), expr.newInstance("str1", "str2"));
     }
-    
+
     @Test
     public void Tuple_hashCode() {
         QMap expr = new QMap(str1, str2);

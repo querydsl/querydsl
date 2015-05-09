@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,39 +21,29 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-import com.querydsl.sql.types.BlobType;
-import com.querydsl.sql.types.BooleanType;
-import com.querydsl.sql.types.ByteType;
-import com.querydsl.sql.types.CharacterType;
-import com.querydsl.sql.types.DoubleType;
-import com.querydsl.sql.types.FloatType;
-import com.querydsl.sql.types.InputStreamType;
-import com.querydsl.sql.types.IntegerType;
-import com.querydsl.sql.types.LongType;
-import com.querydsl.sql.types.ObjectType;
-import com.querydsl.sql.types.ShortType;
+import com.querydsl.sql.types.*;
 
 public class JavaTypeMappingTest {
 
     private JavaTypeMapping typeMapping = new JavaTypeMapping();
-    
+
     @Test
-    public void GetType_With_Subtypes() {        
+    public void GetType_With_Subtypes() {
         typeMapping.register(new InputStreamType());
         assertNotNull(typeMapping.getType(InputStream.class));
         assertNotNull(typeMapping.getType(FileInputStream.class));
     }
-    
+
     @Test
     public void GetType_With_Interfaces() {
         assertEquals(BlobType.class, typeMapping.getType(DummyBlob.class).getClass());
     }
-    
+
     @Test
     public void GetType_for_Object() {
         assertEquals(ObjectType.class, typeMapping.getType(Object.class).getClass());
     }
-    
+
     @Test
     public void GetType_For_Primitive() {
         assertEquals(ByteType.class, typeMapping.getType(byte.class).getClass());

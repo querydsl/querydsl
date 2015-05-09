@@ -87,7 +87,7 @@ public class DeepInitializationTest {
 
     @Embeddable
     public static class MyEmbeddable {
-        
+
         private String nummer;
 
         public MyEmbeddable() {
@@ -101,11 +101,11 @@ public class DeepInitializationTest {
             this.nummer = nummer;
         }
     }
-    
+
     @Test
     public void Init_Via_Parent() {
         QDeepInitializationTest_Parent parent = QDeepInitializationTest_Parent.parent;
         parent.children.any().subChild.myEmbeddable.nummer.eq("Test");
     }
-    
+
 }

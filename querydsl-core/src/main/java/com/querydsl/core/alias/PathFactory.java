@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,12 +23,12 @@ import com.querydsl.core.types.PathMetadata;
 
 /**
  * {@code PathFactory} defines a factory interface for {@link Path} creation
- * 
+ *
  * @author tiwe
  *
  */
 public interface PathFactory {
-        
+
     /**
      * Create an array path
      *
@@ -37,7 +37,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <T> Path<T[]> createArrayPath(Class<T[]> type, PathMetadata metadata);
-    
+
     /**
      * Create an entity path
      *
@@ -55,7 +55,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <T> Path<T> createSimplePath(Class<T> type, PathMetadata metadata);
-    
+
     /**
      * Create a comparable path
      *
@@ -64,7 +64,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <T extends Comparable<?>> Path<T> createComparablePath(Class<T> type, PathMetadata metadata);
-    
+
     /**
      * Create an enum path
      *
@@ -73,7 +73,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <T extends Enum<T>> Path<T> createEnumPath(Class<T> type, PathMetadata metadata);
-    
+
     /**
      * Create a date path
      *
@@ -82,7 +82,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <T extends Comparable<?>> Path<T> createDatePath(Class<T> type, PathMetadata metadata);
-    
+
     /**
      * Create a time path
      *
@@ -91,7 +91,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <T extends Comparable<?>> Path<T> createTimePath(Class<T> type, PathMetadata metadata);
-    
+
     /**
      * Create a datetime path
      *
@@ -100,7 +100,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <T extends Comparable<?>> Path<T> createDateTimePath(Class<T> type, PathMetadata metadata);
-    
+
     /**
      * Create a number path
      *
@@ -109,7 +109,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <T extends Number & Comparable<T>> Path<T> createNumberPath(Class<T> type, PathMetadata metadata);
-    
+
     /**
      * Create a boolean path
      *
@@ -117,7 +117,7 @@ public interface PathFactory {
      * @return new path instance
      */
     Path<Boolean> createBooleanPath(PathMetadata metadata);
-    
+
     /**
      * Create a string path
      *
@@ -134,7 +134,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <E> Path<List<E>> createListPath(Class<E> elementType, PathMetadata metadata);
-    
+
     /**
      * Create a set path
      *
@@ -143,7 +143,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <E> Path<Set<E>> createSetPath(Class<E> elementType, PathMetadata metadata);
-    
+
     /**
      * Create a collection path
      *
@@ -152,7 +152,7 @@ public interface PathFactory {
      * @return new path instance
      */
     <E> Path<Collection<E>> createCollectionPath(Class<E> elementType, PathMetadata metadata);
-    
+
     /**
      * Create a map path
      *

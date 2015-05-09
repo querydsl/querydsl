@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,9 +25,12 @@ import org.hibernate.StatelessSession;
 import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.UpdateClause;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.support.QueryMixin;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPAQueryMixin;
 import com.querydsl.jpa.JPQLSerializer;
@@ -59,12 +62,12 @@ public class HibernateUpdateClause implements
     public HibernateUpdateClause(StatelessSession session, EntityPath<?> entity) {
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
-    
+
     public HibernateUpdateClause(Session session, EntityPath<?> entity, JPQLTemplates templates) {
         this(new DefaultSessionHolder(session), entity, templates);
     }
 
-    public HibernateUpdateClause(SessionHolder session, EntityPath<?> entity, 
+    public HibernateUpdateClause(SessionHolder session, EntityPath<?> entity,
             JPQLTemplates templates) {
         this.session = session;
         this.templates = templates;
@@ -94,17 +97,17 @@ public class HibernateUpdateClause implements
         }
         return this;
     }
-    
+
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
             updates.put(path, expression);
         } else {
             setNull(path);
-        }        
+        }
         return this;
     }
-    
+
     @Override
     public <T> HibernateUpdateClause setNull(Path<T> path) {
         updates.put(path, Expressions.nullExpression(path));
@@ -129,7 +132,7 @@ public class HibernateUpdateClause implements
     public HibernateUpdateClause where(Predicate... o) {
         for (Predicate p : o) {
             queryMixin.where(p);
-        }        
+        }
         return this;
     }
 
@@ -142,7 +145,7 @@ public class HibernateUpdateClause implements
         lockModes.put(path, lockMode);
         return this;
     }
-    
+
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);

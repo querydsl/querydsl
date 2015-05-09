@@ -20,7 +20,7 @@ import com.mysema.codegen.model.TypeCategory;
 /**
  * {@code AnnotationHelper} defines a interface to provide custom annotation processing
  * for {@link TypeFactory}.
- * 
+ *
  * @author dyorgio
  */
 public interface AnnotationHelper {

@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import com.google.common.collect.ForwardingSet;
 
 public class CustomCollection {
-    
+
     @Entity
     public static class MyCustomCollection<T> extends ForwardingSet<T> {
 
@@ -17,7 +17,7 @@ public class CustomCollection {
         }
 
     }
-    
+
     @Entity
     public static class MyCustomCollection2 extends ForwardingSet<String> {
 
@@ -27,12 +27,12 @@ public class CustomCollection {
         }
 
     }
-    
+
     @Entity
     public static class MyEntity {
-        
+
         MyCustomCollection<String> strings;
-        
+
         MyCustomCollection2 strings2;
     }
 

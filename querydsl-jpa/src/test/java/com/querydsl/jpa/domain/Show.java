@@ -15,11 +15,7 @@ package com.querydsl.jpa.domain;
 
 import java.util.Map;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * The Class Show.

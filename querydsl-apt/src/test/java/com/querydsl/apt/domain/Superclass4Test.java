@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,29 +20,29 @@ import org.junit.Test;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class Superclass4Test {
-    
+
     public static class SuperClass {
-        
+
         String superClassProperty;
-        
+
     }
-    
+
     @QueryEntity
     public static class Entity extends SuperClass {
-        
+
         String entityProperty;
-        
+
     }
 
     @Test
     public void SuperClass_Properties() {
         assertNotNull(QSuperclass4Test_SuperClass.superClass.superClassProperty);
     }
-    
+
     @Test
     public void Entity_Properties() {
         assertNotNull(QSuperclass4Test_Entity.entity.entityProperty);
         assertNotNull(QSuperclass4Test_Entity.entity.superClassProperty);
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,16 +13,18 @@
  */
 package com.querydsl.sql.h2;
 
+import static org.junit.Assert.*;
+
 import java.sql.*;
 import java.util.Collections;
 
-import com.querydsl.sql.QGeneratedKeysEntity;
-import com.querydsl.sql.H2Templates;
-import com.querydsl.sql.dml.SQLInsertClause;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.QGeneratedKeysEntity;
+import com.querydsl.sql.dml.SQLInsertClause;
 
 public class GeneratedKeysH2Test {
 
@@ -59,7 +61,7 @@ public class GeneratedKeysH2Test {
         ResultSet rs = insertClause.set(entity.name, "Hello").executeWithKeys();
         ResultSetMetaData md = rs.getMetaData();
         System.out.println(md.getColumnName(1));
-        
+
         assertTrue(rs.next());
         assertEquals(1, rs.getInt(1));
         assertFalse(rs.next());
@@ -72,7 +74,7 @@ public class GeneratedKeysH2Test {
 
         insertClause = new SQLInsertClause(conn, new H2Templates(), entity);
         assertEquals(3, insertClause.set(entity.name, "World").executeWithKey(entity.id).intValue());
-        
+
         insertClause = new SQLInsertClause(conn, new H2Templates(), entity);
         assertEquals(Collections.singletonList(4), insertClause.set(entity.name, "World").executeWithKeys(entity.id));
     }

@@ -2,7 +2,7 @@ package com.querydsl.sql.spatial.suites;
 
 import org.junit.BeforeClass;
 
-import com.querydsl.sql.*;
+import com.querydsl.sql.Connections;
 import com.querydsl.sql.spatial.GeoDBTemplates;
 import com.querydsl.sql.spatial.SpatialBase;
 import com.querydsl.sql.suites.AbstractSuite;

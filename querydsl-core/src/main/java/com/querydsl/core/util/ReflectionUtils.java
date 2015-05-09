@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 /**
  * ReflectionUtils provides Reflection related functionality
- * 
+ *
  * @author tiwe
  *
  */
@@ -67,7 +67,7 @@ public final class ReflectionUtils {
             return getGetterOrNull(beanClass, name, Boolean.class);
         }
     }
-    
+
     @Nullable
     public static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type) {
         String methodName = ((type.equals(Boolean.class) || type.equals(boolean.class)) ? "is" : "get") + BeanUtils.capitalize(name);
@@ -87,7 +87,7 @@ public final class ReflectionUtils {
         if (type instanceof ParameterizedType) {
             return ((ParameterizedType) type).getActualTypeArguments().length;
         } else if (type instanceof TypeVariable) {
-            return getTypeParameterCount(((TypeVariable) type).getBounds()[0]);            
+            return getTypeParameterCount(((TypeVariable) type).getBounds()[0]);
         } else {
             return 0;
         }
@@ -101,18 +101,18 @@ public final class ReflectionUtils {
             return null;
         }
     }
-    
+
     @Nullable
     public static Type getTypeParameter(java.lang.reflect.Type type, int index) {
         if (type instanceof ParameterizedType) {
             return ((ParameterizedType) type).getActualTypeArguments()[index];
-        } else if (type instanceof TypeVariable) {    
+        } else if (type instanceof TypeVariable) {
             return getTypeParameter(((TypeVariable) type).getBounds()[0], index);
         } else {
-            return null;    
-        }        
+            return null;
+        }
     }
-    
+
     private static Class<?> asClass(Type type) {
         if (type instanceof WildcardType) {
             WildcardType wildcardType = (WildcardType) type;
@@ -127,7 +127,7 @@ public final class ReflectionUtils {
             return asClass(((TypeVariable)type).getBounds()[0]);
         } else if (type instanceof ParameterizedType) {
             return (Class<?>) ((ParameterizedType) type).getRawType();
-        } else if (type instanceof GenericArrayType) {    
+        } else if (type instanceof GenericArrayType) {
             Type component = ((GenericArrayType)type).getGenericComponentType();
             return Array.newInstance(asClass(component), 0).getClass();
         } else if (type instanceof Class) {
@@ -136,7 +136,7 @@ public final class ReflectionUtils {
             throw new IllegalArgumentException(type.getClass().toString());
         }
     }
-    
+
     public static Set<Class<?>> getSuperClasses(Class<?> cl) {
         Set<Class<?>> classes = new HashSet<Class<?>>();
         Class<?> c = cl;
@@ -146,7 +146,7 @@ public final class ReflectionUtils {
         }
         return classes;
     }
-    
+
     public static Set<Field> getFields(Class<?> cl) {
         Set<Field> fields = new HashSet<Field>();
         Class<?> c = cl;
@@ -156,7 +156,7 @@ public final class ReflectionUtils {
         }
         return fields;
     }
-    
+
     public static Set<Class<?>> getImplementedInterfaces(Class<?> cl) {
         Set<Class<?>> interfaces = new HashSet<Class<?>>();
         Deque<Class<?>> classes = new ArrayDeque<Class<?>>();

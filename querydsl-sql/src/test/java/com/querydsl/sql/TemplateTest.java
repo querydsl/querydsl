@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,9 @@ import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
 
 public class TemplateTest {
 
@@ -44,5 +46,5 @@ public class TemplateTest {
     private StringExpression to_char(Expression<?> expr, String pattern) {
         return Expressions.stringTemplate("to_char({0},'{1s}')", expr, ConstantImpl.create(pattern));
     }
-        
+
 }

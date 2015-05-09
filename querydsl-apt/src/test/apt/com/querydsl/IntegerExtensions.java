@@ -1,6 +1,6 @@
 package com.querydsl;
 
-import com.querydsl.core.annotations.*;
+import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 

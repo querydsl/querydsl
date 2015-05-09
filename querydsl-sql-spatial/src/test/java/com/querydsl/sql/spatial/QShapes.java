@@ -6,11 +6,11 @@ import javax.annotation.Generated;
 
 import org.geolatte.geom.Geometry;
 
-import com.querydsl.spatial.GeometryPath;
-import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.spatial.GeometryPath;
+import com.querydsl.sql.ColumnMetadata;
 
 /**
  * QShapes is a Querydsl query type for QShapes

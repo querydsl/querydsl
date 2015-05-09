@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,20 +51,20 @@ public class AnyUsageTest {
 
         @ManyToOne
         public DealerGroup dealerGroup;
-        
+
         @ManyToOne
         public Company company;
 
     }
-    
+
     @Entity
-    public static class Company implements Serializable {        
+    public static class Company implements Serializable {
         private static final long serialVersionUID = -5369301332567282659L;
-        
+
         @Id
         @GeneratedValue
         public Long id;
-        
+
     }
 
     @Test
@@ -73,7 +73,7 @@ public class AnyUsageTest {
         assertNotNull(dealer);
         assertNotNull(dealer.company);
     }
-    
+
     @Test
     public void WithQDealer() {
         List<Company> companies = new LinkedList<Company>();
@@ -87,7 +87,7 @@ public class AnyUsageTest {
     public void WithQDealerGroup() {
         List<Company> companies = new LinkedList<Company>();
         companies.add( new Company() );
-        QAnyUsageTest_Dealer qDealer = QAnyUsageTest_DealerGroup.dealerGroup.dealers.any();                   
+        QAnyUsageTest_Dealer qDealer = QAnyUsageTest_DealerGroup.dealerGroup.dealers.any();
         BooleanExpression expression = qDealer.company.in( companies );
         assertNotNull(expression);
     }

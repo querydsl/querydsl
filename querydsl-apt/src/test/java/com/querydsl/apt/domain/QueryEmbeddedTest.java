@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,43 +27,43 @@ public class QueryEmbeddedTest {
 
     @QueryEntity
     public static class Parent {
-    
+
         String parentProperty;
-        
+
         @QueryEmbedded
         Child child;
-        
+
     }
 
     @QueryEntity
     public static class Parent2 {
-    
+
         String parentProperty;
-        
+
         @QueryEmbedded
         List<Child> children;
-        
+
         @QueryEmbedded
         Map<String,Child> children2;
-        
+
     }
-    
+
     public static class Child {
-        
+
         String childProperty;
-        
+
     }
-    
+
     @Test
     public void Parent_Child_ChildProperty() {
         assertNotNull(QQueryEmbeddedTest_Parent.parent.child.childProperty);
     }
-    
+
     @Test
     public void Parent_Children_Any_ChildrenProperty() {
         assertNotNull(QQueryEmbeddedTest_Parent2.parent2.children.any().childProperty);
     }
-    
+
     @Test
     public void Parent_Children2_MapAccess() {
         assertNotNull(QQueryEmbeddedTest_Parent2.parent2.children2.containsKey("XXX"));

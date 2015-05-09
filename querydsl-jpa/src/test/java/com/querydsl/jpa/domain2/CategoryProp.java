@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,11 +23,11 @@ public class CategoryProp {
 
     @Id
     private long id;
-    
+
     private long categoryId;
-    
+
     private String propName;
-    
+
     private String propValue;
 
     public long getId() {
@@ -61,5 +61,5 @@ public class CategoryProp {
     public void setPropValue(String propValue) {
         this.propValue = propValue;
     }
-    
+
 }

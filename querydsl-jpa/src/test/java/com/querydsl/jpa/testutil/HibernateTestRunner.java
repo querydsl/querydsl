@@ -35,8 +35,8 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
-import com.querydsl.jpa.Mode;
 import com.querydsl.jpa.HibernateTest;
+import com.querydsl.jpa.Mode;
 import com.querydsl.jpa.domain.Domain;
 
 /**

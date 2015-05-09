@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,7 @@ public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamEx
         this.name = name;
         this.anon = false;
     }
-    
+
     public ParamExpressionImpl(Class<? extends T> type) {
         super(type);
         this.name = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
@@ -64,14 +64,17 @@ public class ParamExpressionImpl<T> extends ExpressionBase<T> implements ParamEx
         }
     }
 
+    @Override
     public final String getName() {
         return name;
     }
 
+    @Override
     public final boolean isAnon() {
         return anon;
     }
 
+    @Override
     public final String getNotSetMessage() {
         if (!anon) {
             return "The parameter " + name + " needs to be set";

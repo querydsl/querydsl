@@ -101,10 +101,10 @@ public class GenericExporter {
 
     @Nullable
     private File targetFolder;
-    
+
     @Nullable
     private TypeFactory typeFactory;
-    
+
     private final List<AnnotationHelper> annotationHelpers = Lists.newArrayList();
 
     @Nullable
@@ -208,7 +208,7 @@ public class GenericExporter {
         for (AnnotationHelper helper : annotationHelpers){
             typeFactory.addAnnotationHelper(helper);
         }
-        
+
         // process supertypes
         for (Class<?> cl : superTypes.keySet()) {
             createEntityType(cl, superTypes);
@@ -725,8 +725,8 @@ public class GenericExporter {
 
     /**
      * Add a annotation helper object to process custom annotations
-     * 
-     * @param annotationHelper 
+     *
+     * @param annotationHelper
      */
     public void addAnnotationHelper(AnnotationHelper annotationHelper){
         annotationHelpers.add(annotationHelper);

@@ -23,11 +23,7 @@ import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import com.querydsl.sql.AbstractSQLQuery;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.MySQLTemplates;
-import com.querydsl.sql.SQLQuery;
-import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.*;
 
 /**
  * {@code MySQLQuery} provides MySQL related extensions to SQLQuery
@@ -264,5 +260,5 @@ public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
         queryMixin.setProjection(exprs);
         return (MySQLQuery<Tuple>) this;
     }
-    
+
 }

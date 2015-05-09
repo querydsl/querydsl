@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,14 +16,7 @@ package com.querydsl.jpa.domain2;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name="category_")
@@ -31,30 +24,30 @@ public class Category {
 
     @Id
     private long id;
-    
+
     private String categoryName;
-    
+
     private String categoryDescription;
-    
+
     private double createdBy;
-    
+
     private double modifiedBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
-    
+
     private double deletedBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date deleteDate;
-    
+
     @OneToMany
     @JoinTable(joinColumns = @JoinColumn(name = "parentId"), inverseJoinColumns = @JoinColumn(name = "childId"))
     private Set<Category> childCategories;
-    
+
     @OneToMany
     private Set<CategoryProp> properties;
 

@@ -1,12 +1,12 @@
 package com.querydsl.sql.domain;
 
-import com.querydsl.sql.ColumnMetadata;
-import com.querydsl.sql.RelationalPathBase;
+import java.sql.Date;
+
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.dsl.DatePath;
-
-import java.sql.Date;
+import com.querydsl.sql.ColumnMetadata;
+import com.querydsl.sql.RelationalPathBase;
 
 public class QDateTest extends RelationalPathBase<QDateTest> {
 

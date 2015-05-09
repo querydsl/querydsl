@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,14 +20,14 @@ import com.google.common.collect.ImmutableList;
 /**
  * {@code Keywords} provides keywords sets in capitalized form to
  * be used in {@link GenericExporter} and the APT processors
- * 
+ *
  * @author tiwe
  *
  */
 public final class Keywords {
-    
+
     private Keywords() {}
-    
+
     public static final Collection<String> JPA = ImmutableList.of(
             "ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",
             "BIT_LENGTH[51]","BOTH","BY","CASE","CHAR_LENGTH",
@@ -44,7 +44,7 @@ public final class Keywords {
             "SQRT","SUBSTRING","SUM","THEN",
             "TRAILING","TRIM","TRUE","TYPE","UNKNOWN","UPDATE","UPPER",
             "VALUE","WHEN","WHERE");
-    
+
     public static final Collection<String> JDO = ImmutableList.of(
             "AS","ASC", "ASCENDING","AVG",
             "BY","COUNT", "DESC","DESCENDING",

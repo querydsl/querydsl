@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,7 @@ import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 public class OperationTest {
-    
+
     enum ExampleEnum {A,B}
 
     @SuppressWarnings("unchecked")
@@ -45,7 +45,7 @@ public class OperationTest {
         operations.add(new SimpleOperation(String.class,Ops.TRIM, args));
         operations.add(new StringOperation(Ops.CONCAT, args));
         operations.add(new TimeOperation(Time.class,Ops.DateTimeOps.CURRENT_TIME, args));
-        
+
         for (Operation<?> operation : operations) {
             Operation<?> other = ExpressionUtils.operation(operation.getType(), operation.getOperator(),
                     ImmutableList.copyOf(operation.getArgs()));
@@ -54,8 +54,8 @@ public class OperationTest {
             assertEquals(operation, other);
             assertNotNull(operation.getOperator());
             assertNotNull(operation.getArgs());
-            assertNotNull(operation.getType());            
+            assertNotNull(operation.getType());
         }
     }
-    
+
 }

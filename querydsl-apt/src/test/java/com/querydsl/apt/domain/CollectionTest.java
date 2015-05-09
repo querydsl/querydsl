@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,32 +26,32 @@ import com.querydsl.core.types.dsl.MapPath;
 import com.querydsl.core.types.dsl.SetPath;
 
 public class CollectionTest {
-    
+
     @QueryEntity
     public static class Person {
 
         Map<String, ?> map1;
-    
+
         Map<?, String> map2;
-        
+
         Map<?,?> map3;
-        
+
         Map map4;
-        
+
         List<?> list1;
-        
+
         List list2;
-        
+
         Collection<?> collection1;
-        
+
         Collection collection2;
-        
+
         Collection<Collection<Person>> collectionOfCollection;
-        
+
         Collection<Set<String>> collectionOfSet;
-        
+
         Set<?> set1;
-        
+
         Set set2;
     }
 
@@ -77,7 +77,7 @@ public class CollectionTest {
         HashSet<String> set3;
 
     }
-    
+
     @Test
     public void test() {
 //        assertEquals(String.class, QMapWithUndefinedValueTest_Person.person.appData.getParameter(1));

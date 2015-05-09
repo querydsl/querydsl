@@ -50,9 +50,9 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
 
     protected final Multimap<String,Object> hints = HashMultimap.create();
-      
+
     protected final EntityManager entityManager;
-    
+
     protected final QueryHandler queryHandler;
 
     @Nullable
@@ -246,6 +246,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
 
     @Nullable
     @SuppressWarnings("unchecked")
+    @Override
     public T fetchOne() {
         try{
             Query query = createQuery(getMetadata().getModifiers(), false);
@@ -277,7 +278,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         hints.put(name, value);
         return (Q)this;
     }
-    
+
     @Override
     protected JPQLSerializer createSerializer() {
         return new JPQLSerializer(getTemplates(), entityManager);
@@ -289,7 +290,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         hints.putAll(query.hints);
         lockMode = query.lockMode;
     }
-    
+
     /**
      * Clone the state of this query to a new instance with the given EntityManager
      *
@@ -313,6 +314,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
      *
      * @return cloned query
      */
+    @Override
     public Q clone() {
         return clone(entityManager, getTemplates());
     }

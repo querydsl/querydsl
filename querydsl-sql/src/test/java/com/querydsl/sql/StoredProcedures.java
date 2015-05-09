@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,19 +13,15 @@
  */
 package com.querydsl.sql;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class StoredProcedures {
-    
+
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         String url = "jdbc:derby:target/procedure_test;create=true";
         Connection connection = DriverManager.getConnection(url, "", "");
-        
+
         try {
             DatabaseMetaData md = connection.getMetaData();
             ResultSet procedures = md.getProcedures(null, null, null);
@@ -38,7 +34,7 @@ public class StoredProcedures {
                     String type = procedures.getString(8);
                     String specificName = procedures.getString(9);
                     System.out.println(name + "\n" + remarks + "\n" + type + "\n" + specificName);
-                    
+
                     ResultSet procedureColumns = md.getProcedureColumns(cat, schema, name, null);
                     try {
                         while (procedureColumns.next()) {

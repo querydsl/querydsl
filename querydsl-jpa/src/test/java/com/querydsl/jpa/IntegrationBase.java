@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,13 +25,13 @@ import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
 import com.querydsl.jpa.hibernate.HibernateQuery;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import com.querydsl.jpa.hibernate.HibernateUtil;
-import com.querydsl.core.types.EntityPath;
 import com.querydsl.jpa.testutil.HibernateTestRunner;
 
 import antlr.RecognitionException;
@@ -69,7 +69,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     public void GroupBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
-    
+
     @Override
     @Test
     public void GroupBy_2() throws Exception {

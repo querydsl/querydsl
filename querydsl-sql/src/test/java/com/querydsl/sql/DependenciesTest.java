@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,11 +23,11 @@ import org.junit.Test;
 import jdepend.framework.JDepend;
 
 public class DependenciesTest {
-    
+
     @Test
     @Ignore
     public void test() throws IOException{
-        JDepend jdepend = new JDepend();        
+        JDepend jdepend = new JDepend();
         jdepend.addDirectory("target/classes/com/querydsl/sql");
         jdepend.addDirectory("target/classes/com/querydsl/sql/ddl");
         jdepend.addDirectory("target/classes/com/querydsl/sql/dml");
@@ -37,7 +37,7 @@ public class DependenciesTest {
         jdepend.addDirectory("target/classes/com/querydsl/sql/support");
         jdepend.addDirectory("target/classes/com/querydsl/sql/types");
 
-        jdepend.analyze();    
+        jdepend.analyze();
         assertFalse(jdepend.containsCycles());
 
     }

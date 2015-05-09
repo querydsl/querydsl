@@ -13,12 +13,14 @@
  */
 package com.querydsl.sql.codegen;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.mysema.codegen.model.Types;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class DefaultNamingStrategyTest {
 

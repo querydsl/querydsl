@@ -13,15 +13,15 @@
  */
 package com.querydsl.sql;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.querydsl.core.QueryMetadata;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.querydsl.core.QueryMetadata;
 
 /**
  * A mutable implementation of SQL listener context.

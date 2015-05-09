@@ -150,17 +150,17 @@ public class GroupByMapTest extends AbstractGroupByTest {
         assertEquals(3, comments.size());
         assertEquals("comment 2", comments.get(2));
     }
-    
+
     @Test
-    public void Map3() {        
+    public void Map3() {
         Map<Integer, Map<Integer, Map<Integer, String>>> actual = MAP3_RESULTS.transform(
             groupBy(postId).as(map(postId, map(commentId, commentText))));
-        
+
         Map<Integer, Map<Integer, Map<Integer, String>>> expected = new LinkedHashMap<Integer, Map<Integer, Map<Integer, String>>>();
         for (Iterator<Tuple> iterator = MAP3_RESULTS.iterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
-            
+
             Map<Integer, Map<Integer, String>> posts = expected.get(array[0]);
             if (posts == null) {
                 posts = new LinkedHashMap<Integer, Map<Integer,String>>();
@@ -176,20 +176,20 @@ public class GroupByMapTest extends AbstractGroupByTest {
             }
             Pair<Integer, String> second = pair.getSecond();
             comments.put(second.getFirst(), second.getSecond());
-        }      
+        }
         assertEquals(expected.toString(), actual.toString());
     }
 
     @Test
-    public void Map4() {    
+    public void Map4() {
         Map<Integer, Map<Map<Integer, String>, String>> actual = MAP4_RESULTS.transform(
             groupBy(postId).as(map(map(postId, commentText), postName)));
-        
+
         Map<Integer, Map<Map<Integer, String>, String>> expected = new LinkedHashMap<Integer, Map<Map<Integer, String>, String>>();
         for (Iterator<Tuple> iterator = MAP4_RESULTS.iterate(); iterator.hasNext();) {
             Tuple tuple = iterator.next();
             Object[] array = tuple.toArray();
- 
+
             Map<Map<Integer, String>, String> comments = expected.get(array[0]);
             if (comments == null) {
                 comments = new LinkedHashMap<Map<Integer, String>, String>();
@@ -197,10 +197,10 @@ public class GroupByMapTest extends AbstractGroupByTest {
             }
             @SuppressWarnings("unchecked")
             Pair<Pair<Integer, String>, String> pair = (Pair<Pair<Integer, String>, String>) array[1];
-            Pair<Integer, String> first = pair.getFirst(); 
+            Pair<Integer, String> first = pair.getFirst();
             Map<Integer, String> posts = Collections.singletonMap(first.getFirst(), first.getSecond());
             comments.put(posts, pair.getSecond());
-        }      
+        }
         assertEquals(expected.toString(), actual.toString());
     }
 

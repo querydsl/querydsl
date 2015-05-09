@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,18 +22,7 @@ import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.Constant;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.MapExpression;
-import com.querydsl.core.types.dsl.ArrayExpression;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.CollectionExpressionBase;
-import com.querydsl.core.types.dsl.DateExpression;
-import com.querydsl.core.types.dsl.DateTimeExpression;
-import com.querydsl.core.types.dsl.ListExpression;
-import com.querydsl.core.types.dsl.MapExpressionBase;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.SimpleExpression;
-import com.querydsl.core.types.dsl.StringExpression;
-import com.querydsl.core.types.dsl.TimeExpression;
-import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * @author tiwe
@@ -131,12 +120,12 @@ public class ProjectionsFactory {
         HashSet<NumberExpression<?>> rv = new HashSet<NumberExpression<?>>();
         rv.add(expr.abs());
         rv.add(expr.add(other));
-        rv.add(expr.divide(other));     
-        
+        rv.add(expr.divide(other));
+
         if (target != Target.HSQLDB) {
-            rv.add(expr.negate());    
-        }        
-        
+            rv.add(expr.negate());
+        }
+
         rv.add(expr.multiply(other));
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
@@ -160,7 +149,7 @@ public class ProjectionsFactory {
                     .when((NumberExpression<A>)other).then(expr)
                     .otherwise((NumberExpression<A>)other));
         }
-        
+
         return ImmutableList.copyOf(rv);
     }
 
@@ -220,11 +209,11 @@ public class ProjectionsFactory {
         rv.add(expr.trim());
 
         rv.add(expr.upper());
-        
+
         if (module != Module.JDO) {
-            rv.add(expr.nullif("xxx"));    
-        }        
-        
+            rv.add(expr.nullif("xxx"));
+        }
+
         return ImmutableList.copyOf(rv);
     }
 

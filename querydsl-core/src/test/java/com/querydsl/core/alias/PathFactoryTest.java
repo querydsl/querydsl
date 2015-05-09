@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,9 +33,9 @@ import com.querydsl.core.types.PathMetadataFactory;
 public class PathFactoryTest {
 
     private PathFactory pathFactory = new DefaultPathFactory();
-    
+
     private PathMetadata metadata = PathMetadataFactory.forVariable("var");
-    
+
     @Test
     public void CreateArrayPath() {
         Path<String[]> path = pathFactory.createArrayPath(String[].class, metadata);

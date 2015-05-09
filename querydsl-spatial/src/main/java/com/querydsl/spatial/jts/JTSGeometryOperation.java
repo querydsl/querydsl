@@ -15,10 +15,9 @@ package com.querydsl.spatial.jts;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.Geometry;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * {@code JTSGeometryOperation} extends {@link JTSGeometryExpression} to implement the

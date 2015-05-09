@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,14 +26,14 @@ import java.util.Arrays;
 public class ParameterizedTypeImpl implements ParameterizedType {
 
     private final Type rawType;
-    
+
     private final Type[] arguments;
-    
+
     public ParameterizedTypeImpl(Type rawType, Type[] arguments) {
         this.rawType = rawType;
         this.arguments = arguments;
     }
-    
+
     @Override
     public Type[] getActualTypeArguments() {
         return arguments;
@@ -48,23 +48,23 @@ public class ParameterizedTypeImpl implements ParameterizedType {
     public Type getOwnerType() {
         return rawType;
     }
-    
+
     @Override
-    public boolean equals(Object o) { 
+    public boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof ParameterizedTypeImpl) {
             ParameterizedTypeImpl other = (ParameterizedTypeImpl)o;
-            return other.rawType.equals(rawType) 
+            return other.rawType.equals(rawType)
                     && Arrays.equals(other.arguments, arguments);
         } else {
             return false;
         }
     }
-    
+
     @Override
     public int hashCode() {
         return rawType.hashCode();
     }
-    
+
 }

@@ -1,20 +1,8 @@
 package com.querydsl.scala.sql
 
-import com.mysema.codegen._
-import com.mysema.codegen.model._
-
-import com.querydsl.codegen._
-import com.querydsl.sql._
-import com.querydsl.sql.codegen._
-
-import java.io.StringWriter
-
-import org.junit._
-import org.junit.Assert._
-
-import scala.collection.JavaConversions._
-
 import com.querydsl.scala._
+import com.querydsl.sql.codegen._
+import org.junit._
 
 object MetaDataExporterTest {
 
@@ -90,7 +78,7 @@ class MetaDataExporterTest {
 
     CompileTestUtils.assertCompileSuccess(directory)
   }
-    
+
   @Test
   def Generate_With_BeanTypes() {
     val directory = new java.io.File("target/jdbcgen2")
@@ -107,7 +95,7 @@ class MetaDataExporterTest {
 
     CompileTestUtils.assertCompileSuccess(directory)
   }
-    
+
   @Test
   def Generate_With_Schema() {
     val directory = new java.io.File("target/jdbcgen3")
@@ -124,7 +112,7 @@ class MetaDataExporterTest {
 
     CompileTestUtils.assertCompileSuccess(directory)
   }
-    
+
   @Test
   def Generate_With_BeanTypes_And_Schema() {
     val directory = new java.io.File("target/jdbcgen4")
@@ -142,5 +130,5 @@ class MetaDataExporterTest {
 
     CompileTestUtils.assertCompileSuccess(directory)
   }
-    
+
 }

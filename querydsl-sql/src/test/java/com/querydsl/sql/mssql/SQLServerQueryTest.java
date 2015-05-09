@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,21 +23,21 @@ import com.querydsl.sql.domain.QSurvey;
 public class SQLServerQueryTest {
 
     private static final QSurvey survey = QSurvey.survey;
-    
+
     @Test
-    public void TableHints_Single() {        
+    public void TableHints_Single() {
         SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
         query.from(survey).tableHints(SQLServerTableHints.NOWAIT).where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY with (NOWAIT)\nwhere SURVEY.NAME is null", query.toString());
     }
-    
+
     @Test
     public void TableHints_Multiple() {
         SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
         query.from(survey).tableHints(SQLServerTableHints.NOWAIT, SQLServerTableHints.NOLOCK).where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY with (NOWAIT, NOLOCK)\nwhere SURVEY.NAME is null", query.toString());
     }
-    
+
     @Test
     public void TableHints_Multiple2() {
         QSurvey survey2 = new QSurvey("survey2");

@@ -27,7 +27,7 @@ public class ListSubQueryTest {
         queries.add(query2);
         assertEquals(2, queries.size());
     }
-    
+
     @Test
     public void HashCode2() {
         QSurvey survey = new QSurvey("entity");

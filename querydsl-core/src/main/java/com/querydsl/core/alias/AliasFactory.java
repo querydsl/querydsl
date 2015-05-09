@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,12 +39,12 @@ class AliasFactory {
     private final ThreadLocal<Expression<?>> current = new ThreadLocal<Expression<?>>();
 
     private final PathFactory pathFactory;
-    
+
     private final TypeSystem typeSystem;
-    
+
     // caches top level paths (class/var as key)
     private final LoadingCache<Pair<Class<?>,String>, EntityPath<?>> pathCache;
-        
+
     private final LoadingCache<Pair<Class<?>,Expression<?>>, ManagedObject> proxyCache =
         CacheBuilder.newBuilder().build(
             new CacheLoader<Pair<Class<?>,Expression<?>>,ManagedObject>() {
@@ -53,24 +53,24 @@ class AliasFactory {
                     return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
                 }
             });
-    
+
     public AliasFactory(final PathFactory pathFactory, TypeSystem typeSystem) {
-        this.pathFactory = pathFactory; 
+        this.pathFactory = pathFactory;
         this.typeSystem = typeSystem;
-        this.pathCache = CacheBuilder.newBuilder().build( 
+        this.pathCache = CacheBuilder.newBuilder().build(
             new CacheLoader<Pair<Class<?>, String>, EntityPath<?>>() {
                 @Override
                 public EntityPath<?> load( Pair<Class<?>, String> input) {
                     return (EntityPath<?>)pathFactory.createEntityPath(
-                            input.getFirst(), 
+                            input.getFirst(),
                             PathMetadataFactory.forVariable(input.getSecond()));
                 }
             });
     }
-    
+
     /**
      * Create an alias instance for the given class and Expression
-     * 
+     *
      * @param <A>
      * @param cl type for alias
      * @param expr underlying expression
@@ -87,7 +87,7 @@ class AliasFactory {
 
     /**
      * Create an alias instance for the given class, parent and path
-     * 
+     *
      * @param <A>
      * @param cl type for alias
      * @param path underlying expression
@@ -99,7 +99,7 @@ class AliasFactory {
 
     /**
      * Create an alias instance for the given class and variable name
-     * 
+     *
      * @param <A>
      * @param cl type for alias
      * @param var variable name for the underyling expression
@@ -112,12 +112,12 @@ class AliasFactory {
             return (A) proxyCache.get(Pair.<Class<?>, Expression<?>>of(cl, path));
         } catch (ExecutionException e) {
             throw new QueryException(e);
-        }        
+        }
     }
 
     /**
      * Create a proxy instance for the given class and path
-     * 
+     *
      * @param <A>
      * @param cl type of the proxy
      * @param path underlying expression
@@ -141,7 +141,7 @@ class AliasFactory {
 
     /**
      * Get the current thread bound expression without resetting it
-     * 
+     *
      * @param <A>
      * @return expression
      */
@@ -153,7 +153,7 @@ class AliasFactory {
 
     /**
      * Get the current thread bound expression and reset it
-     * 
+     *
      * @param <A>
      * @return expression
      */
@@ -173,7 +173,7 @@ class AliasFactory {
 
     /**
      * Set the thread bound expression to the given value
-     * 
+     *
      * @param expr expression to be set to current
      */
     public void setCurrent(Expression<?> expr) {

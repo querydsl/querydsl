@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -69,25 +69,25 @@ public class OrderingTest extends AbstractJDOTest {
                 .select(product.name, product.description).fetch();
         assertEquals(30, rows.size());
         for (Tuple row : rows) {
-            assertEquals(row.get(0, String.class).substring(1), 
+            assertEquals(row.get(0, String.class).substring(1),
                     row.get(1, String.class).substring(1));
         }
     }
 
     @Test
     public void Limit_Order_Asc() {
-        assertEquals(Arrays.asList("A0", "A1"), 
+        assertEquals(Arrays.asList("A0", "A1"),
             query().from(product).orderBy(product.name.asc()).limit(2).select(product.name).fetch());
     }
-    
+
     @Test
     public void Limit_Order_Desc() {
-        assertEquals(Arrays.asList("C9", "C8"), 
+        assertEquals(Arrays.asList("C9", "C8"),
             query().from(product).orderBy(product.name.desc()).limit(2).select(product.name).fetch());
     }
-    
+
     public void Limit_and_Offset() {
-        assertEquals(Arrays.asList("A2", "A3", "A4"), 
+        assertEquals(Arrays.asList("A2", "A3", "A4"),
             query().from(product).orderBy(product.name.asc()).offset(2).limit(3).select(product.name).fetch());
     }
 

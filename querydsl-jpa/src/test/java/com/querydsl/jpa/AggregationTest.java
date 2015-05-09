@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,22 +21,22 @@ public class AggregationTest extends AbstractQueryTest{
     public void Max() {
         assertToString("max(cat.bodyWeight)", cat.bodyWeight.max());
     }
-    
+
     @Test
     public void Min() {
         assertToString("min(cat.bodyWeight)", cat.bodyWeight.min());
     }
-    
+
     @Test
     public void Avg() {
         assertToString("avg(cat.bodyWeight)", cat.bodyWeight.avg());
     }
-    
+
     @Test
     public void Count() {
         assertToString("count(cat)", cat.count());
     }
-    
+
     @Test
     public void CountDistinct() {
         assertToString("count(distinct cat)", cat.countDistinct());

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,10 +21,10 @@ import com.querydsl.core.types.dsl.DateExpression;
 import com.querydsl.core.types.dsl.Expressions;
 
 public class DateExtensions {
-        
+
     @QueryDelegate(Date.class)
     public static Predicate extension(DateExpression<Date> date) {
         return Expressions.booleanPath("b");
     }
-    
+
 }

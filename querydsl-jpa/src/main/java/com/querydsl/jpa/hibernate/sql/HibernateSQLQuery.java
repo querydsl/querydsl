@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,7 +35,7 @@ public class HibernateSQLQuery<T> extends AbstractHibernateSQLQuery<T, Hibernate
     public HibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
         super(session, new Configuration(sqlTemplates));
     }
-    
+
     public HibernateSQLQuery(Session session, Configuration conf) {
         super(session, conf);
     }
@@ -43,15 +43,15 @@ public class HibernateSQLQuery<T> extends AbstractHibernateSQLQuery<T, Hibernate
     public HibernateSQLQuery(StatelessSession session, SQLTemplates sqlTemplates) {
         super(session, new Configuration(sqlTemplates));
     }
-    
+
     public HibernateSQLQuery(StatelessSession session, Configuration conf) {
         super(session, conf);
     }
-    
+
     public HibernateSQLQuery(SessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
         super(session, new Configuration(sqlTemplates), metadata);
     }
-    
+
     public HibernateSQLQuery(SessionHolder session, Configuration conf, QueryMetadata metadata) {
         super(session, conf, metadata);
     }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@ package com.querydsl.core;
 /**
  * {@code NonUniqueResultException} is thrown for query results where one result row is expected, but multiple
  * are retrieved.
- * 
+ *
  * @author tiwe
  *
  */
@@ -27,9 +27,9 @@ public class NonUniqueResultException extends QueryException{
     public NonUniqueResultException() {
         super("Only one result is allowed for fetchOne calls");
     }
-    
+
     public NonUniqueResultException(String message) {
         super(message);
     }
-    
+
 }

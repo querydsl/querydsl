@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,41 +25,41 @@ import com.querydsl.core.types.Path;
 
 /**
  * Matches based on the current value of a path.
- * 
+ *
  * @author Jeroen van Schagen
  * @author tiwe
  *
  * @param <T> type of the path root
  * @param <V> type of value being matched
  */
-public class PathMatcher<T, V> extends TypeSafeDiagnosingMatcher<T> {   
-    
+public class PathMatcher<T, V> extends TypeSafeDiagnosingMatcher<T> {
+
     private final Function<T, V> accessor;
-    
+
     private final Matcher<? super V> matcher;
-    
+
     private final Path<V> path;
-    
+
     public PathMatcher(Path<V> path, Matcher<? super V> matcher) {
         this(path, matcher, GuavaHelpers.<T,V>wrap(path));
     }
-    
+
     public PathMatcher(Path<V> path, Matcher<? super V> matcher, Function<T, V> accessor) {
         this.path = path;
         this.matcher = matcher;
         this.accessor = accessor;
     }
-    
+
     @Factory
     public static <T,P> Matcher<T> hasValue(Path<P> path) {
         return new PathMatcher<T,P>(path, notNullValue());
     }
-  
+
     @Factory
     public static <T,P> Matcher<T> hasValue(Path<P> path, Matcher<? super P> matcher) {
         return new PathMatcher<T,P>(path, matcher);
     }
-    
+
     @Override
     protected boolean matchesSafely(T bean, Description mismatchDescription) {
         V value = accessor.apply(bean);
@@ -79,5 +79,5 @@ public class PathMatcher<T, V> extends TypeSafeDiagnosingMatcher<T> {
         description.appendDescriptionOf(matcher);
         description.appendText(")");
     }
-    
+
 }

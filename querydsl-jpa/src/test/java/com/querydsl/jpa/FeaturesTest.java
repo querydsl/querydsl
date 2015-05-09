@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +30,7 @@ public class FeaturesTest extends AbstractQueryTest {
         assertNotNull(i.superclassProperty);
         assertNotNull(i.classProperty);
     }
-    
+
     @Test
     public void DomainConstruction2() {
         QAccount a = new QAccount("a");
@@ -41,12 +41,12 @@ public class FeaturesTest extends AbstractQueryTest {
     public void BasicStructure() {
         assertNull(cat.getMetadata().getParent());
     }
-    
+
     @Test
     public void BasicStructure2() {
-        assertEquals(cat, cat.alive.getMetadata().getParent());        
+        assertEquals(cat, cat.alive.getMetadata().getParent());
     }
-    
+
     @Test
     public void BasicStructure3() {
         assertEquals("cat", cat.getMetadata().getName());
@@ -64,24 +64,24 @@ public class FeaturesTest extends AbstractQueryTest {
     public void BasicOperations() {
         assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
     }
-    
+
     @Test
     public void BasicOperations2() {
         assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
     }
-    
+
     @Test
     public void BasicOperations3() {
         assertToString(
                 "cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight",
-                cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));   
+                cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));
     }
 
     @Test
     public void EqualsAndNotEqualsForAllExpressions() {
-        assertToString("cat.name = cust.name.firstName", cat.name.eq(cust.name.firstName));        
+        assertToString("cat.name = cust.name.firstName", cat.name.eq(cust.name.firstName));
     }
-    
+
     @Test
     public void EqualsAndNotEqualsForAllExpressions2() {
         assertToString("cat.name <> cust.name.firstName", cat.name.ne(cust.name.firstName));

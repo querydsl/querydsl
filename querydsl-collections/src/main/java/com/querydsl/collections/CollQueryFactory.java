@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,8 +27,8 @@ import com.querydsl.core.types.Path;
 public final class CollQueryFactory {
 
     /**
-     * Create a new delete clause 
-     * 
+     * Create a new delete clause
+     *
      * @param path source expression
      * @param col source collection
      * @return delete clause
@@ -39,7 +39,7 @@ public final class CollQueryFactory {
 
     /**
      * Create a new query
-     * 
+     *
      * @param alias source alias
      * @param col source collection
      * @return query
@@ -51,7 +51,7 @@ public final class CollQueryFactory {
 
     /**
      * Create a new query
-     * 
+     *
      * @param path source expression
      * @param arr source array
      * @return query
@@ -62,7 +62,7 @@ public final class CollQueryFactory {
 
     /**
      * Create a new query
-     * 
+     *
      * @param path source expression
      * @param col source collection
      * @return query
@@ -73,7 +73,7 @@ public final class CollQueryFactory {
 
     /**
      * Create a new update clause
-     * 
+     *
      * @param path source expression
      * @param col source collection
      * @return query

@@ -7,8 +7,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.domain.QEmployee;
 
 public class RelationalPathExtractorTest {
 

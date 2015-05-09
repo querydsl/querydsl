@@ -1,14 +1,11 @@
 package com.querydsl.scala
 
-import com.querydsl.core.types._
-import com.querydsl.scala._
 import com.querydsl.core.types.PathMetadataFactory._
-import java.util.List
-import java.util.Map
+import com.querydsl.core.types._
 
 object QPerson extends QPerson("person"){
   override def as(variable: String) = new QPerson(variable)
-  
+
 }
 
 class QPerson(cl: Class[_ <: Person], md: PathMetadata) extends EntityPathImpl[Person](cl, md) {
@@ -27,7 +24,7 @@ class QPerson(cl: Class[_ <: Person], md: PathMetadata) extends EntityPathImpl[P
   val javaDouble = createNumber[java.lang.Double]("javaDouble")
 
   val javaInt = createNumber[Integer]("javaInt")
-  
+
   val javaList = createList[String,StringPath]("javaList")
 
   val javaMap = createMap[String,String,StringPath]("javaMap")
@@ -39,9 +36,9 @@ class QPerson(cl: Class[_ <: Person], md: PathMetadata) extends EntityPathImpl[P
   val listOfPersons = createList[Person,QPerson]("listOfPersons")
 
   val scalaInt = createNumber[Int]("scalaInt")
-  
+
   val scalaDouble = createNumber[Double]("scalaDouble")
-  
+
   //val num = createNumber[String]("x")
 
   val scalaList = createList[String,StringPath]("scalaList")

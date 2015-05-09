@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,9 +13,7 @@
  */
 package com.querydsl.collections;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,14 +37,14 @@ public class OrderTest extends AbstractQueryTest {
 
         // TODO : more tests
     }
-    
+
     @Test
     public void test2() {
-        List<String> orderedNames = Arrays.asList("Alex","Bob","Francis","Kitty"); 
+        List<String> orderedNames = Arrays.asList("Alex","Bob","Francis","Kitty");
         assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).select(cat.name).fetch());
         assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).distinct().select(cat.name).fetch());
     }
-    
+
     @Test
     public void With_count() {
         CollQuery<?> q = new CollQuery<Void>();
@@ -60,7 +58,7 @@ public class OrderTest extends AbstractQueryTest {
 
     @Test
     public void With_null() {
-        List<Cat> cats = Arrays.asList(new Cat(), new Cat("Bob"));        
+        List<Cat> cats = Arrays.asList(new Cat(), new Cat("Bob"));
         assertEquals(cats, query().from(cat, cats).orderBy(cat.name.asc()).select(cat).fetch());
         assertEquals(Arrays.asList(cats.get(1), cats.get(0)), query().from(cat, cats).orderBy(cat.name.desc()).select(cat).fetch());
 

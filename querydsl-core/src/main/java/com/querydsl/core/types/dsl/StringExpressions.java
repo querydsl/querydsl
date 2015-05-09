@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import com.querydsl.core.types.Ops;
 
 /**
  * Extended String expressions, supported by the SQL module
- * 
+ *
  * @author tiwe
  *
  */
@@ -48,7 +48,7 @@ public final class StringExpressions {
     public static StringExpression rtrim(Expression<String> str) {
         return Expressions.stringOperation(Ops.StringOps.RTRIM, str);
     }
-    
+
     /**
      * Create a {@code lpad(in, length)} expression
      *
@@ -61,7 +61,7 @@ public final class StringExpressions {
     public static StringExpression lpad(Expression<String> in, int length) {
         return Expressions.stringOperation(Ops.StringOps.LPAD, in, ConstantImpl.create(length));
     }
-    
+
     /**
      * Create a {@code lpad(in, length)} expression
      *
@@ -74,7 +74,7 @@ public final class StringExpressions {
     public static StringExpression lpad(Expression<String> in, Expression<Integer> length) {
         return Expressions.stringOperation(Ops.StringOps.LPAD, in, length);
     }
-    
+
     /**
      * Create a {@code rpad(in, length)} expression
      *
@@ -87,7 +87,7 @@ public final class StringExpressions {
     public static StringExpression rpad(Expression<String> in, int length) {
         return Expressions.stringOperation(Ops.StringOps.RPAD, in, ConstantImpl.create(length));
     }
-    
+
     /**
      * Create a {@code rpad(in, length)} expression
      *
@@ -100,7 +100,7 @@ public final class StringExpressions {
     public static StringExpression rpad(Expression<String> in, Expression<Integer> length) {
         return Expressions.stringOperation(Ops.StringOps.RPAD, in, length);
     }
-    
+
     /**
      * Create a {@code lpad(in, length, c)} expression
      *
@@ -156,7 +156,7 @@ public final class StringExpressions {
     public static StringExpression rpad(Expression<String> in, int length, char c) {
         return Expressions.stringOperation(Ops.StringOps.RPAD2, in, ConstantImpl.create(length), ConstantImpl.create(c));
     }
-    
+
     private StringExpressions() {}
 
 }

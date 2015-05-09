@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  */
 package com.querydsl.apt;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.util.List;
 import org.junit.Test;
 
 public class NamePrefixTest extends AbstractProcessorTest {
-    
+
     private static final String packagePath = "src/test/java/com/querydsl/apt/domain/";
 
     @Test
@@ -34,13 +34,13 @@ public class NamePrefixTest extends AbstractProcessorTest {
 
         // default Processor
         process(QuerydslAnnotationProcessor.class, classes,"prefix");
-        
+
         assertTrue(new File("target/prefix/com/querydsl/apt/domain/query3/QTAnimalTest_Animal.java").exists());
     }
-    
+
     @Override
     protected Collection<String> getAPTOptions() {
         return Arrays.asList("-Aquerydsl.packageSuffix=.query3", "-Aquerydsl.prefix=QT");
     }
-    
+
 }

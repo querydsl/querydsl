@@ -18,7 +18,7 @@ import com.querydsl.core.types._
 
 /**
  * Factory for template expressions
- * 
+ *
  * @author tiwe
  *
  */
@@ -27,7 +27,7 @@ object Templates {
   def dsl[T](t: Class[_ <: T], tpl: Template, args: Ex[_]*): DslExpression[T] = {
     new DslTemplate[T](t, tpl, args: _*)
   }
-  
+
   def simple[T](t: Class[_ <: T], tpl: Template, args: Ex[_]*): SimpleExpression[T] = {
     new SimpleTemplate[T](t, tpl, args: _*)
   }
@@ -49,7 +49,7 @@ object Templates {
   }
 
   def number[T : Numeric](t: Class[_ <: T], tpl: Template, args: Ex[_]*): NumberExpression[T] = {
-    new NumberTemplate[T](t, tpl, args: _*) 
+    new NumberTemplate[T](t, tpl, args: _*)
   }
 
   def boolean(tpl: Template, args: Ex[_]*): BooleanExpression = new BooleanTemplate(tpl, args: _*)
@@ -82,11 +82,11 @@ class NumberTemplate[T : Numeric](t: Class[_ <: T], template: Template, args: Ex
 class BooleanTemplate(template: Template, args: Ex[_]*)
   extends TemplateExpressionImpl[java.lang.Boolean](classOf[java.lang.Boolean], template, args:_*) with BooleanExpression
 
-  
+
 class StringTemplate(template: Template, args: Ex[_]*)
   extends TemplateExpressionImpl[String](classOf[String], template, args:_*) with StringExpression
-  
-  
+
+
 class DateTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: Ex[_]*)
   extends TemplateExpressionImpl[T](t, template, args:_*) with DateExpression[T]
 

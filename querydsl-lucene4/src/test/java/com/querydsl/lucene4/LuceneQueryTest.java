@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -91,7 +91,7 @@ public class LuceneQueryTest {
         year = entityPath.year;
         gross = entityPath.gross;
 
-        
+
         idx = new RAMDirectory();
         writer = createWriter(idx);
 
@@ -112,16 +112,16 @@ public class LuceneQueryTest {
                         "Bubble sort", 1990, 30.50));
 
         writer.close();
-        
+
         IndexReader reader = IndexReader.open(idx);
         searcher = new IndexSearcher(reader);
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
     }
 
     private IndexWriter createWriter(RAMDirectory idx) throws Exception {
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31, 
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31,
                 new StandardAnalyzer(Version.LUCENE_42))
-            .setOpenMode(IndexWriterConfig.OpenMode.CREATE);        
+            .setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         return new IndexWriter(idx, config);
     }
 
@@ -285,12 +285,12 @@ public class LuceneQueryTest {
         assertEquals("1990", documents.get(2).get("year"));
         assertEquals("1990", documents.get(3).get("year"));
     }
-    
+
 
     @Test
     public void List_Sort() {
         Sort sort = LuceneSerializer.DEFAULT.toSort(Collections.singletonList(year.asc()));
-        
+
         query.where(year.between(1800, 2000));
         //query.orderBy(year.asc());
         query.sort(sort);
@@ -334,7 +334,7 @@ public class LuceneQueryTest {
         assertEquals("1954", documents.get(2).get("year"));
         assertEquals("1864", documents.get(3).get("year"));
     }
-    
+
 
     @Test
     public void List_Sorted_Descending_By_Gross() {
@@ -716,7 +716,7 @@ public class LuceneQueryTest {
     @Test
     public void Empty_Index_Should_Return_Empty_List() throws Exception {
         idx = new RAMDirectory();
-        
+
         writer = createWriter(idx);
         writer.close();
         IndexReader reader = IndexReader.open(idx);
@@ -729,7 +729,7 @@ public class LuceneQueryTest {
     public void List_Results_Throws_An_Illegal_Argument_Exception_When_Sum_Of_Limit_And_Offset_Is_Negative() {
         query.limit(1).offset(Integer.MAX_VALUE).fetchResults();
     }
-    
+
     @Test
     public void Limit_Max_Value() {
         assertEquals(4, query.limit(Long.MAX_VALUE).fetch().size());

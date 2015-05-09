@@ -13,15 +13,15 @@ public class GenericExporterMojoTest {
     public void Execute() throws Exception {
         MavenProject mavenProject = new MavenProject();
         mavenProject.getBuild().setOutputDirectory("target/classes");
-        
+
         GenericExporterMojo mojo = new GenericExporterMojo();
         mojo.setTargetFolder(new File("target/generated-test-data"));
         mojo.setPackages(new String[]{"com.querydsl.maven"});
         mojo.setProject( mavenProject);
         mojo.execute();
-        
+
         File file = new File("target/generated-test-data/com/querydsl/maven/QEntity.java");
         assertTrue(file.exists());
     }
-    
+
 }

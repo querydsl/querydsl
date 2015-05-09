@@ -1,6 +1,7 @@
 package com.querydsl.collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,9 @@ import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.dsl.EntityPathBase;
 
 public class JacocoTest {
-    
+
     public static class CloneableVO {}
-    
+
     public static class CloneableKlasse implements Cloneable {
         private CloneableVO value;
         private Integer otherValue;
@@ -43,7 +44,7 @@ public class JacocoTest {
             }
         }
     }
-    
+
     @Test
     public void WithSimpleClass() {
         List<CloneableKlasse> vos = new ArrayList<CloneableKlasse>();

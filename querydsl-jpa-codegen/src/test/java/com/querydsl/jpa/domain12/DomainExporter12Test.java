@@ -22,11 +22,11 @@ public class DomainExporter12Test {
         config.addFile(new File("src/test/resources/com/querydsl/jpa/domain12/domain.hbm.xml"));
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", gen, config);
         exporter.execute();
-        
+
         assertTrue(new File(gen, "com/querydsl/jpa/domain12/QEntity.java").exists());
         assertTrue(new File(gen, "com/querydsl/jpa/domain12/QSupertype.java").exists());
 
         CompileUtils.compile(gen.getAbsolutePath());
     }
-    
+
 }

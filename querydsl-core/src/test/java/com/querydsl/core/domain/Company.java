@@ -4,7 +4,7 @@ import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class Company {
-    
+
     private CompanyPK key;
 
     public CompanyPK getKey() {

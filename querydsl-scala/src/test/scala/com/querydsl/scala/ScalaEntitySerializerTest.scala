@@ -1,17 +1,12 @@
 package com.querydsl.scala
 
-import com.querydsl.core.types._
-
-import org.junit.{ Test, Before, After, Assert }
-import org.junit.Assert._
+import java.io.StringWriter
 
 import com.mysema.codegen._
 import com.mysema.codegen.model._
-
 import com.querydsl.codegen._
-import com.querydsl.sql._
-
-import java.io.StringWriter
+import org.junit.Assert._
+import org.junit.{Before, Test}
 
 class ScalaEntitySerializerTest {
 
@@ -41,7 +36,7 @@ class ScalaEntitySerializerTest {
         ("other", entityType))) {
       entityType.addProperty(new Property(entityType, name, t))
     }
-        
+
 
   }
 

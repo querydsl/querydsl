@@ -16,7 +16,10 @@ package com.querydsl.sql;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Projections;
 
 /**
  * {@code RelationalPathUtils} provides static utility methods for {@link RelationalPath} instances

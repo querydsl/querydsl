@@ -18,9 +18,9 @@ import java.sql.Types;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.querydsl.core.types.Ops;
 import com.querydsl.sql.types.BigDecimalAsDoubleType;
 import com.querydsl.sql.types.BigIntegerAsLongType;
-import com.querydsl.core.types.Ops;
 
 /**
  * {@code SQLiteTemplates} is a SQL dialect for SQLite

@@ -13,31 +13,12 @@
  */
 package com.querydsl.sql.spatial;
 
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.GeometryCollection;
-import org.geolatte.geom.LineString;
-import org.geolatte.geom.LinearRing;
-import org.geolatte.geom.MultiLineString;
-import org.geolatte.geom.MultiPoint;
-import org.geolatte.geom.MultiPolygon;
-import org.geolatte.geom.Point;
-import org.geolatte.geom.PolyHedralSurface;
-import org.geolatte.geom.Polygon;
+import org.geolatte.geom.*;
 
-import com.querydsl.spatial.GeometryCollectionPath;
-import com.querydsl.spatial.GeometryPath;
-import com.querydsl.spatial.GeometryPaths;
-import com.querydsl.spatial.LineStringPath;
-import com.querydsl.spatial.LinearRingPath;
-import com.querydsl.spatial.MultiLineStringPath;
-import com.querydsl.spatial.MultiPointPath;
-import com.querydsl.spatial.MultiPolygonPath;
-import com.querydsl.spatial.PointPath;
-import com.querydsl.spatial.PolygonPath;
-import com.querydsl.spatial.PolyhedralSurfacePath;
-import com.querydsl.sql.RelationalPathBase;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.spatial.*;
+import com.querydsl.sql.RelationalPathBase;
 
 /**
  * {@code RelationalPathSpatial} extends {@link RelationalPathBase} to provide factory methods

@@ -13,23 +13,24 @@
  */
 package com.querydsl.apt.jpa;
 
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import javax.persistence.*;
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
+import com.querydsl.apt.*;
+import com.querydsl.codegen.Keywords;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryEntities;
 import com.querydsl.core.annotations.QueryTransient;
 import com.querydsl.core.annotations.QueryType;
-import com.querydsl.apt.*;
-import com.querydsl.codegen.Keywords;
 import com.querydsl.core.util.Annotations;
 
 /**

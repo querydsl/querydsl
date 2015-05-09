@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -66,6 +66,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
     }
 
     //CHECKSTYLE:OFF
+    @Override
     public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
     //CHECKSTYLE:ON
         Object rv = null;
@@ -140,7 +141,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     @SuppressWarnings({ "unchecked"})
     @Nullable
-    protected <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, 
+    protected <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey,
             PathMetadata metadata) {
         Expression<?> path;
         Object rv;

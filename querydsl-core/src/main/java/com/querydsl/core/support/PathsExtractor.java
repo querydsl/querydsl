@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,14 +20,14 @@ import com.querydsl.core.types.*;
 
 /**
  * Extracts the paths that occurs in an expression via breadth first search
- * 
+ *
  * @author tiwe
  *
  */
 public final class PathsExtractor implements Visitor<Void, List<Path<?>>> {
-      
+
     public static final PathsExtractor DEFAULT = new PathsExtractor();
-    
+
     private PathsExtractor() {}
 
     @Override

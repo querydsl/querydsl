@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,12 +15,7 @@ package com.querydsl.jdo.test.domain;
 
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.dsl.DatePath;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.StringPath;
-import com.querydsl.core.types.dsl.TimePath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * QProduct is a Querydsl query type for Product
@@ -48,13 +43,13 @@ public class QProduct extends EntityPathBase<com.querydsl.jdo.test.domain.Produc
     public QProduct(String path) {
           this(com.querydsl.jdo.test.domain.Product.class, path);
     }
-    
+
     public QProduct(Class<? extends com.querydsl.jdo.test.domain.Product> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
-    
+
     public QProduct(PathMetadata metadata) {
          super(com.querydsl.jdo.test.domain.Product.class, metadata);
     }
-    
+
 }

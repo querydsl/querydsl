@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,7 @@ package com.querydsl.codegen;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.mysema.codegen.CodeWriter;
 
@@ -31,11 +27,11 @@ import com.mysema.codegen.CodeWriter;
  *
  */
 public class GroovyBeanSerializer implements Serializer {
-    
+
     private final boolean propertyAnnotations;
-    
+
     private final String javadocSuffix;
-    
+
     private boolean printSupertype = false;
 
     /**
@@ -47,16 +43,16 @@ public class GroovyBeanSerializer implements Serializer {
 
     /**
      * Create a new {@code GroovyBeanSerializer} instance
-     * 
+     *
      * @param javadocSuffix suffix to be used after the simple name in class level javadoc
      */
     public GroovyBeanSerializer(String javadocSuffix) {
         this(true, javadocSuffix);
     }
-    
+
     /**
      * Create a new {@code GroovyBeanSerializer} instance
-     * 
+     *
      * @param propertyAnnotations true, to serialize property annotations
      */
     public GroovyBeanSerializer(boolean propertyAnnotations) {
@@ -65,7 +61,7 @@ public class GroovyBeanSerializer implements Serializer {
 
     /**
      * Create a new {@code GroovyBeanSerializer} instance
-     * 
+     *
      * @param propertyAnnotations true, to serialize property annotations
      * @param javadocSuffix suffix to be used after the simple name in class level javadoc
      */
@@ -75,7 +71,7 @@ public class GroovyBeanSerializer implements Serializer {
     }
 
     @Override
-    public void serialize(EntityType model, SerializerConfig serializerConfig, 
+    public void serialize(EntityType model, SerializerConfig serializerConfig,
             CodeWriter writer) throws IOException {
         String simpleName = model.getSimpleName();
 
@@ -112,30 +108,30 @@ public class GroovyBeanSerializer implements Serializer {
         } else {
             writer.beginClass(model);
         }
-        
+
         bodyStart(model, writer);
-                
+
         // fields
         for (Property property : model.getProperties()) {
             if (propertyAnnotations) {
                 for (Annotation annotation : property.getAnnotations()) {
                     writer.annotation(annotation);
-                }    
-            }            
+                }
+            }
             writer.field(property.getType(), property.getEscapedName());
         }
-        
+
         bodyEnd(model, writer);
-        
+
         writer.end();
     }
 
     protected void bodyStart(EntityType model, CodeWriter writer) throws IOException {
-        // template method        
+        // template method
     }
 
     protected void bodyEnd(EntityType model, CodeWriter writer) throws IOException {
-        // template method        
+        // template method
     }
 
     private Set<String> getAnnotationTypes(EntityType model) {
@@ -148,13 +144,13 @@ public class GroovyBeanSerializer implements Serializer {
                 for (Annotation annotation : property.getAnnotations()) {
                     imports.add(annotation.annotationType().getName());
                 }
-            }    
-        }        
+            }
+        }
         return imports;
     }
 
     public void setPrintSupertype(boolean printSupertype) {
         this.printSupertype = printSupertype;
     }
-        
+
 }

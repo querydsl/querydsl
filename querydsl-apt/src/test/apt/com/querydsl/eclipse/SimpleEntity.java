@@ -6,19 +6,19 @@ import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class SimpleEntity {
-    
+
     CustomComparable comparableProp;
-    
+
     CustomNumber customNumber;
-    
+
     int intProp;
-    
+
     Integer integerProp;
-    
+
     BigDecimal bigDecimalProp;
-    
+
     String stringProp;
-    
+
     SimpleEntity entityProp;
 
 }
@@ -29,7 +29,7 @@ class CustomComparable implements Comparable<CustomComparable> {
     public int compareTo(CustomComparable o) {
         return 0;
     }
-    
+
 }
 
 class CustomNumber extends Number implements Comparable<CustomNumber> {
@@ -60,6 +60,6 @@ class CustomNumber extends Number implements Comparable<CustomNumber> {
     public int compareTo(CustomNumber o) {
         return 0;
     }
-    
-    
+
+
 }

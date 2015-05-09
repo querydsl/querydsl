@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,7 @@ public class CoalesceTest {
         assertEquals("coalesce(firstname, lastname, xxx)", c.toString());
         assertEquals("coalesce(firstname, lastname, xxx, yyy)", c.add("yyy").toString());
     }
-    
+
     @Test
     public void WithList() {
         Coalesce<String> c = new Coalesce<String>(firstname, lastname).add("xxx");
@@ -59,30 +59,30 @@ public class CoalesceTest {
         Coalesce<String> c = new Coalesce<String>(String.class).add(firstname).add(lastname);
         assertEquals("coalesce(firstname, lastname)", c.toString());
     }
-    
+
     @Test
     public void Dsl() {
         assertEquals("coalesce(firstname, lastname)", firstname.coalesce(lastname).toString());
     }
-    
+
     @Test
     public void Dsl2() {
         assertEquals("coalesce(firstname, lastname, xxx)", firstname.coalesce(lastname).add("xxx").toString());
     }
-    
+
     @Test
     public void Dsl3() {
-        assertEquals("coalesce(firstname, xxx)", firstname.coalesce("xxx").toString());   
+        assertEquals("coalesce(firstname, xxx)", firstname.coalesce("xxx").toString());
     }
-    
+
     @Test
     public void Asc() {
         assertEquals("coalesce(firstname, xxx) ASC", firstname.coalesce("xxx").asc().toString());
     }
-    
+
     @Test
     public void Desc() {
         assertEquals("coalesce(firstname, xxx) DESC", firstname.coalesce("xxx").desc().toString());
     }
-    
+
 }

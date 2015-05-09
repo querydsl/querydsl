@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,13 +20,13 @@ import javax.annotation.Nullable;
 /**
  * {@code FactoryExpression} represents factory expressions such as JavaBean or
  * Constructor projections
- * 
+ *
  * @author tiwe
  *
  * @param <T> type of projection
  */
 public interface FactoryExpression<T> extends Expression<T> {
-    
+
     /**
      * Get the invocation arguments
      *

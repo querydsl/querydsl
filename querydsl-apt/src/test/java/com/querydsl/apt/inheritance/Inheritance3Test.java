@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,8 +20,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.apt.domain.AbstractTest;
+import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.core.types.dsl.StringPath;
 
@@ -52,7 +52,7 @@ public class Inheritance3Test extends AbstractTest {
     public class GenericSupertypeS extends GenericSupertypeC<String>{
 
     }
-    
+
     @QueryEntity
     public class GenericSupertypeS2 extends GenericSupertype<String>{
 
@@ -61,23 +61,23 @@ public class Inheritance3Test extends AbstractTest {
     @Test
     public void GenericSupertype() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance3Test_GenericSupertype.class, QInheritance3Test_GenericSupertype.genericSupertype);
-        match(SimplePath.class, "field");    
+        match(SimplePath.class, "field");
         matchType(Object.class, "field");
     }
-    
+
     @Test
     public void GenericSupertypeC() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance3Test_GenericSupertypeC.class, QInheritance3Test_GenericSupertypeC.genericSupertypeC);
         match(SimplePath.class, "field");
         matchType(Comparable.class, "field");
     }
-    
+
     @Test
     public void GenericSupertypeS() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance3Test_GenericSupertypeS.class, QInheritance3Test_GenericSupertypeS.genericSupertypeS);
         match(StringPath.class, "field");
     }
-    
+
     @Test
     public void GenericSupertypeS2() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance3Test_GenericSupertypeS2.class, QInheritance3Test_GenericSupertypeS2.genericSupertypeS2);

@@ -26,7 +26,7 @@ public class TemplateInfiniteLoop {
     /**
      * Generates array of strings: "\0a", "\0\0a", "\0\0\0a" etc. all with the
      * same hashCode
-     * 
+     *
      * @return
      */
     private static String[] createTemplates() {

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,12 +15,12 @@ package com.querydsl.hibernate.search;
 
 import org.hibernate.search.annotations.Field;
 
-import com.querydsl.lucene3.LuceneSerializer;
 import com.querydsl.core.types.Path;
+import com.querydsl.lucene3.LuceneSerializer;
 
 /**
  * {@code SearchSerializer} extends the {@link LuceneSerializer} to use {@link Field} annotation data from paths
- * 
+ *
  * @author tiwe
  *
  */
@@ -30,7 +30,7 @@ public class SearchSerializer extends LuceneSerializer{
 
     /**
      * Create a new SearchSerializer instance
-     * 
+     *
      * @param lowerCase lowercase names
      * @param splitTerms split terms
      */

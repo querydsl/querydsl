@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,14 @@
  */
 package com.querydsl.core.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
 import org.junit.Test;
 
 public class ArrayUtilsTest {
-    
+
     @Test
     public void test() {
         Object[] array = ArrayUtils.combine(5, new Object[]{"a","b"}, new Object[]{"c","d","e"});

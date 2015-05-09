@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,9 +40,9 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
     protected JPQLTemplates getTemplates() {
         return templates;
     }
-    
+
     protected abstract JPQLSerializer createSerializer();
-    
+
     protected JPQLSerializer serialize(boolean forCountRow) {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
@@ -56,10 +56,12 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
         queryMixin.getMetadata().reset();
     }
 
+    @Override
     public Q fetchJoin() {
         return queryMixin.fetchJoin();
     }
 
+    @Override
     public Q fetchAll() {
         return queryMixin.fetchAll();
     }
@@ -67,115 +69,142 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
     public Q from(EntityPath<?> arg) {
         return queryMixin.from(arg);
     }
-    
+
+    @Override
     public Q from(EntityPath<?>... args) {
         return queryMixin.from(args);
     }
 
+    @Override
     public <P> Q from(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.from(Expressions.as((Path)target, alias));
     }
 
+    @Override
     public <P> Q innerJoin(CollectionExpression<?,P> target) {
         return queryMixin.innerJoin(target);
     }
 
+    @Override
     public <P> Q innerJoin(CollectionExpression<?,P>target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
+    @Override
     public <P> Q innerJoin(EntityPath<P> target) {
         return queryMixin.innerJoin(target);
     }
 
+    @Override
     public <P> Q innerJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
+    @Override
     public <P> Q innerJoin(MapExpression<?,P> target) {
         return queryMixin.innerJoin(target);
     }
 
+    @Override
     public <P> Q innerJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
+    @Override
     public <P> Q join(CollectionExpression<?,P> target) {
         return queryMixin.join(target);
     }
 
+    @Override
     public <P> Q join(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
+    @Override
     public <P> Q join(EntityPath<P> target) {
         return queryMixin.join(target);
     }
 
+    @Override
     public <P> Q join(EntityPath<P> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
+    @Override
     public <P> Q join(MapExpression<?,P> target) {
         return queryMixin.join(target);
     }
 
+    @Override
     public <P> Q join(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
+    @Override
     public <P> Q leftJoin(CollectionExpression<?,P> target) {
         return queryMixin.leftJoin(target);
     }
 
+    @Override
     public <P> Q leftJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
+    @Override
     public <P> Q leftJoin(EntityPath<P> target) {
         return queryMixin.leftJoin(target);
     }
 
+    @Override
     public <P> Q leftJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
+    @Override
     public <P> Q leftJoin(MapExpression<?,P> target) {
         return queryMixin.leftJoin(target);
     }
 
+    @Override
     public <P> Q leftJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
+    @Override
     public <P> Q rightJoin(CollectionExpression<?,P> target) {
         return queryMixin.rightJoin(target);
     }
 
+    @Override
     public <P> Q rightJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 
+    @Override
     public <P> Q rightJoin(EntityPath<P> target) {
         return queryMixin.rightJoin(target);
     }
 
+    @Override
     public <P> Q rightJoin(EntityPath<P> target, Path<P> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 
+    @Override
     public <P> Q rightJoin(MapExpression<?,P> target) {
         return queryMixin.rightJoin(target);
     }
 
+    @Override
     public <P> Q rightJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.rightJoin(target, alias);
     }
-    
+
     public Q on(Predicate condition) {
         return queryMixin.on(condition);
     }
-    
+
+    @Override
     public Q on(Predicate... conditions) {
         return queryMixin.on(conditions);
     }
@@ -187,6 +216,7 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
         return serializer.toString().trim();
     }
 
+    @Override
     public abstract Q clone();
 
 }

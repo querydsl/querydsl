@@ -1,15 +1,12 @@
 package com.querydsl.scala
 
-import com.querydsl.core.types._
-import com.querydsl.core.types.PathMetadataFactory._
-
 class Person {
   var scalaInt: Int = _
 
   var javaInt: Integer = _
 
   var javaDouble: java.lang.Double = _
-  
+
   var firstName: String = _
 
   var lastName: String = _
@@ -27,16 +24,16 @@ class Person {
   var javaMap: java.util.Map[String, String] = _
 
   var listOfPersons: java.util.List[Person] = _
-  
+
   var array: Array[String] = _
-  
+
   var other: Person = _
-  
+
 }
 
 object Person {
-    
+
   def as(path: String) = new QPerson(path)
-  
+
 }
 

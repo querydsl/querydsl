@@ -3,11 +3,12 @@ package com.querydsl.jpa.domain17;
 import java.io.File;
 import java.io.IOException;
 
-import com.querydsl.jpa.codegen.CompileUtils;
-import com.querydsl.jpa.codegen.HibernateDomainExporter;
-import com.querydsl.core.util.FileUtils;
 import org.hibernate.cfg.Configuration;
 import org.junit.Test;
+
+import com.querydsl.core.util.FileUtils;
+import com.querydsl.jpa.codegen.CompileUtils;
+import com.querydsl.jpa.codegen.HibernateDomainExporter;
 
 public class DomainExporter17Test {
 

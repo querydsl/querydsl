@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,14 +17,14 @@ import java.util.List;
 
 /**
  * Extracts the first path that occurs in an expression via breadth first search
- * 
+ *
  * @author tiwe
  *
  */
 public final class PathExtractor implements Visitor<Path<?>,Void> {
-      
+
     public static final PathExtractor DEFAULT = new PathExtractor();
-    
+
     private PathExtractor() {}
 
     @Override
@@ -68,8 +68,8 @@ public final class PathExtractor implements Visitor<Path<?>,Void> {
                 Path<?> path = ((Expression<?>)e).accept(this, null);
                 if (path != null) {
                     return path;
-                }    
-            }            
+                }
+            }
         }
         return null;
     }

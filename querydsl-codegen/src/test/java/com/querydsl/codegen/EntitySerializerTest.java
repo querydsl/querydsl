@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,11 +26,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
+import com.mysema.codegen.model.*;
 import com.querydsl.core.annotations.PropertyType;
 
 public class EntitySerializerTest {
@@ -55,20 +51,20 @@ public class EntitySerializerTest {
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("QEntitySerializerTest_Entity is a Querydsl query type for Entity"));
     }
-    
+
     @Test
     public void Different_Package() throws IOException {
         queryTypeFactory = new QueryTypeFactoryImpl("Q", "", ".gen");
-        
+
         EntityType entityType = new EntityType(new ClassType(Entity.class));
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
-        
-        serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));        
+
+        serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
 //        System.err.println(writer.toString());
         assertTrue(writer.toString().contains("public class QEntitySerializerTest_Entity " +
         		"extends EntityPathBase<EntitySerializerTest.Entity>"));
     }
-    
+
     @Test
     public void No_Package() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);

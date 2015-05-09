@@ -492,7 +492,7 @@ public class SQLTemplates extends Templates {
             case Types.NUMERIC:
             case Types.SMALLINT:
             case Types.TINYINT:
-                return literal;                        
+                return literal;
             default:
                 // for other JDBC types the Type instance is expected to provide
                 // the necessary quoting

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,9 +28,9 @@ import com.querydsl.core.QueryMutability;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.sql.SAnimal;
 import com.querydsl.jpa.sql.JPASQLQuery;
+import com.querydsl.jpa.testutil.JPATestRunner;
 import com.querydsl.sql.DerbyTemplates;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.jpa.testutil.JPATestRunner;
 
 @Ignore
 @RunWith(JPATestRunner.class)

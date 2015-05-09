@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,7 +28,7 @@ import com.querydsl.core.QueryException;
 
 /**
  * {@code ResultIterator} is a {@link CloseableIterator} implementation for Lucene query results
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -46,7 +46,7 @@ public final class ResultIterator<T> implements CloseableIterator<T> {
 
     private final Function<Document,T> transformer;
 
-    public ResultIterator(ScoreDoc[] scoreDocs, int offset, IndexSearcher searcher, 
+    public ResultIterator(ScoreDoc[] scoreDocs, int offset, IndexSearcher searcher,
             @Nullable Set<String> fieldsToLoad, Function<Document, T> transformer) {
         this.scoreDocs = scoreDocs.clone();
         this.cursor = offset;

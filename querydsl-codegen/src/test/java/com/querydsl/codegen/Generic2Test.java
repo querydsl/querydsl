@@ -1,6 +1,6 @@
 package com.querydsl.codegen;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -14,7 +14,7 @@ import com.mysema.codegen.model.Type;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class Generic2Test {
-    
+
     @QueryEntity
     public static class AbstractCollectionAttribute<T extends Collection<?>> {
 
@@ -36,7 +36,7 @@ public class Generic2Test {
         ListAttribute<String> stringAttributes;
 
     }
-    
+
     @Test
     public void Resolve() {
         TypeFactory factory = new TypeFactory(Collections.<Class<? extends Annotation>>emptyList());
@@ -44,7 +44,7 @@ public class Generic2Test {
         assertEquals("com.querydsl.codegen.Generic2Test.AbstractCollectionAttribute", type.getGenericName(false));
         assertEquals("com.querydsl.codegen.Generic2Test.AbstractCollectionAttribute", type.getGenericName(true));
     }
-    
+
     @Test
     public void Resolve2() {
         TypeFactory factory = new TypeFactory(Collections.<Class<? extends Annotation>>emptyList());

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,17 +25,17 @@ public class ExcludedClassTest {
     @QueryExclude
     @QueryEntity
     public static class InnerClass {
-        
+
     }
-    
+
     @Test(expected=ClassNotFoundException.class)
     public void OuterClass() throws ClassNotFoundException {
-        Class.forName(getClass().getPackage().getName() + ".Q" + getClass().getSimpleName()); 
+        Class.forName(getClass().getPackage().getName() + ".Q" + getClass().getSimpleName());
     }
-    
+
     @Test(expected=ClassNotFoundException.class)
     public void InnerClass() throws ClassNotFoundException {
         Class.forName(getClass().getPackage().getName() + ".QExcludedClassTest_InnerClass");
     }
-    
+
 }

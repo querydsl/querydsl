@@ -14,5 +14,5 @@ public class GenericExporterTest {
         exporter.setTargetFolder(new File("target/" + GenericExporterTest.class.getSimpleName()));
         exporter.export(getClass().getPackage());
     }
-    
+
 }

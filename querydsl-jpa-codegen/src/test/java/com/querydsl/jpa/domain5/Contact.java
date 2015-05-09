@@ -1,11 +1,11 @@
 package com.querydsl.jpa.domain5;
 
 public abstract class Contact {
-    
+
     private Long id;
 
     private String value;
-    
+
     public Long getId() {
         return id;
     }

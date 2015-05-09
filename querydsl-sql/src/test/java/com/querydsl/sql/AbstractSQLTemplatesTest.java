@@ -13,8 +13,8 @@
  */
 package com.querydsl.sql;
 
+import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
-import static com.querydsl.sql.SQLExpressions.*;
 
 import org.junit.Before;
 import org.junit.Test;

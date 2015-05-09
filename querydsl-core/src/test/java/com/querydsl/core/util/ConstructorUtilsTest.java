@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,16 @@
  */
 package com.querydsl.core.util;
 
-import static com.querydsl.core.util.ConstructorUtils.*;
 import static com.querydsl.core.util.ArrayUtils.isEmpty;
+import static com.querydsl.core.util.ConstructorUtils.getConstructorParameters;
 import static org.junit.Assert.*;
 
-import com.querydsl.core.types.ProjectionExample;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+
 import org.junit.Test;
+
+import com.querydsl.core.types.ProjectionExample;
 
 /**
  *

@@ -5,7 +5,7 @@ import java.io.File;
 import org.junit.Test;
 
 public abstract class AbstractExporterTest {
-    
+
     @Test
     public void test() {
         GenericExporter exporter = new GenericExporter();

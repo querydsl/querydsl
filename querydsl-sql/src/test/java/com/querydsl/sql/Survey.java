@@ -1,7 +1,7 @@
 package com.querydsl.sql;
 
 public class Survey {
-    
+
     @Column("NAME")
     private String name;
 
@@ -12,5 +12,5 @@ public class Survey {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 }

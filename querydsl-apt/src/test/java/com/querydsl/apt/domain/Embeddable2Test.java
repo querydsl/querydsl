@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,34 +26,34 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.PathInits;
 
 public class Embeddable2Test {
-    
+
     @QuerySupertype
     public static abstract class SomeMappedSuperClassHavingMyEmbeddable {
 
         @QueryEmbedded
         MyEmbeddable embeddable;
     }
-    
+
     @QueryEntity
     public static abstract class SomeEntityClassHavingMyEmbeddable {
-        
+
         @QueryEmbedded
         MyEmbeddable embeddable;
-        
+
     }
-    
+
     @QueryEntity
     public static class SomeEntity extends SomeMappedSuperClassHavingMyEmbeddable {
-        
+
     }
-    
+
     @Test
     @Ignore
     public void MappedSuperClassConstructors() throws SecurityException, NoSuchMethodException {
         assertNotNull(QEmbeddable2Test_SomeMappedSuperClassHavingMyEmbeddable.class.getConstructor(
                 Class.class, PathMetadata.class, PathInits.class));
     }
-    
+
     @Test
     @Ignore
     public void EntityConstructors() throws SecurityException, NoSuchMethodException {

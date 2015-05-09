@@ -32,6 +32,7 @@ public enum LuceneOps implements Operator {
         this.type = type;
     }
 
+    @Override
     public Class<?> getType() {
         return type;
     }

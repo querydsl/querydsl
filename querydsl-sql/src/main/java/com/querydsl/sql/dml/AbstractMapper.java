@@ -16,8 +16,8 @@ package com.querydsl.sql.dml;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.querydsl.sql.RelationalPath;
 import com.querydsl.core.types.Path;
+import com.querydsl.sql.RelationalPath;
 
 /**
  * Abstract base class for Mapper implementations

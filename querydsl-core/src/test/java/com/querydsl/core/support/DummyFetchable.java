@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.Fetchable;
+import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.QueryResults;
 

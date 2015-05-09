@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,9 +33,9 @@ import com.querydsl.jdo.test.domain.QProduct;
 import com.querydsl.jdo.test.domain.QStore;
 
 public class FetchPlanTest extends AbstractJDOTest{
-    
+
     private JDOQuery<?> query;
-    
+
     @After
     public void tearDown() {
         if (query != null) {
@@ -43,7 +43,7 @@ public class FetchPlanTest extends AbstractJDOTest{
         }
         super.tearDown();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void ListProducts() throws Exception{
@@ -56,34 +56,34 @@ public class FetchPlanTest extends AbstractJDOTest{
              .setMaxFetchDepth(2)
              .select(product).fetch();
 //        query.close();
-        
+
         Field queriesField = AbstractJDOQuery.class.getDeclaredField("queries");
         queriesField.setAccessible(true);
         List<Query> queries = (List<Query>)queriesField.get(query);
         Query jdoQuery = queries.get(0);
-        assertEquals(new HashSet<String>(Arrays.asList("myfetchgroup1","myfetchgroup2")), 
+        assertEquals(new HashSet<String>(Arrays.asList("myfetchgroup1","myfetchgroup2")),
                 jdoQuery.getFetchPlan().getGroups());
         assertEquals(2, jdoQuery.getFetchPlan().getMaxFetchDepth());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void ListStores() throws Exception{
         QStore store = QStore.store;
-        query = query(); 
+        query = query();
         query.from(store)
             .addFetchGroup("products")
             .select(store).fetch();
-        
+
         Field queriesField = AbstractJDOQuery.class.getDeclaredField("queries");
         queriesField.setAccessible(true);
         List<Query> queries = (List<Query>)queriesField.get(query);
         Query jdoQuery = queries.get(0);
-        assertEquals(new HashSet<String>(Arrays.asList("products")), 
+        assertEquals(new HashSet<String>(Arrays.asList("products")),
                 jdoQuery.getFetchPlan().getGroups());
         assertEquals(1, jdoQuery.getFetchPlan().getMaxFetchDepth());
     }
-    
+
     @BeforeClass
     public static void doPersist() {
         PersistenceManager pm = pmf.getPersistenceManager();

@@ -13,11 +13,7 @@
  */
 package com.querydsl.sql.types;
 
-import java.sql.Clob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
 /**
  * {@code StringAsObjectType} maps String to String on the JDBC level

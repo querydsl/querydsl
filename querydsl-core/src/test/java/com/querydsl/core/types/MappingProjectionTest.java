@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,49 +23,49 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
 
 public class MappingProjectionTest {
-    
+
     StringPath str1 = Expressions.stringPath("str1");
     StringPath str2 = Expressions.stringPath("str2");
-    
+
     @SuppressWarnings("serial")
     @Test
-    public void Two_Args() {                
+    public void Two_Args() {
         MappingProjection<Pair<String,String>> mapping = new MappingProjection<Pair<String,String>>(Pair.class, str1, str2) {
             @Override
             protected Pair<String, String> map(Tuple row) {
                 return Pair.of(row.get(str1), row.get(str2));
-            }            
+            }
         };
-        
+
         Pair<String, String> pair = mapping.newInstance("1", "2");
         assertEquals("1", pair.getFirst());
         assertEquals("2", pair.getSecond());
     }
-    
+
     @SuppressWarnings("serial")
     @Test
-    public void Single_Arg() {                
+    public void Single_Arg() {
         MappingProjection<String> mapping = new MappingProjection<String>(String.class, str1) {
             @Override
             protected String map(Tuple row) {
                 return row.get(str1);
-            }            
+            }
         };
-        
+
         assertEquals("1", mapping.newInstance("1"));
     }
-    
+
     @Test
     public void Distinct_Expressions() {
         MappingProjection<Pair<String,String>> mapping = new MappingProjection<Pair<String,String>>(Pair.class, str1, str1) {
             @Override
             protected Pair<String, String> map(Tuple row) {
                 return Pair.of(row.get(str1), row.get(str1));
-            }            
+            }
         };
-        
+
         assertEquals(1, mapping.getArgs().size());
         assertEquals(Pair.of("1", "1"), mapping.newInstance("1"));
     }
-    
+
 }

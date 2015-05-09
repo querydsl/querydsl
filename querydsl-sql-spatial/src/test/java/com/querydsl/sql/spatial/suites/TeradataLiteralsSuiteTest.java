@@ -4,7 +4,7 @@ import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
 import com.querydsl.core.testutil.ExternalDB;
-import com.querydsl.sql.*;
+import com.querydsl.sql.Connections;
 import com.querydsl.sql.spatial.SpatialBase;
 import com.querydsl.sql.spatial.TeradataSpatialTemplates;
 import com.querydsl.sql.suites.AbstractSuite;

@@ -3,13 +3,9 @@ package com.querydsl.jpa.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.jpa.JPABase;
-import com.querydsl.jpa.JPASQLBase;
-import com.querydsl.jpa.Mode;
 import com.querydsl.core.Target;
-import com.querydsl.jpa.JPAIntegrationBase;
-import com.querydsl.jpa.SerializationBase;
 import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.jpa.*;
 
 @Category(ExternalDB.class)
 public class MySQLEclipseLinkTest extends AbstractJPASuite {

@@ -12,11 +12,11 @@ package com.querydsl.sql.ddl;
 public class IndexData {
 
     private final String name;
-    
+
     private final String[] columns;
 
     private boolean unique;
-    
+
     public IndexData(String name, String[] columns) {
         this.name = name;
         this.columns = columns.clone();
@@ -37,6 +37,6 @@ public class IndexData {
     public void setUnique(boolean unique) {
         this.unique = unique;
     }
-    
-    
+
+
 }

@@ -1,17 +1,13 @@
 package com.querydsl.scala
 
-import java.io.File._
+import java.io.File
+import java.io.File.pathSeparator
 
 import com.google.common.base.Charsets
 import com.google.common.io.Files
 
 import scala.tools.nsc._
-import scala.tools.nsc.interpreter.IR.Success
-import scala.io.Source.fromFile
-import java.io.File
-import java.io.File.pathSeparator
-
-import scala.tools.nsc.reporters.{ConsoleReporter, Reporter}
+import scala.tools.nsc.reporters.ConsoleReporter
 
 object CompileTestUtils {
 
@@ -51,12 +47,12 @@ object CompileTestUtils {
         file.delete()
     }
   }
-  
+
   private def recursiveFileList(file: File): Array[File] = {
     if (file.isDirectory) {
       file.listFiles.flatMap(recursiveFileList)
     } else {
       Array(file)
     }
-  }  
+  }
 }

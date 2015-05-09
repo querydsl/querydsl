@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,49 +26,49 @@ import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.domain.QSurvey;
 
 public class RelationalFunctionCallTest {
-    
+
     private static Expression[] serializeCollection(String... tokens) {
         Expression[] rv = new Expression[tokens.length];
         for (int i = 0; i < tokens.length; i++) {
-            rv[i] = ConstantImpl.create(tokens[i]); 
+            rv[i] = ConstantImpl.create(tokens[i]);
         }
         return rv;
     }
-    
+
     private static class TokenizeFunction extends RelationalFunctionCall<String> {
         final PathBuilder<String> alias;
         final StringPath token;
-     
+
         public TokenizeFunction(String alias, String... tokens) {
            super(String.class, "tokenize", serializeCollection(tokens));
            this.alias = new PathBuilder<String>(String.class, alias);
            this.token = Expressions.stringPath(this.alias, "token");
        }
-        
+
     }
-    
+
     @Test
     public void Validation() {
         QSurvey survey = QSurvey.survey;
         TokenizeFunction func = new TokenizeFunction("func", "a", "b");
         SQLQuery<?> sub = selectOne().from(func.as(func.alias)).where(survey.name.like(func.token));
         System.out.println(sub);
-        
+
     }
-    
+
     @Test
     public void NoArgs() {
         RelationalFunctionCall<String> functionCall = SQLExpressions.relationalFunctionCall(String.class, "getElements");
         assertEquals("getElements()", functionCall.getTemplate().toString());
     }
-    
+
     @Test
     public void TwoArgs() {
         StringPath str = Expressions.stringPath("str");
         RelationalFunctionCall<String> functionCall = SQLExpressions.relationalFunctionCall(String.class, "getElements", "a", str);
         assertEquals("getElements({0}, {1})", functionCall.getTemplate().toString());
         assertEquals("a", functionCall.getArg(0));
-        assertEquals(str, functionCall.getArg(1));        
+        assertEquals(str, functionCall.getArg(1));
     }
-    
+
 }

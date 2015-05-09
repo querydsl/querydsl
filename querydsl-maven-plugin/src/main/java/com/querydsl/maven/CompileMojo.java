@@ -15,12 +15,7 @@ package com.querydsl.maven;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;

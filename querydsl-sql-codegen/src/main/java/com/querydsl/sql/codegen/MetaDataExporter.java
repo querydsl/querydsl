@@ -111,9 +111,9 @@ public class MetaDataExporter {
     private boolean exportForeignKeys = true;
 
     private boolean spatial = false;
-    
+
     @Nullable
-    private String tableTypesToExport; 
+    private String tableTypesToExport;
 
     public MetaDataExporter() {}
 

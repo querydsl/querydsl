@@ -17,11 +17,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.CollectionExpression;
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.*;
 
 /**
  * {@code CollectionExpressionBase} is an abstract base class for {@link CollectionExpression} implementations

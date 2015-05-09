@@ -1,9 +1,9 @@
 package com.querydsl.sql;
 
-import static com.querydsl.core.testutil.Serialization.*;
+import static com.querydsl.core.testutil.Serialization.serialize;
 import static org.junit.Assert.assertEquals;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.Test;

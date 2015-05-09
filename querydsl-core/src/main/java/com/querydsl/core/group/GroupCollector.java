@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,15 +15,15 @@ package com.querydsl.core.group;
 
 /**
  * A stateful collector of column values for a group.
- * 
+ *
  * @author sasa
  * @param <R> Target type (e.g. List, Set)
  */
 public interface GroupCollector<T, R> {
-    
+
     /**
      * Add given value to this group
-     * 
+     *
      * @param o value to add
      */
     void add(T o);
@@ -34,5 +34,5 @@ public interface GroupCollector<T, R> {
      * @return value of this group.
      */
     R get();
-    
+
 }

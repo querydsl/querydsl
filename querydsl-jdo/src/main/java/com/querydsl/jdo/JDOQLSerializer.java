@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -63,7 +63,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     private static final String VARIABLES = "\nVARIABLES ";
 
     private static final String WHERE = "\nWHERE ";
-    
+
     private static Comparator<Map.Entry<Object,String>> comparator = new Comparator<Map.Entry<Object,String>>() {
         @Override
         public int compare(Entry<Object, String> o1, Entry<Object, String> o2) {
@@ -76,7 +76,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     private final List<Object> constants = new ArrayList<Object>();
 
     private final Stack<Map<Object,String>> constantToLabel = new Stack<Map<Object,String>>();
-    
+
     public JDOQLSerializer(JDOQLTemplates templates, Expression<?> candidate) {
         super(templates);
         this.candidatePath = candidate;
@@ -90,7 +90,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     public List<Object> getConstants() {
         return constants;
     }
-    
+
     @Override
     public Map<Object,String> getConstantToLabel() {
         return constantToLabel.peek();
@@ -106,7 +106,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         constantToLabel.push(new HashMap<Object,String>());
-        
+
         // select
         boolean skippedSelect = false;
         if (forCountRow) {
@@ -153,9 +153,9 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         if (joins.size() > 1) {
             serializeVariables(joins);
         }
-        
+
         int position = getLength();
-        
+
         // group by
         if (!groupBy.isEmpty()) {
             append(GROUP_BY).handle(COMMA, groupBy);
@@ -186,14 +186,14 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             Long offset = metadata.getModifiers().getOffset();
             serializeModifiers(limit, offset);
         }
-        
-        // parameters        
+
+        // parameters
         if (!getConstantToLabel().isEmpty()) {
-            insert(position, serializeParameters(metadata.getParams()));            
+            insert(position, serializeParameters(metadata.getParams()));
         }
-        
+
         constantToLabel.pop();
-        
+
     }
 
     private void serializeModifiers(@Nullable Long limit, @Nullable Long offset) {
@@ -284,24 +284,24 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         } else if (operator == Ops.LIKE || operator == Ops.LIKE_ESCAPE) {
             @SuppressWarnings("unchecked") //This is the expected type for like
             Expression<String> rightArg = (Expression<String>) args.get(1);
-            super.visitOperation(type, Ops.MATCHES, 
+            super.visitOperation(type, Ops.MATCHES,
                 ImmutableList.of(args.get(0), ExpressionUtils.likeToRegex(rightArg, false)));
-            
-        // exists    
+
+        // exists
         } else if (operator == Ops.EXISTS && args.get(0) instanceof SubQueryExpression) {
             final SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
             append("(");
             serialize(subQuery.getMetadata(), true, true);
             append(") > 0");
 
-        // not exists    
-        } else if (operator == Ops.NOT && args.get(0) instanceof Operation 
-                && ((Operation)args.get(0)).getOperator().equals(Ops.EXISTS)) {    
+        // not exists
+        } else if (operator == Ops.NOT && args.get(0) instanceof Operation
+                && ((Operation)args.get(0)).getOperator().equals(Ops.EXISTS)) {
             final SubQueryExpression subQuery = (SubQueryExpression) ((Operation)args.get(0)).getArg(0);
             append("(");
             serialize(subQuery.getMetadata(), true, true);
             append(") == 0");
-                
+
         } else if (operator == Ops.NUMCAST) {
             @SuppressWarnings("unchecked") //This is the expected type for castToNum
             Constant<Class<?>> rightArg = (Constant<Class<?>>)args.get(1);
@@ -315,6 +315,6 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             super.visitOperation(type, operator, args);
         }
     }
-    
+
 
 }

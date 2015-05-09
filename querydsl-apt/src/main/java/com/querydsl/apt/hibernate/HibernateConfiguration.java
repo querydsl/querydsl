@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,7 @@ import com.querydsl.apt.jpa.JPAConfiguration;
 
 /**
  * Configuration for {@link HibernateAnnotationProcessor}
- * 
+ *
  * @author tiwe
  * @see HibernateAnnotationProcessor
  * @see JPAConfiguration
@@ -46,16 +46,16 @@ public class HibernateConfiguration extends JPAConfiguration {
     @SuppressWarnings("unchecked")
     @Override
     protected List<Class<? extends Annotation>> getAnnotations() {
-        try {            
+        try {
             List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
             annotations.addAll(super.getAnnotations());
             for (String simpleName : Arrays.asList("Type", "Cascade", "LazyCollection", "OnDelete")) {
                 annotations.add((Class<? extends Annotation>) Class.forName("org.hibernate.annotations."+simpleName));
             }
-            return annotations;    
+            return annotations;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
-    
+
 }

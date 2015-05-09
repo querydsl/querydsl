@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,12 +16,7 @@ package com.querydsl.jpa.domain2;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name="user2_")
@@ -29,27 +24,27 @@ public class User2 {
 
     @Id
     private long id;
-    
+
     private String userName, userPassword, userFirstName, userEmail, userLastName;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    
+
     private double createdBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
-    
+
     private double modifiedBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date deleteDate;
-    
+
     private double deletedBy;
-    
+
     @OneToMany
     private Set<UserProp> properties;
-    
+
     public long getId() {
         return id;
     }
@@ -154,5 +149,5 @@ public class User2 {
         this.properties = properties;
     }
 
-    
+
 }

@@ -16,8 +16,8 @@ package com.querydsl.spatial.hibernate;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.Operator;
+import com.querydsl.spatial.SpatialOps;
 
 /**
  * {@code HibernateSpatialSupport} provides mappings from operators to serialization templates

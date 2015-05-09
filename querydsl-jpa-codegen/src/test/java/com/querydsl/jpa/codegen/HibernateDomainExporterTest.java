@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,23 +13,25 @@
  */
 package com.querydsl.jpa.codegen;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-import com.querydsl.core.annotations.Config;
-import com.querydsl.codegen.SerializerConfig;
-import com.querydsl.codegen.SimpleSerializerConfig;
-import com.querydsl.jpa.domain.Domain;
-import com.querydsl.jpa.domain2.Domain2;
-import com.querydsl.core.util.FileUtils;
 import org.hibernate.cfg.Configuration;
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+import com.querydsl.codegen.SerializerConfig;
+import com.querydsl.codegen.SimpleSerializerConfig;
+import com.querydsl.core.annotations.Config;
+import com.querydsl.core.util.FileUtils;
+import com.querydsl.jpa.domain.Domain;
+import com.querydsl.jpa.domain2.Domain2;
 
 public class HibernateDomainExporterTest {
 

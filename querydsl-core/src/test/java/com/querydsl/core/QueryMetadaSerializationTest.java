@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ public class QueryMetadaSerializationTest {
         metadata.addJoin(JoinType.DEFAULT, expr);
         metadata.addFlag(new QueryFlag(Position.AFTER_FILTERS, ""));
         metadata.addGroupBy(expr);
-        metadata.addHaving(expr.isEmpty());        
+        metadata.addHaving(expr.isEmpty());
 //        metadata.getJoins().get(0).addFlag(new JoinFlag(""));
         metadata.addJoinCondition(expr.isEmpty());
         metadata.addOrderBy(expr.asc());
@@ -47,7 +47,7 @@ public class QueryMetadaSerializationTest {
         metadata.addWhere(expr.isEmpty());
 
         QueryMetadata metadata2 = Serialization.serialize(metadata);
-        
+
         assertEquals(metadata.getFlags(), metadata2.getFlags());
         assertEquals(metadata.getGroupBy().get(0), metadata2.getGroupBy().get(0));
         assertEquals(metadata.getGroupBy(), metadata2.getGroupBy());
@@ -59,22 +59,22 @@ public class QueryMetadaSerializationTest {
         assertEquals(metadata.getProjection(), metadata2.getProjection());
         assertEquals(metadata.getWhere(), metadata2.getWhere());
     }
-    
+
     @Test
     public void FullySerializable() {
         Set<Class<?>> checked = new HashSet<Class<?>>();
         checked.addAll(Arrays.asList(Collection.class, List.class, Set.class, Map.class,
                 Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
-        classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class, 
+        classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class,
                 NumberTemplate.class, BeanPath.class, DefaultQueryMetadata.class));
-        while (!classes.isEmpty()) {            
+        while (!classes.isEmpty()) {
             Class<?> clazz = classes.pop();
             checked.add(clazz);
-            if (!Serializable.class.isAssignableFrom(clazz) && !clazz.isPrimitive()) {     
+            if (!Serializable.class.isAssignableFrom(clazz) && !clazz.isPrimitive()) {
                 System.out.println(clazz.getName());
                 fail(clazz.getName() + " is not serializable");
-            }            
+            }
             for (Field field : clazz.getDeclaredFields()) {
                 if (Modifier.isTransient(field.getModifiers())) {
                     continue;
@@ -82,13 +82,13 @@ public class QueryMetadaSerializationTest {
                 Set<Class<?>> types = new HashSet<Class<?>>(3);
                 types.add(field.getType());
                 if (field.getType().getSuperclass() != null) {
-                    types.add(field.getType().getSuperclass());    
-                }                
+                    types.add(field.getType().getSuperclass());
+                }
                 if (field.getType().getComponentType() != null) {
                     types.add(field.getType().getComponentType());
                 }
                 if (Collection.class.isAssignableFrom(field.getType())) {
-                    types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0)); 
+                    types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0));
                 } else if (Map.class.isAssignableFrom(field.getType())) {
                     types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0));
                     types.add(ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 1));
@@ -98,5 +98,5 @@ public class QueryMetadaSerializationTest {
             }
         }
     }
-    
+
 }

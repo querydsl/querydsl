@@ -32,7 +32,7 @@ public class JodaTest {
             this.createdDate = null == creationDate ? null : creationDate.toDate();
         }
     }
-    
+
     @Test
     public void test() {
         assertEquals(Date.class, QJodaTest_BaseEntity.baseEntity.createdDate.getType());

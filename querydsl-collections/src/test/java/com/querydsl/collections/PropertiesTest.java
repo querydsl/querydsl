@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 public class PropertiesTest {
-    
+
     @Test
     public void Hidden() {
         QStateHistory history = QStateHistory.stateHistory;
@@ -16,7 +16,7 @@ public class PropertiesTest {
         assertEquals(1, CollQueryFactory.from(history, histories)
                 .where(history.changedAt.isNull()).fetch().size());
     }
-    
+
     @Test
     public void Hidden2() {
         QStateHistoryOwner historyOwner = QStateHistoryOwner.stateHistoryOwner;

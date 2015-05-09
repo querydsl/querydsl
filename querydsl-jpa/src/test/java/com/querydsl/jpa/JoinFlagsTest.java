@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,7 @@ public class JoinFlagsTest extends AbstractQueryTest{
         QueryHelper query1 = query().from(cat).fetchAll().where(cat.name.isNotNull());
         assertEquals("select cat\nfrom Cat cat fetch all properties\nwhere cat.name is not null", query1.toString());
     }
-    
+
     @Test
     public void FetchAll2() {
         QueryHelper query2 = query().from(cat).fetchAll().from(cat1).fetchAll();

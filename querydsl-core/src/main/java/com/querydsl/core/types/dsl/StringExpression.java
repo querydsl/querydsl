@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -102,7 +102,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public SimpleExpression<Character> charAt(int i) {
         return charAt(ConstantImpl.create(i));
     }
-    
+
     /**
      * Create a {@code concat(this, str)} expression
      *
@@ -369,7 +369,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public BooleanExpression like(Expression<String> str) {
         return Expressions.booleanOperation(Ops.LIKE, mixin, str);
     }
-    
+
     /**
      * Create a {@code this like str} expression
      *
@@ -394,31 +394,31 @@ public abstract class StringExpression extends LiteralExpression<String> {
      * Create a {@code locate(str, this)} expression
      *
      * <p>Get the position of the given String in this String, the first position is 1</p>
-     * 
+     *
      * @param str string
      * @return locate(str, this)
      */
     public NumberExpression<Integer> locate(Expression<String> str) {
         return Expressions.numberOperation(Integer.class, Ops.StringOps.LOCATE, str, mixin);
     }
-    
+
     /**
      * Create a {@code locate(str, this)} expression
      *
      * <p>Get the position of the given String in this String, the first position is 1</p>
-     * 
+     *
      * @param str string
      * @return locate(str, this)
      */
     public NumberExpression<Integer> locate(String str) {
         return Expressions.numberOperation(Integer.class, Ops.StringOps.LOCATE, ConstantImpl.create(str), mixin);
     }
-    
+
     /**
      * Create a {@code locate(str, this, start)} expression
      *
      * <p>Get the position of the given String in this String, the first position is 1</p>
-     * 
+     *
      * @param str string
      * @param start start
      * @return locate(str, this, start)
@@ -426,12 +426,12 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public NumberExpression<Integer> locate(Expression<String> str, NumberExpression<Integer> start) {
         return Expressions.numberOperation(Integer.class, Ops.StringOps.LOCATE2, str, mixin, start);
     }
-    
+
     /**
      * Create a {@code locate(str, this, start)} expression
      *
      * <p>Get the position of the given String in this String, the first position is 1</p>
-     * 
+     *
      * @param str string
      * @param start start
      * @return locate(str, this, start)
@@ -439,7 +439,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public NumberExpression<Integer> locate(String str, int start) {
         return Expressions.numberOperation(Integer.class, Ops.StringOps.LOCATE2, ConstantImpl.create(str), mixin, ConstantImpl.create(start));
     }
-    
+
     /**
      * Create a {@code this.toLowerCase()} expression
      *
@@ -459,7 +459,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
      * Create a {@code this.matches(regex)} expression
      *
      * <p>Return true if this String matches the given regular expression</p>
-     * 
+     *
      * <p>Some implementations such as Querydsl JPA will try to convert a regex expression into like
      * form and will throw an Exception when this fails</p>
      *
@@ -475,7 +475,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
      * Create a {@code this.matches(regex)} expression
      *
      * <p>Return true if this String matches the given regular expression</p>
-     * 
+     *
      * <p>Some implementations such as Querydsl JPA will try to convert a regex expression into like
      * form and will throw an Exception when this fails</p>
      *
@@ -514,7 +514,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
         }
         return min;
     }
-    
+
     /**
      * Create a {@code !this.equalsIgnoreCase(str)} expression
      *
@@ -543,7 +543,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public BooleanExpression notEqualsIgnoreCase(String str) {
         return equalsIgnoreCase(str).not();
     }
-    
+
     /**
      * Create a {@code this not like str} expression
      *
@@ -563,7 +563,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public BooleanExpression notLike(Expression<String> str) {
         return like(str).not();
     }
-        
+
     /**
      * Create a {@code this not like str} expression
      *
@@ -583,7 +583,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public BooleanExpression notLike(Expression<String> str, char escape) {
         return like(str, escape).not();
     }
-    
+
     /**
      * Create a {@code concat(str, this)} expression
      *
@@ -681,7 +681,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public StringExpression substring(int beginIndex, int endIndex) {
         return Expressions.stringOperation(Ops.SUBSTR_2ARGS, mixin, ConstantImpl.create(beginIndex), ConstantImpl.create(endIndex));
     }
-    
+
     /**
      * Create a {@code this.substring(beginIndex, endIndex)} expression
      *
@@ -693,7 +693,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public StringExpression substring(Expression<Integer> beginIndex, int endIndex) {
         return Expressions.stringOperation(Ops.SUBSTR_2ARGS, mixin, beginIndex, ConstantImpl.create(endIndex));
     }
-    
+
     /**
      * Create a {@code this.substring(beginIndex, endIndex)} expression
      *
@@ -728,7 +728,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
     public StringExpression substring(Expression<Integer> beginIndex, Expression<Integer> endIndex) {
         return Expressions.stringOperation(Ops.SUBSTR_2ARGS, mixin, beginIndex, endIndex);
     }
-    
+
     /**
      * Create a {@code this.toLowerCase()} expression
      *

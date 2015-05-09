@@ -11,8 +11,8 @@ public class World {
 
     @Id
     Long id;
-    
+
     @OneToMany
     Set<Mammal> mammals;
-    
+
 }

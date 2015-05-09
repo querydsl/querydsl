@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,7 +35,7 @@ import com.querydsl.core.types.dsl.StringExpression;
 public final class StringConstant extends StringExpression implements Constant<String>{
 
     private static final long serialVersionUID = 5182804405789674556L;
-    
+
     public static StringExpression create(String str) {
         return new StringConstant(str);
     }
@@ -57,7 +57,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-    
+
     @Override
     public StringExpression append(Expression<String> s) {
         if (s instanceof Constant<?>) {

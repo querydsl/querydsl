@@ -14,23 +14,10 @@
 package com.querydsl.collections;
 
 
-import static com.querydsl.core.group.GroupBy.avg;
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.list;
-import static com.querydsl.core.group.GroupBy.map;
-import static com.querydsl.core.group.GroupBy.max;
-import static com.querydsl.core.group.GroupBy.min;
-import static com.querydsl.core.group.GroupBy.set;
-import static com.querydsl.core.group.GroupBy.sum;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static com.querydsl.core.group.GroupBy.*;
+import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.junit.Ignore;
 import org.junit.Test;

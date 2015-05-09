@@ -13,9 +13,8 @@
  */
 package com.querydsl.spatial.jts;
 
-import com.vividsolutions.jts.geom.LineString;
-
 import com.querydsl.core.types.Expression;
+import com.vividsolutions.jts.geom.LineString;
 
 /**
  * A Line is a LineString with exactly 2 Points.

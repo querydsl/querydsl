@@ -1,7 +1,7 @@
 package com.querydsl.sql;
 
-import static com.querydsl.sql.Constants.employee;
 import static com.querydsl.core.Target.ORACLE;
+import static com.querydsl.sql.Constants.employee;
 import static com.querydsl.sql.oracle.OracleGrammar.level;
 
 import java.sql.SQLException;
@@ -12,9 +12,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.querydsl.core.testutil.IncludeIn;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.oracle.OracleQuery;
-import com.querydsl.core.testutil.IncludeIn;
 
 public class SelectOracleBase extends AbstractBaseTest {
 

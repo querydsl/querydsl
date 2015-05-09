@@ -14,7 +14,6 @@
 package com.querydsl.jpa.codegen;
 
 import java.io.*;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

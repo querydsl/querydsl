@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,7 @@
  */
 package com.querydsl.apt.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -21,32 +21,32 @@ import com.querydsl.core.annotations.QueryEmbeddable;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class EnumTest {
-    
+
     @QueryEntity
     public enum Gender {
         MALE,
         FEMALE
     }
-    
+
     @QueryEmbeddable
     public enum Gender2 {
         MALE,
         FEMALE
     }
-    
+
     @QueryEntity
     public static class Bean {
         Gender gender;
     }
-    
+
     @Test
     public void Enum_as_Comparable() {
         assertNotNull(QEnumTest_Gender.gender.asc());
     }
-    
+
     @Test
     public void EnumOrdinal_as_Comparable() {
-        assertNotNull(QEnumTest_Gender.gender.ordinal().asc());        
+        assertNotNull(QEnumTest_Gender.gender.ordinal().asc());
     }
 
 }

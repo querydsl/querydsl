@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import com.mysema.codegen.model.Type;
 
 /**
  * Common interface for ForeignKeyData and InverseForeignKeyData
- * 
+ *
  * @author tiwe
  *
  */
@@ -28,9 +28,9 @@ public interface KeyData {
     String getName();
 
     String getTable();
-    
+
     Type getType();
-    
+
     List<String> getForeignColumns();
 
     List<String> getParentColumns();

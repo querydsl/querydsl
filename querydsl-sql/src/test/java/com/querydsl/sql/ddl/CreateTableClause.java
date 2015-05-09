@@ -11,12 +11,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Joiner;
 import com.querydsl.core.QueryException;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * CreateTableClause defines a CREATE TABLE clause

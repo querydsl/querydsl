@@ -4,21 +4,17 @@ import static org.junit.Assert.assertNotNull;
 
 import javax.persistence.EntityManager;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import com.querydsl.core.Target;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.testutil.Performance;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.testutil.JPATestRunner;
-import com.querydsl.core.testutil.Performance;
 
 @RunWith(JPATestRunner.class)
 @Ignore

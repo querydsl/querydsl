@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -64,14 +64,14 @@ public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
         paths.put(path, value);
         return this;
     }
-    
+
 
     @Override
     public <U> CollUpdateClause<T> set(Path<U> path, Expression<? extends U> expression) {
         // TODO : implement
         throw new UnsupportedOperationException();
     }
-    
+
     @Override
     public <U> CollUpdateClause<T> setNull(Path<U> path) {
         paths.put(path, null);
@@ -91,7 +91,7 @@ public class CollUpdateClause<T> implements UpdateClause<CollUpdateClause<T>> {
         query.where(o);
         return this;
     }
-    
+
     @Override
     public String toString() {
         return "update " + query;

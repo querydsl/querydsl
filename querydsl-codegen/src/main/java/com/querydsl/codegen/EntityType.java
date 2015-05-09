@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,13 +37,13 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     private final Set<Constructor> constructors = new HashSet<Constructor>();
 
     private int escapeSuffix = 1;
- 
+
     private final Set<Delegate> delegates = new HashSet<Delegate>();
 
     private final Set<Property> properties = new TreeSet<Property>();
-    
+
     private final Set<String> propertyNames = new HashSet<String>();
-    
+
     private final Set<String> escapedPropertyNames = new HashSet<String>();
 
     private final Set<Supertype> superTypes;
@@ -51,19 +51,19 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     private final Map<Object, Object> data = new HashMap<Object,Object>();
 
     private String uncapSimpleName;
-    
+
     /**
      * Create a new {@code EntityType} instance for the given type
-     * 
+     *
      * @param type
      */
     public EntityType(Type type) {
         this(type, new LinkedHashSet<Supertype>());
     }
-    
+
     /**
      * Create a new {@code EntityType} instance for the given type and superTypes
-     * 
+     *
      * @param type
      * @param superTypes
      */
@@ -71,7 +71,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         super(type);
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         if (JavaSyntaxUtils.isReserved(uncapSimpleName)) {
-            this.uncapSimpleName = uncapSimpleName + "$";    
+            this.uncapSimpleName = uncapSimpleName + "$";
         }
         this.superTypes = superTypes;
     }
@@ -104,16 +104,16 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     public int compareTo(EntityType o) {
         return getType().getSimpleName().compareTo(o.getType().getSimpleName());
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (o instanceof Type) {
-            return getFullName().equals(((Type)o).getFullName());    
+            return getFullName().equals(((Type)o).getFullName());
         } else {
             return false;
-        }        
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -135,12 +135,12 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
 
     @Override
-    public TypeCategory getCategory() {       
+    public TypeCategory getCategory() {
         if (getType().getCategory() == TypeCategory.ENTITY || !properties.isEmpty()) {
-            return TypeCategory.ENTITY;    
+            return TypeCategory.ENTITY;
         } else {
             return TypeCategory.CUSTOM;
-        }        
+        }
     }
 
     public Set<Constructor> getConstructors() {
@@ -162,7 +162,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     public Set<Property> getProperties() {
         return properties;
     }
-    
+
     @Nullable
     public Supertype getSuperType() {
         return superTypes.size() == 1 ? superTypes.iterator().next() : null;
@@ -180,40 +180,40 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     public int hashCode() {
         return getFullName().hashCode();
     }
-    
+
     public boolean hasArrays() {
         return hasPropertyWithType(TypeCategory.ARRAY);
     }
-    
+
     public boolean hasEntityFields() {
         return hasPropertyWithType(TypeCategory.ENTITY);
     }
-    
+
     public boolean hasInits() {
         for (Property property : properties) {
             if (!property.getInits().isEmpty()) {
                 return true;
             }
         }
-        return false;        
+        return false;
     }
-    
+
     public boolean hasLists() {
         return hasPropertyWithType(TypeCategory.LIST);
     }
-    
+
     public boolean hasCollections() {
         return hasPropertyWithType(TypeCategory.COLLECTION);
     }
-    
+
     public boolean hasSets() {
         return hasPropertyWithType(TypeCategory.SET);
     }
-    
+
     public boolean hasMaps() {
         return hasPropertyWithType(TypeCategory.MAP);
     }
-    
+
     private boolean hasPropertyWithType(TypeCategory category) {
         for (Property property : properties) {
             if (property.getType().getCategory() == category) {
@@ -232,7 +232,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
             addProperty(property.createCopy(this));
         }
     }
-    
+
     private Property validateField(Property field) {
         if (field.getName().equals(uncapSimpleName) || field.getEscapedName().equals(uncapSimpleName)) {
             do {
@@ -249,7 +249,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     public Set<String> getEscapedPropertyNames() {
         return escapedPropertyNames;
     }
-    
+
     public Type getInnerType() {
         return type;
     }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -75,7 +75,7 @@ public class ContainerTest extends AbstractTest{
                     gym.wardrobes.containsValue(wrd2))));
     }
 
-    @Test 
+    @Test
     public void NotContainsKeysInMapFields() {
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
@@ -117,7 +117,7 @@ public class ContainerTest extends AbstractTest{
                      gym.wardrobes2.containsKey(wrd1))));
     }
 
-    @Test 
+    @Test
     public void NotContainsEntryInMapFields() {
         // NOTE : containsEntry is not supported in Querydsl
 
@@ -135,7 +135,7 @@ public class ContainerTest extends AbstractTest{
 
     }
 
-    @Test 
+    @Test
     public void GetInMapFields() {
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
@@ -150,7 +150,7 @@ public class ContainerTest extends AbstractTest{
                    .where(gym.wardrobes.get(wrd.getModel()).eq(wrd))));
     }
 
-    @Test 
+    @Test
     public void GetInOrderingInMapFields() {
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd");

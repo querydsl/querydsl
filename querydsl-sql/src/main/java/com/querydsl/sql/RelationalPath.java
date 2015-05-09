@@ -13,9 +13,10 @@
  */
 package com.querydsl.sql;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Path;

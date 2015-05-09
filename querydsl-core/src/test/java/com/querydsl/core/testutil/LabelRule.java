@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,11 +29,11 @@ public class LabelRule implements MethodRule{
         Label label = target.getClass().getAnnotation(Label.class);
         boolean run = true;
         if (label != null) {
-            run = isExecuted(method.getMethod(), label.value()); 
+            run = isExecuted(method.getMethod(), label.value());
         }
         return run ? base : EmptyStatement.DEFAULT;
     }
-    
+
     private boolean isExecuted(Method method, Target target) {
         ExcludeIn ex = method.getAnnotation(ExcludeIn.class);
         // excluded in given targets

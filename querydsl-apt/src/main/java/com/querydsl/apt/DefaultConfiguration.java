@@ -27,10 +27,10 @@ import javax.lang.model.type.TypeMirror;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.mysema.codegen.model.ClassType;
+import com.querydsl.codegen.*;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.annotations.QueryType;
-import com.querydsl.codegen.*;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.util.Annotations;
 

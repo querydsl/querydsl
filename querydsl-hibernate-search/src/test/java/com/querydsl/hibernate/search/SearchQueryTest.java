@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,10 +13,7 @@
  */
 package com.querydsl.hibernate.search;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -140,12 +137,12 @@ public class SearchQueryTest extends AbstractQueryTest {
         assertEquals(Arrays.asList("Anton", "Barbara"), asc);
         assertEquals(4, users.getTotal());
     }
-    
+
     @Test
     public void No_Where() {
         assertEquals(5, query().fetch().size());
     }
-    
+
     @Test @Ignore // OufOfMemoryError
     public void Limit_Max_Value() {
         assertEquals(5, query().limit(Long.MAX_VALUE).fetch().size());

@@ -1,14 +1,16 @@
 package com.querydsl.jpa.domain.sql;
 
-import javax.annotation.Generated;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+
 import java.util.Arrays;
 
-import com.querydsl.sql.ColumnMetadata;
+import javax.annotation.Generated;
+
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringPath;
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+import com.querydsl.sql.ColumnMetadata;
 
 
 /**

@@ -10,5 +10,5 @@ public class Human extends Mammal {
 
     @ElementCollection
     Collection<Integer> hairs;
-    
+
 }

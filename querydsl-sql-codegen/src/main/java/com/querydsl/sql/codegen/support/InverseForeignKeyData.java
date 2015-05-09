@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,14 +30,14 @@ public class InverseForeignKeyData implements KeyData{
 
     @Nullable
     private final String schema;
-    
+
     private final String table;
-    
+
     @Nullable
     private final Type type;
-    
+
     private final List<String> foreignColumns = new ArrayList<String>();
-    
+
     private final List<String> parentColumns = new ArrayList<String>();
 
     public InverseForeignKeyData(String name, @Nullable String schema, String parentTable, @Nullable Type type) {
@@ -52,28 +52,33 @@ public class InverseForeignKeyData implements KeyData{
         parentColumns.add(parentColumn);
     }
 
+    @Override
     public String getName() {
         return name;
     }
-    
+
     @Nullable
     public String getSchema() {
         return schema;
     }
 
+    @Override
     public String getTable() {
         return table;
     }
-    
+
+    @Override
     public List<String> getForeignColumns() {
         return foreignColumns;
     }
 
+    @Override
     public List<String> getParentColumns() {
         return parentColumns;
     }
 
     @Nullable
+    @Override
     public Type getType() {
         return type;
     }

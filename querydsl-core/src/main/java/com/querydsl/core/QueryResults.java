@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,8 +30,8 @@ public final class QueryResults<T> implements Serializable {
     private static final long serialVersionUID = -4591506147471300909L;
 
     private static final QueryResults<Object> EMPTY = new QueryResults<Object>(
-            ImmutableList.of(), Long.MAX_VALUE, 0l, 0l); 
-    
+            ImmutableList.of(), Long.MAX_VALUE, 0l, 0l);
+
     @SuppressWarnings("unchecked")
     public static <T> QueryResults<T> emptyResults() {
         return (QueryResults<T>)EMPTY;
@@ -43,7 +43,7 @@ public final class QueryResults<T> implements Serializable {
 
     /**
      * Create a new SearchResults instance
-     * 
+     *
      * @param results paged results
      * @param limit used limit
      * @param offset used offset
@@ -58,7 +58,7 @@ public final class QueryResults<T> implements Serializable {
 
     /**
      * Create a new SearchResults instance
-     * 
+     *
      * @param results paged results
      * @param mod limit and offset
      * @param total total result rows count
@@ -69,7 +69,7 @@ public final class QueryResults<T> implements Serializable {
 
     /**
      * Get the results in List form
-     * 
+     *
      * An empty list is returned for no results.
      *
      * @return results

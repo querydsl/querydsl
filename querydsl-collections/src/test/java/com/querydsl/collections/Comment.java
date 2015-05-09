@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,23 +18,23 @@ import com.querydsl.core.annotations.QueryProjection;
 
 @QueryEntity
 public class Comment {
-    
+
     private int id;
-    
+
     private String text;
-    
+
     private User user;
-    
+
     private Post post;
 
     public Comment() {}
-    
+
     @QueryProjection
     public Comment(int id, String text) {
         this.id = id;
         this.text = text;
     }
-    
+
     @QueryProjection
     public Comment(int id, String text, User user, Post post) {
         this.id = id;
@@ -42,7 +42,7 @@ public class Comment {
         this.user = user;
         this.post = post;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -74,6 +74,6 @@ public class Comment {
     public void setPost(Post post) {
         this.post = post;
     }
-    
-    
+
+
 }

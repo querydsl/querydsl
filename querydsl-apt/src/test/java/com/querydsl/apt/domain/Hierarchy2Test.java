@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,12 +13,7 @@
  */
 package com.querydsl.apt.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import org.junit.Ignore;
 
@@ -55,7 +50,7 @@ public class Hierarchy2Test {
         public int compareTo(MyEmbeddable individualToCompare) {
             return -1;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }

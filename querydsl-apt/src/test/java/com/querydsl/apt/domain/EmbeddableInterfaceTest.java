@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,8 @@
  */
 package com.querydsl.apt.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 
@@ -27,18 +28,18 @@ public class EmbeddableInterfaceTest {
 
     @Entity
     public static class EntityClass {
-        
+
         @ElementCollection(targetClass=EmbeddableClass.class)
         Collection<EmbeddableInterface> children;
-        
+
     }
-        
+
     @Embeddable
     public interface EmbeddableInterface {
-     
+
         String getName();
     }
-    
+
     @Embeddable
     public static class EmbeddableClass implements EmbeddableInterface {
 
@@ -46,20 +47,20 @@ public class EmbeddableInterfaceTest {
         public String getName() {
             return null;
         }
-        
+
     }
-    
+
     @Test
     public void Type() {
         assertEquals(
                 QEmbeddableInterfaceTest_EmbeddableInterface.class,
                 QEmbeddableInterfaceTest_EntityClass.entityClass.children.any().getClass());
     }
-    
+
     @Test
     public void Properties() {
         assertNotNull(QEmbeddableInterfaceTest_EmbeddableInterface.embeddableInterface.name);
         assertNotNull(QEmbeddableInterfaceTest_EmbeddableClass.embeddableClass.name);
     }
-    
+
 }

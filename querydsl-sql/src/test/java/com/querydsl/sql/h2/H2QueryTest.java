@@ -8,16 +8,16 @@ import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.domain.QSurvey;
 
 public class H2QueryTest {
-    
+
     private SQLQuery<?> query;
-    
+
     private QSurvey survey = new QSurvey("survey");
-    
+
     @Before
     public void setUp() {
         query = new SQLQuery(H2Templates.builder().newLineToSingleSpace().build());
     }
-    
+
     @Test
     public void Syntax() {
 //        SELECT TOP? [DISTINCT | All]? selectExpression
@@ -35,7 +35,7 @@ public class H2QueryTest {
 //          EXCEPT
 //          INTERSECT
 //        ]
-//        LIMIT expression 
+//        LIMIT expression
         query.limit(2);
 //        OFFSET expression
         query.offset(3);

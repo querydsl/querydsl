@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -165,7 +165,7 @@ public class TemplateFactory {
     public TemplateFactory(char escape) {
         this.escape = escape;
     }
-    
+
     public Template create(String template) {
         if (cache.containsKey(template)) {
             return cache.get(template);

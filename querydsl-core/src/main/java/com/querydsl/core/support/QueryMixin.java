@@ -35,6 +35,7 @@ public class QueryMixin<T> {
     private final boolean expandAnyPaths;
 
     private final ReplaceVisitor<Void> replaceVisitor = new ReplaceVisitor<Void>() {
+        @Override
         public Expression<?> visit(Path<?> expr, @Nullable Void context) {
             return normalizePath(expr);
         }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,13 +22,13 @@ import java.lang.annotation.Target;
 
 /**
  * Declaration of a static delegate method
- * 
+ *
  * <p>Example :</p>
- * 
+ *
  * <pre>
  * {@code @QueryDelegate(User.class)}
  * public static Predicate like(QUser entity, User user) {
- *     BooleanBuilder builder = new BooleanBuilder(); 
+ *     BooleanBuilder builder = new BooleanBuilder();
  *     if (user.getFirstName() != null) {
  *         builder.and(entity.firstName.eq(user.getFirstName()));
  *     }
@@ -38,10 +38,10 @@ import java.lang.annotation.Target;
  *     return builder.getValue();
  * }
  * </pre>
- * 
- * <p>This will be then available in the QUser type as an instance method without the first 
+ *
+ * <p>This will be then available in the QUser type as an instance method without the first
  * argument:</p>
- * 
+ *
  * <pre>
  * User user = new User();
  * user.setFirstName("John");

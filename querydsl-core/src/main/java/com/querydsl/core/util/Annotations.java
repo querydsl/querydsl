@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 
 /**
  * Annotations is a merging adapter for the {@link AnnotatedElement} interface
- * 
+ *
  * @author tiwe
  *
  */
@@ -36,7 +36,7 @@ public class Annotations implements AnnotatedElement {
                 annotations.put(annotation.annotationType(), annotation);
             }
         }
-    } 
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -58,12 +58,12 @@ public class Annotations implements AnnotatedElement {
     public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
         return annotations.containsKey(annotationClass);
     }
-    
+
     public void addAnnotation(@Nullable Annotation annotation) {
         if (annotation != null) {
-            annotations.put(annotation.annotationType(), annotation);    
+            annotations.put(annotation.annotationType(), annotation);
         }
-        
+
     }
 
 }

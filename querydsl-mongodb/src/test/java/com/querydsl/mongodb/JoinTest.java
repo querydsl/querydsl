@@ -12,12 +12,12 @@ import org.mongodb.morphia.Morphia;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
+import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.mongodb.domain.Item;
 import com.querydsl.mongodb.domain.QUser;
 import com.querydsl.mongodb.domain.User;
 import com.querydsl.mongodb.morphia.MorphiaQuery;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.testutil.ExternalDB;
 
 @Category(ExternalDB.class)
 public class JoinTest {

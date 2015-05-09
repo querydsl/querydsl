@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,14 +36,14 @@ import com.google.common.base.Function;
  * @author vema
  */
 public class LuceneQuery extends AbstractLuceneQuery<Document, LuceneQuery> {
-    
+
     private static final Function<Document,Document> TRANSFORMER = new Function<Document,Document>() {
         @Override
         public Document apply(Document input) {
             return input;
-        }        
+        }
     };
-  
+
     public LuceneQuery(IndexSearcher searcher) {
         super(searcher, TRANSFORMER);
     }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,24 +26,24 @@ import com.querydsl.core.types.PathMetadata;
 
 /**
  * {@code CollectionPath} is a base class for collection typed paths
- * 
+ *
  * @author tiwe
  *
  * @param <E> component type
  * @param <Q> component query type
  */
-public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends SimpleExpression<? super E>> 
+public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends SimpleExpression<? super E>>
     extends CollectionExpressionBase<C, E> implements Path<C> {
 
     private static final long serialVersionUID = -9004995667633601298L;
-   
+
     @Nullable
     private transient volatile Constructor<?> constructor;
-    
+
     private transient volatile boolean usePathInits = false;
 
     private final PathInits inits;
-    
+
     public CollectionPathBase(PathImpl<C> mixin, PathInits inits) {
         super(mixin);
         this.inits = inits;
@@ -55,7 +55,7 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
      * @return path expression
      */
     public abstract Q any();
-    
+
     @SuppressWarnings("unchecked")
     protected Q newInstance(Class<Q> queryType, PathMetadata pm) {
         try{
@@ -66,14 +66,14 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
                         usePathInits = true;
                     } catch (NoSuchMethodException e) {
                         constructor = queryType.getDeclaredConstructor(Class.class, PathMetadata.class);
-                    }                    
+                    }
                 } else {
                     try {
                         constructor = queryType.getDeclaredConstructor(PathMetadata.class, PathInits.class);
                         usePathInits = true;
                     } catch (NoSuchMethodException e) {
                         constructor = queryType.getDeclaredConstructor(PathMetadata.class);
-                    }    
+                    }
                 }
                 constructor.setAccessible(true);
             }
@@ -81,15 +81,15 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
                 if (usePathInits) {
                     return (Q)constructor.newInstance(getElementType(), pm, inits);
                 } else {
-                    return (Q)constructor.newInstance(getElementType(), pm);    
+                    return (Q)constructor.newInstance(getElementType(), pm);
                 }
-                
+
             } else {
                 if (usePathInits) {
-                    return (Q)constructor.newInstance(pm, inits);    
+                    return (Q)constructor.newInstance(pm, inits);
                 } else {
                     return (Q)constructor.newInstance(pm);
-                }                
+                }
             }
         } catch (NoSuchMethodException e) {
             throw new ExpressionException(e);
@@ -100,7 +100,7 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
         } catch (InvocationTargetException e) {
             throw new ExpressionException(e);
         }
-        
+
     }
 
 }

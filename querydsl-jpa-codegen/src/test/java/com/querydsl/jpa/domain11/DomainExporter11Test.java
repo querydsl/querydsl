@@ -24,17 +24,17 @@ public class DomainExporter11Test {
         config.addFile(new File("src/test/resources/com/querydsl/jpa/domain11/domain.hbm.xml"));
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", gen, config);
         exporter.execute();
-        
+
         assertTrue(new File(gen, "com/querydsl/jpa/domain11/QOtherthing.java").exists());
         assertTrue(new File(gen, "com/querydsl/jpa/domain11/QSomething.java").exists());
-        
+
         String str = Files.toString(new File(gen, "com/querydsl/jpa/domain11/QOtherthing.java"), Charsets.UTF_8);
         assertTrue(str.contains("QSomething"));
-        
+
         str = Files.toString(new File(gen, "com/querydsl/jpa/domain11/QSomething.java"), Charsets.UTF_8);
         assertTrue(str.contains("id"));
 
         CompileUtils.compile(gen.getAbsolutePath());
     }
-    
+
 }

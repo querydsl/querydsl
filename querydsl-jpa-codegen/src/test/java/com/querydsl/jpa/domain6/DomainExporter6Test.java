@@ -15,7 +15,7 @@ import com.querydsl.jpa.codegen.CompileUtils;
 import com.querydsl.jpa.codegen.HibernateDomainExporter;
 
 public class DomainExporter6Test {
-    
+
     @Test
     public void Execute() throws IOException {
         File gen = new File("target/" + getClass().getSimpleName());
@@ -27,9 +27,9 @@ public class DomainExporter6Test {
 
         File targetFile = new File(gen, "com/querydsl/jpa/domain6/QContact.java");
         assertContains(targetFile, "ListPath<PhoneNumber, QPhoneNumber> phoneNumbers");
-        
+
         targetFile = new File(gen, "com/querydsl/jpa/domain6/QPhoneNumber.java");
-        assertContains(targetFile, "QPhoneNumber extends BeanPath<PhoneNumber>", 
+        assertContains(targetFile, "QPhoneNumber extends BeanPath<PhoneNumber>",
                                    "StringPath number = createString(\"number\")");
 
         CompileUtils.compile(gen.getAbsolutePath());
@@ -42,5 +42,5 @@ public class DomainExporter6Test {
             assertTrue(str + " was not contained", result.contains(str));
         }
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,18 +23,18 @@ import com.google.common.collect.Maps;
 
 /**
  * {@code QMap} represents a projection of type Map
- * 
+ *
  * <p>Usage example</p>
  * <pre>
- * {@code 
+ * {@code
  * List<Map<Expression<?>,?> result = query.from(employee).select(Projections.map(employee.firstName, employee.lastName)).fetch();
  * for (Tuple row : result) {
  *     System.out.println("firstName " + row.get(employee.firstName));
- *     System.out.println("lastName " + row.get(employee.lastName)); 
+ *     System.out.println("lastName " + row.get(employee.lastName));
  * }
- * } 
+ * }
  * </pre>
- * 
+ *
  * @author tiwe
  *
  */
@@ -43,30 +43,30 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
     private static final long serialVersionUID = -7545994090073480810L;
 
     private final ImmutableList<Expression<?>> args;
-    
+
     /**
      * Create a new QMap instance
-     * 
+     *
      * @param args
      */
     protected QMap(Expression<?>... args) {
         super((Class)Map.class);
         this.args = ImmutableList.copyOf(args);
     }
-    
+
     /**
      * Create a new QMap instance
-     * 
+     *
      * @param args
      */
     protected QMap(ImmutableList<Expression<?>> args) {
         super((Class)Map.class);
         this.args = args;
     }
-    
+
     /**
      * Create a new QMap instance
-     * 
+     *
      * @param args
      */
     protected QMap(Expression<?>[]... args) {
@@ -88,7 +88,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
     public List<Expression<?>> getArgs() {
         return args;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

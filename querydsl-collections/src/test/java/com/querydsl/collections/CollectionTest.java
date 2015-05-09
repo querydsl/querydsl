@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,13 +22,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class CollectionTest {
-    
+
     private final QCat cat = new QCat("cat");
-    
+
     private final QCat other = new QCat("other");
-    
+
     private List<Cat> cats;
-    
+
     @Before
     public void setUp() {
         Cat cat1 = new Cat("1");
@@ -39,17 +39,17 @@ public class CollectionTest {
         cat3.setKittens(Arrays.asList(cat1, cat2, cat3));
         Cat cat4 = new Cat("4");
         cat4.setKittens(Arrays.asList(cat1, cat2, cat3, cat4));
-        
+
         cats = Arrays.asList(cat1, cat2, cat3, cat4);
     }
-    
+
     @Test
     public void Join() {
         assertEquals("4", CollQueryFactory.from(cat, cats)
                 .innerJoin(cat.kittens, other)
                 .where(other.name.eq("4")).select(cat.name).fetchFirst());
     }
-    
+
     @Test
     public void Join_From_Two_Sources() {
         QCat cat_kittens = new QCat("cat_kittens");
@@ -60,47 +60,47 @@ public class CollectionTest {
                 .innerJoin(other.kittens, other_kittens)
                 .where(cat_kittens.eq(other_kittens)).fetchCount());
     }
-    
+
     @Test
     public void Any_UniqueResult() {
         assertEquals("4", CollQueryFactory.from(cat, cats)
                 .where(cat.kittens.any().name.eq("4")).select(cat.name).fetchOne());
     }
-    
+
     @Test
     public void Any_Count() {
         assertEquals(4, CollQueryFactory.from(cat, cats)
                 .where(cat.kittens.any().name.isNotNull()).fetchCount());
     }
-    
+
     @Test
     public void Any_Two_Levels() {
-        assertEquals(4, CollQueryFactory.from(cat, cats).where( 
+        assertEquals(4, CollQueryFactory.from(cat, cats).where(
                 cat.kittens.any().kittens.any().isNotNull()).fetchCount());
     }
-    
+
     @Test
     public void Any_Two_Levels2() {
         assertEquals(4, CollQueryFactory.from(cat, cats).where(
-                cat.kittens.any().name.isNotNull(), 
+                cat.kittens.any().name.isNotNull(),
                 cat.kittens.any().kittens.any().isNotNull()).fetchCount());
     }
-    
+
     @Test
     public void Any_From_Two_Sources() {
         assertEquals(16, CollQueryFactory.from(cat, cats).from(other, cats).where(
                 cat.kittens.any().name.eq(other.kittens.any().name)).fetchCount());
     }
-    
+
     @Test
     public void List_Size() {
         assertEquals(4, CollQueryFactory.from(cat, cats).where(cat.kittens.size().gt(0)).fetchCount());
         assertEquals(2, CollQueryFactory.from(cat, cats).where(cat.kittens.size().gt(2)).fetchCount());
     }
-    
+
     @Test
     public void List_Is_Empty() {
         assertEquals(0, CollQueryFactory.from(cat, cats).where(cat.kittens.isEmpty()).fetchCount());
     }
-    
+
 }

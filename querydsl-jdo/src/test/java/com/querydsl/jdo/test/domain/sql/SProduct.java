@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,17 +13,17 @@
  */
 package com.querydsl.jdo.test.domain.sql;
 
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+
+import java.sql.Date;
+import java.sql.Time;
+
+import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.ForeignKey;
 import com.querydsl.sql.PrimaryKey;
 import com.querydsl.sql.RelationalPathBase;
-import com.querydsl.core.types.PathMetadata;
-
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
-
-import java.sql.Date;
-import java.sql.Time;
 
 
 /**
@@ -85,6 +85,6 @@ public class SProduct extends RelationalPathBase<SProduct> {
         addMetadata(publicationdate, ColumnMetadata.named("PUBLICATIONDATE"));
         addMetadata(timefield, ColumnMetadata.named("TIMEFIELD"));
     }
-    
+
 }
 

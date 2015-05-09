@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -302,7 +302,7 @@ public final class Alias {
         EntityPathBase<D> rv = aliasFactory.getCurrentAndReset();
         if (rv != null) {
             return rv;
-        } else if (arg instanceof EntityPath<?>) {    
+        } else if (arg instanceof EntityPath<?>) {
             return (EntityPathBase<D>)arg; //NOSONAR
         } else if (arg instanceof ManagedObject) {
             return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
@@ -310,14 +310,14 @@ public final class Alias {
             return null;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Nullable
     private static <D, P extends Path<D>> P getPath(D arg) {
         P rv = aliasFactory.getCurrentAndReset();
         if (rv != null) {
             return rv;
-        } else if (arg instanceof Path<?>) {    
+        } else if (arg instanceof Path<?>) {
             return (P)arg;
         } else if (arg instanceof ManagedObject) {
             return (P) ((ManagedObject) arg).__mappedPath();
@@ -325,12 +325,12 @@ public final class Alias {
             return null;
         }
     }
-    
+
     //CHECKSTYLE:ON
 
     /**
      * Create a new alias proxy of the given type
-     * 
+     *
      * @param cl type of the alias
      * @return alias instance
      */
@@ -340,7 +340,7 @@ public final class Alias {
 
     /**
      * Create a new alias proxy of the given type for the given expression
-     * 
+     *
      * @param cl type of the alias
      * @param expr underlying expression
      * @return alias instance
@@ -351,7 +351,7 @@ public final class Alias {
 
     /**
      * Create a new alias proxy of the given type for the given variable
-     * 
+     *
      * @param cl type of the alias
      * @param var variable name for the underlying expression
      * @return alias instance

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,17 +13,19 @@
  */
 package com.querydsl.sql.mysql;
 
+import static org.junit.Assert.*;
+
 import java.sql.*;
 
-import com.querydsl.sql.QGeneratedKeysEntity;
-import com.querydsl.sql.H2Templates;
-import com.querydsl.sql.dml.SQLInsertClause;
-import com.querydsl.core.testutil.ExternalDB;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import static org.junit.Assert.*;
+
+import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.QGeneratedKeysEntity;
+import com.querydsl.sql.dml.SQLInsertClause;
 
 @Category(ExternalDB.class)
 public class GeneratedKeysMySQLTest {
@@ -61,7 +63,7 @@ public class GeneratedKeysMySQLTest {
         ResultSet rs = insertClause.set(entity.name, "Hello").executeWithKeys();
         ResultSetMetaData md = rs.getMetaData();
         System.out.println(md.getColumnName(1));
-        
+
         assertTrue(rs.next());
         assertEquals(1, rs.getInt(1));
         assertFalse(rs.next());

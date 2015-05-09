@@ -13,18 +13,19 @@
  */
 package com.querydsl.apt.jdo;
 
+import java.lang.annotation.Annotation;
+
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.jdo.annotations.EmbeddedOnly;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
-import java.lang.annotation.Annotation;
 
+import com.querydsl.apt.AbstractQuerydslProcessor;
+import com.querydsl.apt.Configuration;
 import com.querydsl.core.annotations.QueryEmbedded;
 import com.querydsl.core.annotations.QueryEntities;
 import com.querydsl.core.annotations.QuerySupertype;
-import com.querydsl.apt.AbstractQuerydslProcessor;
-import com.querydsl.apt.Configuration;
 
 /**
  * AnnotationProcessor for JDO which takes {@link PersistenceCapable}, {@link EmbeddedOnly} and

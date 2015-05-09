@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -115,7 +115,7 @@ public class LuceneSerializerTest {
         floatField = entityPath.getNumber("floatField", Float.class);
 
         idx = new RAMDirectory();
-        config = new IndexWriterConfig(Version.LUCENE_42, 
+        config = new IndexWriterConfig(Version.LUCENE_42,
                 new StandardAnalyzer(Version.LUCENE_42))
             .setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         writer = new IndexWriter(idx, config);

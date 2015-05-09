@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,10 @@ import java.sql.Time;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Path;
 
 /**
  * {@code TimeExpression} represents Time expressions
@@ -48,7 +51,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     public TimeExpression<T> as(String alias) {
         return as(ExpressionUtils.path(getType(), alias));
     }
-    
+
     /**
      * Create a hours expression (range 0-23)
      *
@@ -92,7 +95,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      * @return milli second
      */
     public NumberExpression<Integer> milliSecond() {
-        if (milliseconds == null) { 
+        if (milliseconds == null) {
             milliseconds = Expressions.numberOperation(Integer.class, Ops.DateTimeOps.MILLISECOND, mixin);
         }
         return milliseconds;

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,12 +21,12 @@ import javax.persistence.*;
 import org.junit.Test;
 
 public class EmbeddedTest {
-    
+
     @Entity
     public static class EntityClass extends AbstractEntity<SubEntityCode> {
-        
+
     }
-    
+
     @MappedSuperclass
     public static abstract class AbstractEntity<C extends EntityCode> {
 
@@ -42,19 +42,19 @@ public class EmbeddedTest {
         String code;
 
     }
-    
+
     @Embeddable
     public static class SubEntityCode extends EntityCode {
-        
+
         String property;
-        
+
     }
-    
+
     @Test
     public void EntityClass() {
         assertNotNull(QEmbeddedTest_EntityClass.entityClass.code.property);
         assertEquals(SubEntityCode.class, QEmbeddedTest_EntityClass.entityClass.code.getType());
     }
-    
+
 
 }

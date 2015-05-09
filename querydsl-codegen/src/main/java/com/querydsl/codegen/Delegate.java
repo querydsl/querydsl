@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import com.mysema.codegen.model.Type;
 
 /**
  * {@code Delegate} defines a delegate method which dispatches to an external static method
- * 
+ *
  * @author tiwe
  *
  */
@@ -37,7 +37,7 @@ public class Delegate {
 
     private final Type returnType;
 
-    public Delegate(Type declaringType, Type delegateType, String name, List<Parameter> params, 
+    public Delegate(Type declaringType, Type delegateType, String name, List<Parameter> params,
             Type returnType) {
         this.declaringType = declaringType;
         this.delegateType = delegateType;

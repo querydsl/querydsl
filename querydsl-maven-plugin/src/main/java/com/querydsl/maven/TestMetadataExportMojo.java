@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,13 +17,14 @@ import com.querydsl.sql.codegen.MetaDataExporter;
 
 /**
  * {@code TestMetadataExportMojo} is a goal for {@link MetaDataExporter} usage and is bound to the generated-sources phase
- * 
+ *
  * @phase generate-sources
  * @goal test-export
  *
  */
 public class TestMetadataExportMojo extends AbstractMetaDataExportMojo{
 
+    @Override
     protected boolean isForTest() {
         return true;
     }

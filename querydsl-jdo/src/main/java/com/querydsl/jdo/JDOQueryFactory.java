@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,10 +18,10 @@ import javax.jdo.PersistenceManager;
 
 import com.querydsl.core.QueryFactory;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jdo.dml.JDODeleteClause;
-import com.querydsl.core.types.EntityPath;
 
 /**
  * Factory class for query and DML clause creation
@@ -116,6 +116,7 @@ public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
         return query().from(from);
     }
 
+    @Override
     public JDOQuery<?> query() {
         return new JDOQuery<Void>(persistenceManager.get());
     }

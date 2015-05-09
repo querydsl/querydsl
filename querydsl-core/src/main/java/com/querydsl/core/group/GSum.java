@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,8 +34,8 @@ class GSum<T extends Number> extends AbstractGroupExpression<T, T> {
             @Override
             public void add(T t) {
                 if (t != null) {
-                    sum = sum.add(new BigDecimal(t.toString()));    
-                }                
+                    sum = sum.add(new BigDecimal(t.toString()));
+                }
             }
 
             @Override

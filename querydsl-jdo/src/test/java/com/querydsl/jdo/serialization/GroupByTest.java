@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.querydsl.jdo.models.company.QEmployee;
 
 public class GroupByTest extends AbstractTest {
-    
+
     @Test
     public void GroupBy() {
         QEmployee employee = QEmployee.employee;

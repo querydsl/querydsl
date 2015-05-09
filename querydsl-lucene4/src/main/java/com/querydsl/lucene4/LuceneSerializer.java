@@ -13,22 +13,24 @@
  */
 package com.querydsl.lucene4;
 
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.types.*;
+import javax.annotation.Nullable;
+
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.NumericUtils;
+
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.types.*;
 
 /**
  * Serializes Querydsl queries to Lucene queries.

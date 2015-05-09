@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,7 @@ public class ExtendedSQLQuery<T> extends AbstractSQLQuery<T, ExtendedSQLQuery<T>
     public ExtendedSQLQuery(Connection conn, SQLTemplates templates) {
         super(conn, new Configuration(templates), new DefaultQueryMetadata());
     }
-    
+
     public ExtendedSQLQuery(Connection conn, Configuration configuration) {
         super(conn, configuration, new DefaultQueryMetadata());
     }
@@ -46,23 +46,23 @@ public class ExtendedSQLQuery<T> extends AbstractSQLQuery<T, ExtendedSQLQuery<T>
     public ExtendedSQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
     }
-    
+
     public <RT> CloseableIterator<RT> iterate(Class<RT> type, Expression<?>... exprs) {
         return select(createProjection(type, exprs)).iterate();
     }
-    
+
     public <RT> RT uniqueResult(Class<RT> type, Expression<?>... exprs) {
         return select(createProjection(type, exprs)).fetchOne();
     }
-    
+
     public <RT> List<RT> list(Class<RT> type, Expression<?>... exprs) {
         return select(createProjection(type, exprs)).fetch();
     }
-    
+
     public <RT> QueryResults<RT> listResults(Class<RT> type, Expression<?>... exprs) {
         return select(createProjection(type, exprs)).fetchResults();
     }
-    
+
     private <T> FactoryExpression<T> createProjection(Class<T> type, Expression<?>... exprs) {
         return Projections.bean(type, exprs);
     }
@@ -85,5 +85,5 @@ public class ExtendedSQLQuery<T> extends AbstractSQLQuery<T, ExtendedSQLQuery<T>
         queryMixin.setProjection(exprs);
         return (ExtendedSQLQuery<Tuple>) this;
     }
-    
+
 }

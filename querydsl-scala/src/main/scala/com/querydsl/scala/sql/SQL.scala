@@ -16,17 +16,18 @@ package com.querydsl.scala.sql
 
 import java.sql._
 import javax.sql._
+
+import com.querydsl.core.types._
 import com.querydsl.sql._
 import com.querydsl.sql.dml._
-import com.querydsl.core.types._
 
 /**
  * Implicit conversion from RelationalPath to RichSimpleQuery
  */
 trait SQLHelpers {
-  
+
   def connection: Connection
-  
+
   def templates: SQLTemplates
 
 }
@@ -36,24 +37,24 @@ trait SQLHelpers {
  * queries and DML clauses and transactional wrapping of code execution
  */
 trait SQL extends SQLHelpers {
-  
+
   private val connectionHolder = new ThreadLocal[Connection]
-  
+
   val dataSource: DataSource
-  
+
   def connection = connectionHolder.get()
-               
+
   def query() = new SQLQuery(connection, templates)
-  
+
   def from(expr: Expression[_]*) = query.from(expr:_*)
 
   def insert(path: RelationalPath[_]) = new SQLInsertClause(connection, templates, path)
-  
+
   def update(path: RelationalPath[_]) = new SQLUpdateClause(connection, templates, path)
-  
+
   def delete(path: RelationalPath[_]) = new SQLDeleteClause(connection, templates, path)
-     
-  def tx[R](fn: ⇒ R): R = {     
+
+  def tx[R](fn: ⇒ R): R = {
     val conn = dataSource.getConnection
     conn.setAutoCommit(false)
     connectionHolder.set(conn)
@@ -71,5 +72,5 @@ trait SQL extends SQLHelpers {
       connectionHolder.remove()
     }
   }
-  
+
 }

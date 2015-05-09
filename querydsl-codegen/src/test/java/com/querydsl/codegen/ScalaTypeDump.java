@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +30,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.*;
 
 public class ScalaTypeDump {
-    
+
     @Test
     @Ignore
     public void test() throws IOException{
@@ -45,7 +45,7 @@ public class ScalaTypeDump {
         classes.add(DateExpression.class);
         classes.add(EnumExpression.class);
         classes.add(NumberExpression.class);
-        
+
         StringWriter w = new StringWriter();
         ScalaWriter writer = new ScalaWriter(w);
         writer.packageDecl("com.querydsl.scala");
@@ -65,7 +65,7 @@ public class ScalaTypeDump {
             }
             writer.end();
         }
-        
+
         System.out.println(w);
     }
 

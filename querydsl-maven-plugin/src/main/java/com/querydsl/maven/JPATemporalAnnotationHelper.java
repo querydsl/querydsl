@@ -13,18 +13,20 @@
  */
 package com.querydsl.maven;
 
+import java.lang.annotation.Annotation;
+
+import javax.persistence.Temporal;
+
 import com.mysema.codegen.model.TypeCategory;
 import com.querydsl.codegen.AnnotationHelper;
-import java.lang.annotation.Annotation;
-import javax.persistence.Temporal;
 
 /**
  * An {@link AnnotationHelper} that handles JPA {@link Temporal} annotation.
- * 
+ *
  * @author dyorgio
  */
 public class JPATemporalAnnotationHelper implements AnnotationHelper {
-        
+
         public static final JPATemporalAnnotationHelper INSTANCE = new JPATemporalAnnotationHelper();
 
         private JPATemporalAnnotationHelper() {

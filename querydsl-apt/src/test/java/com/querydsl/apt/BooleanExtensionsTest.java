@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ public class BooleanExtensionsTest extends AbstractProcessorTest {
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp"));
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp2"));
     }
-    
+
     @Test
     public void Process2() throws IOException {
         List<String> sources = Arrays.asList(
@@ -50,5 +50,5 @@ public class BooleanExtensionsTest extends AbstractProcessorTest {
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp"));
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp2"));
     }
-    
+
 }

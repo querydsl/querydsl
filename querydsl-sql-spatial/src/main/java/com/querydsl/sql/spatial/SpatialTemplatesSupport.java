@@ -16,8 +16,8 @@ package com.querydsl.sql.spatial;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.querydsl.spatial.SpatialOps;
 import com.querydsl.core.types.Operator;
+import com.querydsl.spatial.SpatialOps;
 
 /**
  * Static factory methods for spatial enabled SQLTemplates subclasses

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,9 +34,9 @@ public class GenericExporterTest {
     public void setUp() {
         exporter = new GenericExporter();
     }
-    
+
     @Test
-    public void Export() {        
+    public void Export() {
         exporter.setTargetFolder(new File("target/gen1"));
         exporter.export(getClass().getPackage());
         assertTrue(new File("target/gen1/com/querydsl/codegen/QExampleEmbeddable.java").exists());
@@ -55,15 +55,15 @@ public class GenericExporterTest {
         String str = Files.toString(new File("target/gen1_jpa/com/querydsl/codegen/QGroup.java"), Charsets.UTF_8);
         assertTrue(str.contains("QGroup group = new QGroup(\"group1\");"));
     }
-    
+
     @Test
-    public void Export_With_Stopclass() {        
+    public void Export_With_Stopclass() {
         exporter.setTargetFolder(new File("target/gen1_stop"));
         exporter.addStopClass(Examples.Supertype.class);
         exporter.export(getClass().getPackage());
         assertFalse(new File("target/gen1_stop/com/querydsl/codegen/QExamples_Supertype.java").exists());
     }
-    
+
     @Test
     public void OverrideSerializer() {
         exporter.setTargetFolder(new File("target/gen2"));
@@ -76,9 +76,9 @@ public class GenericExporterTest {
         assertTrue(new File("target/gen2/com/querydsl/codegen/QExampleSupertype.java").exists());
         assertTrue(new File("target/gen2/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
     }
-    
+
     @Test
-    public void Export_Package_as_String() {        
+    public void Export_Package_as_String() {
         exporter.setTargetFolder(new File("target/gen3"));
         exporter.export(getClass().getPackage().getName());
         assertTrue(new File("target/gen3/com/querydsl/codegen/QExampleEmbeddable.java").exists());
@@ -88,9 +88,9 @@ public class GenericExporterTest {
         assertTrue(new File("target/gen3/com/querydsl/codegen/QExampleSupertype.java").exists());
         assertTrue(new File("target/gen3/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
     }
-    
+
     @Test
-    public void Export_With_Package_Suffix() {        
+    public void Export_With_Package_Suffix() {
         exporter.setTargetFolder(new File("target/gen4"));
         exporter.setPackageSuffix("types");
         exporter.export(getClass().getPackage());
@@ -101,16 +101,16 @@ public class GenericExporterTest {
         assertTrue(new File("target/gen4/com/querydsl/codegentypes/QExampleSupertype.java").exists());
         assertTrue(new File("target/gen4/com/querydsl/codegen/subtypes/QExampleEntity2.java").exists());
     }
-    
+
     @Test
-    public void Export_Handle_No_Methods_Nor_Fields() {        
+    public void Export_Handle_No_Methods_Nor_Fields() {
         exporter.setTargetFolder(new File("target/gen5"));
         exporter.setHandleFields(false);
         exporter.setHandleMethods(false);
         exporter.export(getClass().getPackage());
         assertTrue(new File("target/gen5/com/querydsl/codegen/QExampleEmbeddable.java").exists());
     }
-    
+
     @Test
     public void Export_Domain_Package() {
         exporter.setTargetFolder(new File("target/gen6"));

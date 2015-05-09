@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,8 +24,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
-import com.querydsl.sql.AbstractJDBCTest;
 import com.querydsl.codegen.BeanSerializer;
+import com.querydsl.sql.AbstractJDBCTest;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest{
 
@@ -41,16 +41,16 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
         // survey
         statement.execute("create table survey (id int, name varchar(30), "
                 + "CONSTRAINT PK_survey PRIMARY KEY (id, name))");
-        
+
         // date_test
         statement.execute("create table date_test (d date)");
-        
+
         // date_time
         statement.execute("create table date_time_test (dt datetime)");
-        
+
         // spaces
         statement.execute("create table spaces (\"spaces  \n 1\" date)");
-        
+
         // employee
         statement.execute("create table employee("
                 + "id INT, "

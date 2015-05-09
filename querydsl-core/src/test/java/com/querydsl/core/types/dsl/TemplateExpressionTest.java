@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,9 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.sql.Time;
 import java.util.Arrays;
@@ -26,15 +24,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.annotations.PropertyType;
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.JavaTemplates;
-import com.querydsl.core.types.Template;
-import com.querydsl.core.types.TemplateExpression;
-import com.querydsl.core.types.TemplateFactory;
-import com.querydsl.core.types.Templates;
-import com.querydsl.core.types.ToStringVisitor;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.*;
 
 public class TemplateExpressionTest {
 

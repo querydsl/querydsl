@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,16 +13,16 @@
  */
 package com.querydsl.core.types.dsl;
 
+import static org.junit.Assert.*;
+
 import java.sql.Time;
 import java.util.Date;
 import java.util.Map;
 
+import org.junit.Test;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.util.BeanMap;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class PathBuilderTest {
 

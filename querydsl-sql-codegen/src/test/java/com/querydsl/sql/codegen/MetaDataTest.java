@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,16 +24,16 @@ import com.mysema.codegen.model.TypeCategory;
 import com.querydsl.codegen.EntityType;
 
 public class MetaDataTest {
-    
+
     private EntityType classModel;
-    
+
     @Before
     public void setUp() {
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         String packageName = "com.myproject.domain";
         String tableName = "vwServiceName";
         String className = namingStrategy.getClassName(tableName);
-        
+
         Type classTypeModel = new SimpleType(TypeCategory.ENTITY, packageName + "." + className, packageName, className, false, false);
         classModel = new EntityType(classTypeModel);
 //        classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
@@ -41,13 +41,13 @@ public class MetaDataTest {
     }
 
     @Test
-    public void GetSimpleName() {                
-        assertEquals("VwServiceName", classModel.getSimpleName());        
+    public void GetSimpleName() {
+        assertEquals("VwServiceName", classModel.getSimpleName());
     }
-    
+
     @Test
     public void GetFullName() {
         assertEquals("com.myproject.domain.VwServiceName", classModel.getFullName());
     }
-    
+
 }

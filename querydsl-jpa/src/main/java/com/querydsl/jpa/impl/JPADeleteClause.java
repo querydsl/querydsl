@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,20 +13,21 @@
  */
 package com.querydsl.jpa.impl;
 
+import java.util.Map;
+
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-import java.util.Map;
 
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.DeleteClause;
-import com.querydsl.jpa.JPAQueryMixin;
-import com.querydsl.jpa.JPQLSerializer;
-import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.JPAQueryMixin;
+import com.querydsl.jpa.JPQLSerializer;
+import com.querydsl.jpa.JPQLTemplates;
 
 /**
  * DeleteClause implementation for JPA
@@ -68,12 +69,12 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
         JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
-    
+
     @Override
     public JPADeleteClause where(Predicate... o) {
         for (Predicate p : o) {
             queryMixin.where(p);
-        }        
+        }
         return this;
     }
 
@@ -81,7 +82,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
         this.lockMode = lockMode;
         return this;
     }
-    
+
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -48,7 +48,7 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
     public HibernateQuery(Session session) {
         super(new DefaultSessionHolder(session), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
-    
+
     /**
      * Creates a new Session bound query
      *
@@ -79,7 +79,7 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
 
     /**
      * Creates a new Session bound query
-     * 
+     *
      * @param session session
      * @param templates templates
      */
@@ -89,7 +89,7 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
 
     /**
      * Creates a new Session bound query
-     * 
+     *
      * @param session session
      * @param templates templates
      * @param metadata query metadata

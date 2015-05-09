@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,18 +13,13 @@
  */
 package com.querydsl.core.testutil;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
 public class StatementTest {
-    
+
     @Rule
     public MethodRule rule = new MethodRule() {
         @Override
@@ -36,32 +31,32 @@ public class StatementTest {
                     base.evaluate();
                     System.err.println("out of rule");
                 }
-                
+
             };
         }
-        
+
     };
-    
+
     @BeforeClass
     public static void beforeClass() {
         System.err.println("before class");
     }
-    
+
     @Before
     public void before() {
         System.err.println("before");
-    }    
-    
+    }
+
     @AfterClass
     public static void afterClass() {
         System.err.println("after class");
     }
-    
+
     @After
     public void after() {
         System.err.println("after");
     }
-    
+
     @Test
     public void test() {
         System.err.println("test");

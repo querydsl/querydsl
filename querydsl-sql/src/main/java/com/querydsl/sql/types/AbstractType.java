@@ -33,6 +33,7 @@ public abstract class AbstractType<T> implements Type<T> {
         return new int[]{type};
     }
 
+    @Override
     public String getLiteral(T value) {
         return value.toString();
     }

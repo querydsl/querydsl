@@ -48,9 +48,9 @@ public class Generic2Test extends AbstractTest {
 
     @Entity
     public static class Foo extends BaseEntity<Integer> {
-        
+
     }
-    
+
     @Test
     public void test() throws NoSuchFieldException {
         start(QGeneric2Test_Foo.class, QGeneric2Test_Foo.foo);

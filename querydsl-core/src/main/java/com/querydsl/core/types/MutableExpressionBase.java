@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 
 /**
  * {@code MutableExpressionBase} is the base class for mutable Expression implementations
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -30,15 +30,17 @@ public abstract class MutableExpressionBase<T> implements Expression<T> {
     public MutableExpressionBase(Class<? extends T> type) {
         this.type = type;
     }
-    
+
+    @Override
     public final Class<? extends T> getType() {
         return type;
     }
-    
+
+    @Override
     public final int hashCode() {
         return accept(HashCodeVisitor.DEFAULT, null);
     }
-    
+
     @Override
     public final String toString() {
         return accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);

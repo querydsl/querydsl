@@ -65,7 +65,7 @@ public class MetaDataSerializer extends EntitySerializer {
     private final boolean innerClassesForKeys;
 
     private final Set<String> imports;
-    
+
     private final Comparator<Property> columnComparator;
 
     private final Class<?> entityPathType;

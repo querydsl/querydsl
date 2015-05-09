@@ -13,6 +13,11 @@
  */
 package com.querydsl.apt;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.util.*;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
@@ -26,19 +31,15 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.annotation.Annotation;
-import java.util.*;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.*;
 import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.annotations.QueryExclude;
 import com.querydsl.core.annotations.QueryProjection;
-import com.querydsl.codegen.*;
 
 /**
  * {@code AbstractQuerydslProcessor} is the base class for Querydsl annotation processors and

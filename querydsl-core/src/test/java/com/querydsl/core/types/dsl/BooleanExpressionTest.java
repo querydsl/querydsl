@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,14 +32,14 @@ public class BooleanExpressionTest {
     public void AllOf() {
         assertEquals(a.and(b).and(c), Expressions.allOf(a, b, c));
     }
-    
+
     @Test
     public void AllOf_With_Nulls() {
         assertEquals("a && b", Expressions.allOf(a, b, null).toString());
         assertEquals("a", Expressions.allOf(a, null).toString());
         assertEquals("a", Expressions.allOf(null, a).toString());
     }
-    
+
     @Test
     public void AnyOf_With_Nulls() {
         assertEquals("a || b", Expressions.anyOf(a, b, null).toString());

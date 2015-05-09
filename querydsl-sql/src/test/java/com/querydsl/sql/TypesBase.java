@@ -13,11 +13,11 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.google.common.collect.Maps;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.testutil.ExcludeIn;
 
 public class TypesBase extends AbstractBaseTest {
 

@@ -14,5 +14,5 @@ public class CompanyPK {
     public void setId(String id) {
         this.id = id;
     }
-    
+
 }

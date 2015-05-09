@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,28 +31,28 @@ import com.querydsl.jpa.testutil.JPATestRunner;
 
 @RunWith(JPATestRunner.class)
 public class SerializationBase implements JPATest {
-    
+
     private QCat cat = QCat.cat;
-    
+
     private EntityManager entityManager;
-    
+
     @Test
     public void test() throws IOException, ClassNotFoundException{
         // create query
         JPAQuery<?> query = query();
         query.from(cat).where(cat.name.eq("Kate")).select(cat).fetch();
-        
+
         QueryMetadata metadata = query.getMetadata();
         assertFalse(metadata.getJoins().isEmpty());
         assertTrue(metadata.getWhere() != null);
         assertTrue(metadata.getProjection() != null);
         QueryMetadata metadata2 = Serialization.serialize(metadata);
-        
+
         // validate it
         assertEquals(metadata.getJoins(), metadata2.getJoins());
         assertEquals(metadata.getWhere(), metadata2.getWhere());
         assertEquals(metadata.getProjection(), metadata2.getProjection());
-        
+
         // create new query
         JPAQuery<?> query2 = new JPAQuery<Void>(entityManager, metadata2);
         assertEquals("select cat\nfrom Cat cat\nwhere cat.name = ?1", query2.toString());

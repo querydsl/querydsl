@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,25 +13,24 @@
  */
 package com.querydsl.core.types.dsl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.dsl.MapPath;
-import com.querydsl.core.types.dsl.StringPath;
 
 public class MapPathTest {
 
     private MapPath<String,String,StringPath> mapPath = new MapPath<String,String,StringPath>(
             String.class, String.class, StringPath.class, "p");
-    
+
     @Test
     public void Get() {
         assertNotNull(mapPath.get("X"));
         assertNotNull(mapPath.get(ConstantImpl.create("X")));
     }
-    
+
     @Test
     public void GetKeyType() {
         assertEquals(String.class, mapPath.getKeyType());
@@ -41,7 +40,7 @@ public class MapPathTest {
     public void GetValueType() {
         assertEquals(String.class, mapPath.getValueType());
     }
-    
+
     @Test
     public void GetParameter() {
         assertEquals(String.class, mapPath.getParameter(0));

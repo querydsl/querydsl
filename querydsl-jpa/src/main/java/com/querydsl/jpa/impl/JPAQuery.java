@@ -19,8 +19,8 @@ import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.JPQLTemplates;
 
 /**
  * {@code JPAQuery} is the default implementation of the {@link JPQLQuery} interface for JPA

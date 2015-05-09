@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,8 @@
  */
 package com.querydsl.sql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -31,7 +32,7 @@ public class H2TemplatesTest extends AbstractSQLTemplatesTest{
         SQLTemplates templates = H2Templates.builder().quote()
             .newLineToSingleSpace()
             .build();
-        
+
         assertNotNull(templates);
     }
 

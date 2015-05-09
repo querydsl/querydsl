@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,27 +28,27 @@ public class CastTest extends AbstractQueryTest {
     public void Byte() {
         assertEquals(Byte.class, expr.byteValue().getType());
     }
-    
+
     @Test
     public void Double() {
         assertEquals(Double.class, expr.doubleValue().getType());
     }
-    
+
     @Test
     public void Float() {
         assertEquals(Float.class, expr.floatValue().getType());
     }
-    
+
     @Test
     public void Integer() {
         assertEquals(Integer.class, expr.intValue().getType());
     }
-    
+
     @Test
     public void Long() {
         assertEquals(Long.class, expr.longValue().getType());
     }
-    
+
     @Test
     public void Short() {
         assertEquals(Short.class, expr.shortValue().getType());

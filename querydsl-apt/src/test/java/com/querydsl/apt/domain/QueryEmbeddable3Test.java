@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,74 +30,74 @@ public class QueryEmbeddable3Test {
 
     @QueryEntity
     public static class User {
-        
+
         List<Complex<?>> rawList;
-    
+
         List<Complex<String>> list;
-        
+
         Set<Complex<String>> set;
-        
+
         Collection<Complex<String>> collection;
-        
+
         Map<String, Complex<String>> map;
-        
+
         Map<String, Complex<String>> rawMap1;
-        
+
         Map<String, Complex<?>> rawMap2;
-        
+
         Map<?, Complex<String>> rawMap3;
-                
+
     }
-    
+
     @QueryEmbeddable
     public static class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
 
         T a;
-        
+
         @Override
         public int compareTo(Complex<T> arg0) {
             return 0;
         }
-        
+
         public boolean equals(Object o) {
             return o == this;
         }
-        
+
     }
-    
+
     @Test
     public void User_rawList() {
         Assert.assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.rawList.any().getClass());
     }
-    
+
     @Test
     public void User_list() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.list.any().getClass());
     }
-    
+
     @Test
     public void User_set() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.set.any().getClass());
     }
-    
+
     @Test
     public void User_collection() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.collection.any().getClass());
     }
-    
+
     @Test
     public void User_map() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.map.get("XXX").getClass());
     }
-    
+
     @Test
     public void User_rawMap1() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.rawMap1.get("XXX").getClass());
     }
-    
+
     @Test
     public void User_rawMap2() {
         assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.rawMap2.get("XXX").getClass());
     }
-    
+
 }

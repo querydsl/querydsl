@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,13 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.jpa.domain.Animal;
-import com.querydsl.jpa.domain.Cat;
-import com.querydsl.jpa.domain.InheritedProperties;
-import com.querydsl.jpa.domain.QAnimal;
-import com.querydsl.jpa.domain.QCat;
-import com.querydsl.jpa.domain.QInheritedProperties;
-import com.querydsl.jpa.domain.QSuperclass;
+import com.querydsl.jpa.domain.*;
 
 public class TypeCastTest {
 

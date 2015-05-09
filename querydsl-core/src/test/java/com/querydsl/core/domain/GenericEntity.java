@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@ package com.querydsl.core.domain;
 import java.io.Serializable;
 
 public class GenericEntity<KeyType extends Serializable, T> {
-    
+
     private KeyType id;
 
     public KeyType getId() {
@@ -26,5 +26,5 @@ public class GenericEntity<KeyType extends Serializable, T> {
     public void setId(KeyType id) {
         this.id = id;
     }
-    
+
 }

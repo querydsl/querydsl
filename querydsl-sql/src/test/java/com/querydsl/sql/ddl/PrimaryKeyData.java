@@ -22,7 +22,7 @@ public class PrimaryKeyData {
     public PrimaryKeyData(String name) {
         this.name = name;
     }
-    
+
     public PrimaryKeyData(String name, String[] c) {
         this.name = name;
         columns.addAll(Arrays.asList(c));

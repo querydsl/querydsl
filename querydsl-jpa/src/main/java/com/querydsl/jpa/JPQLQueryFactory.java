@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@ import com.querydsl.core.types.Expression;
 
 /**
  * Common interface for JPA related QueryFactory implementations
- * 
+ *
  * @author tiwe
  *
  */
@@ -30,7 +30,7 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<?>> {
 
     /**
      * Create a new DELETE clause
-     * 
+     *
      * @param path entity to delete from
      * @return delete clause
      */
@@ -95,15 +95,15 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<?>> {
 
     /**
      * Create a new Query with the given source
-     * 
+     *
      * @param from from
      * @return from(from)
      */
     JPQLQuery<?> from(EntityPath<?> from);
-    
+
     /**
      * Create a new UPDATE clause
-     * 
+     *
      * @param path entity to update
      * @return update clause
      */

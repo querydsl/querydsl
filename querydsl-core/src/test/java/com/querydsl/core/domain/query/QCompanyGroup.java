@@ -1,13 +1,13 @@
 package com.querydsl.core.domain.query;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
-
-import com.querydsl.core.domain.CompanyGroup;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.PathInits;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import javax.annotation.Generated;
+
+import com.querydsl.core.domain.CompanyGroup;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**

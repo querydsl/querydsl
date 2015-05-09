@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,9 +41,9 @@ public abstract class AbstractQueryTest {
     protected final QCat offspr = new QCat("offspr");
 
     protected final QCat otherCat = new QCat("otherCat");
-    
+
     protected final QCat mate = new QCat("mate");
-    
+
     protected List<Cat> cats = Arrays.asList(c1, c2, c3, c4);
 
     protected List<Integer> ints = new ArrayList<Integer>();
@@ -52,7 +52,7 @@ public abstract class AbstractQueryTest {
 
     protected TestQuery<?> last;
 
-    
+
     @Before
     public void setUp() {
         myInts.addAll(Arrays.asList(1, 2, 3, 4));

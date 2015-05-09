@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,19 +13,19 @@
  */
 package com.querydsl.core.types.dsl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 public class ComparableExpressionTest {
-    
+
     private StringPath strPath = new StringPath("str");
-    
+
     @Test
     public void Between_Start_Given() {
-        assertEquals(strPath.goe("A"), strPath.between("A", null));        
+        assertEquals(strPath.goe("A"), strPath.between("A", null));
     }
-    
+
     @Test
     public void Between_End_Given() {
         assertEquals(strPath.loe("Z"), strPath.between(null, "Z"));

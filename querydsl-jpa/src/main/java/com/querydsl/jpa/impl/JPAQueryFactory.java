@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -50,10 +50,10 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     @Override
     public JPADeleteClause delete(EntityPath<?> path) {
         if (templates != null) {
-            return new JPADeleteClause(entityManager.get(), path, templates);    
+            return new JPADeleteClause(entityManager.get(), path, templates);
         } else {
             return new JPADeleteClause(entityManager.get(), path);
-        }        
+        }
     }
 
     @Override
@@ -99,10 +99,10 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     @Override
     public JPAUpdateClause update(EntityPath<?> path) {
         if (templates != null) {
-            return new JPAUpdateClause(entityManager.get(), path, templates);    
+            return new JPAUpdateClause(entityManager.get(), path, templates);
         } else {
             return new JPAUpdateClause(entityManager.get(), path);
-        }        
+        }
     }
 
     @Override
@@ -111,7 +111,7 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
             return new JPAQuery<Void>(entityManager.get(), templates);
         } else {
             return new JPAQuery<Void>(entityManager.get());
-        }        
+        }
     }
 
 }

@@ -4,15 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import oracle.spatial.geometry.JGeometry;
-
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.GeometryCollection;
-import org.geolatte.geom.MultiLineString;
-import org.geolatte.geom.MultiPolygon;
-import org.geolatte.geom.Polygon;
+import org.geolatte.geom.*;
 import org.geolatte.geom.codec.Wkt;
 import org.junit.Test;
+
+import oracle.spatial.geometry.JGeometry;
 
 public class JGeometryConverterTest extends AbstractConverterTest {
 

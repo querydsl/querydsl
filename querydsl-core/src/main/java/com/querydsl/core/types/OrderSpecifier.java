@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,11 +29,11 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     private static final long serialVersionUID = 3427652988262514678L;
 
     public enum NullHandling { Default, NullsFirst, NullsLast }
-    
+
     private final Order order;
 
     private final Expression<T> target;
-    
+
     private final NullHandling nullHandling;
 
     public OrderSpecifier(Order order, Expression<T> target, NullHandling nullhandling) {
@@ -41,9 +41,9 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
         this.target = target;
         this.nullHandling = nullhandling;
     }
-    
+
     public OrderSpecifier(Order order, Expression<T> target) {
-        this(order, target, NullHandling.Default);        
+        this(order, target, NullHandling.Default);
     }
 
     /**
@@ -81,7 +81,7 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     public NullHandling getNullHandling() {
         return nullHandling;
     }
-    
+
     /**
      * Create a new OrderSpecifier instance with null first enabled
      *
@@ -90,7 +90,7 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
     public OrderSpecifier<T> nullsFirst() {
         return new OrderSpecifier<T>(order, target, NullHandling.NullsFirst);
     }
-    
+
     /**
      * Create a new OrderSpecifier instance with nulls last enabled
      *

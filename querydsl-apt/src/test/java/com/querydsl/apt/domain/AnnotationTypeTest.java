@@ -2,11 +2,7 @@ package com.querydsl.apt.domain;
 
 import java.lang.annotation.Annotation;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 import org.junit.Ignore;
 
@@ -15,7 +11,7 @@ public class AnnotationTypeTest {
 
     @MappedSuperclass
     public static abstract class BaseObject<T extends Annotation> {
-        
+
     }
 
     @Entity
@@ -29,5 +25,5 @@ public class AnnotationTypeTest {
         @EmbeddedId
         private String street;
     }
-    
+
 }

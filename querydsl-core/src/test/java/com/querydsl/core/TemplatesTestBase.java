@@ -16,7 +16,8 @@
 package com.querydsl.core;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.reflections.ReflectionUtils.*;
+import static org.reflections.ReflectionUtils.getAll;
+import static org.reflections.ReflectionUtils.withPattern;
 
 import java.util.Set;
 

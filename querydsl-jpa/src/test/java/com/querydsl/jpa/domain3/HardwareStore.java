@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,9 +14,9 @@
 package com.querydsl.jpa.domain3;
 
 public class HardwareStore extends Store{
-    
+
     private static final long serialVersionUID = 2725944536560445206L;
-    
+
     private String storeCode;
 
     public String getStoreCode() {
@@ -26,5 +26,5 @@ public class HardwareStore extends Store{
     public void setStoreCode(String storeCode) {
         this.storeCode = storeCode;
     }
-    
+
 }

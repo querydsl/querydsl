@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,15 +18,15 @@ package com.querydsl.core.group;
  * TODO: How to project an inner group, i.e. [User] 1->1 [Post] 1->N [Comment]
  */
 public class User {
-    
+
     private String name;
-    
+
     private Post latestPost;
 
     public User() {
-        
+
     }
-    
+
     public User(String name, Post latestPost) {
         this.name = name;
         this.latestPost = latestPost;
@@ -47,7 +47,7 @@ public class User {
     public void setLatestPost(Post latestPost) {
         this.latestPost = latestPost;
     }
-    
-    
-    
+
+
+
 }

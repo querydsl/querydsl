@@ -20,13 +20,7 @@ import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import com.querydsl.sql.AbstractSQLQuery;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.PostgreSQLTemplates;
-import com.querydsl.sql.RelationalPath;
-import com.querydsl.sql.SQLOps;
-import com.querydsl.sql.SQLQuery;
-import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.*;
 
 /**
  * {@code PostgreSQLQuery} provides PostgreSQL related extensions to SQLQuery
@@ -88,7 +82,7 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
         }
         return addFlag(Position.END, builder.toString());
     }
- 
+
     @Override
     public PostgreSQLQuery<T> clone(Connection conn) {
         PostgreSQLQuery<T> q = new PostgreSQLQuery<T>(conn, getConfiguration(), getMetadata().clone());

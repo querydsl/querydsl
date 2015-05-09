@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,18 +24,18 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jdo.dml.JDODeleteClause;
 import com.querydsl.jdo.test.domain.Book;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.Store;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Predicate;
 
 public abstract class AbstractJDOTest {
 
     private static final JDOQLTemplates templates = new JDOQLTemplates();
-    
-    protected static final PersistenceManagerFactory pmf = 
+
+    protected static final PersistenceManagerFactory pmf =
             JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 
     protected PersistenceManager pm;

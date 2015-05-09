@@ -44,7 +44,7 @@ final class SpatialSupport {
                     new SimpleType("com.querydsl.spatial." + entry.getValue()));
         }
     }
-    
+
     private static void registerJTSTypes(TypeMappings typeMappings) {
     	Map<String, String> additions = Maps.newHashMap();
     	additions.put("Geometry", "JTSGeometryPath");

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ import java.lang.reflect.Array;
 
 /**
  * ArrayUtils provides array related utility functionality
- * 
+ *
  * @author tiwe
  *
  */
@@ -39,8 +39,8 @@ public final class ArrayUtils {
             offset += arr.length;
         }
         return target;
-    }    
-    
+    }
+
     // copied and modified from commons-lang-2.3
     // originally licensed under ASL 2.0
     public static Object[] subarray(Object[] array, int startIndexInclusive, int endIndexExclusive) {
@@ -53,7 +53,7 @@ public final class ArrayUtils {
         System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
         return subarray;
     }
-    
+
     public static boolean isEmpty(Object[] array) {
         return array == null || array.length == 0;
     }

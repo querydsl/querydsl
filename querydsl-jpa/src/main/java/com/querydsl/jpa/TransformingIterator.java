@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,23 +30,23 @@ import com.querydsl.core.types.FactoryExpression;
 public class TransformingIterator<T> implements CloseableIterator<T> {
 
     private final Iterator<T> iterator;
-    
+
     private final Closeable closeable;
-    
+
     private final FactoryExpression<?> projection;
-    
+
     public TransformingIterator(Iterator<T> iterator, FactoryExpression<?> projection) {
         this.iterator = iterator;
         this.projection = projection;
         this.closeable = iterator instanceof Closeable ? (Closeable)iterator : null;
     }
-    
+
     public TransformingIterator(Iterator<T> iterator, Closeable closeable, FactoryExpression<?> projection) {
         this.iterator = iterator;
         this.projection = projection;
         this.closeable = closeable;
     }
-    
+
     @Override
     public boolean hasNext() {
         return iterator.hasNext();
@@ -59,10 +59,10 @@ public class TransformingIterator<T> implements CloseableIterator<T> {
             if (!result.getClass().isArray()) {
                 result = new Object[]{result};
             }
-            return (T)projection.newInstance((Object[])result);    
+            return (T)projection.newInstance((Object[])result);
         } else {
             return null;
-        }  
+        }
     }
 
     @Override
@@ -78,8 +78,8 @@ public class TransformingIterator<T> implements CloseableIterator<T> {
             } catch (IOException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
-        }        
+        }
     }
 
-    
+
 }

@@ -17,8 +17,8 @@ import java.sql.Types;
 
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
-import com.querydsl.sql.types.NumericBooleanType;
 import com.querydsl.core.types.Ops;
+import com.querydsl.sql.types.NumericBooleanType;
 
 /**
  * {@code CUBRIDTemplates} is a SQL dialect for CUBRID

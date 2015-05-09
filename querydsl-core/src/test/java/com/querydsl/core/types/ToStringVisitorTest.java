@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,29 +23,29 @@ import com.querydsl.core.types.dsl.Expressions;
 
 
 public class ToStringVisitorTest {
-    
+
     private Templates templates = new Templates() {
         {
             add(PathType.PROPERTY, "{0}_{1}");
             add(PathType.COLLECTION_ANY, "{0}");
         }};
-    
+
     @Test
     public void Operation() {
-        assertEquals("cat_name is not null", 
+        assertEquals("cat_name is not null",
                 QCat.cat.name.isNotNull().accept(ToStringVisitor.DEFAULT, templates));
     }
-        
+
     @Test
     public void Template() {
         Expression<Boolean> template = ExpressionUtils.template(Boolean.class, "{0} is not null", QCat.cat.name);
-        assertEquals("cat_name is not null", 
+        assertEquals("cat_name is not null",
                 template.accept(ToStringVisitor.DEFAULT, templates));
     }
-    
+
     @Test
     public void Path() {
-        assertEquals("cat_kittens_kittens_name", 
+        assertEquals("cat_kittens_kittens_name",
                 QCat.cat.kittens.any().kittens.any().name.accept(ToStringVisitor.DEFAULT, templates));
     }
 

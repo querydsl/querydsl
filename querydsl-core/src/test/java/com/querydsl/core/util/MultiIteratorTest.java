@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,10 @@
  */
 package com.querydsl.core.util;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
-import static java.util.Arrays.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.junit.Test;
 
@@ -29,7 +24,7 @@ import com.mysema.commons.lang.IteratorAdapter;
 
 
 public class MultiIteratorTest {
-    
+
     private MultiIterator it;
 
     private List<Integer> list1 = Arrays.asList(1, 2);
@@ -111,7 +106,7 @@ public class MultiIteratorTest {
             it.next();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void test() {
@@ -119,7 +114,7 @@ public class MultiIteratorTest {
         List<Integer> list2 = asList(10, 20, 30);
         MultiIterator<Integer> iterator = new MultiIterator<Integer>(asList(list1, list2));
         List<Object[]> list = IteratorAdapter.asList(iterator);
-        
+
         assertEquals(asList(1, 10), asList(list.get(0)));
         assertEquals(asList(1, 20), asList(list.get(1)));
         assertEquals(asList(1, 30), asList(list.get(2)));
@@ -133,7 +128,7 @@ public class MultiIteratorTest {
         assertEquals(asList(4, 20), asList(list.get(10)));
         assertEquals(asList(4, 30), asList(list.get(11)));
     }
-    
+
 
     protected void assertIteratorEquals(Iterator<Object[]> a, Iterator<Object[]> b) {
         while (a.hasNext()) {

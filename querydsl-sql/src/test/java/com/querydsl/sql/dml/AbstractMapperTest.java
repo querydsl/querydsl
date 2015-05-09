@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,34 +23,34 @@ import com.querydsl.sql.Column;
 import com.querydsl.sql.domain.Employee;
 
 public abstract class AbstractMapperTest {
-    
+
     public static class EmployeeX {
-        
+
         private String property;
-        
+
         public String getProperty() {
             return property;
         }
-        
+
         public void setProperty(String property) {
             this.property = property;
         }
     }
-    
+
     public static class EmployeeNames {
 
         @Column("ID")
         Integer _id;
-        
+
         @Column("FIRSTNAME")
         String _firstname;
-        
+
         @Column("LASTNAME")
-        String _lastname;        
+        String _lastname;
     }
 
     protected Employee employee;
-    
+
     @Before
     public void setUp() {
         employee = new Employee();
@@ -61,6 +61,6 @@ public abstract class AbstractMapperTest {
         employee.setSuperiorId(2);
         employee.setTimefield(new Time(0));
     }
-     
+
 
 }

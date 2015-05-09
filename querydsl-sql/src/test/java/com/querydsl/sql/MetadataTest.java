@@ -8,7 +8,7 @@ import org.junit.Test;
 
 @Ignore
 public class MetadataTest {
-    
+
 //    CUBRID
 //    Apache Derby
 //    H2
@@ -17,7 +17,7 @@ public class MetadataTest {
 //    Oracle
 //    PostgreSQL
 //    SQLite
-    
+
     @Test
     public void test() throws SQLException, ClassNotFoundException {
         Connections.initCubrid();

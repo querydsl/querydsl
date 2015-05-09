@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,7 +28,7 @@ import com.querydsl.core.types.*;
  * @param <E> component type
  * @param <Q> component query type
  */
-public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends CollectionPathBase<Collection<E>, E, Q> {    
+public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends CollectionPathBase<Collection<E>, E, Q> {
 
     private static final long serialVersionUID = -4982311799113762600L;
 
@@ -38,7 +38,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
 
     @Nullable
     private transient Q any;
-    
+
     private final Class<Q> queryType;
 
     protected CollectionPath(Class<? super E> type, Class<Q> queryType, String variable) {
@@ -52,7 +52,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
     protected CollectionPath(Class<? super E> type, Class<Q> queryType, PathMetadata metadata) {
         this(type, queryType, metadata, PathInits.DIRECT);
     }
-    
+
     @SuppressWarnings("unchecked")
     protected CollectionPath(Class<? super E> type, Class<Q> queryType, PathMetadata metadata, PathInits inits) {
         super(new ParameterizedPathImpl<Collection<E>>((Class)Collection.class, metadata, type), inits);
@@ -60,12 +60,12 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
         this.queryType = queryType;
         this.pathMixin = (PathImpl<Collection<E>>)mixin;
     }
-    
+
     @Override
     public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(pathMixin, context);
     }
-    
+
     @Override
     public Q any() {
         if (any == null) {
@@ -102,5 +102,5 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
     }
-    
+
 }

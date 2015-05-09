@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,10 +20,10 @@ import com.google.common.collect.Maps;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.UpdateClause;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * {@link UpdateClause} implementation for JDO
@@ -72,18 +72,18 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
         updates.put(path, expression);
         return this;
     }
-    
+
     @Override
     public <T> JDOUpdateClause setNull(Path<T> path) {
         updates.put(path, Expressions.nullExpression(path));
         return this;
     }
-    
+
     @Override
     public JDOUpdateClause where(Predicate... o) {
         for (Predicate p : o) {
-            metadata.addWhere(p);    
-        }        
+            metadata.addWhere(p);
+        }
         return this;
     }
 

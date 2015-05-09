@@ -1,17 +1,17 @@
 package com.querydsl.jpa.domain.sql;
 
-import javax.annotation.Generated;
-
-import com.querydsl.core.types.dsl.*;
-import com.querydsl.sql.ColumnMetadata;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadata;
-
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+
+import javax.annotation.Generated;
+
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
+import com.querydsl.sql.ColumnMetadata;
 
 
 /**

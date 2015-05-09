@@ -13,32 +13,14 @@
  */
 package com.querydsl.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.MapExpression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.ArrayExpression;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Coalesce;
-import com.querydsl.core.types.dsl.CollectionExpressionBase;
-import com.querydsl.core.types.dsl.ComparableExpression;
-import com.querydsl.core.types.dsl.DateExpression;
-import com.querydsl.core.types.dsl.DateTimeExpression;
-import com.querydsl.core.types.dsl.ListExpression;
-import com.querydsl.core.types.dsl.MapExpressionBase;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.SimpleExpression;
-import com.querydsl.core.types.dsl.StringExpression;
-import com.querydsl.core.types.dsl.TemporalExpression;
-import com.querydsl.core.types.dsl.TimeExpression;
-import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * @author tiwe

@@ -1,7 +1,8 @@
 package com.querydsl.sql.spatial;
 
-import com.querydsl.sql.SQLTemplates;
 import org.junit.Test;
+
+import com.querydsl.sql.SQLTemplates;
 
 public class GeoDBTemplatesTest {
 

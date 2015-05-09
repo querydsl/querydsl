@@ -9,7 +9,7 @@ import org.hibernate.type.StandardBasicTypes;
  *
  */
 public class ExtendedOracleDialect extends Oracle10gDialect {
-    
+
     public ExtendedOracleDialect() {
         // there fail otherwise with the time datatype
         registerFunction( "second", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "to_number(to_char(?1,'SS'))") );

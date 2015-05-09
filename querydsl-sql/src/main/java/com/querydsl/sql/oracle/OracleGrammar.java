@@ -15,7 +15,9 @@ package com.querydsl.sql.oracle;
 
 import java.util.Date;
 
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 
 /**
  * Convenience functions and constants for Oracle DB usage

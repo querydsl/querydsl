@@ -83,6 +83,7 @@ public enum SQLOps implements Operator {
         this.type = type;
     }
 
+    @Override
     public Class<?> getType() {
         return type;
     }

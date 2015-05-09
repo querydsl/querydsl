@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,13 +25,13 @@ public interface NamingStrategy {
 
     /**
      * Normalizes and appends the given schema name to the package name
-     * 
+     *
      * @param packageName
      * @param schema
      * @return
      */
     String appendSchema(String packageName, String schema);
-    
+
     /**
      * Convert the given tableName to a simple class name
      * @return
@@ -56,28 +56,28 @@ public interface NamingStrategy {
 
     /**
      * Get the class name for the foreign keys inner class
-     * 
+     *
      * @return
      */
     String getForeignKeysClassName();
 
     /**
      * Get the field name for the foreign keys class instance
-     * 
+     *
      * @return
      */
     String getForeignKeysVariable(EntityType entityType);
 
     /**
      * Get the class name for the primary keys inner class
-     * 
+     *
      * @return
      */
     String getPrimaryKeysClassName();
 
     /**
      * Get the field name for the primary keys class instance
-     * 
+     *
      * @return
      */
     String getPrimaryKeysVariable(EntityType entityType);
@@ -99,16 +99,16 @@ public interface NamingStrategy {
      * @return
      */
     String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType);
-    
+
     /**
      * Convert the given foreign key name to a foreign key property name
-     * 
+     *
      * @param name
      * @param model
      * @return
      */
     String getPropertyNameForInverseForeignKey(String name, EntityType model);
-    
+
     /**
      * Convert the given primary key name to a primary key property name
      *
@@ -117,7 +117,7 @@ public interface NamingStrategy {
      * @return
      */
     String getPropertyNameForPrimaryKey(String name, EntityType model);
-    
+
     /**
      * Convert the given column name and provide the opportunity to add quoted identifiers
      *
@@ -125,7 +125,7 @@ public interface NamingStrategy {
      * @return
      */
     String normalizeColumnName(String columnName);
-    
+
     /**
      * Convert the given table name and provide the opportunity to add quoted identifiers
      *
@@ -133,7 +133,7 @@ public interface NamingStrategy {
      * @return
      */
     String normalizeTableName(String tableName);
-    
+
 
     /**
      * Convert the given schema name and provide the opportunity to add quoted identifiers

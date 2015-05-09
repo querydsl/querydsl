@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,8 +13,8 @@
  */
 package com.querydsl.apt.domain.p2;
 
-import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.apt.domain.p4.SSupertype;
+import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
 public class SEntity2 extends SSupertype {

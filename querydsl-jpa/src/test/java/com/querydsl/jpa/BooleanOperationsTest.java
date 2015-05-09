@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,24 +26,24 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     public void BooleanOperations_Or() {
         assertToString("cust is null or cat is null", cust.isNull().or(cat.isNull()));
     }
-    
+
     @Test
     public void BooleanOperations_And() {
         assertToString("cust is null and cat is null", cust.isNull().and(cat.isNull()));
     }
-    
-    
+
+
     @Test
     public void BooleanOperations_Not() {
         assertToString("not cust is null", cust.isNull().not());
     }
-    
-    
+
+
     @Test
     public void BooleanOperations2_And() {
         cat.name.eq(cust.name.firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));
     }
-    
+
     @Test
     public void BooleanOperations2_Or() {
         cat.name.eq(cust.name.firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
@@ -53,12 +53,12 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     public void LogicalOperations_Or() {
         assertToString("cat = kitten or kitten = cat", cat.eq(kitten).or(kitten.eq(cat)));
     }
-    
+
     @Test
     public void LogicalOperations_And() {
         assertToString("cat = kitten and kitten = cat", cat.eq(kitten).and(kitten.eq(cat)));
     }
-    
+
     @Test
     public void LogicalOperations_And2() {
         assertToString("cat is null and (kitten is null or kitten.bodyWeight > ?1)",
@@ -93,7 +93,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     public void BooleanBuilder_With_Null_In_Where() {
         assertEquals("select cat\nfrom Cat cat", selectFrom(cat).where(new BooleanBuilder()).toString());
     }
-    
+
     @Test
     public void BooleanBuilder_With_Null_In_Having() {
         assertEquals("select cat\nfrom Cat cat\ngroup by cat.name",

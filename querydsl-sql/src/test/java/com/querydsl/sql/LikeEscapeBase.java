@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,7 @@ public class LikeEscapeBase extends AbstractBaseTest{
         delete(survey).execute();
         SQLInsertClause insert = insert(survey);
         insert.set(survey.id, 5).set(survey.name, "aaa").addBatch();
-        insert.set(survey.id, 6).set(survey.name, "a_").addBatch();    
+        insert.set(survey.id, 6).set(survey.name, "a_").addBatch();
         insert.set(survey.id, 7).set(survey.name, "a%").addBatch();
         insert.execute();
     }
@@ -42,21 +42,21 @@ public class LikeEscapeBase extends AbstractBaseTest{
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
     }
-    
+
     @Test
     @Ignore
-    public void Like() {        
+    public void Like() {
         assertEquals(1l, query().from(survey).where(survey.name.like("a!%")).fetchCount());
         assertEquals(1l, query().from(survey).where(survey.name.like("a!_")).fetchCount());
         assertEquals(3l, query().from(survey).where(survey.name.like("a%")).fetchCount());
         assertEquals(2l, query().from(survey).where(survey.name.like("a_")).fetchCount());
-        
+
         assertEquals(1l, query().from(survey).where(survey.name.startsWith("a_")).fetchCount());
         assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).fetchCount());
     }
-    
+
     @Test
-    public void Like_with_Escape() {        
+    public void Like_with_Escape() {
         assertEquals(1l, query().from(survey).where(survey.name.like("a!%", '!')).fetchCount());
         assertEquals(1l, query().from(survey).where(survey.name.like("a!_", '!')).fetchCount());
         assertEquals(3l, query().from(survey).where(survey.name.like("a%", '!')).fetchCount());
