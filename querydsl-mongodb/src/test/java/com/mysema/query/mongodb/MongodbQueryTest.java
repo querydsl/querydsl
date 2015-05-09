@@ -84,6 +84,12 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void Query() {
+        assertEquals(4L, query(user).count());
+        assertEquals(4L, query(User.class).count());
+    }
+
+    @Test
     public void List_Keys() {
         User u = where(user.firstName.eq("Jaakko")).list(user.firstName, user.mainAddress().street).get(0);
         assertEquals("Jaakko", u.getFirstName());
@@ -579,6 +585,10 @@ public class MongodbQueryTest {
 
     private <T> MorphiaQuery<T> query(EntityPath<T> path) {
         return new MorphiaQuery<T>(morphia, ds, path);
+    }
+
+    private <T> MorphiaQuery<T> query(Class<T> clazz) {
+        return new MorphiaQuery<T>(morphia, ds, clazz);
     }
 
     private void assertQuery(MongodbQuery<User> query, User ... expected ) {

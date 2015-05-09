@@ -42,12 +42,21 @@ public class MorphiaQuery<K> extends MongodbQuery<K> {
         this(morphia, datastore, new DefaultEntityCache(), entityPath);
     }
 
+    public MorphiaQuery(Morphia morphia, Datastore datastore, Class<? extends K> entityType) {
+        this(morphia, datastore, new DefaultEntityCache(), entityType);
+    }
+
+    public MorphiaQuery(Morphia morphia, Datastore datastore,
+                        EntityCache cache, EntityPath<K> entityPath) {
+        this(morphia, datastore, cache, entityPath.getType());
+    }
+
     public MorphiaQuery(final Morphia morphia, final Datastore datastore,
-            final EntityCache cache, final EntityPath<K> entityPath) {
-        super(datastore.getCollection(entityPath.getType()), new Function<DBObject, K>() {
+            final EntityCache cache, final Class<? extends K> entityType) {
+        super(datastore.getCollection(entityType), new Function<DBObject, K>() {
             @Override
             public K apply(DBObject dbObject) {
-                return morphia.fromDBObject(entityPath.getType(), dbObject, cache);
+                return morphia.fromDBObject(entityType, dbObject, cache);
             }
         }, new MorphiaSerializer(morphia));
         this.datastore = datastore;
