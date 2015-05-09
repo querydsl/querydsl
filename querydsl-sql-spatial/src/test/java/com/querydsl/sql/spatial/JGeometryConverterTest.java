@@ -16,8 +16,12 @@ public class JGeometryConverterTest extends AbstractConverterTest {
     public void RoundTrip() {
         List<Geometry> geometries = getGeometries();
         for (Geometry geometry : geometries) {
-            if (geometry instanceof MultiPolygon) continue;
-            if (geometry instanceof GeometryCollection) continue;
+            if (geometry instanceof MultiPolygon) {
+                continue;
+            }
+            if (geometry instanceof GeometryCollection) {
+                continue;
+            }
             System.err.println(Wkt.toWkt(geometry));
             JGeometry converted = JGeometryConverter.convert(geometry);
             Geometry back = JGeometryConverter.convert(converted);
@@ -28,8 +32,8 @@ public class JGeometryConverterTest extends AbstractConverterTest {
     @Test
     public void Polygon() {
         Polygon polygon = (org.geolatte.geom.Polygon) Wkt.fromWkt("POLYGON (" +
-        		"(30 10, 40 40, 20 40, 10 20, 30 10), " +
-        		"(20 30, 35 35, 30 20, 20 30))");
+                "(30 10, 40 40, 20 40, 10 20, 30 10), " +
+                "(20 30, 35 35, 30 20, 20 30))");
         JGeometry geo = JGeometryConverter.convert(polygon);
 
         double[] extRing = new double[]{30, 10, 40, 40, 20, 40, 10, 20, 30, 10};

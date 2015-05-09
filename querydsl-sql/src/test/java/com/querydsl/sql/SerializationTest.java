@@ -235,7 +235,7 @@ public class SerializationTest {
     public void With_SingleColumn() {
         QSurvey survey2 = new QSurvey("survey2");
         SQLQuery<?> q = new SQLQuery<Void>();
-        q.with(survey, new Path[]{ survey.id }).as(
+        q.with(survey, new Path<?>[]{survey.id}).as(
                 select(survey2.id).from(survey2));
 
         assertEquals("with SURVEY (ID) as (select survey2.ID\n" +

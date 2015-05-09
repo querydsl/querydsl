@@ -19,17 +19,17 @@ import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.StringPath;
 
 //@Table("TEST")
-public class QTest_ extends EntityPathBase<Object> {
+public class QTestX extends EntityPathBase<Object> {
 
     private static final long serialVersionUID = -8421112749591552595L;
 
     public final StringPath name = createString("NAME");
 
-    public QTest_(String path) {
+    public QTestX(String path) {
         super(Object.class, PathMetadataFactory.forVariable(path));
     }
 
-    public QTest_(PathMetadata metadata) {
+    public QTestX(PathMetadata metadata) {
         super(Object.class, metadata);
     }
 

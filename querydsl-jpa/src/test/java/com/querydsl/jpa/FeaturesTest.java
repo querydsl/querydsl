@@ -14,6 +14,7 @@
 package com.querydsl.jpa;
 
 import static org.junit.Assert.*;
+import static com.querydsl.jpa.Constants.*;
 
 import org.junit.Test;
 

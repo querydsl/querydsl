@@ -214,7 +214,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         teradataQuery().from(employee)
                .qualify(SQLExpressions.rank().over()
                        .partitionBy(employee.superiorId)
-                       .orderBy(employee.datefield).eq(1l))
+                       .orderBy(employee.datefield).eq(1L))
                .select(employee.id,SQLExpressions.sum(employee.salary).over()).fetch();
 
     }

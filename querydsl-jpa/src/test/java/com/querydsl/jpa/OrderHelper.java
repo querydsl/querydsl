@@ -10,7 +10,9 @@ import com.google.common.collect.Maps;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 
-public class OrderHelper {
+public final class OrderHelper {
+
+    private OrderHelper() {}
 
     private static final Pattern DOT = Pattern.compile("\\.");
 

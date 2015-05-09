@@ -59,37 +59,37 @@ public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest{
 
     @Test
     public void Precedence() {
-        //.	left	table/column name separator
-        //        ::	left	PostgreSQL-style typecast
-        //[ ]	left	array element selection
-        //+ -	right	unary plus, unary minus
+        //.    left    table/column name separator
+        //        ::    left    PostgreSQL-style typecast
+        //[ ]    left    array element selection
+        //+ -    right    unary plus, unary minus
         int p0 = getPrecedence(Ops.NEGATE);
-        //        ^	left	exponentiation
-        //        * / %	left	multiplication, division, modulo
+        //        ^    left    exponentiation
+        //        * / %    left    multiplication, division, modulo
         int p1 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);
-        //+ -	left	addition, subtraction
+        //+ -    left    addition, subtraction
         int p2 = getPrecedence(Ops.ADD, Ops.SUB);
-        //IS	 	IS TRUE, IS FALSE, IS NULL, etc
+        //IS         IS TRUE, IS FALSE, IS NULL, etc
         int p3 = getPrecedence(Ops.IS_NULL, Ops.IS_NOT_NULL);
-        //ISNULL	 	test for null
-        //NOTNULL	 	test for not null
-        //(any other)	left	all other native and user-defined operators
-        //IN	 	set membership
+        //ISNULL         test for null
+        //NOTNULL         test for not null
+        //(any other)    left    all other native and user-defined operators
+        //IN         set membership
         int p4 = getPrecedence(Ops.IN);
-        //BETWEEN	 	range containment
+        //BETWEEN         range containment
         int p5 = getPrecedence(Ops.BETWEEN);
-        //OVERLAPS	 	time interval overlap
-        //LIKE ILIKE SIMILAR	 	string pattern matching
+        //OVERLAPS         time interval overlap
+        //LIKE ILIKE SIMILAR         string pattern matching
         int p6 = getPrecedence(Ops.LIKE, Ops.LIKE_ESCAPE);
-        //< >	 	less than, greater than
+        //< >         less than, greater than
         int p7 = getPrecedence(Ops.LT, Ops.GT);
-        //        =	right	equality, assignment
+        //        =    right    equality, assignment
         int p8 = getPrecedence(Ops.EQ);
-        //NOT	right	logical negation
+        //NOT    right    logical negation
         int p9 = getPrecedence(Ops.NOT);
-        //AND	left	logical conjunction
+        //AND    left    logical conjunction
         int p10 = getPrecedence(Ops.AND);
-        //OR	left	logical disjunction
+        //OR    left    logical disjunction
         int p11 = getPrecedence(Ops.OR);
 
         assertTrue(p0 < p1);

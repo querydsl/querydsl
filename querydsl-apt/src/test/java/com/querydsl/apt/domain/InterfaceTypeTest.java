@@ -39,28 +39,28 @@ public class InterfaceTypeTest extends AbstractTest {
     @QueryEntity
     public interface InterfaceType2 {
 
-        public String getProp2();
+        String getProp2();
 
     }
 
     @QueryEntity
     public interface InterfaceType3 extends InterfaceType, InterfaceType2 {
 
-        public String getProp3();
+        String getProp3();
 
     }
 
     @QueryEntity
     public interface InterfaceType4 {
 
-        public String getProp4();
+        String getProp4();
 
     }
 
     @QueryEntity
     public interface InterfaceType5 extends InterfaceType3, InterfaceType4 {
 
-        public String getProp5();
+        String getProp5();
 
     }
 

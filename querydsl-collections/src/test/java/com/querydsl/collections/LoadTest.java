@@ -87,7 +87,9 @@ public class LoadTest {
             long s2 = System.currentTimeMillis();
             List<Cat> bobs2 = new ArrayList<Cat>();
             for (Cat c : data) {
-                if (c.getName().startsWith("Bob")) bobs2.add(c);
+                if (c.getName().startsWith("Bob")) {
+                    bobs2.add(c);
+                }
             }
             assertEquals(1000, bobs2.size());
             long e2 = System.currentTimeMillis();

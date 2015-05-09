@@ -101,29 +101,29 @@ public class DefaultQueryMetadataTest {
 
     @Test
     public void GetModifiers() {
-        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        QueryModifiers modifiers = new QueryModifiers(1L,2L);
         metadata.setModifiers(modifiers);
         assertEquals(modifiers, metadata.getModifiers());
     }
 
     @Test
     public void setLimit() {
-        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        QueryModifiers modifiers = new QueryModifiers(1L,2L);
         metadata.setModifiers(modifiers);
-        metadata.setLimit(3l);
+        metadata.setLimit(3L);
 
-        assertEquals(Long.valueOf(3l), metadata.getModifiers().getLimit());
-        assertEquals(Long.valueOf(2l), metadata.getModifiers().getOffset());
+        assertEquals(Long.valueOf(3L), metadata.getModifiers().getLimit());
+        assertEquals(Long.valueOf(2L), metadata.getModifiers().getOffset());
     }
 
     @Test
     public void setOffset() {
-        QueryModifiers modifiers = new QueryModifiers(1l,1l);
+        QueryModifiers modifiers = new QueryModifiers(1L,1L);
         metadata.setModifiers(modifiers);
-        metadata.setOffset(2l);
+        metadata.setOffset(2L);
 
-        assertEquals(Long.valueOf(1l), metadata.getModifiers().getLimit());
-        assertEquals(Long.valueOf(2l), metadata.getModifiers().getOffset());
+        assertEquals(Long.valueOf(1L), metadata.getModifiers().getLimit());
+        assertEquals(Long.valueOf(2L), metadata.getModifiers().getOffset());
     }
 
     @SuppressWarnings("unchecked")
@@ -178,7 +178,7 @@ public class DefaultQueryMetadataTest {
         metadata.addGroupBy(str);
         metadata.addHaving(str.isNotNull());
         metadata.addJoin(JoinType.DEFAULT, str2);
-        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        QueryModifiers modifiers = new QueryModifiers(1L,2L);
         metadata.setModifiers(modifiers);
         metadata.addOrderBy(str.asc());
         metadata.setProjection(str.append("abc"));
@@ -216,7 +216,7 @@ public class DefaultQueryMetadataTest {
         metadata.addGroupBy(str);
         metadata.addHaving(str.isNotNull());
         metadata.addJoin(JoinType.DEFAULT, str2);
-        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        QueryModifiers modifiers = new QueryModifiers(1L,2L);
         metadata.setModifiers(modifiers);
         metadata.addOrderBy(str.asc());
         metadata.setProjection(str.append("abc"));
@@ -250,7 +250,7 @@ public class DefaultQueryMetadataTest {
         metadata.addGroupBy(str);
         metadata.addHaving(str.isNotNull());
         metadata.addJoin(JoinType.DEFAULT, str2);
-        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        QueryModifiers modifiers = new QueryModifiers(1L,2L);
         metadata.setModifiers(modifiers);
         metadata.addOrderBy(str.asc());
         metadata.setProjection(str.append("abc"));

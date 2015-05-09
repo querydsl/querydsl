@@ -34,12 +34,12 @@ public class AggregationTest extends AbstractQueryTest {
 
     @Test
     public void Count() {
-        assertEquals(Long.valueOf(4l), query.select(cat.count()).fetchOne());
+        assertEquals(Long.valueOf(4L), query.select(cat.count()).fetchOne());
     }
 
     @Test
     public void CountDistinct() {
-        assertEquals(Long.valueOf(4l), query.select(cat.countDistinct()).fetchOne());
+        assertEquals(Long.valueOf(4L), query.select(cat.countDistinct()).fetchOne());
     }
 
     @Test

@@ -81,7 +81,7 @@ public class InterfaceType2Test {
     @Table(name = "PARTY")
     @org.hibernate.annotations.AccessType("field")
     @org.hibernate.annotations.Proxy(proxyClass = Party.class)
-    public static abstract class PartyImpl extends EntityImpl implements Party {
+    public abstract static class PartyImpl extends EntityImpl implements Party {
 
         @Column(name = "NAME", nullable = false)
         private String name;

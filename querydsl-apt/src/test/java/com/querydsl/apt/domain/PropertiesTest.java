@@ -26,7 +26,7 @@ import org.junit.Test;
 public class PropertiesTest {
 
     @Entity
-    public static abstract class AbstractEntity {
+    public abstract static class AbstractEntity {
 
     }
 

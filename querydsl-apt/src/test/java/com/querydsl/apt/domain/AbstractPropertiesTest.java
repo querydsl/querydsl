@@ -22,7 +22,7 @@ import org.junit.Ignore;
 @Ignore
 public class AbstractPropertiesTest {
 
-    public static abstract class GenericEntity<K extends Serializable & Comparable<K>> {
+    public abstract static class GenericEntity<K extends Serializable & Comparable<K>> {
 
         private static final long serialVersionUID = -3988499137919577054L;
 

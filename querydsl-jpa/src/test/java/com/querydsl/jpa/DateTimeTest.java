@@ -13,6 +13,8 @@
  */
 package com.querydsl.jpa;
 
+import static com.querydsl.jpa.Constants.*;
+
 import java.util.Date;
 
 import org.junit.Test;

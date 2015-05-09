@@ -3,7 +3,9 @@ package com.querydsl.sql;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
-public class SQLTemplatesRegistryDump {
+public final class SQLTemplatesRegistryDump {
+
+    private SQLTemplatesRegistryDump() {}
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Connections.initCubrid();

@@ -51,7 +51,9 @@ public class SignatureTest {
         Set<String> skippedMethods = new HashSet<String>(Arrays.asList("getArg","getRoot","not"));
         List<String> errors = new ArrayList<String>();
         for (Class<?> cl : classes) {
-            if (cl.equals(Expressions.class)) continue;
+            if (cl.equals(Expressions.class)) {
+                continue;
+            }
             for (Method m : cl.getDeclaredMethods()) {
                 if (!skippedMethods.contains(m.getName())
                  && Modifier.isPublic(m.getModifiers())

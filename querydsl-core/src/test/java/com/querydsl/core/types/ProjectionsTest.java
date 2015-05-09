@@ -63,10 +63,10 @@ public class ProjectionsTest {
 
     @Test
     public void Constructor() {
-        Expression<Long> longVal = ConstantImpl.create(1l);
+        Expression<Long> longVal = ConstantImpl.create(1L);
         Expression<String> stringVal = ConstantImpl.create("");
         assertEquals(ProjectionExample.class, Projections.constructor(ProjectionExample.class, longVal, stringVal)
-                .newInstance(0l, "").getClass());
+                .newInstance(0L, "").getClass());
     }
 
     @Test

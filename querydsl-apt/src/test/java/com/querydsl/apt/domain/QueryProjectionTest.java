@@ -67,9 +67,9 @@ public class QueryProjectionTest {
         NumberExpression<Long> longExpr = Expressions.numberPath(Long.class, "x");
         StringExpression stringExpr = Expressions.stringPath("x");
 
-        QQueryProjectionTest_EntityWithProjection.create(longExpr).newInstance(0l);
+        QQueryProjectionTest_EntityWithProjection.create(longExpr).newInstance(0L);
         QQueryProjectionTest_EntityWithProjection.create(stringExpr).newInstance("");
-        QQueryProjectionTest_EntityWithProjection.create(longExpr, stringExpr).newInstance(0l,"");
+        QQueryProjectionTest_EntityWithProjection.create(longExpr, stringExpr).newInstance(0L,"");
         QQueryProjectionTest_EntityWithProjection.create(stringExpr,stringExpr).newInstance("","");
     }
 
@@ -120,9 +120,9 @@ public class QueryProjectionTest {
         NumberExpression<Long> longExpr = Expressions.numberPath(Long.class, "x");
         StringExpression stringExpr = Expressions.stringPath("x");
 
-        new QQueryProjectionTest_DTOWithProjection(longExpr).newInstance(0l);
+        new QQueryProjectionTest_DTOWithProjection(longExpr).newInstance(0L);
         new QQueryProjectionTest_DTOWithProjection(stringExpr).newInstance("");
-        new QQueryProjectionTest_DTOWithProjection(longExpr, stringExpr).newInstance(0l,"");
+        new QQueryProjectionTest_DTOWithProjection(longExpr, stringExpr).newInstance(0L,"");
         new QQueryProjectionTest_DTOWithProjection(stringExpr, stringExpr).newInstance("","");
 
     }

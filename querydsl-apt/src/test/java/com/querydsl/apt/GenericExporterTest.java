@@ -142,7 +142,9 @@ public class GenericExporterTest extends AbstractProcessorTest {
         int successes = 0;
         for (File file : new File("target/"+genericExporterFolder+"/com/querydsl/apt/domain").listFiles()) {
             File other = new File("target/"+aptFolder+"/com/querydsl/apt/domain", file.getName());
-            if (!other.exists() || !other.isFile()) continue;
+            if (!other.exists() || !other.isFile()) {
+                continue;
+            }
             String result1 = Files.toString(file, Charsets.UTF_8);
             String result2 = Files.toString(other, Charsets.UTF_8);
             if (!result1.equals(result2)) {

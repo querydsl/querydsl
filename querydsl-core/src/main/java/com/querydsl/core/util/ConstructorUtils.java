@@ -173,11 +173,11 @@ public final class ConstructorUtils {
         public abstract boolean isApplicable();
     }
 
-    private static final class VarArgsTransformer extends ArgumentTransformer {
+    private static class VarArgsTransformer extends ArgumentTransformer {
 
         protected final Class<?> componentType;
 
-        private VarArgsTransformer(Constructor<?> constructor) {
+        public VarArgsTransformer(Constructor<?> constructor) {
             super(constructor);
 
             if (paramTypes.length > 0) {
@@ -221,11 +221,11 @@ public final class ConstructorUtils {
 
     }
 
-    private static final class PrimitiveTransformer extends ArgumentTransformer {
+    private static class PrimitiveTransformer extends ArgumentTransformer {
 
         private final Set<Integer> primitiveLocations;
 
-        private PrimitiveTransformer(Constructor<?> constructor) {
+        public PrimitiveTransformer(Constructor<?> constructor) {
             super(constructor);
             ImmutableSet.Builder<Integer> builder = ImmutableSet.builder();
             Class<?>[] parameterTypes = constructor.getParameterTypes();

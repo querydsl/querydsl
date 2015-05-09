@@ -45,7 +45,7 @@ public class BeanPopulationBase extends AbstractBaseTest {
 
         // Update
         employee.setLastname("S");
-        assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
+        assertEquals(1L, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
         // Query
         Employee smith = extQuery().from(e).where(e.lastname.eq("S"))
@@ -69,7 +69,7 @@ public class BeanPopulationBase extends AbstractBaseTest {
         assertEquals("S", other.getLastname());
 
         // Delete (no changes needed)
-        assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
+        assertEquals(1L, delete(e).where(e.id.eq(employee.getId())).execute());
     }
 
     @Test
@@ -83,14 +83,14 @@ public class BeanPopulationBase extends AbstractBaseTest {
 
         // Update
         employee.setLastname("S");
-        assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
+        assertEquals(1L, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
         // Query
         Employee smith = query().from(e).where(e.lastname.eq("S")).limit(1).select(e).fetchFirst();
         assertEquals("John", smith.getFirstname());
 
         // Delete (no changes needed)
-        assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
+        assertEquals(1L, delete(e).where(e.id.eq(employee.getId())).execute());
     }
 
     @Test

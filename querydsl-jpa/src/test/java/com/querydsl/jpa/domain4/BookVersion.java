@@ -70,28 +70,4 @@ public class BookVersion implements Serializable {
         this.definition = definition;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        BookVersion that = (BookVersion) o;
-
-        if (bookID != null ? !bookID.equals(that.bookID) : that.bookID != null)
-            return false;
-        if (library != null ? !library.equals(that.library)
-                : that.library != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = bookID != null ? bookID.hashCode() : 0;
-        result = 31 * result + (library != null ? library.hashCode() : 0);
-        return result;
-    }
 }

@@ -13,6 +13,8 @@
  */
 package com.querydsl.jpa;
 
+import static com.querydsl.jpa.Constants.*;
+
 import static com.querydsl.core.Target.*;
 import static com.querydsl.core.alias.Alias.$;
 import static com.querydsl.core.alias.Alias.alias;
@@ -37,7 +39,7 @@ public class ParsingTest extends AbstractQueryTest {
     @Test
     @Ignore
     public void ArrayExpr() throws Exception {
-        query().from(ord).where(ord.items(0).id.eq(1234l)).parse();
+        query().from(ord).where(ord.items(0).id.eq(1234L)).parse();
     }
 
     @Test
@@ -136,7 +138,7 @@ public class ParsingTest extends AbstractQueryTest {
                                 catalog.effectiveDate.gtAny(
                                         select(catalog.effectiveDate).from(catalog).where(
                                                 catalog.effectiveDate.lt(DateExpression.currentDate())))))
-                .groupBy(ord).having(price.amount.sum().gt(0l))
+                .groupBy(ord).having(price.amount.sum().gt(0L))
                 .orderBy(price.amount.sum().desc())
                 .select(ord.id, price.amount.sum(), item.count());
 
@@ -148,7 +150,7 @@ public class ParsingTest extends AbstractQueryTest {
                .from(catalog).join(catalog.prices, price).where(
                         ord.paid.not().and(ord.customer.eq(c1)).and(
                                 price.product.eq(product)).and(catalog.eq(c2)))
-                .groupBy(ord).having(price.amount.sum().gt(0l))
+                .groupBy(ord).having(price.amount.sum().gt(0L))
                 .orderBy(price.amount.sum().desc())
                 .select(ord.id, price.amount.sum(), item.count());
 
@@ -395,7 +397,7 @@ public class ParsingTest extends AbstractQueryTest {
     public void DocoExamples98_10() throws Exception {
         query().from(item, ord).select(item).where(
                 ord.items(ord.deliveredItemIndices(0)).eq(item),
-                ord.id.eq(1l)).parse();
+                ord.id.eq(1L)).parse();
     }
 
     @Test

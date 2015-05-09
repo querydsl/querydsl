@@ -15,7 +15,9 @@ package com.querydsl.sql;
 
 import java.sql.*;
 
-public class StoredProcedures {
+public final class StoredProcedures {
+
+    private StoredProcedures() {}
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");

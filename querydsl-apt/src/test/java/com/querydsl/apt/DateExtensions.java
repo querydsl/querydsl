@@ -20,7 +20,9 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.DateExpression;
 import com.querydsl.core.types.dsl.Expressions;
 
-public class DateExtensions {
+public final class DateExtensions {
+
+    private DateExtensions() {}
 
     @QueryDelegate(Date.class)
     public static Predicate extension(DateExpression<Date> date) {

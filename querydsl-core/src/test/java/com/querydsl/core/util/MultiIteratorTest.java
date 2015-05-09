@@ -98,8 +98,9 @@ public class MultiIteratorTest {
     @Test
     public void FourLevels2() {
         list1 = new ArrayList<Integer>(100);
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 100; i++) {
             list1.add(i + 1);
+        }
         list2 = list1;
         it = new MultiIterator(Arrays.asList(list1, list2));
         while (it.hasNext()) {

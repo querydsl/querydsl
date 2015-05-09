@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa;
 
+import static com.querydsl.jpa.Constants.*;
 import static com.querydsl.jpa.JPAExpressions.*;
 import static org.junit.Assert.assertEquals;
 
@@ -159,8 +160,8 @@ public class SubQueryTest extends AbstractQueryTest{
     @Test
     public void Indexed_Access() {
         assertMatches("\\(select count\\(cat\\) from Cat cat   " +
-        		"left join cat.kittens as cat_kittens_\\w+ " +
-        		"with index\\(cat_kittens_\\w+\\) = \\?1 where cat_kittens_\\w+.name = \\?2\\)",
+                "left join cat.kittens as cat_kittens_\\w+ " +
+                "with index\\(cat_kittens_\\w+\\) = \\?1 where cat_kittens_\\w+.name = \\?2\\)",
 
                 select(cat.count()).from(cat).where(cat.kittens.get(0).name.eq("Kate")));
     }

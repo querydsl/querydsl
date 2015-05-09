@@ -48,20 +48,20 @@ public class PaginationTest {
             System.out.println();
 
             // limit
-            query.restrict(QueryModifiers.limit(10l));
+            query.restrict(QueryModifiers.limit(10L));
             System.out.println("* limit");
             System.out.println(serialize(query.getMetadata(), templates));
             System.out.println();
 
             if (!templates.getClass().equals(SQLServerTemplates.class)) {
                 // offset
-                query.restrict(QueryModifiers.offset(10l));
+                query.restrict(QueryModifiers.offset(10L));
                 System.out.println("* offset");
                 System.out.println(serialize(query.getMetadata(), templates));
                 System.out.println();
 
                 // limit and offset
-                query.restrict(new QueryModifiers(10l, 10l));
+                query.restrict(new QueryModifiers(10L, 10L));
                 System.out.println("* limit and offset");
                 System.out.println(serialize(query.getMetadata(), templates));
                 System.out.println();

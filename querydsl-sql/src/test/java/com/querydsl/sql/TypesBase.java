@@ -70,9 +70,9 @@ public class TypesBase extends AbstractBaseTest {
                 String classname = rs.getString(4);
                 String datatype = rs.getString(5);
                 String remarks = rs.getString(6);
-                String base_type = rs.getString(7);
+                String baseType= rs.getString(7);
                 System.out.println(name + " " + classname + " " + datatype + " " +
-                                   remarks + " " + base_type);
+                                   remarks + " " + baseType);
 
                 // attributes
                 ResultSet rs2 = md.getAttributes(cat, schema, name, null);
@@ -81,15 +81,15 @@ public class TypesBase extends AbstractBaseTest {
                         // cat, schema, name, attr_name, data_type, attr_type_name, attr_size
                         // decimal_digits, num_prec_radix, nullable, remarks, attr_def, sql_data_type, ordinal_position
                         // ...
-                        String _cat = rs2.getString(1);
-                        String _schema = rs2.getString(2);
-                        String _name = rs2.getString(3);
-                        String _attr_name = rs2.getString(4);
-                        String _data_type = rs2.getString(5);
-                        String _attr_type_name = rs2.getString(6);
-                        String _attr_size = rs2.getString(7);
+                        String cat2 = rs2.getString(1);
+                        String schema2 = rs2.getString(2);
+                        String name2 = rs2.getString(3);
+                        String attrName2 = rs2.getString(4);
+                        String dataType2 = rs2.getString(5);
+                        String attrTypeName2 = rs2.getString(6);
+                        String attrSize2 = rs2.getString(7);
 
-                        System.out.println(" " + _attr_name + " " + _data_type + " " + _attr_type_name + " " + _attr_size);
+                        System.out.println(" " + attrName2 + " " + dataType2 + " " + attrTypeName2 + " " + attrSize2);
                     }
                 } finally {
                     rs2.close();

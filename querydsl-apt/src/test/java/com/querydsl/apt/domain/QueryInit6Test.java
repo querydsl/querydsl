@@ -19,7 +19,7 @@ public class QueryInit6Test {
 
     @Entity(name = Component.NAME)
     @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-    public static abstract class Component implements Serializable {
+    public abstract static class Component implements Serializable {
         public static final String NAME = "Component";
 
         @Id

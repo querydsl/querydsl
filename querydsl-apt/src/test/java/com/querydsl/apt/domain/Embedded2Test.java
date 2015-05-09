@@ -30,7 +30,7 @@ public class Embedded2Test {
     }
 
     @MappedSuperclass
-    public static abstract class AbstractEntity<C extends EntityCode> {
+    public abstract static class AbstractEntity<C extends EntityCode> {
 
         @Embedded
         @Column(name = "code", nullable = false, unique = true)
@@ -44,7 +44,7 @@ public class Embedded2Test {
     }
 
     @MappedSuperclass
-    public static abstract class AbstractNamedEntity<C extends EntityCode> extends AbstractMultilingualEntity<C> {
+    public abstract static class AbstractNamedEntity<C extends EntityCode> extends AbstractMultilingualEntity<C> {
 
         @Column(name = "name_en", nullable = false)
         String nameEn;

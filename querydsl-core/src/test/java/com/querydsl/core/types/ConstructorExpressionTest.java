@@ -31,10 +31,10 @@ public class ConstructorExpressionTest {
 
     @Test
     public void Constructor() {
-        Expression<Long> longVal = ConstantImpl.create(1l);
+        Expression<Long> longVal = ConstantImpl.create(1L);
         Expression<String> stringVal = ConstantImpl.create("");
         ProjectionExample instance = new ConstructorExpression<ProjectionExample>(ProjectionExample.class,
-                new Class[]{long.class, String.class}, longVal, stringVal).newInstance(0l, "");
+                new Class[]{long.class, String.class}, longVal, stringVal).newInstance(0L, "");
         assertNotNull(instance);
         assertEquals((Long) 0L, instance.id);
         assertTrue(instance.text.isEmpty());
@@ -42,15 +42,15 @@ public class ConstructorExpressionTest {
 
     @Test
     public void Create() {
-        Expression<Long> longVal = ConstantImpl.create(1l);
+        Expression<Long> longVal = ConstantImpl.create(1L);
         Expression<String> stringVal = ConstantImpl.create("");
-        assertNotNull(Projections.constructor(ProjectionExample.class, longVal, stringVal).newInstance(0l, ""));
+        assertNotNull(Projections.constructor(ProjectionExample.class, longVal, stringVal).newInstance(0L, ""));
     }
 
     @Test
     public void Create2() {
-        Expression<Long> longVal = ConstantImpl.create(1l);
-        assertNotNull(Projections.constructor(ProjectionExample.class, longVal).newInstance(0l));
+        Expression<Long> longVal = ConstantImpl.create(1L);
+        assertNotNull(Projections.constructor(ProjectionExample.class, longVal).newInstance(0L));
     }
 
     @Test

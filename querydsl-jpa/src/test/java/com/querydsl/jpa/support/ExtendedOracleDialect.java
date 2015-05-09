@@ -12,9 +12,9 @@ public class ExtendedOracleDialect extends Oracle10gDialect {
 
     public ExtendedOracleDialect() {
         // there fail otherwise with the time datatype
-        registerFunction( "second", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "to_number(to_char(?1,'SS'))") );
-        registerFunction( "minute", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "to_number(to_char(?1,'MI'))") );
-        registerFunction( "hour", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "to_number(to_char(?1,'HH24'))") );
+        registerFunction("second", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "to_number(to_char(?1,'SS'))"));
+        registerFunction("minute", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "to_number(to_char(?1,'MI'))"));
+        registerFunction("hour", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "to_number(to_char(?1,'HH24'))"));
     }
 
 }

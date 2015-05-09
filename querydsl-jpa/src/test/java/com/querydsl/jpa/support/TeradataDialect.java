@@ -309,7 +309,7 @@ public class TeradataDialect extends Dialect {
         return EXTRACTER;
     }
 
-    private static ViolatedConstraintNameExtracter EXTRACTER = new TemplatedViolatedConstraintNameExtracter() {
+    private static final ViolatedConstraintNameExtracter EXTRACTER = new TemplatedViolatedConstraintNameExtracter() {
 
         /**
          * Extract the name of the violated constraint from the given
@@ -392,9 +392,9 @@ public class TeradataDialect extends Dialect {
                 // just take whatever lies between
                 // "alter table " and "drop constraint"
 
-                int idx_start = dropSql.indexOf(tableStr, 0) + 5;
-                int idx_end = dropSql.lastIndexOf(dropStr);
-                tableName = dropSql.substring(idx_start, idx_end).trim();
+                int idxStart = dropSql.indexOf(tableStr, 0) + 5;
+                int idxEnd = dropSql.lastIndexOf(dropStr);
+                tableName = dropSql.substring(idxStart, idxEnd).trim();
 
                 if (tableName.startsWith("\"") && tableName.endsWith("\"")) {
                     tableName = tableName.substring(1, tableName.length() - 1);

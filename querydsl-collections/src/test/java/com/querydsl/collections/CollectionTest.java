@@ -52,13 +52,13 @@ public class CollectionTest {
 
     @Test
     public void Join_From_Two_Sources() {
-        QCat cat_kittens = new QCat("cat_kittens");
-        QCat other_kittens = new QCat("other_kittens");
+        QCat catKittens = new QCat("cat_kittens");
+        QCat otherKittens = new QCat("other_kittens");
         assertEquals(30, CollQueryFactory
                 .from(cat, cats).from(other, cats)
-                .innerJoin(cat.kittens, cat_kittens)
-                .innerJoin(other.kittens, other_kittens)
-                .where(cat_kittens.eq(other_kittens)).fetchCount());
+                .innerJoin(cat.kittens, catKittens)
+                .innerJoin(other.kittens, otherKittens)
+                .where(catKittens.eq(otherKittens)).fetchCount());
     }
 
     @Test

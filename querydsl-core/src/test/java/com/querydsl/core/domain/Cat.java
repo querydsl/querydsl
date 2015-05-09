@@ -34,7 +34,7 @@ public class Cat extends Animal {
 
     public Cat(String name, int id) {
         this.setId(id);
-        this.setName( name);
+        this.setName(name);
     }
 
     public Cat(String name, int id, double bodyWeight) {

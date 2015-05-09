@@ -14,7 +14,9 @@
 import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
-public class Entity {
+public final class Entity {
+
+    private Entity() {}
 
     static final QEntity entity = QEntity.entity;
 

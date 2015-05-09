@@ -46,21 +46,21 @@ public class LikeEscapeBase extends AbstractBaseTest{
     @Test
     @Ignore
     public void Like() {
-        assertEquals(1l, query().from(survey).where(survey.name.like("a!%")).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.like("a!_")).fetchCount());
-        assertEquals(3l, query().from(survey).where(survey.name.like("a%")).fetchCount());
-        assertEquals(2l, query().from(survey).where(survey.name.like("a_")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.like("a!%")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.like("a!_")).fetchCount());
+        assertEquals(3L, query().from(survey).where(survey.name.like("a%")).fetchCount());
+        assertEquals(2L, query().from(survey).where(survey.name.like("a_")).fetchCount());
 
-        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a_")).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.startsWith("a_")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.startsWith("a%")).fetchCount());
     }
 
     @Test
     public void Like_with_Escape() {
-        assertEquals(1l, query().from(survey).where(survey.name.like("a!%", '!')).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.like("a!_", '!')).fetchCount());
-        assertEquals(3l, query().from(survey).where(survey.name.like("a%", '!')).fetchCount());
-        assertEquals(2l, query().from(survey).where(survey.name.like("a_", '!')).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.like("a!%", '!')).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.like("a!_", '!')).fetchCount());
+        assertEquals(3L, query().from(survey).where(survey.name.like("a%", '!')).fetchCount());
+        assertEquals(2L, query().from(survey).where(survey.name.like("a_", '!')).fetchCount());
     }
 
 }

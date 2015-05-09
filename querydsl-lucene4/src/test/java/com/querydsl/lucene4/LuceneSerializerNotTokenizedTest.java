@@ -154,8 +154,8 @@ public class LuceneSerializerNotTokenizedTest {
 
     @Test
     public void Or_By_Name_Should_Match_2() throws Exception {
-        testQuery(    person.name.eq("Brad Pitt")
-                  .or(person.name.eq("George Clooney")), "name:Brad Pitt name:George Clooney", 2);
+        testQuery(person.name.eq("Brad Pitt")
+              .or(person.name.eq("George Clooney")), "name:Brad Pitt name:George Clooney", 2);
     }
 
     @Test
@@ -180,14 +180,14 @@ public class LuceneSerializerNotTokenizedTest {
 
     @Test
     public void And_With_Two_Not_Equals_Doesnt_Find_The_Actors() throws Exception {
-        testQuery(     person.name.ne("Brad Pitt")
-                  .and(person.name.ne("George Clooney")), "+(-name:Brad Pitt +*:*) +(-name:George Clooney +*:*)", 1);
+        testQuery(person.name.ne("Brad Pitt")
+             .and(person.name.ne("George Clooney")), "+(-name:Brad Pitt +*:*) +(-name:George Clooney +*:*)", 1);
     }
 
     @Test
     public void Or_With_Two_Not_Equals_Finds_Movies_And_Actors() throws Exception {
-        testQuery(    person.name.ne("Brad Pitt")
-                  .or(person.name.ne("George Clooney")), "(-name:Brad Pitt +*:*) (-name:George Clooney +*:*)", 3);
+        testQuery(person.name.ne("Brad Pitt")
+              .or(person.name.ne("George Clooney")), "(-name:Brad Pitt +*:*) (-name:George Clooney +*:*)", 3);
     }
 
     @Test

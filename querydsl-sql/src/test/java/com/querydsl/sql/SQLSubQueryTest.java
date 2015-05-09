@@ -35,9 +35,15 @@ public class SQLSubQueryTest {
     @Test(expected = IllegalArgumentException.class)
     public void UnknownOperator() {
         Operator op = new Operator() {
-            public String name() { return "unknownfn"; }
-            public String toString() { return name(); }
-            public Class<?> getType() { return Object.class; }
+            public String name() {
+                return "unknownfn";
+            }
+            public String toString() {
+                return name();
+            }
+            public Class<?> getType() {
+                return Object.class;
+            }
         };
         SQLQuery<?> query = new SQLQuery<Void>();
         query.from(employee)
@@ -46,7 +52,7 @@ public class SQLSubQueryTest {
 
     @Test
     public void List() {
-        SubQueryExpression<?> subQuery = select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);;
+        SubQueryExpression<?> subQuery = select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
         List<? extends Expression<?>> exprs = ((FactoryExpression)subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
         assertEquals(ConstantImpl.create("XXX") , exprs.get(1));

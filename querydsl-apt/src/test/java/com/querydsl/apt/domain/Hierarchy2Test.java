@@ -21,7 +21,7 @@ import org.junit.Ignore;
 public class Hierarchy2Test {
 
     @MappedSuperclass
-    public static abstract class SomeMappedSuperClassHavingMyEmbeddable {
+    public abstract static class SomeMappedSuperClassHavingMyEmbeddable {
 
         @Embedded
         MyEmbeddable embeddable;

@@ -13,10 +13,10 @@
  */
 package com.querydsl.core.types;
 
-import static com.querydsl.core.alias.Alias.$;
-import static com.querydsl.core.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static com.querydsl.core.alias.Alias.$;
+import static com.querydsl.core.alias.Alias.alias;
 
 import org.junit.Test;
 
@@ -37,9 +37,9 @@ public class CaseForEqBuilderTest {
         Customer c = alias(Customer.class, "customer");
 
         NumberExpression<Integer> cases = $(c.getAnnualSpending())
-            .when(1000l).then(1)
-            .when(2000l).then(2)
-            .when(5000l).then(3)
+            .when(1000L).then(1)
+            .when(2000L).then(2)
+            .when(5000L).then(3)
             .otherwise(4);
 
         assertEquals(
@@ -56,9 +56,9 @@ public class CaseForEqBuilderTest {
         Customer c = alias(Customer.class, "customer");
 
         StringExpression cases = $(c.getAnnualSpending())
-            .when(1000l).then("bronze")
-            .when(2000l).then("silver")
-            .when(5000l).then("gold")
+            .when(1000L).then("bronze")
+            .when(2000L).then("silver")
+            .when(5000L).then("gold")
             .otherwise("platinum");
 
         assertNotNull(cases);
@@ -70,7 +70,7 @@ public class CaseForEqBuilderTest {
         Customer c = alias(Customer.class, "customer");
 
         Expression<Boolean> cases = $(c.getAnnualSpending())
-            .when(1000l).then(true)
+            .when(1000L).then(true)
             .otherwise(false);
 
         assertNotNull(cases);

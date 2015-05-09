@@ -8,7 +8,8 @@ import com.querydsl.core.annotations.QuerySupertype;
 @QuerySupertype
 public abstract class AbstractEntity {
 
-    private @Id ObjectId id;
+    @Id
+    private ObjectId id;
 
     public ObjectId getId() {
         return id;
@@ -28,18 +29,24 @@ public abstract class AbstractEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         AbstractEntity other = (AbstractEntity) obj;
         if (id == null) {
-            if (other.id != null)
+            if (other.id != null) {
                 return false;
-        } else if (!id.equals(other.id))
+            }
+
+        } else if (!id.equals(other.id)) {
             return false;
+        }
         return true;
     }
 

@@ -210,12 +210,11 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Beans() {
-        QEmployee EMPLOYEE = new QEmployee("EMPLOYEE");
-        List<Beans> rows = query().from(employee, EMPLOYEE).select(new QBeans(employee, EMPLOYEE)).fetch();
+        List<Beans> rows = query().from(employee, employee2).select(new QBeans(employee, employee2)).fetch();
         assertFalse(rows.isEmpty());
         for (Beans row : rows) {
             assertEquals(Employee.class, row.get(employee).getClass());
-            assertEquals(Employee.class, row.get(EMPLOYEE).getClass());
+            assertEquals(Employee.class, row.get(employee2).getClass());
         }
     }
 
@@ -950,7 +949,9 @@ public class SelectBase extends AbstractBaseTest {
     @IncludeIn(ORACLE)
     @SkipForQuoted
     public void Limit_and_Offset_In_Oracle() throws SQLException {
-        if (configuration.getUseLiterals()) return;
+        if (configuration.getUseLiterals()) {
+            return;
+        }
 
         // limit
         expectedQuery = "select * from (   select e.ID from EMPLOYEE e ) where rownum <= ?";
@@ -1015,8 +1016,8 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DB2, DERBY})
     public void Literals() {
-        assertEquals(1, firstResult(ConstantImpl.create(1)).intValue());
-        assertEquals(2l, firstResult(ConstantImpl.create(2l)).longValue());
+        assertEquals(1L, firstResult(ConstantImpl.create(1)).intValue());
+        assertEquals(2L, firstResult(ConstantImpl.create(2L)).longValue());
         assertEquals(3.0, firstResult(ConstantImpl.create(3.0)).doubleValue(), 0.001);
         assertEquals(4.0f, firstResult(ConstantImpl.create(4.0f)).floatValue(), 0.001);
         assertEquals(true, firstResult(ConstantImpl.create(true)));
@@ -1227,8 +1228,8 @@ public class SelectBase extends AbstractBaseTest {
     @SkipForQuoted
     public void Path_Alias() {
         expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum " +
-        		"from EMPLOYEE e " +
-        		"group by e.LASTNAME having salarySum > ?";
+                "from EMPLOYEE e " +
+                "group by e.LASTNAME having salarySum > ?";
 
         NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");
         query().from(employee)
@@ -1249,7 +1250,7 @@ public class SelectBase extends AbstractBaseTest {
         StringPath fn = employee.firstname;
         StringPath ln = employee.lastname;
         Predicate where = fn.eq("Mike").and(ln.eq("Smith")).or(fn.eq("Joe").and(ln.eq("Divis")));
-        assertEquals(2l, query().from(employee).where(where).fetchCount());
+        assertEquals(2L, query().from(employee).where(where).fetchCount());
     }
 
     @Test
@@ -1257,7 +1258,7 @@ public class SelectBase extends AbstractBaseTest {
         StringPath fn = employee.firstname;
         StringPath ln = employee.lastname;
         Predicate where = fn.eq("Mike").and(ln.eq("Smith").or(fn.eq("Joe")).and(ln.eq("Divis")));
-        assertEquals(0l, query().from(employee).where(where).fetchCount());
+        assertEquals(0L, query().from(employee).where(where).fetchCount());
     }
 
     @Test

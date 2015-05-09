@@ -21,12 +21,12 @@ import com.querydsl.core.annotations.QueryEntity;
 public class Enum2Test {
 
     @QueryEntity
-    public static abstract class EnumPermissions<P extends Enum<P> & Permission> extends EntityImpl implements Permissions<P> {
+    public abstract static class EnumPermissions<P extends Enum<P> & Permission> extends EntityImpl implements Permissions<P> {
 
     }
 
     @QueryEntity
-    public static abstract class EntityImpl {
+    public abstract static class EntityImpl {
 
     }
 

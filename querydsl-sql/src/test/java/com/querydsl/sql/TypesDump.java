@@ -8,7 +8,9 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public class TypesDump {
+public final class TypesDump {
+
+    private TypesDump() {}
 
     public static void main(String[] args) throws Exception {
         Map<Integer, String> typeConstants = Maps.newHashMap();

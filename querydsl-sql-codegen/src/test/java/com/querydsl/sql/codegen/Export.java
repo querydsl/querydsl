@@ -4,7 +4,9 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class Export {
+public final class Export {
+
+    private Export() {}
 
     public static void main(String[] args) throws Exception {
         Class.forName("com.mysql.jdbc.Driver");

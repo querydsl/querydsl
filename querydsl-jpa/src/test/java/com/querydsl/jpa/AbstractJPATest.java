@@ -251,7 +251,9 @@ public abstract class AbstractJPATest {
     @Test
     public void Any_In11() {
         List<Integer> ids = Lists.newArrayList();
-        for (Cat cat : savedCats) ids.add(cat.getId());
+        for (Cat cat : savedCats) {
+            ids.add(cat.getId());
+        }
         assertFalse(query().from(cat).where(cat.kittens.any().id.in(ids)).select(cat).fetch().isEmpty());
     }
 
@@ -476,12 +478,12 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Contains2() {
-        assertEquals(1l, query().from(cat).where(cat.kittens.contains(savedCats.get(0))).fetchCount());
+        assertEquals(1L, query().from(cat).where(cat.kittens.contains(savedCats.get(0))).fetchCount());
     }
 
     @Test
     public void Contains3() {
-        assertEquals(1l, query().from(cat).where(cat.name.contains("_")).fetchCount());
+        assertEquals(1L, query().from(cat).where(cat.name.contains("_")).fetchCount());
     }
 
     @Test
@@ -524,13 +526,13 @@ public abstract class AbstractJPATest {
         System.out.println("-- fetch results");
         QueryResults<Date> res = query().from(cat).limit(2).select(cat.birthdate).fetchResults();
         assertEquals(2, res.getResults().size());
-        assertEquals(6l, res.getTotal());
+        assertEquals(6L, res.getTotal());
         System.out.println();
 
         System.out.println("-- fetch distinct results");
         res = query().from(cat).limit(2).distinct().select(cat.birthdate).fetchResults();
         assertEquals(1, res.getResults().size());
-        assertEquals(1l, res.getTotal());
+        assertEquals(1L, res.getTotal());
         System.out.println();
 
         System.out.println("-- fetch distinct");
@@ -635,7 +637,7 @@ public abstract class AbstractJPATest {
         JPQLQuery<?> query = query();
         query.from(employee).where(employee.lastName.eq("Smith"), employee.jobFunctions
                 .contains(JobFunction.CODER));
-        assertEquals(1l, query.fetchCount());
+        assertEquals(1L, query.fetchCount());
     }
 
     @Test
@@ -749,7 +751,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void In() {
-        assertEquals(3l, query().from(cat).where(cat.name.in("Bob123", "Ruth123", "Felix123")).fetchCount());
+        assertEquals(3L, query().from(cat).where(cat.name.in("Bob123", "Ruth123", "Felix123")).fetchCount());
 
         query().from(cat).where(cat.id.in(Arrays.asList(1,2,3))).fetchCount();
         query().from(cat).where(cat.name.in(Arrays.asList("A","B","C"))).fetchCount();
@@ -809,24 +811,24 @@ public abstract class AbstractJPATest {
 
     @Test
     public void InstanceOf_Cat() {
-        assertEquals(6l, query().from(cat).where(cat.instanceOf(Cat.class)).fetchCount());
+        assertEquals(6L, query().from(cat).where(cat.instanceOf(Cat.class)).fetchCount());
     }
 
     @Test
     public void InstanceOf_DomesticCat() {
-        assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).fetchCount());
+        assertEquals(0L, query().from(cat).where(cat.instanceOf(DomesticCat.class)).fetchCount());
     }
 
     @Test
     public void InstanceOf_Entity1() {
         QEntity1 entity1 = QEntity1.entity1;
-        assertEquals(2l, query().from(entity1).where(entity1.instanceOf(Entity1.class)).fetchCount());
+        assertEquals(2L, query().from(entity1).where(entity1.instanceOf(Entity1.class)).fetchCount());
     }
 
     @Test
     public void InstanceOf_Entity2() {
         QEntity1 entity1 = QEntity1.entity1;
-        assertEquals(1l, query().from(entity1).where(entity1.instanceOf(Entity2.class)).fetchCount());
+        assertEquals(1L, query().from(entity1).where(entity1.instanceOf(Entity2.class)).fetchCount());
     }
 
     @Test
@@ -929,37 +931,37 @@ public abstract class AbstractJPATest {
     @Test
     public void Map_ContainsKey() {
         QShow show = QShow.show;
-        assertEquals(1l, query().from(show).where(show.acts.containsKey("a")).fetchCount());
+        assertEquals(1L, query().from(show).where(show.acts.containsKey("a")).fetchCount());
     }
 
     @Test
     public void Map_ContainsKey2() {
         QShow show = QShow.show;
-        assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).fetchCount());
+        assertEquals(1L, query().from(show).where(show.acts.containsKey("b")).fetchCount());
     }
 
     @Test
     public void Map_ContainsKey3() {
         QShow show = QShow.show;
-        assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).fetchCount());
+        assertEquals(0L, query().from(show).where(show.acts.containsKey("c")).fetchCount());
     }
 
     @Test
     public void Map_ContainsValue() {
         QShow show = QShow.show;
-        assertEquals(1l, query().from(show).where(show.acts.containsValue("A")).fetchCount());
+        assertEquals(1L, query().from(show).where(show.acts.containsValue("A")).fetchCount());
     }
 
     @Test
     public void Map_ContainsValue2() {
         QShow show = QShow.show;
-        assertEquals(1l, query().from(show).where(show.acts.containsValue("B")).fetchCount());
+        assertEquals(1L, query().from(show).where(show.acts.containsValue("B")).fetchCount());
     }
 
     @Test
     public void Map_ContainsValue3() {
         QShow show = QShow.show;
-        assertEquals(0l, query().from(show).where(show.acts.containsValue("C")).fetchCount());
+        assertEquals(0L, query().from(show).where(show.acts.containsValue("C")).fetchCount());
     }
 
     @Test
@@ -1019,7 +1021,7 @@ public abstract class AbstractJPATest {
     @Test
     public void Not_In() {
         long all = query().from(cat).fetchCount();
-        assertEquals(all - 3l, query().from(cat).where(cat.name.notIn("Bob123", "Ruth123", "Felix123")).fetchCount());
+        assertEquals(all - 3L, query().from(cat).where(cat.name.notIn("Bob123", "Ruth123", "Felix123")).fetchCount());
 
         query().from(cat).where(cat.id.notIn(1,2,3)).fetchCount();
         query().from(cat).where(cat.name.notIn("A","B","C")).fetchCount();
@@ -1156,7 +1158,7 @@ public abstract class AbstractJPATest {
         StringPath str = cat.name;
         Predicate where = str.like("Bob%").and(str.like("%ob123"))
                       .or(str.like("Ruth%").and(str.like("%uth123")));
-        assertEquals(2l, query().from(cat).where(where).fetchCount());
+        assertEquals(2L, query().from(cat).where(where).fetchCount());
     }
 
     @Test
@@ -1164,14 +1166,14 @@ public abstract class AbstractJPATest {
         StringPath str = cat.name;
         Predicate where = str.like("Bob%").and(str.like("%ob123")
                       .or(str.like("Ruth%"))).and(str.like("%uth123"));
-        assertEquals(0l, query().from(cat).where(where).fetchCount());
+        assertEquals(0L, query().from(cat).where(where).fetchCount());
     }
 
     @Test
     public void Precedence3() {
         Predicate where = cat.name.eq("Bob123").and(cat.id.eq(1))
                       .or(cat.name.eq("Ruth123").and(cat.id.eq(2)));
-        assertEquals(2l, query().from(cat).where(where).fetchCount());
+        assertEquals(2L, query().from(cat).where(where).fetchCount());
     }
 
     @Test

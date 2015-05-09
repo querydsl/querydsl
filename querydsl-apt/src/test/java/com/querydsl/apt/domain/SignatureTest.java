@@ -25,12 +25,12 @@ import com.querydsl.core.types.dsl.ComparablePath;
 public class SignatureTest {
 
     @QuerySupertype
-    public static abstract class APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
+    public abstract static class APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
 
     }
 
     @QuerySupertype
-    public static abstract class AValueObject extends APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
+    public abstract static class AValueObject extends APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
 
     }
 

@@ -77,18 +77,18 @@ public class AnyUsageTest {
     @Test
     public void WithQDealer() {
         List<Company> companies = new LinkedList<Company>();
-        companies.add( new Company() );
+        companies.add(new Company());
         QAnyUsageTest_Dealer qDealer = QAnyUsageTest_Dealer.dealer;
-        BooleanExpression expression = qDealer.company.in( companies );
+        BooleanExpression expression = qDealer.company.in(companies);
         assertNotNull(expression);
     }
 
     @Test
     public void WithQDealerGroup() {
         List<Company> companies = new LinkedList<Company>();
-        companies.add( new Company() );
+        companies.add(new Company());
         QAnyUsageTest_Dealer qDealer = QAnyUsageTest_DealerGroup.dealerGroup.dealers.any();
-        BooleanExpression expression = qDealer.company.in( companies );
+        BooleanExpression expression = qDealer.company.in(companies);
         assertNotNull(expression);
     }
 

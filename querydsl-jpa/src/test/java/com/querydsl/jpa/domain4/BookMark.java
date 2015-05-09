@@ -48,23 +48,4 @@ public class BookMark implements Serializable {
         this.comment = comment;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        BookMark bookMark = (BookMark) o;
-
-        if (page != null ? !page.equals(bookMark.page) : bookMark.page != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return page != null ? page.hashCode() : 0;
-    }
 }

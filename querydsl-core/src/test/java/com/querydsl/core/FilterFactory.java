@@ -207,7 +207,7 @@ public class FilterFactory {
         rv.add(expr.lt(knownValue));
 
         rv.add(expr.in(1,2,3));
-        rv.add(expr.in(1l,2l,3l));
+        rv.add(expr.in(1L,2L,3L));
 
         if (expr.getType().equals(Integer.class)) {
             NumberExpression<Integer> eint = (NumberExpression)expr;
@@ -220,7 +220,7 @@ public class FilterFactory {
             rv.add(edouble.notBetween(1.0, 2.0));
         } else if (expr.getType().equals(Long.class)) {
             NumberExpression<Long> elong = (NumberExpression)expr;
-            rv.add(elong.mod(5l).eq(0l));
+            rv.add(elong.mod(5L).eq(0L));
         }
 
 //        rv.add(expr.in(IntervalImpl.create(0, 100)));

@@ -23,7 +23,7 @@ import com.querydsl.core.annotations.QueryInit;
 public class AbstractEntityTest {
 
     @QueryEntity
-    public static abstract class Category<T extends Category<T>> {
+    public abstract static class Category<T extends Category<T>> {
 
         public Category<T> defaultChild;
 

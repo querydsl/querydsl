@@ -10,7 +10,9 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 
-public class JodaMoneyHelpers {
+public final class JodaMoneyHelpers {
+
+    private JodaMoneyHelpers() {}
 
     @QueryDelegate(Money.class)
     public static NumberExpression<BigDecimal> sum(QMoney money) {

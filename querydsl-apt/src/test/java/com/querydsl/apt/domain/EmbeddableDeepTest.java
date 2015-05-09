@@ -31,12 +31,12 @@ public class EmbeddableDeepTest {
     }
 
     @MappedSuperclass
-    public static abstract class AValueObject implements Cloneable, Serializable {
+    public abstract static class AValueObject implements Cloneable, Serializable {
 
     }
 
     @MappedSuperclass
-    public static abstract class AEntity extends AValueObject {
+    public abstract static class AEntity extends AValueObject {
 
     }
 

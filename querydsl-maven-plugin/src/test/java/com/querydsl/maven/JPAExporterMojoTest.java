@@ -17,7 +17,7 @@ public class JPAExporterMojoTest {
         JPAExporterMojo mojo = new JPAExporterMojo();
         mojo.setTargetFolder(new File("target/generated-test-data2"));
         mojo.setPackages(new String[]{"com.querydsl.maven"});
-        mojo.setProject( mavenProject);
+        mojo.setProject(mavenProject);
         mojo.execute();
 
         File file = new File("target/generated-test-data2/com/querydsl/maven/QEntity.java");

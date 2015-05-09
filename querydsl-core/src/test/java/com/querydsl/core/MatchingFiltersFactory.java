@@ -77,7 +77,7 @@ public class MatchingFiltersFactory {
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
                 && !target.equals(Target.FIREBIRD)
                 && (!target.equals(Target.POSTGRESQL) || !module.equals(Module.JPA))) {
-            rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
+            rv.add(expr.dayOfWeek().eq(other.dayOfWeek()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
 
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL)
@@ -113,7 +113,7 @@ public class MatchingFiltersFactory {
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
                 && (!target.equals(Target.POSTGRESQL) || !module.equals(Module.JPA))) {
-            rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
+            rv.add(expr.dayOfWeek().eq(other.dayOfWeek()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
 
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL)

@@ -36,7 +36,7 @@ public class BlockingTest extends AbstractTest {
     }
 
     @QueryEntity
-    public static abstract class Entity2 {
+    public abstract static class Entity2 {
 
         @QueryTransient
         @QueryType(PropertyType.ENTITY)

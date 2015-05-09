@@ -3,9 +3,11 @@ package com.querydsl.core.types;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TemplateInfiniteLoop {
+public final class TemplateInfiniteLoop {
 
-    static String templates[] = createTemplates();
+    private TemplateInfiniteLoop() {}
+
+    static String[] templates = createTemplates();
 
     public static void main(String[] args) {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
@@ -30,7 +32,7 @@ public class TemplateInfiniteLoop {
      * @return
      */
     private static String[] createTemplates() {
-        String tab[] = new String[10000];
+        String[] tab = new String[10000];
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < tab.length; i++) {
             builder.append('\0');

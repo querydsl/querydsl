@@ -9,7 +9,6 @@ import org.junit.Test;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.domain.QCat;
@@ -31,34 +30,34 @@ public class JPAQueryMixinTest {
     @Test
     public void OrderBy() {
         QCat cat = QCat.cat;
-        QCat cat_mate = new QCat("cat_mate");
+        QCat catMate = new QCat("cat_mate");
         mixin.from(cat);
         mixin.orderBy(cat.mate.name.asc());
 
         QueryMetadata md = mixin.getMetadata();
         assertEquals(Arrays.asList(
                 new JoinExpression(JoinType.DEFAULT, cat),
-                new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(cat_mate))),
+                new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(catMate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(cat_mate.name.asc()),
+        assertEquals(Arrays.asList(catMate.name.asc()),
                 md.getOrderBy());
     }
 
     @Test
     public void OrderBy_NonRoot_Twice() {
         QDepartment department = QDepartment.department;
-        QCompany department_company = new QCompany("department_company");
-        QEmployee department_company_ceo = new QEmployee("department_company_ceo");
+        QCompany departmentCompany = new QCompany("department_company");
+        QEmployee departmentCompanyCeo = new QEmployee("department_company_ceo");
         mixin.from(department);
         mixin.orderBy(department.company.ceo.firstName.asc(), department.company.ceo.lastName.asc());
 
         QueryMetadata md = mixin.getMetadata();
         assertEquals(Arrays.asList(
                         new JoinExpression(JoinType.DEFAULT, department),
-                        new JoinExpression(JoinType.LEFTJOIN, department.company.as(department_company)),
-                        new JoinExpression(JoinType.LEFTJOIN, department_company.ceo.as(department_company_ceo))),
+                        new JoinExpression(JoinType.LEFTJOIN, department.company.as(departmentCompany)),
+                        new JoinExpression(JoinType.LEFTJOIN, departmentCompany.ceo.as(departmentCompanyCeo))),
                 md.getJoins());
-        assertEquals(Arrays.asList(department_company_ceo.firstName.asc(), department_company_ceo.lastName.asc()),
+        assertEquals(Arrays.asList(departmentCompanyCeo.firstName.asc(), departmentCompanyCeo.lastName.asc()),
                 md.getOrderBy());
     }
 
@@ -89,35 +88,34 @@ public class JPAQueryMixinTest {
     @Test
     public void OrderBy_Operation() {
         QCat cat = QCat.cat;
-        QCat cat_mate = new QCat("cat_mate");
+        QCat catMate = new QCat("cat_mate");
         mixin.from(cat);
         mixin.orderBy(cat.mate.name.lower().asc());
 
         QueryMetadata md = mixin.getMetadata();
         assertEquals(Arrays.asList(
                         new JoinExpression(JoinType.DEFAULT, cat),
-                        new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(cat_mate))),
+                        new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(catMate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(cat_mate.name.lower().asc()),
+        assertEquals(Arrays.asList(catMate.name.lower().asc()),
                 md.getOrderBy());
     }
 
     @Test
     public void OrderBy_Long() {
         QCat cat = QCat.cat;
-        QCat catMate = new QCat(PathMetadataFactory.forProperty(cat, "mate"));
-        QCat cat_mate = new QCat("cat_mate");
-        QCat cat_mate_mate = new QCat("cat_mate_mate");
+        QCat catMate = new QCat("cat_mate");
+        QCat catMateMate = new QCat("cat_mate_mate");
         mixin.from(cat);
         mixin.orderBy(cat.mate.mate.name.asc());
 
         QueryMetadata md = mixin.getMetadata();
         assertEquals(Arrays.asList(
                 new JoinExpression(JoinType.DEFAULT, cat),
-                new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(cat_mate)),
-                new JoinExpression(JoinType.LEFTJOIN, cat_mate.mate.as(cat_mate_mate))),
+                new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(catMate)),
+                new JoinExpression(JoinType.LEFTJOIN, catMate.mate.as(catMateMate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(cat_mate_mate.name.asc()),
+        assertEquals(Arrays.asList(catMateMate.name.asc()),
                 md.getOrderBy());
     }
 
@@ -142,7 +140,7 @@ public class JPAQueryMixinTest {
     public void OrderBy_Long_Reuse() {
         QCat cat = QCat.cat;
         QCat mate = new QCat("mate");
-        QCat mate_mate = new QCat("mate_mate");
+        QCat mateMate = new QCat("mate_mate");
         mixin.from(cat);
         mixin.leftJoin(cat.mate, mate);
         mixin.orderBy(cat.mate.mate.name.asc());
@@ -151,25 +149,25 @@ public class JPAQueryMixinTest {
         assertEquals(Arrays.asList(
                 new JoinExpression(JoinType.DEFAULT, cat),
                 new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(mate)),
-                new JoinExpression(JoinType.LEFTJOIN, mate.mate.as(mate_mate))),
+                new JoinExpression(JoinType.LEFTJOIN, mate.mate.as(mateMate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(mate_mate.name.asc()),
+        assertEquals(Arrays.asList(mateMate.name.asc()),
                 md.getOrderBy());
     }
 
     @Test
     public void OrderBy_Any() {
         QCat cat = QCat.cat;
-        QCat cat_kittens = new QCat("cat_kittens");
+        QCat catKittens = new QCat("cat_kittens");
         mixin.from(cat);
         mixin.orderBy(cat.kittens.any().name.asc());
 
         QueryMetadata md = mixin.getMetadata();
         assertEquals(Arrays.asList(
                 new JoinExpression(JoinType.DEFAULT, cat),
-                new JoinExpression(JoinType.LEFTJOIN, cat.kittens.as(cat_kittens))),
+                new JoinExpression(JoinType.LEFTJOIN, cat.kittens.as(catKittens))),
                 md.getJoins());
-        assertEquals(Arrays.asList(cat_kittens.name.asc()),
+        assertEquals(Arrays.asList(catKittens.name.asc()),
                 md.getOrderBy());
     }
 
@@ -189,16 +187,16 @@ public class JPAQueryMixinTest {
     @Test
     public void OrderBy_Embeddable2() {
         QArticle article = QArticle.article;
-        QArticle article_content_article = new QArticle("article_content_article");
+        QArticle articleContentArticle = new QArticle("article_content_article");
         mixin.from(article);
         mixin.orderBy(article.content.article.name.asc());
 
         QueryMetadata md = mixin.getMetadata();
         assertEquals(Arrays.asList(
                 new JoinExpression(JoinType.DEFAULT, article),
-                new JoinExpression(JoinType.LEFTJOIN, article.content.article.as(article_content_article))),
+                new JoinExpression(JoinType.LEFTJOIN, article.content.article.as(articleContentArticle))),
                 md.getJoins());
-        assertEquals(Arrays.asList(article_content_article.name.asc()),
+        assertEquals(Arrays.asList(articleContentArticle.name.asc()),
                 md.getOrderBy());
     }
 
@@ -214,6 +212,5 @@ public class JPAQueryMixinTest {
                 md.getJoins());
         assertEquals(Arrays.asList(Expressions.stringPath(bookVersion.definition.bookMarks, "comment").asc()),
                 md.getOrderBy());
-
     }
 }

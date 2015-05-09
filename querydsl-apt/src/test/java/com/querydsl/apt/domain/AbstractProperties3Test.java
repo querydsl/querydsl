@@ -29,7 +29,7 @@ public class AbstractProperties3Test {
 
     @Entity
     @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-    public static abstract class Containable extends BaseEntity implements Serializable {
+    public abstract static class Containable extends BaseEntity implements Serializable {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO, generator = "containable_seq_gen")
@@ -45,7 +45,7 @@ public class AbstractProperties3Test {
     @MappedSuperclass
     @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
     @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
-    public static abstract class CompoundContainer extends BaseEntity implements Serializable {
+    public abstract static class CompoundContainer extends BaseEntity implements Serializable {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO, generator = "compound_container_seq_gen")

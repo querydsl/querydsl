@@ -14,9 +14,9 @@
 package com.querydsl.jpa;
 
 import static org.junit.Assert.assertEquals;
+import static com.querydsl.jpa.Constants.*;
 
 import org.junit.Test;
-
 
 public class JoinFlagsTest extends AbstractQueryTest{
 

@@ -19,7 +19,7 @@ public class Generic11Test {
 
     // 2
     @MappedSuperclass
-    public static abstract class WhatEver2 { }
+    public abstract static class WhatEver2 { }
 
     @Entity
     public static class A2<T extends WhatEver2> { }

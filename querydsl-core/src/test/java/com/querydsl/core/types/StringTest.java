@@ -28,24 +28,30 @@ import org.junit.Test;
 
 public class StringTest {
 
+    private static class DummyTemplates extends Templates {
+
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     public void PatternAvailability() throws IllegalArgumentException, IllegalAccessException{
-        Templates ops = new Templates() {{
-            // TODO
-        }};
+        Templates ops = new DummyTemplates();
         Set<Field> missing = new HashSet<Field>();
         for (Field field : Ops.class.getFields()) {
             if (field.getType().equals(Operator.class)) {
                 Operator op = (Operator)field.get(null);
-                if (ops.getTemplate(op) == null) missing.add(field);
+                if (ops.getTemplate(op) == null) {
+                    missing.add(field);
+                }
             }
         }
         for (Class<?> cl : Ops.class.getClasses()) {
             for (Field field : cl.getFields()) {
                 if (field.getType().equals(Operator.class)) {
                     Operator op = (Operator)field.get(null);
-                    if (ops.getTemplate(op) == null) missing.add(field);
+                    if (ops.getTemplate(op) == null) {
+                        missing.add(field);
+                    }
                 }
             }
         }
@@ -87,13 +93,21 @@ public class StringTest {
 
         public SomeType(SomeType st) {}
 
-        public String getName() {return ""; };
+        public String getName() {
+            return "";
+        }
 
-        public SomeType getRef() { return null; };
+        public SomeType getRef() {
+            return null;
+        }
 
-        public List<SomeType> getRefs() { return null; };
+        public List<SomeType> getRefs() {
+            return null;
+        }
 
-        public int getAmount() { return 0; };
+        public int getAmount() {
+            return 0;
+        }
     }
 
 }

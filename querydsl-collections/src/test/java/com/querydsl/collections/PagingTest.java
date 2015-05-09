@@ -35,13 +35,13 @@ public class PagingTest extends AbstractQueryTest {
     @Test
     public void test() {
         assertResultSize(9, 9, QueryModifiers.EMPTY);
-        assertResultSize(9, 2, new QueryModifiers(2l, null));
-        assertResultSize(9, 2, new QueryModifiers(2l, 0l));
-        assertResultSize(9, 2, new QueryModifiers(2l, 3l));
-        assertResultSize(9, 9, new QueryModifiers(20l, null));
-        assertResultSize(9, 9, new QueryModifiers(20l, 0l));
-        assertResultSize(9, 5, new QueryModifiers(20l, 4l));
-        assertResultSize(9, 0, new QueryModifiers(10l, 9l));
+        assertResultSize(9, 2, new QueryModifiers(2L, null));
+        assertResultSize(9, 2, new QueryModifiers(2L, 0L));
+        assertResultSize(9, 2, new QueryModifiers(2L, 3L));
+        assertResultSize(9, 9, new QueryModifiers(20L, null));
+        assertResultSize(9, 9, new QueryModifiers(20L, 0L));
+        assertResultSize(9, 5, new QueryModifiers(20L, 4L));
+        assertResultSize(9, 0, new QueryModifiers(10L, 9L));
     }
 
     private void assertResultSize(int total, int size, QueryModifiers modifiers) {

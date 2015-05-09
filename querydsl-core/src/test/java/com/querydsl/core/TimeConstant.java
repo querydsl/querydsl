@@ -46,7 +46,7 @@ public final class TimeConstant<D extends java.util.Date> extends TimeExpression
     }
 
     @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 

@@ -11,20 +11,20 @@ public class JavaTemplatesTest {
 
     @Test
     public void Precedence() {
-        // postfix	expr++ expr--
-        // unary	++expr --expr +expr -expr ~ !
-        // multiplicative	* / %
-        // additive	+ -
-        // shift	<< >> >>>
-        // relational	< > <= >= instanceof
-        // equality	== !=
-        // bitwise AND	&
-        // bitwise exclusive OR	^
-        // bitwise inclusive OR	|
-        // logical AND	&&
-        // logical OR	||
-        // ternary	? :
-        // assignment	= += -= *= /= %= &= ^= |= <<= >>= >>>=
+        // postfix    expr++ expr--
+        // unary    ++expr --expr +expr -expr ~ !
+        // multiplicative    * / %
+        // additive    + -
+        // shift    << >> >>>
+        // relational    < > <= >= instanceof
+        // equality    == !=
+        // bitwise AND    &
+        // bitwise exclusive OR    ^
+        // bitwise inclusive OR    |
+        // logical AND    &&
+        // logical OR    ||
+        // ternary    ? :
+        // assignment    = += -= *= /= %= &= ^= |= <<= >>= >>>=
 
         int p1 = getPrecedence(Ops.NOT);
         int p2 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);

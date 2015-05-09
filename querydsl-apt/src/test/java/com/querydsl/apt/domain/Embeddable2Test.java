@@ -28,14 +28,14 @@ import com.querydsl.core.types.dsl.PathInits;
 public class Embeddable2Test {
 
     @QuerySupertype
-    public static abstract class SomeMappedSuperClassHavingMyEmbeddable {
+    public abstract static class SomeMappedSuperClassHavingMyEmbeddable {
 
         @QueryEmbedded
         MyEmbeddable embeddable;
     }
 
     @QueryEntity
-    public static abstract class SomeEntityClassHavingMyEmbeddable {
+    public abstract static class SomeEntityClassHavingMyEmbeddable {
 
         @QueryEmbedded
         MyEmbeddable embeddable;

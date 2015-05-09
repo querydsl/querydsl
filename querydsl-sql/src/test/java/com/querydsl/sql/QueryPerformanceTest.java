@@ -21,8 +21,8 @@ import com.querydsl.core.testutil.Runner;
 public class QueryPerformanceTest {
 
     private static final String QUERY = "select COMPANIES.NAME\n" +
-    		"from COMPANIES COMPANIES\n" +
-    		"where COMPANIES.ID = ?";
+            "from COMPANIES COMPANIES\n" +
+            "where COMPANIES.ID = ?";
 
     private static final SQLTemplates templates = new H2Templates();
 
@@ -260,7 +260,7 @@ public class QueryPerformanceTest {
         QCompanies companies = QCompanies.companies;
         final QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, companies);
-        md.addWhere(companies.id.eq(1l));
+        md.addWhere(companies.id.eq(1L));
         md.setProjection(companies.name);
 
         Runner.run("ser1", new Benchmark() {
@@ -282,7 +282,7 @@ public class QueryPerformanceTest {
         QCompanies companies = QCompanies.companies;
         final QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, companies);
-        md.addWhere(companies.id.eq(1l));
+        md.addWhere(companies.id.eq(1L));
         md.setProjection(companies.name);
 
         Runner.run("ser2 (non normalized)", new Benchmark() {

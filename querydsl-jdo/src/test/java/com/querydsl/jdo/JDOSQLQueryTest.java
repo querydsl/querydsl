@@ -50,7 +50,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
 
     @Test
     public void Count() {
-        assertEquals(30l, sql().from(product).fetchCount());
+        assertEquals(30L, sql().from(product).fetchCount());
     }
 
     @Test(expected=NonUniqueResultException.class)
@@ -70,18 +70,18 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
 
     @Test
     public void StartsWith_Count() {
-        assertEquals(10l, sql().from(product).where(product.name.startsWith("A")).fetchCount());
-        assertEquals(10l, sql().from(product).where(product.name.startsWith("B")).fetchCount());
-        assertEquals(10l, sql().from(product).where(product.name.startsWith("C")).fetchCount());
+        assertEquals(10L, sql().from(product).where(product.name.startsWith("A")).fetchCount());
+        assertEquals(10L, sql().from(product).where(product.name.startsWith("B")).fetchCount());
+        assertEquals(10L, sql().from(product).where(product.name.startsWith("C")).fetchCount());
 
     }
 
     @Test
     public void Eq_Count() {
         for (int i = 0; i < 10; i++) {
-            assertEquals(1l, sql().from(product).where(product.name.eq("A"+i)).fetchCount());
-            assertEquals(1l, sql().from(product).where(product.name.eq("B"+i)).fetchCount());
-            assertEquals(1l, sql().from(product).where(product.name.eq("C"+i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("A"+i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("B"+i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("C"+i)).fetchCount());
         }
     }
 
@@ -90,10 +90,10 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
         BooleanExpression filter = product.name.startsWith("A");
 
         // fetchCount
-        assertEquals(10l, sql().from(product).where(filter).fetchCount());
+        assertEquals(10L, sql().from(product).where(filter).fetchCount());
 
         // countDistinct
-        assertEquals(10l, sql().from(product).where(filter).distinct().fetchCount());
+        assertEquals(10L, sql().from(product).where(filter).distinct().fetchCount());
 
         // fetch
         assertEquals(10, sql().from(product).where(filter).select(product.name).fetch().size());
@@ -117,7 +117,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
         // fetchResults
         QueryResults<String> results = sql().from(product).limit(3).select(product.name).fetchResults();
         assertEquals(3, results.getResults().size());
-        assertEquals(30l, results.getTotal());
+        assertEquals(30L, results.getTotal());
 
     }
 

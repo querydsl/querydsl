@@ -34,7 +34,7 @@ public class QueryTypeOverTransientTest {
     }
 
     @QueryEntity
-    public static abstract class  Entity2 {
+    public abstract static class  Entity2 {
 
         @QueryType(PropertyType.ENTITY)
         @QueryTransient
