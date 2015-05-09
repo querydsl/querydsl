@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -49,7 +49,7 @@ public final class HibernateUtil {
 
     private HibernateUtil() {}
 
-    public static void setConstants(Query query, Map<Object,String> constants, 
+    public static void setConstants(Query query, Map<Object,String> constants,
             Map<ParamExpression<?>, Object> params) {
         for (Map.Entry<Object, String> entry : constants.entrySet()) {
             String key = entry.getValue();

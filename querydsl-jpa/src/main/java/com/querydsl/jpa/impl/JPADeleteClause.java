@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -69,12 +69,12 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
         JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
-    
+
     @Override
     public JPADeleteClause where(Predicate... o) {
         for (Predicate p : o) {
             queryMixin.where(p);
-        }        
+        }
         return this;
     }
 
@@ -82,7 +82,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
         this.lockMode = lockMode;
         return this;
     }
-    
+
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);

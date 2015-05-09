@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,14 +20,14 @@ import com.querydsl.jpa.hibernate.HibernateQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 
 public class SignatureTest {
-    
+
     @Test
     public void test() {
         meet((JPAQuery)null);
         meet((HibernateQuery)null);
         meet((JPQLQuery)null);
     }
-    
+
     public static <T extends FilteredClause<? super T>> T meet(T query) {
         return null;
     }

@@ -22,7 +22,7 @@ public class JPQLTemplatesTest {
             new JPQLTemplates(), new HQLTemplates(),
             new EclipseLinkTemplates(), new OpenJPATemplates()
         );
-        
+
         for (Templates t : templates) {
             assertEquals("{0} like {1} escape '!'", t.getTemplate(Ops.LIKE).toString());
         }
@@ -34,7 +34,7 @@ public class JPQLTemplatesTest {
             new JPQLTemplates('X'), new HQLTemplates('X'),
             new EclipseLinkTemplates('X'), new OpenJPATemplates('X')
         );
-        
+
         for (Templates t : templates) {
             assertEquals("{0} like {1} escape 'X'", t.getTemplate(Ops.LIKE).toString());
         }

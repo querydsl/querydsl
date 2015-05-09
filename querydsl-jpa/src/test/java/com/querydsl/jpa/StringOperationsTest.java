@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,20 +42,20 @@ public class StringOperationsTest extends AbstractQueryTest{
 
     @Test
     @SuppressWarnings("rawtypes")
-    public void IndexOf() {        
+    public void IndexOf() {
         Path path = QCat.cat.name;
         Expression startIndex = Expressions.constant(0);
         Expression endIndex = Expressions.numberOperation(Integer.class, Ops.INDEX_OF, path, Expressions.constant("x"));
         Expression substr = Expressions.stringOperation(Ops.SUBSTR_2ARGS, path, startIndex, endIndex);
         assertToString("substring(cat.name,1,(locate(?1,cat.name)-1)-0)", substr);
     }
-    
+
     @Test
     public void IndexOf2() {
         StringPath str = QCat.cat.name;
         assertToString("substring(cat.name,1,(locate(?1,cat.name)-1)-0)", str.substring(0, str.indexOf("x")));
     }
-    
+
     @Test
     public void IndexOf3() {
         assertToString("substring(cat.name,2,1)", QCat.cat.name.substring(1,2));

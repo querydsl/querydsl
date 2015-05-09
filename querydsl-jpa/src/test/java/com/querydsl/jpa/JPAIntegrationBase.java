@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,14 +32,14 @@ public class JPAIntegrationBase extends ParsingTest implements JPATest {
 
     @Rule
     public static MethodRule targetRule = new TargetRule();
-    
+
     @Rule
     public static MethodRule hibernateOnly = new JPAProviderRule();
-        
+
     private EntityManager em;
 
     private JPQLTemplates templates;
-    
+
     @Override
     protected QueryHelper<?> query() {
         return new QueryHelper<Void>(templates) {

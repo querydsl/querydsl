@@ -339,7 +339,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     protected JPQLSerializer createSerializer() {
         return new JPQLSerializer(getTemplates());
     }
-    
+
     protected void clone(Q query) {
         cacheable = query.cacheable;
         cacheRegion = query.cacheRegion;
@@ -349,7 +349,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
         readOnly = query.readOnly;
         timeout = query.timeout;
     }
-    
+
     protected abstract Q clone(SessionHolder sessionHolder);
 
     /**
@@ -371,7 +371,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     public Q clone(StatelessSession session) {
         return this.clone(new StatelessSessionHolder(session));
     }
-    
+
     /**
      * Clone the state of this query to a new instance
      *

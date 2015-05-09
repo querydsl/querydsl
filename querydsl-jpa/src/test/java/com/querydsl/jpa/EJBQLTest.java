@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,20 +30,20 @@ public class EJBQLTest extends AbstractQueryTest{
     // sqrt(),
     // bit_length(),
     // mod()
-    
+
     @Test
     public void Trim() {
-        assertToString("trim(cat.name)", cat.name.trim());   
+        assertToString("trim(cat.name)", cat.name.trim());
     }
-    
+
     @Test
     public void Lower() {
-        assertToString("lower(cat.name)", cat.name.lower());    
+        assertToString("lower(cat.name)", cat.name.lower());
     }
-    
+
     @Test
     public void Upper() {
-        assertToString("upper(cat.name)", cat.name.upper());   
+        assertToString("upper(cat.name)", cat.name.upper());
     }
 
 }

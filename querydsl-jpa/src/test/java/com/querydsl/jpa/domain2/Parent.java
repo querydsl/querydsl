@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,9 +24,9 @@ public class Parent {
 
     @Id
     private long id;
-    
+
     private String name;
-    
+
     @Embedded
     private Child child;
 
@@ -53,5 +53,5 @@ public class Parent {
     public void setChild(Child child) {
         this.child = child;
     }
-    
+
 }

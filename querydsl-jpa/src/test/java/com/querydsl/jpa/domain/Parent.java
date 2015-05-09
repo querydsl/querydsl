@@ -11,8 +11,8 @@ public class Parent {
 
     @Id
     int id;
-    
-    @OneToMany(mappedBy = "parent")  
+
+    @OneToMany(mappedBy = "parent")
     Set<Child> children;
-    
+
 }

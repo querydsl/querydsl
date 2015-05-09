@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ public class Animal {
     // needed for JPA tests
     @Type(type="com.querydsl.jpa.ExtDoubleType")
     private double bodyWeight;
-    
+
     private float floatProperty;
 
     private Color color;
@@ -52,11 +52,11 @@ public class Animal {
     private java.sql.Time timeField;
 
     public Animal() {}
-    
+
     public Animal(int id) {
         setId(id);
     }
-    
+
     public java.util.Date getBirthdate() {
         return new Date(birthdate.getTime());
     }
@@ -144,5 +144,5 @@ public class Animal {
     public void setFloatProperty(float floatProperty) {
         this.floatProperty = floatProperty;
     }
-    
+
 }

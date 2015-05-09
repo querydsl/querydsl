@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +30,7 @@ public class Foo {
     public int id;
 
     @ElementCollection
-    @CollectionTable(name = "foo_names", joinColumns = {@JoinColumn(name="foo_id")})    
+    @CollectionTable(name = "foo_names", joinColumns = {@JoinColumn(name="foo_id")})
     public List<String> names;
 
     @Temporal(TemporalType.DATE)

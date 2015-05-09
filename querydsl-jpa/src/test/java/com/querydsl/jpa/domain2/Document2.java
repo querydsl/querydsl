@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,37 +20,37 @@ import javax.persistence.*;
 @Entity
 @Table(name="document2_")
 public class Document2 {
-    
+
     @Id
     private long id;
-    
+
     private String documentTitle;
-    
+
     private String documentBody;
-    
+
     private String documentSummary;
-    
+
     private double createdBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    
+
     private double modifiedBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
-    
+
     private double deletedBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
-    
+
     private double documentVersion;
 
     private double documentStatus;
-    
+
     private double entryId;
-    
+
     public long getId() {
         return id;
     }

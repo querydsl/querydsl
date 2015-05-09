@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,33 +21,33 @@ import javax.persistence.*;
 @Entity
 @Table(name="userprop_")
 public class UserProp {
-    
+
     @Id
     private long id;
 
     private String categoryName, categoryDescription;
-    
+
     private double createdBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    
+
     private double modifiedBy;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
-    
+
     private double deletedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date deleteDate;
-    
+
     @OneToMany
     private Set<Category> childCategories;
-    
+
     @OneToMany
     private Set<CategoryProp> properties;
-    
+
     public long getId() {
         return id;
     }
@@ -135,6 +135,6 @@ public class UserProp {
     public void setProperties(Set<CategoryProp> properties) {
         this.properties = properties;
     }
-    
-}    
+
+}
 

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@ import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.jpa.domain.QCat;
 
 public class TupleTest extends AbstractQueryTest {
-        
+
     @Test
     @Ignore // FIXME
     public void test() {
@@ -34,11 +34,11 @@ public class TupleTest extends AbstractQueryTest {
                 .from(cat)
                 .groupBy(cat.mate)
                 .contains(Projections.tuple(cat.mate, cat.birthdate)));
-        
+
         assertToString(
                 "(select cat.birthdate, cat.name, cat.mate from Cat cat " +
                 "where (cat.mate, cat.birthdate) in " +
                     "(select cat.mate, max(cat.birthdate) from Cat cat group by cat.mate))", subQuery);
     }
-    
+
 }

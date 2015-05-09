@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,7 +31,7 @@ import com.querydsl.jpa.impl.JPAQuery;
  *
  */
 public class CustomFinder {
-    
+
     public static <T> List<T> findCustom(EntityManager em, Class<T> entityClass,Map<String,?> filters, String sort) {
         EntityPath<T> entityPath = new EntityPathBase<T>(entityClass, "entity");
         BooleanBuilder builder = new BooleanBuilder();

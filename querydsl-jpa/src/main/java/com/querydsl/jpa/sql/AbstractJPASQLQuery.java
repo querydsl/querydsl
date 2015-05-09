@@ -337,9 +337,9 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
         lockMode = query.lockMode;
         projection = query.projection;
     }
-    
+
     public abstract Q clone(EntityManager entityManager);
-    
+
     @Override
     public Q clone() {
         return this.clone(this.entityManager);

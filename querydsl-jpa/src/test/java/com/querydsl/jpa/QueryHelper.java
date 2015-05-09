@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,7 +42,7 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
     public QueryHelper(JPQLTemplates templates) {
         this(new DefaultQueryMetadata(), templates);
     }
-    
+
     public QueryHelper(QueryMetadata metadata, JPQLTemplates templates) {
         super(metadata, templates);
     }
@@ -106,5 +106,5 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
         queryMixin.setProjection(exprs);
         return (QueryHelper<Tuple>) this;
     }
-    
+
 }

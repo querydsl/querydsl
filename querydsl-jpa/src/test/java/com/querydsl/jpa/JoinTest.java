@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,7 +31,7 @@ public class JoinTest {
 
         List<String> getNames();
     }
-    
+
     private final Entity alias = Alias.alias(Entity.class);
 
     private final StringPath path = Expressions.stringPath("path");
@@ -44,7 +44,7 @@ public class JoinTest {
         subQuery.innerJoin($(alias.getNames()), path);
         // TODO : assertions
     }
-    
+
     @Test
     public void SubQuery_Join() {
         subQuery.from($(alias));
@@ -65,14 +65,14 @@ public class JoinTest {
         query.innerJoin($(alias.getNames()), path);
         // TODO : assertions
     }
-    
+
     @Test
     public void Query_Join() {
         query.from($(alias));
         query.join($(alias.getNames()), path);
         // TODO : assertions
     }
-    
+
     @Test
     public void Query_LeftJoin() {
         query.from($(alias));

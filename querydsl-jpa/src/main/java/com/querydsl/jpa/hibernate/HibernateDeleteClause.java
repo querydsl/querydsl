@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -59,7 +59,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
     public HibernateDeleteClause(Session session, EntityPath<?> entity, JPQLTemplates templates) {
         this(new DefaultSessionHolder(session), entity, templates);
     }
-    
+
     public HibernateDeleteClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates) {
         this.session = session;
         this.templates = templates;
@@ -79,12 +79,12 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
-    
+
     @Override
     public HibernateDeleteClause where(Predicate... o) {
         for (Predicate p : o) {
             queryMixin.where(p);
-        }        
+        }
         return this;
     }
 

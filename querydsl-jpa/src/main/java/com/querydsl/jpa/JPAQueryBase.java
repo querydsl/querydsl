@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,9 +40,9 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
     protected JPQLTemplates getTemplates() {
         return templates;
     }
-    
+
     protected abstract JPQLSerializer createSerializer();
-    
+
     protected JPQLSerializer serialize(boolean forCountRow) {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
