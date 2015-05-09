@@ -14,13 +14,13 @@
 package com.querydsl.sql;
 
 import com.querydsl.core.QueryFactory;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.sql.dml.SQLDeleteClause;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.dml.SQLMergeClause;
 import com.querydsl.sql.dml.SQLUpdateClause;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.SubQueryExpression;
 
 /**
  * Factory interface for query and clause creation.

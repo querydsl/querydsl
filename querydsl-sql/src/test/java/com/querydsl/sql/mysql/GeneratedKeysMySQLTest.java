@@ -13,17 +13,19 @@
  */
 package com.querydsl.sql.mysql;
 
+import static org.junit.Assert.*;
+
 import java.sql.*;
 
-import com.querydsl.sql.QGeneratedKeysEntity;
-import com.querydsl.sql.H2Templates;
-import com.querydsl.sql.dml.SQLInsertClause;
-import com.querydsl.core.testutil.ExternalDB;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import static org.junit.Assert.*;
+
+import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.QGeneratedKeysEntity;
+import com.querydsl.sql.dml.SQLInsertClause;
 
 @Category(ExternalDB.class)
 public class GeneratedKeysMySQLTest {

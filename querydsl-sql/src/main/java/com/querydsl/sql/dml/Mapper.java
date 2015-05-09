@@ -15,8 +15,8 @@ package com.querydsl.sql.dml;
 
 import java.util.Map;
 
-import com.querydsl.sql.RelationalPath;
 import com.querydsl.core.types.Path;
+import com.querydsl.sql.RelationalPath;
 
 /**
  * Create a Map of updates for a given domain object

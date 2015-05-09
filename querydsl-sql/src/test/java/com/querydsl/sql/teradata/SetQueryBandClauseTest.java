@@ -1,10 +1,12 @@
 package com.querydsl.sql.teradata;
 
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.SQLTemplates;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.SQLTemplates;
 
 public class SetQueryBandClauseTest {
 

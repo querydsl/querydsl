@@ -20,16 +20,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.types.Constant;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.ParamExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.TemplateExpression;
-import com.querydsl.core.types.Visitor;
+import com.querydsl.core.types.*;
 
 /**
  * {@code RelationalPathExtractor} extracts {@link RelationalPath} instances from expressions and queries

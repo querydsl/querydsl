@@ -6,17 +6,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 
-import com.google.common.base.Throwables;
-import com.querydsl.sql.AbstractBaseTest;
-import com.querydsl.sql.Connections;
-import com.querydsl.core.JavaSpecVersion;
-import com.querydsl.core.QueryException;
-import com.querydsl.sql.DefaultSQLExceptionTranslator;
-import com.querydsl.sql.H2Templates;
-import com.querydsl.sql.SQLExceptionTranslator;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.google.common.base.Throwables;
+import com.querydsl.core.JavaSpecVersion;
+import com.querydsl.core.QueryException;
+import com.querydsl.sql.*;
 
 public class H2ExceptionSuiteTest extends AbstractBaseTest {
 

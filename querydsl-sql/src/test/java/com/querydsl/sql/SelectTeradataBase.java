@@ -1,12 +1,12 @@
 package com.querydsl.sql;
 
-import static com.querydsl.sql.Constants.survey;
 import static com.querydsl.core.Target.TERADATA;
+import static com.querydsl.sql.Constants.survey;
 
 import org.junit.Test;
 
-import com.querydsl.sql.teradata.SetQueryBandClause;
 import com.querydsl.core.testutil.IncludeIn;
+import com.querydsl.sql.teradata.SetQueryBandClause;
 
 public class SelectTeradataBase extends AbstractBaseTest {
 

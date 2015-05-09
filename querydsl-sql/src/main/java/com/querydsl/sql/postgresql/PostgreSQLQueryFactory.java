@@ -17,7 +17,10 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.querydsl.sql.*;
+import com.querydsl.sql.AbstractSQLQueryFactory;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.PostgreSQLTemplates;
+import com.querydsl.sql.SQLTemplates;
 
 /**
  * PostgreSQL specific implementation of SQLQueryFactory

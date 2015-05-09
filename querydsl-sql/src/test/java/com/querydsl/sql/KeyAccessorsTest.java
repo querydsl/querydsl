@@ -13,12 +13,14 @@
  */
 package com.querydsl.sql;
 
-import java.io.Serializable;
-
-import com.querydsl.core.types.dsl.NumberPath;
-import org.junit.Test;
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 import static org.junit.Assert.assertNotNull;
+
+import java.io.Serializable;
+
+import org.junit.Test;
+
+import com.querydsl.core.types.dsl.NumberPath;
 
 public class KeyAccessorsTest {
 

@@ -13,11 +13,7 @@
  */
 package com.querydsl.sql.types;
 
-import java.sql.Blob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
 /**
  * {@code BlobType} maps Blob to Blob on the JDBC level

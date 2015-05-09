@@ -13,11 +13,11 @@
  */
 package com.querydsl.sql;
 
-import com.querydsl.core.QueryMetadata;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Collection;
+
+import com.querydsl.core.QueryMetadata;
 
 /**
  * A context object that is progressively filled out during query execution and is passed to each {@link

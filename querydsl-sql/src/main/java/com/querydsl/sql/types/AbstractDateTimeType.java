@@ -13,11 +13,11 @@
  */
 package com.querydsl.sql.types;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Common abstract superclass for Type implementations

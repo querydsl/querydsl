@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.querydsl.core.QueryException;
-import com.querydsl.sql.RelationalPath;
-import com.querydsl.sql.types.Null;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.util.ReflectionUtils;
+import com.querydsl.sql.RelationalPath;
+import com.querydsl.sql.types.Null;
 
 /**
  * Creates the mapping by inspecting the RelationalPath and Object via reflection.

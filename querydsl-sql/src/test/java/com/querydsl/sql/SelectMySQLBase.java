@@ -1,12 +1,12 @@
 package com.querydsl.sql;
 
-import static com.querydsl.sql.Constants.survey;
 import static com.querydsl.core.Target.MYSQL;
+import static com.querydsl.sql.Constants.survey;
 
 import org.junit.Test;
 
-import com.querydsl.sql.mysql.MySQLQuery;
 import com.querydsl.core.testutil.IncludeIn;
+import com.querydsl.sql.mysql.MySQLQuery;
 
 
 public class SelectMySQLBase extends AbstractBaseTest {

@@ -13,14 +13,16 @@
  */
 package com.querydsl.sql;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Connection;
 
-import com.querydsl.core.JoinFlag;
-import com.querydsl.sql.domain.QSurvey;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+
+import com.querydsl.core.JoinFlag;
+import com.querydsl.sql.domain.QSurvey;
 
 public class JoinFlagsTest {
     

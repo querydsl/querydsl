@@ -8,9 +8,9 @@ import org.junit.experimental.categories.Category;
 import com.google.common.collect.Lists;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.testutil.ReportingOnly;
 import com.querydsl.sql.domain.QEmployee;
-import com.querydsl.core.support.QueryMixin;
 
 @Category(ReportingOnly.class)
 public class PaginationTest {

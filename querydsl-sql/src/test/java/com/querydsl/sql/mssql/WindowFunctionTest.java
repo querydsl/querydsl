@@ -19,11 +19,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLSerializer;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.WindowFunction;
-import com.querydsl.core.types.Expression;
 
 public class WindowFunctionTest {
 

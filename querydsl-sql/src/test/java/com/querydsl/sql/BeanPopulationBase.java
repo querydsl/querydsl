@@ -13,24 +13,17 @@
  */
 package com.querydsl.sql;
 
-import static com.querydsl.core.Target.CUBRID;
-import static com.querydsl.core.Target.DB2;
-import static com.querydsl.core.Target.DERBY;
-import static com.querydsl.core.Target.ORACLE;
-import static com.querydsl.core.Target.POSTGRESQL;
-import static com.querydsl.core.Target.SQLITE;
-import static com.querydsl.core.Target.SQLSERVER;
-import static com.querydsl.core.Target.TERADATA;
+import static com.querydsl.core.Target.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.Test;
 
+import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.sql.dml.BeanMapper;
 import com.querydsl.sql.domain.Employee;
 import com.querydsl.sql.domain.QEmployee;
-import com.querydsl.core.testutil.ExcludeIn;
 
 @ExcludeIn({CUBRID, DB2, DERBY, ORACLE, SQLSERVER, POSTGRESQL, SQLITE, TERADATA})
 public class BeanPopulationBase extends AbstractBaseTest {

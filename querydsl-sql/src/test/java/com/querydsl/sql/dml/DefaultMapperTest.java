@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.core.types.Path;
+import com.querydsl.sql.domain.QEmployee;
 
 public class DefaultMapperTest extends AbstractMapperTest {
     

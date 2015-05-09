@@ -13,7 +13,8 @@
  */
 package com.querydsl.sql;
 
-import static com.querydsl.sql.SQLExpressions.*;
+import static com.querydsl.sql.SQLExpressions.select;
+import static com.querydsl.sql.SQLExpressions.union;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;

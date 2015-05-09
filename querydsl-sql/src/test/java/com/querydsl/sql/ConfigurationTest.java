@@ -13,18 +13,20 @@
  */
 package com.querydsl.sql;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.easymock.EasyMock;
+import org.junit.Test;
+
 import com.querydsl.core.alias.Gender;
 import com.querydsl.sql.domain.QSurvey;
 import com.querydsl.sql.types.*;
-import org.easymock.EasyMock;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class ConfigurationTest {
 

@@ -19,8 +19,8 @@ import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * {@code SQLServerTemplates} is an SQL dialect for Microsoft SQL Server

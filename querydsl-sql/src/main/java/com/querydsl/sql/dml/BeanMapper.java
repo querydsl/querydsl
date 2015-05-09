@@ -16,10 +16,10 @@ package com.querydsl.sql.dml;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.querydsl.sql.RelationalPath;
-import com.querydsl.sql.types.Null;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.util.BeanMap;
+import com.querydsl.sql.RelationalPath;
+import com.querydsl.sql.types.Null;
 
 /**
  * Creates the mapping by inspecting object via bean inspection.

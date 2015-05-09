@@ -9,8 +9,8 @@ import org.junit.experimental.categories.Category;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.sql.domain.QSurvey;
 import com.querydsl.core.testutil.Performance;
+import com.querydsl.sql.domain.QSurvey;
 
 @Category(Performance.class)
 public class PerformanceTest {

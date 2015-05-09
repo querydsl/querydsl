@@ -18,12 +18,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.querydsl.core.QueryException;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.util.ReflectionUtils;
 import com.querydsl.sql.Column;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.types.Null;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.util.ReflectionUtils;
 
 /**
  * Creates the mapping via @Column annotated fields in the object. Field names don't have to match those in the RelationalPath.

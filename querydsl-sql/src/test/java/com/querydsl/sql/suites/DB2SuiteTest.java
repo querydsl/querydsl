@@ -3,8 +3,8 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.sql.*;
 import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.sql.*;
 
 @Category(ExternalDB.class)
 public class DB2SuiteTest extends AbstractSuite {

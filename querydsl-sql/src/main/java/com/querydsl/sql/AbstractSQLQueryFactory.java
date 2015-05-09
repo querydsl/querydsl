@@ -17,13 +17,13 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.sql.dml.SQLDeleteClause;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.dml.SQLMergeClause;
 import com.querydsl.sql.dml.SQLUpdateClause;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.SubQueryExpression;
 
 /**
  * {@code AbstractSQLQueryFactory} is the base class for {@link SQLCommonQueryFactory} implementations

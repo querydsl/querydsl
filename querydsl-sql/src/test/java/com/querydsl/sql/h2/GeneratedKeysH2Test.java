@@ -13,16 +13,18 @@
  */
 package com.querydsl.sql.h2;
 
+import static org.junit.Assert.*;
+
 import java.sql.*;
 import java.util.Collections;
 
-import com.querydsl.sql.QGeneratedKeysEntity;
-import com.querydsl.sql.H2Templates;
-import com.querydsl.sql.dml.SQLInsertClause;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.QGeneratedKeysEntity;
+import com.querydsl.sql.dml.SQLInsertClause;
 
 public class GeneratedKeysH2Test {
 
