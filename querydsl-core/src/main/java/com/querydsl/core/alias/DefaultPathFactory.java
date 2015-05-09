@@ -20,7 +20,8 @@ import java.util.Set;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
 
 /**
  * {@code DefaultPathFactory} is the default implementation of the {@link PathFactory} interface

@@ -18,7 +18,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.JavaTemplates;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Templates;
 
 public class JavaTemplatesTest {
 

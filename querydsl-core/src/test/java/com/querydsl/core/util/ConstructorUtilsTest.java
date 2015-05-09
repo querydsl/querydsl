@@ -13,14 +13,16 @@
  */
 package com.querydsl.core.util;
 
-import static com.querydsl.core.util.ConstructorUtils.*;
 import static com.querydsl.core.util.ArrayUtils.isEmpty;
+import static com.querydsl.core.util.ConstructorUtils.getConstructorParameters;
 import static org.junit.Assert.*;
 
-import com.querydsl.core.types.ProjectionExample;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+
 import org.junit.Test;
+
+import com.querydsl.core.types.ProjectionExample;
 
 /**
  *

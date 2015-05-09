@@ -15,20 +15,8 @@ package com.querydsl.core;
 
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.ParamExpression;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.ValidatingVisitor;
-import com.querydsl.core.types.dsl.BeanPath;
-import com.querydsl.core.types.dsl.BooleanPath;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.ListPath;
-import com.querydsl.core.types.dsl.MapPath;
-import com.querydsl.core.types.dsl.PathInits;
-import com.querydsl.core.types.dsl.SetPath;
-import com.querydsl.core.types.dsl.SimplePath;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.*;
 
 
 /**

@@ -19,8 +19,6 @@ import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.dsl.ListPath;
-import com.querydsl.core.types.dsl.StringPath;
 
 public class ListPathTest {
     

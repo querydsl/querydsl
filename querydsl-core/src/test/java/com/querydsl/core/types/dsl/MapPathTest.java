@@ -13,13 +13,12 @@
  */
 package com.querydsl.core.types.dsl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.dsl.MapPath;
-import com.querydsl.core.types.dsl.StringPath;
 
 public class MapPathTest {
 

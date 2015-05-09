@@ -18,9 +18,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.core.types.dsl.PathBuilderFactory;
-
 public class PathBuilderFactoryTest {
 
     @Test

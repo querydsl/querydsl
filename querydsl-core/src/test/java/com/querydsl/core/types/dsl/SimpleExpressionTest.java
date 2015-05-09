@@ -24,7 +24,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Path;
 
 public class SimpleExpressionTest {
 

@@ -13,15 +13,10 @@
  */
 package com.querydsl.core.util;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
-import static java.util.Arrays.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.junit.Test;
 

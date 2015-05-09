@@ -13,13 +13,13 @@
  */
 package com.querydsl.core.domain.query;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import java.sql.Date;
 import java.sql.Time;
 
 import com.querydsl.core.domain.Animal;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
 
 

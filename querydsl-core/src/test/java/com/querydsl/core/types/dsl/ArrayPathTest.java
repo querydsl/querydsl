@@ -13,12 +13,11 @@
  */
 package com.querydsl.core.types.dsl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.dsl.ArrayPath;
 
 
 public class ArrayPathTest {

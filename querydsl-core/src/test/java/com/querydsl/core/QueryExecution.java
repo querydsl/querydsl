@@ -26,18 +26,7 @@ import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.MapExpression;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.ArrayExpression;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CollectionExpressionBase;
-import com.querydsl.core.types.dsl.DateExpression;
-import com.querydsl.core.types.dsl.DateTimeExpression;
-import com.querydsl.core.types.dsl.ListExpression;
-import com.querydsl.core.types.dsl.MapExpressionBase;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.SimpleExpression;
-import com.querydsl.core.types.dsl.StringExpression;
-import com.querydsl.core.types.dsl.TimeExpression;
-import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * The Class StandardTest.

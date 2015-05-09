@@ -13,16 +13,16 @@
  */
 package com.querydsl.core.types.dsl;
 
+import static org.junit.Assert.*;
+
 import java.sql.Time;
 import java.util.Date;
 import java.util.Map;
 
+import org.junit.Test;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.util.BeanMap;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class PathBuilderTest {
 

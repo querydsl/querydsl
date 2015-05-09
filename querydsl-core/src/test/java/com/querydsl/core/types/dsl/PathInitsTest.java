@@ -18,8 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.dsl.PathInits;
-
 public class PathInitsTest {
 
     @Test

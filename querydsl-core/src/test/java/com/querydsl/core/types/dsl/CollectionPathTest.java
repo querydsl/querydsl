@@ -13,13 +13,11 @@
  */
 package com.querydsl.core.types.dsl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.PathMetadataFactory;
-import com.querydsl.core.types.dsl.CollectionPath;
-import com.querydsl.core.types.dsl.StringPath;
 
 public class CollectionPathTest {
     

@@ -1,13 +1,12 @@
 package com.querydsl.core.types.dsl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.Collection;
 import java.util.Map;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
-import com.querydsl.core.types.dsl.PathBuilderValidator;
 
 public class PathBuilderValidatorTest {
 

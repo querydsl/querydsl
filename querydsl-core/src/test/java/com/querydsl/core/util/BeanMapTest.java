@@ -1,11 +1,13 @@
 package com.querydsl.core.util;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class BeanMapTest {
 

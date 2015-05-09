@@ -16,8 +16,8 @@ package com.querydsl.core;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Visitor;
 

@@ -13,12 +13,12 @@
  */
 package com.querydsl.core.domain.query;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import java.io.Serializable;
 
 import com.querydsl.core.domain.CommonIdentifiable;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.BeanPath;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.NumberPath;
