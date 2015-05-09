@@ -32,13 +32,13 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
  * </pre>
  */
 public class SpringConnectionProvider implements Provider<Connection> {
-    
+
     private final DataSource dataSource;
-    
+
     public SpringConnectionProvider(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
     @Override
     public Connection get() {
         Connection connection = DataSourceUtils.getConnection(dataSource);
@@ -47,5 +47,5 @@ public class SpringConnectionProvider implements Provider<Connection> {
         }
         return connection;
     }
-    
+
 }
