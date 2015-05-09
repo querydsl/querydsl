@@ -26,11 +26,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
+import com.mysema.codegen.model.*;
 import com.querydsl.core.annotations.PropertyType;
 
 public class EntitySerializerTest {

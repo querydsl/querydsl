@@ -13,14 +13,15 @@
  */
 package com.querydsl.codegen;
 
-import com.SomeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import org.junit.Test;
+
+import com.SomeClass;
 
 
 public class ClassPathUtilsTest {

@@ -13,16 +13,17 @@
  */
 package com.querydsl.codegen;
 
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.*;
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
+import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.*;
 
 
 public class ProjectionSerializerTest {

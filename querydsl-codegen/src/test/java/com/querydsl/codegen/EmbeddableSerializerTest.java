@@ -23,10 +23,11 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
+import org.junit.Test;
+
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.core.annotations.PropertyType;
-import org.junit.Test;
 
 public class EmbeddableSerializerTest {
 

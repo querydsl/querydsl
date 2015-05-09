@@ -13,9 +13,7 @@
  */
 package com.querydsl.codegen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -27,11 +25,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.TypeExtends;
-import com.mysema.codegen.model.Types;
+import com.mysema.codegen.model.*;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.types.Expression;
 

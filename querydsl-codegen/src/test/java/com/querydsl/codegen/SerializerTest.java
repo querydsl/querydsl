@@ -16,26 +16,14 @@ package com.querydsl.codegen;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.StringUtils;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Constructor;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.TypeExtends;
-import com.mysema.codegen.model.TypeSuper;
+import com.mysema.codegen.model.*;
 
 public class SerializerTest {
 
