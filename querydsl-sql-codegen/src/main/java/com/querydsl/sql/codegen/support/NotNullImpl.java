@@ -16,7 +16,7 @@ package com.querydsl.sql.codegen.support;
 import java.lang.annotation.Annotation;
 
 import javax.validation.Payload;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author tiwe

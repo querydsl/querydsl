@@ -14,11 +14,7 @@
 package com.querydsl.sql.codegen;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.Parameter;
