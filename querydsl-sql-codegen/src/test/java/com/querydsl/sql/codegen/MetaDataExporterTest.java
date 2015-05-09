@@ -65,6 +65,8 @@ public class MetaDataExporterTest {
             // reserved words
             stmt.execute("create table reserved (id int, while int)");
 
+            stmt.execute("create table class (id int)");
+
             // underscore
             stmt.execute("create table underscore (e_id int, c_id int)");
 

@@ -33,12 +33,9 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String getClassName(String tableName) {
-        if (tableName.length() > 1) {
-            return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH) +
-                    toCamelCase(tableName.substring(1));
-        } else {
-            return tableName.toUpperCase(Locale.ENGLISH);
-        }
+        String className = tableName.substring(0, 1).toUpperCase(Locale.ENGLISH) +
+                toCamelCase(tableName.substring(1));
+        return normalizeJavaName(className);
     }
 
     @Override
@@ -48,28 +45,27 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
 
     @Override
     public String getDefaultVariableName(EntityType entityType) {
-        return escape(entityType, toCamelCase(entityType.getData().get("table").toString()));
+        String variable = escape(entityType, toCamelCase(entityType.getData().get("table").toString()));
+        return normalizeJavaName(variable);
     }
 
     @Override
     public String getForeignKeysVariable(EntityType entityType) {
-        return escape(entityType, foreignKeysVariable);
+        String variable = escape(entityType, foreignKeysVariable);
+        return normalizeJavaName(variable);
     }
 
     @Override
     public String getPrimaryKeysVariable(EntityType entityType) {
-        return escape(entityType, primaryKeysVariable);
+        String variable = escape(entityType, primaryKeysVariable);
+        return normalizeJavaName(variable);
     }
 
     @Override
     public String getPropertyName(String columnName, EntityType entityType) {
-        if (columnName.length() > 1) {
-            String normalized = normalizePropertyName(columnName);
-            return normalizePropertyName(normalized.substring(0, 1).toLowerCase(Locale.ENGLISH) +
-                    toCamelCase(normalized.substring(1)));
-        } else {
-            return columnName.toLowerCase(Locale.ENGLISH);
-        }
+        String normalized = normalizeJavaName(columnName);
+        return normalizeJavaName(normalized.substring(0, 1).toLowerCase(Locale.ENGLISH) +
+                toCamelCase(normalized.substring(1)));
     }
 
     @Override
@@ -77,12 +73,14 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
         if (fkName.toLowerCase().startsWith("fk_")) {
             fkName = fkName.substring(3) + "_" + fkName.substring(0,2);
         }
-        return escape(entityType, getPropertyName(fkName, entityType));
+        String propertyName = escape(entityType, getPropertyName(fkName, entityType));
+        return normalizeJavaName(propertyName);
     }
 
     @Override
     public String getPropertyNameForInverseForeignKey(String fkName, EntityType entityType) {
-        return "_" + getPropertyNameForForeignKey(fkName, entityType);
+        String propertyName = "_" + getPropertyNameForForeignKey(fkName, entityType);
+        return normalizeJavaName(propertyName);
     }
 
 
@@ -94,14 +92,10 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
         String propertyName = getPropertyName(pkName, entityType);
         for (String candidate : ImmutableList.of(propertyName, propertyName + "Pk")) {
             if (!entityType.getEscapedPropertyNames().contains(candidate)) {
-                return candidate;
+                return normalizeJavaName(candidate);
             }
         }
-        return escape(entityType, propertyName);
-    }
-
-    protected String normalizePropertyName(String name) {
-        return Naming.normalize(name, reservedSuffix);
+        return normalizeJavaName(escape(entityType, propertyName));
     }
 
     protected String toCamelCase(String str) {

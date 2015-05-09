@@ -77,29 +77,29 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
 
     @Override
     public String normalizeColumnName(String columnName) {
-        if (columnName != null) {
-            return columnName.replaceAll("\r", "").replaceAll("\n", " ");
-        } else {
-            return null;
-        }
+        return normalizeSQLName(columnName);
     }
 
     @Override
     public String normalizeTableName(String tableName) {
-        if (tableName != null) {
-            return tableName.replaceAll("\r", "").replaceAll("\n", " ");
+        return normalizeSQLName(tableName);
+    }
+
+    @Override
+    public String normalizeSchemaName(String schemaName) {
+        return normalizeSQLName(schemaName);
+    }
+
+    protected String normalizeSQLName(String name) {
+        if (name != null) {
+            return name.replaceAll("\r", "").replaceAll("\n", " ");
         } else {
             return null;
         }
     }
 
-    @Override
-    public String normalizeSchemaName(String schemaName) {
-        if (schemaName != null) {
-            return schemaName.replaceAll("\r", "").replaceAll("\n", " ");
-        } else {
-            return null;
-        }
+    protected String normalizeJavaName(String name) {
+        return Naming.normalize(name, reservedSuffix);
     }
 
     public void setForeignKeysClassName(String foreignKeysClassName) {
