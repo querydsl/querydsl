@@ -16,14 +16,14 @@ import com.querydsl.jpa.codegen.CompileUtils;
 import com.querydsl.jpa.codegen.HibernateDomainExporter;
 
 public class DomainExporter5Test {
-    
+
     @Test
     public void Execute() throws IOException {
         File gen = new File("target/" + getClass().getSimpleName());
         FileUtils.delete(gen);
         Configuration config = new Configuration();
-        for (String res : Arrays.asList("Customer.hbm.xml", 
-                "CustomerContact.hbm.xml", 
+        for (String res : Arrays.asList("Customer.hbm.xml",
+                "CustomerContact.hbm.xml",
                 "CustomerHistory.hbm.xml")) {
             config.addFile(new File("src/test/resources/com/querydsl/jpa/domain5/" + res));
         }
@@ -45,5 +45,5 @@ public class DomainExporter5Test {
             assertTrue(str + " was not contained", result.contains(str));
         }
     }
-    
+
 }

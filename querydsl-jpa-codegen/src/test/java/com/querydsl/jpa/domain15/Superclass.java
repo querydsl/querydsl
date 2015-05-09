@@ -8,9 +8,9 @@ import com.querydsl.core.annotations.QuerySupertype;
 public class Superclass<T> {
 
     Long id;
-    
+
     List<T> values;
-    
+
     List<? extends T> values2;
 
 }

@@ -7,11 +7,11 @@ import java.util.Set;
 public class Person<T extends Contact, H extends HistoryEntity> {
 
     private Long id;
-    
+
     private Set<T> contacts = new HashSet<T>();
 
     private Set<H> history = new HashSet<H>();
-    
+
     public Long getId() {
         return id;
     }
@@ -36,5 +36,5 @@ public class Person<T extends Contact, H extends HistoryEntity> {
         this.history = history;
     }
 
-    
+
 }

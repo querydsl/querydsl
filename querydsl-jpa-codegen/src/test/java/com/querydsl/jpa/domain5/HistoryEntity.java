@@ -3,7 +3,7 @@ package com.querydsl.jpa.domain5;
 public class HistoryEntity {
 
     private Long id;
-    
+
     private String description;
 
     public String getDescription() {
@@ -21,7 +21,7 @@ public class HistoryEntity {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    
+
+
 
 }

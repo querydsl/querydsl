@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,12 +19,12 @@ import com.google.common.collect.ImmutableList;
 
 /**
  * Constants defines keywords used in Hibernate
- * 
+ *
  * @author tiwe
  *
  */
 final class Constants {
-    
+
     public static final List<String> keywords = ImmutableList.of(
             "ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",
             "BIT_LENGTH[51]","BOTH","BY","CASE","CHAR_LENGTH",
