@@ -13,11 +13,7 @@
  */
 package com.querydsl.maven;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import com.querydsl.codegen.GenericExporter;
 

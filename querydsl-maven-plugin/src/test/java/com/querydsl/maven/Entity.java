@@ -1,11 +1,12 @@
 package com.querydsl.maven;
 
-import javax.jdo.annotations.PersistenceCapable;
-
-import com.querydsl.core.annotations.QueryEntity;
 import java.util.Date;
+
+import javax.jdo.annotations.PersistenceCapable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.querydsl.core.annotations.QueryEntity;
 
 @PersistenceCapable
 @javax.persistence.Entity

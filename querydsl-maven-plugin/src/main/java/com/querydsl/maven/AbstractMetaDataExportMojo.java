@@ -28,7 +28,9 @@ import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.sql.codegen.*;
+import com.querydsl.sql.codegen.DefaultNamingStrategy;
+import com.querydsl.sql.codegen.MetaDataExporter;
+import com.querydsl.sql.codegen.NamingStrategy;
 import com.querydsl.sql.types.Type;
 
 /**
