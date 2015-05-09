@@ -15,8 +15,8 @@ package com.querydsl.mongodb;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ArrayPath;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 /**
  * {@code Point} is an adapter type for Double[] arrays to use geo spatial querying features of Mongodb

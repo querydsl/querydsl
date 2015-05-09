@@ -22,8 +22,8 @@ import com.google.common.base.Function;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.querydsl.mongodb.AbstractMongodbQuery;
 import com.querydsl.core.types.EntityPath;
+import com.querydsl.mongodb.AbstractMongodbQuery;
 
 /**
  * {@code MorphiaQuery} extends {@link AbstractMongodbQuery} with Morphia specific transformations
