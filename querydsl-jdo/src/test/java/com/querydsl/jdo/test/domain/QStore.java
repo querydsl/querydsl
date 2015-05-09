@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,13 +43,13 @@ public class QStore extends EntityPathBase<com.querydsl.jdo.test.domain.Store>{
     public QStore(String path) {
           this(Store.class, path);
     }
-    
+
     public QStore(Class<? extends Store> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
-    
+
     public QStore(PathMetadata metadata) {
          super(Store.class, metadata);
     }
-    
+
 }

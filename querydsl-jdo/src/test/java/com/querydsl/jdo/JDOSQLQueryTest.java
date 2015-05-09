@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,43 +39,43 @@ import com.querydsl.sql.HSQLDBTemplates;
 import com.querydsl.sql.SQLTemplates;
 
 public class JDOSQLQueryTest extends AbstractJDOTest{
-    
+
     private final SQLTemplates sqlTemplates = new HSQLDBTemplates();
-    
+
     private final SProduct product = SProduct.product;
-    
+
     protected JDOSQLQuery<?> sql() {
         return new JDOSQLQuery<Void>(pm, sqlTemplates);
     }
 
     @Test
-    public void Count() {        
+    public void Count() {
         assertEquals(30l, sql().from(product).fetchCount());
     }
-    
+
     @Test(expected=NonUniqueResultException.class)
     public void UniqueResult() {
         sql().from(product).select(product.name).fetchOne();
     }
-    
+
     @Test
     public void SingleResult() {
         sql().from(product).select(product.name).fetchFirst();
     }
-    
+
     @Test
     public void SingleResult_With_Array() {
         sql().from(product).select(new Expression[]{product.name}).fetchFirst();
     }
-    
-    @Test    
+
+    @Test
     public void StartsWith_Count() {
         assertEquals(10l, sql().from(product).where(product.name.startsWith("A")).fetchCount());
         assertEquals(10l, sql().from(product).where(product.name.startsWith("B")).fetchCount());
         assertEquals(10l, sql().from(product).where(product.name.startsWith("C")).fetchCount());
-        
+
     }
-    
+
     @Test
     public void Eq_Count() {
         for (int i = 0; i < 10; i++) {
@@ -84,11 +84,11 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
             assertEquals(1l, sql().from(product).where(product.name.eq("C"+i)).fetchCount());
         }
     }
-    
+
     @Test
     public void ScalarQueries() {
         BooleanExpression filter = product.name.startsWith("A");
-        
+
         // fetchCount
         assertEquals(10l, sql().from(product).where(filter).fetchCount());
 
@@ -120,7 +120,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
         assertEquals(30l, results.getTotal());
 
     }
-    
+
     @Ignore
     @Test
     @SuppressWarnings("unchecked")
@@ -130,7 +130,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
         List<Integer> list = sql().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
     }
-    
+
     @Ignore
     @Test
     @SuppressWarnings("unchecked")

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,13 +43,13 @@ public class QProduct extends EntityPathBase<com.querydsl.jdo.test.domain.Produc
     public QProduct(String path) {
           this(com.querydsl.jdo.test.domain.Product.class, path);
     }
-    
+
     public QProduct(Class<? extends com.querydsl.jdo.test.domain.Product> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
-    
+
     public QProduct(PathMetadata metadata) {
          super(com.querydsl.jdo.test.domain.Product.class, metadata);
     }
-    
+
 }

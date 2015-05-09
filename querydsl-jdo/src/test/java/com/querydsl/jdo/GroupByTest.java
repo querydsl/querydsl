@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ public class GroupByTest extends AbstractJDOTest {
         assertEquals(3, query().from(product).groupBy(product.description).select(product.description).fetch().size());
         assertEquals(3, query().from(product).groupBy(product.price).select(product.price).fetch().size());
     }
-    
+
     @Test
     public void Having() {
         assertEquals(3, query().from(product)

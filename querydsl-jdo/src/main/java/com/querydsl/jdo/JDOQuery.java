@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,13 +70,13 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
 
     /**
      * Create a new {@link JDOQuery} instance
-     * 
+     *
      * @param persistenceManager PersistenceManager instance to use
      * @param templates templates to use
      * @param metadata query metadata
      * @param detach detached results or not
      */
-    protected JDOQuery(PersistenceManager persistenceManager, JDOQLTemplates templates, 
+    protected JDOQuery(PersistenceManager persistenceManager, JDOQLTemplates templates,
             QueryMetadata metadata, boolean detach) {
         super(persistenceManager, templates, metadata, detach);
     }

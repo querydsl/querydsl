@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -85,17 +85,17 @@ public class BasicsTest extends AbstractJDOTest {
     public void List_Distinct() {
         query().from(product).distinct().select(product).fetch();
     }
-    
+
     @Test
     public void List_Distinct_Two_Sources() {
         query().from(product, product2).distinct().select(product, product2).fetch();
     }
-    
+
     @Test
     public void Single_Result() {
         query().from(product).select(product).fetchFirst();
     }
-    
+
     @Test
     public void Single_Result_With_Array() {
         query().from(product).select(new Expression<?>[]{product}).fetchFirst();

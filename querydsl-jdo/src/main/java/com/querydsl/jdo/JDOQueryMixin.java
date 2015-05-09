@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,13 +20,13 @@ import com.querydsl.core.types.*;
 
 /**
  * {@code JDOQueryMixin} extends {@link QueryMixin} to provide module-specific extensions
- * 
+ *
  * @author tiwe
  *
  * @param <T>
  */
 public class JDOQueryMixin<T> extends QueryMixin<T> {
-    
+
     public JDOQueryMixin() {}
 
     public JDOQueryMixin(QueryMetadata metadata) {
@@ -36,18 +36,18 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
     public JDOQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
-        
+
     @Override
     protected Predicate convert(Predicate predicate, Role role) {
         predicate = (Predicate)ExpressionUtils.extract(predicate);
         if (predicate != null) {
-            Context context = new Context();            
+            Context context = new Context();
             Predicate transformed = (Predicate) predicate.accept(collectionAnyVisitor, context);
             for (int i = 0; i < context.paths.size(); i++) {
-                Path<?> path = context.paths.get(i);            
+                Path<?> path = context.paths.get(i);
                 addCondition(context, i, path, role);
             }
-            return transformed;    
+            return transformed;
         } else {
             return null;
         }
@@ -55,7 +55,7 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
 
     @SuppressWarnings("unchecked")
     private void addCondition(Context context, int i, Path<?> path, Role role) {
-        EntityPath<?> alias = context.replacements.get(i);                 
+        EntityPath<?> alias = context.replacements.get(i);
         from(alias);
         Predicate condition = ExpressionUtils.predicate(Ops.IN, alias, path.getMetadata().getParent());
         if (role == Role.WHERE) {
@@ -64,5 +64,5 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
             super.having(condition);
         }
     }
-    
+
 }
