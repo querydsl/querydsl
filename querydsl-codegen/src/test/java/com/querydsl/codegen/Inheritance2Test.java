@@ -44,17 +44,17 @@ public class Inheritance2Test {
     public interface IFace {
 
     }
-    
+
     @Test
-    public void Base_base() throws SecurityException, NoSuchFieldException {        
+    public void Base_base() throws SecurityException, NoSuchFieldException {
         TypeFactory typeFactory = new TypeFactory();
         Field field = Base.class.getDeclaredField("base");
         Type type = typeFactory.get(field.getType(), field.getGenericType());
         assertEquals(0, type.getParameters().size());
     }
-    
+
     @Test
-    public void Base_base2() throws SecurityException, NoSuchFieldException {        
+    public void Base_base2() throws SecurityException, NoSuchFieldException {
         TypeFactory typeFactory = new TypeFactory();
         Field field = Base.class.getDeclaredField("base2");
         Type type = typeFactory.get(field.getType(), field.getGenericType());
@@ -62,7 +62,7 @@ public class Inheritance2Test {
         assertNull(((TypeExtends)type.getParameters().get(0)).getVarName());
         assertNull(((TypeExtends)type.getParameters().get(1)).getVarName());
     }
-    
+
     @Test
     public void test() {
         GenericExporter exporter = new GenericExporter();

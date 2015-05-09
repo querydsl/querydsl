@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@ import com.mysema.codegen.model.Type;
 /**
  * {@code Supertype} defines a tuple of a {@link Type} and an optional {@link EntityType} instance used for
  * supertype references in {@link EntityType} instances
- * 
+ *
  * @author tiwe
  *
  */
@@ -34,7 +34,7 @@ public class Supertype {
     public Supertype(Type type) {
         this.type = type;
     }
-    
+
     public Supertype(Type type, EntityType entityType) {
         this.type = type;
         this.entityType = entityType;

@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,9 +29,9 @@ import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.*;
 
 public class GroovyBeanSerializerTest {
-    
+
     private Type typeModel;
-    
+
     private EntityType type;
 
     private final Writer writer = new StringWriter();
@@ -39,9 +39,9 @@ public class GroovyBeanSerializerTest {
     @Before
     public void setUp() {
         typeModel = new SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false,false);
-        type = new EntityType(typeModel);                    
+        type = new EntityType(typeModel);
     }
-        
+
     @Test
     public void Properties() throws IOException{
         // property
@@ -52,7 +52,7 @@ public class GroovyBeanSerializerTest {
         type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class)));
         type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel)));
 
-        for (Class<?> cl : Arrays.<Class<?>>asList(Boolean.class, Comparable.class, Integer.class, 
+        for (Class<?> cl : Arrays.<Class<?>>asList(Boolean.class, Comparable.class, Integer.class,
                 Date.class, java.sql.Date.class, java.sql.Time.class)) {
             Type classType = new ClassType(TypeCategory.get(cl.getName()), cl);
             type.addProperty(new Property(type, StringUtils.uncapitalize(cl.getSimpleName()), classType));
@@ -77,5 +77,5 @@ public class GroovyBeanSerializerTest {
             assertTrue(prop + " was not contained", str.contains(prop));
         }
     }
-    
+
 }

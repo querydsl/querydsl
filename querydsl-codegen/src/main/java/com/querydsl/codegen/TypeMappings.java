@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ public abstract class TypeMappings {
 
     private final Map<TypeCategory, Type> templateTypes
             = new EnumMap<TypeCategory, Type>(TypeCategory.class);
-    
+
     public Type getTemplateType(Type type, EntityType model, boolean raw) {
         return getTemplateType(type, model, raw, false, false);
     }
@@ -76,13 +76,13 @@ public abstract class TypeMappings {
         }
     }
 
-    private Type getQueryType(Map<TypeCategory, Type> types, Type type, EntityType model, boolean raw, 
+    private Type getQueryType(Map<TypeCategory, Type> types, Type type, EntityType model, boolean raw,
             boolean rawParameters, boolean extend) {
         Type exprType = types.get(type.getCategory());
         return getQueryType(type, model, exprType, raw, rawParameters, extend);
     }
 
-    public Type getQueryType(Type type, EntityType model, Type exprType, boolean raw, 
+    public Type getQueryType(Type type, EntityType model, Type exprType, boolean raw,
             boolean rawParameters, boolean extend) {
         TypeCategory category = type.getCategory();
         if (raw && category != TypeCategory.ENTITY && category != TypeCategory.CUSTOM) {
@@ -102,7 +102,7 @@ public abstract class TypeMappings {
 
         }
     }
-    
+
     @SuppressWarnings("rawtypes")
     public void register(TypeCategory category,
             @Nullable Class<? extends Expression> expr,

@@ -6,12 +6,12 @@ import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QuerySupertype;
 
 public class EmbeddedTest extends AbstractExporterTest {
-    
+
     @QueryEntity
     public static class EntityClass extends AbstractEntity<SubEntityCode> {
-        
+
     }
-    
+
     @QuerySupertype
     public static abstract class AbstractEntity<C extends EntityCode> {
 
@@ -25,12 +25,12 @@ public class EmbeddedTest extends AbstractExporterTest {
         public String code;
 
     }
-    
+
     @QueryEmbeddable
     public static class SubEntityCode extends EntityCode {
-        
+
         public String property;
-        
+
     }
-    
-}    
+
+}

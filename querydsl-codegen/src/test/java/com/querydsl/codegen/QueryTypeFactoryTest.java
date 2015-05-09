@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,29 +23,29 @@ import com.mysema.codegen.model.Type;
 public class QueryTypeFactoryTest {
 
     private Type type = new ClassType(Point.class);
-    
+
     @Test
     public void Prefix_Only() {
         QueryTypeFactory factory = new QueryTypeFactoryImpl("Q", "", "");
         assertEquals("com.querydsl.codegen.QPoint", factory.create(type).getFullName());
     }
-    
+
     @Test
     public void Prefix_And_Suffix() {
         QueryTypeFactory factory = new QueryTypeFactoryImpl("Q", "Type", "");
         assertEquals("com.querydsl.codegen.QPointType", factory.create(type).getFullName());
     }
-    
+
     @Test
     public void Suffix_Only() {
         QueryTypeFactory factory = new QueryTypeFactoryImpl("", "Type", "");
         assertEquals("com.querydsl.codegen.PointType", factory.create(type).getFullName());
     }
-    
+
     @Test
     public void Prefix_And_Package_Suffix() {
         QueryTypeFactory factory = new QueryTypeFactoryImpl("Q", "", ".query");
         assertEquals("com.querydsl.codegen.query.QPoint", factory.create(type).getFullName());
     }
-    
+
 }

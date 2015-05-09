@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@ import com.mysema.codegen.model.TypeSuper;
 /**
  * {@code TypeResolver} provides type resolving functionality for resolving generic type variables to
  * concrete types
- * 
+ *
  * @author tiwe
  *
  */
@@ -30,30 +30,30 @@ final class TypeResolver {
 
     /**
      * Resolve type declared in declaringType for context
-     * 
+     *
      * @param type type to be resolved
      * @param declaringType declaration context of type
      * @param context target context of type
      * @return resolved type
      */
-    public static Type resolve(Type type, Type declaringType, EntityType context) {         
+    public static Type resolve(Type type, Type declaringType, EntityType context) {
         Type resolved = unwrap(type);
-        
-        String varName = getVarName(resolved);        
+
+        String varName = getVarName(resolved);
         if (varName != null) {
             resolved = resolveVar(resolved, varName, declaringType, context);
         } else if (!resolved.getParameters().isEmpty()) {
             resolved = resolveWithParameters(resolved, declaringType, context);
         }
-        
+
         // rewrap entity type
         if (type instanceof EntityType) {
             if (!unwrap(type).equals(resolved)) {
-                resolved = new EntityType(resolved, ((EntityType)type).getSuperTypes());    
+                resolved = new EntityType(resolved, ((EntityType)type).getSuperTypes());
             } else {
                 // reset to original type
                 resolved = type;
-            }            
+            }
         }
 
         return resolved;
@@ -68,22 +68,22 @@ final class TypeResolver {
                 index = i;
             }
         }
-        
+
         if (index == -1) {
             throw new IllegalStateException("Did not find type " + varName
                     + " in " + declaringType + " for " + context);
         }
 
-        Supertype type = context.getSuperType();            
+        Supertype type = context.getSuperType();
         while (!type.getEntityType().equals(declaringType)) {
-            type = type.getEntityType().getSuperType();                
-        }        
+            type = type.getEntityType().getSuperType();
+        }
         if (!type.getType().getParameters().isEmpty()) {
             return type.getType().getParameters().get(index);
         } else {
             // raw type
             return resolved;
-        }        
+        }
     }
 
     private static Type resolveWithParameters(Type type, Type declaringType, EntityType context) {

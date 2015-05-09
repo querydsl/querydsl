@@ -11,10 +11,10 @@ public class ExternalEmbeddableTest {
 
     @QueryEntity
     public static class EntityWithExternalEmbeddable {
-        
+
         @QueryEmbedded
         EmbeddableWithoutQType embeddable;
-        
+
     }
-    
+
 }
