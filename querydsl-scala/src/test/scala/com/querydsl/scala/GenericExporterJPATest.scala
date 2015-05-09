@@ -1,9 +1,9 @@
 package com.querydsl.scala
 
 import javax.persistence._
+
 import com.querydsl.codegen.GenericExporter
 import org.junit.Test
-import io.Source.fromFile
 
 class GenericExporterJPATest {
 

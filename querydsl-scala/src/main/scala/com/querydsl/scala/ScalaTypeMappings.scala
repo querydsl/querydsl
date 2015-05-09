@@ -14,10 +14,9 @@
 
 package com.querydsl.scala
 
-import com.querydsl.codegen.TypeMappings
 import com.mysema.codegen.model.TypeCategory
-import com.querydsl.core.types.Expression
-import com.querydsl.core.types.Path
+import com.querydsl.codegen.TypeMappings
+import com.querydsl.core.types.{Expression, Path}
 
 /**
  * Factory for TypeMappings creation

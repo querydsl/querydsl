@@ -1,10 +1,9 @@
 package com.querydsl.scala
 
-import com.querydsl.core.annotations._
+import java.io.File
+
 import com.querydsl.codegen.GenericExporter
 import org.junit.Test
-import io.Source.fromFile
-import java.io.File
 
 class GenericExporterTest {
 

@@ -16,9 +16,10 @@ package com.querydsl.scala.sql
 
 import java.sql._
 import javax.sql._
+
+import com.querydsl.core.types._
 import com.querydsl.sql._
 import com.querydsl.sql.dml._
-import com.querydsl.core.types._
 
 /**
  * Implicit conversion from RelationalPath to RichSimpleQuery

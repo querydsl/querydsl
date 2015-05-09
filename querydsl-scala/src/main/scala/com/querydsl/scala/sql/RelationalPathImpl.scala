@@ -14,16 +14,14 @@
 
 package com.querydsl.scala.sql
 
+import java.util.{ArrayList, HashMap, List => JavaList, Map => JavaMap}
+
 import com.google.common.collect.ImmutableList._
-import com.mysema.commons.lang.Pair
-import com.querydsl.scala._
-import ReflectionUtils._
+import com.querydsl.core.types.PathMetadataFactory._
+import com.querydsl.core.types._
 import com.querydsl.scala._
 import com.querydsl.sql._
-import com.querydsl.core.types._
-import com.querydsl.core.types.PathMetadataFactory._
-import java.util.{List => JavaList, ArrayList, Map => JavaMap, HashMap}
-import java.lang.reflect._
+
 import scala.beans.BeanProperty
 
 /**

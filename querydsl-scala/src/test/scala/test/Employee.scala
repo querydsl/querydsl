@@ -1,10 +1,5 @@
 package test
 
-import scala.beans.BeanProperty
-import javax.validation.constraints.Size
-import javax.validation.constraints.NotNull
-import com.querydsl.sql._
-
 object Employee extends QEmployee("employee") {
   override def as(variable: String) = new QEmployee(variable)
   

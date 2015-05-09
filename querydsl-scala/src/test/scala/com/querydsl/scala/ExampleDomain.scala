@@ -1,8 +1,5 @@
 package com.querydsl.scala
 
-import com.querydsl.core.types._
-import com.querydsl.core.types.PathMetadataFactory._
-
 class Person {
   var scalaInt: Int = _
 

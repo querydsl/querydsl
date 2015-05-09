@@ -1,10 +1,6 @@
 package com.querydsl.scala
 
-import com.querydsl.core.types._
-
-import org.junit.{ Test, Before, After, Assert }
-
-import Matchers._
+import org.junit.{Assert, Test}
 
 class QPersonTest {
 

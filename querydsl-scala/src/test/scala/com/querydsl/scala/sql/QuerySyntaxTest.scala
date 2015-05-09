@@ -1,9 +1,8 @@
 package com.querydsl.scala.sql
 
 import com.querydsl.sql._
-
-import org.junit.Test
 import org.junit.Assert._
+import org.junit.Test
 
 class QuerySyntaxTest {
 

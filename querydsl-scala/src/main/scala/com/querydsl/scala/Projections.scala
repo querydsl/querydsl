@@ -14,9 +14,9 @@
 
 package com.querydsl.scala
 
-import com.querydsl.core.types._
-import com.querydsl.core.types.{ Projections => ProjectionsFactory }
-import java.util.{ Arrays }
+import java.util.Arrays
+
+import com.querydsl.core.types.{Projections => ProjectionsFactory, _}
 
 object Projections extends Projections
 

@@ -1,27 +1,12 @@
 package com.querydsl.scala.sql
 
-import test._
-import com.querydsl.sql.{Configuration, HSQLDBTemplates, RelationalPath, SQLQuery}
-import com.querydsl.core.types.dsl._
-import java.io.File
+import java.sql.{Connection, DriverManager, Statement}
 
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.SQLException
-import java.sql.Statement
-
-import org.junit._
-import org.junit.Assert._
-
-import java.util.Arrays
-
-import com.querydsl.scala.CompileTestUtils
-
-import com.querydsl.scala.ScalaBeanSerializer
-import com.querydsl.scala.ScalaTypeMappings
-
-import com.querydsl.sql.codegen._
 import com.querydsl.sql.dml._
+import com.querydsl.sql.{Configuration, HSQLDBTemplates, RelationalPath, SQLQuery}
+import org.junit.Assert._
+import org.junit._
+import test._
 
 object JDBCIntegrationTest {
 
@@ -73,7 +58,6 @@ object JDBCIntegrationTest {
 }
 
 class JDBCIntegrationTest extends SQLHelpers {
-  import JDBCIntegrationTest._
 
   val survey = QSurvey
   val employee = QEmployee

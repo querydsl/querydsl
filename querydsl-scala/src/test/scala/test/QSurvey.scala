@@ -1,11 +1,8 @@
 package test
 
-import com.querydsl.core.types._
-import com.querydsl.scala._
-
 import com.querydsl.core.types.PathMetadataFactory._
+import com.querydsl.core.types._
 import com.querydsl.scala.sql.RelationalPathImpl
-
 import com.querydsl.sql._
 
 object QSurvey extends QSurvey("survey") {

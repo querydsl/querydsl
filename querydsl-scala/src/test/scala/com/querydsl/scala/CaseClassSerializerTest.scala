@@ -1,15 +1,10 @@
 package com.querydsl.scala
 
-import com.mysema.codegen._
-import com.mysema.codegen.model._
-import com.querydsl.codegen._
-
 import java.io.StringWriter
 
+import com.mysema.codegen._
+import com.querydsl.codegen._
 import org.junit._
-import org.junit.Assert._
-
-import scala.collection.JavaConversions._
 
 class CaseClassSerializerTest {
 

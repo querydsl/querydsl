@@ -1,20 +1,8 @@
 package com.querydsl.scala.sql
 
-import com.mysema.codegen._
-import com.mysema.codegen.model._
-
-import com.querydsl.codegen._
-import com.querydsl.sql._
-import com.querydsl.sql.codegen._
-
-import java.io.StringWriter
-
-import org.junit._
-import org.junit.Assert._
-
-import scala.collection.JavaConversions._
-
 import com.querydsl.scala._
+import com.querydsl.sql.codegen._
+import org.junit._
 
 object MetaDataExporterTest {
 

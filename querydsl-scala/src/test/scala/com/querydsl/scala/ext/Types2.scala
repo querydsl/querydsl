@@ -1,6 +1,7 @@
 package com.querydsl.scala.ext
 
 import com.querydsl.core.annotations._
+
 import scala.runtime.RichChar
 
 object WeekDay extends Enumeration {
