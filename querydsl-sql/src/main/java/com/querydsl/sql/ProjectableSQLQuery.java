@@ -45,7 +45,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     private static final Path<?> defaultQueryAlias = ExpressionUtils.path(Object.class, "query");
 
     protected final Configuration configuration;
-    
+
     @Nullable
     protected Expression<?> union;
 
@@ -405,7 +405,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         Expression<?> aliasCombined = Expressions.operation(alias.getType(), SQLOps.WITH_COLUMNS, alias, columnsCombined);
         return new WithBuilder<Q>(queryMixin, aliasCombined);
     }
-    
+
     protected void clone(Q query) {
         this.union = query.union;
         this.unionAll = query.unionAll;
@@ -414,7 +414,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
 
     @Override
     public abstract Q clone();
-    
+
     protected abstract SQLSerializer createSerializer();
 
     private Set<Path<?>> getRootPaths(Collection<? extends Expression<?>> exprs) {
@@ -460,7 +460,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         }
         return serializer;
     }
-    
+
     /**
      * Get the query as an SQL query string and bindings
      *

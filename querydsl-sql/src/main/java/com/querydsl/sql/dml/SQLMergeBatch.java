@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,28 +24,28 @@ import com.querydsl.core.types.SubQueryExpression;
 
 /**
  * {@code SQLMergeBatch} defines the state of an SQL MERGE batch item
- * 
+ *
  * @author tiwe
  *
  */
 public class SQLMergeBatch {
-    
+
     private final List<Path<?>> keys;
-    
+
     private final List<Path<?>> columns;
-    
+
     private final List<Expression<?>> values;
-    
+
     @Nullable
     private final SubQueryExpression<?> subQuery;
-    
+
     public SQLMergeBatch(List<Path<?>> k, List<Path<?>> c, List<Expression<?>> v, @Nullable SubQueryExpression<?> sq) {
         keys = new ArrayList<Path<?>>(k);
         columns = new ArrayList<Path<?>>(c);
         values = new ArrayList<Expression<?>>(v);
         subQuery = sq;
     }
-    
+
     public List<Path<?>> getKeys() {
         return keys;
     }

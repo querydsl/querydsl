@@ -20,7 +20,7 @@ public class TargetRule implements MethodRule {
         boolean run = target == null || isExecuted(method.getMethod(), target);
         return run ? base : EmptyStatement.DEFAULT;
     }
-    
+
     private boolean isExecuted(Method method, Target target) {
         ExcludeIn ex = method.getAnnotation(ExcludeIn.class);
         if (ex == null) {

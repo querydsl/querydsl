@@ -11,12 +11,12 @@ import com.querydsl.core.types.Path;
 import com.querydsl.sql.domain.QEmployee;
 
 public class DefaultMapperTest extends AbstractMapperTest {
-    
+
     private static final QEmployee emp = QEmployee.employee;
-    
+
     @Test
-    public void Extract() {        
-        Map<Path<?>, Object> values = DefaultMapper.DEFAULT.createMap(emp, employee);        
+    public void Extract() {
+        Map<Path<?>, Object> values = DefaultMapper.DEFAULT.createMap(emp, employee);
         assertEquals(employee.getDatefield(), values.get(emp.datefield));
         assertEquals(employee.getFirstname(), values.get(emp.firstname));
         assertEquals(employee.getLastname(), values.get(emp.lastname));
@@ -24,7 +24,7 @@ public class DefaultMapperTest extends AbstractMapperTest {
         assertEquals(employee.getSuperiorId(), values.get(emp.superiorId));
         assertEquals(employee.getTimefield(), values.get(emp.timefield));
     }
-    
+
     @Test
     public void Extract2() {
         Map<Path<?>, Object> values = DefaultMapper.DEFAULT.createMap(emp, new EmployeeX());

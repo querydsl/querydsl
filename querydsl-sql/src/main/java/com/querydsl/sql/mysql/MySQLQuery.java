@@ -260,5 +260,5 @@ public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
         queryMixin.setProjection(exprs);
         return (MySQLQuery<Tuple>) this;
     }
-    
+
 }

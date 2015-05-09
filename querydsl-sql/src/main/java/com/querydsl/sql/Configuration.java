@@ -114,7 +114,7 @@ public final class Configuration {
             } else {
                 throw new IllegalArgumentException("Unsupported literal type " + o.getClass().getName());
             }
-        }                
+        }
     }
 
     public SQLTemplates getTemplates() {

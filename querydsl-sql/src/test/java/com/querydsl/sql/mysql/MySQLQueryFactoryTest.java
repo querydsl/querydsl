@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,7 +31,7 @@ import com.querydsl.sql.domain.QSurvey;
 public class MySQLQueryFactoryTest {
 
     private MySQLQueryFactory queryFactory;
-    
+
     @Before
     public void setUp() {
         Provider<Connection> provider = new Provider<Connection>() {
@@ -74,13 +74,13 @@ public class MySQLQueryFactoryTest {
         SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey, "c = c+1");
         assertEquals("insert into SURVEY\nvalues () on duplicate key update c = c+1", clause.toString());
     }
-    
+
     @Test
     public void InsertOnDuplicateKeyUpdate2() {
         SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey, QSurvey.survey.id.eq(2));
         assertEquals("insert into SURVEY\nvalues () on duplicate key update SURVEY.ID = ?", clause.toString());
-    }    
-    
+    }
+
     @Test
     public void Replace() {
         assertNotNull(queryFactory.replace(QSurvey.survey));

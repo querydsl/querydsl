@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,17 +30,17 @@ public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest{
     @Override
     protected SQLTemplates createTemplates() {
         return new PostgreSQLTemplates();
-    }    
-    
+    }
+
     @Test
     public void NoFrom() {
         query.getMetadata().setProjection(Expressions.ONE);
         assertEquals("select 1", query.toString());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
-    public void Union() {        
+    public void Union() {
         NumberExpression<Integer> one = Expressions.ONE;
         NumberExpression<Integer> two = Expressions.TWO;
         NumberExpression<Integer> three = Expressions.THREE;

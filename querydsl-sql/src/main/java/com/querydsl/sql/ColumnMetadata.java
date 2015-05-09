@@ -73,7 +73,7 @@ public final class ColumnMetadata implements Serializable {
     private static final int UNDEFINED = -1;
 
     private final String name;
-    
+
     private final Integer index;
 
     private final Integer jdbcType;
@@ -97,11 +97,11 @@ public final class ColumnMetadata implements Serializable {
     public String getName() {
         return name;
     }
-    
+
     public int getIndex() {
         return index;
     }
-    
+
     public ColumnMetadata withIndex(int index) {
         return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
     }

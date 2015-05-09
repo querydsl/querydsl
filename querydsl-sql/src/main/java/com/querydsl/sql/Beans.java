@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * {@code Beans} contains Objects mapped to {@link RelationalPath} instances
- * 
+ *
  * @author luis
  */
 public class Beans {

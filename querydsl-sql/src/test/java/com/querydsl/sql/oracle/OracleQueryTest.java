@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,11 +22,11 @@ import com.querydsl.sql.OracleTemplates;
 import com.querydsl.sql.domain.QSurvey;
 
 public class OracleQueryTest {
-    
+
     private OracleQuery query;
-    
+
     private QSurvey survey = new QSurvey("survey");
-    
+
     @Before
     public void setUp() {
         query = new OracleQuery(null, new OracleTemplates() {{
@@ -34,12 +34,12 @@ public class OracleQueryTest {
         }});
         query.from(survey);
         query.orderBy(survey.name.asc());
-    }    
+    }
 
     @Test
     public void ConnectByPrior() {
         query.connectByPrior(survey.name.isNull());
-        assertEquals("from SURVEY survey connect by prior survey.NAME is null order by survey.NAME asc", 
+        assertEquals("from SURVEY survey connect by prior survey.NAME is null order by survey.NAME asc",
                 toString(query));
     }
 
@@ -60,17 +60,17 @@ public class OracleQueryTest {
     @Test
     public void StartWith() {
         query.startWith(survey.name.isNull());
-        assertEquals("from SURVEY survey start with survey.NAME is null order by survey.NAME asc", 
+        assertEquals("from SURVEY survey start with survey.NAME is null order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
     public void OrderSiblingsBy() {
         query.orderSiblingsBy(survey.name);
-        assertEquals("from SURVEY survey order siblings by survey.NAME order by survey.NAME asc", 
+        assertEquals("from SURVEY survey order siblings by survey.NAME order by survey.NAME asc",
                 toString(query));
     }
-    
+
     @Test
     public void RowNum() {
         query.where(OracleGrammar.rownum.lt(5));

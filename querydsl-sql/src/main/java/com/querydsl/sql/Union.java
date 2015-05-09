@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,7 +26,7 @@ import com.querydsl.core.types.*;
  * @param <RT> return type of projection
  */
 public interface Union<RT> extends SubQueryExpression<RT> {
-    
+
     /**
      * Get the projection as a typed List
      *
@@ -40,7 +40,7 @@ public interface Union<RT> extends SubQueryExpression<RT> {
      * @return result iterator
      */
     CloseableIterator<RT> iterate();
-    
+
     /**
      * Defines the grouping/aggregation expressions
      *
@@ -56,7 +56,7 @@ public interface Union<RT> extends SubQueryExpression<RT> {
      * @return the current object
      */
     Union<RT> having(Predicate... o);
-    
+
 
     /**
      * Define the ordering of the query results

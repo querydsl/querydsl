@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,19 +24,19 @@ import com.querydsl.core.types.SubQueryExpression;
 
 /**
  * {@code SQLInsertBatch} defines the state of an SQL INSERT batch item
- * 
+ *
  * @author tiwe
  *
  */
-public class SQLInsertBatch {        
-    
+public class SQLInsertBatch {
+
     private final List<Path<?>> columns;
-    
+
     private final List<Expression<?>> values;
-    
+
     @Nullable
     private final SubQueryExpression<?> subQuery;
-    
+
     public SQLInsertBatch(List<Path<?>> c, List<Expression<?>> v, @Nullable SubQueryExpression<?> sq) {
         columns = new ArrayList<Path<?>>(c);
         values = new ArrayList<Expression<?>>(v);
@@ -54,6 +54,6 @@ public class SQLInsertBatch {
     public SubQueryExpression<?> getSubQuery() {
         return subQuery;
     }
-    
-    
+
+
 }

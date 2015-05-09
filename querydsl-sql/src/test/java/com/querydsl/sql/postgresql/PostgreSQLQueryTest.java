@@ -9,18 +9,18 @@ import com.querydsl.sql.PostgreSQLTemplates;
 import com.querydsl.sql.domain.QSurvey;
 
 public class PostgreSQLQueryTest {
-    
+
     private PostgreSQLQuery<?> query;
-    
+
     private QSurvey survey = new QSurvey("survey");
-    
+
     @Before
     public void setUp() {
         query = new PostgreSQLQuery<Void>(null, new PostgreSQLTemplates() {{
             newLineToSingleSpace();
-        }});        
+        }});
     }
-    
+
     @Test
     public void Syntax() {
 //        [ WITH [ RECURSIVE ] with_query [, ...] ]
@@ -50,9 +50,9 @@ public class PostgreSQLQueryTest {
         query.forUpdate();
         query.forShare();
         query.noWait();
-        
+
         query.forUpdate().of(survey);
-        
+
 //        where from_item can be one of:
 //
 //            [ ONLY ] table_name [ * ] [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
@@ -68,25 +68,25 @@ public class PostgreSQLQueryTest {
 //
 //        TABLE { [ ONLY ] table_name [ * ] | with_query_name }
     }
-    
+
     @Test
     public void ForShare() {
         query.from(survey).forShare();
         assertEquals("from SURVEY survey for share", toString(query));
     }
-    
+
     @Test
     public void ForUpDate_NoWait() {
         query.from(survey).forUpdate().noWait();
         assertEquals("from SURVEY survey for update nowait", toString(query));
     }
-    
+
     @Test
     public void ForUpdate_Of() {
         query.from(survey).forUpdate().of(survey);
         assertEquals("from SURVEY survey for update of SURVEY", toString(query));
     }
-    
+
     private String toString(PostgreSQLQuery query) {
         return query.toString().replace('\n', ' ');
     }

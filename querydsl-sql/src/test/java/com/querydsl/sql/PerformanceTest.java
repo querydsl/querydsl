@@ -14,15 +14,15 @@ import com.querydsl.sql.domain.QSurvey;
 
 @Category(Performance.class)
 public class PerformanceTest {
-    
+
     private QueryMetadata md;
-    
+
     private SQLTemplates templates;
-    
+
     private Configuration configuration;
-    
+
     int iterations;
-    
+
     @Before
     public void setUp() {
         QSurvey survey = QSurvey.survey;
@@ -30,13 +30,13 @@ public class PerformanceTest {
         md.addJoin(JoinType.DEFAULT, survey);
         md.addWhere(survey.id.eq(10));
         md.setProjection(survey.name);
-        
+
         templates = new H2Templates();
         configuration = new Configuration(templates);
-        
+
         iterations =  1000000;
     }
-    
+
     @Test
     public void NonNormalized() {
         long start = System.currentTimeMillis();
@@ -50,7 +50,7 @@ public class PerformanceTest {
         }
         System.err.println("non-normalized " + (System.currentTimeMillis() - start));
     }
-    
+
     @Test
     public void Default() {
         long start = System.currentTimeMillis();
@@ -63,5 +63,5 @@ public class PerformanceTest {
         }
         System.err.println("default " + (System.currentTimeMillis() - start));
     }
-        
+
 }

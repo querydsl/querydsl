@@ -113,7 +113,7 @@ public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
     public OracleQuery<T> orderSiblingsBy(Expression<?> path) {
         return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
     }
-    
+
     @Override
     public OracleQuery<T> clone(Connection conn) {
         OracleQuery<T> q = new OracleQuery<T>(conn, getConfiguration(), getMetadata().clone());

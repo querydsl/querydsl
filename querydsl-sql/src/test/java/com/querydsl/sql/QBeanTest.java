@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,16 +23,16 @@ import com.querydsl.sql.domain.Employee;
 import com.querydsl.sql.domain.QEmployee;
 
 public class QBeanTest {
-    
+
     private final QEmployee e = new QEmployee("e");
-    
+
     @Test
     public void Direct_to_Managed_type() {
         FactoryExpression<Employee> expr = Projections.bean(Employee.class, e.superiorId);
         Employee e = expr.newInstance(3);
         assertEquals(Integer.valueOf(3), e.getSuperiorId());
     }
-    
+
     @Test
     public void Direct_to_Custom_type() {
         FactoryExpression<Employee> expr = Projections.bean(Employee.class, e.firstname, e.lastname);
@@ -40,14 +40,14 @@ public class QBeanTest {
         assertEquals("John", e.getFirstname());
         assertEquals("Smith", e.getLastname());
     }
-    
+
     @Test
     public void Alias_to_Managed_type() {
         FactoryExpression<Employee> expr = Projections.bean(Employee.class, e.superiorId.as("id"));
         Employee e = expr.newInstance(3);
         assertEquals(3, e.getId().intValue());
     }
-    
+
     @Test
     public void Alias_to_Custom_type() {
         FactoryExpression<Employee> expr = Projections.bean(Employee.class, e.firstname.as("lastname"), e.lastname.as("firstname"));

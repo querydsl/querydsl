@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,19 +24,19 @@ import com.querydsl.core.types.*;
 
 /**
  * Default implementation of the Union interface
- * 
+ *
  * @author tiwe
  *
  * @param <T>
  */
 public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  implements Union<T> {
-    
+
     private final Q query;
 
     public UnionImpl(Q query) {
         this.query = query;
     }
-    
+
     @Override
     public List<T> list() {
         return query.fetch();
@@ -59,7 +59,7 @@ public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  imple
         return this;
     }
 
-    
+
     @Override
     public Union<T> orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);

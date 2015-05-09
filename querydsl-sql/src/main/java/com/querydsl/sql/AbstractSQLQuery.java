@@ -66,7 +66,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata());
     }
- 
+
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(new QueryMixin<Q>(metadata, false), configuration);
         this.conn = conn;
@@ -550,19 +550,19 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public void setUseLiterals(boolean useLiterals) {
         this.useLiterals = useLiterals;
     }
-    
+
     @Override
     protected void clone(Q query) {
         super.clone(query);
         this.useLiterals = query.useLiterals;
         this.listeners = new SQLListeners(query.listeners);
     }
-    
+
     @Override
     public Q clone() {
         return this.clone(this.conn);
     }
-    
+
     public abstract Q clone(Connection connection);
 
 }

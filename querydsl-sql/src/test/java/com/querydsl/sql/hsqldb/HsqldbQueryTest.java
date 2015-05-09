@@ -8,16 +8,16 @@ import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.domain.QSurvey;
 
 public class HsqldbQueryTest {
-    
+
     private SQLQuery<?> query;
-    
+
     private QSurvey survey = new QSurvey("survey");
-    
+
     @Before
     public void setUp() {
         query = new SQLQuery(HSQLDBTemplates.builder().newLineToSingleSpace().build());
     }
-    
+
     @Test
     public void Syntax() {
 //        SELECT [{LIMIT <offset> <limit> | TOP <limit>}[2]][ALL | DISTINCT]
@@ -41,7 +41,7 @@ public class HsqldbQueryTest {
 //        [LIMIT <limit> [OFFSET <offset>]];
         query.limit(4);
         query.offset(4);
-        
+
     }
 
 }

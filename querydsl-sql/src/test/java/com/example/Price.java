@@ -3,7 +3,7 @@ package com.example;
 public class Price {
 
     private float price;
-    
+
     private String currency;
 
     public float getPrice() {
@@ -21,7 +21,7 @@ public class Price {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
-    
-    
+
+
 
 }

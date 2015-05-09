@@ -155,7 +155,7 @@ public class SelectBase extends AbstractBaseTest {
         NumberExpression<Integer> four = Expressions.FOUR;
         arithmeticTests(one, two, three, four);
     }
-    
+
     @Test
     public void Arithmetic_Mod() {
         NumberExpression<Integer> one = Expressions.numberTemplate(Integer.class, "(1)");

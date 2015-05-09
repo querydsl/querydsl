@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@ public class DummyBlob implements Blob{
     @Override
     public void free() throws SQLException {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -85,7 +85,7 @@ public class DummyBlob implements Blob{
     @Override
     public void truncate(long len) throws SQLException {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

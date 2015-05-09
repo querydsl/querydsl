@@ -97,7 +97,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
-    
+
     private List<? extends Path<?>> getKeys() {
         if (!keys.isEmpty()) {
             return keys;

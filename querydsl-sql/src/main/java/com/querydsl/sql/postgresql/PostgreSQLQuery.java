@@ -82,7 +82,7 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
         }
         return addFlag(Position.END, builder.toString());
     }
- 
+
     @Override
     public PostgreSQLQuery<T> clone(Connection conn) {
         PostgreSQLQuery<T> q = new PostgreSQLQuery<T>(conn, getConfiguration(), getMetadata().clone());

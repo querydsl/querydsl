@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,7 @@ public class QProjection extends ExpressionBase<Projection> implements FactoryEx
     private static final long serialVersionUID = -7330905848558102164L;
 
     private final List<Expression<?>> args;
-    
+
     public QProjection(Expression<?>... args) {
         super(Projection.class);
         this.args = Arrays.asList(args);

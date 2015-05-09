@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,7 @@ public final class PrimaryKey<E> implements Serializable, ProjectionRole<Tuple> 
     private final RelationalPath<?> entity;
 
     private final ImmutableList<? extends Path<?>> localColumns;
-    
+
     @Nullable
     private transient volatile Expression<Tuple> mixin;
 
@@ -59,8 +59,8 @@ public final class PrimaryKey<E> implements Serializable, ProjectionRole<Tuple> 
     public List<? extends Path<?>> getLocalColumns() {
         return localColumns;
     }
-    
-    public BooleanExpression in(CollectionExpression<?,Tuple> coll) {        
+
+    public BooleanExpression in(CollectionExpression<?,Tuple> coll) {
         return Expressions.booleanOperation(Ops.IN, getProjection(), coll);
     }
 
