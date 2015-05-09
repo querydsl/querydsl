@@ -17,11 +17,19 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.SimplePath;
 
 public class UnionSubQueryTest {
+
+    private static final SimpleExpression<Integer> one = Expressions.numberTemplate(Integer.class, "1");
+
+    private static final SimpleExpression<Integer> two = Expressions.numberTemplate(Integer.class, "2");
+
+    private static final SimpleExpression<Integer> three = Expressions.numberTemplate(Integer.class,"3");
 
     private SQLTemplates templates = H2Templates.builder().newLineToSingleSpace().build();
 
@@ -29,8 +37,6 @@ public class UnionSubQueryTest {
 
     @Test
     public void In_Union() {
-        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
-        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
         NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
 
         Expression<?> expr = intPath.in(sq().union(
@@ -46,9 +52,6 @@ public class UnionSubQueryTest {
 
     @Test
     public void Union_SubQuery() {
-        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
-        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
-        SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
         SimplePath<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
         Expression<?> union = sq().union(
             sq().unique(one.as(col1)),
@@ -66,9 +69,6 @@ public class UnionSubQueryTest {
 
     @Test
     public void UnionAll_SubQuery() {
-        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
-        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
-        SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
         SimplePath<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
         Expression<?> union = sq().unionAll(
             sq().unique(one.as(col1)),
