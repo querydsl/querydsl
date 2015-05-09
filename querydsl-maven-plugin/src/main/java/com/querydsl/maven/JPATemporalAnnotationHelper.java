@@ -22,11 +22,11 @@ import com.querydsl.codegen.AnnotationHelper;
 
 /**
  * An {@link AnnotationHelper} that handles JPA {@link Temporal} annotation.
- * 
+ *
  * @author dyorgio
  */
 public class JPATemporalAnnotationHelper implements AnnotationHelper {
-        
+
         public static final JPATemporalAnnotationHelper INSTANCE = new JPATemporalAnnotationHelper();
 
         private JPATemporalAnnotationHelper() {

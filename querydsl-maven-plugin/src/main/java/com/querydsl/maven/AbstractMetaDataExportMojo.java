@@ -297,8 +297,8 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
     /**
      * override default column order (default: alphabetical)
-     * 
-     * @parameter 
+     *
+     * @parameter
      */
     private String columnComparatorClass;
 
@@ -308,17 +308,17 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter default-value=false
      */
     private boolean spatial;
-    
+
 	/**
 	 * Comma-separated list of table types to export (allowable values will
 	 * depend on JDBC driver). Allows for arbitrary set of types to be exported,
 	 * e.g.: "TABLE, MATERIALIZED VIEW". The exportTables and exportViews
 	 * parameters will be ignored if this parameter is set. (default: none)
-	 * 
+	 *
 	 * @parameter
 	 */
     private String tableTypesToExport;
-    
+
     /**
      * java import added to generated query classes:
      * com.bar for package (without .* notation)
