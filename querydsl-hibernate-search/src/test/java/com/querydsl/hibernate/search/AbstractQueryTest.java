@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,10 +44,10 @@ public abstract class AbstractQueryTest {
         Properties props = new Properties();
         InputStream is = SearchQueryTest.class.getResourceAsStream("/derby.properties");
         try {
-            props.load(is);    
+            props.load(is);
         } finally {
             is.close();
-        }        
+        }
         cfg.setProperties(props);
         sessionFactory = cfg.buildSessionFactory();
     }
@@ -55,8 +55,8 @@ public abstract class AbstractQueryTest {
     @AfterClass
     public static void tearDownClass() {
         if (sessionFactory != null) {
-            sessionFactory.close();    
-        }        
+            sessionFactory.close();
+        }
     }
 
     private Session session;
