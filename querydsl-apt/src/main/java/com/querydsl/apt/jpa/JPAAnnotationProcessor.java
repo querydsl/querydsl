@@ -39,7 +39,7 @@ public class JPAAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> embeddable = Embeddable.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = Transient.class;
-        return new JPAConfiguration(roundEnv, processingEnv.getOptions(),
+        return new JPAConfiguration(roundEnv, processingEnv, processingEnv.getOptions(),
                 entity, superType, embeddable, embedded, skip);
     }
 

@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 
 import com.querydsl.apt.jpa.JPAConfiguration;
@@ -34,13 +35,14 @@ public class HibernateConfiguration extends JPAConfiguration {
 
     public HibernateConfiguration(
             RoundEnvironment roundEnv,
+            ProcessingEnvironment processingEnv,
             Map<String,String> options,
             Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> embeddedAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(roundEnv, options, entityAnn, superTypeAnn, embeddableAnn, embeddedAnn, skipAnn);
+        super(roundEnv, processingEnv, options, entityAnn, superTypeAnn, embeddableAnn, embeddedAnn, skipAnn);
     }
 
     @SuppressWarnings("unchecked")
