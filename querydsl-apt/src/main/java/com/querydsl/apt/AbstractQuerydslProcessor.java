@@ -26,8 +26,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
@@ -50,11 +48,6 @@ import com.querydsl.core.annotations.QueryProjection;
  */
 public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
-    // TODO replace with proper injections in Querydsl 4.0.0
-    public static Types types;
-
-    public static Elements elements;
-
     public static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
 
     private final TypeExtractor typeExtractor = new TypeExtractor(true);
@@ -71,9 +64,6 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        types = processingEnv.getTypeUtils();
-        elements = processingEnv.getElementUtils();
-
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
 
         if (roundEnv.processingOver() || annotations.size() == 0) {

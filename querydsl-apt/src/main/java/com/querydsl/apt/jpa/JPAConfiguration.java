@@ -17,6 +17,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
@@ -46,6 +47,7 @@ public class JPAConfiguration extends DefaultConfiguration {
     private final Types types;
 
     public JPAConfiguration(RoundEnvironment roundEnv,
+            ProcessingEnvironment processingEnv,
             Map<String,String> options,
             Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
@@ -55,8 +57,7 @@ public class JPAConfiguration extends DefaultConfiguration {
         super(roundEnv, options, Keywords.JPA, QueryEntities.class, entityAnn, superTypeAnn,
             embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
-        // TODO replace with proper injection in Querydsl 4.0.0
-        this.types = AbstractQuerydslProcessor.types;
+        this.types = processingEnv.getTypeUtils();
         setStrictMode(true);
     }
 
