@@ -13,8 +13,8 @@
  */
 package com.querydsl.core.group;
 
-import static org.junit.Assert.*;
 import static com.querydsl.core.group.GroupBy.*;
+import static org.junit.Assert.*;
 
 import java.util.*;
 
@@ -24,8 +24,18 @@ import com.google.common.collect.Ordering;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
 
 public class GroupByMapTest extends AbstractGroupByTest {
+
+    @Test
+    public void Compile() {
+        StringExpression str = Expressions.stringPath("str");
+        GroupExpression<String, String> strGroup = new GOne<String>(str);
+        GroupBy.sortedMap(strGroup, str, null);
+        GroupBy.sortedMap(str, strGroup, null);
+    }
 
     @Test
     public void Group_Order() {
