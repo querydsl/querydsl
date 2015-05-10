@@ -304,7 +304,7 @@ public final class GroupBy {
      * @param comparator comparator for the created TreeMap instances
      * @return wrapper expression
      */
-    public static <K, V, T> AbstractGroupExpression<Pair<K, V>, SortedMap<T, V>> sortedMap(GroupExpression<K, T> key, Expression<V> value, Comparator<? super K> comparator) {
+    public static <K, V, T> AbstractGroupExpression<Pair<K, V>, SortedMap<T, V>> sortedMap(GroupExpression<K, T> key, Expression<V> value, Comparator<? super T> comparator) {
         return sortedMap(key, new GOne<V>(value), comparator);
     }
 
@@ -316,7 +316,7 @@ public final class GroupBy {
      * @param comparator comparator for the created TreeMap instances
      * @return wrapper expression
      */
-    public static <K, V, U> AbstractGroupExpression<Pair<K, V>, SortedMap<K, U>> sortedMap(Expression<K> key, GroupExpression<V, U> value, Comparator<? super U> comparator) {
+    public static <K, V, U> AbstractGroupExpression<Pair<K, V>, SortedMap<K, U>> sortedMap(Expression<K> key, GroupExpression<V, U> value, Comparator<? super K> comparator) {
         return sortedMap(new GOne<K>(key), value, comparator);
     }
 
