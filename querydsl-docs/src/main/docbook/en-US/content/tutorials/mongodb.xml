@@ -104,7 +104,7 @@ QUser user = new QUser("user");
 MorphiaQuery<User> query = new MorphiaQuery<User>(morphia, datastore, user);
 List<User> list = query
     .where(user.firstName.eq("Bob"))
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -157,7 +157,7 @@ List<User> list = query
 query
     .where(doc.title.like("*"))
     .orderBy(doc.title.asc(), doc.year.desc())
-    .list();
+    .fetch();
 ]]></programlisting>
 
     <para>The results are sorted ascending based on title and year.</para>
@@ -173,7 +173,7 @@ query
 query
     .where(doc.title.like("*"))
     .limit(10)
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -187,7 +187,7 @@ query
 query
     .where(doc.title.like("*"))
     .offset(3)
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -203,7 +203,7 @@ query
     <programlisting language="java"><![CDATA[
 query
     .where(geoEntity.location.near(50.0, 50.0))
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -213,13 +213,13 @@ query
     <title>Select only relevant fields</title>
 
     <para>To select only relevant fields you can use the overloaded projection methods
-      list, iterate, uniqueResult and singleResult methods like this
+      fetch, iterate, fetchOne and fetchFirst methods like this
     </para>
 
     <programlisting language="java"><![CDATA[
 query
     .where(doc.title.like("*"))
-    .list(doc.title, doc.path);
+    .fetch(doc.title, doc.path);
 ]]></programlisting>
 
     <para>This query will load only the title and path fields of the documents.</para>

@@ -278,7 +278,6 @@
 </typeMappings>
 ]]></programlisting>
 
-
     <para>The defaults for the numeric mappings are </para>
 
     <table>
@@ -481,15 +480,21 @@ Configuration configuration = new Configuration(templates);
 
     <title>Querying</title>
 
+    <para>For the following examples we will be using the <code>SQLQueryFactory</code> class for query creation.
+      Using it results in more concise code compared to constructor based query creation.</para>
+
+    <programlisting language="java"><![CDATA[
+SQLQueryFactory queryFactory = new SQLQueryFactory(configuration, dataSource);
+]]></programlisting>
+
     <para>Querying with Querydsl SQL is as simple as this:</para>
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = new QCustomer("c");
 
-SQLQuery query = new SQLQuery(connection, configuration);
-List<String> lastNames = query.from(customer)
+List<String> lastNames = queryFactory.select(customer.lastName).from(customer)
     .where(customer.firstName.eq("Bob"))
-    .list(customer.lastName);
+    .fetch();
 ]]></programlisting>
 
     <para>
@@ -512,6 +517,11 @@ WHERE c.first_name = 'Bob'
     <title>General usage</title>
 
     <para>Use the the cascading methods of the SQLQuery class like this</para>
+
+    <para>
+      <emphasis>select:</emphasis>
+      Set the projection of the query. (Not necessary if created via query factory)
+    </para>
 
     <para>
       <emphasis>from:</emphasis>
@@ -566,25 +576,28 @@ WHERE c.first_name = 'Bob'
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 QCompany company = QCompany.company;
-query.from(customer)
+queryFactory.select(customer.firstName, customer.lastName, company.name)
+    .from(customer)
     .innerJoin(customer.company, company)
-    .list(customer.firstName, customer.lastName, company.name);
+    .fetch();
 ]]></programlisting>
 
     <para>and for a left join:</para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.select(customer.firstName, customer.lastName, company.name)
+    .from(customer)
     .leftJoin(customer.company, company)
-    .list(customer.firstName, customer.lastName, company.name);
+    .fetch();
 ]]></programlisting>
 
     <para>Alternatively the join condition can also be written out:</para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.select(customer.firstName, customer.lastName, company.name)
+    .from(customer)
     .leftJoin(company).on(customer.company.eq(company.id))
-    .list(customer.firstName, customer.lastName, company.name);
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -597,9 +610,10 @@ query.from(customer)
     <para>The syntax for declaring ordering is </para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.select(customer.firstName, customer.lastName)
+    .from(customer)
     .orderBy(customer.lastName.asc(), customer.firstName.asc())
-    .list(customer.firstName, customer.lastName);
+    .fetch();
 ]]></programlisting>
 
     <para>which is equivalent to the following native SQL</para>
@@ -619,9 +633,10 @@ ORDER BY c.last_name ASC, c.first_name ASC
     <para>Grouping can be done in the following form</para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.select(customer.lastName)
+    .from(customer)
     .groupBy(customer.lastName)
-    .list(customer.lastName);
+    .fetch();
 ]]></programlisting>
 
     <para>which is equivalent to the following native SQL</para>
@@ -640,28 +655,29 @@ GROUP BY c.last_name
 
     <title>Using Subqueries</title>
 
-    <para>
-      To create a subquery you create a SQLSubQuery instance, define the query parameters via
-      from, where etc and use unique or list to create a subquery, which is just a type-safe Querydsl
-      expression for the query. unique is used for a unique (single) result and list for a
-      list result.
+    <para>To create a subquery you can use one of the factory methods of <code>SQLExpressions</code>
+      and add the query parameters via from, where etc.
     </para>
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 QCustomer customer2 = new QCustomer("customer2");
-query.from(customer).where(
-  customer.status.eq(new SQLSubQuery().from(customer2).unique(customer2.status.max()))
-  .list(customer.all())
+queryFactory.select(customer.all())
+    .from(customer)
+    .where(customer.status.eq(
+        SQLExpressions.select(customer2.status.max()).from(customer2)))
+    .fetch()
 ]]></programlisting>
 
     <para>Another example</para>
 
     <programlisting language="java"><![CDATA[
 QStatus status = QStatus.status;
-query.from(customer).where(
-  customer.status.in(new SQLSubQuery().from(status).where(status.level.lt(3)).list(status.id))
-  .list(customer.all())
+queryFactory.select(customer.all())
+    .from(customer)
+    .where(customer.status.in(
+        SQLExpressions.select(status.id).from(status).where(status.level.lt(3))))
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -673,8 +689,8 @@ query.from(customer).where(
     <para>To select literals you need to create constant instances for them like this:</para>
 
     <programlisting language="java"><![CDATA[
-query.list(Expressions.constant(1),
-           Expressions.constant("abc"));
+queryFactory.select(Expressions.constant(1),
+                    Expressions.constant("abc"));
 ]]></programlisting>
 
     <para>The class  <code>com.querydsl.core.types.dsl.Expressions</code> offers also other useful static methods for
@@ -692,7 +708,7 @@ query.list(Expressions.constant(1),
     </para>
 
     <programlisting language="java"><![CDATA[
-public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
+public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
 
     public MySQLQuery(Connection conn) {
         this(conn, new MySQLTemplates(), new DefaultQueryMetadata());
@@ -736,11 +752,11 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> {
     <para>Usage example:</para>
 
     <programlisting language="java"><![CDATA[
-query.from(employee)
-    .list(SQLExpressions.rowNumber()
+queryFactory.select(SQLExpressions.rowNumber()
         .over()
         .partitionBy(employee.name)
-        .orderBy(employee.id));
+        .orderBy(employee.id))
+     .from(employee)
 ]]></programlisting>
 
   </sect2>
@@ -753,17 +769,21 @@ query.from(employee)
 
     <programlisting language="java"><![CDATA[
 QEmployee employee = QEmployee.employee;
-query.with(employee, sq().from(employee).where(employee.name.startsWith("A")).list(employee.all()))
-     .from(...)
+queryFactory.with(employee, SQLExpressions.select(employee.all)
+                                          .from(employee)
+                                          .where(employee.name.startsWith("A")))
+            .from(...)
 ]]></programlisting>
 
     <para>And using a column listing</para>
 
     <programlisting language="java"><![CDATA[
 QEmployee employee = QEmployee.employee;
-query.with(employee, employee.id, employee.name)
-     .as(sq().from(employee).where(employee.name.startsWith("A")).list(employee.id, employee.name))
-     .from(...)
+queryFactory.with(employee, employee.id, employee.name)
+            .as(SQLExpressions.select(employee.id, employee.name)
+                              .from(employee)
+                              .where(employee.name.startsWith("A")))
+            .from(...)
 ]]></programlisting>
 
     <para>If the columns of the common table expression are a subset of an existing table or view
@@ -776,10 +796,11 @@ query.with(employee, employee.id, employee.name)
 QEmployee employee = QEmployee.employee;
 QDepartment department = QDepartment.department;
 PathBuilder<Tuple> emp = new PathBuilder<Tuple>(Tuple.class, "emp");
-query.with(emp, sq().from(employee).innerJoin(department).on(employee.departmentId.eq(department.id))
-                    .list(employee.id, employee.name, employee.departmentId,
-                          department.name.as("departmentName")))
-     .from(...)
+queryFactory.with(emp, SQLExpressions.select(employee.id, employee.name, employee.departmentId,
+                                          department.name.as("departmentName"))
+                                      .from(employee)
+                                      .innerJoin(department).on(employee.departmentId.eq(department.id))))
+            .from(...)
 ]]></programlisting>
 
   </sect2>
@@ -798,11 +819,6 @@ query.with(emp, sq().from(employee).innerJoin(department).on(employee.department
 
     <title>Using Data manipulation commands</title>
 
-    <para>All the DMLClause implementation in the Querydsl SQL module take three
-      parameters, the Connection, the SQLTemplates instance
-      used in the queries and the main entity the DMLClause is bound to.
-    </para>
-
     <sect3>
 
       <title>Insert</title>
@@ -812,7 +828,7 @@ query.with(emp, sq().from(employee).innerJoin(department).on(employee.department
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-new SQLInsertClause(conn, configuration, survey)
+queryFactory.insert(survey)
     .columns(survey.id, survey.name)
     .values(3, "Hello").execute();
 ]]></programlisting>
@@ -820,24 +836,24 @@ new SQLInsertClause(conn, configuration, survey)
       <para>Without columns</para>
 
       <programlisting language="java"><![CDATA[
-new SQLInsertClause(conn, configuration, survey)
+queryFactory.insert(survey)
     .values(4, "Hello").execute();
 ]]></programlisting>
 
       <para>With subquery</para>
 
       <programlisting language="java"><![CDATA[
-new SQLInsertClause(conn, configuration, survey)
+queryFactory.insert(survey)
     .columns(survey.id, survey.name)
-    .select(new SQLSubQuery().from(survey2).list(survey2.id.add(1), survey2.name))
+    .select(SQLExpressions.select(survey2.id.add(1), survey2.name).from(survey2))
     .execute();
 ]]></programlisting>
 
       <para>With subquery, without columns</para>
 
       <programlisting language="java"><![CDATA[
-new SQLInsertClause(conn, configuration, survey)
-    .select(new SQLSubQuery().from(survey2).list(survey2.id.add(10), survey2.name))
+queryFactory.insert(survey)
+    .select(SQLExpressions.select(survey2.id.add(10), survey2.name).from(survey2))
     .execute();
 ]]></programlisting>
 
@@ -847,7 +863,7 @@ new SQLInsertClause(conn, configuration, survey)
     <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-new SQLInsertClause(conn, configuration, survey)
+queryFactory.insert(survey)
     .set(survey.id, 3)
     .set(survey.name, "Hello").execute();
 ]]></programlisting>
@@ -874,14 +890,14 @@ set(...)
      <para>To populate a clause instance based on the contents of a bean you can use</para>
 
     <programlisting language="java"><![CDATA[
-new SQLInsertClause(conn, configuration, survey)
+queryFactory.insert(survey)
     .populate(surveyBean).execute();
 ]]></programlisting>
 
     <para>This will exclude null bindings, if you need also null bindings use</para>
 
     <programlisting language="java"><![CDATA[
-new SQLInsertClause(conn, configuration, survey)
+queryFactory.insert(survey)
     .populate(surveyBean, DefaultMapper.WITH_NULL_BINDINGS).execute();
 ]]></programlisting>
 
@@ -896,7 +912,7 @@ new SQLInsertClause(conn, configuration, survey)
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-new SQLUpdateClause(conn, configuration, survey)
+queryFactory.update(survey)
     .where(survey.name.eq("XXX"))
     .set(survey.name, "S")
     .execute();
@@ -905,7 +921,7 @@ new SQLUpdateClause(conn, configuration, survey)
       <para>Without where</para>
 
       <programlisting language="java"><![CDATA[
-new SQLUpdateClause(conn, configuration, survey)
+queryFactory.update(survey)
     .set(survey.name, "S")
     .execute();
 ]]></programlisting>
@@ -913,7 +929,7 @@ new SQLUpdateClause(conn, configuration, survey)
     <para>Using bean population</para>
 
 <programlisting language="java"><![CDATA[
-new SQLUpdateClause(conn, configuration, survey)
+queryFactory.update(survey)
     .populate(surveyBean)
     .execute();
 ]]></programlisting>
@@ -929,7 +945,7 @@ new SQLUpdateClause(conn, configuration, survey)
       <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-new SQLDeleteClause(conn, configuration, survey)
+queryFactory.delete(survey)
     .where(survey.name.eq("XXX"))
     .execute();
 
@@ -938,7 +954,7 @@ new SQLDeleteClause(conn, configuration, survey)
       <para>Without where</para>
 
       <programlisting language="java"><![CDATA[
-new SQLDeleteClause(conn, configuration, survey)
+queryFactory.delete(survey)
     .execute()
 ]]></programlisting>
 
@@ -961,10 +977,10 @@ new SQLDeleteClause(conn, configuration, survey)
     <programlisting language="java"><![CDATA[
 QSurvey survey = QSurvey.survey;
 
-insert(survey).values(2, "A").execute();
-insert(survey).values(3, "B").execute();
+queryFactory.insert(survey).values(2, "A").execute();
+queryFactory.insert(survey).values(3, "B").execute();
 
-SQLUpdateClause update = update(survey);
+SQLUpdateClause update = queryFactory.update(survey);
 update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
 update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
 ]]></programlisting>
@@ -972,10 +988,10 @@ update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
     <para>Delete:</para>
 
     <programlisting language="java"><![CDATA[
-insert(survey).values(2, "A").execute();
-insert(survey).values(3, "B").execute();
+queryFactory.insert(survey).values(2, "A").execute();
+queryFactory.insert(survey).values(3, "B").execute();
 
-SQLDeleteClause delete = delete(survey);
+SQLDeleteClause delete = queryFactory.delete(survey);
 delete.where(survey.name.eq("A")).addBatch();
 delete.where(survey.name.eq("B")).addBatch();
 assertEquals(2, delete.execute());
@@ -984,7 +1000,7 @@ assertEquals(2, delete.execute());
     <para>Insert:</para>
 
     <programlisting language="java"><![CDATA[
-SQLInsertClause insert = insert(survey);
+SQLInsertClause insert = queryFactory.insert(survey);
 insert.set(survey.id, 5).set(survey.name, "5").addBatch();
 insert.set(survey.id, 6).set(survey.name, "6").addBatch();
 assertEquals(2, insert.execute());
@@ -1020,44 +1036,19 @@ QEmployee e = new QEmployee("e");
 // Insert
 Employee employee = new Employee();
 employee.setFirstname("John");
-Integer id = insert(e).populate(employee).executeWithKey(e.id);
+Integer id = queryFactory.insert(e).populate(employee).executeWithKey(e.id);
 employee.setId(id);
 
 // Update
 employee.setLastname("Smith");
-assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
+assertEquals(1l, queryFactory.update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
 // Query
-Employee smith = query().from(e).where(e.lastname.eq("Smith")).uniqueResult(e);
+Employee smith = queryFactory.selectFrom(e).where(e.lastname.eq("Smith")).fetchOne();
 assertEquals("John", smith.getFirstname());
 
 // Delete
-assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
-]]></programlisting>
-
-    <para>The factory methods used in the previous example are here:</para>
-
-    <programlisting language="java"><![CDATA[
-protected SQLUpdateClause update(RelationalPath<?> e) {
-    return new SQLUpdateClause(Connections.getConnection(), templates, e);
-}
-
-protected SQLInsertClause insert(RelationalPath<?> e) {
-    return new SQLInsertClause(Connections.getConnection(), templates, e);
-}
-
-protected SQLDeleteClause delete(RelationalPath<?> e) {
-    return new SQLDeleteClause(Connections.getConnection(), templates, e);
-}
-
-protected SQLMergeClause merge(RelationalPath<?> e) {
-    return new SQLMergeClause(Connections.getConnection(), templates, e);
-}
-
-protected SQLQuery query() {
-    return new SQLQuery(Connections.getConnection(), templates);
-}
-
+assertEquals(1l, queryFactory.delete(e).where(e.id.eq(employee.getId())).execute());
 ]]></programlisting>
 
   </sect2>
@@ -1100,7 +1091,7 @@ NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myf
     <para>The SQL query and bindings can be extracted via the getSQL method:</para>
 
     <programlisting language="java"><![CDATA[
-SQLBindings bindings = query.getSQL(customer.id, customer.firstname, customer.lastname);
+SQLBindings bindings = query.getSQL();
 System.out.println(bindings.getSQL());
 ]]></programlisting>
 

@@ -21,13 +21,13 @@
     <programlisting language="java"><![CDATA[
 public List<Customer> getCustomer(String... names) {
     QCustomer customer = QCustomer.customer;
-    JPAQuery query = new JPAQuery(entityManager).from(customer);
+    JPAQuery<Customer> query = queryFactory.selectFrom(customer);
     BooleanBuilder builder = new BooleanBuilder();
     for (String name : names) {
         builder.or(customer.name.eq(name));
     }
     query.where(builder); // customer.name eq name1 OR customer.name eq name2 OR ...
-    return query.list(customer);
+    return query.fetch();
 }
 ]]></programlisting>
 

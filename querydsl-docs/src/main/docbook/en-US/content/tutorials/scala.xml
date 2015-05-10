@@ -68,49 +68,6 @@ map.get("X")            map("X")
   </sect2>
 
   <sect2>
-    <title>Improved projections</title>
-
-    <para>The Querydsl Scala module offers a few implicit conversion to make Querydsl
-      query projections more Scala compatible.
-    </para>
-
-    <para>
-      The <code>RichProjectable</code> and <code>RichSimpleProjectable</code> wrappers should be used to enable
-      Scala projections for Querydsl queries.
-      By importing the contents of <code>com.querydsl.scala.Helpers</code>
-      the needed implicit conversions become available.
-    </para>
-
-    <para>
-      For example the following query with the standard API would return a <code>java.util.List</code> of
-      type <code>Object[]</code>.
-    </para>
-
-    <programlisting language="java"><![CDATA[
-query.from(person).list(person.firstName, person.lastName, person.age)
-]]></programlisting>
-
-    <para>With the added conversions you can use select instead of list for Scala list
-      typed results, unique instead of uniqueResult for
-      Option typed results and single instead of singleResult for Option typed results.
-    </para>
-
-    <para>The previous query could be expressed like this with the implicit conversions:
-    </para>
-
-    <programlisting language="java"><![CDATA[
-import com.querydsl.scala.Helpers._
-
-query.from(person).select(person.firstName, person.lastName, person.age)
-]]></programlisting>
-
-    <para>In this case the result type would be List[(String,String,Integer)] or in other
-      words List of Tuple3[String,String,Integer].
-    </para>
-
-  </sect2>
-
-  <sect2>
 
     <title>Querying with SQL</title>
 
@@ -152,54 +109,6 @@ exporter.setTypeMappings(ScalaTypeMappings.create)
 exporter.export(connection.getMetaData)
 ]]></programlisting>
 
-    <sect3>
-
-      <title>Compact queries</title>
-
-      <para>Querydsl Scala provides a compact query syntax for Querydsl SQL. The syntax is
-        inspired by domain oriented query syntaxes like that from the Rogue framework.
-      </para>
-
-      <para>
-        The domain oriented queries are implemented as implicit conversions from
-        <code>RelationalPath</code> instances into queries. This functionality
-        can be made available by implementing the
-        <code>com.querydsl.scala.sql.SQLHelpers</code>
-        trait in your service or DAO classes.
-      </para>
-
-      <para>Using this compact syntax you can use your meta model classes as a starting
-        point for queries.
-      </para>
-
-      <para>Instead of the following normal syntax</para>
-
-      <programlisting language="java"><![CDATA[
-query().from(employee).select(employee.firstName, employee.lastName)
-]]></programlisting>
-
-      <para>you could use the companion object of Employee or QEmployee and write it like
-        this </para>
-
-      <programlisting language="java"><![CDATA[
-Employee.select(_.firstName, _.lastName)
-]]></programlisting>
-
-      <para>Instead of giving expressions to orderBy, where, select, single and unique you
-        can give functions which take the root expression of
-        the query and return another expression. The expanded form of the previous example would be
-      </para>
-
-      <programlisting language="java"><![CDATA[
-Employee.select({ e => e.firstName }, { e => e.lastName })
-]]></programlisting>
-
-      <para>
-        See the signature of the <code>com.querydsl.scala.sql.RichSimpleQuery</code>
-        class for details.
-      </para>
-
-    </sect3>
 
     <sect3>
 
@@ -297,35 +206,35 @@ class Department {
     <programlisting language="java"><![CDATA[
 val person = Person as "person"
 
-query.from(person).where(person.firstName like "Rob%").list(person)
+selectFrom(person).where(person.firstName like "Rob%").fetch()
 ]]></programlisting>
 
     <para>Unique result</para>
 
     <programlisting language="java"><![CDATA[
-query.from(person).where(person.firstName like "Rob%").unique(person)
+selectFrom(person).where(person.firstName like "Rob%").fetchOne()
 ]]></programlisting>
 
     <para>Long where</para>
 
     <programlisting language="java"><![CDATA[
-query.from(person)
+selectFrom(person)
   .where(person.firstName like "Rob%", person.lastName like "An%")
-  .list(person)
+  .fetch()
 ]]></programlisting>
 
     <para>Order</para>
 
     <programlisting language="java"><![CDATA[
-query.from(person).orderBy(person.firstName asc).list(person)
+selectFrom(person).orderBy(person.firstName asc).fetch()
 ]]></programlisting>
 
     <para>Not null</para>
 
     <programlisting language="java"><![CDATA[
-query.from(person)
+selectFrom(person)
   .where(person.firstName isEmpty, person.lastName isNotNull)
-  .list(person)
+  .fetch()
 ]]></programlisting>
 
     <para>The factory method for query creation is</para>

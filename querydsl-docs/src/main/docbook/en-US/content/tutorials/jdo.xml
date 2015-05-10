@@ -209,14 +209,17 @@ customer.firstName;
     <title>Querying with JDO</title>
 
     <para>
-      For the JDO-module JDOQuery is the main Query implementation. It
+      For the JDO-module <code>JDOQuery</code> is the main Query implementation. It
       is instantiated like this:
     </para>
 
     <programlisting language="java"><![CDATA[
 PersistenceManager pm = ...;
-JDOQuery query = new JDOQuery (pm);
+JDOQuery<?> query = new JDOQuery<Void>(pm);
 ]]></programlisting>
+
+    <para>For the examples of this chapter the queries are created via a <code>JDOQueryFactory</code> instance.
+    <code>JDOQueryFactory</code> should be the preferred option to obtain <code>JDOQuery</code> instances.</para>
 
     <para>
       To retrieve the customer with the first name Bob you would construct a
@@ -225,18 +228,24 @@ JDOQuery query = new JDOQuery (pm);
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-JDOQuery query = new JDOQuery (pm);
-Customer bob = query.from(customer)
-  .where(customer.firstName.eq("Bob"))
-  .uniqueResult(customer);
-query.close();
+Customer bob = queryFactory.selectFrom(customer)
+                   .where(customer.firstName.eq("Bob"))
+                   .fetchOne();
 ]]></programlisting>
 
     <para>
-      The from call defines the query source, the where part defines the
-      filter and uniqueResult defines the projection and tells Querydsl
-      to return a single element. Easy, right?
+      The selectFrom call defines the query source and projection, the where part defines the
+      filter and fetchOne tells Querydsl to return a single element. Easy, right?
     </para>
+
+    <para>Alternatively you can express it also like this</para>
+
+    <programlisting language="java"><![CDATA[
+QCustomer customer = QCustomer.customer;
+Customer bob = queryFactory.select(customer).from(customer)
+                   .where(customer.firstName.eq("Bob"))
+                   .fetchOne();
+]]></programlisting>
 
     <para>
       To create a query with multiple sources you just use the JDOQuery class like this:
@@ -253,14 +262,14 @@ query.from(customer, company);
     </para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.selectFrom(customer)
     .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));
 ]]></programlisting>
 
     <para>Or like this</para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.selectFrom(customer)
     .where(customer.firstName.eq("Bob").and(customer.lastName.eq("Wilson")));
 ]]></programlisting>
 
@@ -268,7 +277,7 @@ query.from(customer)
     </para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.selectFrom(customer)
     .where(customer.firstName.eq("Bob").or(customer.lastName.eq("Wilson")));
 ]]></programlisting>
 
@@ -279,6 +288,11 @@ query.from(customer)
     <title>General usage</title>
 
     <para>Use the the cascading methods of the JDOQuery class like this</para>
+
+    <para>
+      <emphasis>select:</emphasis>
+      Set the projection of the query. (Not necessary if created via query factory)
+    </para>
 
     <para>
       <emphasis>from:</emphasis>
@@ -326,9 +340,9 @@ query.from(customer)
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-query.from(customer)
+queryFactory.selectFrom(customer)
     .orderBy(customer.lastName.asc(), customer.firstName.desc())
-    .list(customer);
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -340,9 +354,9 @@ query.from(customer)
     <para>Grouping can be done in the following form</para>
 
     <programlisting language="java"><![CDATA[
-query.from(customer)
+queryFactory.select(customer.lastName).from(customer)
     .groupBy(customer.lastName)
-    .list(customer.lastName);
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -350,6 +364,7 @@ query.from(customer)
   <sect2>
 
     <title>Delete clauses</title>
+
     <para>Delete clauses in Querydsl JDO follow a simple delete-where-execute form. Here
       are some examples:
     </para>
@@ -357,9 +372,9 @@ query.from(customer)
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 // delete all customers
-new JDODeleteClause(pm, customer).execute();
+queryFactory.delete(customer).execute();
 // delete all customers with a level less than 3
-new JDODeleteClause(pm, customer).where(customer.level.lt(3)).execute();
+queryFactory.delete(customer).where(customer.level.lt(3)).execute();
 ]]></programlisting>
 
     <para>The second parameter of the JDODeleteClause constructor is the entity to be
@@ -373,26 +388,24 @@ new JDODeleteClause(pm, customer).where(customer.level.lt(3)).execute();
 
     <title>Subqueries</title>
 
-    <para>To create a subquery you create a <code>JDOSubQuery</code> instance, add the query parameters
-      via from, where etc and use unique or list to create a subquery, which is just a type-safe
-      expression for the query. unique is used for a unique result and list for a list result.
+    <para>To create a subquery you can use one of the factory methods of <code>JDOExpressions</code>
+      and add the query parameters via from, where etc.
     </para>
 
     <programlisting language="java"><![CDATA[
 QDepartment department = QDepartment.department;
 QDepartment d = new QDepartment("d");
-query.from(department)
-    .where(department.employees.size().eq(
-        new JDOSubQuery().from(d).unique(AggregationFunctions.max(d.employees.size()))
-     )).list(department);
+queryFactory.selectFrom(department)
+    .where(department.size.eq(JDOExpressions.select(d.size.max()).from(d))
+    .fetch();
 ]]></programlisting>
 
     <para>represents the following native JDO query</para>
 
     <programlisting>
-      SELECT this FROM com.querydsl.jdo.models.company.Department
-      WHERE this.employees.size() ==
-      (SELECT max(d.employees.size()) FROM com.querydsl.jdo.models.company.Department d)
+SELECT this FROM com.querydsl.jdo.models.company.Department
+WHERE this.size ==
+(SELECT max(d.size) FROM com.querydsl.jdo.models.company.Department d)
     </programlisting>
 
     <para>Another example</para>
@@ -400,20 +413,20 @@ query.from(department)
     <programlisting language="java"><![CDATA[
 QEmployee employee = QEmployee.employee;
 QEmployee e = new QEmployee("e");
-query.from(employee)
+queryFactory.selectFrom(employee)
     .where(employee.weeklyhours.gt(
-        new JDOSubQuery().from(employee.department.employees, e)
-        .where(e.manager.eq(employee.manager))
-        .unique(AggregationFunctions.avg(e.weeklyhours))
-    )).list(employee);
+        JDOExpressions.select(e.weeklyhours.avg())
+                      .from(employee.department.employees, e)
+                      .where(e.manager.eq(employee.manager)))
+    .fetch();
 ]]></programlisting>
 
     <para>which represents the following native JDO query</para>
 
     <programlisting>
-      SELECT this FROM com.querydsl.jdo.models.company.Employee
-      WHERE this.weeklyhours >
-      (SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)
+SELECT this FROM com.querydsl.jdo.models.company.Employee
+WHERE this.weeklyhours >
+(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)
     </programlisting>
 
   </sect2>
@@ -477,40 +490,41 @@ SQLTemplates templates = new DerbyTemplates();
 SAnimal cat = new SAnimal("cat");
 SAnimal mate = new SAnimal("mate");
 
-JDOSQLQuery query = new JDOSQLQuery(pm, templates);
-List<String> names = query.from(cat).list(cat.name);
+JDOSQLQuery<?> query = new JDOSQLQuery<Void>(pm, templates);
+List<String> names = query.select(cat.name).from(cat).fetch();
 ]]></programlisting>
 
     <para>Query multiple columns:</para>
 
     <programlisting language="java"><![CDATA[
-query = new JDOSQLQuery(pm, templates);
-List<Object[]> rows = query.from(cat).list(cat.id, cat.name);
+query = new JDOSQLQuery<Void>(pm, templates);
+List<Tuple> rows = query.select(cat.id, cat.name).from(cat).fetch();
 ]]></programlisting>
 
     <para>Query all columns:</para>
 
     <programlisting language="java"><![CDATA[
-List<Object[]> rows = query.from(cat).list(cat.all());
+List<Tuple> rows = query.select(cat.all()).from(cat).fetch();
  ]]></programlisting>
 
     <para>Query with joins: </para>
 
     <programlisting language="java"><![CDATA[
-query = new JDOSQLQuery(pm, templates);
-cats = query.from(cat)
+query = new JDOSQLQuery<Void>(pm, templates);
+cats = query.select(catEntity).from(cat)
     .innerJoin(mate).on(cat.mateId.eq(mate.id))
     .where(cat.dtype.eq("Cat"), mate.dtype.eq("Cat"))
-    .list(catEntity);
+    .fetch();
 ]]></programlisting>
 
     <para>Query and project into DTO: </para>
 
     <programlisting language="java"><![CDATA[
-query = new JDOSQLQuery(pm, templates);
-List<CatDTO> catDTOs = query.from(cat)
+query = new JDOSQLQuery<Void>(pm, templates);
+List<CatDTO> catDTOs = query.select(Projections.constructor(CatDTO.class, cat.id, cat.name))
+    .from(cat)
     .orderBy(cat.name.asc())
-    .list(Projections.constructor(CatDTO.class, cat.id, cat.name));
+    .fetch();
 ]]></programlisting>
 
   </sect2>

@@ -19,9 +19,9 @@
 
   <programlisting language="java"><![CDATA[
 QCat cat = new QCat("cat");
-for (String name : query.from(cat,cats)
+for (String name : queryFactory.select(cat.name).from(cat,cats)
     .where(cat.kittens.size().gt(0))
-    .list(cat.name)) {
+    .fetch()) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -33,9 +33,9 @@ for (String name : query.from(cat,cats)
 
   <programlisting language="java"><![CDATA[
 Cat c = alias(Cat.class, "cat");
-for (String name : query.from($(c),cats)
+for (String name : select($(c.getName())).from($(c),cats)
     .where($(c.getKittens()).size().gt(0))
-    .list($(c.getName()))) {
+    .fetch()) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -57,9 +57,9 @@ import static com.querydsl.core.alias.Alias.alias;
 
   <programlisting language="java"><![CDATA[
 Cat c = alias(Cat.class, "cat");
-for (String name : query.from($(c),cats)
+for (String name : queryFactory.select($(c.getName())).from($(c),cats)
     .where($(c.getKittens().size()).gt(0))
-    .list($(c.getName()))) {
+    .fetch()) {
     System.out.println(name);
 }
 ]]></programlisting>

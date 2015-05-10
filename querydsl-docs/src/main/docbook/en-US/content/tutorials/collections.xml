@@ -46,9 +46,9 @@ import static com.querydsl.core.alias.Alias.*;
 
     <programlisting language="java"><![CDATA[
 Cat c = alias(Cat.class, "cat");
-for (String name : from($(c),cats)
+for (String name : select($(c.getName())).from($(c),cats)
   .where($(c.getKittens()).size().gt(0))
-  .list($(c.getName()))) {
+  .fetch()) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -61,9 +61,9 @@ for (String name : from($(c),cats)
 
     <programlisting language="java"><![CDATA[
 Cat c = alias(Cat.class, "cat");
-for (String name : from($(c),cats)
+for (String name : select($(c.getName())).from($(c),cats)
   .where($(c.getKittens().size()).gt(0))
-  .list($(c.getName()))) {
+  .fetch()) {
     System.out.println(name);
 }
 ]]></programlisting>
@@ -112,9 +112,9 @@ $(c.getMate().getName().toLowerCase())
 
     <programlisting language="java"><![CDATA[
 QCat cat = new QCat("cat");
-for (String name : from(cat,cats)
+for (String name : select(cat.name).from(cat,cats)
   .where(cat.kittens.size().gt(0))
-  .list(cat.name)) {
+  .fetch()) {
     System.out.println(name);
 }
 ]]></programlisting>

@@ -88,7 +88,7 @@ IndexSearcher searcher = new IndexSearcher(index);
 LuceneQuery query = new LuceneQuery(true, searcher);
 List<Document> documents = query
     .where(doc.year.between("1800", "2000").and(doc.title.startsWith("Huckle"))
-    .list();
+    .fetch();
 ]]></programlisting>
 
     <para>which is transformed into the following Lucene query:</para>
@@ -147,7 +147,7 @@ List<Document> documents = query
 query
     .where(doc.title.like("*"))
     .orderBy(doc.title.asc(), doc.year.desc())
-    .list();
+    .fetch();
 ]]></programlisting>
 
     <para>which is equivalent to the following Lucene query</para>
@@ -167,7 +167,7 @@ Sort sort = ...;
 query
     .where(doc.title.like("*"))
     .sort(sort)
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -181,7 +181,7 @@ query
 query
     .where(doc.title.like("*"))
     .limit(10)
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -195,7 +195,7 @@ query
 query
     .where(doc.title.like("*"))
     .offset(3)
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -211,7 +211,7 @@ query
     <programlisting language="java"><![CDATA[
 query
     .where(LuceneExpressions.fuzzyLike(doc.title, "Hello"))
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
@@ -226,7 +226,7 @@ query
 query
     .where(doc.title.like("*"))
     .filter(filter)
-    .list();
+    .fetch();
 ]]></programlisting>
 
     <para>A shortcut for distinct filtering is provided via the distinct(Path) method:
@@ -236,7 +236,7 @@ query
 query
     .where(doc.title.like("*"))
     .distinct(doc.title)
-    .list();
+    .fetch();
 ]]></programlisting>
 
   </sect2>
