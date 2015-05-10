@@ -104,6 +104,10 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
         return new ConstantImpl<T>(obj);
     }
 
+    public static <T> Constant<T> create(Class<T> type, T constant) {
+        return new ConstantImpl<T>(type, constant);
+    }
+
     private final T constant;
 
     /**
@@ -112,7 +116,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
      * @param constant constant
      */
     @SuppressWarnings("unchecked") //The class of the constant will mandate the type
-    public ConstantImpl(T constant) {
+    private ConstantImpl(T constant) {
         this((Class)constant.getClass(), constant);
     }
 
@@ -122,7 +126,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
      * @param type type of the expression
      * @param constant constant
      */
-    public ConstantImpl(Class<T> type, T constant) {
+    private ConstantImpl(Class<T> type, T constant) {
         super(type);
         this.constant = constant;
     }
