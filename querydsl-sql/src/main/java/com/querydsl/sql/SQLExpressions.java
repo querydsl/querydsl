@@ -641,7 +641,7 @@ public final class SQLExpressions {
      * @return nth_value(expr, n)
      */
     public static <T> WindowOver<T> nthValue(Expression<T> expr, Number n) {
-        return nthValue(expr, new ConstantImpl<Number>(n));
+        return nthValue(expr, ConstantImpl.create(n));
     }
 
     /**
@@ -664,7 +664,7 @@ public final class SQLExpressions {
      * @return ntile(num)
      */
     public static <T extends Number & Comparable> WindowOver<T> ntile(T num) {
-        return new WindowOver<T>((Class<T>)num.getClass(), SQLOps.NTILE, new ConstantImpl<T>(num));
+        return new WindowOver<T>((Class<T>)num.getClass(), SQLOps.NTILE, ConstantImpl.create(num));
     }
 
     /**
@@ -800,7 +800,7 @@ public final class SQLExpressions {
         if (arg.doubleValue() < 0.0 || arg.doubleValue() > 1.0) {
             throw new IllegalArgumentException("The percentile value should be a number between 0 and 1");
         }
-        return percentileCont(new ConstantImpl<T>(arg));
+        return percentileCont(ConstantImpl.create(arg));
     }
 
     /**
@@ -829,7 +829,7 @@ public final class SQLExpressions {
         if (arg.doubleValue() < 0.0 || arg.doubleValue() > 1.0) {
             throw new IllegalArgumentException("The percentile value should be a number between 0 and 1");
         }
-        return percentileDisc(new ConstantImpl<T>(arg));
+        return percentileDisc(ConstantImpl.create(arg));
     }
 
     /**

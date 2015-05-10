@@ -28,7 +28,7 @@ object Constants {
 
   def constant(value: String) = ConstantImpl.create(value)
 
-  def constant[T](value: T) = new ConstantImpl(value)
+  def constant[T](value: T) = ConstantImpl.create(value)
 
 }
 
