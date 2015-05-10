@@ -45,7 +45,7 @@ import com.querydsl.jpa.domain2.Domain2;
 
 public class JPADomainExporterTest {
 
-    private static Properties props = new Properties();
+    private static final Properties props = new Properties();
 
     static {
         try {
