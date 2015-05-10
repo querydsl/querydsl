@@ -118,7 +118,7 @@ public class SpatialBase extends AbstractBaseTest {
             Point point1 = tuple.get(shapes1.geometry.asPoint());
             Point point2 = tuple.get(shapes2.geometry.asPoint());
             Double distance = tuple.get(shapes1.geometry.distance(shapes2.geometry));
-            assertEquals(point1.distance(point2), distance.doubleValue(), 0.0001);
+            assertEquals(point1.distance(point2), distance, 0.0001);
         }
     }
 

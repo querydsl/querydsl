@@ -270,10 +270,10 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         Integer limit = modifiers.getLimitAsInteger();
         Integer offset = modifiers.getOffsetAsInteger();
         if (limit != null) {
-            cursor.limit(limit.intValue());
+            cursor.limit(limit);
         }
         if (offset != null) {
-            cursor.skip(offset.intValue());
+            cursor.skip(offset);
         }
         if (orderBy.size() > 0) {
             cursor.sort(serializer.toSort(orderBy));

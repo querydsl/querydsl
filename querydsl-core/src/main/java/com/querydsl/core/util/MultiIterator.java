@@ -60,7 +60,7 @@ public class MultiIterator<T> implements Iterator<Object[]> {
         while (hasNext == null) {
             produceNext();
         }
-        return hasNext.booleanValue();
+        return hasNext;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MultiIterator<T> implements Iterator<Object[]> {
         while (hasNext == null) {
             produceNext();
         }
-        if (hasNext.booleanValue()) {
+        if (hasNext) {
             hasNext = null;
             return (T[]) values.clone();
         } else {

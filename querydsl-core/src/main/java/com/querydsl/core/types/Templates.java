@@ -327,7 +327,7 @@ public class Templates {
     }
 
     public final int getPrecedence(Operator op) {
-        return precedence.get(op).intValue();
+        return precedence.get(op);
     }
 
     protected void setPrecedence(int p, Operator... ops) {

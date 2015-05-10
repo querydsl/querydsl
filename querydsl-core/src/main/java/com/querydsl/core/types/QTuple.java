@@ -86,7 +86,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
         public <T> T get(Expression<T> expr) {
             Integer idx = QTuple.this.bindings.get(expr);
             if (idx != null) {
-                return (T) a[idx.intValue()];
+                return (T) a[idx];
             } else {
                 return null;
             }

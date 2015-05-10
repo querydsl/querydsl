@@ -1018,8 +1018,8 @@ public class SelectBase extends AbstractBaseTest {
     public void Literals() {
         assertEquals(1L, firstResult(ConstantImpl.create(1)).intValue());
         assertEquals(2L, firstResult(ConstantImpl.create(2L)).longValue());
-        assertEquals(3.0, firstResult(ConstantImpl.create(3.0)).doubleValue(), 0.001);
-        assertEquals(4.0f, firstResult(ConstantImpl.create(4.0f)).floatValue(), 0.001);
+        assertEquals(3.0, firstResult(ConstantImpl.create(3.0)), 0.001);
+        assertEquals(4.0f, firstResult(ConstantImpl.create(4.0f)), 0.001);
         assertEquals(true, firstResult(ConstantImpl.create(true)));
         assertEquals(false, firstResult(ConstantImpl.create(false)));
         assertEquals("abc", firstResult(ConstantImpl.create("abc")));

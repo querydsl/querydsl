@@ -46,7 +46,7 @@ public class EnumByOrdinalType<T extends Enum<T>> extends AbstractType<T> {
     @Override
     public T getValue(ResultSet rs, int startIndex) throws SQLException {
         Integer ordinal = (Integer)rs.getObject(startIndex);
-        return ordinal != null ? type.getEnumConstants()[ordinal.intValue()] : null;
+        return ordinal != null ? type.getEnumConstants()[ordinal] : null;
     }
 
     @Override

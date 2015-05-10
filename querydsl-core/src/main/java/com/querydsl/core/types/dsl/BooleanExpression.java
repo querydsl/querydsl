@@ -142,7 +142,7 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
 
     @Override
     public BooleanExpression eq(Boolean right) {
-        if (right.booleanValue()) {
+        if (right) {
             if (eqTrue == null) {
                 eqTrue = super.eq(true);
             }
