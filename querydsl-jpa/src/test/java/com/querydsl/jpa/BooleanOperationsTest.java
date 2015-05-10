@@ -14,6 +14,7 @@
 package com.querydsl.jpa;
 
 import static com.querydsl.jpa.JPAExpressions.selectFrom;
+import static com.querydsl.jpa.Constants.*;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

@@ -130,8 +130,8 @@ public class InsertBase extends AbstractBaseTest {
 
         assertEquals(2, insert.execute());
 
-        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("55")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("66")).fetchCount());
     }
 
     @Test
@@ -147,8 +147,8 @@ public class InsertBase extends AbstractBaseTest {
 
         assertEquals(2, insert.execute());
 
-        assertEquals(1l, query().from(survey).where(survey.name.eq("55")).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.eq("66")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("55")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("66")).fetchCount());
     }
 
     @Test
@@ -301,7 +301,7 @@ public class InsertBase extends AbstractBaseTest {
                 .select(Expressions.constant("MyModule")).fetchFirst())
             .execute());
 
-        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule")).fetchCount());
+        assertEquals(1L , query().from(survey).where(survey.name.eq("MyModule")).fetchCount());
     }
 
     @Test
@@ -318,7 +318,7 @@ public class InsertBase extends AbstractBaseTest {
                 .select(Expressions.constant("MyModule2")))
             .execute());
 
-        assertEquals(1l , query().from(survey).where(survey.name.eq("MyModule2")).fetchCount());
+        assertEquals(1L , query().from(survey).where(survey.name.eq("MyModule2")).fetchCount());
     }
 
     @Test
@@ -382,7 +382,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     public void Like() {
         insert(survey).values(11, "Hello World", "a\\b").execute();
-        assertEquals(1l, query().from(survey).where(survey.name2.contains("a\\b")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name2.contains("a\\b")).fetchCount());
     }
 
     @Test
@@ -393,13 +393,13 @@ public class InsertBase extends AbstractBaseTest {
         insert.set(survey.id, 7).set(survey.name, "a%").addBatch();
         assertEquals(3, insert.execute());
 
-        assertEquals(1l, query().from(survey).where(survey.name.like("a|%", '|')).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.like("a|_", '|')).fetchCount());
-        assertEquals(3l, query().from(survey).where(survey.name.like("a%")).fetchCount());
-        assertEquals(2l, query().from(survey).where(survey.name.like("a_")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.like("a|%", '|')).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.like("a|_", '|')).fetchCount());
+        assertEquals(3L, query().from(survey).where(survey.name.like("a%")).fetchCount());
+        assertEquals(2L, query().from(survey).where(survey.name.like("a_")).fetchCount());
 
-        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a_")).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.startsWith("a_")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.startsWith("a%")).fetchCount());
     }
 
     @Test

@@ -13,8 +13,8 @@
  */
 package com.querydsl.core.types.dsl;
 
-import static com.querydsl.core.alias.Alias.$;
 import static org.junit.Assert.*;
+import static com.querydsl.core.alias.Alias.$;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;

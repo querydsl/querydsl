@@ -15,7 +15,7 @@ public class Generic12Test {
     @Entity
     @Inheritance
     @DiscriminatorColumn(name = "CONTEXT")
-    public static abstract class Permission {
+    public abstract static class Permission {
         // some common stuff
     }
 
@@ -36,7 +36,7 @@ public class Generic12Test {
     @Entity
     @Inheritance
     @DiscriminatorColumn(name = "CONTEXT")
-    public static abstract class Role<T extends Permission> {
+    public abstract static class Role<T extends Permission> {
 
         @ManyToMany(targetEntity = Permission.class)
         private final List<T> permissions = Lists.newArrayList();

@@ -41,13 +41,13 @@ public class QueryInit2Test {
     }
 
     @QueryEntity
-    public static class Account{
+    public static class Account {
 
         Owner owner;
     }
 
     @QueryEntity
-    public static class Owner{
+    public static class Owner {
 
     }
 

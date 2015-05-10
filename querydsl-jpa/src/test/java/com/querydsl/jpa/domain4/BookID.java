@@ -36,24 +36,4 @@ public class BookID implements Serializable {
         this.identity = identity;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        BookID bookID = (BookID) o;
-
-        if (identity != null ? !identity.equals(bookID.identity)
-                : bookID.identity != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return identity != null ? identity.hashCode() : 0;
-    }
 }

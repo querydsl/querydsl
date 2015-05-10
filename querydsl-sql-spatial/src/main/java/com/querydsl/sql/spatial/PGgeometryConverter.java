@@ -16,8 +16,7 @@ package com.querydsl.sql.spatial;
 import org.geolatte.geom.*;
 import org.geolatte.geom.crs.CrsId;
 
-
-class PGgeometryConverter {
+final class PGgeometryConverter {
 
     // to postgis
 

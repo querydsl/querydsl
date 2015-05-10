@@ -28,20 +28,20 @@ import javax.lang.model.util.SimpleTypeVisitor6;
  */
 class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor6<R, P> {
 
-    private static Class<?> IntersectionTypeClass;
+    private static Class<?> intersectionTypeClass;
 
     private static Method getBoundsMethod;
 
     static {
         try {
-            IntersectionTypeClass = Class.forName("javax.lang.model.type.IntersectionType");
-            getBoundsMethod = IntersectionTypeClass.getMethod("getBounds");
+            intersectionTypeClass = Class.forName("javax.lang.model.type.IntersectionType");
+            getBoundsMethod = intersectionTypeClass.getMethod("getBounds");
         } catch (Exception e) {}
     }
 
     @Override
     public R visitUnknown(TypeMirror t, P p) {
-        if (IntersectionTypeClass != null && IntersectionTypeClass.isInstance(t)) {
+        if (intersectionTypeClass != null && intersectionTypeClass.isInstance(t)) {
             try {
                 List<TypeMirror> bounds = (List<TypeMirror>) getBoundsMethod.invoke(t);
                 return bounds.get(0).accept(this, p);

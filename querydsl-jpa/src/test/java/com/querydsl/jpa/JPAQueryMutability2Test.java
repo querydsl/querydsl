@@ -32,9 +32,15 @@ public class JPAQueryMutability2Test implements JPATest {
     private EntityManager entityManager;
 
     private final Operator customOperator = new Operator() {
-        public String name() { return "custom"; }
-        public String toString() { return name(); }
-        public Class<?> getType() { return Object.class; }
+        public String name() {
+            return "custom";
+        }
+        public String toString() {
+            return name();
+        }
+        public Class<?> getType() {
+            return Object.class;
+        }
     };
 
     private final JPQLTemplates customTemplates = new HQLTemplates() {{

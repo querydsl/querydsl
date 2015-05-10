@@ -48,8 +48,8 @@ public class NativeSQLSerializerTest {
         md.setProjection(cat.id);
         serializer.serialize(md, false);
         assertEquals("select animal_.id\n" +
-        	"from animal_ animal_\n" +
-        	"where animal_.name in (?1, ?2)", serializer.toString());
+            "from animal_ animal_\n" +
+            "where animal_.name in (?1, ?2)", serializer.toString());
     }
 
     @Test

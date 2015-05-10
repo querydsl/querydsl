@@ -44,16 +44,16 @@ public class PathInits implements Serializable {
     private final Map<String,PathInits> propertyToInits = new HashMap<String,PathInits>();
 
     public PathInits(String... initStrs) {
-        boolean _initAllProps = false;
-        PathInits _defaultValue = DEFAULT;
+        boolean initAllProps = false;
+        PathInits defaultValue = DEFAULT;
 
         Map<String, Collection<String>> properties = Maps.newHashMap();
         for (String initStr : initStrs) {
             if (initStr.equals("*")) {
-                _initAllProps = true;
+                initAllProps = true;
             } else if (initStr.startsWith("*.")) {
-                _initAllProps = true;
-                _defaultValue = new PathInits(initStr.substring(2));
+                initAllProps = true;
+                defaultValue = new PathInits(initStr.substring(2));
             } else {
                 String key = initStr;
                 List<String> inits = Collections.emptyList();
@@ -75,8 +75,8 @@ public class PathInits implements Serializable {
             propertyToInits.put(entry.getKey(), inits);
         }
 
-        initAllProps = _initAllProps;
-        defaultValue = _defaultValue;
+        this.initAllProps = initAllProps;
+        this.defaultValue = defaultValue;
     }
 
     public PathInits get(String property) {

@@ -28,7 +28,7 @@ public class EmbeddedTest {
     }
 
     @MappedSuperclass
-    public static abstract class AbstractEntity<C extends EntityCode> {
+    public abstract static class AbstractEntity<C extends EntityCode> {
 
         @Embedded
         @Column(name = "code", nullable = false, unique = true)

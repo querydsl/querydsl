@@ -22,7 +22,7 @@ import com.google.common.collect.ImmutableList;
  *
  * @param <T> expression type
  */
-public class NullExpression<T> extends TemplateExpressionImpl<T> {
+public final class NullExpression<T> extends TemplateExpressionImpl<T> {
 
     private static final Template NULL_TEMPLATE = TemplateFactory.DEFAULT.create("null");
 

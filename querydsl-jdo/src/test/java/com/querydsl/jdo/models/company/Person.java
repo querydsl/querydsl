@@ -51,7 +51,6 @@ public class Person implements Cloneable {
             if (obj == this) {
                 return true;
             }
-
             if (!(obj instanceof Id)) {
                 return false;
             }
@@ -135,8 +134,9 @@ public class Person implements Cloneable {
         if (o == this) {
             return true;
         }
-        if ((o == null) || (o.getClass() != this.getClass()))
+        if ((o == null) || (o.getClass() != this.getClass())) {
             return false;
+        }
 
         Person other = (Person) o;
         return personNum == other.personNum

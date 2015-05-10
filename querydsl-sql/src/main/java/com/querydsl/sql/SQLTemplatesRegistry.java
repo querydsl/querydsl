@@ -49,16 +49,36 @@ public class SQLTemplatesRegistry {
      */
     public SQLTemplates getTemplates(DatabaseMetaData md) throws SQLException {
         String name = md.getDatabaseProductName().toLowerCase();
-        if (name.equals("cubrid")) return cubrid;
-        if (name.equals("apache derby")) return derby;
-        if (name.startsWith("firebird")) return firebird;
-        if (name.equals("h2")) return h2;
-        if (name.equals("hsql")) return hsqldb;
-        if (name.equals("mysql")) return mysql;
-        if (name.equals("oracle")) return oracle;
-        if (name.equals("postgresql")) return postgresql;
-        if (name.equals("sqlite")) return sqlite;
-        if (name.startsWith("teradata")) return teradata;
+        if (name.equals("cubrid")) {
+            return cubrid;
+        }
+        if (name.equals("apache derby")) {
+            return derby;
+        }
+        if (name.startsWith("firebird")) {
+            return firebird;
+        }
+        if (name.equals("h2")) {
+            return h2;
+        }
+        if (name.equals("hsql")) {
+            return hsqldb;
+        }
+        if (name.equals("mysql")) {
+            return mysql;
+        }
+        if (name.equals("oracle")) {
+            return oracle;
+        }
+        if (name.equals("postgresql")) {
+            return postgresql;
+        }
+        if (name.equals("sqlite")) {
+            return sqlite;
+        }
+        if (name.startsWith("teradata")) {
+            return teradata;
+        }
 
         // sqlserver
         if (name.equals("microsft sql server")) {

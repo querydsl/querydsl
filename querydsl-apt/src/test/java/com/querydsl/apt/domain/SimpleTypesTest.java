@@ -240,7 +240,7 @@ public class SimpleTypesTest extends AbstractTest {
     public void List_Access() {
         // date / time
         QSimpleTypesTest_SimpleTypes.simpleTypes.dateList.get(0).after(new Date());
-        QSimpleTypesTest_SimpleTypes.simpleTypes.timeList.get(0).after(new Time(0l));
+        QSimpleTypesTest_SimpleTypes.simpleTypes.timeList.get(0).after(new Time(0L));
         QSimpleTypesTest_SimpleTypes.simpleTypes.calendarList.get(0).before(Calendar.getInstance());
 
         // numeric

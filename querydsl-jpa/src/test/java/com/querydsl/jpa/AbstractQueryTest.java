@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.querydsl.core.types.Expression;
 
-public abstract class AbstractQueryTest implements Constants {
+public abstract class AbstractQueryTest {
 
     protected QueryHelper<?> query() {
         return new QueryHelper<Void>(HQLTemplates.DEFAULT);

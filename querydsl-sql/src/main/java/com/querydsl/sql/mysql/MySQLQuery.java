@@ -141,7 +141,7 @@ public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
      * @return the current object
      */
     public MySQLQuery<T> intoDumpfile(File file) {
-        return addFlag(Position.END, "\ninto dumpfile '" + file.getPath() + "'" );
+        return addFlag(Position.END, "\ninto dumpfile '" + file.getPath() + "'");
     }
 
     /**
@@ -152,7 +152,7 @@ public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
      * @return the current object
      */
     public MySQLQuery<T> intoOutfile(File file) {
-        return addFlag(Position.END, "\ninto outfile '" + file.getPath() + "'" );
+        return addFlag(Position.END, "\ninto outfile '" + file.getPath() + "'");
     }
 
     /**

@@ -30,7 +30,9 @@ import com.querydsl.jpa.impl.JPAQuery;
  * @author tiwe
  *
  */
-public class CustomFinder {
+public final class CustomFinder {
+
+    private CustomFinder() {}
 
     public static <T> List<T> findCustom(EntityManager em, Class<T> entityClass,Map<String,?> filters, String sort) {
         EntityPath<T> entityPath = new EntityPathBase<T>(entityClass, "entity");

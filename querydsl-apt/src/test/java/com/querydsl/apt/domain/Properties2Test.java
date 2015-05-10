@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class Properties2Test {
 
-    public static abstract class BaseX<T extends Serializable> implements Serializable {
+    public abstract static class BaseX<T extends Serializable> implements Serializable {
 
         public abstract T getId();
     }

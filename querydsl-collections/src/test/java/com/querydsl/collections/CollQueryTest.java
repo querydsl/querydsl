@@ -74,9 +74,9 @@ public class CollQueryTest extends AbstractQueryTest {
     @Test
     public void Cast() {
         NumberExpression<?> num = cat.id;
-        Expression<?>[] expr = new Expression[] { num.byteValue(), num.doubleValue(),
+        Expression<?>[] expr = new Expression[] {num.byteValue(), num.doubleValue(),
                 num.floatValue(), num.intValue(), num.longValue(),
-                num.shortValue(), num.stringValue() };
+                num.shortValue(), num.stringValue()};
 
         for (Expression<?> e : expr) {
             query().from(cat, Arrays.asList(c1, c2)).select(e).fetch();

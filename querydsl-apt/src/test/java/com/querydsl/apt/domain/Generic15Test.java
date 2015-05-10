@@ -11,19 +11,19 @@ import org.junit.Test;
 public class Generic15Test extends AbstractTest {
 
     @MappedSuperclass
-    public static abstract class Compound<T extends Containable> {
+    public abstract static class Compound<T extends Containable> {
 
         private Set<T> containables = new HashSet<T>();
     }
 
     @MappedSuperclass
-    public static abstract class Containable<T extends Compound> {
+    public abstract static class Containable<T extends Compound> {
 
         private T compound;
     }
 
     @Entity
-    public static class MyCompound extends Compound<MyContainable>{
+    public static class MyCompound extends Compound<MyContainable> {
     }
 
     @Entity

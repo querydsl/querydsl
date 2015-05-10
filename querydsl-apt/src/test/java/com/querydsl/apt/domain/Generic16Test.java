@@ -14,24 +14,24 @@ import org.junit.Test;
 public class Generic16Test extends AbstractTest {
 
     @Entity
-    public static abstract class HidaBez<B extends HidaBez<B, G>, G extends HidaBezGruppe<G, B>> extends CapiBCKeyedByGrundstueck {
+    public abstract static class HidaBez<B extends HidaBez<B, G>, G extends HidaBezGruppe<G, B>> extends CapiBCKeyedByGrundstueck {
 
     }
 
     @Entity
-    public static abstract class HidaBezGruppe<G extends HidaBezGruppe<G, B>, B extends HidaBez<B, G>> extends CapiBCKeyedByGrundstueck {
+    public abstract static class HidaBezGruppe<G extends HidaBezGruppe<G, B>, B extends HidaBez<B, G>> extends CapiBCKeyedByGrundstueck {
 
         SortedSet<B> bez = new TreeSet<B>();
 
     }
 
     @MappedSuperclass
-    public static abstract class CapiBCKeyedByGrundstueck extends CapiBusinessClass {
+    public abstract static class CapiBCKeyedByGrundstueck extends CapiBusinessClass {
 
     }
 
     @MappedSuperclass
-    public static abstract class CapiBusinessClass implements ICapiBusinessClass {
+    public abstract static class CapiBusinessClass implements ICapiBusinessClass {
 
     }
 

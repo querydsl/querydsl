@@ -40,7 +40,7 @@ import org.sonatype.plexus.build.incremental.BuildContext;
 public class CompileMojo extends AbstractMojo {
 
     private static final String JAVA_FILE_FILTER = "/*.java";
-    private static final String[] ALL_JAVA_FILES_FILTER = new String[] { "**" + JAVA_FILE_FILTER };
+    private static final String[] ALL_JAVA_FILES_FILTER = new String[] {"**" + JAVA_FILE_FILTER};
 
     /**
      * @parameter default-value="${project}"

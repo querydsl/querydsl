@@ -12,7 +12,7 @@ public class NullSafetyTest extends AbstractQueryTest {
     public void Filters() {
         QCat cat = QCat.cat;
         CollQuery<Cat> query = CollQueryFactory.from(cat, Arrays.asList(new Cat(), new Cat("Bob")));
-        assertEquals(1l, query.where(cat.name.eq("Bob")).fetchCount());
+        assertEquals(1L, query.where(cat.name.eq("Bob")).fetchCount());
     }
 
     @Test

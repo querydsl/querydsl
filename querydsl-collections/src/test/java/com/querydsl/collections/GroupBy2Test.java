@@ -77,23 +77,23 @@ public class GroupBy2Test {
     @Before
     public void setUp() {
         Role r1 = new Role();
-        r1.id = 1l;
+        r1.id = 1L;
         r1.name = "User";
-        r1.groups = Lists.newArrayList(new SecurityGroup(1l, "User 1"));
+        r1.groups = Lists.newArrayList(new SecurityGroup(1L, "User 1"));
 
         Role r2 = new Role();
-        r2.id = 2l;
+        r2.id = 2L;
         r2.name = null; // NOTE this is null on purpose
-        r2.groups = Lists.newArrayList(new SecurityGroup(2l, "Admin 1"),
-                                       new SecurityGroup(3l, "Admin 2"));
+        r2.groups = Lists.newArrayList(new SecurityGroup(2L, "Admin 1"),
+                                       new SecurityGroup(3L, "Admin 2"));
 
         User u1 = new User();
-        u1.id = 3l;
+        u1.id = 3L;
         u1.name = "Bob";
         u1.roles = Lists.newArrayList(r1);
 
         User u2 = new User();
-        u2.id = 32l;
+        u2.id = 32L;
         u2.name = "Ann";
         u2.roles = Lists.newArrayList(r1, r2);
 
@@ -117,12 +117,12 @@ public class GroupBy2Test {
                             list(role.name),
                             list(group.id))));
 
-        UserDto dto1 = userDtos.get(3l);
+        UserDto dto1 = userDtos.get(3L);
         assertEquals(1, dto1.roleIds.size());
         assertEquals(1, dto1.roleNames.size());
         assertEquals(1, dto1.secIds.size());
 
-        UserDto dto2 = userDtos.get(32l);
+        UserDto dto2 = userDtos.get(32L);
         assertEquals(3, dto2.roleIds.size());
         assertEquals(1, dto2.roleNames.size());
         assertEquals(3, dto2.secIds.size());
@@ -144,12 +144,12 @@ public class GroupBy2Test {
                             map(role.id, role.name),
                             map(group.id, group.name))));
 
-        UserDto dto1 = userDtos.get(3l);
+        UserDto dto1 = userDtos.get(3L);
         assertEquals(1, dto1.roleIds.size());
         assertEquals(1, dto1.roleNames.size());
         assertEquals(1, dto1.secIds.size());
 
-        UserDto dto2 = userDtos.get(32l);
+        UserDto dto2 = userDtos.get(32L);
         assertEquals(2, dto2.roleIds.size());
         assertEquals(2, dto2.roleNames.size());
         assertEquals(3, dto2.secIds.size());

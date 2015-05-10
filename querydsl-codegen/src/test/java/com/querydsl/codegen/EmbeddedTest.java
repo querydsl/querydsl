@@ -13,7 +13,7 @@ public class EmbeddedTest extends AbstractExporterTest {
     }
 
     @QuerySupertype
-    public static abstract class AbstractEntity<C extends EntityCode> {
+    public abstract static class AbstractEntity<C extends EntityCode> {
 
         @QueryEmbedded
         public C code;

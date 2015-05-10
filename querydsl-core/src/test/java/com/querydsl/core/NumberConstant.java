@@ -52,7 +52,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     }
 
     @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 

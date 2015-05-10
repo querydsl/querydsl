@@ -45,7 +45,7 @@ public class QueryTypeTest extends AbstractTest {
     }
 
     @Test
-    public void test() throws SecurityException, NoSuchFieldException{
+    public void test() throws SecurityException, NoSuchFieldException {
         start(QQueryTypeTest_QueryTypeEntity.class, QQueryTypeTest_QueryTypeEntity.queryTypeEntity);
         match(SimplePath.class, "stringAsSimple");
         match(ComparablePath.class, "stringAsComparable");

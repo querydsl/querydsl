@@ -24,6 +24,6 @@ import org.hibernate.type.StandardBasicTypes;
 public class ExtendedHSQLDialect extends HSQLDialect{
 
     public ExtendedHSQLDialect() {
-        registerFunction( "trim", new SQLFunctionTemplate( StandardBasicTypes.STRING, "trim(both from ?1)" ) );
+        registerFunction("trim", new SQLFunctionTemplate(StandardBasicTypes.STRING, "trim(both from ?1)"));
     }
 }

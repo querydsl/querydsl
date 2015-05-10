@@ -73,10 +73,10 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         query.getMetadata().addFlag(new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() "));
 
         assertEquals("select * from (  " +
-        	"select a.*, rownum rn from (   " +
-        	"select survey1.ID, count(*) over()  from SURVEY survey1  ) " +
-        	"a) " +
-        	"where rn > 3 and rownum <= 5", query.toString());
+            "select a.*, rownum rn from (   " +
+            "select survey1.ID, count(*) over()  from SURVEY survey1  ) " +
+            "a) " +
+            "where rn > 3 and rownum <= 5", query.toString());
     }
 
     @Test

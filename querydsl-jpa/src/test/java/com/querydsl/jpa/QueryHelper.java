@@ -68,20 +68,16 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
     }
 
     public void parse() throws RecognitionException, TokenStreamException {
-        try {
-            String input = toString();
-            logger.debug("input: " + input.replace('\n', ' '));
-            HqlParser parser = HqlParser.getInstance(input);
-            parser.setFilter(false);
-            parser.statement();
-            AST ast = parser.getAST();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            parser.showAst(ast, new PrintStream(baos));
-            assertEquals("At least one error occurred during parsing " + input,
-                    0, parser.getParseErrorHandler().getErrorCount());
-        } finally {
-            // clear();
-        }
+        String input = toString();
+        logger.debug("input: " + input.replace('\n', ' '));
+        HqlParser parser = HqlParser.getInstance(input);
+        parser.setFilter(false);
+        parser.statement();
+        AST ast = parser.getAST();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        parser.showAst(ast, new PrintStream(baos));
+        assertEquals("At least one error occurred during parsing " + input,
+                0, parser.getParseErrorHandler().getErrorCount());
     }
 
     @Override

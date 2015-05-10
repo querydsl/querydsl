@@ -24,7 +24,7 @@ import com.querydsl.core.annotations.QueryEntity;
 
 public class AbstractProperties2Test {
 
-    public static abstract class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> {
+    public abstract static class GenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> {
 
         public abstract K getId();
 
@@ -32,7 +32,7 @@ public class AbstractProperties2Test {
 
     }
 
-    public static abstract class AbstractEntity<P extends AbstractEntity<P>> extends GenericEntity<Integer, P> {
+    public abstract static class AbstractEntity<P extends AbstractEntity<P>> extends GenericEntity<Integer, P> {
 
         private Integer id;
 

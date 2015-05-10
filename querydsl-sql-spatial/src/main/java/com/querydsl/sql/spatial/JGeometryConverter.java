@@ -21,7 +21,7 @@ import org.geolatte.geom.crs.CrsId;
 
 import oracle.spatial.geometry.JGeometry;
 
-class JGeometryConverter {
+final class JGeometryConverter {
 
     // to jgeometry
 

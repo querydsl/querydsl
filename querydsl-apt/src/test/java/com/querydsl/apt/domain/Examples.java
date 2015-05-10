@@ -21,7 +21,7 @@ public class Examples {
     }
 
     @QueryEntity
-    public static abstract class AbstractEntity<Id extends java.io.Serializable> {
+    public abstract static class AbstractEntity<Id extends java.io.Serializable> {
 
         Id id;
 

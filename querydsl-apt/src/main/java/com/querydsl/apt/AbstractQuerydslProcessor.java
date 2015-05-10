@@ -51,9 +51,9 @@ import com.querydsl.core.annotations.QueryProjection;
 public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     // TODO replace with proper injections in Querydsl 4.0.0
-    public static Types TYPES;
+    public static Types types;
 
-    public static Elements ELEMENTS;
+    public static Elements elements;
 
     public static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
 
@@ -71,8 +71,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        TYPES = processingEnv.getTypeUtils();
-        ELEMENTS = processingEnv.getElementUtils();
+        types = processingEnv.getTypeUtils();
+        elements = processingEnv.getElementUtils();
 
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
 
@@ -129,7 +129,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 context.entityTypes.put(entityType.getFullName(), entityType);
             } else if (altEntityAnn && element.getAnnotation(conf.getAlternativeEntityAnnotation()) != null) {
                 context.entityTypes.put(entityType.getFullName(), entityType);
-            } else if (embeddableAnn && element.getAnnotation(conf.getEmbeddableAnnotation()) != null ) {
+            } else if (embeddableAnn && element.getAnnotation(conf.getEmbeddableAnnotation()) != null) {
                 context.embeddableTypes.put(entityType.getFullName(), entityType);
             } else if (superAnn && element.getAnnotation(conf.getSuperTypeAnnotation()) != null) {
                 context.supertypes.put(entityType.getFullName(), entityType);

@@ -37,14 +37,14 @@ public interface PathBuilderValidator {
      */
     Class<?> validate(Class<?> parent, String property, Class<?> propertyType);
 
-    public final PathBuilderValidator DEFAULT = new PathBuilderValidator() {
+    PathBuilderValidator DEFAULT = new PathBuilderValidator() {
         @Override
         public Class<?> validate(Class<?> parent, String property, Class<?> propertyType) {
             return propertyType;
         }
     };
 
-    public final PathBuilderValidator FIELDS = new PathBuilderValidator() {
+    PathBuilderValidator FIELDS = new PathBuilderValidator() {
         @Override
         public Class<?> validate(Class<?> parent, String property, Class<?> propertyType) {
             while (!parent.equals(Object.class)) {
@@ -65,7 +65,7 @@ public interface PathBuilderValidator {
         }
     };
 
-    public final PathBuilderValidator PROPERTIES = new PathBuilderValidator() {
+    PathBuilderValidator PROPERTIES = new PathBuilderValidator() {
         @Override
         public Class<?> validate(Class<?> parent, String property, Class<?> propertyType) {
             Method getter = BeanUtils.getAccessor("get", property, parent);

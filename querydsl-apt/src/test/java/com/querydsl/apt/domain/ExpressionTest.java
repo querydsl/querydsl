@@ -57,7 +57,7 @@ public class ExpressionTest {
 
         exprs.add(ConstantImpl.create("Hello World!"));
         exprs.add(ConstantImpl.create(1000));
-        exprs.add(ConstantImpl.create(10l));
+        exprs.add(ConstantImpl.create(10L));
         exprs.add(ConstantImpl.create(true));
         exprs.add(ConstantImpl.create(false));
 
@@ -88,8 +88,12 @@ public class ExpressionTest {
 
         for (Expression<?> expr : toVisit) {
             for (Method method : expr.getClass().getMethods()) {
-                if (method.getName().equals("getParameter")) continue;
-                if (method.getName().equals("getArg")) continue;
+                if (method.getName().equals("getParameter")) {
+                    continue;
+                }
+                if (method.getName().equals("getArg")) {
+                    continue;
+                }
                 if (method.getReturnType() != void.class
                  && !method.getReturnType().isPrimitive()) {
                     Class<?>[] types = method.getParameterTypes();

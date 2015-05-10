@@ -338,7 +338,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         try {
             Long limit = queryMixin.getMetadata().getModifiers().getLimit();
             if (limit == null) {
-                limit = 2l;
+                limit = 2L;
             }
             DBCursor c = createCursor().limit(limit.intValue());
             if (c.hasNext()) {
@@ -370,7 +370,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
     public QueryResults<K> fetchResults() {
         try {
             long total = fetchCount();
-            if (total > 0l) {
+            if (total > 0L) {
                 return new QueryResults<K>(fetch(), queryMixin.getMetadata().getModifiers(), total);
             } else {
                 return QueryResults.emptyResults();
@@ -386,7 +386,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
             Predicate filter = createFilter(queryMixin.getMetadata());
             return collection.count(createQuery(filter));
         } catch (NoResults ex) {
-            return 0l;
+            return 0L;
         }
     }
 

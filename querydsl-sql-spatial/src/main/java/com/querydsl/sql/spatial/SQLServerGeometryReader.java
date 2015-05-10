@@ -38,7 +38,7 @@ class SQLServerGeometryReader {
         GeometryType type;
     }
 
-    private static GeometryType[] TYPES = new GeometryType[]{
+    private static final GeometryType[] TYPES = new GeometryType[]{
         GeometryType.POINT,
         GeometryType.LINE_STRING,
         GeometryType.POLYGON,

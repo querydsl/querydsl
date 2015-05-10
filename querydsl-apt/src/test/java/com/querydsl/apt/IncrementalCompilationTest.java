@@ -26,7 +26,7 @@ import org.junit.Test;
 import com.google.common.io.Files;
 
 @Ignore
-public class IncrementalCompilationTest extends AbstractProcessorTest{
+public class IncrementalCompilationTest extends AbstractProcessorTest {
 
     private static final String packagePath = "src/test/java/com/querydsl/apt/domain/";
 

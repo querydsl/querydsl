@@ -10,12 +10,12 @@ import com.querydsl.core.types.dsl.StringPath;
 public class Generic3Test extends AbstractTest {
 
     @MappedSuperclass
-    public static abstract class BaseEntity<E extends BaseEntity<E>> {
+    public abstract static class BaseEntity<E extends BaseEntity<E>> {
 
     }
 
     @MappedSuperclass
-    public static abstract class Order<O extends Order<O>> extends BaseEntity<O> implements Cloneable {
+    public abstract static class Order<O extends Order<O>> extends BaseEntity<O> implements Cloneable {
 
         String property1;
     }

@@ -120,7 +120,7 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         NumberPath<Double> doublePath = Expressions.numberPath(Double.class, "doublePath");
         serializer.handle(doublePath.add(1));
-        serializer.handle(doublePath.between((float)1.0, 1l));
+        serializer.handle(doublePath.between((float)1.0, 1L));
         serializer.handle(doublePath.lt((byte)1));
         for (Object constant : serializer.getConstantToLabel().keySet()) {
             assertEquals(Double.class, constant.getClass());
@@ -154,7 +154,7 @@ public class JPQLSerializerTest {
         serializer.serializeForDelete(md);
         assertEquals("delete from Cat kitten\n" +
                 "where kitten.id = ?1 and exists (select 1\n" +
-        	"from Cat cat\nwhere cat.id = ?2 and kitten member of cat.kittens)", serializer.toString());
+            "from Cat cat\nwhere cat.id = ?2 and kitten member of cat.kittens)", serializer.toString());
     }
 
     @Test
@@ -204,8 +204,8 @@ public class JPQLSerializerTest {
         md.addOrderBy(cat.name.asc().nullsFirst());
         serializer.serialize(md, false, null);
         assertEquals("select cat\n" +
-        	     "from Cat cat\n" +
-        	     "order by cat.name asc nulls first", serializer.toString());
+                 "from Cat cat\n" +
+                 "order by cat.name asc nulls first", serializer.toString());
     }
 
     @Test

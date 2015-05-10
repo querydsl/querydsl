@@ -62,7 +62,9 @@ public class SelectOracleBase extends AbstractBaseTest {
     @IncludeIn(ORACLE)
     @SkipForQuoted
     public void ConnectByPrior2() throws SQLException {
-        if (configuration.getUseLiterals()) return;
+        if (configuration.getUseLiterals()) {
+            return;
+        }
 
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
@@ -79,7 +81,9 @@ public class SelectOracleBase extends AbstractBaseTest {
     @IncludeIn(ORACLE)
     @SkipForQuoted
     public void ConnectByPrior3() throws SQLException {
-        if (configuration.getUseLiterals()) return;
+        if (configuration.getUseLiterals()) {
+            return;
+        }
 
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
@@ -98,7 +102,9 @@ public class SelectOracleBase extends AbstractBaseTest {
     @IncludeIn(ORACLE)
     @SkipForQuoted
     public void ConnectByPrior4() throws SQLException {
-        if (configuration.getUseLiterals()) return;
+        if (configuration.getUseLiterals()) {
+            return;
+        }
 
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +

@@ -27,7 +27,7 @@ public class Delegate3Test {
     }
 
     @QueryDelegate(Geometry.class)
-    public static BooleanExpression isWithin( ComparablePath<? extends Geometry> geo1, ComparablePath<? extends Geometry> geo2){
+    public static BooleanExpression isWithin(ComparablePath<? extends Geometry> geo1, ComparablePath<? extends Geometry> geo2) {
         return Expressions.TRUE;
     }
 

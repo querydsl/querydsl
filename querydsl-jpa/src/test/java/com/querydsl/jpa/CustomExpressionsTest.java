@@ -13,6 +13,8 @@
  */
 package com.querydsl.jpa;
 
+import static com.querydsl.jpa.Constants.*;
+
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;

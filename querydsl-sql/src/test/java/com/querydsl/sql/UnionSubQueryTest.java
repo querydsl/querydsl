@@ -46,8 +46,8 @@ public class UnionSubQueryTest {
         serializer.handle(expr);
         assertEquals(
             "intPath in ((select 1 from dual)\n" +
-        	"union\n" +
-        	"(select 2 from dual))", serializer.toString());
+            "union\n" +
+            "(select 2 from dual))", serializer.toString());
     }
 
     @Test

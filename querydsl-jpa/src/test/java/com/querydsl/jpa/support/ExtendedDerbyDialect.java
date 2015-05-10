@@ -41,8 +41,8 @@ public class ExtendedDerbyDialect extends DerbyDialect{
     };
 
     public ExtendedDerbyDialect() {
-        registerFunction( "concat", new VarArgsSQLFunction( StandardBasicTypes.STRING, "cast ((","||",") as varchar(128))" ) );
-        registerFunction( "cast", castFunction );
+        registerFunction("concat", new VarArgsSQLFunction(StandardBasicTypes.STRING, "cast ((","||",") as varchar(128))"));
+        registerFunction("cast", castFunction);
     }
 
 }

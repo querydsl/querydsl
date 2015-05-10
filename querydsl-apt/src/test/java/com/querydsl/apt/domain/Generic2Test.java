@@ -32,7 +32,7 @@ public class Generic2Test extends AbstractTest {
     }
 
     @MappedSuperclass
-    public static abstract class BaseEntity<T extends Comparable<? super T>> implements
+    public abstract static class BaseEntity<T extends Comparable<? super T>> implements
             Serializable {
         @Embedded
         private Range<T> range;

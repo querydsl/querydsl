@@ -410,20 +410,18 @@
             <goals>
               <goal>check</goal>
             </goals>
-            <configuration>
-              <includeTestSourceDirectory>true</includeTestSourceDirectory>
-              <failOnViolation>true</failOnViolation>
-            </configuration>
           </execution>
         </executions>
         <configuration>
           <configLocation>querydsl_checks.xml</configLocation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <failOnViolation>true</failOnViolation>
         </configuration>
         <dependencies>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>6.4.1</version>
+            <version>6.6</version>
           </dependency>
         </dependencies>
       </plugin>

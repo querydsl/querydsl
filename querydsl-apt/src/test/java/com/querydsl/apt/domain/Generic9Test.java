@@ -9,7 +9,7 @@ import org.junit.Test;
 public class Generic9Test {
 
     @MappedSuperclass
-    public static abstract class CommonOrganizationalUnit<T extends EntityLocalized, E extends TenantPreference, P extends CommonOrganizationalUnit<?, ?, ?>> extends
+    public abstract static class CommonOrganizationalUnit<T extends EntityLocalized, E extends TenantPreference, P extends CommonOrganizationalUnit<?, ?, ?>> extends
         LocalizableEntity<T> implements Serializable, Comparable<CommonOrganizationalUnit<T, E, P>> {
 
         P parent;
@@ -21,7 +21,7 @@ public class Generic9Test {
     }
 
     @MappedSuperclass
-    public static abstract class ProductionSurface<T extends EntityLocalized, E extends TenantPreference, P extends CommonOrganizationalUnit<?, ?, ?>> extends
+    public abstract static class ProductionSurface<T extends EntityLocalized, E extends TenantPreference, P extends CommonOrganizationalUnit<?, ?, ?>> extends
         CommonOrganizationalUnit<T, E, P> implements Serializable {
 
     }
@@ -32,7 +32,7 @@ public class Generic9Test {
 //    }
 
     @MappedSuperclass
-    public static abstract class EntityLocalized extends CommonEntity {
+    public abstract static class EntityLocalized extends CommonEntity {
 
     }
 
@@ -44,17 +44,17 @@ public class Generic9Test {
     @Entity
     @Table(name = "preference")
     @DiscriminatorColumn(name = "discriminator", discriminatorType = DiscriminatorType.STRING)
-    public static abstract class TenantPreference extends Preference {
+    public abstract static class TenantPreference extends Preference {
 
     }
 
     @MappedSuperclass
-    public static abstract class CommonEntity {
+    public abstract static class CommonEntity {
 
     }
 
     @MappedSuperclass
-    public static abstract class LocalizableEntity<T extends EntityLocalized> extends CommonEntity {
+    public abstract static class LocalizableEntity<T extends EntityLocalized> extends CommonEntity {
 
     }
 

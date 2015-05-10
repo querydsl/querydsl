@@ -82,7 +82,7 @@ public class SQLSerializerTest {
         NumberPath<Long> idPath = Expressions.numberPath(Long.class, userPath, "id");
         StringPath usernamePath = Expressions.stringPath(userPath, "username");
         Expression<?> sq = select(idPath, usernamePath)
-            .from(userPath).where(idPath.eq(1l));
+            .from(userPath).where(idPath.eq(1L));
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(sq);
@@ -98,7 +98,7 @@ public class SQLSerializerTest {
         NumberPath<Long> idPath = userPath.getNumber("id", Long.class);
         StringPath usernamePath = userPath.getString("username");
         Expression<?> sq = select(idPath, usernamePath)
-            .from(userPath).where(idPath.eq(1l));
+            .from(userPath).where(idPath.eq(1L));
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.handle(sq);

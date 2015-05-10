@@ -21,7 +21,7 @@ public class Generic14Test extends AbstractTest {
     }
 
     @MappedSuperclass
-    public static abstract class BaseReferencablePersistable<T, PK extends Serializable> extends BasePersistable<PK> {
+    public abstract static class BaseReferencablePersistable<T, PK extends Serializable> extends BasePersistable<PK> {
 
         private Class<T> entityClass;
 
@@ -44,7 +44,7 @@ public class Generic14Test extends AbstractTest {
     }
 
     @MappedSuperclass
-    public static abstract class AbstractPersistable<PK extends Serializable> implements Persistable<PK> {
+    public abstract static class AbstractPersistable<PK extends Serializable> implements Persistable<PK> {
 
     }
 

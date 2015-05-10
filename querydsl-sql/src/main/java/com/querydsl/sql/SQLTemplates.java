@@ -1158,7 +1158,7 @@ public class SQLTemplates extends Templates {
         this.arraysSupported = b;
     }
 
-    protected void setListMaxSize(int i ) {
+    protected void setListMaxSize(int i) {
         listMaxSize = i;
     }
 

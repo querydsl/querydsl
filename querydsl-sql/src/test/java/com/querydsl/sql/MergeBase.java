@@ -142,8 +142,8 @@ public class MergeBase extends AbstractBaseTest{
 
         assertEquals(2, merge.execute());
 
-        assertEquals(1l, query().from(survey).where(survey.name.eq("5")).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.eq("6")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("5")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("6")).fetchCount());
     }
 
     @Test
@@ -163,8 +163,8 @@ public class MergeBase extends AbstractBaseTest{
 
         assertEquals(2, merge.execute());
 
-        assertEquals(1l, query().from(survey).where(survey.name.eq("5")).fetchCount());
-        assertEquals(1l, query().from(survey).where(survey.name.eq("6")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("5")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("6")).fetchCount());
     }
 
 

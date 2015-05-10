@@ -17,7 +17,9 @@ import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 
-public class EntityExtensions {
+public final class EntityExtensions {
+
+    private EntityExtensions() {}
 
     @QueryDelegate(EntityWithExtensions.class)
     public static Predicate extension(QEntityWithExtensions entity) {

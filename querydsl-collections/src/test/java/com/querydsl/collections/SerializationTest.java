@@ -36,8 +36,8 @@ public class SerializationTest extends AbstractQueryTest{
         query().from(cat, cats).select(cat).fetch();
     }
 
-    public List<Cat> oneSource_list(List<Cat> cat_) {
-        return cat_;
+    public List<Cat> oneSource_list(List<Cat> cats) {
+        return cats;
     }
 
     @Test
@@ -45,8 +45,8 @@ public class SerializationTest extends AbstractQueryTest{
         query().from(cat,cats).from(otherCat, cats).select(cat).fetch();
     }
 
-    public List<Cat> twoSources_list(List<Cat> cat_, List<Cat> otherCat_) {
-        return cat_;
+    public List<Cat> twoSources_list(List<Cat> cats, List<Cat> otherCats) {
+        return cats;
     }
 
     @Test
@@ -54,7 +54,7 @@ public class SerializationTest extends AbstractQueryTest{
         query().from(cat, cats).where(cat.name.eq("Kitty")).select(cat).fetch();
     }
 
-    public List<Cat> oneSource_filteredList(List<Cat> cat_) {
+    public List<Cat> oneSource_filteredList(List<Cat> cats) {
         List<Cat> rv = new ArrayList<Cat>();
         for (Cat cat : cats) {                   // from
             if (cat.getName().equals("Kitty")) { // where
@@ -69,9 +69,9 @@ public class SerializationTest extends AbstractQueryTest{
         query().from(cat, cats).select(cat.name).fetch();
     }
 
-    public List<String> oneSource_projectedList(List<Cat> cat_) {
+    public List<String> oneSource_projectedList(List<Cat> cats) {
         List<String> rv = new ArrayList<String>();
-        for (Cat cat : cat_) {                   // from
+        for (Cat cat : cats) {                   // from
             rv.add(cat.getName());               // list
         }
         return rv;
@@ -82,9 +82,9 @@ public class SerializationTest extends AbstractQueryTest{
         query().from(cat, cats).where(cat.name.eq("Kitty")).select(cat.name).fetch();
     }
 
-    public List<String> oneSource_filtered_projectedList(List<Cat> cat_) {
+    public List<String> oneSource_filtered_projectedList(List<Cat> cats) {
         List<String> rv = new ArrayList<String>();
-        for (Cat cat : cat_) {                   // from
+        for (Cat cat : cats) {                   // from
             if (cat.getName().equals("Kitty")) { // where
                 rv.add(cat.getName());           // list
             }
@@ -97,8 +97,8 @@ public class SerializationTest extends AbstractQueryTest{
         query().from(cat, cats).where(cat.name.eq("Kitty")).select(cat.name).fetchOne();
     }
 
-    public String oneSource_filtered_projectedUnique(List<Cat> cat_) {
-        for (Cat cat : cat_) {                   // from
+    public String oneSource_filtered_projectedUnique(List<Cat> cats) {
+        for (Cat cat : cats) {                   // from
             if (cat.getName().equals("Kitty")) { // where
                 return cat.getName();            // unique
             }
@@ -114,9 +114,9 @@ public class SerializationTest extends AbstractQueryTest{
                .select(cat).fetch();
     }
 
-    public List<Cat> join_list(List<Cat> cat_) {
+    public List<Cat> join_list(List<Cat> cats) {
         List<Cat> rv = new ArrayList<Cat>();
-        for (Cat cat : cat_) {                          // from
+        for (Cat cat : cats) {                          // from
             for (Cat kitten : cat.getKittens()) {       // inner join
                 if (kitten.getName().equals("Kitty")) { // where
                     rv.add(cat);                        // list
@@ -126,15 +126,15 @@ public class SerializationTest extends AbstractQueryTest{
         return rv;
     }
 
-    public List<Object[]> pairs(List<Cat> cat_, List<Cat> otherCat_) {
+    public List<Object[]> pairs(List<Cat> cats, List<Cat> otherCats) {
         query().from(cat, cats)
-               .from(otherCat, cats)
+               .from(otherCat, otherCats)
                .where(cat.name.eq(otherCat.name))
                .select(cat, otherCat).fetch();
 
         List<Object[]> rv = new ArrayList<Object[]>();
-        for (Cat cat : cat_) {                                  // from
-            for (Cat otherCat : otherCat_) {                    // from
+        for (Cat cat : cats) {                                  // from
+            for (Cat otherCat : otherCats) {                    // from
                 if (cat.getName().equals(otherCat.getName())) { // where
                     rv.add(new Object[]{cat,otherCat});         // list
                 }
@@ -143,14 +143,14 @@ public class SerializationTest extends AbstractQueryTest{
         return rv;
     }
 
-    public List<Tuple> pairsAsTuple(List<Cat> cat_, List<Cat> otherCat_) {
+    public List<Tuple> pairsAsTuple(List<Cat> cats, List<Cat> otherCats) {
         query().from(cat, cats).from(otherCat, cats)
                .where(cat.name.eq(otherCat.name))
                .select(Projections.tuple(cat, otherCat)).fetch();
 
         List<Tuple> rv = new ArrayList<Tuple>();
-        for (Cat cat : cat_) {                                  // from
-            for (Cat otherCat : otherCat_) {                    // from
+        for (Cat cat : cats) {                                  // from
+            for (Cat otherCat : otherCats) {                    // from
                 if (cat.getName().equals(otherCat.getName())) { // where
                     rv.add(tuple.newInstance(cat, otherCat));   // list
                 }

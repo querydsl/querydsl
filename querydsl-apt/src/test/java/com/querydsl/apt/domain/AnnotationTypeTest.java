@@ -10,7 +10,7 @@ import org.junit.Ignore;
 public class AnnotationTypeTest {
 
     @MappedSuperclass
-    public static abstract class BaseObject<T extends Annotation> {
+    public abstract static class BaseObject<T extends Annotation> {
 
     }
 

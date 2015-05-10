@@ -36,24 +36,4 @@ public class Library implements Serializable {
         this.identity = identity;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        Library library = (Library) o;
-
-        if (identity != null ? !identity.equals(library.identity)
-                : library.identity != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return identity != null ? identity.hashCode() : 0;
-    }
 }

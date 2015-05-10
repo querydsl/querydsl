@@ -46,21 +46,21 @@ final class SpatialSupport {
     }
 
     private static void registerJTSTypes(TypeMappings typeMappings) {
-    	Map<String, String> additions = Maps.newHashMap();
-    	additions.put("Geometry", "JTSGeometryPath");
-    	additions.put("GeometryCollection", "JTSGeometryCollectionPath");
-    	additions.put("LinearRing", "JTSLinearRingPath");
-    	additions.put("LineString", "JTSLineStringPath");
-    	additions.put("MultiLineString", "JTSMultiLineStringPath");
-    	additions.put("MultiPoint", "JTSMultiPointPath");
-    	additions.put("MultiPolygon", "JTSMultiPolygonPath");
-    	additions.put("Point", "JTSPointPath");
-    	additions.put("Polygon", "JTSPolygonPath");
-    	for (Map.Entry<String, String> entry : additions.entrySet()) {
-    		typeMappings.register(
-    				new SimpleType("com.vividsolutions.jts.geom."+ entry.getKey()),
-    				new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
-    	}
+        Map<String, String> additions = Maps.newHashMap();
+        additions.put("Geometry", "JTSGeometryPath");
+        additions.put("GeometryCollection", "JTSGeometryCollectionPath");
+        additions.put("LinearRing", "JTSLinearRingPath");
+        additions.put("LineString", "JTSLineStringPath");
+        additions.put("MultiLineString", "JTSMultiLineStringPath");
+        additions.put("MultiPoint", "JTSMultiPointPath");
+        additions.put("MultiPolygon", "JTSMultiPolygonPath");
+        additions.put("Point", "JTSPointPath");
+        additions.put("Polygon", "JTSPolygonPath");
+        for (Map.Entry<String, String> entry : additions.entrySet()) {
+            typeMappings.register(
+                    new SimpleType("com.vividsolutions.jts.geom."+ entry.getKey()),
+                    new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
+        }
     }
 
     private static void addImports(AbstractModule module, String packageName) {
@@ -79,8 +79,8 @@ final class SpatialSupport {
     public static void addSupport(AbstractModule module) {
         registerTypes(module.get(TypeMappings.class));
         addImports(module,"com.querydsl.spatial.path");
-    	registerJTSTypes(module.get(TypeMappings.class));
-    	addImports(module,"com.querydsl.spatial.jts.path");
+        registerJTSTypes(module.get(TypeMappings.class));
+        addImports(module,"com.querydsl.spatial.jts.path");
     }
 
     private SpatialSupport() {}

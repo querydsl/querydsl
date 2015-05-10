@@ -25,13 +25,13 @@ public class OrderTest extends AbstractQueryTest {
     @Test
     public void test() {
         query().from(cat, cats).orderBy(cat.name.asc()).select(cat.name).fetch();
-        assertArrayEquals(new Object[] { "Alex", "Bob", "Francis", "Kitty" }, last.res.toArray());
+        assertArrayEquals(new Object[] {"Alex", "Bob", "Francis", "Kitty"}, last.res.toArray());
 
         query().from(cat, cats).orderBy(cat.name.desc()).select(cat.name).fetch();
-        assertArrayEquals(new Object[] { "Kitty", "Francis", "Bob", "Alex" }, last.res.toArray());
+        assertArrayEquals(new Object[] {"Kitty", "Francis", "Bob", "Alex"}, last.res.toArray());
 
         query().from(cat, cats).orderBy(cat.name.substring(1).asc()).select(cat.name).fetch();
-        assertArrayEquals(new Object[] { "Kitty", "Alex", "Bob", "Francis" }, last.res.toArray());
+        assertArrayEquals(new Object[] {"Kitty", "Alex", "Bob", "Francis"}, last.res.toArray());
 
         query().from(cat, cats).from(otherCat, cats).orderBy(cat.name.asc(), otherCat.name.desc()).select(cat.name, otherCat.name).fetch();
 

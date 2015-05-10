@@ -9,7 +9,9 @@ import org.junit.Assert;
 
 import com.mysema.codegen.SimpleCompiler;
 
-public class CompileUtils {
+public final class CompileUtils {
+
+    private CompileUtils() {}
 
     private static final SimpleCompiler compiler = new SimpleCompiler();
 

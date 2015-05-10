@@ -112,8 +112,9 @@ public class Office {
         if (o == this) {
             return true;
         }
-        if ((o == null) || (o.getClass() != this.getClass()))
+        if ((o == null) || (o.getClass() != this.getClass())) {
             return false;
+        }
 
         Office other = (Office) o;
         return floor == other.floor

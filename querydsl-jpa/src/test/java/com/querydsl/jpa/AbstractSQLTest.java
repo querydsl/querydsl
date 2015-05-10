@@ -44,7 +44,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void Count() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).fetchCount());
+        assertEquals(6L, query().from(cat).where(cat.dtype.eq("C")).fetchCount());
     }
 
     @Test
@@ -55,7 +55,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void CountDistinct() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).distinct().fetchCount());
+        assertEquals(6L, query().from(cat).where(cat.dtype.eq("C")).distinct().fetchCount());
     }
 
     @Test
@@ -161,7 +161,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void In() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.in("C", "CX")).fetchCount());
+        assertEquals(6L, query().from(cat).where(cat.dtype.in("C", "CX")).fetchCount());
     }
 
     @Test
@@ -204,13 +204,13 @@ public abstract class AbstractSQLTest {
         QueryResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc())
                 .select(cat.name).fetchResults();
         assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
-        assertEquals(6l, results.getTotal());
+        assertEquals(6L, results.getTotal());
     }
 
     @Test
     @ExcludeIn(Target.H2)
     public void List_Wildcard() {
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).select(Wildcard.all).fetch().size());
+        assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).select(Wildcard.all).fetch().size());
     }
 
     @Test
@@ -311,7 +311,9 @@ public abstract class AbstractSQLTest {
         int nulls = 0;
         for (Tuple row : rows) {
             System.err.println(Arrays.asList(row));
-            if (row.get(1, Object.class) == null) nulls++;
+            if (row.get(1, Object.class) == null) {
+                nulls++;
+            }
         }
         assertEquals(6, nulls);
     }

@@ -11,7 +11,7 @@ import com.querydsl.core.annotations.QueryInit;
 public class DeepInitializationTest {
 
     @MappedSuperclass
-    public static abstract class AbstractEntity implements Cloneable {
+    public abstract static class AbstractEntity implements Cloneable {
 
         @Id
         @Column(name = "ID")

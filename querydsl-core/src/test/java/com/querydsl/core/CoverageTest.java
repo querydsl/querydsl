@@ -13,8 +13,8 @@
  */
 package com.querydsl.core;
 
-import static com.querydsl.core.alias.Alias.$;
 import static org.junit.Assert.assertTrue;
+import static com.querydsl.core.alias.Alias.$;
 
 import java.lang.reflect.Field;
 import java.util.*;

@@ -229,7 +229,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void Eq_Numeric() throws Exception{
-        testQuery(longField.eq(1l), "longField:" + LONG_PREFIX_CODED, 1);
+        testQuery(longField.eq(1L), "longField:" + LONG_PREFIX_CODED, 1);
         testQuery(shortField.eq((short)1), "shortField:" + SHORT_PREFIX_CODED, 1);
         testQuery(byteField.eq((byte)1), "byteField:" + BYTE_PREFIX_CODED, 1);
         testQuery(floatField.eq((float)1.0), "floatField:" + FLOAT_PREFIX_CODED, 1);
@@ -393,7 +393,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void Between_Numeric() throws Exception{
-        testQuery(longField.between(0l,2l), "longField:[0 TO 2]", 1);
+        testQuery(longField.between(0L,2L), "longField:[0 TO 2]", 1);
         testQuery(shortField.between((short)0,(short)2), "shortField:[0 TO 2]", 1);
         testQuery(byteField.between((byte)0,(byte)2), "byteField:[0 TO 2]", 1);
         testQuery(floatField.between((float)0.0,(float)2.0), "floatField:[0.0 TO 2.0]", 1);

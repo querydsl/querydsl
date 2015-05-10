@@ -346,7 +346,7 @@ final class ExtendedTypeFactory {
                 && isAssignable(typeElement.asType(), comparableType)) {
             typeCategory = TypeCategory.COMPARABLE;
 
-        } if (typeCategory == TypeCategory.SIMPLE) {
+        } else if (typeCategory == TypeCategory.SIMPLE) {
             for (Class<? extends Annotation> entityAnn : entityAnnotations) {
                 if (typeElement.getAnnotation(entityAnn) != null) {
                     typeCategory = TypeCategory.ENTITY;

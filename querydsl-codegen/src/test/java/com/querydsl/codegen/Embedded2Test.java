@@ -30,7 +30,7 @@ public class Embedded2Test extends AbstractExporterTest {
     }
 
     @QuerySupertype
-    public static abstract class AbstractEntity<C extends EntityCode> {
+    public abstract static class AbstractEntity<C extends EntityCode> {
 
         @QueryEmbedded
         public C code;
@@ -43,7 +43,7 @@ public class Embedded2Test extends AbstractExporterTest {
     }
 
     @QuerySupertype
-    public static abstract class AbstractNamedEntity<C extends EntityCode> extends AbstractMultilingualEntity<C> {
+    public abstract static class AbstractNamedEntity<C extends EntityCode> extends AbstractMultilingualEntity<C> {
 
         public String nameEn;
 

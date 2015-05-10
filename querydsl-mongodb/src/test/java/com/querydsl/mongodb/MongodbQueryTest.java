@@ -299,18 +299,18 @@ public class MongodbQueryTest {
     @Test
     public void ListResults() {
         QueryResults<User> results = query().limit(2).orderBy(user.age.asc()).fetchResults();
-        assertEquals(4l, results.getTotal());
+        assertEquals(4L, results.getTotal());
         assertEquals(2, results.getResults().size());
 
         results = query().offset(2).orderBy(user.age.asc()).fetchResults();
-        assertEquals(4l, results.getTotal());
+        assertEquals(4L, results.getTotal());
         assertEquals(2, results.getResults().size());
     }
 
     @Test
     public void EmptyResults() {
         QueryResults<User> results = query().where(user.firstName.eq("XXX")).fetchResults();
-        assertEquals(0l, results.getTotal());
+        assertEquals(0L, results.getTotal());
         assertEquals(Collections.emptyList(), results.getResults());
     }
 
@@ -561,10 +561,10 @@ public class MongodbQueryTest {
     // - test more complex ands
 
     private void assertQuery(Predicate e, User ... expected) {
-        assertQuery(where(e).orderBy(user.lastName.asc(), user.firstName.asc()), expected );
+        assertQuery(where(e).orderBy(user.lastName.asc(), user.firstName.asc()), expected);
     }
 
-    private void assertQuery(Predicate e, OrderSpecifier<?> orderBy, User ... expected ) {
+    private void assertQuery(Predicate e, OrderSpecifier<?> orderBy, User ... expected) {
         assertQuery(where(e).orderBy(orderBy), expected);
     }
 
@@ -584,16 +584,17 @@ public class MongodbQueryTest {
         return new MorphiaQuery<T>(morphia, ds, path);
     }
 
+
     private <T> MorphiaQuery<T> query(Class<? extends T> clazz) {
         return new MorphiaQuery<T>(morphia, ds, clazz);
     }
 
-    private void assertQuery(MorphiaQuery<User> query, User ... expected ) {
+    private void assertQuery(MorphiaQuery<User> query, User ... expected) {
         String toString = query.toString();
         List<User> results = query.fetch();
 
         assertNotNull(toString, results);
-        if (expected == null ) {
+        if (expected == null) {
             assertEquals("Should get empty result", 0, results.size());
             return;
         }

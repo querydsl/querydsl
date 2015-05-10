@@ -478,7 +478,7 @@ public class LuceneSerializer {
             if (operation.getOperator() == LuceneOps.PHRASE) {
                 return Iterables.toArray(WS_SPLITTER.split(operation.getArg(0).toString()), String.class);
             } else if (operation.getOperator() == LuceneOps.TERM) {
-                return new String[] { operation.getArg(0).toString() };
+                return new String[] {operation.getArg(0).toString()};
             } else {
                 throw new IllegalArgumentException(rightHandSide.toString());
             }
@@ -510,12 +510,12 @@ public class LuceneSerializer {
         }
         if (splitTerms) {
             if (str.equals("")) {
-                return new String[] { str };
+                return new String[] {str};
             } else {
                 return Iterables.toArray(WS_SPLITTER.split(str), String.class);
             }
         } else {
-            return new String[] { str };
+            return new String[] {str};
         }
     }
 

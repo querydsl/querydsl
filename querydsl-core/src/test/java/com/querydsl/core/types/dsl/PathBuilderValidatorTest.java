@@ -19,13 +19,23 @@ public class PathBuilderValidatorTest {
     public static class ExtendedCustomer extends Customer {}
 
     public static class Project {
-        public String getName() { return ""; }
-        public Collection<Integer> getCollection() { return null; }
-        public Map<String, Integer> getMap() { return null; }
+        public String getName() {
+            return "";
+        }
+
+        public Collection<Integer> getCollection() {
+            return null;
+        }
+
+        public Map<String, Integer> getMap() {
+            return null;
+        }
     }
 
     public static class ExtendedProject extends Project {
-        public boolean isStarted() { return true; }
+        public boolean isStarted() {
+            return true;
+        }
     }
 
     @Test

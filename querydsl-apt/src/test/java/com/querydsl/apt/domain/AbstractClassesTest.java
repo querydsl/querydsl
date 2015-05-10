@@ -36,7 +36,7 @@ public class AbstractClassesTest {
 
 
     @MappedSuperclass
-    public static abstract class BaseArchetype<PK extends Serializable, DO extends Serializable> implements Archetype<PK, DO> {
+    public abstract static class BaseArchetype<PK extends Serializable, DO extends Serializable> implements Archetype<PK, DO> {
 
         @Id
         @GeneratedValue

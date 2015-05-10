@@ -18,14 +18,14 @@ public class Generic10Test extends AbstractTest {
     public static class FutureTrade implements Tradable {}
 
     @MappedSuperclass
-    public static abstract class AbstractTradingMarket<T extends Tradable> implements Market<T> {
+    public abstract static class AbstractTradingMarket<T extends Tradable> implements Market<T> {
 
         @OneToOne
         private TradingMarketLedger<AbstractTradingMarket<T>> ledger;
     }
 
     @Entity
-    public static abstract class AbstractFuturesMarket extends AbstractTradingMarket<FutureTrade> {}
+    public abstract static class AbstractFuturesMarket extends AbstractTradingMarket<FutureTrade> {}
 
     @Entity
     public static class CommonFuturesMarket extends AbstractFuturesMarket {}

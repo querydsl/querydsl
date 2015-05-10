@@ -264,7 +264,7 @@ public class LuceneQueryTest {
     @Test
     public void List_Sorted_Ascending_By_Year_Restrict_Limit_2_Offset_1() {
         query.where(year.between(1800, 2000));
-        query.restrict(new QueryModifiers(2l, 1l));
+        query.restrict(new QueryModifiers(2L, 1L));
         query.orderBy(year.asc());
         final List<Document> documents = query.fetch();
         assertFalse(documents.isEmpty());
@@ -318,8 +318,8 @@ public class LuceneQueryTest {
 
     @Test
     public void Count_Distinct_Property() {
-        assertEquals(4l, query.fetchCount());
-        assertEquals(3l, query.distinct(year).fetchCount());
+        assertEquals(4L, query.fetchCount());
+        assertEquals(3L, query.distinct(year).fetchCount());
     }
 
     @Test
@@ -600,7 +600,7 @@ public class LuceneQueryTest {
     @Test
     public void ListResults() {
         query.where(year.between(1800, 2000));
-        query.restrict(new QueryModifiers(2l, 1l));
+        query.restrict(new QueryModifiers(2L, 1L));
         query.orderBy(year.asc());
         final QueryResults<Document> results = query.fetchResults();
         assertFalse(results.isEmpty());
@@ -615,7 +615,7 @@ public class LuceneQueryTest {
     public void ListDistinctResults() {
         query.where(year.between(1800, 2000).or(
                 title.eq("The Lord of the Rings")));
-        query.restrict(new QueryModifiers(1l, 1l));
+        query.restrict(new QueryModifiers(1L, 1L));
         query.orderBy(year.asc());
         final QueryResults<Document> results = query.distinct().fetchResults();
         assertFalse(results.isEmpty());

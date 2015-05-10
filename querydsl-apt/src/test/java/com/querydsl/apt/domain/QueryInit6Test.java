@@ -19,7 +19,7 @@ public class QueryInit6Test {
 
     @Entity(name = Component.NAME)
     @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-    public static abstract class Component implements Serializable {
+    public abstract static class Component implements Serializable {
         public static final String NAME = "Component";
 
         @Id
@@ -32,16 +32,16 @@ public class QueryInit6Test {
         @QueryType(PropertyType.ENTITY)
         @QueryInit("*")
         @Transient
-        public Container getContainer(){
+        public Container getContainer() {
             Component temp = this.parent;
-            if(this.parent instanceof HibernateProxy){
+            if (this.parent instanceof HibernateProxy) {
                 temp = (Component) ((HibernateProxy) this.parent)
                         .getHibernateLazyInitializer().getImplementation();
             }
 
-            if(temp instanceof Container)
-                return (Container)temp;
-            else{
+            if (temp instanceof Container) {
+                return (Container) temp;
+            } else {
                 if (!temp.isRoot()) {
                     return temp.getParent().getContainer();
                 } else {
@@ -188,7 +188,7 @@ public class QueryInit6Test {
     }
 
     @Test
-    public void test(){
+    public void test() {
         assertNotNull(QQueryInit6Test_Content.content.container.packaging);
         assertNotNull(QQueryInit6Test_Content.content.container.packaging.id);
     }

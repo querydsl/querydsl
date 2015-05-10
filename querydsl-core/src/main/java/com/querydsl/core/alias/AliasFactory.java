@@ -60,7 +60,7 @@ class AliasFactory {
         this.pathCache = CacheBuilder.newBuilder().build(
             new CacheLoader<Pair<Class<?>, String>, EntityPath<?>>() {
                 @Override
-                public EntityPath<?> load( Pair<Class<?>, String> input) {
+                public EntityPath<?> load(Pair<Class<?>, String> input) {
                     return (EntityPath<?>)pathFactory.createEntityPath(
                             input.getFirst(),
                             PathMetadataFactory.forVariable(input.getSecond()));
@@ -128,10 +128,10 @@ class AliasFactory {
         Enhancer enhancer = new Enhancer();
         enhancer.setClassLoader(AliasFactory.class.getClassLoader());
         if (cl.isInterface()) {
-            enhancer.setInterfaces(new Class[] { cl, ManagedObject.class });
+            enhancer.setInterfaces(new Class[] {cl, ManagedObject.class});
         } else {
             enhancer.setSuperclass(cl);
-            enhancer.setInterfaces(new Class[] { ManagedObject.class });
+            enhancer.setInterfaces(new Class[] {ManagedObject.class});
         }
         // creates one handler per proxy
         MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this, pathFactory, typeSystem);

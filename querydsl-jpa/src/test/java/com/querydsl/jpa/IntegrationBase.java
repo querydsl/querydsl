@@ -14,6 +14,7 @@
 package com.querydsl.jpa;
 
 import static org.junit.Assert.assertEquals;
+import static com.querydsl.jpa.Constants.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -122,7 +123,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
             .execute();
         assertEquals(1, amount);
 
-        assertEquals(0l, query().from(cat).where(cat.name.eq("Bob")).fetchCount());
+        assertEquals(0L, query().from(cat).where(cat.name.eq("Bob")).fetchCount());
     }
 
     @Test

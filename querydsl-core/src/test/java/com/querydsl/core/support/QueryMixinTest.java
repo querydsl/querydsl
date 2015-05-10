@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.support;
 
-import static com.querydsl.core.alias.Alias.$;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static com.querydsl.core.alias.Alias.$;
 
 import org.junit.Test;
 

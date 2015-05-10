@@ -18,12 +18,10 @@ import com.querydsl.sql.dml.SQLInsertBatch;
 import com.querydsl.sql.dml.SQLMergeBatch;
 import com.querydsl.sql.dml.SQLUpdateBatch;
 
-public class SQLListenersTest
-{
+public class SQLListenersTest {
 
     @Test
-    public void NotifyQuery()
-    {
+    public void NotifyQuery() {
         SQLListener listener = createMock(SQLListener.class);
         SQLListeners listeners = new SQLListeners();
         listeners.add(listener);
@@ -37,8 +35,7 @@ public class SQLListenersTest
     }
 
     @Test
-    public void NotifyQuery_Parent()
-    {
+    public void NotifyQuery_Parent() {
         SQLListener listener = createMock(SQLListener.class);
         SQLListeners listeners = new SQLListeners(listener);
 
@@ -52,8 +49,7 @@ public class SQLListenersTest
 
 
     @Test
-    public void NotifyQuery_DetailedListener_start()
-    {
+    public void NotifyQuery_DetailedListener_start() {
         SQLListenerContext sqlListenerContext = createMock(SQLListenerContext.class);
         SQLDetailedListener listenerParent = createMock(SQLDetailedListener.class);
         SQLDetailedListener listener1 = createMock(SQLDetailedListener.class);
@@ -81,8 +77,7 @@ public class SQLListenersTest
 
 
     @Test
-    public void NotifyQuery_DetailedListener_contexSetting()
-    {
+    public void NotifyQuery_DetailedListener_contexSetting() {
         SQLListenerContext sqlListenerContext = new SQLListenerContextImpl(new DefaultQueryMetadata());
         SQLDetailedListener listenerParent = new AssertingDetailedListener("keyParent", "valueParent");
         SQLDetailedListener listener1 = new AssertingDetailedListener("key1", "value1");
@@ -101,115 +96,94 @@ public class SQLListenersTest
         listeners.preExecute(sqlListenerContext);
     }
 
-
-    static class AssertingDetailedListener implements SQLDetailedListener
-    {
+    static class AssertingDetailedListener implements SQLDetailedListener {
         private final String key;
         private final Object value;
 
-        AssertingDetailedListener(final String key, final Object value)
-        {
+        AssertingDetailedListener(String key, Object value) {
             this.key = key;
             this.value = value;
         }
 
         @Override
-        public void start(final SQLListenerContext context)
-        {
+        public void start(SQLListenerContext context) {
             context.setData(key, value);
         }
 
         @Override
-        public void preRender(final SQLListenerContext context)
-        {
+        public void preRender(SQLListenerContext context) {
             assertThat(this.value, CoreMatchers.equalTo(context.getData(key)));
         }
 
         @Override
-        public void rendered(final SQLListenerContext context)
-        {
+        public void rendered(SQLListenerContext context) {
             assertThat(this.value, CoreMatchers.equalTo(context.getData(key)));
         }
 
         @Override
-        public void prePrepare(final SQLListenerContext context)
-        {
+        public void prePrepare(SQLListenerContext context) {
             assertThat(this.value, CoreMatchers.equalTo(context.getData(key)));
         }
 
         @Override
-        public void prepared(final SQLListenerContext context)
-        {
+        public void prepared(SQLListenerContext context) {
             assertThat(this.value, CoreMatchers.equalTo(context.getData(key)));
         }
 
         @Override
-        public void preExecute(final SQLListenerContext context)
-        {
+        public void preExecute(SQLListenerContext context) {
             assertThat(this.value, CoreMatchers.equalTo(context.getData(key)));
         }
 
         @Override
-        public void executed(final SQLListenerContext context)
-        {
+        public void executed(SQLListenerContext context) {
             assertThat(this.value, CoreMatchers.equalTo(context.getData(key)));
         }
 
         @Override
-        public void exception(final SQLListenerContext context)
-        {
+        public void exception(SQLListenerContext context) {
             assertThat(this.value, CoreMatchers.equalTo(context.getData(key)));
         }
 
         @Override
-        public void end(final SQLListenerContext context)
-        {
+        public void end(SQLListenerContext context) {
             assertThat(this.value, CoreMatchers.equalTo(context.getData(key)));
         }
 
         @Override
-        public void notifyQuery(final QueryMetadata md)
-        {
+        public void notifyQuery(QueryMetadata md) {
         }
 
         @Override
-        public void notifyDelete(final RelationalPath<?> entity, final QueryMetadata md)
-        {
+        public void notifyDelete(RelationalPath<?> entity, QueryMetadata md) {
         }
 
         @Override
-        public void notifyDeletes(final RelationalPath<?> entity, final List<QueryMetadata> batches)
-        {
+        public void notifyDeletes(RelationalPath<?> entity, List<QueryMetadata> batches) {
         }
 
         @Override
-        public void notifyMerge(final RelationalPath<?> entity, final QueryMetadata md, final List<Path<?>> keys, final List<Path<?>> columns, final List<Expression<?>> values, final SubQueryExpression<?> subQuery)
-        {
+        public void notifyMerge(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> keys, List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery) {
         }
 
         @Override
-        public void notifyMerges(final RelationalPath<?> entity, final QueryMetadata md, final List<SQLMergeBatch> batches)
-        {
+        public void notifyMerges(RelationalPath<?> entity, QueryMetadata md, List<SQLMergeBatch> batches) {
         }
 
         @Override
-        public void notifyInsert(final RelationalPath<?> entity, final QueryMetadata md, final List<Path<?>> columns, final List<Expression<?>> values, final SubQueryExpression<?> subQuery)
-        {
+        public void notifyInsert(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery) {
         }
 
         @Override
-        public void notifyInserts(final RelationalPath<?> entity, final QueryMetadata md, final List<SQLInsertBatch> batches)
-        {
+        public void notifyInserts(RelationalPath<?> entity, QueryMetadata md, List<SQLInsertBatch> batches) {
         }
 
         @Override
-        public void notifyUpdate(final RelationalPath<?> entity, final QueryMetadata md, final Map<Path<?>, Expression<?>> updates)
-        {
+        public void notifyUpdate(RelationalPath<?> entity, QueryMetadata md, Map<Path<?>, Expression<?>> updates) {
         }
 
         @Override
-        public void notifyUpdates(final RelationalPath<?> entity, final List<SQLUpdateBatch> batches)
-        {
+        public void notifyUpdates(RelationalPath<?> entity, List<SQLUpdateBatch> batches) {
         }
     }
 

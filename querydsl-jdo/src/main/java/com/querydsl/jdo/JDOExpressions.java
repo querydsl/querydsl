@@ -95,4 +95,6 @@ public final class JDOExpressions {
         return select(expr).from(expr);
     }
 
+    private JDOExpressions() {}
+
 }

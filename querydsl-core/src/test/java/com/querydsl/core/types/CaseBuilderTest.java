@@ -13,10 +13,10 @@
  */
 package com.querydsl.core.types;
 
-import static com.querydsl.core.alias.Alias.$;
-import static com.querydsl.core.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static com.querydsl.core.alias.Alias.$;
+import static com.querydsl.core.alias.Alias.alias;
 
 import org.junit.Test;
 

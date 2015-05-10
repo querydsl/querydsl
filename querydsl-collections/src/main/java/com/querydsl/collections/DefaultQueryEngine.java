@@ -34,13 +34,13 @@ import com.querydsl.core.types.*;
 @SuppressWarnings("unchecked")
 public class DefaultQueryEngine implements QueryEngine {
 
-    private static transient volatile QueryEngine DEFAULT;
+    private static transient volatile QueryEngine defaultQueryEngine;
 
     public static QueryEngine getDefault() {
-        if (DEFAULT == null) {
-            DEFAULT = new DefaultQueryEngine(new DefaultEvaluatorFactory(CollQueryTemplates.DEFAULT));
+        if (defaultQueryEngine == null) {
+            defaultQueryEngine = new DefaultQueryEngine(new DefaultEvaluatorFactory(CollQueryTemplates.DEFAULT));
         }
-        return DEFAULT;
+        return defaultQueryEngine;
     }
 
     private final DefaultEvaluatorFactory evaluatorFactory;
@@ -61,7 +61,7 @@ public class DefaultQueryEngine implements QueryEngine {
     @Override
     public boolean exists(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables) {
         QueryModifiers modifiers = metadata.getModifiers();
-        metadata.setLimit(1l);
+        metadata.setLimit(1L);
         try {
             if (metadata.getJoins().size() == 1) {
                 return !evaluateSingleSource(metadata, iterables, true).isEmpty();

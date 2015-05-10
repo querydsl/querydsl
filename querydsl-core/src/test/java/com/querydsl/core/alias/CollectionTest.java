@@ -13,8 +13,8 @@
  */
 package com.querydsl.core.alias;
 
-import static com.querydsl.core.alias.Alias.$;
 import static org.junit.Assert.assertEquals;
+import static com.querydsl.core.alias.Alias.$;
 
 import org.junit.Test;
 
