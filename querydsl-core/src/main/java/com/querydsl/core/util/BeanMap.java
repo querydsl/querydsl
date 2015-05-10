@@ -70,7 +70,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
         defaultFunctions.put(Character.TYPE, new Function() {
             @Override
             public Object apply(Object input) {
-                return Character.valueOf(input.toString().charAt(0));
+                return input.toString().charAt(0);
             }
         });
         defaultFunctions.put(Byte.TYPE, new Function() {

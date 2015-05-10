@@ -265,7 +265,7 @@ public class GroupByTest {
     }
 
     private Integer toInt(int i) {
-        return Integer.valueOf(i);
+        return i;
     }
 
     private <T >Set<T> toSet(T... s) {

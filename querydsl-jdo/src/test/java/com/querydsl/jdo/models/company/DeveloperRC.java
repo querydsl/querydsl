@@ -44,7 +44,7 @@ public class DeveloperRC extends PersonRC {
      *            The id to set.
      */
     public void setId(BigDecimal id) {
-        this.id = Long.valueOf(id.longValue());
+        this.id = id.longValue();
     }
 
     /**
@@ -52,7 +52,7 @@ public class DeveloperRC extends PersonRC {
      *            The id to set.
      */
     public void setId(BigInteger id) {
-        this.id = Long.valueOf(id.longValue());
+        this.id = id.longValue();
     }
 
     /**

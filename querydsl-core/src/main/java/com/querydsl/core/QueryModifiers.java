@@ -44,11 +44,11 @@ public final class QueryModifiers implements Serializable{
     }
 
     public static QueryModifiers limit(@Nonnegative long limit) {
-        return new QueryModifiers(Long.valueOf(limit), null);
+        return new QueryModifiers(limit, null);
     }
 
     public static QueryModifiers offset(@Nonnegative long offset) {
-        return new QueryModifiers(null, Long.valueOf(offset));
+        return new QueryModifiers(null, offset);
     }
 
     @Nullable

@@ -51,21 +51,21 @@ public class TypeTest implements InvocationHandler{
             if (method.getReturnType().isPrimitive() && value == null) {
                 Class<?> rt = method.getReturnType();
                 if (rt == Byte.TYPE) {
-                    return Byte.valueOf((byte)0);
+                    return (byte) 0;
                 } else if (rt == Short.TYPE) {
-                    return Short.valueOf((short)0);
+                    return (short) 0;
                 } else if (rt == Integer.TYPE) {
-                    return Integer.valueOf(0);
+                    return 0;
                 } else if (rt == Long.TYPE) {
-                    return Long.valueOf(0);
+                    return 0L;
                 } else if (rt == Float.TYPE) {
-                    return Float.valueOf(0);
+                    return 0.0f;
                 } else if (rt == Double.TYPE) {
-                    return Double.valueOf(0);
+                    return 0.0;
                 } else if (rt == Boolean.TYPE) {
                     return Boolean.FALSE;
                 } else if (rt == Character.TYPE) {
-                    return Character.valueOf((char)0);
+                    return (char) 0;
                 }
             }
             return value;
@@ -88,19 +88,19 @@ public class TypeTest implements InvocationHandler{
         valueAndType.add(Pair.of(new BigDecimal("1.0"), new BigDecimalAsDoubleType()));
         valueAndType.add(Pair.of(new BigInteger("2"), new BigIntegerAsLongType()));
         //valueAndType.add(Pair.of(Boolean.TRUE,         new BooleanType()));
-        valueAndType.add(Pair.of(Byte.valueOf((byte)1),   new ByteType()));
+        valueAndType.add(Pair.of((byte) 1,   new ByteType()));
         valueAndType.add(Pair.of(new byte[0],         new BytesType()));
         valueAndType.add(Pair.of(Calendar.getInstance(), new CalendarType()));
-        valueAndType.add(Pair.of(new Character('c'),  new CharacterType()));
+        valueAndType.add(Pair.of('c',  new CharacterType()));
         valueAndType.add(Pair.of(Currency.getInstance("EUR"), new CurrencyType()));
         valueAndType.add(Pair.of(new java.sql.Date(0),new DateType()));
-        valueAndType.add(Pair.of(Double.valueOf(1),       new DoubleType()));
-        valueAndType.add(Pair.of(Float.valueOf(1),        new FloatType()));
-        valueAndType.add(Pair.of(Integer.valueOf(1),      new IntegerType()));
+        valueAndType.add(Pair.of(1.0,       new DoubleType()));
+        valueAndType.add(Pair.of(1.0f,        new FloatType()));
+        valueAndType.add(Pair.of(1,      new IntegerType()));
         valueAndType.add(Pair.of(true,                    new NumericBooleanType()));
-        valueAndType.add(Pair.of(Long.valueOf(1),         new LongType()));
+        valueAndType.add(Pair.of(1L,         new LongType()));
         valueAndType.add(Pair.of(new Object(),        new ObjectType()));
-        valueAndType.add(Pair.of(Short.valueOf((short)1), new ShortType()));
+        valueAndType.add(Pair.of((short) 1, new ShortType()));
         valueAndType.add(Pair.of("",                   new StringType()));
         valueAndType.add(Pair.of(true,                 new TrueFalseType()));
         valueAndType.add(Pair.of(true,                 new YesNoType()));

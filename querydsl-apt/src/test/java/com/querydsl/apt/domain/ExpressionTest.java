@@ -102,7 +102,7 @@ public class ExpressionTest {
                         args = new Object[0];
                     } else if (types.length == 1) {
                         if (types[0] == int.class) {
-                            args = new Object[]{Integer.valueOf(1)};
+                            args = new Object[]{1};
                         } else if (types[0] == boolean.class) {
                             args = new Object[]{Boolean.TRUE};
                         } else {
