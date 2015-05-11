@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * Spatial support
  */
-package com.querydsl.mongodb;
+package com.querydsl.sql.spatial;

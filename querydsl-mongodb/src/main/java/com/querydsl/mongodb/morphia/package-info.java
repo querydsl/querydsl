@@ -12,4 +12,7 @@
  * limitations under the License.
  */
 
+/**
+ * Morphia bindings
+ */
 package com.querydsl.mongodb.morphia;

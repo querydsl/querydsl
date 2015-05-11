@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * Aggregating post processing functionality
  */
-package com.querydsl.mongodb;
+package com.querydsl.core.group;

@@ -12,4 +12,7 @@
  * limitations under the License.
  */
 
+/**
+ * Hibernate Search support
+ */
 package com.querydsl.hibernate.search;

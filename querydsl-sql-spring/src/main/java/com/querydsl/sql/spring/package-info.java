@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * Spring support
  */
-package com.querydsl.mongodb;
+package com.querydsl.sql.spring;

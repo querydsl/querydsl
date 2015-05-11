@@ -27,12 +27,6 @@
 
     <module name="SuppressWarningsHolder"/>
 
-    <!-- FIXME
-    <module name="JavadocType">
-      <property name="scope" value="public"/>
-    </module>
-    <module name="JavadocMethod"/>
-    -->
     <!-- <module name="ConstantName"/> -->
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>

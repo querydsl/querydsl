@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * APT Roo support
  */
-package com.querydsl.mongodb;
+package com.querydsl.apt.roo;

@@ -14,6 +14,6 @@
 
 
 /**
- * Oracle support for Querydsl SQL
+ * Oracle support
  */
 package com.querydsl.sql.oracle;

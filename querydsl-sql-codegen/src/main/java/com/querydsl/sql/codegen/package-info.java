@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * JDBC schema inspection based code generation
  */
-package com.querydsl.mongodb;
+package com.querydsl.sql.codegen;

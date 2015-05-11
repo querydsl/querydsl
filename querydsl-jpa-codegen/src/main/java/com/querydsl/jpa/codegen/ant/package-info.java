@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * ANT integration for JPA code generation
  */
-package com.querydsl.mongodb;
+package com.querydsl.jpa.codegen.ant;

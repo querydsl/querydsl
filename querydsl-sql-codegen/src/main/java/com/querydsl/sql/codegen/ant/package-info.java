@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * ANT support
  */
-package com.querydsl.mongodb;
+package com.querydsl.sql.codegen.ant;

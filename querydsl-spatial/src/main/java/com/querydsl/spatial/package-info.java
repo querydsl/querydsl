@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * Spatial types using Geolatte
  */
-package com.querydsl.mongodb;
+package com.querydsl.spatial;

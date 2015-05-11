@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * Teradata support
  */
-package com.querydsl.mongodb;
+package com.querydsl.sql.teradata;

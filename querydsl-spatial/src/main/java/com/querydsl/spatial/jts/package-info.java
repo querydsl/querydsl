@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * Spatial types using JTS
  */
-package com.querydsl.mongodb;
+package com.querydsl.spatial.jts;

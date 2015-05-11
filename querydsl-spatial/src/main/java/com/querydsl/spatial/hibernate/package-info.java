@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * Serialization patterns for Hibernate Spatial
  */
-package com.querydsl.mongodb;
+package com.querydsl.spatial.hibernate;

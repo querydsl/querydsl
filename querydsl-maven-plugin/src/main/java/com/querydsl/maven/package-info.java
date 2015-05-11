@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * Maven plugins
  */
-package com.querydsl.mongodb;
+package com.querydsl.maven;

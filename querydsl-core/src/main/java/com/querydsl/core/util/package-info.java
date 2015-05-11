@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * General utility classes
  */
-package com.querydsl.mongodb;
+package com.querydsl.core.util;

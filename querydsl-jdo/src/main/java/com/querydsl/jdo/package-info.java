@@ -11,7 +11,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- * JDOQL support for Querydsl
+ * JDO support for Querydsl
  */
 package com.querydsl.jdo;

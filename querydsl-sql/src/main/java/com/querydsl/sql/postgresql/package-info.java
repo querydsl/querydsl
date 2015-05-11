@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * PostgreSQL support
  */
-package com.querydsl.mongodb;
+package com.querydsl.sql.postgresql;

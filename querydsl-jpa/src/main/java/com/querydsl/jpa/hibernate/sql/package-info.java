@@ -12,5 +12,8 @@
  * limitations under the License.
  */
 
+/**
+ * Native queries for Hibernate
+ */
 package com.querydsl.jpa.hibernate.sql;
 

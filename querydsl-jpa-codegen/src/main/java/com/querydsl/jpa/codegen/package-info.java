@@ -13,6 +13,6 @@
  */
 
 /**
- * MongoDB support
+ * JPA and Hibernate model based code generation
  */
-package com.querydsl.mongodb;
+package com.querydsl.jpa.codegen;
