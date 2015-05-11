@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>4.0.0</version>
+  <version>4.0.1.BUILD-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
