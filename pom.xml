@@ -411,7 +411,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
-              <configLocation>src/main/querydsl_checks.xml</configLocation>
+              <configLocation>src/main/resources/querydsl_checks_base.xml</configLocation>
               <includeTestSourceDirectory>true</includeTestSourceDirectory>
               <failOnViolation>true</failOnViolation>
             </configuration>
@@ -423,7 +423,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
-              <configLocation>src/main/querydsl_checks_main.xml</configLocation>
+              <configLocation>src/main/resources/querydsl_checks_main.xml</configLocation>
               <failOnViolation>true</failOnViolation>
             </configuration>
           </execution>
