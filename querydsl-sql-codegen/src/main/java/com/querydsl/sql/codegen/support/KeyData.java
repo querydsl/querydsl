@@ -18,7 +18,7 @@ import java.util.List;
 import com.mysema.codegen.model.Type;
 
 /**
- * Common interface for ForeignKeyData and InverseForeignKeyData
+ * Common interface for {@link ForeignKeyData} and {@link InverseForeignKeyData}
  *
  * @author tiwe
  *

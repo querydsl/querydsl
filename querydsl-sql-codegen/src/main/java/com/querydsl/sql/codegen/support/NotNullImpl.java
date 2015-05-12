@@ -19,11 +19,13 @@ import javax.validation.Payload;
 import javax.validation.constraints.NotNull;
 
 /**
+ * {@code NotNullImpl} is an implementation of the {@link NotNull} interface
+ *
  * @author tiwe
  *
  */
 @SuppressWarnings("all")
-public class NotNullImpl implements NotNull{
+public class NotNullImpl implements NotNull {
 
     @Override
     public Class<?>[] groups() {

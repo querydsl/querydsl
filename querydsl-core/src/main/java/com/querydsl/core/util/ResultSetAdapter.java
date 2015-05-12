@@ -22,6 +22,8 @@ import java.util.Calendar;
 import java.util.Map;
 
 /**
+ * {@code ResultSetAdapter} is an adapter implementation of the {@link ResultSet} interface
+ *
  * @author tiwe
  *
  */

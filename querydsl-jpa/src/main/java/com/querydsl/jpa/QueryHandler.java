@@ -28,6 +28,8 @@ import com.querydsl.core.types.FactoryExpression;
 public interface QueryHandler {
 
     /**
+     * Return whether native queries should be created as typed queries
+     *
      * @return whether native queries should be created as typed queries
      */
     boolean createNativeQueryTyped();
@@ -68,6 +70,8 @@ public interface QueryHandler {
     boolean transform(Query query, FactoryExpression<?> projection);
 
     /**
+     * Return whether entity projections need to be wrapped
+     *
      * @return whether entity projections need to be wrapped
      */
     boolean wrapEntityProjections();

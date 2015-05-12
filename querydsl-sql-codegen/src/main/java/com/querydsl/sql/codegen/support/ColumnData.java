@@ -14,6 +14,8 @@
 package com.querydsl.sql.codegen.support;
 
 /**
+ * {@code ColumnData} defines column data
+ *
  * @author tiwe
  *
  */

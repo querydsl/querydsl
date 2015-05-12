@@ -41,6 +41,8 @@ import com.querydsl.sql.types.Type;
 public class AbstractMetaDataExportMojo extends AbstractMojo{
 
     /**
+     * maven project
+     *
      * @parameter default-value="${project}"
      * @readonly
      */

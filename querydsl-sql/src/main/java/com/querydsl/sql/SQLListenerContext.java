@@ -47,54 +47,70 @@ public interface SQLListenerContext {
     void setData(String dataKey, Object value);
 
     /**
+     * Return the underlying query metadata
+     *
      * @return the underlying query metadata
      */
     QueryMetadata getMetadata();
 
     /**
-     * NOTE : This can be null depending on the stage of the query execution
+     * Return the underlying sql or first in a batch query
+     *
+     * <p>NOTE : This can be null depending on the stage of the query execution</p>
      *
      * @return the underlying sql or first in a batch query
      */
     String getSQL();
 
     /**
-     * NOTE : This can be empty depending on the stage of the query execution
+     * Return the underlying sql collection if the query is a batch query
+     *
+     * <p>NOTE : This can be empty depending on the stage of the query execution</p>
      *
      * @return the underlying sql collection if the query is a batch query
      */
     Collection<String> getSQLStatements();
 
     /**
-     * NOTE : This can be null depending on the stage of the query execution
+     * Return the underlying entity affected
+     *
+     * <p>NOTE : This can be null depending on the stage of the query execution</p>
      *
      * @return the underlying entity affected
      */
     RelationalPath<?> getEntity();
 
     /**
-     * NOTE : This can be null depending on the stage of the query execution
+     * Return the underlying connection if there is one
+     *
+     * <p>NOTE : This can be null depending on the stage of the query execution</p>
      *
      * @return the underlying connection if there is one
      */
     Connection getConnection();
 
     /**
-     * NOTE : This can be null depending on whether an exception occurred
+     * Return the underlying exception that has happened during query execution
+     *
+     * <p>NOTE : This can be null depending on whether an exception occurred</p>
      *
      * @return the underlying exception that has happened during query execution
      */
     Exception getException();
 
     /**
-     * NOTE : This can be null depending on the stage of the query execution
+     * Return the underlying prepared statement or the first if its batch query
+     *
+     * <p>NOTE : This can be null depending on the stage of the query execution</p>
      *
      * @return the underlying prepared statement or the first if its batch query
      */
     PreparedStatement getPreparedStatement();
 
     /**
-     * NOTE : This can be empty depending on the stage of the query execution
+     * Return the underlying set of prepared statements
+     *
+     * <p>NOTE : This can be empty depending on the stage of the query execution</p>
      *
      * @return the underlying set of prepared statements
      */

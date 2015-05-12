@@ -165,6 +165,8 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     }
 
     /**
+     * Create a new Enum path
+     *
      * @param <A>
      * @param property property name
      * @param type property type

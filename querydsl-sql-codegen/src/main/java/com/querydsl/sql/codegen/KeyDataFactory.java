@@ -28,6 +28,8 @@ import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
 
 /**
+ * {@code KeyDataFactory} is a factory for table key data
+ *
  * @author tiwe
  *
  */

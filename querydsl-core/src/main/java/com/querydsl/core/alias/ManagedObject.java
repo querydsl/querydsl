@@ -22,7 +22,9 @@ import com.querydsl.core.types.EntityPath;
 public interface ManagedObject {
 
     /**
-     * @return returns the underlying {@link EntityPath} instance of this proxy
+     * Returns the underlying {@link EntityPath} instance of this proxy
+     *
+     * @return underlying {@link EntityPath} instance
      */
     EntityPath<?> __mappedPath();
 

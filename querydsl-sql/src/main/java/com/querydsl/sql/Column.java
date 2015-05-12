@@ -33,6 +33,8 @@ import java.lang.annotation.Target;
 public @interface Column {
 
     /**
+     * Get the column name
+     *
      * @return column name
      */
     String value();

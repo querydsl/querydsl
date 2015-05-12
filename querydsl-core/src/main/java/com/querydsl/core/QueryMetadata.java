@@ -208,6 +208,8 @@ public interface QueryMetadata extends Serializable {
     void setOffset(@Nullable Long offset);
 
     /**
+     * Set the unique flag
+     *
      * @param unique unique
      */
     void setUnique(boolean unique);
@@ -215,7 +217,7 @@ public interface QueryMetadata extends Serializable {
     /**
      * Bind the value for the given parameter expression
      *
-     * @param <T>
+     * @param <T> binding type
      * @param param parameter
      * @param value binding
      */

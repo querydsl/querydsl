@@ -84,13 +84,6 @@ public abstract class AbstractDomainExporter {
 
     private final Set<File> generatedFiles = new HashSet<File>();
 
-    /**
-     * @param namePrefix
-     * @param nameSuffix
-     * @param targetFolder
-     * @param serializerConfig
-     * @param charset
-     */
     public AbstractDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             SerializerConfig serializerConfig, Charset charset) {
         this.targetFolder = targetFolder;

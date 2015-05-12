@@ -169,7 +169,7 @@ public class MetaDataExporter {
     /**
      * Export the tables based on the given database metadata
      *
-     * @param md
+     * @param md database metadata
      * @throws SQLException
      */
     public void export(DatabaseMetaData md) throws SQLException {
@@ -472,7 +472,7 @@ public class MetaDataExporter {
     /**
      * Override the bean package name (default: packageName)
      *
-     * @param beanPackageName
+     * @param beanPackageName package name for bean sources
      */
     public void setBeanPackageName(@Nullable String beanPackageName) {
         this.beanPackageName = beanPackageName;
@@ -542,6 +542,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether inner classes should be created for keys
+     *
      * @param innerClassesForKeys
      */
     public void setInnerClassesForKeys(boolean innerClassesForKeys) {
@@ -549,6 +551,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the column comparator class
+     *
      * @param columnComparatorClass
      */
     public void setColumnComparatorClass(Class<? extends Comparator<Property>> columnComparatorClass) {
@@ -556,6 +560,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the serializer class
+     *
      * @param serializerClass
      */
     public void setSerializerClass(Class<? extends Serializer> serializerClass) {
@@ -563,6 +569,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the type mappings to use
+     *
      * @param typeMappings
      */
     public void setTypeMappings(TypeMappings typeMappings) {
@@ -570,6 +578,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether column annotations should be created
+     *
      * @param columnAnnotations
      */
     public void setColumnAnnotations(boolean columnAnnotations) {
@@ -577,6 +587,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether validation annotations should be created
+     *
      * @param validationAnnotations
      */
     public void setValidationAnnotations(boolean validationAnnotations) {
@@ -584,6 +596,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the source encoding
+     *
      * @param sourceEncoding
      */
     public void setSourceEncoding(String sourceEncoding) {
@@ -591,6 +605,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether schema names should be appended to the package name
+     *
      * @param schemaToPackage
      */
     public void setSchemaToPackage(boolean schemaToPackage) {
@@ -599,6 +615,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether names should be normalized to lowercase
+     *
      * @param lowerCase
      */
     public void setLowerCase(boolean lowerCase) {
@@ -606,6 +624,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether tables should be exported
+     *
      * @param exportTables
      */
     public void setExportTables(boolean exportTables) {
@@ -613,6 +633,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether views should be exported
+     *
      * @param exportViews
      */
     public void setExportViews(boolean exportViews) {
@@ -620,6 +642,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether all table types should be exported
+     *
      * @param exportAll
      */
     public void setExportAll(boolean exportAll) {
@@ -627,6 +651,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether primary keys should be exported
+     *
      * @param exportPrimaryKeys
      */
     public void setExportPrimaryKeys(boolean exportPrimaryKeys) {
@@ -634,6 +660,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether foreign keys should be exported
+     *
      * @param exportForeignKeys
      */
     public void setExportForeignKeys(boolean exportForeignKeys) {
@@ -651,6 +679,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set whether spatial type support should be used
+     *
      * @param spatial
      */
     public void setSpatial(boolean spatial) {
@@ -658,6 +688,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the table types to export as a comma separated string
+     *
      * @param tableTypesToExport
      */
     public void setTableTypesToExport(String tableTypesToExport) {

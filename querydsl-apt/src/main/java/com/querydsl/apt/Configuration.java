@@ -36,200 +36,79 @@ import com.querydsl.core.util.Annotations;
  */
 public interface Configuration {
 
-    /**
-     * @return
-     */
     boolean isUnknownAsEmbedded();
 
-    /**
-     * @return
-     */
     TypeMappings getTypeMappings();
 
-    /**
-     * Get the visitor configuration for the given element
-     *
-     * @param e element to be inspected
-     * @param elements child elements
-     * @return
-     */
     VisitorConfig getConfig(TypeElement e, List<? extends Element> elements);
 
-    /**
-     * @return
-     */
     Serializer getDTOSerializer();
 
-    /**
-     * @return
-     */
     @Nullable
     Class<? extends Annotation> getEntitiesAnnotation();
 
-    /**
-     * @return
-     */
     @Nullable
     Class<? extends Annotation> getEmbeddedAnnotation();
 
-    /**
-     * @return
-     */
     @Nullable
     Class<? extends Annotation> getEmbeddableAnnotation();
 
-    /**
-     * @return
-     */
     Serializer getEmbeddableSerializer();
 
-    /**
-     * @return
-     */
     Class<? extends Annotation> getEntityAnnotation();
 
-    /**
-     * @return
-     */
     Class<? extends Annotation> getAlternativeEntityAnnotation();
 
-    /**
-     * @return
-     */
     Set<Class<? extends Annotation>> getEntityAnnotations();
 
-    /**
-     * @return
-     */
     Serializer getEntitySerializer();
 
-    /**
-     * @return
-     */
     String getNamePrefix();
 
-    /**
-     * @return
-     */
     String getNameSuffix();
 
-    /**
-     * @param entityType
-     * @return
-     */
     SerializerConfig getSerializerConfig(EntityType entityType);
 
-    /**
-     * @return
-     */
     @Nullable
     Class<? extends Annotation> getSkipAnnotation();
 
-    /**
-     * @return
-     */
     @Nullable
     Class<? extends Annotation> getSuperTypeAnnotation();
 
-    /**
-     * @return
-     */
     Serializer getSupertypeSerializer();
 
-    /**
-     * @param field
-     * @return
-     */
     boolean isBlockedField(VariableElement field);
 
-    /**
-     * @param getter
-     * @return
-     */
     boolean isBlockedGetter(ExecutableElement getter);
 
-    /**
-     * @return
-     */
     boolean isUseFields();
 
-    /**
-     * @return
-     */
     boolean isUseGetters();
 
-    /**
-     * @param constructor
-     * @return
-     */
     boolean isValidConstructor(ExecutableElement constructor);
 
-    /**
-     * @param field
-     * @return
-     */
     boolean isValidField(VariableElement field);
 
-    /**
-     * @param getter
-     * @return
-     */
     boolean isValidGetter(ExecutableElement getter);
 
-    /**
-     * @return
-     */
     Collection<String> getKeywords();
 
-    /**
-     * @return
-     */
     QueryTypeFactory getQueryTypeFactory();
 
-    /**
-     * @param packageName
-     */
     void addExcludedPackage(String packageName);
 
-    /**
-     * @param className
-     */
     void addExcludedClass(String className);
 
-    /**
-     * @param method
-     * @return
-     */
     TypeMirror getRealType(ExecutableElement method);
 
-    /**
-     * @param field
-     * @return
-     */
     TypeMirror getRealType(VariableElement field);
 
-    /**
-     * @param packageName
-     * @return
-     */
     boolean isExcludedPackage(String packageName);
 
-    /**
-     * @param className
-     * @return
-     */
     boolean isExcludedClass(String className);
 
-    /**
-     * @param element
-     * @param annotations
-     */
     void inspect(Element element, Annotations annotations);
 
-    /**
-     *
-     * @return
-     */
     boolean isStrictMode();
 
 }

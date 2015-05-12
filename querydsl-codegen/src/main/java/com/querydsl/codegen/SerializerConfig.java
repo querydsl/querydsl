@@ -22,26 +22,36 @@ package com.querydsl.codegen;
 public interface SerializerConfig {
 
     /**
+     * accessors are used for entity fields
+     *
      * @return if accessors are used for entity fields
      */
     boolean useEntityAccessors();
 
     /**
+     * indexed list accessors are used
+     *
      * @return if indexed list accessors are used
      */
     boolean useListAccessors();
 
     /**
+     * keyed map accessors are used
+     *
      * @return if keyed map accessors are used
      */
     boolean useMapAccessors();
 
     /**
+     * the default variable is created
+     *
      * @return if the default variable is created
      */
     boolean createDefaultVariable();
 
     /**
+     * the name of the default variable
+     *
      * @return the name of the default variable
      */
     String defaultVariableName();

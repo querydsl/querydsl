@@ -21,6 +21,8 @@ import javax.annotation.Nullable;
 import com.mysema.codegen.model.Type;
 
 /**
+ * {@code InverseForeignKeyData} defines inverse foreign key data
+ *
  * @author tiwe
  *
  */

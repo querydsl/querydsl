@@ -31,6 +31,7 @@ import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.ExpressionException;
 
 /**
+ * ConstructorUtils provides constructor resolving functionality
  *
  * @author Shredder121
  */
