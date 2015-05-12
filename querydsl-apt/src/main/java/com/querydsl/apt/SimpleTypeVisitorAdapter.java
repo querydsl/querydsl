@@ -28,15 +28,23 @@ import javax.lang.model.util.SimpleTypeVisitor6;
  */
 class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor6<R, P> {
 
-    private static Class<?> intersectionTypeClass;
+    private static final Class<?> intersectionTypeClass;
 
-    private static Method getBoundsMethod;
+    private static final Method getBoundsMethod;
 
     static {
+        Class<?> availableClass;
+        Method availableMethod;
         try {
-            intersectionTypeClass = Class.forName("javax.lang.model.type.IntersectionType");
-            getBoundsMethod = intersectionTypeClass.getMethod("getBounds");
-        } catch (Exception e) {}
+            availableClass = Class.forName("javax.lang.model.type.IntersectionType");
+            availableMethod = availableClass.getMethod("getBounds");
+        } catch (Exception e) {
+            // Not using Java 8
+            availableClass = null;
+            availableMethod = null;
+        }
+        intersectionTypeClass = availableClass;
+        getBoundsMethod = availableMethod;
     }
 
     @Override
