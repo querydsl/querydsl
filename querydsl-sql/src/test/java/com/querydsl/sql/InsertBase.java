@@ -45,7 +45,7 @@ import com.querydsl.sql.domain.*;
 
 public class InsertBase extends AbstractBaseTest {
 
-    private void reset() throws SQLException{
+    private void reset() throws SQLException {
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
 
@@ -58,7 +58,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @After
-    public void tearDown() throws SQLException{
+    public void tearDown() throws SQLException {
         reset();
     }
 
@@ -232,7 +232,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys() throws SQLException{
+    public void Insert_With_Keys() throws SQLException {
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
         assertTrue(rs.getObject(1) != null);
@@ -241,13 +241,13 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys_Projected() throws SQLException{
+    public void Insert_With_Keys_Projected() throws SQLException {
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys_Projected2() throws SQLException{
+    public void Insert_With_Keys_Projected2() throws SQLException {
         Path<Object> idPath = ExpressionUtils.path(Object.class, "id");
         Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
         assertNotNull(id);

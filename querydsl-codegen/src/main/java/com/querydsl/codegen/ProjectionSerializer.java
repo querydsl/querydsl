@@ -33,7 +33,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  * @author tiwe
  *
  */
-public final class ProjectionSerializer implements Serializer{
+public final class ProjectionSerializer implements Serializer {
 
     private final TypeMappings typeMappings;
 
@@ -86,7 +86,7 @@ public final class ProjectionSerializer implements Serializer{
 
     @Override
     public void serialize(final EntityType model, SerializerConfig serializerConfig,
-            CodeWriter writer) throws IOException{
+            CodeWriter writer) throws IOException {
         // intro
         intro(model, writer);
 

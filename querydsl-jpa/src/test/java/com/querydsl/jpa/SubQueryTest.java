@@ -23,7 +23,7 @@ import com.querydsl.core.domain.QCat;
 import com.querydsl.jpa.domain.QEmployee;
 import com.querydsl.jpa.domain.QUser;
 
-public class SubQueryTest extends AbstractQueryTest{
+public class SubQueryTest extends AbstractQueryTest {
 
     @Test
     public void Single_Source() {

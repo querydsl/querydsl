@@ -66,7 +66,7 @@ public class JDODeleteClause implements DeleteClause<JDODeleteClause> {
             query.setFilter(serializer.toString());
             Map<Object,String> constToLabel = serializer.getConstantToLabel();
 
-            try{
+            try {
                 if (!constToLabel.isEmpty()) {
                     List<Object> constants = new ArrayList<Object>(constToLabel.size());
                     StringBuilder builder = new StringBuilder();
@@ -83,13 +83,13 @@ public class JDODeleteClause implements DeleteClause<JDODeleteClause> {
                 } else {
                     return query.deletePersistentAll();
                 }
-            }finally{
+            } finally {
                 query.closeAll();
             }
         } else {
-            try{
+            try {
                 return query.deletePersistentAll();
-            }finally{
+            } finally {
                 query.closeAll();
             }
         }

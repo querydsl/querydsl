@@ -299,7 +299,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
 
     @Nullable
     private Object uniqueResult(Query query) {
-        try{
+        try {
             return getSingleResult(query);
         } catch(javax.persistence.NoResultException e) {
             logger.trace(e.getMessage(),e);

@@ -33,7 +33,7 @@ public class GeneratedKeysH2Test {
     private Statement stmt;
 
     @Before
-    public void setUp() throws ClassNotFoundException, SQLException{
+    public void setUp() throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
         String url = "jdbc:h2:~/dbs/h2-gen";
         conn = DriverManager.getConnection(url, "sa", "");
@@ -41,16 +41,16 @@ public class GeneratedKeysH2Test {
     }
 
     @After
-    public void tearDown() throws SQLException{
-        try{
+    public void tearDown() throws SQLException {
+        try {
             stmt.close();
-        }finally{
+        } finally {
             conn.close();
         }
     }
 
     @Test
-    public void test() throws SQLException{
+    public void test() throws SQLException {
         stmt.execute("drop table GENERATED_KEYS if exists");
         stmt.execute("create table GENERATED_KEYS(" +
                  "ID int AUTO_INCREMENT PRIMARY KEY, " +

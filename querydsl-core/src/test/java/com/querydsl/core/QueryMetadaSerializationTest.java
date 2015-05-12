@@ -34,7 +34,7 @@ public class QueryMetadaSerializationTest {
     private QueryMetadata metadata = new DefaultQueryMetadata();
 
     @Test
-    public void Serialization() throws IOException, ClassNotFoundException{
+    public void Serialization() throws IOException, ClassNotFoundException {
         StringPath expr = Expressions.stringPath("str");
         metadata.addJoin(JoinType.DEFAULT, expr);
         metadata.addFlag(new QueryFlag(Position.AFTER_FILTERS, ""));

@@ -23,7 +23,7 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.Ops;
 
-public class DerbyTemplatesTest extends AbstractSQLTemplatesTest{
+public class DerbyTemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     protected SQLTemplates createTemplates() {

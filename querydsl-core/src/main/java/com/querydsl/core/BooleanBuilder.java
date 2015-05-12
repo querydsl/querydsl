@@ -109,7 +109,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     }
 
     @Override
-    public BooleanBuilder clone() throws CloneNotSupportedException{
+    public BooleanBuilder clone() throws CloneNotSupportedException {
         return (BooleanBuilder) super.clone();
     }
 

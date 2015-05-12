@@ -5,7 +5,7 @@ import java.util.Arrays;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 
-public class MockTuple implements Tuple{
+public class MockTuple implements Tuple {
 
     private final Object[] a;
 

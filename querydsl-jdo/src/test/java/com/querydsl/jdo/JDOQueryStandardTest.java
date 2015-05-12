@@ -51,7 +51,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     private static final java.sql.Time time;
 
-    static{
+    static {
         Calendar cal = Calendar.getInstance();
         cal.set(2000, 1, 2, 3, 4);
         cal.set(Calendar.MILLISECOND, 0);

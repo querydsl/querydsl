@@ -35,7 +35,7 @@ class JavaTypeMapping {
 
     private static final Map<Class<?>,Type<?>> defaultTypes = new HashMap<Class<?>,Type<?>>();
 
-    static{
+    static {
         registerDefault(new BigIntegerType());
         registerDefault(new BigDecimalType());
         registerDefault(new BlobType());
@@ -110,7 +110,7 @@ class JavaTypeMapping {
     private Type<?> findType(Class<?> clazz) {
         //Look for a registered type in the class hierarchy
         Class<?> cl = clazz;
-        do{
+        do {
             if (typeByClass.containsKey(cl)) {
                 return typeByClass.get(cl);
             } else if (defaultTypes.containsKey(cl)) {

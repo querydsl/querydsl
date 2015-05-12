@@ -20,7 +20,7 @@ import com.querydsl.core.testutil.ExternalDB;
 import com.querydsl.sql.Connections;
 
 @Category(ExternalDB.class)
-public class ExportPostgreSQLTest extends ExportBaseTest{
+public class ExportPostgreSQLTest extends ExportBaseTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {

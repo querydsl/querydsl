@@ -19,7 +19,7 @@ import javax.persistence.Embeddable;
 
 @SuppressWarnings("serial")
 @Embeddable
-public class EmbeddedType implements Serializable{
+public class EmbeddedType implements Serializable {
 
     String someData;
 

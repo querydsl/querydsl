@@ -18,7 +18,7 @@ import org.hibernate.SQLQuery;
 
 import com.querydsl.jpa.hibernate.SessionHolder;
 
-public class DummySessionHolder implements SessionHolder{
+public class DummySessionHolder implements SessionHolder {
 
     @Override
     public Query createQuery(String queryString) {

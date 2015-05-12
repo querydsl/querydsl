@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="personid_")
-public class PersonId implements Serializable{
+public class PersonId implements Serializable {
     String country;
 
     @Id

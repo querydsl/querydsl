@@ -200,7 +200,7 @@ public class MetaDataSerializer extends EntitySerializer {
             boolean isClass = Character.isUpperCase(javaImport.charAt(javaImport.lastIndexOf(".") + 1));
             if (isClass){
                 classes.add(javaImport);
-            }else{
+            } else {
                 packages.add(javaImport);
             }
         }

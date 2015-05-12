@@ -34,7 +34,7 @@ public class StringTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void PatternAvailability() throws IllegalArgumentException, IllegalAccessException{
+    public void PatternAvailability() throws IllegalArgumentException, IllegalAccessException {
         Templates ops = new DummyTemplates();
         Set<Field> missing = new HashSet<Field>();
         for (Field field : Ops.class.getFields()) {
@@ -87,7 +87,7 @@ public class StringTest {
     }
 
 
-    public static class SomeType{
+    public static class SomeType {
 
         public SomeType() {}
 

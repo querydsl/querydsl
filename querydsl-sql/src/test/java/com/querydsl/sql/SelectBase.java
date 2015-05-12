@@ -695,7 +695,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    public void GetResultSet() throws IOException, SQLException{
+    public void GetResultSet() throws IOException, SQLException {
         ResultSet results = query().from(survey).getResults(survey.id, survey.name);
         while(results.next()) {
             System.out.println(results.getInt(1) +","+results.getString(2));
@@ -1262,7 +1262,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Projection() throws IOException{
+    public void Projection() throws IOException {
         CloseableIterator<Tuple> results = query().from(survey).select(survey.all()).iterate();
         assertTrue(results.hasNext());
         while (results.hasNext()) {
@@ -1284,7 +1284,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Projection2() throws IOException{
+    public void Projection2() throws IOException {
         // TODO : add assertions
         CloseableIterator<Tuple> results = query().from(survey).select(survey.id, survey.name).iterate();
         assertTrue(results.hasNext());
@@ -1295,7 +1295,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Projection3() throws IOException{
+    public void Projection3() throws IOException {
         CloseableIterator<String> names = query().from(survey).select(survey.name).iterate();
         assertTrue(names.hasNext());
         while (names.hasNext()) {
@@ -1466,7 +1466,7 @@ public class SelectBase extends AbstractBaseTest {
         serialize(rows);
     }
 
-    private void serialize(List<Tuple> rows) throws IOException, ClassNotFoundException{
+    private void serialize(List<Tuple> rows) throws IOException, ClassNotFoundException {
         rows = Serialization.serialize(rows);
         for (Tuple row : rows) {
             row.hashCode();

@@ -24,7 +24,7 @@ import com.querydsl.sql.Connections;
 public abstract class ExportBaseTest {
 
     @Test
-    public void Export() throws SQLException{
+    public void Export() throws SQLException {
         File folder = new File("target", getClass().getSimpleName());
         folder.mkdirs();
         NamingStrategy namingStrategy = new DefaultNamingStrategy();

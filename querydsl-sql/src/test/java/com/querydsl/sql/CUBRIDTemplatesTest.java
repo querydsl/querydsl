@@ -13,7 +13,7 @@
  */
 package com.querydsl.sql;
 
-public class CUBRIDTemplatesTest extends AbstractSQLTemplatesTest{
+public class CUBRIDTemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     protected SQLTemplates createTemplates() {

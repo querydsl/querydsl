@@ -23,7 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="price_")
-public class Price{
+public class Price {
     long amount;
 
     @Id

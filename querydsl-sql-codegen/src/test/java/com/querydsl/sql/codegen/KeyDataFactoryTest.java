@@ -28,10 +28,10 @@ import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
 
 
-public class KeyDataFactoryTest extends AbstractJDBCTest{
+public class KeyDataFactoryTest extends AbstractJDBCTest {
 
     @Test
-    public void test() throws SQLException{
+    public void test() throws SQLException {
         statement.execute("drop table employee if exists");
         statement.execute("drop table survey if exists");
         statement.execute("drop table date_test if exists");

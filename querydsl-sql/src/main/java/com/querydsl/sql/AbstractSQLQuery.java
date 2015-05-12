@@ -446,7 +446,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private <RT> RT newInstance(FactoryExpression<RT> c, ResultSet rs, int offset)
-        throws InstantiationException, IllegalAccessException, InvocationTargetException, SQLException{
+        throws InstantiationException, IllegalAccessException, InvocationTargetException, SQLException {
         Object[] args = new Object[c.getArgs().size()];
         for (int i = 0; i < args.length; i++) {
             args[i] = get(rs, c.getArgs().get(i), offset + i + 1, c.getArgs().get(i).getType());

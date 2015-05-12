@@ -56,7 +56,7 @@ public class TypeFactoryTest {
     private TypeFactory factory = new TypeFactory();
 
     @Test
-    public void InnerClass_Field() throws SecurityException, NoSuchFieldException{
+    public void InnerClass_Field() throws SecurityException, NoSuchFieldException {
         Field field = Entity.class.getDeclaredField("field");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -122,7 +122,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Generics_WildCard() throws SecurityException, NoSuchFieldException{
+    public void Generics_WildCard() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -131,7 +131,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Generics_Object() throws SecurityException, NoSuchFieldException{
+    public void Generics_Object() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field2");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -169,7 +169,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void RawField() throws SecurityException, NoSuchFieldException{
+    public void RawField() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field3");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -177,7 +177,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Extends() throws SecurityException, NoSuchFieldException{
+    public void Extends() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field4");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());

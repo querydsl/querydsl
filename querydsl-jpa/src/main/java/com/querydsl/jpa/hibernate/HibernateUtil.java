@@ -36,7 +36,7 @@ public final class HibernateUtil {
 
     private static final Map<Class<?>,Type> TYPES = new HashMap<Class<?>,Type>();
 
-    static{
+    static {
         TYPES.put(Byte.class, new ByteType());
         TYPES.put(Short.class, new ShortType());
         TYPES.put(Integer.class, new IntegerType());

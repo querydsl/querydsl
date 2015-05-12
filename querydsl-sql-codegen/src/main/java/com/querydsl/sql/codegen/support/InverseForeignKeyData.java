@@ -26,7 +26,7 @@ import com.mysema.codegen.model.Type;
  * @author tiwe
  *
  */
-public class InverseForeignKeyData implements KeyData{
+public class InverseForeignKeyData implements KeyData {
 
     private final String name;
 

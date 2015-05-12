@@ -107,7 +107,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         return this;
     }
 
-    private PreparedStatement createStatement() throws SQLException{
+    private PreparedStatement createStatement() throws SQLException {
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         serializer.serializeUpdate(metadata, entity, updates);

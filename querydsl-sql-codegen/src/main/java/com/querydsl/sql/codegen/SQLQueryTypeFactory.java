@@ -27,7 +27,7 @@ import com.querydsl.codegen.QueryTypeFactory;
  * @author tiwe
  *
  */
-public final class SQLQueryTypeFactory implements QueryTypeFactory{
+public final class SQLQueryTypeFactory implements QueryTypeFactory {
 
     private final String packageName, beanPackageName;
 

@@ -21,7 +21,7 @@ import java.io.Serializable;
  *
  * @author tiwe
  */
-public interface Operator extends Serializable{
+public interface Operator extends Serializable {
 
     /**
      * Get the unique id for this Operator

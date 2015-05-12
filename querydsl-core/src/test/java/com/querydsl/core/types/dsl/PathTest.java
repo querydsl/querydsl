@@ -48,7 +48,7 @@ public class PathTest {
     }
 
     @QueryEntity
-    public static class Entity extends Superclass{
+    public static class Entity extends Superclass {
 
         @Nullable
         private String property1;

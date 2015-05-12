@@ -26,7 +26,7 @@ import com.google.common.base.Objects;
  * @author tiwe
  */
 @Immutable
-public final class PathMetadata implements Serializable{
+public final class PathMetadata implements Serializable {
 
     private static final long serialVersionUID = -1055994185028970065L;
 

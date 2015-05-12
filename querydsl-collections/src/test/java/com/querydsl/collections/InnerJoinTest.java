@@ -25,7 +25,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-public class InnerJoinTest extends AbstractQueryTest{
+public class InnerJoinTest extends AbstractQueryTest {
 
     private QCat cat, kitten;
 

@@ -40,7 +40,7 @@ public class EmbeddableSerializerTest {
     private final StringWriter writer = new StringWriter();
 
     @Test
-    public void Properties() throws IOException{
+    public void Properties() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "b", new ClassType(TypeCategory.BOOLEAN, Boolean.class)));
@@ -58,7 +58,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void OriginalCategory() throws IOException{
+    public void OriginalCategory() throws IOException {
         Map<TypeCategory, String> categoryToSuperClass
                 = new EnumMap<TypeCategory, String>(TypeCategory.class);
         categoryToSuperClass.put(TypeCategory.COMPARABLE, "ComparablePath<Entity>");
@@ -82,7 +82,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Empty() throws IOException{
+    public void Empty() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
 
@@ -110,7 +110,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Primitive_Array() throws IOException{
+    public void Primitive_Array() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "bytes", new ClassType(byte[].class)));
@@ -119,7 +119,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Include() throws IOException{
+    public void Include() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "b", new ClassType(TypeCategory.BOOLEAN, Boolean.class)));
@@ -140,7 +140,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void SuperType() throws IOException{
+    public void SuperType() throws IOException {
         EntityType superType = new EntityType(new SimpleType(TypeCategory.ENTITY, "Entity2", "", "Entity2",false,false));
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type, Collections.singleton(new Supertype(superType, superType)));
@@ -152,7 +152,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Delegates() throws IOException{
+    public void Delegates() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         Delegate delegate = new Delegate(type, type, "test", Collections.<Parameter>emptyList(), Types.STRING);

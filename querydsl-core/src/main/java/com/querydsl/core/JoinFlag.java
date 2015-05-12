@@ -29,7 +29,7 @@ import com.querydsl.core.types.ExpressionUtils;
  *
  */
 @Immutable
-public class JoinFlag implements Serializable{
+public class JoinFlag implements Serializable {
 
     public enum Position {
 

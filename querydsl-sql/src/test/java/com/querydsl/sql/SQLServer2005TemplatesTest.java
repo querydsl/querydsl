@@ -23,7 +23,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 
-public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest{
+public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     @Test

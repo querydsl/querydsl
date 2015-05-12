@@ -26,7 +26,7 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="nationality_")
-public class Nationality implements Serializable{
+public class Nationality implements Serializable {
     @ManyToOne
     Calendar calendar;
 

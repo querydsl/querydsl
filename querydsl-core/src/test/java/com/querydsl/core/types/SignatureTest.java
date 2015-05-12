@@ -34,7 +34,7 @@ public class SignatureTest {
     private List<Class<?>> classes = new ArrayList<Class<?>>();
 
     @Before
-    public void setUp() throws ClassNotFoundException{
+    public void setUp() throws ClassNotFoundException {
         for (String folder : Arrays.asList("com/querydsl/core/types/dsl")) {
             for (String file : new File("src/main/java",folder).list()) {
                 if (file.endsWith(".java") && !file.equals("package-info.java")) {

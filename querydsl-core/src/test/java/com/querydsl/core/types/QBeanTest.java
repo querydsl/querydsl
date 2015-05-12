@@ -70,7 +70,7 @@ public class QBeanTest {
 
     }
 
-    public static class SubEntity extends Entity{
+    public static class SubEntity extends Entity {
 
     }
 

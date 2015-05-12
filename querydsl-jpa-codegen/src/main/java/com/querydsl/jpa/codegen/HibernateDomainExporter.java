@@ -41,7 +41,7 @@ import com.querydsl.codegen.SimpleSerializerConfig;
  * @author tiwe
  *
  */
-public class HibernateDomainExporter extends AbstractDomainExporter{
+public class HibernateDomainExporter extends AbstractDomainExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
 

@@ -35,7 +35,7 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
 
-public class TypeTest implements InvocationHandler{
+public class TypeTest implements InvocationHandler {
 
     public enum Gender {
         MALE, FEMALE
@@ -81,7 +81,7 @@ public class TypeTest implements InvocationHandler{
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test() throws MalformedURLException, SQLException{
+    public void test() throws MalformedURLException, SQLException {
         List<Pair<?,?>> valueAndType = new ArrayList<Pair<?,?>>();
         valueAndType.add(Pair.of(new BigDecimal("1"), new BigDecimalType()));
         valueAndType.add(Pair.of(new BigInteger("2"), new BigIntegerType()));

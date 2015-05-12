@@ -25,7 +25,7 @@ import com.querydsl.core.types.ExpressionUtils;
  * @author tiwe
  *
  */
-public class QueryFlag implements Serializable{
+public class QueryFlag implements Serializable {
 
     private static final long serialVersionUID = -7131081607441961628L;
 

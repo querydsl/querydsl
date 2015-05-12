@@ -85,7 +85,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private boolean inCaseOperation = false;
 
-    static{
+    static {
         joinTypes.put(JoinType.DEFAULT, COMMA);
         joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
         joinTypes.put(JoinType.INNERJOIN, "\n  inner join ");

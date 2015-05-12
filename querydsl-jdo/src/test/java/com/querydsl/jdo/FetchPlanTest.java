@@ -32,7 +32,7 @@ import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;
 import com.querydsl.jdo.test.domain.QStore;
 
-public class FetchPlanTest extends AbstractJDOTest{
+public class FetchPlanTest extends AbstractJDOTest {
 
     private JDOQuery<?> query;
 
@@ -46,7 +46,7 @@ public class FetchPlanTest extends AbstractJDOTest{
 
     @SuppressWarnings("unchecked")
     @Test
-    public void ListProducts() throws Exception{
+    public void ListProducts() throws Exception {
         QProduct product = QProduct.product;
         query = query();
         query.from(product)
@@ -68,7 +68,7 @@ public class FetchPlanTest extends AbstractJDOTest{
 
     @SuppressWarnings("unchecked")
     @Test
-    public void ListStores() throws Exception{
+    public void ListStores() throws Exception {
         QStore store = QStore.store;
         query = query();
         query.from(store)

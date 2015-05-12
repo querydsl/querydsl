@@ -37,7 +37,7 @@ public class SerializationBase implements JPATest {
     private EntityManager entityManager;
 
     @Test
-    public void test() throws IOException, ClassNotFoundException{
+    public void test() throws IOException, ClassNotFoundException {
         // create query
         JPAQuery<?> query = query();
         query.from(cat).where(cat.name.eq("Kate")).select(cat).fetch();

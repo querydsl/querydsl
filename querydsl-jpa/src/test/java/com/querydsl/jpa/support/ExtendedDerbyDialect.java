@@ -27,7 +27,7 @@ import org.hibernate.type.Type;
  * @author tiwe
  *
  */
-public class ExtendedDerbyDialect extends DerbyDialect{
+public class ExtendedDerbyDialect extends DerbyDialect {
 
     private static final CastFunction castFunction = new CastFunction() {
         @Override

@@ -25,7 +25,7 @@ import com.google.common.collect.ImmutableList;
  *
  */
 @Immutable
-public final class PredicateOperation extends OperationImpl<Boolean> implements Predicate{
+public final class PredicateOperation extends OperationImpl<Boolean> implements Predicate {
 
     private static final long serialVersionUID = -5371430939203772072L;
 

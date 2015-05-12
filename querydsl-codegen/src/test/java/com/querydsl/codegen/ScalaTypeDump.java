@@ -33,7 +33,7 @@ public class ScalaTypeDump {
 
     @Test
     @Ignore
-    public void test() throws IOException{
+    public void test() throws IOException {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         classes.add(SimpleExpression.class);
         classes.add(ComparableExpression.class);

@@ -36,10 +36,10 @@ public abstract class AbstractJDBCTest {
     }
 
     @After
-    public void tearDown() throws SQLException{
-        try{
+    public void tearDown() throws SQLException {
+        try {
             statement.close();
-        }finally{
+        } finally {
             connection.close();
         }
     }

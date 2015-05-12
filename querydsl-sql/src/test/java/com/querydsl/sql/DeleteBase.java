@@ -31,25 +31,25 @@ import com.querydsl.sql.dml.SQLDeleteClause;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
 
-public class DeleteBase extends AbstractBaseTest{
+public class DeleteBase extends AbstractBaseTest {
 
-    private void reset() throws SQLException{
+    private void reset() throws SQLException {
         delete(survey).where(survey.name.isNotNull()).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
     }
 
     @Before
-    public void setUp() throws SQLException{
+    public void setUp() throws SQLException {
         reset();
     }
 
     @After
-    public void tearDown() throws SQLException{
+    public void tearDown() throws SQLException {
         reset();
     }
 
     @Test
-    public void Batch() throws SQLException{
+    public void Batch() throws SQLException {
         insert(survey).values(2, "A","B").execute();
         insert(survey).values(3, "B","C").execute();
 
@@ -61,7 +61,7 @@ public class DeleteBase extends AbstractBaseTest{
 
     @Test
     @ExcludeIn({CUBRID, SQLITE})
-    public void Batch_Templates() throws SQLException{
+    public void Batch_Templates() throws SQLException {
         insert(survey).values(2, "A","B").execute();
         insert(survey).values(3, "B","C").execute();
 
@@ -73,7 +73,7 @@ public class DeleteBase extends AbstractBaseTest{
 
     @Test
     @ExcludeIn(MYSQL)
-    public void Delete() throws SQLException{
+    public void Delete() throws SQLException {
         long count = query().from(survey).fetchCount();
         assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
         assertEquals(count, delete(survey).execute());

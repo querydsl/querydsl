@@ -44,7 +44,7 @@ public class Inheritance4Test extends AbstractTest {
     }
 
     @QueryEntity
-    public class EntityWithString extends EntityWithComparable{
+    public class EntityWithString extends EntityWithComparable {
         private String field;
 
         public String getField() {
@@ -54,7 +54,7 @@ public class Inheritance4Test extends AbstractTest {
     }
 
     @Test
-    public void test() throws IllegalAccessException, NoSuchFieldException{
+    public void test() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance4Test_EntityWithComparable.class, QInheritance4Test_EntityWithComparable.entityWithComparable);
         match(SimplePath.class, "field");
         matchType(Comparable.class, "field");

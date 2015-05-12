@@ -27,20 +27,20 @@ import org.junit.Test;
 import com.querydsl.core.QueryMutability;
 import com.querydsl.sql.domain.QSurvey;
 
-public class QueryMutabilityTest{
+public class QueryMutabilityTest {
 
     private static final QSurvey survey = new QSurvey("survey");
 
     private Connection connection;
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         Connections.initDerby();
         connection = Connections.getConnection();
     }
 
     @After
-    public void tearDown() throws SQLException{
+    public void tearDown() throws SQLException {
         Connections.close();
     }
 

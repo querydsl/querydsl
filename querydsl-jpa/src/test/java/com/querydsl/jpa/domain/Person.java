@@ -25,7 +25,7 @@ import com.querydsl.core.annotations.QueryInit;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="person_")
-public class Person implements Serializable{
+public class Person implements Serializable {
     @Temporal(TemporalType.DATE)
     java.util.Date birthDay;
 

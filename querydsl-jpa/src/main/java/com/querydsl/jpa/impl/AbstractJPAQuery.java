@@ -248,7 +248,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     @SuppressWarnings("unchecked")
     @Override
     public T fetchOne() {
-        try{
+        try {
             Query query = createQuery(getMetadata().getModifiers(), false);
             return (T) getSingleResult(query);
         } catch(javax.persistence.NoResultException e) {

@@ -150,7 +150,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void QueryElement() throws Exception{
+    public void QueryElement() throws Exception {
         Query query1 = serializer.toQuery(author.like("Michael"), metadata);
         Query query2 = serializer.toQuery(text.like("Text"), metadata);
 
@@ -197,23 +197,23 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void Eq_with_deep_path() throws Exception{
+    public void Eq_with_deep_path() throws Exception {
         StringPath deepPath = entityPath.get("property1", Object.class).getString("property2");
         testQuery(deepPath.eq("good"), "property1.property2:good", 0);
     }
 
     @Test
-    public void FuzzyLike() throws Exception{
+    public void FuzzyLike() throws Exception {
         testQuery(LuceneExpressions.fuzzyLike(rating, "Good"), "rating:Good~0.5", 1);
     }
 
     @Test
-    public void FuzzyLike_with_Similarity() throws Exception{
+    public void FuzzyLike_with_Similarity() throws Exception {
         testQuery(LuceneExpressions.fuzzyLike(rating, "Good", 0.6f), "rating:Good~0.6", 1);
     }
 
     @Test
-    public void FuzzyLike_with_Similarity_and_prefix() throws Exception{
+    public void FuzzyLike_with_Similarity_and_prefix() throws Exception {
         testQuery(LuceneExpressions.fuzzyLike(rating, "Good", 0.6f, 0), "rating:Good~0.6", 1);
     }
 
@@ -228,7 +228,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void Eq_Numeric() throws Exception{
+    public void Eq_Numeric() throws Exception {
         testQuery(longField.eq(1L), "longField:" + LONG_PREFIX_CODED, 1);
         testQuery(shortField.eq((short)1), "shortField:" + SHORT_PREFIX_CODED, 1);
         testQuery(byteField.eq((byte)1), "byteField:" + BYTE_PREFIX_CODED, 1);
@@ -392,7 +392,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void Between_Numeric() throws Exception{
+    public void Between_Numeric() throws Exception {
         testQuery(longField.between(0L,2L), "longField:[0 TO 2]", 1);
         testQuery(shortField.between((short)0,(short)2), "shortField:[0 TO 2]", 1);
         testQuery(byteField.between((byte)0,(byte)2), "byteField:[0 TO 2]", 1);
@@ -607,7 +607,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void BooleanBuilder() throws Exception{
+    public void BooleanBuilder() throws Exception {
         testQuery(new BooleanBuilder(gross.goe(900.10)), "gross:[900.1 TO *]", 0);
     }
 
@@ -646,7 +646,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void various() throws Exception{
+    public void various() throws Exception {
         MatchingFiltersFactory filters = new MatchingFiltersFactory(Module.LUCENE, Target.LUCENE);
         for (Predicate filter : filters.string(title, StringConstant.create("jurassic park"))) {
             if (unsupportedOperation(filter)) {

@@ -28,7 +28,7 @@ import com.querydsl.jpa.hibernate.sql.HibernateSQLQuery;
 import com.querydsl.sql.DerbyTemplates;
 import com.querydsl.sql.SQLTemplates;
 
-public class QueryMutabilityTest{
+public class QueryMutabilityTest {
 
     private static final SQLTemplates derbyTemplates = new DerbyTemplates();
 

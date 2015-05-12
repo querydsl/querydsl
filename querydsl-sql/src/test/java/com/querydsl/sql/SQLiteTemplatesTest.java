@@ -24,7 +24,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 
-public class SQLiteTemplatesTest extends AbstractSQLTemplatesTest{
+public class SQLiteTemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     protected SQLTemplates createTemplates() {

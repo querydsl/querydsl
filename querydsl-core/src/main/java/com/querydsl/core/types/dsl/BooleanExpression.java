@@ -24,7 +24,7 @@ import com.querydsl.core.types.*;
  * @see java.lang.Boolean
  *
  */
-public abstract class BooleanExpression extends LiteralExpression<Boolean> implements Predicate{
+public abstract class BooleanExpression extends LiteralExpression<Boolean> implements Predicate {
 
     private static final long serialVersionUID = 3797956062512074164L;
 

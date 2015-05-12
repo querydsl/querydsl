@@ -24,7 +24,7 @@ import com.querydsl.lucene3.LuceneSerializer;
  * @author tiwe
  *
  */
-public class SearchSerializer extends LuceneSerializer{
+public class SearchSerializer extends LuceneSerializer {
 
     public static final SearchSerializer DEFAULT = new SearchSerializer(false,true);
 

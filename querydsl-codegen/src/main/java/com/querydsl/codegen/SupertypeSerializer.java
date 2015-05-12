@@ -24,7 +24,7 @@ import javax.inject.Named;
  * @author tiwe
  *
  */
-public final class SupertypeSerializer extends EntitySerializer{
+public final class SupertypeSerializer extends EntitySerializer {
 
     /**
      * Create a new SupertypeSerializer instance

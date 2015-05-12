@@ -24,7 +24,7 @@ import jdepend.framework.JDepend;
 public class DependenciesTest {
 
     @Test
-    public void test() throws IOException{
+    public void test() throws IOException {
         JDepend jdepend = new JDepend();
         jdepend.addDirectory("target/classes/com/querydsl/jpa");
         jdepend.addDirectory("target/classes/com/querydsl/jpa/hibernate");

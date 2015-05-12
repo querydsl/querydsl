@@ -47,7 +47,7 @@ public class SimpleExpressionTest {
     }
 
     @Test
-    public void Subclasses_Override_As() throws SecurityException, NoSuchMethodException{
+    public void Subclasses_Override_As() throws SecurityException, NoSuchMethodException {
         List<Class<?>> classes = Arrays.<Class<?>>asList(
                 BooleanExpression.class,
                 ComparableExpression.class,

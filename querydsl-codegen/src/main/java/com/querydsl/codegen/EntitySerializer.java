@@ -581,7 +581,7 @@ public class EntitySerializer implements Serializer {
 
     @Override
     public void serialize(EntityType model, SerializerConfig config,
-            CodeWriter writer) throws IOException{
+            CodeWriter writer) throws IOException {
         intro(model, config, writer);
 
         // properties

@@ -22,7 +22,7 @@ import org.junit.runners.model.Statement;
 
 import com.querydsl.core.Target;
 
-public class LabelRule implements MethodRule{
+public class LabelRule implements MethodRule {
 
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target) {

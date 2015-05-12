@@ -43,7 +43,7 @@ public class GroovyBeanSerializerTest {
     }
 
     @Test
-    public void Properties() throws IOException{
+    public void Properties() throws IOException {
         // property
         type.addProperty(new Property(type, "entityField", type));
         type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));

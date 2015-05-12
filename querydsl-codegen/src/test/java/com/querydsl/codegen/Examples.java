@@ -16,7 +16,7 @@ public class Examples {
     }
 
     @QueryEntity
-    public static class SimpleEntity extends Supertype{
+    public static class SimpleEntity extends Supertype {
 
     }
 
@@ -76,7 +76,7 @@ public class Examples {
     }
 
     @QueryEntity
-    public static class GenericRelations{
+    public static class GenericRelations {
         public Collection<Collection<Reference>> col1;
         public Collection<List<Reference>> col2;
         public Collection<Collection<? extends Reference>> col3;
@@ -94,7 +94,7 @@ public class Examples {
     }
 
     @QueryEntity
-    public static class Subtype extends DefaultQueryMetadata{
+    public static class Subtype extends DefaultQueryMetadata {
 
         private static final long serialVersionUID = -218949941713252847L;
 

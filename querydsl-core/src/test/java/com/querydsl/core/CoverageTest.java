@@ -40,7 +40,7 @@ public class CoverageTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test() throws IllegalArgumentException, IllegalAccessException{
+    public void test() throws IllegalArgumentException, IllegalAccessException {
         // make sure all Operators are covered in expression factory methods
         Set<Operator> usedOperators = new HashSet<Operator>();
         List<Expression<?>> exprs = new ArrayList<Expression<?>>();

@@ -32,7 +32,7 @@ import com.querydsl.core.util.BeanUtils;
  * @author tiwe
  *
  */
-public class BeanSerializer implements Serializer{
+public class BeanSerializer implements Serializer {
 
     private static final Function<Property, Parameter> propertyToParameter = new Function<Property, Parameter>() {
         @Override

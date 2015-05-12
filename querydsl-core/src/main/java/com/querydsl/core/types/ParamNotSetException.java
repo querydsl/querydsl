@@ -19,7 +19,7 @@ package com.querydsl.core.types;
  * @author tiwe
  *
  */
-public class ParamNotSetException extends RuntimeException{
+public class ParamNotSetException extends RuntimeException {
 
     private static final long serialVersionUID = 2019016965590576490L;
 

@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import com.querydsl.core.types.Ops;
 
-public class H2TemplatesTest extends AbstractSQLTemplatesTest{
+public class H2TemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     protected SQLTemplates createTemplates() {

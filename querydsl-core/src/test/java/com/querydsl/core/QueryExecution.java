@@ -75,7 +75,7 @@ public abstract class QueryExecution {
         if (this.runProjections) {
             for (Expression<?> pr : projections) {
                 total++;
-                try{
+                try {
                     // projection
                     runProjection(pr);
 
@@ -105,7 +105,7 @@ public abstract class QueryExecution {
         if (this.runFilters) {
             for (Predicate f : filters) {
                 total++;
-                try{
+                try {
                     // filter
                     int results = runFilter(f);
 
@@ -124,7 +124,7 @@ public abstract class QueryExecution {
                         failures.add(f + " failed");
                     }
 
-                }catch(Throwable t) {
+                } catch(Throwable t) {
                     t.printStackTrace();
                     t = addError(f, t);
                 }
@@ -138,26 +138,26 @@ public abstract class QueryExecution {
 
     private long runCount(Predicate f) {
         Fetchable<?> p = createQuery(f);
-        try{
+        try {
             return p.fetchCount();
-        }finally{
+        } finally {
             close(p);
         }
     }
 
     private long runCountDistinct(Predicate f) {
         Fetchable<?> p = createQuery(f);
-        try{
+        try {
             ((QueryBase)p).distinct();
             return p.fetchCount();
-        }finally{
+        } finally {
             close(p);
         }
     }
 
     private int runFilter(Predicate f) {
         Fetchable<?> p = createQuery(f);
-        try{
+        try {
             return p.fetch().size();
         } finally {
             close(p);
@@ -166,7 +166,7 @@ public abstract class QueryExecution {
 
     private int runFilterDistinct(Predicate f) {
         Fetchable<?> p = createQuery(f);
-        try{
+        try {
             ((QueryBase)p).distinct();
             return p.fetch().size();
         } finally {
@@ -186,11 +186,11 @@ public abstract class QueryExecution {
 
     private int runProjectionDistinct(Expression<?> pr) {
         Fetchable<?> p = createQuery();
-        try{
+        try {
             ((QueryBase)p).distinct();
             ((FetchableQuery)p).select(pr);
             return p.fetch().size();
-        }finally{
+        } finally {
             close(p);
         }
     }

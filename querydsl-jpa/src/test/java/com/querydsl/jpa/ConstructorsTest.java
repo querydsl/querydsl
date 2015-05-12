@@ -22,7 +22,7 @@ import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 
-public class ConstructorsTest extends AbstractQueryTest{
+public class ConstructorsTest extends AbstractQueryTest {
 
     public static final class BookmarkDTO {
 

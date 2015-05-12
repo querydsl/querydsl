@@ -38,7 +38,7 @@ import com.querydsl.jdo.test.domain.sql.SProduct;
 import com.querydsl.sql.HSQLDBTemplates;
 import com.querydsl.sql.SQLTemplates;
 
-public class JDOSQLQueryTest extends AbstractJDOTest{
+public class JDOSQLQueryTest extends AbstractJDOTest {
 
     private final SQLTemplates sqlTemplates = new HSQLDBTemplates();
 

@@ -23,7 +23,7 @@ import java.util.Comparator;
  *
  * @param <T>
  */
-public class NullSafeComparableComparator<T extends Comparable<T>> implements Comparator<T>, Serializable{
+public class NullSafeComparableComparator<T extends Comparable<T>> implements Comparator<T>, Serializable {
 
     private static final long serialVersionUID = 5681808684776488757L;
 

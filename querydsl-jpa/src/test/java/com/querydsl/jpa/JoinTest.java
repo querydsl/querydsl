@@ -27,7 +27,7 @@ import com.querydsl.jpa.hibernate.HibernateQuery;
 
 public class JoinTest {
 
-    public interface Entity{
+    public interface Entity {
 
         List<String> getNames();
     }

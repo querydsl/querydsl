@@ -159,7 +159,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = executeWithKeys();
-        try{
+        try {
             if (rs.next()) {
                 return configuration.get(rs, path, 1, type);
             } else {
@@ -167,7 +167,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             }
         } catch (SQLException e) {
             throw configuration.translate(e);
-        }finally{
+        } finally {
             close(rs);
         }
     }
@@ -192,7 +192,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = null;
-        try{
+        try {
             rs = executeWithKeys();
             List<T> rv = new ArrayList<T>();
             while (rs.next()) {
@@ -201,7 +201,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             return rv;
         } catch (SQLException e) {
             throw configuration.translate(e);
-        }finally {
+        } finally {
             if (rs != null) {
                 close(rs);
             }

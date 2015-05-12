@@ -33,26 +33,26 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.dml.SQLMergeClause;
 import com.querydsl.sql.domain.QSurvey;
 
-public class MergeBase extends AbstractBaseTest{
+public class MergeBase extends AbstractBaseTest {
 
-    private void reset() throws SQLException{
+    private void reset() throws SQLException {
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
     }
 
     @Before
-    public void setUp() throws SQLException{
+    public void setUp() throws SQLException {
         reset();
     }
 
     @After
-    public void tearDown() throws SQLException{
+    public void tearDown() throws SQLException {
         reset();
     }
 
     @Test
     @ExcludeIn({H2, CUBRID, SQLSERVER})
-    public void Merge_With_Keys() throws SQLException{
+    public void Merge_With_Keys() throws SQLException {
         ResultSet rs = merge(survey).keys(survey.id)
                 .set(survey.id, 7)
                 .set(survey.name, "Hello World").executeWithKeys();
@@ -98,7 +98,7 @@ public class MergeBase extends AbstractBaseTest{
 
     @Test
     @ExcludeIn({CUBRID, DB2, DERBY, POSTGRESQL, SQLSERVER, TERADATA})
-    public void Merge_With_Keys_Null_Id() throws SQLException{
+    public void Merge_With_Keys_Null_Id() throws SQLException {
         ResultSet rs = merge(survey).keys(survey.id)
                 .setNull(survey.id)
                 .set(survey.name, "Hello World").executeWithKeys();
@@ -109,7 +109,7 @@ public class MergeBase extends AbstractBaseTest{
 
     @Test
     @ExcludeIn({H2, CUBRID, SQLSERVER})
-    public void Merge_With_Keys_Projected() throws SQLException{
+    public void Merge_With_Keys_Projected() throws SQLException {
         assertNotNull(merge(survey).keys(survey.id)
                 .set(survey.id, 8)
                 .set(survey.name, "Hello you").executeWithKey(survey.id));
@@ -117,7 +117,7 @@ public class MergeBase extends AbstractBaseTest{
 
     @Test
     @ExcludeIn({H2, CUBRID, SQLSERVER})
-    public void Merge_With_Keys_Projected2() throws SQLException{
+    public void Merge_With_Keys_Projected2() throws SQLException {
         Path<Object> idPath = ExpressionUtils.path(Object.class, "id");
         Object id = merge(survey).keys(survey.id)
                 .set(survey.id, 9)

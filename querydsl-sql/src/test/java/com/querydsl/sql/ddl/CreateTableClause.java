@@ -195,7 +195,7 @@ public class CreateTableClause {
         logger.info(builder.toString());
 
         Statement stmt = null;
-        try{
+        try {
             stmt = connection.createStatement();
             stmt.execute(builder.toString());
 
@@ -213,7 +213,7 @@ public class CreateTableClause {
         } catch (SQLException e) {
             System.err.println(builder.toString());
             throw new QueryException(e.getMessage(), e);
-        }finally{
+        } finally {
             if (stmt != null) {
                 try {
                     stmt.close();

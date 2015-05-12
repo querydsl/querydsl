@@ -27,7 +27,7 @@ import java.util.Map;
  * @author tiwe
  *
  */
-public class ResultSetAdapter implements ResultSet{
+public class ResultSetAdapter implements ResultSet {
 
     private final ResultSet rs;
 

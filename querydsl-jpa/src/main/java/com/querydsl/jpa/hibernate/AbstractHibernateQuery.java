@@ -178,7 +178,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     @Override
     public QueryResults<T> fetchResults() {
-        try{
+        try {
             Query countQuery = createQuery(null, true);
             long total = (Long) countQuery.uniqueResult();
 
@@ -191,7 +191,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
             } else {
                 return QueryResults.emptyResults();
             }
-        }finally{
+        } finally {
             reset();
         }
     }
@@ -325,7 +325,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
         try {
             QueryModifiers modifiers = getMetadata().getModifiers();
             Query query = createQuery(modifiers, false);
-            try{
+            try {
                 return (T) query.uniqueResult();
             } catch (org.hibernate.NonUniqueResultException e) {
                 throw new NonUniqueResultException();

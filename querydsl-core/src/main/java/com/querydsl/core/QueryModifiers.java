@@ -26,7 +26,7 @@ import com.google.common.base.Objects;
  *
  * @author tiwe
  */
-public final class QueryModifiers implements Serializable{
+public final class QueryModifiers implements Serializable {
 
     private static final long serialVersionUID = 2934344588433680339L;
 

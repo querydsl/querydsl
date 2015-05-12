@@ -291,10 +291,10 @@ public abstract class AbstractDomainExporter {
         File targetFile = new File(targetFolder, path);
         generatedFiles.add(targetFile);
         Writer w = writerFor(targetFile);
-        try{
+        try {
             CodeWriter writer = new JavaWriter(w);
             serializer.serialize(type, serializerConfig, writer);
-        }finally{
+        } finally {
             w.close();
         }
     }

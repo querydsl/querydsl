@@ -23,7 +23,7 @@ import org.junit.Test;
 import com.querydsl.core.QueryMutability;
 import com.querydsl.jdo.test.domain.QProduct;
 
-public class QueryMutabilityTest extends AbstractJDOTest{
+public class QueryMutabilityTest extends AbstractJDOTest {
 
     @Test
     public void QueryMutability() throws IOException, SecurityException,

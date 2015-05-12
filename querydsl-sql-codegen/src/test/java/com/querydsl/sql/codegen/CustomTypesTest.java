@@ -33,13 +33,13 @@ import com.querydsl.sql.types.EnumByNameType;
 import com.querydsl.sql.types.StringType;
 import com.querydsl.sql.types.UtilDateType;
 
-public class CustomTypesTest extends AbstractJDBCTest{
+public class CustomTypesTest extends AbstractJDBCTest {
 
     private Configuration configuration;
 
     @Override
     @Before
-    public void setUp() throws ClassNotFoundException, SQLException{
+    public void setUp() throws ClassNotFoundException, SQLException {
         super.setUp();
         // create schema
         statement.execute("drop table person if exists");
@@ -62,7 +62,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
     }
 
     @Test
-    public void Export() throws SQLException, IOException{
+    public void Export() throws SQLException, IOException {
         // create exporter
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();

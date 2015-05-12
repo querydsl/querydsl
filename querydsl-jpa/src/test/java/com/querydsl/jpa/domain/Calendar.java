@@ -26,7 +26,7 @@ import javax.persistence.*;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="calendar_")
-public class Calendar implements Serializable{
+public class Calendar implements Serializable {
     @ElementCollection
     @Temporal(TemporalType.DATE)
     @MapKeyColumn(name="holidays_key")

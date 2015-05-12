@@ -221,9 +221,9 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
 
     @Nullable
     private Object uniqueResult(Query query) {
-        try{
+        try {
             return query.uniqueResult();
-        }catch (org.hibernate.NonUniqueResultException e) {
+        } catch (org.hibernate.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         }
     }

@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-public class FirstResultContractTest extends AbstractQueryTest{
+public class FirstResultContractTest extends AbstractQueryTest {
 
     @Test
     public void SingleResult() {

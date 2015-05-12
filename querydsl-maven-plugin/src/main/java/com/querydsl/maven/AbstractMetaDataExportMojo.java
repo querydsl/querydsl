@@ -38,7 +38,7 @@ import com.querydsl.sql.types.Type;
  *
  * @author tiwe
  */
-public class AbstractMetaDataExportMojo extends AbstractMojo{
+public class AbstractMetaDataExportMojo extends AbstractMojo {
 
     /**
      * maven project
@@ -466,7 +466,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
             Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-            try{
+            try {
                 exporter.export(conn.getMetaData());
             } finally {
                 if (conn != null) {

@@ -226,21 +226,21 @@ public class MetaDataExporter {
         if (tableNamePattern != null && tableNamePattern.contains(",")) {
             for (String table : tableNamePattern.split(",")) {
                 ResultSet tables = md.getTables(null, schemaPattern, table.trim(), typesArray);
-                try{
+                try {
                     while (tables.next()) {
                         handleTable(md, tables);
                     }
-                }finally{
+                } finally {
                     tables.close();
                 }
             }
         } else {
             ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, typesArray);
-            try{
+            try {
                 while (tables.next()) {
                     handleTable(md, tables);
                 }
-            }finally{
+            } finally {
                 tables.close();
             }
         }
@@ -341,11 +341,11 @@ public class MetaDataExporter {
 
         // collect columns
         ResultSet columns = md.getColumns(catalog, schema, tableName.replace("/", "//"), null);
-        try{
+        try {
             while (columns.next()) {
                 handleColumn(classModel, tableName, columns);
             }
-        }finally{
+        } finally {
             columns.close();
         }
 

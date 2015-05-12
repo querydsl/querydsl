@@ -111,7 +111,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         return this;
     }
 
-    private PreparedStatement createStatement() throws SQLException{
+    private PreparedStatement createStatement() throws SQLException {
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         serializer.serializeDelete(metadata, entity);

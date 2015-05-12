@@ -28,7 +28,7 @@ public class CaseBuilderTest {
         MALE, FEMALE
     }
 
-    public static class Customer{
+    public static class Customer {
         private long annualSpending;
         public long getAnnualSpending() {
             return annualSpending;

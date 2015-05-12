@@ -37,7 +37,7 @@ public class CustomTypeTest {
     private final StringWriter writer = new StringWriter();
 
     @Test
-    public void CustomType() throws IOException{
+    public void CustomType() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "property", new ClassType(Double[].class)));

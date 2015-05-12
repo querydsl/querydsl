@@ -151,7 +151,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     }
 
     @Test
-    public void Collection() throws Exception{
+    public void Collection() throws Exception {
         List<Cat> cats = Arrays.asList(new Cat("Bob",10), new Cat("Steve",11));
         for (Cat cat : cats) {
             session.save(cat);

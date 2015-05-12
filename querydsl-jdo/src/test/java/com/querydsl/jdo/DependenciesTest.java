@@ -26,7 +26,7 @@ public class DependenciesTest {
 
     @Test
     @Ignore
-    public void test() throws IOException{
+    public void test() throws IOException {
         JDepend jdepend = new JDepend();
         jdepend.addDirectory("target/classes/com/querydsl/jdo");
         jdepend.addDirectory("target/classes/com/querydsl/jdo/dml");

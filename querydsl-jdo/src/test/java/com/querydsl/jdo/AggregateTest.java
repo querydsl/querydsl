@@ -24,7 +24,7 @@ import org.junit.Test;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;
 
-public class AggregateTest extends AbstractJDOTest{
+public class AggregateTest extends AbstractJDOTest {
 
     private final QProduct product = QProduct.product;
 

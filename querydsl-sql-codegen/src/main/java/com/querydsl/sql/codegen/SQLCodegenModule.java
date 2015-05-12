@@ -28,7 +28,7 @@ import com.querydsl.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public class SQLCodegenModule extends CodegenModule{
+public class SQLCodegenModule extends CodegenModule {
 
     public static final String BEAN_SERIALIZER = "beanSerializer";
 
