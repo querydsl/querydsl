@@ -436,6 +436,18 @@ public final class ExpressionUtils {
     /**
      * Create a {@code left in right} expression
      *
+     * @param <D> type of expressions
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left in right
+     */
+    public static <D> Predicate in(Expression<D> left, SubQueryExpression<? extends D> right) {
+        return predicate(Ops.IN, left, right);
+    }
+
+    /**
+     * Create a {@code left in right} expression
+     *
      * @param <D> element type
      * @param left lhs of expression
      * @param right rhs of expression
@@ -655,6 +667,18 @@ public final class ExpressionUtils {
      * @return left not in right
      */
     public static <D> Predicate notIn(Expression<D> left, CollectionExpression<?,? extends D> right) {
+        return predicate(Ops.NOT_IN, left, right);
+    }
+
+    /**
+     * Create a {@code left not in right} expression
+     *
+     * @param <D> type of epressions
+     * @param left lhs of expression
+     * @param right rhs of expression
+     * @return left not in right
+     */
+    public static <D> Predicate notIn(Expression<D> left, SubQueryExpression<? extends D> right) {
         return predicate(Ops.NOT_IN, left, right);
     }
 
