@@ -51,10 +51,10 @@ public class QueryTypeFactoryImpl implements QueryTypeFactory {
     private Type createWithPackage(Type type) {
         String packageName = type.getPackageName();
         String simpleName = prefix + normalizeName(type.getFullName()
-                .substring(packageName.length()+1)) + suffix;
+                .substring(packageName.length() + 1)) + suffix;
         packageName = (packageName.startsWith("java") ? "ext." : "")
                 + packageName + packageSuffix;
-        return new SimpleType(type.getCategory(), packageName+"."+simpleName,
+        return new SimpleType(type.getCategory(), packageName + "." + simpleName,
                 packageName, simpleName, false, false);
     }
 

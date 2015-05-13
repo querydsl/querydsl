@@ -18,7 +18,7 @@ import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.ArrayPath;
 
 
-public class Point extends ArrayPath<Double[], Double>{
+public class Point extends ArrayPath<Double[], Double> {
 
     private static final long serialVersionUID = 1776628530121566388L;
 

@@ -51,7 +51,7 @@ public class Delegate {
         if (o == this) {
             return true;
         } else if (o instanceof Delegate) {
-            Delegate m = (Delegate)o;
+            Delegate m = (Delegate) o;
             return m.name.equals(name) && m.parameters.equals(parameters);
         } else {
             return false;

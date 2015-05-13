@@ -80,10 +80,10 @@ public abstract class AbstractModule {
     @SuppressWarnings("unchecked")
     public final <T> T get(Class<T> iface) {
         if (instances.containsKey(iface)) {
-            return (T)instances.get(iface);
+            return (T) instances.get(iface);
         } else if (bindings.containsKey(iface)) {
             Class<?> implementation = bindings.get(iface);
-            T instance = (T)createInstance(implementation);
+            T instance = (T) createInstance(implementation);
             instances.put(iface, instance);
             return instance;
         } else {
@@ -94,11 +94,11 @@ public abstract class AbstractModule {
     @SuppressWarnings("unchecked")
     public final <T> T get(Class<T> iface, String name) {
         if (namedInstances.containsKey(name)) {
-            return (T)namedInstances.get(name);
+            return (T) namedInstances.get(name);
         } else if (namedBindings.containsKey(name)) {
             Class<?> implementation = namedBindings.get(name);
             if (implementation != null) {
-                T instance = (T)createInstance(implementation);
+                T instance = (T) createInstance(implementation);
                 namedInstances.put(name, instance);
                 return instance;
             } else {
@@ -160,7 +160,7 @@ public abstract class AbstractModule {
     private Named getNamedAnnotation(Annotation[] annotations) {
         for (Annotation annotation : annotations) {
             if (annotation.annotationType().equals(Named.class)) {
-                return (Named)annotation;
+                return (Named) annotation;
             }
         }
         return null;

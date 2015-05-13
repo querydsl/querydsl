@@ -94,7 +94,7 @@ public class EntitySerializerTest {
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
             serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-            assertTrue(entry.toString(), writer.toString().contains("public class QEntity extends "+entry.getValue()+" {"));
+            assertTrue(entry.toString(), writer.toString().contains("public class QEntity extends " + entry.getValue() + " {"));
         }
 
     }

@@ -164,12 +164,12 @@ public class BeanSerializer implements Serializer {
         for (Property property : model.getProperties()) {
             String propertyName = property.getEscapedName();
             // getter
-            writer.beginPublicMethod(property.getType(), "get"+BeanUtils.capitalize(propertyName));
+            writer.beginPublicMethod(property.getType(), "get" + BeanUtils.capitalize(propertyName));
             writer.line("return ", propertyName, ";");
             writer.end();
             // setter
             Parameter parameter = new Parameter(propertyName, property.getType());
-            writer.beginPublicMethod(Types.VOID, "set"+BeanUtils.capitalize(propertyName), parameter);
+            writer.beginPublicMethod(Types.VOID, "set" + BeanUtils.capitalize(propertyName), parameter);
             writer.line("this.", propertyName, " = ", propertyName, ";");
             writer.end();
         }

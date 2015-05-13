@@ -54,7 +54,7 @@ public class ParameterizedTypeImpl implements ParameterizedType {
         if (o == this) {
             return true;
         } else if (o instanceof ParameterizedTypeImpl) {
-            ParameterizedTypeImpl other = (ParameterizedTypeImpl)o;
+            ParameterizedTypeImpl other = (ParameterizedTypeImpl) o;
             return other.rawType.equals(rawType)
                     && Arrays.equals(other.arguments, arguments);
         } else {

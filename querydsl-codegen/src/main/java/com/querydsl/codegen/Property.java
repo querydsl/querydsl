@@ -111,7 +111,7 @@ public final class Property implements Comparable<Property> {
         if (o == this) {
             return true;
         } else if (o instanceof Property) {
-            Property p = (Property)o;
+            Property p = (Property) o;
             return p.name.equals(name) && p.type.equals(type);
         } else {
             return false;

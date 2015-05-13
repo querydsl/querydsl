@@ -39,7 +39,7 @@ public class TypeFactoryTest {
 
     List<? extends Expression<?>> field4;
 
-    enum EnumExample { FIRST, SECOND}
+    enum EnumExample { FIRST, SECOND }
 
     static class Entity<A> {
 
@@ -99,7 +99,7 @@ public class TypeFactoryTest {
         Field field = EmbeddedTest.AbstractEntity.class.getDeclaredField("code");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertTrue(type instanceof TypeExtends);
-        assertEquals("C", ((TypeExtends)type).getVarName());
+        assertEquals("C", ((TypeExtends) type).getVarName());
     }
 
     @Test
@@ -155,7 +155,7 @@ public class TypeFactoryTest {
         assertEquals(Expression.class, parameter.getJavaClass());
         parameter = parameter.getParameters().get(0);
         assertEquals(TypeExtends.class, parameter.getClass());
-        assertNull(((TypeExtends)parameter).getVarName());
+        assertNull(((TypeExtends) parameter).getVarName());
     }
 
     @Test
@@ -163,7 +163,7 @@ public class TypeFactoryTest {
         Type type = factory.getEntityType(ComparableEntity.class);
         //ComparableEntity<T extends Comparable<? super T>> implements Serializable
         assertEquals(1, type.getParameters().size());
-        TypeExtends t = (TypeExtends)type.getParameters().get(0);
+        TypeExtends t = (TypeExtends) type.getParameters().get(0);
         assertEquals("T", t.getVarName());
         assertEquals(1, t.getParameters().size());
     }

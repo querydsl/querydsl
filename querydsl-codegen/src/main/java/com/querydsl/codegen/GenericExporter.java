@@ -205,7 +205,7 @@ public class GenericExporter {
         typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
 
         // copy annotations helpers to typeFactory
-        for (AnnotationHelper helper : annotationHelpers){
+        for (AnnotationHelper helper : annotationHelpers) {
             typeFactory.addAnnotationHelper(helper);
         }
 
@@ -367,7 +367,7 @@ public class GenericExporter {
                             constructor.getGenericParameterTypes()[i]);
                     for (Annotation annotation : constructor.getParameterAnnotations()[i]) {
                         if (annotation.annotationType().equals(QueryType.class)) {
-                            QueryType queryType = (QueryType)annotation;
+                            QueryType queryType = (QueryType) annotation;
                             parameterType = parameterType.as(TypeCategory.valueOf(queryType.value().name()));
                         }
                     }
@@ -459,7 +459,7 @@ public class GenericExporter {
             if (propertyType instanceof EntityType && !allTypes.containsKey(ClassUtils.getFullName(type))) {
                 String fullName = ClassUtils.getFullName(type);
                 if (!allTypes.containsKey(fullName)) {
-                    allTypes.put(fullName, (EntityType)propertyType);
+                    allTypes.put(fullName, (EntityType) propertyType);
                 }
             }
         }
@@ -730,7 +730,7 @@ public class GenericExporter {
      *
      * @param annotationHelper
      */
-    public void addAnnotationHelper(AnnotationHelper annotationHelper){
+    public void addAnnotationHelper(AnnotationHelper annotationHelper) {
         annotationHelpers.add(annotationHelper);
     }
 }
