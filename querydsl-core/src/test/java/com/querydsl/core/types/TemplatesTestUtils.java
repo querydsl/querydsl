@@ -31,6 +31,6 @@ public final class TemplatesTestUtils {
         }
     }
 
-    private TemplatesTestUtils() {}
+    private TemplatesTestUtils() { }
 
 }

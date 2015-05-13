@@ -61,7 +61,7 @@ public abstract class FactoryExpressionBase<T> extends ExpressionBase<T> impleme
             if (o == this) {
                 return true;
             } else if (o instanceof FactoryExpressionWrapper) {
-                return expr.equals(((FactoryExpressionWrapper)o).expr);
+                return expr.equals(((FactoryExpressionWrapper) o).expr);
             } else {
                 return false;
             }

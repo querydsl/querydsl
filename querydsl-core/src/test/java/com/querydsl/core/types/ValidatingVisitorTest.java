@@ -67,7 +67,7 @@ public class ValidatingVisitorTest {
 
     @Test
     public void VisitTemplateExpressionOfQVoid() {
-        validator.visit((TemplateExpression)Expressions.template(Object.class, "XXX"), known);
+        validator.visit((TemplateExpression) Expressions.template(Object.class, "XXX"), known);
     }
 
 }

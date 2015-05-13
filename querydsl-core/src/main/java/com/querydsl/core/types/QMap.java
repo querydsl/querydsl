@@ -50,7 +50,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      * @param args
      */
     protected QMap(Expression<?>... args) {
-        super((Class)Map.class);
+        super((Class) Map.class);
         this.args = ImmutableList.copyOf(args);
     }
 
@@ -60,7 +60,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      * @param args
      */
     protected QMap(ImmutableList<Expression<?>> args) {
-        super((Class)Map.class);
+        super((Class) Map.class);
         this.args = args;
     }
 
@@ -70,7 +70,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      * @param args
      */
     protected QMap(Expression<?>[]... args) {
-        super((Class)Map.class);
+        super((Class) Map.class);
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?>[] exprs: args) {
             builder.add(exprs);
@@ -94,7 +94,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
         if (obj == this) {
             return true;
         } else if (obj instanceof FactoryExpression) {
-            FactoryExpression<?> c = (FactoryExpression<?>)obj;
+            FactoryExpression<?> c = (FactoryExpression<?>) obj;
             return args.equals(c.getArgs()) && getType().equals(c.getType());
         } else {
             return false;

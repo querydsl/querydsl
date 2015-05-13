@@ -28,7 +28,7 @@ public final class PathsExtractor implements Visitor<Void, List<Path<?>>> {
 
     public static final PathsExtractor DEFAULT = new PathsExtractor();
 
-    private PathsExtractor() {}
+    private PathsExtractor() { }
 
     @Override
     public Void visit(Constant<?> expr, List<Path<?>> paths) {

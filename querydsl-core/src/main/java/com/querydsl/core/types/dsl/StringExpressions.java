@@ -157,6 +157,6 @@ public final class StringExpressions {
         return Expressions.stringOperation(Ops.StringOps.RPAD2, in, ConstantImpl.create(length), ConstantImpl.create(c));
     }
 
-    private StringExpressions() {}
+    private StringExpressions() { }
 
 }

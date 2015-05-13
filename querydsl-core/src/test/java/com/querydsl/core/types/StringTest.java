@@ -39,7 +39,7 @@ public class StringTest {
         Set<Field> missing = new HashSet<Field>();
         for (Field field : Ops.class.getFields()) {
             if (field.getType().equals(Operator.class)) {
-                Operator op = (Operator)field.get(null);
+                Operator op = (Operator) field.get(null);
                 if (ops.getTemplate(op) == null) {
                     missing.add(field);
                 }
@@ -48,7 +48,7 @@ public class StringTest {
         for (Class<?> cl : Ops.class.getClasses()) {
             for (Field field : cl.getFields()) {
                 if (field.getType().equals(Operator.class)) {
-                    Operator op = (Operator)field.get(null);
+                    Operator op = (Operator) field.get(null);
                     if (ops.getTemplate(op) == null) {
                         missing.add(field);
                     }
@@ -89,9 +89,9 @@ public class StringTest {
 
     public static class SomeType {
 
-        public SomeType() {}
+        public SomeType() { }
 
-        public SomeType(SomeType st) {}
+        public SomeType(SomeType st) { }
 
         public String getName() {
             return "";

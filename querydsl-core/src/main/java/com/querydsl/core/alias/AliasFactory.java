@@ -61,7 +61,7 @@ class AliasFactory {
             new CacheLoader<Pair<Class<?>, String>, EntityPath<?>>() {
                 @Override
                 public EntityPath<?> load(Pair<Class<?>, String> input) {
-                    return (EntityPath<?>)pathFactory.createEntityPath(
+                    return (EntityPath<?>) pathFactory.createEntityPath(
                             input.getFirst(),
                             PathMetadataFactory.forVariable(input.getSecond()));
                 }

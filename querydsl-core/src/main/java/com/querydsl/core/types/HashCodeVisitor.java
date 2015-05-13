@@ -23,7 +23,7 @@ public final class HashCodeVisitor implements Visitor<Integer,Void> {
 
     public static final HashCodeVisitor DEFAULT = new HashCodeVisitor();
 
-    private HashCodeVisitor() {}
+    private HashCodeVisitor() { }
 
     @Override
     public Integer visit(Constant<?> expr, Void context) {

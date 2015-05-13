@@ -21,12 +21,12 @@ public class DummyFetchableQuery<T> extends DummyFetchable<T> implements Fetchab
 
     @Override
     public <U> DummyFetchableQuery<U> select(Expression<U> expr) {
-        return (DummyFetchableQuery<U>)this;
+        return (DummyFetchableQuery<U>) this;
     }
 
     @Override
     public DummyFetchableQuery<Tuple> select(Expression<?>... exprs) {
-        return (DummyFetchableQuery<Tuple>)this;
+        return (DummyFetchableQuery<Tuple>) this;
     }
 
     @Override

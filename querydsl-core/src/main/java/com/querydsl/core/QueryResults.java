@@ -34,7 +34,7 @@ public final class QueryResults<T> implements Serializable {
 
     @SuppressWarnings("unchecked")
     public static <T> QueryResults<T> emptyResults() {
-        return (QueryResults<T>)EMPTY;
+        return (QueryResults<T>) EMPTY;
     };
 
     private final long limit, offset, total;

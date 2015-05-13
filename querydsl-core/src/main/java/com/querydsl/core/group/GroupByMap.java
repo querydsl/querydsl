@@ -56,7 +56,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
             while (iter.hasNext()) {
                 Object[] row = iter.next().toArray();
                 K groupId = (K) row[0];
-                GroupImpl group = (GroupImpl)groups.get(groupId);
+                GroupImpl group = (GroupImpl) groups.get(groupId);
                 if (group == null) {
                     group = new GroupImpl(groupExpressions, maps);
                     groups.put(groupId, group);
@@ -73,7 +73,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
     }
 
     protected Map<K, V> transform(Map<K, Group> groups) {
-        return (Map<K,V>)groups;
+        return (Map<K,V>) groups;
     }
 
 }

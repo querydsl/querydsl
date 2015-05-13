@@ -83,11 +83,11 @@ public class CoverageTest {
 
         for (Expression<?> e : exprs) {
             if (e instanceof Operation) {
-                Operation<?> op = (Operation<?>)e;
+                Operation<?> op = (Operation<?>) e;
                 if (op.getArg(0) instanceof Operation) {
-                    usedOperators.add(((Operation<?>)op.getArg(0)).getOperator());
+                    usedOperators.add(((Operation<?>) op.getArg(0)).getOperator());
                 } else if (op.getArgs().size() > 1 && op.getArg(1) instanceof Operation) {
-                    usedOperators.add(((Operation<?>)op.getArg(1)).getOperator());
+                    usedOperators.add(((Operation<?>) op.getArg(1)).getOperator());
                 }
                 usedOperators.add(op.getOperator());
             }

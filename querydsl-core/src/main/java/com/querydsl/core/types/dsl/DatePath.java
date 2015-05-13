@@ -37,7 +37,7 @@ public class DatePath<T extends Comparable> extends DateExpression<T> implements
 
     protected DatePath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     protected DatePath(Class<? extends T> type, String var) {

@@ -93,7 +93,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
 
     }
 
-    @Test(expected=NoSuchElementException.class)
+    @Test(expected = NoSuchElementException.class)
     public void NoSuchElementException() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
             groupBy(postId).as(postName, set(commentId), list(commentText)));
@@ -102,7 +102,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
         group.getSet(qComment);
     }
 
-    @Test(expected=ClassCastException.class)
+    @Test(expected = ClassCastException.class)
     public void ClassCastException() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
             groupBy(postId).as(postName, set(commentId), list(commentText)));

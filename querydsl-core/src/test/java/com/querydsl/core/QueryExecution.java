@@ -81,7 +81,7 @@ public abstract class QueryExecution {
 
                     // projection distinct
                     runProjectionDistinct(pr);
-                } catch(Throwable t) {
+                } catch (Throwable t) {
                     t.printStackTrace();
                     t = addError(pr, t);
                 }
@@ -124,7 +124,7 @@ public abstract class QueryExecution {
                         failures.add(f + " failed");
                     }
 
-                } catch(Throwable t) {
+                } catch (Throwable t) {
                     t.printStackTrace();
                     t = addError(f, t);
                 }
@@ -148,7 +148,7 @@ public abstract class QueryExecution {
     private long runCountDistinct(Predicate f) {
         Fetchable<?> p = createQuery(f);
         try {
-            ((QueryBase)p).distinct();
+            ((QueryBase) p).distinct();
             return p.fetchCount();
         } finally {
             close(p);
@@ -167,7 +167,7 @@ public abstract class QueryExecution {
     private int runFilterDistinct(Predicate f) {
         Fetchable<?> p = createQuery(f);
         try {
-            ((QueryBase)p).distinct();
+            ((QueryBase) p).distinct();
             return p.fetch().size();
         } finally {
             close(p);
@@ -177,7 +177,7 @@ public abstract class QueryExecution {
     private int runProjection(Expression<?> pr) {
         Fetchable<?> p = createQuery();
         try {
-            ((FetchableQuery)p).select(pr);
+            ((FetchableQuery) p).select(pr);
             return p.fetch().size();
         } finally {
             close(p);
@@ -187,8 +187,8 @@ public abstract class QueryExecution {
     private int runProjectionDistinct(Expression<?> pr) {
         Fetchable<?> p = createQuery();
         try {
-            ((QueryBase)p).distinct();
-            ((FetchableQuery)p).select(pr);
+            ((QueryBase) p).distinct();
+            ((FetchableQuery) p).select(pr);
             return p.fetch().size();
         } finally {
             close(p);
@@ -198,7 +198,7 @@ public abstract class QueryExecution {
     private void close(Fetchable p) {
         if (p instanceof Closeable) {
             try {
-                ((Closeable)p).close();
+                ((Closeable) p).close();
             } catch (IOException e) {
                 throw new QueryException(e);
             }

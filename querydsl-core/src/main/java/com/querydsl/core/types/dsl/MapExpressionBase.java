@@ -64,7 +64,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
      */
     @SuppressWarnings("unchecked")
     public final BooleanExpression contains(Expression<K> key, Expression<V> value) {
-        return get(key).eq((Expression)value);
+        return get(key).eq((Expression) value);
     }
 
     /**

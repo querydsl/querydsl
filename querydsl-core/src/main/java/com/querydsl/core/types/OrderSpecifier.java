@@ -110,7 +110,7 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
         if (o == this) {
             return true;
         } else if (o instanceof OrderSpecifier) {
-            OrderSpecifier<?> os = (OrderSpecifier)o;
+            OrderSpecifier<?> os = (OrderSpecifier) o;
             return os.order.equals(order) && os.target.equals(target)
                     && os.nullHandling.equals(nullHandling);
         } else {

@@ -15,8 +15,7 @@ import com.querydsl.core.types.dsl.StringPath;
 
 public class NumberConversionsTest {
 
-
-    public enum Color {GREEN, BLUE, RED, YELLOW, BLACK, WHITE}
+    public enum Color { GREEN, BLUE, RED, YELLOW, BLACK, WHITE }
 
     @Test
     public void Name() {

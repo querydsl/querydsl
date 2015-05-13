@@ -55,12 +55,12 @@ public class QBean<T> extends FactoryExpressionBase<T> {
         ImmutableMap.Builder<String, Expression<?>> rv = ImmutableMap.builder();
         for (Expression<?> expr : args) {
             if (expr instanceof Path<?>) {
-                Path<?> path = (Path<?>)expr;
+                Path<?> path = (Path<?>) expr;
                 rv.put(path.getMetadata().getName(), expr);
             } else if (expr instanceof Operation<?>) {
-                Operation<?> operation = (Operation<?>)expr;
+                Operation<?> operation = (Operation<?>) expr;
                 if (operation.getOperator() == Ops.ALIAS && operation.getArg(1) instanceof Path<?>) {
-                    Path<?> path = (Path<?>)operation.getArg(1);
+                    Path<?> path = (Path<?>) operation.getArg(1);
                     rv.put(path.getMetadata().getName(), operation.getArg(0));
                 } else {
                     throw new IllegalArgumentException("Unsupported expression " + expr);
@@ -271,7 +271,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
         if (obj == this) {
             return true;
         } else if (obj instanceof QBean<?>) {
-            QBean<?> c = (QBean<?>)obj;
+            QBean<?> c = (QBean<?>) obj;
             return getArgs().equals(c.getArgs()) && getType().equals(c.getType());
         } else {
             return false;

@@ -25,7 +25,7 @@ import com.querydsl.core.types.dsl.TimeExpression;
  * @author tiwe
  *
  */
-public final class TimeConstant<D extends java.util.Date> extends TimeExpression<D> implements Constant<D>{
+public final class TimeConstant<D extends java.util.Date> extends TimeExpression<D> implements Constant<D> {
 
     private static final long serialVersionUID = -7835941761930555480L;
 

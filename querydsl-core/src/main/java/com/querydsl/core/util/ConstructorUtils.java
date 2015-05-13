@@ -37,7 +37,7 @@ import com.querydsl.core.types.ExpressionException;
  */
 public final class ConstructorUtils {
 
-    private ConstructorUtils() {}
+    private ConstructorUtils() { }
 
     /**
      * The parameter list for the default constructor;

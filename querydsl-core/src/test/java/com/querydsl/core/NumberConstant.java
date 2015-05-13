@@ -28,7 +28,7 @@ import com.querydsl.core.util.MathUtils;
  *
  * @param <D>
  */
-final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpression<D> implements Constant<D>{
+final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpression<D> implements Constant<D> {
 
     private static final long serialVersionUID = 2958824808974260439L;
 
@@ -41,7 +41,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
      */
     @SuppressWarnings("unchecked")
     public static <T extends Number & Comparable<?>> NumberExpression<T> create(T val) {
-        return new NumberConstant<T>((Class<T>)val.getClass(), val);
+        return new NumberConstant<T>((Class<T>) val.getClass(), val);
     }
 
     private final D constant;
@@ -79,7 +79,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     @Override
     public <N extends Number & Comparable<?>> NumberExpression<D> add(Expression<N> right) {
         if (right instanceof Constant<?>) {
-            return add(((Constant<N>)right).getConstant());
+            return add(((Constant<N>) right).getConstant());
         } else {
             return super.add(right);
         }
@@ -93,7 +93,7 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     @Override
     public <N extends Number & Comparable<?>> NumberExpression<D> subtract(Expression<N> right) {
         if (right instanceof Constant<?>) {
-            return subtract(((Constant<N>)right).getConstant());
+            return subtract(((Constant<N>) right).getConstant());
         } else {
             return super.subtract(right);
         }

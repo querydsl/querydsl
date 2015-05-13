@@ -30,7 +30,7 @@ public class BeanPathTest {
 
     }
 
-    public static class MyBeanPath extends BeanPath<BeanPathTest>{
+    public static class MyBeanPath extends BeanPath<BeanPathTest> {
 
         private static final long serialVersionUID = 6225684967115368814L;
 

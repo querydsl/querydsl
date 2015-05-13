@@ -87,7 +87,7 @@ public class GroupByBuilder<K> {
         return new GroupByMap<K, V>(key, expression) {
             @Override
             protected Map<K, V> transform(Map<K, Group> groups) {
-                Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size()/0.75), 0.75f);
+                Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size() / 0.75), 0.75f);
                 for (Map.Entry<K, Group> entry : groups.entrySet()) {
                     results.put(entry.getKey(), entry.getValue().getOne(lookup));
                 }
@@ -130,7 +130,7 @@ public class GroupByBuilder<K> {
 
     private <V> Expression<V> getLookup(Expression<V> expression) {
         if (expression instanceof GroupExpression) {
-            return ((GroupExpression)expression).getExpression();
+            return ((GroupExpression) expression).getExpression();
         } else {
             return expression;
         }
@@ -149,7 +149,7 @@ public class GroupByBuilder<K> {
 
             @Override
             protected Map<K, V> transform(Map<K, Group> groups) {
-                Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size()/0.75), 0.75f);
+                Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size() / 0.75), 0.75f);
                 for (Map.Entry<K, Group> entry : groups.entrySet()) {
                     results.put(entry.getKey(), transform(entry.getValue()));
                 }
@@ -163,7 +163,7 @@ public class GroupByBuilder<K> {
                 for (int i = 1; i < groupExpressions.size(); i++) {
                     args.add(group.getGroup(groupExpressions.get(i)));
                 }
-                return (V)transformation.newInstance(args.toArray());
+                return (V) transformation.newInstance(args.toArray());
             }
 
         };
@@ -186,7 +186,7 @@ public class GroupByBuilder<K> {
                 for (int i = 1; i < groupExpressions.size(); i++) {
                     args.add(group.getGroup(groupExpressions.get(i)));
                 }
-                return (V)transformation.newInstance(args.toArray());
+                return (V) transformation.newInstance(args.toArray());
             }
         };
     }
@@ -208,7 +208,7 @@ public class GroupByBuilder<K> {
                 for (int i = 1; i < groupExpressions.size(); i++) {
                     args.add(group.getGroup(groupExpressions.get(i)));
                 }
-                return (V)transformation.newInstance(args.toArray());
+                return (V) transformation.newInstance(args.toArray());
             }
         };
     }

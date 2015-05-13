@@ -33,7 +33,7 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
 
     protected NumberTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(ExpressionUtils.template(type, template, args));
-        templateMixin = (TemplateExpressionImpl<T>)mixin;
+        templateMixin = (TemplateExpressionImpl<T>) mixin;
     }
 
     @Override

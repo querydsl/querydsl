@@ -39,9 +39,9 @@ public class CollectionOperation<E> extends CollectionExpressionBase<Collection<
     }
 
     protected CollectionOperation(Class<? super E> type, Operator op, ImmutableList<Expression<?>> args) {
-        super(ExpressionUtils.operation((Class)Collection.class, op, args));
-        this.opMixin = (OperationImpl)super.mixin;
-        this.elementType = (Class<E>)type;
+        super(ExpressionUtils.operation((Class) Collection.class, op, args));
+        this.opMixin = (OperationImpl) super.mixin;
+        this.elementType = (Class<E>) type;
     }
 
     @Override

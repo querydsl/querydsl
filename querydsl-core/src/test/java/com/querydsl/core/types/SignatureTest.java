@@ -38,7 +38,7 @@ public class SignatureTest {
         for (String folder : Arrays.asList("com/querydsl/core/types/dsl")) {
             for (String file : new File("src/main/java",folder).list()) {
                 if (file.endsWith(".java") && !file.equals("package-info.java")) {
-                    String className = (folder+"."+file.substring(0, file.length()-5)).replace('/', '.');
+                    String className = (folder + "." + file.substring(0, file.length() - 5)).replace('/', '.');
                     classes.add(Class.forName(className));
                 }
             }
@@ -61,7 +61,7 @@ public class SignatureTest {
                  && !Coalesce.class.isAssignableFrom(m.getReturnType())
                  && !DslExpression.class.isAssignableFrom(m.getReturnType())
                  && !SimpleExpression.class.isAssignableFrom(m.getReturnType())) {
-                    errors.add(cl.getSimpleName()+"."+m.getName() + " has illegal return type");
+                    errors.add(cl.getSimpleName() + "." + m.getName() + " has illegal return type");
                 }
             }
         }
@@ -69,7 +69,7 @@ public class SignatureTest {
             System.err.println(error);
         }
         if (!errors.isEmpty()) {
-            Assert.fail("Got " + errors.size() +" errors");
+            Assert.fail("Got " + errors.size() + " errors");
         }
     }
 

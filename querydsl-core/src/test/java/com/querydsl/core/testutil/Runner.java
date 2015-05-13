@@ -35,6 +35,6 @@ public final class Runner {
         System.err.println(label + " " + stopwatch.stop().toString());
     }
 
-    private Runner() {}
+    private Runner() { }
 
 }

@@ -25,7 +25,7 @@ import com.google.common.collect.ImmutableSet;
  */
 public final class JavaSyntaxUtils {
 
-    private JavaSyntaxUtils() {}
+    private JavaSyntaxUtils() { }
 
     private static final Set<String> reserved = ImmutableSet.of(
     "abstract",

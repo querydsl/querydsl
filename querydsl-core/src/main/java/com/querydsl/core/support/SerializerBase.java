@@ -95,7 +95,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     public final S handle(Object arg) {
         if (arg instanceof Expression) {
-            ((Expression<?>)arg).accept(this, null);
+            ((Expression<?>) arg).accept(this, null);
         } else {
             visitConstant(arg);
         }
@@ -125,7 +125,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         for (final Template.Element element : template.getElements()) {
             final Object rv = element.convert(args);
             if (rv instanceof Expression) {
-                ((Expression<?>)rv).accept(this, null);
+                ((Expression<?>) rv).accept(this, null);
             } else if (element.isString()) {
                 builder.append(rv.toString());
             } else {

@@ -25,7 +25,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  * @author tiwe
  *
  */
-public final class DateConstant<D extends java.util.Date> extends DateExpression<D> implements Constant<D>{
+public final class DateConstant<D extends java.util.Date> extends DateExpression<D> implements Constant<D> {
 
     private static final long serialVersionUID = -5745611667058255826L;
 

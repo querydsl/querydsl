@@ -51,7 +51,7 @@ public abstract class MappingProjection<T> extends FactoryExpressionBase<T> {
      */
     @SuppressWarnings("unchecked")
     public MappingProjection(Class<? super T> type, Expression<?>... args) {
-        super((Class)type);
+        super((Class) type);
         qTuple = new QTuple(ExpressionUtils.distinctList(args));
     }
 
@@ -63,7 +63,7 @@ public abstract class MappingProjection<T> extends FactoryExpressionBase<T> {
      */
     @SuppressWarnings("unchecked")
     public MappingProjection(Class<? super T> type, Expression<?>[]... args) {
-        super((Class)type);
+        super((Class) type);
         qTuple = new QTuple(ExpressionUtils.distinctList(args));
     }
 

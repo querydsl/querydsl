@@ -200,7 +200,7 @@ public final class Template implements Serializable {
         if (o == this) {
             return true;
         } else if (o instanceof Template) {
-            return ((Template)o).template.equals(template);
+            return ((Template) o).template.equals(template);
         } else {
             return false;
         }

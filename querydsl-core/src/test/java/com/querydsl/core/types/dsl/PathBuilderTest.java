@@ -68,7 +68,7 @@ public class PathBuilderTest {
 
     @SuppressWarnings("unchecked")
     private <T> BooleanBuilder getByExample(T entity) {
-        PathBuilder<T> entityPath = new PathBuilder<T>((Class<T>)entity.getClass(), "entity");
+        PathBuilder<T> entityPath = new PathBuilder<T>((Class<T>) entity.getClass(), "entity");
         BooleanBuilder conditions = new BooleanBuilder();
         Map<String, Object> beanMap = new BeanMap(entity);
         for (Map.Entry<String,Object> entry : beanMap.entrySet()) {

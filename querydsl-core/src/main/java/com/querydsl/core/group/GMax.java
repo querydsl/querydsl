@@ -21,7 +21,7 @@ class GMax<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T
 
     @SuppressWarnings("unchecked")
     public GMax(Expression<T> expr) {
-        super((Class)expr.getType(), expr);
+        super((Class) expr.getType(), expr);
     }
 
     @Override

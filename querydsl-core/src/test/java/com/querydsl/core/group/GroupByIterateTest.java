@@ -68,7 +68,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
 
     }
 
-    @Test(expected=NoSuchElementException.class)
+    @Test(expected = NoSuchElementException.class)
     public void NoSuchElementException() {
         CloseableIterator<Group> resultsIt = BASIC_RESULTS.transform(
             groupBy(postId).iterate(postName, set(commentId), list(commentText)));
@@ -80,7 +80,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
         group.getSet(qComment);
     }
 
-    @Test(expected=ClassCastException.class)
+    @Test(expected = ClassCastException.class)
     public void ClassCastException() {
         CloseableIterator<Group> resultsIt = BASIC_RESULTS.transform(
             groupBy(postId).iterate(postName, set(commentId), list(commentText)));

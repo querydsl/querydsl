@@ -304,5 +304,5 @@ public final class MathExpressions {
         return Expressions.numberOperation(Double.class, Ops.MathOps.TANH, num);
     }
 
-    private MathExpressions() {}
+    private MathExpressions() { }
 }

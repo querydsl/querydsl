@@ -278,5 +278,5 @@ public final class Projections {
         return new QTuple(exprs);
     }
 
-    private Projections() {}
+    private Projections() { }
 }

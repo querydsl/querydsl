@@ -38,7 +38,7 @@ public class ComparablePath<T extends Comparable> extends ComparableExpression<T
 
     protected ComparablePath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     protected ComparablePath(Class<? extends T> type, String var) {

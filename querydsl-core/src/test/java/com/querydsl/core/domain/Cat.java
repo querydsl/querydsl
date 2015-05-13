@@ -30,7 +30,7 @@ public class Cat extends Animal {
 
     private Cat mate;
 
-    public Cat() {}
+    public Cat() { }
 
     public Cat(String name, int id) {
         this.setId(id);

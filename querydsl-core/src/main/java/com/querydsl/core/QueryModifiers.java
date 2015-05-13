@@ -126,7 +126,7 @@ public final class QueryModifiers implements Serializable {
         if (o == this) {
             return true;
         } else if (o instanceof QueryModifiers) {
-            QueryModifiers qm = (QueryModifiers)o;
+            QueryModifiers qm = (QueryModifiers) o;
             return Objects.equal(qm.getLimit(), limit) && Objects.equal(qm.getOffset(), offset);
         } else {
             return false;

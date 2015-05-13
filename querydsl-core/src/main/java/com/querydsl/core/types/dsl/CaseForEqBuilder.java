@@ -93,7 +93,7 @@ public final class CaseForEqBuilder<D> {
     }
 
     public <T> Cases<T,Expression<T>> thenNull() {
-        return then((Expression<T>)NullExpression.DEFAULT);
+        return then((Expression<T>) NullExpression.DEFAULT);
     }
 
     public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then) {
@@ -152,17 +152,17 @@ public final class CaseForEqBuilder<D> {
             Expression<T> last = null;
             for (CaseElement<D> element : caseElements) {
                 if (last == null) {
-                    last = Expressions.operation((Class<T>)type, Ops.CASE_EQ_ELSE,
+                    last = Expressions.operation((Class<T>) type, Ops.CASE_EQ_ELSE,
                             element.getTarget());
                 } else {
-                    last = Expressions.operation((Class<T>)type, Ops.CASE_EQ_WHEN,
+                    last = Expressions.operation((Class<T>) type, Ops.CASE_EQ_WHEN,
                             base,
                             element.getEq(),
                             element.getTarget(),
                             last);
                 }
             }
-            return createResult((Class<T>)type, last);
+            return createResult((Class<T>) type, last);
         }
 
         protected abstract Q createResult(Class<T> type, Expression<T> last);

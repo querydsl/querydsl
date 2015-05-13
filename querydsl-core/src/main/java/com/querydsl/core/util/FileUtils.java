@@ -37,6 +37,6 @@ public final class FileUtils {
         }
     }
 
-    private FileUtils() {}
+    private FileUtils() { }
 
 }

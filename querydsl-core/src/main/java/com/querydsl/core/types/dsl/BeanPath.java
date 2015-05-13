@@ -54,7 +54,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
 
     public BeanPath(Class<? extends T> type, PathMetadata metadata, @Nullable PathInits inits) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
         this.inits = inits;
     }
 

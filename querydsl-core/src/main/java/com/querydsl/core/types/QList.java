@@ -39,7 +39,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      * @param args
      */
     protected QList(Expression<?>... args) {
-        super((Class)List.class);
+        super((Class) List.class);
         this.args = ImmutableList.copyOf(args);
     }
 
@@ -49,7 +49,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      * @param args
      */
     protected QList(ImmutableList<Expression<?>> args) {
-        super((Class)List.class);
+        super((Class) List.class);
         this.args = args;
     }
 
@@ -59,7 +59,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      * @param args
      */
     protected QList(Expression<?>[]... args) {
-        super((Class)List.class);
+        super((Class) List.class);
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
         for (Expression<?>[] exprs: args) {
             builder.add(exprs);
@@ -83,7 +83,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
         if (obj == this) {
             return true;
         } else if (obj instanceof FactoryExpression) {
-            FactoryExpression<?> c = (FactoryExpression<?>)obj;
+            FactoryExpression<?> c = (FactoryExpression<?>) obj;
             return args.equals(c.getArgs()) && getType().equals(c.getType());
         } else {
             return false;

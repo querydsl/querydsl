@@ -55,5 +55,5 @@ public final class BeanUtils {
         }
     }
 
-    private BeanUtils() {}
+    private BeanUtils() { }
 }

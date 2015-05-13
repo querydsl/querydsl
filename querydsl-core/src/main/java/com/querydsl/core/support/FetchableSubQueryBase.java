@@ -32,7 +32,7 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
 
     public FetchableSubQueryBase(QueryMixin<Q> queryMixin) {
         super(queryMixin);
-        mixin = new SubQueryExpressionImpl<T>((Class)Object.class, queryMixin.getMetadata());
+        mixin = new SubQueryExpressionImpl<T>((Class) Object.class, queryMixin.getMetadata());
     }
 
     @Override

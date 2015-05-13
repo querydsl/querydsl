@@ -113,11 +113,11 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
     }
 
     public EnumExpression<?> asEnum() {
-        return Expressions.enumOperation((Class)getType(), Ops.COALESCE, getExpressionList());
+        return Expressions.enumOperation((Class) getType(), Ops.COALESCE, getExpressionList());
     }
 
     public NumberExpression<?> asNumber() {
-        return Expressions.numberOperation((Class)getType(), Ops.COALESCE, getExpressionList());
+        return Expressions.numberOperation((Class) getType(), Ops.COALESCE, getExpressionList());
     }
 
     public StringExpression asString() {
@@ -137,7 +137,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
         if (o == this) {
             return true;
         } else if (o instanceof Coalesce<?>) {
-            Coalesce<?> c = (Coalesce<?>)o;
+            Coalesce<?> c = (Coalesce<?>) o;
             return c.exprs.equals(exprs);
         } else {
             return false;

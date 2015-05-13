@@ -34,7 +34,7 @@ public class QueryMixinTest {
 
     @Test
     public void Where_Null() {
-        mixin.where((Predicate)null);
+        mixin.where((Predicate) null);
     }
 
     @Test

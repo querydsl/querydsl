@@ -71,7 +71,7 @@ public class BooleanBuilderTest {
         assertEquals(first, builder.getValue());
     }
 
-    @Test(expected=QueryException.class)
+    @Test(expected = QueryException.class)
     @Ignore
     public void WrappedBooleanBuilder() {
         new BooleanBuilder(new BooleanBuilder());

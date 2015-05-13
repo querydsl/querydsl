@@ -85,17 +85,17 @@ public class ExpressionUtilsTest {
         assertEquals("_ + path", like(path.prepend(".")));
     }
 
-    @Test(expected=QueryException.class)
+    @Test(expected = QueryException.class)
     public void RegexToLike_Fail() {
         like(ConstantImpl.create("a*"));
     }
 
-    @Test(expected=QueryException.class)
+    @Test(expected = QueryException.class)
     public void RegexToLike_Fail2() {
         like(ConstantImpl.create("\\d"));
     }
 
-    @Test(expected=QueryException.class)
+    @Test(expected = QueryException.class)
     public void RegexToLike_Fail3() {
         like(ConstantImpl.create("[ab]"));
     }

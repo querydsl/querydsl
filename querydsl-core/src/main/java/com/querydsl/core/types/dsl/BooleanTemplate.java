@@ -32,7 +32,7 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     protected BooleanTemplate(Template template, ImmutableList<?> args) {
         super(ExpressionUtils.predicateTemplate(template, args));
-        this.templateMixin = (PredicateTemplate)mixin;
+        this.templateMixin = (PredicateTemplate) mixin;
     }
 
     @Override

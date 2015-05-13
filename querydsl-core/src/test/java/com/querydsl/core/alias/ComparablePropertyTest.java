@@ -31,7 +31,7 @@ public class ComparablePropertyTest {
 
     }
 
-    public static class ComparableType implements Comparable<ComparableType>{
+    public static class ComparableType implements Comparable<ComparableType> {
 
         @Override
         public int compareTo(ComparableType o) {

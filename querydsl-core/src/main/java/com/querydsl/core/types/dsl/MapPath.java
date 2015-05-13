@@ -55,11 +55,11 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
 
     @SuppressWarnings("unchecked")
     protected MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata metadata) {
-        super(new ParameterizedPathImpl<Map<K,V>>((Class)Map.class, metadata, keyType, valueType));
+        super(new ParameterizedPathImpl<Map<K,V>>((Class) Map.class, metadata, keyType, valueType));
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;
-        this.pathMixin = (PathImpl<Map<K,V>>)mixin;
+        this.pathMixin = (PathImpl<Map<K,V>>) mixin;
     }
 
     @Override

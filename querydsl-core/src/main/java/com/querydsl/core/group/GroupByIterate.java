@@ -109,6 +109,6 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
     }
 
     protected V transform(Group group) {
-        return (V)group;
+        return (V) group;
     }
 }

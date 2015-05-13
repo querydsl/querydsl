@@ -210,16 +210,16 @@ public class FilterFactory {
         rv.add(expr.in(1L,2L,3L));
 
         if (expr.getType().equals(Integer.class)) {
-            NumberExpression<Integer> eint = (NumberExpression)expr;
+            NumberExpression<Integer> eint = (NumberExpression) expr;
             rv.add(eint.between(1, 2));
             rv.add(eint.notBetween(1, 2));
             rv.add(eint.mod(5).eq(0));
         } else if (expr.getType().equals(Double.class)) {
-            NumberExpression<Double> edouble = (NumberExpression)expr;
+            NumberExpression<Double> edouble = (NumberExpression) expr;
             rv.add(edouble.between(1.0, 2.0));
             rv.add(edouble.notBetween(1.0, 2.0));
         } else if (expr.getType().equals(Long.class)) {
-            NumberExpression<Long> elong = (NumberExpression)expr;
+            NumberExpression<Long> elong = (NumberExpression) expr;
             rv.add(elong.mod(5L).eq(0L));
         }
 
@@ -292,17 +292,17 @@ public class FilterFactory {
 
         rv.add(expr.length().gt(0));
 
-        rv.add(expr.like(knownValue.substring(0,1)+"%"));
-        rv.add(expr.like("%"+knownValue.substring(1)));
-        rv.add(expr.like("%"+knownValue.substring(1,2)+"%"));
+        rv.add(expr.like(knownValue.substring(0,1) + "%"));
+        rv.add(expr.like("%" + knownValue.substring(1)));
+        rv.add(expr.like("%" + knownValue.substring(1,2) + "%"));
 
-        rv.add(expr.like(knownValue.substring(0,1)+"%", '!'));
-        rv.add(expr.like("%"+knownValue.substring(1), '!'));
-        rv.add(expr.like("%"+knownValue.substring(1,2)+"%", '!'));
+        rv.add(expr.like(knownValue.substring(0,1) + "%", '!'));
+        rv.add(expr.like("%" + knownValue.substring(1), '!'));
+        rv.add(expr.like("%" + knownValue.substring(1,2) + "%", '!'));
 
-        rv.add(expr.notLike(knownValue.substring(0,1)+"%"));
-        rv.add(expr.notLike("%"+knownValue.substring(1)));
-        rv.add(expr.notLike("%"+knownValue.substring(1,2)+"%"));
+        rv.add(expr.notLike(knownValue.substring(0,1) + "%"));
+        rv.add(expr.notLike("%" + knownValue.substring(1)));
+        rv.add(expr.notLike("%" + knownValue.substring(1,2) + "%"));
 
         if (!target.equals(Target.DERBY)
          && !target.equals(Target.DB2)
@@ -311,9 +311,9 @@ public class FilterFactory {
          && !target.equals(Target.H2)
          && !target.equals(Target.SQLITE)
          && !target.equals(Target.SQLSERVER)) {
-            rv.add(expr.matches(knownValue.substring(0,1)+".*"));
-            rv.add(expr.matches(".*"+knownValue.substring(1)));
-            rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));
+            rv.add(expr.matches(knownValue.substring(0,1) + ".*"));
+            rv.add(expr.matches(".*" + knownValue.substring(1)));
+            rv.add(expr.matches(".*" + knownValue.substring(1,2) + ".*"));
         }
 
         rv.add(expr.notIn("A","B","C"));

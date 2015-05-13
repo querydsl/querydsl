@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.alias;
 
-public class ComparableEntity implements Comparable<ComparableEntity>{
+public class ComparableEntity implements Comparable<ComparableEntity> {
 
     @Override
     public int compareTo(ComparableEntity o) {

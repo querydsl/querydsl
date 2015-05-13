@@ -40,7 +40,7 @@ public final class SimpleConstant<D> extends SimpleExpression<D> implements Cons
     @SuppressWarnings("unchecked")
     public static <T> SimpleExpression<T> create(T val) {
         if (val instanceof Boolean) {
-            return (SimpleExpression<T>)BooleanConstant.create((Boolean)val);
+            return (SimpleExpression<T>) BooleanConstant.create((Boolean) val);
         } else {
             return new SimpleConstant<T>(val);
         }

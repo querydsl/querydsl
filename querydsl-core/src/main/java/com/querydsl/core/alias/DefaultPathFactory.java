@@ -64,7 +64,7 @@ public class DefaultPathFactory implements PathFactory {
     @Override
     public <T> Path<T> createEntityPath(Class<T> type, PathMetadata metadata) {
         if (Comparable.class.isAssignableFrom(type)) {
-            return Expressions.comparableEntityPath((Class)type, metadata);
+            return Expressions.comparableEntityPath((Class) type, metadata);
         } else {
             return new EntityPathBase<T>(type, metadata);
         }

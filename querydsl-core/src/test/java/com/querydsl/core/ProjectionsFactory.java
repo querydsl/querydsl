@@ -142,12 +142,12 @@ public class ProjectionsFactory {
             CaseBuilder cases = new CaseBuilder();
             rv.add(NumberConstant.create(1).add(cases
                 .when(expr.gt(10)).then(expr)
-                .when(expr.between(0, 10)).then((NumberExpression<A>)other)
-                .otherwise((NumberExpression<A>)other)));
+                .when(expr.between(0, 10)).then((NumberExpression<A>) other)
+                .otherwise((NumberExpression<A>) other)));
 
             rv.add(expr
-                    .when((NumberExpression<A>)other).then(expr)
-                    .otherwise((NumberExpression<A>)other));
+                    .when((NumberExpression<A>) other).then(expr)
+                    .otherwise((NumberExpression<A>) other));
         }
 
         return ImmutableList.copyOf(rv);

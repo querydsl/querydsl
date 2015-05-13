@@ -45,6 +45,6 @@ public final class Wildcard {
      */
     public static final NumberExpression<Integer> countAsInt = Expressions.numberOperation(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
 
-    private Wildcard() {}
+    private Wildcard() { }
 
 }

@@ -37,7 +37,7 @@ import com.querydsl.core.util.Annotations;
 
 public class PathTest {
 
-    enum ExampleEnum {A,B}
+    enum ExampleEnum { A, B }
 
     public static class Superclass {
 

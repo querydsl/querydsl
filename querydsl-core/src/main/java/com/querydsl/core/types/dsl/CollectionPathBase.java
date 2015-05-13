@@ -79,16 +79,16 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
             }
             if (Constants.isTyped(queryType)) {
                 if (usePathInits) {
-                    return (Q)constructor.newInstance(getElementType(), pm, inits);
+                    return (Q) constructor.newInstance(getElementType(), pm, inits);
                 } else {
-                    return (Q)constructor.newInstance(getElementType(), pm);
+                    return (Q) constructor.newInstance(getElementType(), pm);
                 }
 
             } else {
                 if (usePathInits) {
-                    return (Q)constructor.newInstance(pm, inits);
+                    return (Q) constructor.newInstance(pm, inits);
                 } else {
-                    return (Q)constructor.newInstance(pm);
+                    return (Q) constructor.newInstance(pm);
                 }
             }
         } catch (NoSuchMethodException e) {

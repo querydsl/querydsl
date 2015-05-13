@@ -36,7 +36,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
 
     protected BooleanOperation(Operator op, ImmutableList<Expression<?>> args) {
         super(ExpressionUtils.predicate(op, args));
-        opMixin = (PredicateOperation)mixin;
+        opMixin = (PredicateOperation) mixin;
     }
 
     @Override

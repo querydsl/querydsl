@@ -27,7 +27,7 @@ public class ArrayConstructorExpressionTest {
         ArrayConstructorExpression<String> constructor = new ArrayConstructorExpression<String>(
                 String[].class,  new StringPath("test"), new StringPath("test2"));
 
-        String[] strings = constructor.newInstance((Object[])new String[]{"1", "2"});
+        String[] strings = constructor.newInstance((Object[]) new String[]{"1", "2"});
         assertEquals("1", strings[0]);
         assertEquals("2", strings[1]);
 

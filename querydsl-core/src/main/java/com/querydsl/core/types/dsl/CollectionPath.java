@@ -55,10 +55,10 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
 
     @SuppressWarnings("unchecked")
     protected CollectionPath(Class<? super E> type, Class<Q> queryType, PathMetadata metadata, PathInits inits) {
-        super(new ParameterizedPathImpl<Collection<E>>((Class)Collection.class, metadata, type), inits);
-        this.elementType = (Class<E>)type;
+        super(new ParameterizedPathImpl<Collection<E>>((Class) Collection.class, metadata, type), inits);
+        this.elementType = (Class<E>) type;
         this.queryType = queryType;
-        this.pathMixin = (PathImpl<Collection<E>>)mixin;
+        this.pathMixin = (PathImpl<Collection<E>>) mixin;
     }
 
     @Override

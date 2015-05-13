@@ -34,7 +34,7 @@ public abstract class GroupByProjection<K,V> extends GroupByMap<K,V> {
 
     @Override
     protected Map<K, V> transform(Map<K, Group> groups) {
-        Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size()/0.75), 0.75f);
+        Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size() / 0.75), 0.75f);
         for (Map.Entry<K, Group> entry : groups.entrySet()) {
             results.put(entry.getKey(), transform(entry.getValue()));
         }

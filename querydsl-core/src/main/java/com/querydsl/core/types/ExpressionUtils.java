@@ -237,7 +237,7 @@ public final class ExpressionUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> all(CollectionExpression<?, ? super T> col) {
-        return new OperationImpl<T>((Class<T>)col.getParameter(0), Ops.QuantOps.ALL,
+        return new OperationImpl<T>((Class<T>) col.getParameter(0), Ops.QuantOps.ALL,
                 ImmutableList.<Expression<?>>of(col));
     }
 
@@ -249,7 +249,7 @@ public final class ExpressionUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> any(CollectionExpression<?, ? super T> col) {
-        return new OperationImpl<T>((Class<T>)col.getParameter(0), Ops.QuantOps.ANY,
+        return new OperationImpl<T>((Class<T>) col.getParameter(0), Ops.QuantOps.ANY,
                 ImmutableList.<Expression<?>>of(col));
     }
 
@@ -531,7 +531,7 @@ public final class ExpressionUtils {
                 return ConstantImpl.create(rv.toString());
             }
         } else if (expr instanceof Operation<?>) {
-            Operation<?> o = (Operation<?>)expr;
+            Operation<?> o = (Operation<?>) expr;
             if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0), false);
                 Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1), false);
@@ -561,7 +561,7 @@ public final class ExpressionUtils {
      * @return list expression
      */
     public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {
-        Expression<T> rv = (Expression<T>)exprs.get(0);
+        Expression<T> rv = (Expression<T>) exprs.get(0);
         if (exprs.size() == 1) {
             rv = operation(clazz, Ops.SINGLETON, rv, exprs.get(0));
         } else {
@@ -588,7 +588,7 @@ public final class ExpressionUtils {
             for (int i = 0; i < str.length(); i++) {
                 final char ch = str.charAt(i);
                 if (!escape && ch == '.') {
-                    if (i < str.length() - 1 && str.charAt(i+1) == '*') {
+                    if (i < str.length() - 1 && str.charAt(i + 1) == '*') {
                         rv.append('%');
                         i++;
                     } else {
@@ -610,7 +610,7 @@ public final class ExpressionUtils {
                 return ConstantImpl.create(rv.toString());
             }
         } else if (expr instanceof Operation<?>) {
-            Operation<?> o = (Operation<?>)expr;
+            Operation<?> o = (Operation<?>) expr;
             if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = regexToLike((Expression<String>) o.getArg(0));
                 Expression<String> rhs = regexToLike((Expression<String>) o.getArg(1));
@@ -812,6 +812,6 @@ public final class ExpressionUtils {
         return operation(Object.class, Ops.ORDER, ConstantImpl.create(args));
     }
 
-    private ExpressionUtils() {}
+    private ExpressionUtils() { }
 
 }

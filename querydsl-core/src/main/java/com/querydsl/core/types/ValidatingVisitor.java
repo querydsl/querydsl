@@ -108,7 +108,7 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
     public Set<Expression<?>> visit(TemplateExpression<?> expr, Set<Expression<?>> known) {
         for (Object arg : expr.getArgs()) {
             if (arg instanceof Expression<?>) {
-                known = ((Expression<?>)arg).accept(this, known);
+                known = ((Expression<?>) arg).accept(this, known);
             }
         }
         return known;
@@ -117,7 +117,7 @@ public final class ValidatingVisitor implements Visitor<Set<Expression<?>>, Set<
     private Set<Expression<?>> visitJoins(Iterable<JoinExpression> joins, Set<Expression<?>> known) {
         for (JoinExpression j : joins) {
             final Expression<?> expr = j.getTarget();
-            if (expr instanceof Path && ((Path)expr).getMetadata().isRoot()) {
+            if (expr instanceof Path && ((Path) expr).getMetadata().isRoot()) {
                 known = add(known, expr);
             } else {
                 known = expr.accept(this, known);
