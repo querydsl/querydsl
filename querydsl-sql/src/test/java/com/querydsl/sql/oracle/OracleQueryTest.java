@@ -23,15 +23,13 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class OracleQueryTest {
 
-    private OracleQuery query;
+    private OracleQuery<?> query;
 
     private QSurvey survey = new QSurvey("survey");
 
     @Before
     public void setUp() {
-        query = new OracleQuery(null, new OracleTemplates() {{
-            newLineToSingleSpace();
-        }});
+        query = new OracleQuery<Void>(null, OracleTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.orderBy(survey.name.asc());
     }

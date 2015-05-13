@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public final class SQLTemplatesRegistryDump {
 
-    private SQLTemplatesRegistryDump() {}
+    private SQLTemplatesRegistryDump() { }
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Connections.initCubrid();

@@ -115,7 +115,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void All() {
         for (Expression<?> expr : survey.all()) {
-            Path<?> path = (Path<?>)expr;
+            Path<?> path = (Path<?>) expr;
             assertEquals(survey, path.getMetadata().getParent());
         }
     }
@@ -327,8 +327,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Constructor_Projection2() {
-
-        List<SimpleProjection> projections =query().from(employee).select(
+        List<SimpleProjection> projections = query().from(employee).select(
                 Projections.constructor(SimpleProjection.class,
                         employee.firstname, employee.lastname)).fetch();
         assertFalse(projections.isEmpty());
@@ -409,7 +408,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLITE, TERADATA})
     public void Dates() {
-        long ts = ((long)Math.floor(System.currentTimeMillis() / 1000)) * 1000;
+        long ts = ((long) Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
         long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
 
@@ -697,8 +696,8 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void GetResultSet() throws IOException, SQLException {
         ResultSet results = query().from(survey).getResults(survey.id, survey.name);
-        while(results.next()) {
-            System.out.println(results.getInt(1) +","+results.getString(2));
+        while (results.next()) {
+            System.out.println(results.getInt(1) + "," + results.getString(2));
         }
         results.close();
     }
@@ -792,7 +791,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @SuppressWarnings("unchecked")
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void IllegalUnion() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.max());
@@ -1153,7 +1152,7 @@ public class SelectBase extends AbstractBaseTest {
         QNumberTest numberTest = QNumberTest.numberTest;
         delete(numberTest).execute();
         insert(numberTest).set(numberTest.col1Boolean, true).execute();
-        insert(numberTest).set(numberTest.col1Number, (byte)1).execute();
+        insert(numberTest).set(numberTest.col1Number, (byte) 1).execute();
         assertEquals(2, query().from(numberTest).select(numberTest.col1Boolean).fetch().size());
         assertEquals(2, query().from(numberTest).select(numberTest.col1Number).fetch().size());
     }
@@ -1215,7 +1214,7 @@ public class SelectBase extends AbstractBaseTest {
                 .select(employee.firstname).fetchFirst());
     }
 
-    @Test(expected=ParamNotSetException.class)
+    @Test(expected = ParamNotSetException.class)
     public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Mike", query()
@@ -1697,10 +1696,10 @@ public class SelectBase extends AbstractBaseTest {
         assertNotNull(row);
         assertEquals(3, row.size());
         assertNotNull(row.get(0, Object.class));
-        assertNotNull(row.get(0, Object.class) +" is not null", row.get(1, Object.class));
+        assertNotNull(row.get(0, Object.class) + " is not null", row.get(1, Object.class));
     }
 
-    @Test(expected=NonUniqueResultException.class)
+    @Test(expected = NonUniqueResultException.class)
     public void UniqueResultContract() {
         query().from(employee).select(employee.all()).fetchOne();
     }

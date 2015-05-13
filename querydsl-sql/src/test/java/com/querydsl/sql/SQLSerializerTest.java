@@ -226,7 +226,7 @@ public class SQLSerializerTest {
         // create sub queries
         List<SubQueryExpression<Tuple>> sq = new ArrayList<SubQueryExpression<Tuple>>();
         String[] strs = new String[]{"a","b","c"};
-        for(String str : strs) {
+        for (String str : strs) {
             Expression<Boolean> alias = Expressions.cases().when(survey.name.eq(str)).then(true).otherwise(false);
             sq.add(select(survey.name, alias).from(survey).distinct());
         }

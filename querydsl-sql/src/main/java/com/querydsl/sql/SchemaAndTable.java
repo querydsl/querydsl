@@ -42,7 +42,7 @@ public class SchemaAndTable implements Serializable {
         if (o == this) {
             return true;
         } else if (o instanceof SchemaAndTable) {
-            SchemaAndTable st = (SchemaAndTable)o;
+            SchemaAndTable st = (SchemaAndTable) o;
             return Objects.equal(st.schema, schema) && Objects.equal(st.table, table);
         } else {
             return false;

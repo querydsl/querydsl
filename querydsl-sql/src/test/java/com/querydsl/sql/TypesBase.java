@@ -47,7 +47,7 @@ public class TypesBase extends AbstractBaseTest {
             c.execute();
             RelationalPath<Object> entityPath = new RelationalPathBase<Object>(Object.class, tableName, "PUBLIC", tableName);
             Path<?> columnPath = Expressions.path(entry.getKey(), entityPath, "col");
-            insert(entityPath).set((Path)columnPath, entry.getValue()).execute();
+            insert(entityPath).set((Path) columnPath, entry.getValue()).execute();
             new DropTableClause(connection, configuration, tableName).execute();
         }
 
@@ -70,7 +70,7 @@ public class TypesBase extends AbstractBaseTest {
                 String classname = rs.getString(4);
                 String datatype = rs.getString(5);
                 String remarks = rs.getString(6);
-                String baseType= rs.getString(7);
+                String baseType = rs.getString(7);
                 System.out.println(name + " " + classname + " " + datatype + " " +
                                    remarks + " " + baseType);
 

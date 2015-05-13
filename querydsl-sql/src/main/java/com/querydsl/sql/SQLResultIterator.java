@@ -59,7 +59,7 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
                     stmt.close();
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw configuration.translate(e);
         }
     }

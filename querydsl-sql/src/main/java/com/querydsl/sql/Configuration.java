@@ -228,7 +228,7 @@ public final class Configuration {
                 stmt.setNull(i, Types.NULL);
             }
         } else {
-            getType(path, (Class)value.getClass()).setValue(stmt, i, value);
+            getType(path, (Class) value.getClass()).setValue(stmt, i, value);
         }
     }
 
@@ -236,9 +236,9 @@ public final class Configuration {
     private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
         if (hasTableColumnTypes && path != null && !clazz.equals(Null.class)
                 && path.getMetadata().getParent() instanceof RelationalPath) {
-            String table = ((RelationalPath)path.getMetadata().getParent()).getTableName();
+            String table = ((RelationalPath) path.getMetadata().getParent()).getTableName();
             String column = ColumnMetadata.getName(path);
-            Type<T> type = (Type)javaTypeMapping.getType(table, column);
+            Type<T> type = (Type) javaTypeMapping.getType(table, column);
             if (type != null) {
                 return type;
             }

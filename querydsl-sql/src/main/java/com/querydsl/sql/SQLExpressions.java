@@ -82,7 +82,7 @@ public final class SQLExpressions {
         Expression<?>[] exprs = new Expression<?>[args.length];
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof Expression) {
-                exprs[i] = (Expression)args[i];
+                exprs[i] = (Expression) args[i];
             } else {
                 exprs[i] = ConstantImpl.create(args[i]);
             }
@@ -664,7 +664,7 @@ public final class SQLExpressions {
      * @return ntile(num)
      */
     public static <T extends Number & Comparable> WindowOver<T> ntile(T num) {
-        return new WindowOver<T>((Class<T>)num.getClass(), SQLOps.NTILE, ConstantImpl.create(num));
+        return new WindowOver<T>((Class<T>) num.getClass(), SQLOps.NTILE, ConstantImpl.create(num));
     }
 
     /**
@@ -1182,6 +1182,6 @@ public final class SQLExpressions {
         return Expressions.stringOperation(Ops.StringOps.RIGHT, lhs, rhs);
     }
 
-    private SQLExpressions() {}
+    private SQLExpressions() { }
 
 }

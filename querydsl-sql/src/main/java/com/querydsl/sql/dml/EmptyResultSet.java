@@ -31,7 +31,7 @@ public final class EmptyResultSet implements ResultSet {
 
     public static final ResultSet DEFAULT = new EmptyResultSet();
 
-    private EmptyResultSet() {}
+    private EmptyResultSet() { }
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {

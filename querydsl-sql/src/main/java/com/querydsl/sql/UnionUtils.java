@@ -40,6 +40,6 @@ final class UnionUtils {
         return ExpressionUtils.as(rv, alias);
     }
 
-    private UnionUtils() {}
+    private UnionUtils() { }
 
 }

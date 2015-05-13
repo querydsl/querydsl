@@ -37,7 +37,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
             if (i > 0) {
                 builder.append(", ");
             }
-            builder.append("{"+ i + "}");
+            builder.append("{" + i + "}");
         }
         builder.append(")");
         return TemplateFactory.DEFAULT.create(builder.toString());
@@ -47,7 +47,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
 
     protected RelationalFunctionCall(Class<? extends T> type, String function, Object... args) {
         super(ExpressionUtils.template(type, createTemplate(function, args.length), args));
-        templateMixin = (TemplateExpression<T>)mixin;
+        templateMixin = (TemplateExpression<T>) mixin;
     }
 
     @Override

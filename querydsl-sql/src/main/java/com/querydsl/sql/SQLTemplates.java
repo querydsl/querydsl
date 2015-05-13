@@ -372,13 +372,13 @@ public class SQLTemplates extends Templates {
         add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
 
         // like with escape
-        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'", Precedence.COMPARISON);
+        add(Ops.LIKE, "{0} like {1} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.ENDS_WITH, "{0} like {%1} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.STARTS_WITH, "{0} like {1%} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '" + escape + "'", Precedence.COMPARISON);
 
         add(SQLOps.CAST, "cast({0} as {1s})");
         add(SQLOps.UNION, "{0}\nunion\n{1}", Precedence.OR + 1);

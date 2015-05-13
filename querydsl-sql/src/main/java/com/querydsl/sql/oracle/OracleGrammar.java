@@ -26,7 +26,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  */
 public final class OracleGrammar {
 
-    private OracleGrammar() {}
+    private OracleGrammar() { }
 
     public static final NumberExpression<Integer> level = Expressions.numberTemplate(Integer.class, "level");
 

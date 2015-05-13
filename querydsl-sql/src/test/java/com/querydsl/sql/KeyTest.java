@@ -24,7 +24,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 public class KeyTest {
 
 //    @Table("USER")
-    public static class QUser extends RelationalPathBase<QUser>{
+    public static class QUser extends RelationalPathBase<QUser> {
 
         public final NumberPath<Integer> id = createNumber("id", Integer.class);
 

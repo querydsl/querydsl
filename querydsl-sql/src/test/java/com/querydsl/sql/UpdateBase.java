@@ -123,7 +123,7 @@ public class UpdateBase extends AbstractBaseTest {
     @Test
     public void SetNull2() {
         long count = query().from(survey).fetchCount();
-        assertEquals(count, update(survey).set(survey.name, (String)null).execute());
+        assertEquals(count, update(survey).set(survey.name, (String) null).execute());
     }
 
     @Test

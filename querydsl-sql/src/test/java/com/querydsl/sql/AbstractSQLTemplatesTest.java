@@ -78,11 +78,11 @@ public abstract class AbstractSQLTemplatesTest {
         } else {
             String dummyTable = templates.getDummyTable();
             assertEquals(
-                    "(select 1 as col1 from "+dummyTable+")\n" +
+                    "(select 1 as col1 from " + dummyTable + ")\n" +
                     "union\n" +
-                    "(select 2 from "+dummyTable+")\n" +
+                    "(select 2 from " + dummyTable + ")\n" +
                     "union\n" +
-                    "(select 3 from "+dummyTable+")", union.toString());
+                    "(select 3 from " + dummyTable + ")", union.toString());
         }
     }
 

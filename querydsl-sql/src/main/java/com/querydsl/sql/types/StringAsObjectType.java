@@ -37,9 +37,9 @@ public class StringAsObjectType extends AbstractType<String> {
     public String getValue(ResultSet rs, int startIndex) throws SQLException {
         Object o = rs.getObject(startIndex);
         if (o instanceof String) {
-            return (String)o;
+            return (String) o;
         } else if (o instanceof Clob) {
-            Clob clob = (Clob)o;
+            Clob clob = (Clob) o;
             return clob.getSubString(1, (int) clob.length());
         } else if (o != null) {
             return o.toString();

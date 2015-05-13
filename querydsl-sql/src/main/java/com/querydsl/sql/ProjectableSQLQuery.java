@@ -92,7 +92,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     @SuppressWarnings("unchecked")
     public Q addJoinFlag(String flag, JoinFlag.Position position) {
         queryMixin.addJoinFlag(new JoinFlag(flag, position));
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -430,7 +430,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
 
     private Collection<? extends Expression<?>> expandProjection(Expression<?> expr) {
         if (expr instanceof FactoryExpression) {
-            return ((FactoryExpression)expr).getArgs();
+            return ((FactoryExpression) expr).getArgs();
         } else {
             return ImmutableList.of(expr);
         }

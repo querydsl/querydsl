@@ -17,7 +17,7 @@ import java.sql.*;
 
 public final class StoredProcedures {
 
-    private StoredProcedures() {}
+    private StoredProcedures() { }
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");

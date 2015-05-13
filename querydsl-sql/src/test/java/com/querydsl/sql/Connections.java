@@ -569,7 +569,7 @@ public final class Connections {
         stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY blob)");
         for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
             stmt.execute("insert into SHAPES values(" + entry.getKey()
-                    +", ST_GeomFromText('" + entry.getValue() + "', 4326))");
+                    + ", ST_GeomFromText('" + entry.getValue() + "', 4326))");
         }
 
         // qtest
@@ -710,7 +710,7 @@ public final class Connections {
         stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
         for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
             stmt.execute("insert into SHAPES values(" + entry.getKey()
-                    +", GeomFromText('" + entry.getValue() + "'))");
+                    + ", GeomFromText('" + entry.getValue() + "'))");
         }
 
         // survey
@@ -790,19 +790,19 @@ public final class Connections {
 
         try {
             stmt.execute("drop sequence survey_seq");
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             if (!e.getMessage().contains("sequence does not exist")) {
                 throw e;
             }
         }
 
         stmt.execute("create sequence survey_seq");
-        stmt.execute("create or replace trigger survey_trigger\n"+
-                "before insert on survey\n"+
-                "for each row\n" +
-                "when (new.id is null)\n"+
-                "begin\n"+
-                "  select survey_seq.nextval into :new.id from dual;\n"+
+        stmt.execute("create or replace trigger survey_trigger\n" +
+                "before insert on survey\n" +
+                "for each row\n"  +
+                "when (new.id is null)\n" +
+                "begin\n" +
+                "  select survey_seq.nextval into :new.id from dual;\n" +
                 "end;\n");
 
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello')");
@@ -869,7 +869,7 @@ public final class Connections {
         stmt.execute("select AddGeometryColumn('SHAPES', 'GEOMETRY', -1, 'GEOMETRY', 2)");
         for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
             stmt.execute("insert into \"SHAPES\" values(" + entry.getKey()
-                    +", '" + entry.getValue() + "')");
+                    + ", '" + entry.getValue() + "')");
         }
 
         // types
@@ -894,7 +894,7 @@ public final class Connections {
         dropTable(templates, "SURVEY");
         try {
             stmt.execute("drop sequence SURVEY_SEQ");
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             if (!e.getMessage().contains("does not exist")) {
                 throw e;
             }
@@ -993,7 +993,7 @@ public final class Connections {
                 "DATEFIELD DATE, " +
                 "TIMEFIELD TIME, " +
                 "SUPERIOR_ID INT, " +
-                "CONSTRAINT PK_EMPLOYEE PRIMARY KEY(ID),"+
+                "CONSTRAINT PK_EMPLOYEE PRIMARY KEY(ID)," +
                 "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
                 ")");
         addEmployees(INSERT_INTO_EMPLOYEE);
@@ -1032,7 +1032,7 @@ public final class Connections {
         stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
         for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
             stmt.execute("insert into SHAPES values(" + entry.getKey()
-                    +", geometry::STGeomFromText('" + entry.getValue() + "', 0))");
+                    + ", geometry::STGeomFromText('" + entry.getValue() + "', 0))");
         }
 
         // survey
@@ -1095,7 +1095,7 @@ public final class Connections {
         stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY ST_GEOMETRY)");
         for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
             stmt.execute("insert into SHAPES values(" + entry.getKey()
-                    +", '" + entry.getValue() + "')");
+                    + ", '" + entry.getValue() + "')");
         }
 
         // qtest
@@ -1194,5 +1194,5 @@ public final class Connections {
         return rv;
     }
 
-    private Connections() {}
+    private Connections() { }
 }
