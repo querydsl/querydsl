@@ -42,7 +42,7 @@ public class AbstractClasses2Test {
         String name;
         String description;
 
-        public BaseArchetype() {}
+        public BaseArchetype() { }
 
 
         public int compareTo(BaseArchetype o) {
@@ -87,7 +87,7 @@ public class AbstractClasses2Test {
         @ManyToOne()
         P party;
 
-        public PartyRole() {}
+        public PartyRole() { }
 
         public int compareTo(PartyRole o) {
             return 0;

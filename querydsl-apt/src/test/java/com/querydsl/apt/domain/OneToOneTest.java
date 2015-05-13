@@ -20,7 +20,7 @@ public class OneToOneTest {
     @Entity
     public static class Person {
 
-        @OneToOne(targetEntity=PhoneNumberImpl.class)
+        @OneToOne(targetEntity = PhoneNumberImpl.class)
         PhoneNumber phone;
     }
 

@@ -22,7 +22,7 @@ import com.querydsl.core.annotations.QueryEntity;
 public class InheritanceTest {
 
     @QueryEntity
-    public abstract class BobbinGenOperation<M extends FlexPlasticFilm> extends Operation<M>{
+    public abstract class BobbinGenOperation<M extends FlexPlasticFilm> extends Operation<M> {
 
     }
 

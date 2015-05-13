@@ -71,12 +71,12 @@ public class ExpressionTest {
                 Object rv = field.get(expr);
                 if (rv instanceof Expression) {
                     if (rv instanceof StringExpression) {
-                        StringExpression str = (StringExpression)rv;
+                        StringExpression str = (StringExpression) rv;
                         toVisit.add(str.toLowerCase());
                         toVisit.add(str.charAt(0));
                         toVisit.add(str.isEmpty());
                     } else if (rv instanceof BooleanExpression) {
-                        BooleanExpression b = (BooleanExpression)rv;
+                        BooleanExpression b = (BooleanExpression) rv;
                         toVisit.add(b.not());
                     }
                     toVisit.add((Expression<?>) rv);
@@ -114,14 +114,14 @@ public class ExpressionTest {
                     }
                     Object rv = method.invoke(expr, args);
                     if (method.invoke(expr, args) != rv) {
-                        failures.add(expr.getClass().getSimpleName()+"."+method.getName()+" is unstable");
+                        failures.add(expr.getClass().getSimpleName() + "." + method.getName() + " is unstable");
                     }
                 }
             }
         }
 
         if (failures.size() > 0) {
-            System.err.println("Got "+failures.size()+" failures\n");
+            System.err.println("Got " + failures.size() + " failures\n");
         }
         for (String failure : failures) {
             System.err.println(failure);

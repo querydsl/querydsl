@@ -19,7 +19,7 @@ import com.querydsl.core.types.dsl.Expressions;
 
 public final class EntityExtensions {
 
-    private EntityExtensions() {}
+    private EntityExtensions() { }
 
     @QueryDelegate(EntityWithExtensions.class)
     public static Predicate extension(QEntityWithExtensions entity) {

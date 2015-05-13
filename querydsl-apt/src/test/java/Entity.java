@@ -16,7 +16,7 @@ import com.querydsl.core.annotations.QueryEntity;
 @QueryEntity
 public final class Entity {
 
-    private Entity() {}
+    private Entity() { }
 
     static final QEntity entity = QEntity.entity;
 

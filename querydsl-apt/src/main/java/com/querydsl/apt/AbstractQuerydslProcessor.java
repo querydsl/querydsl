@@ -300,8 +300,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         for (Element element : getElements(QueryProjection.class)) {
             Element parent = element.getEnclosingElement();
             if (!elements.contains(parent) && !visited.contains(parent)) {
-                EntityType model = elementHandler.handleProjectionType((TypeElement)parent);
-                registerTypeElement(model.getFullName(), (TypeElement)parent);
+                EntityType model = elementHandler.handleProjectionType((TypeElement) parent);
+                registerTypeElement(model.getFullName(), (TypeElement) parent);
                 context.projectionTypes.put(model.getFullName(), model);
                 visited.add(parent);
             }
@@ -320,17 +320,17 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     private void handleEmbeddedType(Element element, Set<TypeElement> elements) {
         TypeMirror type = element.asType();
         if (element.getKind() == ElementKind.METHOD) {
-            type = ((ExecutableElement)element).getReturnType();
+            type = ((ExecutableElement) element).getReturnType();
         }
         String typeName = type.toString();
 
         if (typeName.startsWith(Collection.class.getName())
          || typeName.startsWith(List.class.getName())
          || typeName.startsWith(Set.class.getName())) {
-            type = ((DeclaredType)type).getTypeArguments().get(0);
+            type = ((DeclaredType) type).getTypeArguments().get(0);
 
         } else if (typeName.startsWith(Map.class.getName())) {
-            type = ((DeclaredType)type).getTypeArguments().get(1);
+            type = ((DeclaredType) type).getTypeArguments().get(1);
         }
 
         TypeElement typeElement = typeExtractor.visit(type);
@@ -346,7 +346,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         Set<TypeElement> elements = new HashSet<TypeElement>();
         for (Element element : parents) {
             if (element instanceof TypeElement) {
-                processFromProperties((TypeElement)element, elements);
+                processFromProperties((TypeElement) element, elements);
             }
         }
 
@@ -414,9 +414,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     private void processExclusions() {
         for (Element element : getElements(QueryExclude.class)) {
             if (element instanceof PackageElement) {
-                conf.addExcludedPackage(((PackageElement)element).getQualifiedName().toString());
+                conf.addExcludedPackage(((PackageElement) element).getQualifiedName().toString());
             } else if (element instanceof TypeElement) {
-                conf.addExcludedClass(((TypeElement)element).getQualifiedName().toString());
+                conf.addExcludedClass(((TypeElement) element).getQualifiedName().toString());
             } else {
                 throw new IllegalArgumentException(element.toString());
             }
@@ -424,11 +424,11 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     private Set<TypeElement> processDelegateMethods() {
-        Set<Element> delegateMethods = (Set)getElements(QueryDelegate.class);
+        Set<Element> delegateMethods = (Set) getElements(QueryDelegate.class);
         Set<TypeElement> typeElements = new HashSet<TypeElement>();
 
         for (Element delegateMethod : delegateMethods) {
-            ExecutableElement method = (ExecutableElement)delegateMethod;
+            ExecutableElement method = (ExecutableElement) delegateMethod;
             Element element = delegateMethod.getEnclosingElement();
             String name = method.getSimpleName().toString();
             Type delegateType = typeFactory.getType(element.asType(), true);
@@ -448,7 +448,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             }
 
             if (entityType != null) {
-                registerTypeElement(entityType.getFullName(), (TypeElement)element);
+                registerTypeElement(entityType.getFullName(), (TypeElement) element);
                 entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
                 TypeElement typeElement = processingEnv.getElementUtils().getTypeElement(entityType.getFullName());
                 boolean isAnnotated = false;
@@ -492,9 +492,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         for (String init : property.getInits()) {
             if (!init.startsWith("*") && property.getType() instanceof EntityType) {
                 String initProperty = init.contains(".") ? init.substring(0, init.indexOf('.')) : init;
-                if (!((EntityType)property.getType()).getPropertyNames().contains(initProperty)) {
+                if (!((EntityType) property.getType()).getPropertyNames().contains(initProperty)) {
                     processingEnv.getMessager().printMessage(Kind.ERROR,
-                        "Illegal inits of " + entityType.getFullName()+ "." + property.getName() + ": " +
+                        "Illegal inits of " + entityType.getFullName() + "." + property.getName() + ": " +
                         initProperty + " not found");
                 }
             }

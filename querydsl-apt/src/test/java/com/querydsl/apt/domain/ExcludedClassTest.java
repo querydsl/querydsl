@@ -28,12 +28,12 @@ public class ExcludedClassTest {
 
     }
 
-    @Test(expected=ClassNotFoundException.class)
+    @Test(expected = ClassNotFoundException.class)
     public void OuterClass() throws ClassNotFoundException {
         Class.forName(getClass().getPackage().getName() + ".Q" + getClass().getSimpleName());
     }
 
-    @Test(expected=ClassNotFoundException.class)
+    @Test(expected = ClassNotFoundException.class)
     public void InnerClass() throws ClassNotFoundException {
         Class.forName(getClass().getPackage().getName() + ".QExcludedClassTest_InnerClass");
     }

@@ -29,12 +29,12 @@ public abstract class AbstractTest {
     }
 
     protected void match(Class<?> expectedType, String name) throws SecurityException, NoSuchFieldException {
-        assertTrue(cl.getSimpleName()+"."+name + " failed", expectedType.isAssignableFrom(cl.getField(name).getType()));
+        assertTrue(cl.getSimpleName() + "." + name + " failed", expectedType.isAssignableFrom(cl.getField(name).getType()));
     }
 
     protected void matchType(Class<?> expectedType, String name) throws NoSuchFieldException, IllegalAccessException {
-        Class<?> type = ((com.querydsl.core.types.Expression)cl.getField(name).get(standardVariable)).getType();
-        assertTrue(cl.getSimpleName()+"."+name + " failed", expectedType.isAssignableFrom(type));
+        Class<?> type = ((com.querydsl.core.types.Expression) cl.getField(name).get(standardVariable)).getType();
+        assertTrue(cl.getSimpleName() + "." + name + " failed", expectedType.isAssignableFrom(type));
     }
 
     protected void assertPresent(String name) {

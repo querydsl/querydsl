@@ -25,14 +25,14 @@ import com.querydsl.core.annotations.QueryEntity;
 
 public class QuerydslConfigTest {
 
-    @Config(entityAccessors=true)
+    @Config(entityAccessors = true)
     @QueryEntity
     public static class Superclass {
 
         Entity prop3;
     }
 
-    @Config(entityAccessors=true, listAccessors = true, mapAccessors= true)
+    @Config(entityAccessors = true, listAccessors = true, mapAccessors = true)
     @QueryEntity
     public static class Entity extends Superclass {
 

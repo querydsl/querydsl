@@ -32,7 +32,7 @@ public class Inheritance3Test extends AbstractTest {
      */
 
     @QueryEntity
-    public class GenericSupertype<A>{
+    public class GenericSupertype<A> {
         A field;
         Collection<A> fieldCol;
         Set<A> fieldSet;
@@ -44,17 +44,17 @@ public class Inheritance3Test extends AbstractTest {
     }
 
     @QueryEntity
-    public class GenericSupertypeC<D extends Comparable<D>> extends GenericSupertype<D>{
+    public class GenericSupertypeC<D extends Comparable<D>> extends GenericSupertype<D> {
 
     }
 
     @QueryEntity
-    public class GenericSupertypeS extends GenericSupertypeC<String>{
+    public class GenericSupertypeS extends GenericSupertypeC<String> {
 
     }
 
     @QueryEntity
-    public class GenericSupertypeS2 extends GenericSupertype<String>{
+    public class GenericSupertypeS2 extends GenericSupertype<String> {
 
     }
 

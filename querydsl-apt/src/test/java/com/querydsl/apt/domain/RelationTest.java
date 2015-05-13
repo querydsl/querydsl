@@ -54,7 +54,7 @@ public class RelationTest extends AbstractTest {
     }
 
     @QueryEntity
-    @Config(listAccessors=true, mapAccessors=true)
+    @Config(listAccessors = true, mapAccessors = true)
     public static class RelationType {
 
         MyEnum enumProperty;

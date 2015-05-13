@@ -108,10 +108,10 @@ public class DefaultConfiguration implements Configuration {
             Config querydslConfig = element.getAnnotation(Config.class);
             SerializerConfig config = SimpleSerializerConfig.getConfig(querydslConfig);
             if (element instanceof PackageElement) {
-                PackageElement packageElement = (PackageElement)element;
+                PackageElement packageElement = (PackageElement) element;
                 packageToConfig.put(packageElement.getQualifiedName().toString(), config);
             } else if (element instanceof TypeElement) {
-                TypeElement typeElement = (TypeElement)element;
+                TypeElement typeElement = (TypeElement) element;
                 typeToConfig.put(typeElement.getQualifiedName().toString(), config);
             }
         }

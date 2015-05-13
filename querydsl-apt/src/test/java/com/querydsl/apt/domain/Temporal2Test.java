@@ -22,7 +22,7 @@ public class Temporal2Test {
         @Temporal(TemporalType.DATE)
         private Date dataVencimento;
 
-        @Column(precision=15, scale=2)
+        @Column(precision = 15, scale = 2)
         private BigDecimal valor;
 
         @QueryProjection

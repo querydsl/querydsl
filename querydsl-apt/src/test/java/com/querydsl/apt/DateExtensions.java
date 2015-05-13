@@ -22,7 +22,7 @@ import com.querydsl.core.types.dsl.Expressions;
 
 public final class DateExtensions {
 
-    private DateExtensions() {}
+    private DateExtensions() { }
 
     @QueryDelegate(Date.class)
     public static Predicate extension(DateExpression<Date> date) {
