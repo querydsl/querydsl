@@ -12,4 +12,4 @@
  * limitations under the License.
  */
 //hack to generate package javadoc
-public class PlaceHolder {}
+public class PlaceHolder { }
