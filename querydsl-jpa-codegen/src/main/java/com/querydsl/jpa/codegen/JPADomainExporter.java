@@ -182,7 +182,7 @@ public class JPADomainExporter extends AbstractDomainExporter {
 
         if (p.isCollection()) {
             if (p instanceof MapAttribute) {
-                MapAttribute<?,?,?> map = (MapAttribute<?,?,?>)p;
+                MapAttribute<?,?,?> map = (MapAttribute<?,?,?>) p;
                 Type keyType = typeFactory.get(map.getKeyJavaType());
                 Type valueType = typeFactory.get(map.getElementType().getJavaType());
                 valueType = getPropertyType(p, valueType);
@@ -190,7 +190,7 @@ public class JPADomainExporter extends AbstractDomainExporter {
                         normalize(propertyType.getParameters().get(0), keyType),
                         normalize(propertyType.getParameters().get(1), valueType));
             } else {
-                Type valueType = typeFactory.get(((PluralAttribute<?,?,?>)p).getElementType().getJavaType());
+                Type valueType = typeFactory.get(((PluralAttribute<?,?,?>) p).getElementType().getJavaType());
                 valueType = getPropertyType(p, valueType);
                 propertyType = new SimpleType(propertyType,
                         normalize(propertyType.getParameters().get(0), valueType));
@@ -204,7 +204,7 @@ public class JPADomainExporter extends AbstractDomainExporter {
     }
 
     private Type getPropertyType(Attribute<?, ?> p, Type propertyType) {
-        Temporal temporal = ((AnnotatedElement)p.getJavaMember()).getAnnotation(Temporal.class);
+        Temporal temporal = ((AnnotatedElement) p.getJavaMember()).getAnnotation(Temporal.class);
         if (temporal != null) {
             switch (temporal.value()) {
             case DATE: propertyType = propertyType.as(TypeCategory.DATE); break;

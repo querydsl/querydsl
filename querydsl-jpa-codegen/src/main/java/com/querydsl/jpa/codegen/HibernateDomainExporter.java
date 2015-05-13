@@ -147,7 +147,7 @@ public class HibernateDomainExporter extends AbstractDomainExporter {
         // super classes
         Iterator<?> superClassMappings = configuration.getMappedSuperclassMappings();
         while (superClassMappings.hasNext()) {
-            MappedSuperclass msc = (MappedSuperclass)superClassMappings.next();
+            MappedSuperclass msc = (MappedSuperclass) superClassMappings.next();
             EntityType entityType = createSuperType(msc.getMappedClass());
             if (msc.getDeclaredIdentifierProperty() != null) {
                 handleProperty(entityType, msc.getMappedClass(), msc.getDeclaredIdentifierProperty());
@@ -161,7 +161,7 @@ public class HibernateDomainExporter extends AbstractDomainExporter {
         // entity classes
         Iterator<?> classMappings = configuration.getClassMappings();
         while (classMappings.hasNext()) {
-            PersistentClass pc = (PersistentClass)classMappings.next();
+            PersistentClass pc = (PersistentClass) classMappings.next();
             EntityType entityType = createEntityType(pc.getMappedClass());
             if (pc.getDeclaredIdentifierProperty() != null) {
                 handleProperty(entityType, pc.getMappedClass(), pc.getDeclaredIdentifierProperty());
@@ -171,7 +171,7 @@ public class HibernateDomainExporter extends AbstractDomainExporter {
             } else if (pc.getIdentifier() != null) {
                 KeyValue identifier = pc.getIdentifier();
                 if (identifier instanceof Component) {
-                    Component component = (Component)identifier;
+                    Component component = (Component) identifier;
                     Iterator<?> properties = component.getPropertyIterator();
                     if (component.isEmbedded()) {
                         while (properties.hasNext()) {
@@ -226,9 +226,9 @@ public class HibernateDomainExporter extends AbstractDomainExporter {
 
         if (p.isComposite()) {
             EntityType embeddedType = createEmbeddableType(propertyType);
-            Iterator<?> properties = ((Component)p.getValue()).getPropertyIterator();
+            Iterator<?> properties = ((Component) p.getValue()).getPropertyIterator();
             while (properties.hasNext()) {
-                handleProperty(embeddedType, embeddedType.getJavaClass(), (org.hibernate.mapping.Property)properties.next());
+                handleProperty(embeddedType, embeddedType.getJavaClass(), (org.hibernate.mapping.Property) properties.next());
             }
             propertyType = embeddedType;
         } else if (propertyType.getCategory() == TypeCategory.ENTITY || p.getValue() instanceof ManyToOne) {
@@ -236,9 +236,9 @@ public class HibernateDomainExporter extends AbstractDomainExporter {
         } else if (propertyType.getCategory() == TypeCategory.CUSTOM) {
             propertyType = createEmbeddableType(propertyType);
         } else if (p.getValue() instanceof org.hibernate.mapping.Collection) {
-            org.hibernate.mapping.Collection collection = (org.hibernate.mapping.Collection)p.getValue();
+            org.hibernate.mapping.Collection collection = (org.hibernate.mapping.Collection) p.getValue();
             if (collection.getElement() instanceof OneToMany) {
-                String entityName = ((OneToMany)collection.getElement()).getReferencedEntityName();
+                String entityName = ((OneToMany) collection.getElement()).getReferencedEntityName();
                 if (entityName != null) {
                     if (collection.isMap()) {
                         Type keyType = typeFactory.get(Class.forName(propertyType.getParameters().get(0).getFullName()));
@@ -253,12 +253,12 @@ public class HibernateDomainExporter extends AbstractDomainExporter {
                     }
                 }
             } else if (collection.getElement() instanceof Component) {
-                Component component = (Component)collection.getElement();
+                Component component = (Component) collection.getElement();
                 Class<?> embeddedClass = Class.forName(component.getComponentClassName());
                 EntityType embeddedType = createEmbeddableType(embeddedClass);
                 Iterator<?> properties = component.getPropertyIterator();
                 while (properties.hasNext()) {
-                    handleProperty(embeddedType, embeddedClass, (org.hibernate.mapping.Property)properties.next());
+                    handleProperty(embeddedType, embeddedClass, (org.hibernate.mapping.Property) properties.next());
                 }
             }
         }
