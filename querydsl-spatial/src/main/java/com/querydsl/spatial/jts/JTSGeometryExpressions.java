@@ -255,5 +255,5 @@ public final class JTSGeometryExpressions {
         return new JTSPolygonOperation<Polygon>(Polygon.class, op, args);
     }
 
-    private JTSGeometryExpressions() {}
+    private JTSGeometryExpressions() { }
 }

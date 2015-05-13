@@ -46,7 +46,7 @@ public class JTSPointPath<T extends Point> extends JTSPointExpression<T> impleme
 
     public JTSPointPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public JTSPointPath(String var) {

@@ -39,7 +39,7 @@ public class JTSGeometryOperation<T extends Geometry> extends JTSGeometryExpress
 
     protected JTSGeometryOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
-        this.opMixin = (OperationImpl<T>)mixin;
+        this.opMixin = (OperationImpl<T>) mixin;
     }
 
     @Override

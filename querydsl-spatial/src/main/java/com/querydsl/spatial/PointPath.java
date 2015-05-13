@@ -47,7 +47,7 @@ public class PointPath<T extends Point> extends PointExpression<T> implements Pa
 
     public PointPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public PointPath(String var) {

@@ -47,7 +47,7 @@ public class PolyhedralSurfacePath<T extends PolyHedralSurface> extends Polyhedr
 
     public PolyhedralSurfacePath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public PolyhedralSurfacePath(String var) {

@@ -47,7 +47,7 @@ public class LineStringPath<T extends LineString> extends LineStringExpression<T
 
     public LineStringPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public LineStringPath(String var) {

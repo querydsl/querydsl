@@ -65,7 +65,7 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
 
     public GeometryPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public GeometryPath(String var) {

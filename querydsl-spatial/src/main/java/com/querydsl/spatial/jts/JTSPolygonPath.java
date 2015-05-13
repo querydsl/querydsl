@@ -46,7 +46,7 @@ public class JTSPolygonPath<T extends Polygon> extends JTSPolygonExpression<T> i
 
     public JTSPolygonPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public JTSPolygonPath(String var) {
