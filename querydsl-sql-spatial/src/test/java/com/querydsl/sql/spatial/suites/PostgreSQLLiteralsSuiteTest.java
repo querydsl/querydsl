@@ -12,7 +12,7 @@ import com.querydsl.sql.suites.AbstractSuite;
 @Category(ExternalDB.class)
 public class PostgreSQLLiteralsSuiteTest extends AbstractSuite {
 
-    public static class Spatial extends SpatialBase {}
+    public static class Spatial extends SpatialBase { }
 
     @BeforeClass
     public static void setUp() throws Exception {

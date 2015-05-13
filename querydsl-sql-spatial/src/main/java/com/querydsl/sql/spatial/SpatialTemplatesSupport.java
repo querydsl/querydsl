@@ -27,7 +27,7 @@ import com.querydsl.spatial.SpatialOps;
  */
 public final class SpatialTemplatesSupport {
 
-    private SpatialTemplatesSupport() {}
+    private SpatialTemplatesSupport() { }
 
     private static String createSpatial(String name, int args, boolean asFunction) {
         StringBuilder result = new StringBuilder();
