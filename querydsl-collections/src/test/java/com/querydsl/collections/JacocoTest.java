@@ -13,7 +13,7 @@ import com.querydsl.core.types.dsl.EntityPathBase;
 
 public class JacocoTest {
 
-    public static class CloneableVO {}
+    public static class CloneableVO { }
 
     public static class CloneableKlasse implements Cloneable {
         private CloneableVO value;

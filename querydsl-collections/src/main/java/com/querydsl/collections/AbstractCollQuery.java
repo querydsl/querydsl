@@ -79,7 +79,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     public <A> Q from(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity, col);
         getMetadata().addJoin(JoinType.DEFAULT, entity);
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -92,7 +92,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      */
     public <A> Q bind(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity, col);
-        return (Q)this;
+        return (Q) this;
     }
 
     @Override
@@ -129,7 +129,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      */
     public <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -142,7 +142,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      */
     public <P> Q innerJoin(MapExpression<?,P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      */
     public <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -168,13 +168,13 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      */
     public <P> Q leftJoin(MapExpression<?,P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return (Q)this;
+        return (Q) this;
     }
 
     @Override
     public CloseableIterator<T> iterate() {
         try {
-            Expression<T> projection = (Expression<T>)queryMixin.getMetadata().getProjection();
+            Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
             return new IteratorAdapter<T>(queryEngine.list(getMetadata(), iterables, projection).iterator());
         } finally {
             reset();
@@ -184,7 +184,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     @Override
     public List<T> fetch() {
         try {
-            Expression<T> projection = (Expression<T>)queryMixin.getMetadata().getProjection();
+            Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
             return queryEngine.list(getMetadata(), iterables, projection);
         } finally {
             reset();
@@ -193,7 +193,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
 
     @Override
     public QueryResults<T> fetchResults() {
-        Expression<T> projection = (Expression<T>)queryMixin.getMetadata().getProjection();
+        Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
         long count = queryEngine.count(getMetadata(), iterables);
         if (count > 0L) {
             List<T> list = queryEngine.list(getMetadata(), iterables, projection);

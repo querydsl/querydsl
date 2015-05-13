@@ -83,12 +83,12 @@ public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements 
     @Override
     public <E> CollQuery<E> select(Expression<E> expr) {
         queryMixin.setProjection(expr);
-        return (CollQuery<E>)this;
+        return (CollQuery<E>) this;
     }
 
     @Override
     public CollQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
-        return (CollQuery<Tuple>)this;
+        return (CollQuery<Tuple>) this;
     }
 }

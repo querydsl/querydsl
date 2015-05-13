@@ -27,7 +27,7 @@ public class Comment {
 
     private Post post;
 
-    public Comment() {}
+    public Comment() { }
 
     @QueryProjection
     public Comment(int id, String text) {
