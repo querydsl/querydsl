@@ -53,7 +53,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
         assertEquals(30L, sql().from(product).fetchCount());
     }
 
-    @Test(expected=NonUniqueResultException.class)
+    @Test(expected = NonUniqueResultException.class)
     public void UniqueResult() {
         sql().from(product).select(product.name).fetchOne();
     }
@@ -79,9 +79,9 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
     @Test
     public void Eq_Count() {
         for (int i = 0; i < 10; i++) {
-            assertEquals(1L, sql().from(product).where(product.name.eq("A"+i)).fetchCount());
-            assertEquals(1L, sql().from(product).where(product.name.eq("B"+i)).fetchCount());
-            assertEquals(1L, sql().from(product).where(product.name.eq("C"+i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("A" + i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("B" + i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("C" + i)).fetchCount());
         }
     }
 

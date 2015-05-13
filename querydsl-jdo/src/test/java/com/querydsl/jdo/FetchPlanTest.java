@@ -59,7 +59,7 @@ public class FetchPlanTest extends AbstractJDOTest {
 
         Field queriesField = AbstractJDOQuery.class.getDeclaredField("queries");
         queriesField.setAccessible(true);
-        List<Query> queries = (List<Query>)queriesField.get(query);
+        List<Query> queries = (List<Query>) queriesField.get(query);
         Query jdoQuery = queries.get(0);
         assertEquals(new HashSet<String>(Arrays.asList("myfetchgroup1","myfetchgroup2")),
                 jdoQuery.getFetchPlan().getGroups());
@@ -77,7 +77,7 @@ public class FetchPlanTest extends AbstractJDOTest {
 
         Field queriesField = AbstractJDOQuery.class.getDeclaredField("queries");
         queriesField.setAccessible(true);
-        List<Query> queries = (List<Query>)queriesField.get(query);
+        List<Query> queries = (List<Query>) queriesField.get(query);
         Query jdoQuery = queries.get(0);
         assertEquals(new HashSet<String>(Arrays.asList("products")),
                 jdoQuery.getFetchPlan().getGroups());

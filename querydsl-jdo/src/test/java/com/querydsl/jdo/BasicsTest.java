@@ -107,7 +107,7 @@ public class BasicsTest extends AbstractJDOTest {
         assertFalse(query().from(product).groupBy(productBean).select(productBean).fetch().isEmpty());
     }
 
-    @Test(expected=NonUniqueResultException.class)
+    @Test(expected = NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results() {
         query().from(product).select(product).fetchOne();
     }

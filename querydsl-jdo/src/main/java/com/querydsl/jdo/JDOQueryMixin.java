@@ -27,7 +27,7 @@ import com.querydsl.core.types.*;
  */
 public class JDOQueryMixin<T> extends QueryMixin<T> {
 
-    public JDOQueryMixin() {}
+    public JDOQueryMixin() { }
 
     public JDOQueryMixin(QueryMetadata metadata) {
         super(metadata);
@@ -39,7 +39,7 @@ public class JDOQueryMixin<T> extends QueryMixin<T> {
 
     @Override
     protected Predicate convert(Predicate predicate, Role role) {
-        predicate = (Predicate)ExpressionUtils.extract(predicate);
+        predicate = (Predicate) ExpressionUtils.extract(predicate);
         if (predicate != null) {
             Context context = new Context();
             Predicate transformed = (Predicate) predicate.accept(collectionAnyVisitor, context);

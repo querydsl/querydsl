@@ -36,7 +36,7 @@ public class PackageVerification {
     @Test
     public void Verify_Package() throws Exception {
         String version = System.getProperty("version");
-        verify(new File("target/querydsl-jdo-"+version+"-apt-one-jar.jar"));
+        verify(new File("target/querydsl-jdo-" + version + "-apt-one-jar.jar"));
     }
 
     private void verify(File oneJar) throws Exception {

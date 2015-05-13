@@ -41,7 +41,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     public static class Projection {
 
-        public Projection(String str) {}
+        public Projection(String str) { }
 
     }
 
@@ -192,7 +192,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
                 .select(product.name).fetchFirst());
     }
 
-    @Test(expected=ParamNotSetException.class)
+    @Test(expected = ParamNotSetException.class)
     public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name))

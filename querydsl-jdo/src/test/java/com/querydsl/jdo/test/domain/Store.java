@@ -23,19 +23,19 @@ import javax.jdo.annotations.*;
 @PersistenceCapable
 @Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 @FetchGroups({
-    @FetchGroup(name="products", members={@Persistent(name="products")})
+    @FetchGroup(name = "products", members = {@Persistent(name = "products")})
 })
 public class Store {
 
     private String name;
 
     @Join
-    @Element(types=Product.class)
+    @Element(types = Product.class)
     private List<Product> products = new ArrayList<Product>();
 
     @Join
-    @Key(types=String.class)
-    @Value(types=Product.class)
+    @Key(types = String.class)
+    @Value(types = Product.class)
     private Map<String,Product> productsByName = new HashMap<String,Product>();
 
     public String getName() {
