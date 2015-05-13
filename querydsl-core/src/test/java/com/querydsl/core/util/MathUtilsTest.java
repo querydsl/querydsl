@@ -34,7 +34,7 @@ public class MathUtilsTest {
 
     @Test
     public void Cast() {
-        Integer value = Integer.valueOf(1);
+        Integer value = 1;
         assertEquals(BigDecimal.class, MathUtils.cast(value, BigDecimal.class).getClass());
         assertEquals(BigInteger.class, MathUtils.cast(value, BigInteger.class).getClass());
         assertEquals(Double.class, MathUtils.cast(value, Double.class).getClass());

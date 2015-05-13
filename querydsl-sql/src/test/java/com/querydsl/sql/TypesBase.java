@@ -25,15 +25,15 @@ public class TypesBase extends AbstractBaseTest {
     public void CreateTables() {
         Map<Class<?>, Object> instances = Maps.newLinkedHashMap();
         instances.put(BigInteger.class, BigInteger.valueOf(1));
-        instances.put(Long.class, Long.valueOf(1));
-        instances.put(Integer.class, Integer.valueOf(1));
-        instances.put(Short.class, Short.valueOf((short)1));
-        instances.put(Byte.class, Byte.valueOf((byte)1));
+        instances.put(Long.class, 1L);
+        instances.put(Integer.class, 1);
+        instances.put(Short.class, (short) 1);
+        instances.put(Byte.class, (byte) 1);
         instances.put(BigDecimal.class, BigDecimal.valueOf(1.0));
-        instances.put(Double.class, Double.valueOf(1.0));
-        instances.put(Float.class, Float.valueOf((float)1.0));
+        instances.put(Double.class, 1.0);
+        instances.put(Float.class, 1.0f);
         instances.put(Boolean.class, Boolean.TRUE);
-        instances.put(Character.class, Character.valueOf('a'));
+        instances.put(Character.class, 'a');
         instances.put(String.class, "ABC");
 
         for (Map.Entry<Class<?>, Object> entry : instances.entrySet()) {

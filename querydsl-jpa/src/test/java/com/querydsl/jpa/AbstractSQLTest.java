@@ -339,8 +339,8 @@ public abstract class AbstractSQLTest {
 
         assertEquals(5, rows.size());
         for (Tuple row : rows) {
-            int first = row.get(cat.id).intValue();
-            int second = row.get(cat2.id).intValue();
+            int first = row.get(cat.id);
+            int second = row.get(cat2.id);
             assertEquals(first + 1, second);
         }
     }

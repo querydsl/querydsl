@@ -116,7 +116,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
             query.setUnique(true);
             Long rv = (Long) execute(query, true);
             if (rv != null) {
-                return rv.longValue();
+                return rv;
             } else {
                 throw new QueryException("Query returned null");
             }

@@ -36,7 +36,7 @@ public final class QueryModifiers implements Serializable{
     public static final QueryModifiers EMPTY = new QueryModifiers();
 
     private static int toInt(Long l) {
-        if (l.longValue() <= Integer.MAX_VALUE) {
+        if (l <= Integer.MAX_VALUE) {
             return l.intValue();
         } else {
             return Integer.MAX_VALUE;
@@ -44,11 +44,11 @@ public final class QueryModifiers implements Serializable{
     }
 
     public static QueryModifiers limit(@Nonnegative long limit) {
-        return new QueryModifiers(Long.valueOf(limit), null);
+        return new QueryModifiers(limit, null);
     }
 
     public static QueryModifiers offset(@Nonnegative long offset) {
-        return new QueryModifiers(null, Long.valueOf(offset));
+        return new QueryModifiers(null, offset);
     }
 
     @Nullable

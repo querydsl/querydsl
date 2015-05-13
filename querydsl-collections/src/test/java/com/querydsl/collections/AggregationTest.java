@@ -29,27 +29,27 @@ public class AggregationTest extends AbstractQueryTest {
 
     @Test
     public void Avg() {
-        assertEquals(Double.valueOf(3.5), query.select(cat.weight.avg()).fetchOne());
+        assertEquals(3.5, query.select(cat.weight.avg()).fetchOne());
     }
 
     @Test
     public void Count() {
-        assertEquals(Long.valueOf(4L), query.select(cat.count()).fetchOne());
+        assertEquals(4L, query.select(cat.count()).fetchOne());
     }
 
     @Test
     public void CountDistinct() {
-        assertEquals(Long.valueOf(4L), query.select(cat.countDistinct()).fetchOne());
+        assertEquals(4L, query.select(cat.countDistinct()).fetchOne());
     }
 
     @Test
     public void Max() {
-        assertEquals(Integer.valueOf(5), query.select(cat.weight.max()).fetchOne());
+        assertEquals(5, query.select(cat.weight.max()).fetchOne());
     }
 
     @Test
     public void Min() {
-        assertEquals(Integer.valueOf(2), query.select(cat.weight.min()).fetchOne());
+        assertEquals(2, query.select(cat.weight.min()).fetchOne());
     }
 
     @Test(expected=UnsupportedOperationException.class)
@@ -59,7 +59,7 @@ public class AggregationTest extends AbstractQueryTest {
 
     @Test
     public void Sum() {
-        assertEquals(Integer.valueOf(14), query.select(cat.weight.sum()).fetchOne());
+        assertEquals(14, query.select(cat.weight.sum()).fetchOne());
     }
 
 }

@@ -50,7 +50,7 @@ public class YesNoType extends AbstractType<Boolean> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Boolean value) throws SQLException {
-        st.setString(startIndex, value.booleanValue() ? "Y" : "N");
+        st.setString(startIndex, value ? "Y" : "N");
 
     }
 

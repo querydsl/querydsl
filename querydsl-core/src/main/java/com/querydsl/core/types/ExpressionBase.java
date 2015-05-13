@@ -48,7 +48,7 @@ public abstract class ExpressionBase<T> implements Expression<T> {
         if (hashCode == null) {
             hashCode = accept(HashCodeVisitor.DEFAULT, null);
         }
-        return hashCode.intValue();
+        return hashCode;
     }
 
     @Override

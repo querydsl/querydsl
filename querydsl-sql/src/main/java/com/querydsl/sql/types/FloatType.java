@@ -42,7 +42,7 @@ public class FloatType extends AbstractType<Float> {
     @Override
     public Float getValue(ResultSet rs, int startIndex) throws SQLException {
         float val = rs.getFloat(startIndex);
-        return rs.wasNull() ? null : Float.valueOf(val);
+        return rs.wasNull() ? null : val;
     }
 
     @Override

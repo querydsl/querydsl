@@ -60,9 +60,9 @@ public class GeoSpatialQueryTest {
         ds.save(new GeoEntity(30.0, 50.0));
 
         List<GeoEntity> entities = query().where(geoEntity.location.near(50.0, 50.0)).fetch();
-        assertEquals(30.0, entities.get(0).getLocation()[0].doubleValue(), 0.1);
-        assertEquals(20.0, entities.get(1).getLocation()[0].doubleValue(), 0.1);
-        assertEquals(10.0, entities.get(2).getLocation()[0].doubleValue(), 0.1);
+        assertEquals(30.0, entities.get(0).getLocation()[0], 0.1);
+        assertEquals(20.0, entities.get(1).getLocation()[0], 0.1);
+        assertEquals(10.0, entities.get(2).getLocation()[0], 0.1);
     }
 
     private MorphiaQuery<GeoEntity> query() {

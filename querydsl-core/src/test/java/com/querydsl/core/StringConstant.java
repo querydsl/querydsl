@@ -110,7 +110,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Override
     public NumberExpression<Integer> length() {
         if (length == null) {
-            length = NumberConstant.create(Integer.valueOf(constant.length()));
+            length = NumberConstant.create(constant.length());
         }
         return length;
     }

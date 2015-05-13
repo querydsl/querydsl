@@ -137,7 +137,7 @@ public abstract class AbstractGroupByTest {
     }
 
     protected Integer toInt(int i) {
-        return Integer.valueOf(i);
+        return i;
     }
 
     protected <T >Set<T> toSet(T... s) {

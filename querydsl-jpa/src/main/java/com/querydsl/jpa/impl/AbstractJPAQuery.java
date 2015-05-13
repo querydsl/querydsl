@@ -103,10 +103,10 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
             Integer limit = modifiers.getLimitAsInteger();
             Integer offset = modifiers.getOffsetAsInteger();
             if (limit != null) {
-                query.setMaxResults(limit.intValue());
+                query.setMaxResults(limit);
             }
             if (offset != null) {
-                query.setFirstResult(offset.intValue());
+                query.setFirstResult(offset);
             }
         }
         if (lockMode != null) {

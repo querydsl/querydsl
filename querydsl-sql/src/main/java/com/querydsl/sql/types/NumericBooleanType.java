@@ -47,12 +47,12 @@ public class NumericBooleanType extends AbstractType<Boolean> {
     @Nullable
     public Boolean getValue(ResultSet rs, int startIndex) throws SQLException {
         Number num = (Number) rs.getObject(startIndex);
-        return num != null ? Boolean.valueOf(num.intValue() == 1) : null;
+        return num != null ? num.intValue() == 1 : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Boolean value) throws SQLException {
-        st.setInt(startIndex, value.booleanValue() ? 1 : 0);
+        st.setInt(startIndex, value ? 1 : 0);
     }
 
 }

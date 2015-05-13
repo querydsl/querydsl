@@ -172,7 +172,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
         final Integer queryOffset = metadata.getModifiers().getOffsetAsInteger();
         Sort sort = querySort;
         int limit;
-        final int offset = queryOffset != null ? queryOffset.intValue() : 0;
+        final int offset = queryOffset != null ? queryOffset : 0;
         try {
             limit = maxDoc();
             if (limit == 0) {
@@ -183,8 +183,8 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
         } catch (IllegalArgumentException e) {
             throw new QueryException(e);
         }
-        if (queryLimit != null && queryLimit.intValue() < limit) {
-            limit = queryLimit.intValue();
+        if (queryLimit != null && queryLimit < limit) {
+            limit = queryLimit;
         }
         if (sort == null && !orderBys.isEmpty()) {
             sort = serializer.toSort(orderBys);

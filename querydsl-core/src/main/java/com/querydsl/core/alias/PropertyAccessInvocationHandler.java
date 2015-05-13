@@ -153,11 +153,11 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
             path = pathFactory.createNumberPath(Integer.class, metadata);
-            rv = Integer.valueOf(RETURN_VALUE);
+            rv = RETURN_VALUE;
 
         } else if (Byte.class.equals(type) || byte.class.equals(type)) {
             path = pathFactory.createNumberPath(Byte.class, metadata);
-            rv = Byte.valueOf((byte)RETURN_VALUE);
+            rv = (byte) RETURN_VALUE;
 
         } else if (java.util.Date.class.equals(type)) {
             path = pathFactory.createDateTimePath((Class)type, metadata);
@@ -177,19 +177,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (Long.class.equals(type) || long.class.equals(type)) {
             path = pathFactory.createNumberPath(Long.class, metadata);
-            rv = Long.valueOf(RETURN_VALUE);
+            rv = (long) RETURN_VALUE;
 
         } else if (Short.class.equals(type) || short.class.equals(type)) {
             path = pathFactory.createNumberPath(Short.class, metadata);
-            rv = Short.valueOf((short) RETURN_VALUE);
+            rv = (short) RETURN_VALUE;
 
         } else if (Double.class.equals(type) || double.class.equals(type)) {
             path = pathFactory.createNumberPath(Double.class, metadata);
-            rv = Double.valueOf(RETURN_VALUE);
+            rv = (double) RETURN_VALUE;
 
         } else if (Float.class.equals(type) || float.class.equals(type)) {
             path = pathFactory.createNumberPath(Float.class, metadata);
-            rv = Float.valueOf(RETURN_VALUE);
+            rv = (float) RETURN_VALUE;
 
         } else if (BigInteger.class.equals(type)) {
             path = pathFactory.createNumberPath((Class)type, metadata);

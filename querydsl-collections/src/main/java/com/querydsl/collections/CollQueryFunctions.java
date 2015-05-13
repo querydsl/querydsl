@@ -210,12 +210,12 @@ public final class CollQueryFunctions {
             Number sum = reduce(source, SUM);
             return sum.doubleValue() / source.size();
         } else if (aggregator == Ops.AggOps.COUNT_AGG) {
-            return Long.valueOf(source.size());
+            return (long) source.size();
         } else if (aggregator == Ops.AggOps.COUNT_DISTINCT_AGG) {
             if (!Set.class.isInstance(source)) {
                 source = new HashSet(source);
             }
-            return Long.valueOf(source.size());
+            return (long) source.size();
         } else if (aggregator == Ops.AggOps.MAX_AGG) {
             return MathUtils.cast(reduce(source, MAX), (Class<Number>)expr.getType());
         } else if (aggregator == Ops.AggOps.MIN_AGG) {

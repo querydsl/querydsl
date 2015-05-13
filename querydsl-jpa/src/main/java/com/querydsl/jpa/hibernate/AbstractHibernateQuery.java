@@ -78,7 +78,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
             Query query = createQuery(modifiers, true);
             Long rv = (Long)query.uniqueResult();
             if (rv != null) {
-                return rv.longValue();
+                return rv;
             } else {
                 throw new QueryException("Query returned null");
             }
@@ -131,10 +131,10 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
             Integer limit = modifiers.getLimitAsInteger();
             Integer offset = modifiers.getOffsetAsInteger();
             if (limit != null) {
-                query.setMaxResults(limit.intValue());
+                query.setMaxResults(limit);
             }
             if (offset != null) {
-                query.setFirstResult(offset.intValue());
+                query.setFirstResult(offset);
             }
         }
 

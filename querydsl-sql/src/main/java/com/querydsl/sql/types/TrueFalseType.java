@@ -50,7 +50,7 @@ public class TrueFalseType extends AbstractType<Boolean> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Boolean value) throws SQLException {
-        st.setString(startIndex, value.booleanValue() ? "T" : "F");
+        st.setString(startIndex, value ? "T" : "F");
 
     }
 
