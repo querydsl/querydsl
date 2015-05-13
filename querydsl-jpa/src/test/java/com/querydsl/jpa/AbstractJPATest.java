@@ -66,8 +66,8 @@ public abstract class AbstractJPATest {
     private static final BooleanExpression cond2 = otherCat.name.length().gt(0);
 
     private static final Predicate condition = ExpressionUtils.and(
-            (Predicate)ExpressionUtils.extract(cond1),
-            (Predicate)ExpressionUtils.extract(cond2));
+            (Predicate) ExpressionUtils.extract(cond1),
+            (Predicate) ExpressionUtils.extract(cond2));
 
     private static final Date birthDate;
 
@@ -366,7 +366,7 @@ public abstract class AbstractJPATest {
         List<Cat> cats = query().from(cat).select(cat).fetch();
         List<Integer> weights = query().from(cat).select(cat.bodyWeight.castToNum(Integer.class)).fetch();
         for (int i = 0; i < cats.size(); i++) {
-            assertEquals(Integer.valueOf((int)(cats.get(i).getBodyWeight())), weights.get(i));
+            assertEquals(Integer.valueOf((int) (cats.get(i).getBodyWeight())), weights.get(i));
         }
     }
 
@@ -432,7 +432,7 @@ public abstract class AbstractJPATest {
         }
     }
 
-    @Test(expected=ClassCastException.class)
+    @Test(expected = ClassCastException.class)
     @NoEclipseLink
     @NoBatooJPA
     public void Constant_Hibernate() {
@@ -680,7 +680,7 @@ public abstract class AbstractJPATest {
             save(a);
             for (int j = 0; j < 2; j++) {
                 Book b = new Book();
-                b.setTitle(String.valueOf(i)+" "+String.valueOf(j));
+                b.setTitle(String.valueOf(i) + " " + String.valueOf(j));
                 b.setAuthor(a);
                 save(b);
             }
@@ -1014,7 +1014,7 @@ public abstract class AbstractJPATest {
         for (Tuple tuple : tuples) {
             assertEquals(
                 tuple.get(concat),
-                tuple.get(cat.name)+tuple.get(cat.name));
+                tuple.get(cat.name) + tuple.get(cat.name));
         }
     }
 
@@ -1092,28 +1092,28 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Order_StringValue() {
-        int count = (int)query().from(cat).fetchCount();
+        int count = (int) query().from(cat).fetchCount();
         assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().asc()).select(cat).fetch().size());
     }
 
     @Test
     @NoBatooJPA // can't be parsed
     public void Order_StringValue_To_Integer() {
-        int count = (int)query().from(cat).fetchCount();
+        int count = (int) query().from(cat).fetchCount();
         assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().castToNum(Integer.class).asc()).select(cat).fetch().size());
     }
 
     @Test
     @NoBatooJPA // can't be parsed
     public void Order_StringValue_ToLong() {
-        int count = (int)query().from(cat).fetchCount();
+        int count = (int) query().from(cat).fetchCount();
         assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().castToNum(Long.class).asc()).select(cat).fetch().size());
     }
 
     @Test
     @NoBatooJPA // can't be parsed
     public void Order_StringValue_ToBigInteger() {
-        int count = (int)query().from(cat).fetchCount();
+        int count = (int) query().from(cat).fetchCount();
         assertEquals(count, query().from(cat).orderBy(cat.id.stringValue().castToNum(BigInteger.class).asc()).select(cat).fetch().size());
     }
 
@@ -1147,7 +1147,7 @@ public abstract class AbstractJPATest {
                 .select(cat.name).fetchFirst());
     }
 
-    @Test(expected=ParamNotSetException.class)
+    @Test(expected = ParamNotSetException.class)
     public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob123", query().from(cat).where(cat.name.eq(name)).select(cat.name).fetchFirst());
@@ -1440,7 +1440,7 @@ public abstract class AbstractJPATest {
     @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void test() {
         Cat kitten = savedCats.get(0);
-        Cat noKitten = savedCats.get(savedCats.size()-1);
+        Cat noKitten = savedCats.get(savedCats.size() - 1);
 
         ProjectionsFactory projections = new ProjectionsFactory(Module.JPA, getTarget()) {
             @Override

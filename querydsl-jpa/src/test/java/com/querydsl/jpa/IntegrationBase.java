@@ -133,7 +133,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
 
         QCat cat = QCat.cat;
         long amount = update(cat).where(cat.name.eq("Bob"))
-            .set(cat.name, (String)null)
+            .set(cat.name, (String) null)
             .set(cat.alive, false)
             .execute();
         assertEquals(1, amount);

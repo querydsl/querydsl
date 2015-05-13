@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * The Class Formula.
  */
 @Entity
-@Table(name="formula_")
+@Table(name = "formula_")
 public class Formula {
     @Id
     int id;

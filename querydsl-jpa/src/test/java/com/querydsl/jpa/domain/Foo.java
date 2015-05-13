@@ -21,7 +21,7 @@ import javax.persistence.*;
  * The Class Foo.
  */
 @Entity
-@Table(name="foo_")
+@Table(name = "foo_")
 public class Foo {
     public String bar;
 
@@ -30,7 +30,7 @@ public class Foo {
     public int id;
 
     @ElementCollection
-    @CollectionTable(name = "foo_names", joinColumns = {@JoinColumn(name="foo_id")})
+    @CollectionTable(name = "foo_names", joinColumns = {@JoinColumn(name = "foo_id")})
     public List<String> names;
 
     @Temporal(TemporalType.DATE)

@@ -87,7 +87,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
     }
 
     private boolean isAlias(Expression<?> expr) {
-        return expr instanceof Operation && ((Operation<?>)expr).getOperator() == Ops.ALIAS;
+        return expr instanceof Operation && ((Operation<?>) expr).getOperator() == Ops.ALIAS;
     }
 
     public ListMultimap<Expression<?>, String> getAliases() {
@@ -96,9 +96,9 @@ public final class NativeSQLSerializer extends SQLSerializer {
 
     private boolean isAllExpression(Expression<?> expr) {
         if (expr instanceof Operation) {
-            return ((Operation<?>)expr).getOperator() == SQLOps.ALL;
+            return ((Operation<?>) expr).getOperator() == SQLOps.ALL;
         } else if (expr instanceof TemplateExpression) {
-            return ((TemplateExpression<?>)expr).getTemplate().toString().equals("*");
+            return ((TemplateExpression<?>) expr).getTemplate().toString().equals("*");
         } else {
             return false;
         }
@@ -111,7 +111,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
         Set<String> used = new HashSet<String>();
         Expression<?> projection = metadata.getProjection();
         if (projection instanceof Path) {
-            Path<?> path = (Path<?>)projection;
+            Path<?> path = (Path<?>) projection;
             if (!used.add(path.getMetadata().getName())) {
                 String alias = "col_1";
                 aliases.put(projection, alias);
@@ -123,7 +123,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
                 aliases.put(path, ColumnMetadata.getName(path));
             }
         } else if (projection instanceof FactoryExpression) {
-            FactoryExpression<?> factoryExpr = (FactoryExpression<?>)projection;
+            FactoryExpression<?> factoryExpr = (FactoryExpression<?>) projection;
             List<Expression<?>> fargs = Lists.newArrayList(factoryExpr.getArgs());
             for (int j = 0; j < fargs.size(); j++) {
                 if (fargs.get(j) instanceof Path) {
@@ -135,17 +135,17 @@ public final class NativeSQLSerializer extends SQLSerializer {
                         columnName = ColumnMetadata.getName(path);
                     }
                     if (!used.add(columnName)) {
-                        String alias = "col_"+(j+1);
+                        String alias = "col_" + (j + 1);
                         aliases.put(path, alias);
                         fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                     } else {
                         aliases.put(path, columnName);
                     }
                 } else if (isAlias(fargs.get(j))) {
-                    Operation<?> operation = (Operation<?>)fargs.get(j);
+                    Operation<?> operation = (Operation<?>) fargs.get(j);
                     aliases.put(operation, operation.getArg(1).toString());
                 } else if (!isAllExpression(fargs.get(j))) {
-                    String alias = "col_"+(j+1);
+                    String alias = "col_" + (j + 1);
                     aliases.put(fargs.get(j), alias);
                     fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                 }
@@ -153,7 +153,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
             projection = Projections.tuple(ImmutableList.copyOf(fargs));
             modified = true;
         } else if (isAlias(projection)) {
-            Operation<?> operation = (Operation<?>)projection;
+            Operation<?> operation = (Operation<?>) projection;
             aliases.put(operation, operation.getArg(1).toString());
         } else {
             // https://github.com/querydsl/querydsl/issues/80
@@ -176,7 +176,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
         if (constant instanceof Collection<?>) {
             append("(");
             boolean first = true;
-            for (Object element : ((Collection<?>)constant)) {
+            for (Object element : ((Collection<?>) constant)) {
                 if (!first) {
                     append(", ");
                 }
@@ -187,9 +187,9 @@ public final class NativeSQLSerializer extends SQLSerializer {
         } else if (!getConstantToLabel().containsKey(constant)) {
             String constLabel = String.valueOf(getConstantToLabel().size() + 1);
             getConstantToLabel().put(constant, constLabel);
-            append("?"+constLabel);
+            append("?" + constLabel);
         } else {
-            append("?"+getConstantToLabel().get(constant));
+            append("?" + getConstantToLabel().get(constant));
         }
     }
 

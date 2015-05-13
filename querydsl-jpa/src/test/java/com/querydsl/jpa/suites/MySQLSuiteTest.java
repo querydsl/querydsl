@@ -16,16 +16,16 @@ public class MySQLSuiteTest extends AbstractSuite {
             // not supported
         }
     }
-    public static class JPASQL extends JPASQLBase {}
-    public static class JPAIntegration extends JPAIntegrationBase {}
-    public static class Serialization extends SerializationBase {}
+    public static class JPASQL extends JPASQLBase { }
+    public static class JPAIntegration extends JPAIntegrationBase { }
+    public static class Serialization extends SerializationBase { }
     public static class Hibernate extends HibernateBase {
         @Override
         public void Order_StringValue_ToLong() {
             // not supported
         }
     }
-    public static class HibernateSQL extends HibernateSQLBase {}
+    public static class HibernateSQL extends HibernateSQLBase { }
 
     @BeforeClass
     public static void setUp() throws Exception {

@@ -67,7 +67,7 @@ public final class DefaultQueryHandler implements QueryHandler {
         return false;
     }
 
-    private DefaultQueryHandler() {}
+    private DefaultQueryHandler() { }
 
 
 }

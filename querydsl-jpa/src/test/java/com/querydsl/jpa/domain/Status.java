@@ -21,7 +21,7 @@ import javax.persistence.Table;
  * The Class Status.
  */
 @Entity
-@Table(name="status_")
+@Table(name = "status_")
 public class Status {
     @Id
     long id;

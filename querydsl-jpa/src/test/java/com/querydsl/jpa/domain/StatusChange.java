@@ -19,7 +19,7 @@ import javax.persistence.*;
  * The Class StatusChange.
  */
 @Entity
-@Table(name="statuschange_")
+@Table(name = "statuschange_")
 public class StatusChange {
     @Id
     long id;

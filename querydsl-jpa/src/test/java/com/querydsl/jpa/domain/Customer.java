@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * The Class Customer.
  */
 @Entity
-@Table(name="customer_")
+@Table(name = "customer_")
 public class Customer {
     @ManyToOne
     Order currentOrder;

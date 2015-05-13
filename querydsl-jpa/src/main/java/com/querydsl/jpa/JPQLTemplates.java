@@ -94,10 +94,10 @@ public class JPQLTemplates extends Templates {
         add(Ops.ARRAY_SIZE, "size({0})");
 
         // string
-        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'");
+        add(Ops.LIKE, "{0} like {1} escape '" + escape + "'");
         add(Ops.CONCAT, "concat({0},{1})", -1);
-        add(Ops.MATCHES, "{0} like {1}  escape '"+escape+"'"); // TODO : support real regexes
-        add(Ops.MATCHES_IC, "{0} like {1} escape '"+escape+"'"); // TODO : support real regexes
+        add(Ops.MATCHES, "{0} like {1}  escape '" + escape + "'"); // TODO : support real regexes
+        add(Ops.MATCHES_IC, "{0} like {1} escape '" + escape + "'"); // TODO : support real regexes
         add(Ops.LOWER, "lower({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1s}+1)", Precedence.ARITH_LOW);
         add(Ops.SUBSTR_2ARGS, "substring({0},{1s}+1,{2s}-{1s})", Precedence.ARITH_LOW);
@@ -107,12 +107,12 @@ public class JPQLTemplates extends Templates {
         add(Ops.CHAR_AT, "cast(substring({0},{1s}+1,1) as char)", Precedence.ARITH_LOW);
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
 
-        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'");
-        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'");
-        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'");
-        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'");
-        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'");
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'");
+        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '" + escape + "'");
+        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '" + escape + "'");
+        add(Ops.ENDS_WITH, "{0} like {%1} escape '" + escape + "'");
+        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '" + escape + "'");
+        add(Ops.STARTS_WITH, "{0} like {1%} escape '" + escape + "'");
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '" + escape + "'");
         add(Ops.INDEX_OF, "locate({1},{0})-1", Precedence.ARITH_LOW);
         add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1)-1", Precedence.ARITH_LOW);
 

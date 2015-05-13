@@ -19,7 +19,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Table(name="category_")
+@Table(name = "category_")
 public class Category {
 
     @Id

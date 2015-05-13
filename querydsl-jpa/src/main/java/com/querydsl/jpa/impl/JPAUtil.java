@@ -31,7 +31,7 @@ import com.querydsl.core.util.MathUtils;
  */
 public final class JPAUtil {
 
-    private JPAUtil() {}
+    private JPAUtil() { }
 
     public static void setConstants(Query query, Map<Object,String> constants, Map<ParamExpression<?>, Object> params) {
         boolean hasParameters = !query.getParameters().isEmpty();

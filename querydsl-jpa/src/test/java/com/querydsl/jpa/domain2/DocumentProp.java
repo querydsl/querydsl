@@ -18,7 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="documentprop_")
+@Table(name = "documentprop_")
 public class DocumentProp {
 
     @Id

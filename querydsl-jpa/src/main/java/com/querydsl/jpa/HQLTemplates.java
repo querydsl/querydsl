@@ -77,7 +77,7 @@ public class HQLTemplates extends JPQLTemplates {
         // add Hibernate Spatial mappings, if on classpath
         try {
             Class cl = Class.forName("com.querydsl.spatial.hibernate.HibernateSpatialSupport");
-            add((Map)cl.getMethod("getSpatialOps").invoke(null));
+            add((Map) cl.getMethod("getSpatialOps").invoke(null));
         } catch (Exception e) {
             // do nothing
         }

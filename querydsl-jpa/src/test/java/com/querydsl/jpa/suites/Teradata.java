@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 
 public final class Teradata {
 
-    private Teradata() {}
+    private Teradata() { }
 
     public static void main(String[] args) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("teradata");

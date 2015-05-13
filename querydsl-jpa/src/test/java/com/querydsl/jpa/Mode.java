@@ -15,20 +15,20 @@ public final class Mode {
 
     public static SQLTemplates getSQLTemplates() {
         switch (target.get()) {
-        case CUBRID:return new CUBRIDTemplates();
-        case DERBY: return new DerbyTemplates();
-        case H2:    return new H2Templates();
-        case HSQLDB:return new HSQLDBTemplates();
+        case CUBRID: return new CUBRIDTemplates();
+        case DERBY:  return new DerbyTemplates();
+        case H2:     return new H2Templates();
+        case HSQLDB: return new HSQLDBTemplates();
         case SQLSERVER: return new SQLServerTemplates();
-        case MYSQL: return new MySQLTemplates();
-        case ORACLE:return new OracleTemplates();
+        case MYSQL:  return new MySQLTemplates();
+        case ORACLE: return new OracleTemplates();
         case POSTGRESQL: return new PostgreSQLTemplates();
-        case SQLITE:return new SQLiteTemplates();
+        case SQLITE: return new SQLiteTemplates();
         case TERADATA: return new TeradataTemplates();
         }
         throw new IllegalStateException("Unknown mode " + mode);
     }
 
-    private Mode() {}
+    private Mode() { }
 
 }

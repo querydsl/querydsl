@@ -43,7 +43,7 @@ public class JPAPathBuilderValidator implements PathBuilderValidator {
             ManagedType managedType = metamodel.managedType(parent);
             Attribute attribute = managedType.getAttribute(property);
             if (attribute instanceof PluralAttribute) {
-                return ((PluralAttribute)attribute).getElementType().getJavaType();
+                return ((PluralAttribute) attribute).getElementType().getJavaType();
             } else {
                 return Primitives.wrap(attribute.getJavaType());
             }

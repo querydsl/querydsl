@@ -18,7 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="categoryprop_")
+@Table(name = "categoryprop_")
 public class CategoryProp {
 
     @Id

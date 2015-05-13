@@ -23,7 +23,7 @@ import org.batoo.jpa.annotations.Index;
  * The Class Department.
  */
 @Entity
-@Table(name="department_")
+@Table(name = "department_")
 public class Department {
     @ManyToOne
     Company company;

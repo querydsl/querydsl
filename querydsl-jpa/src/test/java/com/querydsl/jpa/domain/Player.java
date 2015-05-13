@@ -24,7 +24,7 @@ import javax.persistence.Table;
  * The Class Player.
  */
 @Entity
-@Table(name="player_")
+@Table(name = "player_")
 public class Player {
     @Id
     long id;

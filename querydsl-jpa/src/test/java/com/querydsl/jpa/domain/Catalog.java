@@ -22,7 +22,7 @@ import javax.persistence.*;
  * The Class Catalog.
  */
 @Entity
-@Table(name="catalog_")
+@Table(name = "catalog_")
 public class Catalog {
     @Temporal(TemporalType.DATE)
     Date effectiveDate;

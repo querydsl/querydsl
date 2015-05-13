@@ -12,7 +12,7 @@ import com.querydsl.core.types.dsl.PathBuilder;
 
 public final class OrderHelper {
 
-    private OrderHelper() {}
+    private OrderHelper() { }
 
     private static final Pattern DOT = Pattern.compile("\\.");
 
@@ -26,10 +26,10 @@ public final class OrderHelper {
                 String parentKey = StringUtils.join(parent, ".");
                 builder = join(query, builder, joins, parentKey);
                 rv = new PathBuilder(Object.class, StringUtils.join(tokens, "_"));
-                query.leftJoin((EntityPath)builder.get(tokens[tokens.length - 1]), rv);
+                query.leftJoin((EntityPath) builder.get(tokens[tokens.length - 1]), rv);
             } else {
                 rv = new PathBuilder(Object.class, path);
-                query.leftJoin((EntityPath)builder.get(path), rv);
+                query.leftJoin((EntityPath) builder.get(path), rv);
             }
             joins.put(path, rv);
         }

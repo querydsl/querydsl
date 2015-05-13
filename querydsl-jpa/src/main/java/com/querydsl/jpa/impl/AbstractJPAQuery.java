@@ -149,7 +149,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
                     if (!o.getClass().isArray()) {
                         o = new Object[]{o};
                     }
-                    rv.add(projection.newInstance((Object[])o));
+                    rv.add(projection.newInstance((Object[]) o));
                 } else {
                     rv.add(null);
                 }
@@ -174,7 +174,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
                 if (!result.getClass().isArray()) {
                     result = new Object[]{result};
                 }
-                return projection.newInstance((Object[])result);
+                return projection.newInstance((Object[]) result);
             } else {
                 return null;
             }
@@ -251,10 +251,10 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         try {
             Query query = createQuery(getMetadata().getModifiers(), false);
             return (T) getSingleResult(query);
-        } catch(javax.persistence.NoResultException e) {
+        } catch (javax.persistence.NoResultException e) {
             logger.trace(e.getMessage(),e);
             return null;
-        } catch(javax.persistence.NonUniqueResultException e) {
+        } catch (javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         } finally {
             reset();
@@ -264,19 +264,19 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     @SuppressWarnings("unchecked")
     public Q setLockMode(LockModeType lockMode) {
         this.lockMode = lockMode;
-        return (Q)this;
+        return (Q) this;
     }
 
     @SuppressWarnings("unchecked")
     public Q setFlushMode(FlushModeType flushMode) {
         this.flushMode = flushMode;
-        return (Q)this;
+        return (Q) this;
     }
 
     @SuppressWarnings("unchecked")
     public Q setHint(String name, Object value) {
         hints.put(name, value);
-        return (Q)this;
+        return (Q) this;
     }
 
     @Override

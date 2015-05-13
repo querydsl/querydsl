@@ -47,7 +47,7 @@ public final class HibernateUtil {
         TYPES.put(BigDecimal.class, new BigDecimalType());
     }
 
-    private HibernateUtil() {}
+    private HibernateUtil() { }
 
     public static void setConstants(Query query, Map<Object,String> constants,
             Map<ParamExpression<?>, Object> params) {
