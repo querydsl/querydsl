@@ -147,7 +147,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
             }
             filters.add(filter);
         }
-        return (Q)this;
+        return (Q) this;
     }
 
     private Filter getFilter() {
@@ -226,7 +226,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     @SuppressWarnings("unchecked")
     public Q load(FieldSelector fieldSelector) {
         this.fieldSelector = fieldSelector;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -242,7 +242,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
             fields.add(serializer.toField(path));
         }
         this.fieldSelector = new MapFieldSelector(fields);
-        return (Q)this;
+        return (Q) this;
     }
 
     @Override
@@ -282,7 +282,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     @SuppressWarnings("unchecked")
     public Q sort(Sort sort) {
         this.querySort = sort;
-        return (Q)this;
+        return (Q) this;
     }
 
     @Nullable

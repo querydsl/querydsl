@@ -68,6 +68,6 @@ public final class LuceneExpressions {
         return new QueryElement(new FuzzyQuery(term, minimumSimilarity, prefixLength));
     }
 
-    private LuceneExpressions() {}
+    private LuceneExpressions() { }
 
 }
