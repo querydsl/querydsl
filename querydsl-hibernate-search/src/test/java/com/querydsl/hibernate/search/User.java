@@ -46,7 +46,7 @@ public class User implements Serializable {
     private String middleName;
 
     @NaturalId
-    @Field(analyze = Analyze.NO, name="email", index = Index.YES, store = Store.YES)
+    @Field(analyze = Analyze.NO, name = "email", index = Index.YES, store = Store.YES)
     private String emailAddress;
 
     public Long getId() {
