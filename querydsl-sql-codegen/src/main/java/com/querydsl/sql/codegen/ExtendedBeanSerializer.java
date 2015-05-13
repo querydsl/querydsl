@@ -81,7 +81,7 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         writer.line("if (!(o instanceof ", model.getSimpleName(), ")) {");
         writer.line("    return false;");
         writer.line("}");
-        writer.line(model.getSimpleName(), " obj = (", model.getSimpleName(), ")o;");
+        writer.line(model.getSimpleName(), " obj = (", model.getSimpleName(), ") o;");
         writer.line("return ", columnEquals + ";");
         writer.end();
 

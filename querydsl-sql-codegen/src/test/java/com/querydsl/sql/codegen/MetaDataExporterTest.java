@@ -183,8 +183,8 @@ public class MetaDataExporterTest {
             this.exportColumns = exportColumns;
             this.beanSerializer = beanSerializer;
             test(namePrefix, nameSuffix, beanPrefix, beanSuffix,
-                 ns, "target/multiple_"+counter, withBeans, withInnerClasses, withOriginalPositioning);
-        }}}}}}}}}}}}
+                 ns, "target/multiple_" + counter, withBeans, withInnerClasses, withOriginalPositioning);
+        } } } } } } } } } } } }
     }
 
     @Test

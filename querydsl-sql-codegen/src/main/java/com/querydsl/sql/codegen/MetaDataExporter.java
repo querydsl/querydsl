@@ -115,7 +115,7 @@ public class MetaDataExporter {
     @Nullable
     private String tableTypesToExport;
 
-    public MetaDataExporter() {}
+    public MetaDataExporter() { }
 
     protected EntityType createEntityType(@Nullable String schemaName, String tableName,
             final String className) {
@@ -368,14 +368,14 @@ public class MetaDataExporter {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
 
             if (beanSerializer != null) {
-                String packageName = normalizePackage(beanPackageName, (String)type.getData().get("schema"));
+                String packageName = normalizePackage(beanPackageName, (String) type.getData().get("schema"));
                 String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(beanSerializer, path, type);
 
                 String otherPath = entityToWrapped.get(type).getFullName().replace('.', '/') + fileSuffix;
                 write(serializer, otherPath, type);
             } else {
-                String packageName = normalizePackage(module.getPackageName(), (String)type.getData().get("schema"));
+                String packageName = normalizePackage(module.getPackageName(), (String) type.getData().get("schema"));
                 String path =  packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(serializer, path, type);
             }

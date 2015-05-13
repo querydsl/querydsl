@@ -55,14 +55,14 @@ public class SQLCodegenModule extends CodegenModule {
         bind(Configuration.class, new Configuration(SQLTemplates.DEFAULT));
         bind(Serializer.class, MetaDataSerializer.class);
         bind(QueryTypeFactory.class, SQLQueryTypeFactory.class);
-        bind(BEAN_SERIALIZER, (Class<?>)null);
+        bind(BEAN_SERIALIZER, (Class<?>) null);
 
         bind(INNER_CLASSES_FOR_KEYS, false);
         bind(BEAN_PREFIX, "");
         bind(BEAN_SUFFIX, "");
         bind(BEAN_PACKAGE_NAME, "com.example");
         bind(PACKAGE_NAME, "com.example");
-        bind(BEAN_SERIALIZER, (Class<?>)null);
+        bind(BEAN_SERIALIZER, (Class<?>) null);
         bind(SCHEMA_TO_PACKAGE, false);
         bindInstance(ENTITYPATH_TYPE, RelationalPathBase.class);
         bind(COLUMN_COMPARATOR, null);

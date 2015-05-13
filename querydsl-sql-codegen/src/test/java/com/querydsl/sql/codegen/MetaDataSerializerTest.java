@@ -88,7 +88,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, null, null, classes.toArray(new String[classes.size()]));
-        if(compilationResult == 0) {
+        if (compilationResult == 0) {
             System.out.println("Compilation is successful");
         } else {
             Assert.fail("Compilation Failed");
