@@ -24,7 +24,7 @@ public class GeoEntity extends AbstractEntity {
         location = new Double[]{l1, l2};
     }
 
-    public GeoEntity() {}
+    public GeoEntity() { }
 
     public Double[] getLocation() {
         return location;
