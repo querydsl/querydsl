@@ -120,6 +120,9 @@ public class SQLTemplates extends Templates {
             CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).or(inRange('0', '9'))
             .negate().precomputed();
 
+    private static final CharMatcher NON_UNDERSCORE_ALPHA =
+            CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).negate().precomputed();
+
     private final Set<String> reservedWords;
 
     public abstract static class Builder {
@@ -836,6 +839,8 @@ public class SQLTemplates extends Templates {
 
     protected boolean requiresQuotes(final String identifier, final boolean precededByDot) {
         if (NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier)) {
+            return true;
+        } else if (NON_UNDERSCORE_ALPHA.matches(identifier.charAt(0))) {
             return true;
         } else if (precededByDot && supportsUnquotedReservedWordsAsIdentifier) {
             return false;

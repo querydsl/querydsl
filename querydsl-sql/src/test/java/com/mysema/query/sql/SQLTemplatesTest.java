@@ -13,22 +13,22 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.support.Expressions;
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.template.SimpleTemplate;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.junit.Test;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.regex.Pattern;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.template.SimpleTemplate;
 
 public class SQLTemplatesTest {
 
@@ -70,9 +70,15 @@ public class SQLTemplatesTest {
 
     @Test
     public void Quote() {
-        Pattern pattern = Pattern.compile("[a-zA-Z0-9_\\-]+");
-        assertTrue(pattern.matcher("a1").matches());
-        assertTrue(pattern.matcher("a").matches());
+        SQLTemplates templates = SQLTemplates.DEFAULT;
+        // non quoted
+        assertEquals("employee", templates.quoteIdentifier("employee"));
+        assertEquals("Employee", templates.quoteIdentifier("Employee"));
+        assertEquals("employee1", templates.quoteIdentifier("employee1"));
+        assertEquals("employee_", templates.quoteIdentifier("employee_"));
+        // quoted
+        assertEquals("\"e e\"", templates.quoteIdentifier("e e"));
+        assertEquals("\"1phoenix2\"", templates.quoteIdentifier("1phoenix2"));
     }
 
     @Test
