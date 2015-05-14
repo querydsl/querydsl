@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * The Class AuditLog.
  */
 @Entity
-@Table(name="auditlog_")
+@Table(name = "auditlog_")
 public class AuditLog {
     @Id
     int id;

@@ -15,6 +15,6 @@ package com.querydsl.sql;
 
 import com.querydsl.sql.types.StringType;
 
-public class EncryptedString extends StringType{
+public class EncryptedString extends StringType {
 
 }

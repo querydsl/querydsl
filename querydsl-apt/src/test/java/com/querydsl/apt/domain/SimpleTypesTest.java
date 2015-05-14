@@ -122,7 +122,7 @@ public class SimpleTypesTest extends AbstractTest {
     }
 
     @QueryEntity
-    @Config(listAccessors=true)
+    @Config(listAccessors = true)
     public static class SimpleTypes {
         transient int test;
         List<Integer> testList;

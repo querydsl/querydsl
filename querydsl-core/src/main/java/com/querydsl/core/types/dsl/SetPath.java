@@ -55,10 +55,10 @@ public class SetPath<E, Q extends SimpleExpression<? super E>> extends Collectio
 
     @SuppressWarnings("unchecked")
     protected SetPath(Class<? super E> type, Class<Q> queryType, PathMetadata metadata, PathInits inits) {
-        super(new ParameterizedPathImpl<Set<E>>((Class)Set.class, metadata, type), inits);
-        this.elementType = (Class<E>)type;
+        super(new ParameterizedPathImpl<Set<E>>((Class) Set.class, metadata, type), inits);
+        this.elementType = (Class<E>) type;
         this.queryType = queryType;
-        this.pathMixin = (PathImpl<Set<E>>)mixin;
+        this.pathMixin = (PathImpl<Set<E>>) mixin;
     }
 
     @Override

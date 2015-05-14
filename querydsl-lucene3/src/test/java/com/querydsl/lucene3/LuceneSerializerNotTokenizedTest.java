@@ -107,7 +107,7 @@ public class LuceneSerializerNotTokenizedTest {
         testQuery(person.name.eq("George Clooney"), "name:George Clooney", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Equals_By_Name_Ignoring_Case_Does_Not_Match() throws Exception {
         testQuery(person.name.equalsIgnoreCase("george clooney"), "name:george clooney", 0);
     }

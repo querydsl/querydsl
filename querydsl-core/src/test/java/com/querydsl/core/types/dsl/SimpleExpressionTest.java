@@ -30,7 +30,7 @@ import com.querydsl.core.types.Path;
 
 public class SimpleExpressionTest {
 
-    enum ExampleEnum {A,B}
+    enum ExampleEnum { A, B }
 
     @Test
     public void As_usage() {
@@ -47,7 +47,7 @@ public class SimpleExpressionTest {
     }
 
     @Test
-    public void Subclasses_Override_As() throws SecurityException, NoSuchMethodException{
+    public void Subclasses_Override_As() throws SecurityException, NoSuchMethodException {
         List<Class<?>> classes = Arrays.<Class<?>>asList(
                 BooleanExpression.class,
                 ComparableExpression.class,
@@ -96,8 +96,8 @@ public class SimpleExpressionTest {
         }
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void Eq_Null() {
-        new SimplePath<Object>(Object.class, "path").eq((Object)null);
+        new SimplePath<Object>(Object.class, "path").eq((Object) null);
     }
 }

@@ -76,7 +76,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
         QueryModifiers modifiers = getMetadata().getModifiers();
         try {
             Query query = createQuery(modifiers, true);
-            Long rv = (Long)query.uniqueResult();
+            Long rv = (Long) query.uniqueResult();
             if (rv != null) {
                 return rv;
             } else {
@@ -178,7 +178,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     @Override
     public QueryResults<T> fetchResults() {
-        try{
+        try {
             Query countQuery = createQuery(null, true);
             long total = (Long) countQuery.uniqueResult();
 
@@ -191,7 +191,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
             } else {
                 return QueryResults.emptyResults();
             }
-        }finally{
+        } finally {
             reset();
         }
     }
@@ -239,7 +239,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     @SuppressWarnings("unchecked")
     public Q setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -250,7 +250,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     @SuppressWarnings("unchecked")
     public Q setCacheRegion(String cacheRegion) {
         this.cacheRegion = cacheRegion;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -261,7 +261,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     @SuppressWarnings("unchecked")
     public Q setComment(String comment) {
         this.comment = comment;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -272,7 +272,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     @SuppressWarnings("unchecked")
     public Q setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -282,7 +282,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     @SuppressWarnings("unchecked")
     public Q setLockMode(Path<?> path, LockMode lockMode) {
         lockModes.put(path, lockMode);
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -292,7 +292,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     @SuppressWarnings("unchecked")
     public Q setFlushMode(FlushMode flushMode) {
         this.flushMode = flushMode;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -306,7 +306,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     @SuppressWarnings("unchecked")
     public Q setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -317,7 +317,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     @SuppressWarnings("unchecked")
     public Q setTimeout(int timeout) {
         this.timeout = timeout;
-        return (Q)this;
+        return (Q) this;
     }
 
     @Override
@@ -325,7 +325,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
         try {
             QueryModifiers modifiers = getMetadata().getModifiers();
             Query query = createQuery(modifiers, false);
-            try{
+            try {
                 return (T) query.uniqueResult();
             } catch (org.hibernate.NonUniqueResultException e) {
                 throw new NonUniqueResultException();

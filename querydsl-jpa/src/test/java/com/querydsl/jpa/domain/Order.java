@@ -21,7 +21,7 @@ import javax.persistence.*;
  * The Class Order.
  */
 @Entity
-@Table(name="order_")
+@Table(name = "order_")
 public class Order {
     @ManyToOne
     Customer customer;

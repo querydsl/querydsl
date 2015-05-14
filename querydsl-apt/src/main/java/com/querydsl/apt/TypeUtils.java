@@ -85,6 +85,6 @@ public final class TypeUtils {
         return null;
     }
 
-    private TypeUtils() {}
+    private TypeUtils() { }
 
 }

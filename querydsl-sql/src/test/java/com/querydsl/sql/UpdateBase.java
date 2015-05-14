@@ -37,23 +37,23 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class UpdateBase extends AbstractBaseTest {
 
-    protected void reset() throws SQLException{
+    protected void reset() throws SQLException {
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
     }
 
     @Before
-    public void setUp() throws SQLException{
+    public void setUp() throws SQLException {
         reset();
     }
 
     @After
-    public void tearDown() throws SQLException{
+    public void tearDown() throws SQLException {
         reset();
     }
 
     @Test
-    public void Update() throws SQLException{
+    public void Update() throws SQLException {
         // original state
         long count = query().from(survey).fetchCount();
         assertEquals(0, query().from(survey).where(survey.name.eq("S")).fetchCount());
@@ -77,7 +77,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update2() throws SQLException{
+    public void Update2() throws SQLException {
         List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
         List<?> values = Collections.singletonList("S");
 
@@ -123,11 +123,11 @@ public class UpdateBase extends AbstractBaseTest {
     @Test
     public void SetNull2() {
         long count = query().from(survey).fetchCount();
-        assertEquals(count, update(survey).set(survey.name, (String)null).execute());
+        assertEquals(count, update(survey).set(survey.name, (String) null).execute());
     }
 
     @Test
-    public void Batch() throws SQLException{
+    public void Batch() throws SQLException {
         assertEquals(1, insert(survey).values(2, "A","B").execute());
         assertEquals(1, insert(survey).values(3, "B","C").execute());
 
@@ -138,7 +138,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Batch_Templates() throws SQLException{
+    public void Batch_Templates() throws SQLException {
         assertEquals(1, insert(survey).values(2, "A","B").execute());
         assertEquals(1, insert(survey).values(3, "B","C").execute());
 

@@ -36,8 +36,8 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
         PathMetadata metadata = new PathMetadata(parent, path.getMetadata().getElement(),
                 path.getMetadata().getPathType());
         if (path instanceof CollectionExpression) {
-            CollectionExpression<?,?> col = (CollectionExpression<?,?>)path;
-            return (Path<T>)Expressions.listPath(col.getParameter(0), SimplePath.class, metadata);
+            CollectionExpression<?,?> col = (CollectionExpression<?,?>) path;
+            return (Path<T>) Expressions.listPath(col.getParameter(0), SimplePath.class, metadata);
         } else {
             return ExpressionUtils.path(path.getType(), metadata);
         }
@@ -54,7 +54,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context> {
         for (int i = 0; i < args.length; i++) {
             Context c = new Context();
             if (expr.getArg(i) instanceof Expression) {
-                args[i] = ((Expression<?>)expr.getArg(i)).accept(this, c);
+                args[i] = ((Expression<?>) expr.getArg(i)).accept(this, c);
             } else {
                 args[i] = expr.getArg(i);
             }

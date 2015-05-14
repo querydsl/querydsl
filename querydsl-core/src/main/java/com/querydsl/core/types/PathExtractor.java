@@ -25,7 +25,7 @@ public final class PathExtractor implements Visitor<Path<?>,Void> {
 
     public static final PathExtractor DEFAULT = new PathExtractor();
 
-    private PathExtractor() {}
+    private PathExtractor() { }
 
     @Override
     public Path<?> visit(Constant<?> expr, Void context) {
@@ -65,7 +65,7 @@ public final class PathExtractor implements Visitor<Path<?>,Void> {
     private Path<?> visit(List<?> exprs) {
         for (Object e : exprs) {
             if (e instanceof Expression) {
-                Path<?> path = ((Expression<?>)e).accept(this, null);
+                Path<?> path = ((Expression<?>) e).accept(this, null);
                 if (path != null) {
                     return path;
                 }

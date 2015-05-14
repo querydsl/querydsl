@@ -32,7 +32,7 @@ public class BeanMapTest {
     @Test
     public void Primitives() {
         beanMap.put("id", 5);
-        assertEquals(5, ((Entity)beanMap.getBean()).getId());
+        assertEquals(5, ((Entity) beanMap.getBean()).getId());
     }
 
     @Test

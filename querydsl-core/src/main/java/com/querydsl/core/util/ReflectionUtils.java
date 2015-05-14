@@ -29,7 +29,7 @@ public final class ReflectionUtils {
 
     private static final AnnotatedElement EMPTY = new Annotations();
 
-    private ReflectionUtils() {}
+    private ReflectionUtils() { }
 
     public static AnnotatedElement getAnnotatedElement(Class<?> beanClass, String propertyName, Class<?> propertyClass) {
         Field field = getFieldOrNull(beanClass, propertyName);
@@ -124,11 +124,11 @@ public final class ReflectionUtils {
                 return Object.class;
             }
         } else if (type instanceof TypeVariable) {
-            return asClass(((TypeVariable)type).getBounds()[0]);
+            return asClass(((TypeVariable) type).getBounds()[0]);
         } else if (type instanceof ParameterizedType) {
             return (Class<?>) ((ParameterizedType) type).getRawType();
         } else if (type instanceof GenericArrayType) {
-            Type component = ((GenericArrayType)type).getGenericComponentType();
+            Type component = ((GenericArrayType) type).getGenericComponentType();
             return Array.newInstance(asClass(component), 0).getClass();
         } else if (type instanceof Class) {
             return (Class<?>) type;

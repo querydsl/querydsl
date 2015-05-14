@@ -205,7 +205,7 @@ public class GenericExporter {
         typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
 
         // copy annotations helpers to typeFactory
-        for (AnnotationHelper helper : annotationHelpers){
+        for (AnnotationHelper helper : annotationHelpers) {
             typeFactory.addAnnotationHelper(helper);
         }
 
@@ -367,7 +367,7 @@ public class GenericExporter {
                             constructor.getGenericParameterTypes()[i]);
                     for (Annotation annotation : constructor.getParameterAnnotations()[i]) {
                         if (annotation.annotationType().equals(QueryType.class)) {
-                            QueryType queryType = (QueryType)annotation;
+                            QueryType queryType = (QueryType) annotation;
                             parameterType = parameterType.as(TypeCategory.valueOf(queryType.value().name()));
                         }
                     }
@@ -459,7 +459,7 @@ public class GenericExporter {
             if (propertyType instanceof EntityType && !allTypes.containsKey(ClassUtils.getFullName(type))) {
                 String fullName = ClassUtils.getFullName(type);
                 if (!allTypes.containsKey(fullName)) {
-                    allTypes.put(fullName, (EntityType)propertyType);
+                    allTypes.put(fullName, (EntityType) propertyType);
                 }
             }
         }
@@ -561,6 +561,8 @@ public class GenericExporter {
 
 
     /**
+     * Return the set of generated files
+     *
      * @return a set of generated files
      */
     public Set<File> getGeneratedFiles() {
@@ -570,7 +572,7 @@ public class GenericExporter {
     /**
      * Set the entity annotation
      *
-     * @param entityAnnotation
+     * @param entityAnnotation entity annotation
      */
     public void setEntityAnnotation(Class<? extends Annotation> entityAnnotation) {
         this.entityAnnotation = entityAnnotation;
@@ -579,7 +581,7 @@ public class GenericExporter {
     /**
      * Set the supertype annotation
      *
-     * @param supertypeAnnotation
+     * @param supertypeAnnotation supertype annotation
      */
     public void setSupertypeAnnotation(
             Class<? extends Annotation> supertypeAnnotation) {
@@ -589,7 +591,7 @@ public class GenericExporter {
     /**
      * Set the embeddable annotation
      *
-     * @param embeddableAnnotation
+     * @param embeddableAnnotation embeddable annotation
      */
     public void setEmbeddableAnnotation(
             Class<? extends Annotation> embeddableAnnotation) {
@@ -599,7 +601,7 @@ public class GenericExporter {
     /**
      * Set the embedded annotation
      *
-     * @param embeddedAnnotation
+     * @param embeddedAnnotation embedded annotation
      */
     public void setEmbeddedAnnotation(Class<? extends Annotation> embeddedAnnotation) {
         this.embeddedAnnotation = embeddedAnnotation;
@@ -608,7 +610,7 @@ public class GenericExporter {
     /**
      * Set the skip annotation
      *
-     * @param skipAnnotation
+     * @param skipAnnotation skip annotation
      */
     public void setSkipAnnotation(Class<? extends Annotation> skipAnnotation) {
         this.skipAnnotation = skipAnnotation;
@@ -728,7 +730,7 @@ public class GenericExporter {
      *
      * @param annotationHelper
      */
-    public void addAnnotationHelper(AnnotationHelper annotationHelper){
+    public void addAnnotationHelper(AnnotationHelper annotationHelper) {
         annotationHelpers.add(annotationHelper);
     }
 }

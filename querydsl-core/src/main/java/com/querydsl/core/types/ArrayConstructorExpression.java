@@ -38,13 +38,13 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
 
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Expression<?>... args) {
-        this((Class)Object[].class, (Expression[])args);
+        this((Class) Object[].class, (Expression[]) args);
     }
 
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Class<T[]> type, Expression<T>... args) {
         super(type);
-        this.elementType = (Class<T>)type.getComponentType();
+        this.elementType = (Class<T>) type.getComponentType();
         this.args = ImmutableList.<Expression<?>>copyOf(args);
     }
 
@@ -61,7 +61,7 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
     @Override
     public T[] newInstance(Object... a) {
         if (a.getClass().getComponentType().equals(elementType)) {
-            return (T[])a;
+            return (T[]) a;
         } else {
             T[] rv = (T[]) Array.newInstance(elementType, a.length);
             System.arraycopy(a, 0, rv, 0, a.length);
@@ -79,7 +79,7 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
         if (obj == this) {
             return true;
         } else if (obj instanceof FactoryExpression<?>) {
-            FactoryExpression<?> c = (FactoryExpression<?>)obj;
+            FactoryExpression<?> c = (FactoryExpression<?>) obj;
             return args.equals(c.getArgs()) && getType().equals(c.getType());
         } else {
             return false;

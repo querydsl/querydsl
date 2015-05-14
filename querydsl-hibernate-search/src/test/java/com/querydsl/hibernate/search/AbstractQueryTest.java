@@ -36,7 +36,7 @@ public abstract class AbstractQueryTest {
     private static SessionFactory sessionFactory;
 
     @BeforeClass
-    public static void setUpClass() throws IOException{
+    public static void setUpClass() throws IOException {
         FileUtils.delete(new File("target/derbydb"));
         FileUtils.delete(new File("target/lucene3"));
         AnnotationConfiguration cfg = new AnnotationConfiguration();
@@ -79,7 +79,7 @@ public abstract class AbstractQueryTest {
     }
 
     @After
-    public void tearDown() throws HibernateException, SQLException{
+    public void tearDown() throws HibernateException, SQLException {
         if (!session.getTransaction().wasRolledBack()) {
             session.getTransaction().commit();
         }

@@ -115,7 +115,7 @@ public class GenericTest extends AbstractTest {
         SimpleType2<?> prop4;
     }
 
-    public static class Amount<T>{
+    public static class Amount<T> {
 
     }
 

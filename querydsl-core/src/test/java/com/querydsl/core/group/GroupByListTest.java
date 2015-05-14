@@ -65,7 +65,7 @@ public class GroupByListTest extends AbstractGroupByTest {
 
     }
 
-    @Test(expected=NoSuchElementException.class)
+    @Test(expected = NoSuchElementException.class)
     public void NoSuchElementException() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
@@ -76,7 +76,7 @@ public class GroupByListTest extends AbstractGroupByTest {
         group.getSet(qComment);
     }
 
-    @Test(expected=ClassCastException.class)
+    @Test(expected = ClassCastException.class)
     public void ClassCastException() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));

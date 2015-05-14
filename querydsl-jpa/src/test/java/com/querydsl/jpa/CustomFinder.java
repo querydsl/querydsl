@@ -32,13 +32,13 @@ import com.querydsl.jpa.impl.JPAQuery;
  */
 public final class CustomFinder {
 
-    private CustomFinder() {}
+    private CustomFinder() { }
 
     public static <T> List<T> findCustom(EntityManager em, Class<T> entityClass,Map<String,?> filters, String sort) {
         EntityPath<T> entityPath = new EntityPathBase<T>(entityClass, "entity");
         BooleanBuilder builder = new BooleanBuilder();
         for (Map.Entry<String, ?> entry : filters.entrySet()) {
-            SimplePath<Object> property = Expressions.path((Class)entry.getValue().getClass(), entityPath, entry.getKey());
+            SimplePath<Object> property = Expressions.path((Class) entry.getValue().getClass(), entityPath, entry.getKey());
             builder.and(property.eq(entry.getValue()));
         }
         ComparablePath<?> sortProperty = Expressions.comparablePath(Comparable.class, entityPath, sort);

@@ -40,7 +40,7 @@ public class LineStringOperation<T extends LineString> extends LineStringExpress
 
     protected LineStringOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
-        this.opMixin = (OperationImpl<T>)mixin;
+        this.opMixin = (OperationImpl<T>) mixin;
     }
 
     @Override

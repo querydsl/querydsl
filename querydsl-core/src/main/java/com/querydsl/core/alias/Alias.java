@@ -303,7 +303,7 @@ public final class Alias {
         if (rv != null) {
             return rv;
         } else if (arg instanceof EntityPath<?>) {
-            return (EntityPathBase<D>)arg; //NOSONAR
+            return (EntityPathBase<D>) arg; //NOSONAR
         } else if (arg instanceof ManagedObject) {
             return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
         } else {
@@ -318,7 +318,7 @@ public final class Alias {
         if (rv != null) {
             return rv;
         } else if (arg instanceof Path<?>) {
-            return (P)arg;
+            return (P) arg;
         } else if (arg instanceof ManagedObject) {
             return (P) ((ManagedObject) arg).__mappedPath();
         } else {
@@ -406,7 +406,7 @@ public final class Alias {
      */
     @SuppressWarnings("unchecked")
     public static <D extends Comparable<?>> ComparablePath<D> var(D arg) {
-        return Expressions.comparablePath((Class<D>)arg.getClass(), "var"+arg);
+        return Expressions.comparablePath((Class<D>) arg.getClass(), "var" + arg);
     }
 
     /**
@@ -418,7 +418,7 @@ public final class Alias {
      */
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<D>> NumberPath<D> var(D arg) {
-        return Expressions.numberPath((Class<D>)arg.getClass(), "var" + arg.getClass().getSimpleName() + arg);
+        return Expressions.numberPath((Class<D>) arg.getClass(), "var" + arg.getClass().getSimpleName() + arg);
     }
 
     /**
@@ -430,8 +430,8 @@ public final class Alias {
      */
     @SuppressWarnings("unchecked")
     public static <D> EntityPathBase<D> var(D arg) {
-        String var = "var"+ arg.getClass().getSimpleName() + "_" + arg.toString().replace(' ', '_');
-        return new PathBuilder<D>((Class)arg.getClass(), var);
+        String var = "var" + arg.getClass().getSimpleName() + "_" + arg.toString().replace(' ', '_');
+        return new PathBuilder<D>((Class) arg.getClass(), var);
     }
 
     /**
@@ -444,6 +444,6 @@ public final class Alias {
         return Expressions.stringPath(arg.replace(' ', '_'));
     }
 
-    private Alias() {}
+    private Alias() { }
 
 }

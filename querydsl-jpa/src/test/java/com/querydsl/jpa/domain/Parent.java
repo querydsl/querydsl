@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity(name="Parent2")
+@Entity(name = "Parent2")
 public class Parent {
 
     @Id

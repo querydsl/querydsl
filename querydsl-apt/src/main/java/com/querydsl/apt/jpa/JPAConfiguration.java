@@ -123,7 +123,7 @@ public class JPAConfiguration extends DefaultConfiguration {
                     return types.getDeclaredType(typeElement, typeArg);
                 } else if (typeElement.getTypeParameters().size() == 2) {
                     if (element.asType() instanceof DeclaredType) {
-                        TypeMirror first = ((DeclaredType)element.asType()).getTypeArguments().get(0);
+                        TypeMirror first = ((DeclaredType) element.asType()).getTypeArguments().get(0);
                         return types.getDeclaredType(typeElement, first, typeArg);
                     }
                 }

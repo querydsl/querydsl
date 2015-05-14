@@ -14,6 +14,8 @@
 package com.querydsl.sql.codegen.support;
 
 /**
+ * {@code IndexData} defines index data
+ *
  * @author tiwe
  *
  */

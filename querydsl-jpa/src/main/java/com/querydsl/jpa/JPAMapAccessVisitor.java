@@ -40,7 +40,7 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
             ParameterizedExpression map = (ParameterizedExpression<?>) expr.getArg(0);
             Expression key = expr.getArg(1);
             Path replacement = ExpressionUtils.path(map.getParameter(1),
-                    ExpressionUtils.createRootVariable((Path<?>)map, Math.abs(expr.hashCode())));
+                    ExpressionUtils.createRootVariable((Path<?>) map, Math.abs(expr.hashCode())));
             metadata.addJoin(JoinType.LEFTJOIN, ExpressionUtils.as(map, replacement));
             metadata.addJoinCondition(ExpressionUtils.eq(
                     Expressions.operation(map.getParameter(0), JPQLOps.KEY, replacement),

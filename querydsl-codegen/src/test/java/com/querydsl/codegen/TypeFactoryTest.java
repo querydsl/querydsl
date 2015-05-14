@@ -39,7 +39,7 @@ public class TypeFactoryTest {
 
     List<? extends Expression<?>> field4;
 
-    enum EnumExample { FIRST, SECOND}
+    enum EnumExample { FIRST, SECOND }
 
     static class Entity<A> {
 
@@ -56,7 +56,7 @@ public class TypeFactoryTest {
     private TypeFactory factory = new TypeFactory();
 
     @Test
-    public void InnerClass_Field() throws SecurityException, NoSuchFieldException{
+    public void InnerClass_Field() throws SecurityException, NoSuchFieldException {
         Field field = Entity.class.getDeclaredField("field");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -99,7 +99,7 @@ public class TypeFactoryTest {
         Field field = EmbeddedTest.AbstractEntity.class.getDeclaredField("code");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertTrue(type instanceof TypeExtends);
-        assertEquals("C", ((TypeExtends)type).getVarName());
+        assertEquals("C", ((TypeExtends) type).getVarName());
     }
 
     @Test
@@ -122,7 +122,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Generics_WildCard() throws SecurityException, NoSuchFieldException{
+    public void Generics_WildCard() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -131,7 +131,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Generics_Object() throws SecurityException, NoSuchFieldException{
+    public void Generics_Object() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field2");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -155,7 +155,7 @@ public class TypeFactoryTest {
         assertEquals(Expression.class, parameter.getJavaClass());
         parameter = parameter.getParameters().get(0);
         assertEquals(TypeExtends.class, parameter.getClass());
-        assertNull(((TypeExtends)parameter).getVarName());
+        assertNull(((TypeExtends) parameter).getVarName());
     }
 
     @Test
@@ -163,13 +163,13 @@ public class TypeFactoryTest {
         Type type = factory.getEntityType(ComparableEntity.class);
         //ComparableEntity<T extends Comparable<? super T>> implements Serializable
         assertEquals(1, type.getParameters().size());
-        TypeExtends t = (TypeExtends)type.getParameters().get(0);
+        TypeExtends t = (TypeExtends) type.getParameters().get(0);
         assertEquals("T", t.getVarName());
         assertEquals(1, t.getParameters().size());
     }
 
     @Test
-    public void RawField() throws SecurityException, NoSuchFieldException{
+    public void RawField() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field3");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -177,7 +177,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Extends() throws SecurityException, NoSuchFieldException{
+    public void Extends() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field4");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());

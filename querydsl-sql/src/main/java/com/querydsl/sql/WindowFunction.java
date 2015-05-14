@@ -118,7 +118,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
         if (o == this) {
             return true;
         } else if (o instanceof WindowFunction) {
-            WindowFunction<?> so = (WindowFunction<?>)o;
+            WindowFunction<?> so = (WindowFunction<?>) o;
             return so.target.equals(target)
                 && so.partitionBy.equals(partitionBy)
                 && so.orderBy.equals(orderBy);

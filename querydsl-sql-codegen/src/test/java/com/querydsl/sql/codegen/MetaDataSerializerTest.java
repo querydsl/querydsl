@@ -27,11 +27,11 @@ import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.AbstractJDBCTest;
 
-public class MetaDataSerializerTest extends AbstractJDBCTest{
+public class MetaDataSerializerTest extends AbstractJDBCTest {
 
     @Override
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException{
+    public void setUp() throws SQLException, ClassNotFoundException {
         super.setUp();
         statement.execute("drop table employee if exists");
         statement.execute("drop table survey if exists");
@@ -69,7 +69,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
     }
 
     @Test
-    public void Normal_serialization() throws SQLException{
+    public void Normal_serialization() throws SQLException {
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         // customization of serialization
@@ -88,7 +88,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, null, null, classes.toArray(new String[classes.size()]));
-        if(compilationResult == 0) {
+        if (compilationResult == 0) {
             System.out.println("Compilation is successful");
         } else {
             Assert.fail("Compilation Failed");

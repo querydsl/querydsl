@@ -22,52 +22,52 @@ package com.querydsl.core.annotations;
  */
 public enum PropertyType {
     /**
-     *
+     * Comparable
      */
     COMPARABLE,
 
     /**
-     *
+     * Enum
      */
     ENUM,
 
     /**
-     *
+     * Date
      */
     DATE,
 
     /**
-     *
+     * Datetime
      */
     DATETIME,
 
     /**
-     *
+     * None
      */
     NONE,
 
     /**
-     *
+     * Numeric
      */
     NUMERIC,
 
     /**
-     *
+     * Simple
      */
     SIMPLE,
 
     /**
-     *
+     * String
      */
     STRING,
 
     /**
-     *
+     * Time
      */
     TIME,
 
     /**
-     *
+     * Entity
      */
     ENTITY,
 

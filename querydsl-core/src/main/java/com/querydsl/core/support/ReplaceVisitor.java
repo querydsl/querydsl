@@ -66,7 +66,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
             return expr;
         } else {
             PathMetadata metadata = expr.getMetadata();
-            Path<?> parent = (Path)metadata.getParent().accept(this, context);
+            Path<?> parent = (Path) metadata.getParent().accept(this, context);
             Object element = metadata.getElement();
             if (element instanceof Expression<?>) {
                 element = ((Expression<?>) element).accept(this, context);
@@ -95,12 +95,12 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         }
         Predicate having = expr.getMetadata().getHaving();
         if (having != null) {
-            md.addHaving((Predicate)having.accept(this, context));
+            md.addHaving((Predicate) having.accept(this, context));
         }
         for (JoinExpression je : expr.getMetadata().getJoins()) {
             md.addJoin(je.getType(), je.getTarget().accept(this, context));
             if (je.getCondition() != null) {
-                md.addJoinCondition((Predicate)je.getCondition().accept(this, context));
+                md.addJoinCondition((Predicate) je.getCondition().accept(this, context));
             }
             for (JoinFlag jf : je.getFlags()) {
                 md.addJoinFlag(new JoinFlag(jf.getFlag().accept(this, context), jf.getPosition()));
@@ -117,14 +117,14 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         }
         for (Map.Entry<ParamExpression<?>, Object> entry : expr.getMetadata().getParams()
                 .entrySet()) {
-            md.setParam((ParamExpression)entry.getKey().accept(this, context), entry.getValue());
+            md.setParam((ParamExpression) entry.getKey().accept(this, context), entry.getValue());
         }
         if (expr.getMetadata().getProjection() != null) {
             md.setProjection(expr.getMetadata().getProjection().accept(this, context));
         }
         Predicate where = expr.getMetadata().getWhere();
         if (where != null) {
-           md.addWhere((Predicate)where.accept(this, context));
+           md.addWhere((Predicate) where.accept(this, context));
         }
         if (expr.getMetadata().equals(md)) {
             return expr;
@@ -138,7 +138,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         ImmutableList.Builder builder = ImmutableList.builder();
         for (Object arg : expr.getArgs()) {
             if (arg instanceof Expression) {
-                builder.add(((Expression<?>)arg).accept(this, context));
+                builder.add(((Expression<?>) arg).accept(this, context));
             } else {
                 builder.add(arg);
             }

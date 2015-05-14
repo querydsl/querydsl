@@ -22,7 +22,7 @@ import com.querydsl.core.types.dsl.PathInits;
 
 public class TypeCastTest {
 
-    @Test(expected=IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     @Ignore
     public void Cast() {
         QAnimal animal = QAnimal.animal;

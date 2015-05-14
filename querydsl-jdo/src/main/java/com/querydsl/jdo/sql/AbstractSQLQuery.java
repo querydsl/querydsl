@@ -78,7 +78,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                             boolean detach) {
         super(new QueryMixin<Q>(metadata, false), conf);
         this.queryMixin = super.queryMixin;
-        this.queryMixin.setSelf((Q)this);
+        this.queryMixin.setSelf((Q) this);
         this.persistenceManager = persistenceManager;
         this.detach = detach;
     }
@@ -125,7 +125,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         if (!forCount) {
             Expression<?> projection = queryMixin.getMetadata().getProjection();
             if (projection instanceof FactoryExpression) {
-                this.projection = (FactoryExpression<?>)projection;
+                this.projection = (FactoryExpression<?>) projection;
             }
         } else {
             query.setResultClass(Long.class);
@@ -147,7 +147,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         if (row == null) {
             return null;
         } else if (row.getClass().isArray()) {
-            return expr.newInstance((Object[])row);
+            return expr.newInstance((Object[]) row);
         } else {
             return expr.newInstance(row);
         }
@@ -165,10 +165,10 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         }
         if (projection != null && !forCount) {
             if (rv instanceof List) {
-                List<?> original = (List<?>)rv;
+                List<?> original = (List<?>) rv;
                 rv = Lists.newArrayList();
                 for (Object o : original) {
-                    ((List)rv).add(project(projection, o));
+                    ((List) rv).add(project(projection, o));
                 }
             } else {
                 rv = project(projection, rv);
@@ -191,7 +191,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public List<T> fetch() {
         Object rv = execute(createQuery(false), false);
         reset();
-        return rv instanceof List ? (List<T>)rv : Collections.singletonList((T) rv);
+        return rv instanceof List ? (List<T>) rv : Collections.singletonList((T) rv);
     }
 
     @Override
@@ -236,7 +236,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         reset();
         Object rv = execute(query, false);
         if (rv instanceof List) {
-            List<?> list = (List<?>)rv;
+            List<?> list = (List<?>) rv;
             if (!list.isEmpty()) {
                 if (list.size() > 1) {
                     throw new NonUniqueResultException();

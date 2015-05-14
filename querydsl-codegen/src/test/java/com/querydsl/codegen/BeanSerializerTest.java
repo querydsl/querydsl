@@ -45,7 +45,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Annotations() throws IOException{
+    public void Annotations() throws IOException {
         type.addAnnotation(new QueryEntityImpl());
 
         BeanSerializer serializer = new BeanSerializer();
@@ -57,7 +57,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Annotated_Property() throws IOException{
+    public void Annotated_Property() throws IOException {
         Property property = new Property(type, "entityField", type);
         property.addAnnotation(new QueryEntityImpl());
         type.addProperty(property);
@@ -71,7 +71,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Annotated_Property_Not_Serialized() throws IOException{
+    public void Annotated_Property_Not_Serialized() throws IOException {
         Property property = new Property(type, "entityField", type);
         property.addAnnotation(new QueryEntityImpl());
         type.addProperty(property);
@@ -85,7 +85,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Capitalization() throws IOException{
+    public void Capitalization() throws IOException {
         // property
         type.addProperty(new Property(type, "cId", type));
 
@@ -111,7 +111,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void ToString() throws IOException{
+    public void ToString() throws IOException {
         // property
         type.addProperty(new Property(type, "entityField", type));
         type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));
@@ -129,7 +129,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void FullConstructor() throws IOException{
+    public void FullConstructor() throws IOException {
         // property
         type.addProperty(new Property(type, "entityField", type));
         type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));
@@ -145,7 +145,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Properties() throws IOException{
+    public void Properties() throws IOException {
         // property
         type.addProperty(new Property(type, "entityField", type));
         type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));

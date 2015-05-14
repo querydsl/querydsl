@@ -35,10 +35,10 @@ import com.querydsl.core.types.Expression;
 public class PackageVerification {
 
     @Test
-    public void Verify_Package() throws Exception{
+    public void Verify_Package() throws Exception {
         String version = System.getProperty("version");
-        verify(new File("target/querydsl-jpa-"+version+"-apt-hibernate-one-jar.jar"), true);
-        verify(new File("target/querydsl-jpa-"+version+"-apt-one-jar.jar"), false);
+        verify(new File("target/querydsl-jpa-" + version + "-apt-hibernate-one-jar.jar"), true);
+        verify(new File("target/querydsl-jpa-" + version + "-apt-one-jar.jar"), false);
     }
 
     private void verify(File oneJar, boolean hibernateDeps) throws Exception {

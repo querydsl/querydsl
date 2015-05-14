@@ -31,14 +31,14 @@ public class ConstructorTest {
     @QueryEntity
     public static class Category<T extends Category<T>> extends CategorySuperclass {
 
-        public Category(int i) {}
+        public Category(int i) { }
 
     }
 
     @QueryEntity
     public static class ClassWithConstructor {
 
-        public ClassWithConstructor() {}
+        public ClassWithConstructor() { }
 
     }
 

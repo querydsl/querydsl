@@ -33,7 +33,7 @@ public class NativeSQLSerializerTest {
         @Column
         private String name;
 
-        @Column(name="first_name")
+        @Column(name = "first_name")
         private String firstName;
     }
 

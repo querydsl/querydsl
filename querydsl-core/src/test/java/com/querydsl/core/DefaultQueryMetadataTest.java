@@ -58,7 +58,7 @@ public class DefaultQueryMetadataTest {
     }
 
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void Validation() {
         metadata.addWhere(str.isNull());
     }

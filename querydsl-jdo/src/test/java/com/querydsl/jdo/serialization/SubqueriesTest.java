@@ -21,7 +21,7 @@ import org.junit.Test;
 import com.querydsl.jdo.models.company.QDepartment;
 import com.querydsl.jdo.models.company.QEmployee;
 
-public class SubqueriesTest extends AbstractTest{
+public class SubqueriesTest extends AbstractTest {
 
     private QDepartment department = QDepartment.department;
 

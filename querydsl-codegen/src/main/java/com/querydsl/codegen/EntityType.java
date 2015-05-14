@@ -110,7 +110,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         if (o == this) {
             return true;
         } else if (o instanceof Type) {
-            return getFullName().equals(((Type)o).getFullName());
+            return getFullName().equals(((Type) o).getFullName());
         } else {
             return false;
         }

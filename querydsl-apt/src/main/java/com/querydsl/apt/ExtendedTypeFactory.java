@@ -103,13 +103,13 @@ final class ExtendedTypeFactory {
         @Override
         public Type visitDeclared(DeclaredType declaredType, Boolean p) {
             if (declaredType.asElement() instanceof TypeElement) {
-                TypeElement typeElement = (TypeElement)declaredType.asElement();
-                switch(typeElement.getKind()) {
-                case ENUM:      return createEnumType(declaredType, typeElement, p);
-                case ANNOTATION_TYPE:
-                case CLASS:     return createClassType(declaredType, typeElement, p);
-                case INTERFACE: return createInterfaceType(declaredType, typeElement, p);
-                default: throw new IllegalArgumentException("Illegal type " + typeElement);
+                TypeElement typeElement = (TypeElement) declaredType.asElement();
+                switch (typeElement.getKind()) {
+                    case ENUM:      return createEnumType(declaredType, typeElement, p);
+                    case ANNOTATION_TYPE:
+                    case CLASS:     return createClassType(declaredType, typeElement, p);
+                    case INTERFACE: return createInterfaceType(declaredType, typeElement, p);
+                    default: throw new IllegalArgumentException("Illegal type " + typeElement);
                 }
             } else {
                 throw new IllegalArgumentException("Unsupported element type " + declaredType.asElement());
@@ -369,9 +369,9 @@ final class ExtendedTypeFactory {
                     type = superType;
                 }
             }
-            typeElement = (TypeElement)env.getTypeUtils().asElement(type);
+            typeElement = (TypeElement) env.getTypeUtils().asElement(type);
             if (type instanceof DeclaredType) {
-                arguments = ((DeclaredType)type).getTypeArguments();
+                arguments = ((DeclaredType) type).getTypeArguments();
             }
         }
 
@@ -380,7 +380,7 @@ final class ExtendedTypeFactory {
         TypeMirror superType = typeElement.getSuperclass();
         TypeElement superTypeElement = null;
         if (superType instanceof DeclaredType) {
-            superTypeElement = (TypeElement) ((DeclaredType)superType).asElement();
+            superTypeElement = (TypeElement) ((DeclaredType) superType).asElement();
         }
 
         // entity type
@@ -468,7 +468,7 @@ final class ExtendedTypeFactory {
         if (value != null) {
             EntityType entityType = null;
             if (value instanceof EntityType) {
-                entityType = (EntityType)value;
+                entityType = (EntityType) value;
             } else {
                 entityType = new EntityType(value);
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
@@ -535,14 +535,14 @@ final class ExtendedTypeFactory {
         Set<Type> superTypes = Collections.emptySet();
         typeMirror = normalize(typeMirror);
         if (typeMirror.getKind() == TypeKind.DECLARED) {
-            DeclaredType declaredType = (DeclaredType)typeMirror;
-            TypeElement e = (TypeElement)declaredType.asElement();
+            DeclaredType declaredType = (DeclaredType) typeMirror;
+            TypeElement e = (TypeElement) declaredType.asElement();
             // class
             if (e.getKind() == ElementKind.CLASS) {
                 if (e.getSuperclass().getKind() != TypeKind.NONE) {
                     TypeMirror supertype = normalize(e.getSuperclass());
                     if (supertype instanceof DeclaredType
-                            && ((DeclaredType)supertype).asElement().getAnnotation(QueryExclude.class) != null) {
+                            && ((DeclaredType) supertype).asElement().getAnnotation(QueryExclude.class) != null) {
                         return Collections.emptySet();
                     } else {
                         Type superClass = getType(supertype, deep);
@@ -586,12 +586,12 @@ final class ExtendedTypeFactory {
 
     private TypeMirror normalize(TypeMirror type) {
         if (type.getKind() == TypeKind.TYPEVAR) {
-            TypeVariable typeVar = (TypeVariable)type;
+            TypeVariable typeVar = (TypeVariable) type;
             if (typeVar.getUpperBound() != null) {
                 return typeVar.getUpperBound();
             }
         } else if (type.getKind() == TypeKind.WILDCARD) {
-            WildcardType wildcard = (WildcardType)type;
+            WildcardType wildcard = (WildcardType) type;
             if (wildcard.getExtendsBound() != null) {
                 return wildcard.getExtendsBound();
             }

@@ -26,7 +26,7 @@ import com.google.common.collect.ImmutableList;
  */
 public final class Keywords {
 
-    private Keywords() {}
+    private Keywords() { }
 
     public static final Collection<String> JPA = ImmutableList.of(
             "ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",

@@ -18,7 +18,7 @@ import static com.querydsl.jpa.Constants.*;
 
 import org.junit.Test;
 
-public class JoinFlagsTest extends AbstractQueryTest{
+public class JoinFlagsTest extends AbstractQueryTest {
 
     @Test
     public void FetchAll() {

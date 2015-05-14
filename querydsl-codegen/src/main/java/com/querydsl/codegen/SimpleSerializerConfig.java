@@ -21,7 +21,7 @@ import com.querydsl.core.annotations.Config;
  * @author tiwe
  *
  */
-public final class SimpleSerializerConfig implements SerializerConfig{
+public final class SimpleSerializerConfig implements SerializerConfig {
 
     public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true, "");
 

@@ -34,7 +34,7 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
 
     @SuppressWarnings("unchecked")
     public AbstractGroupExpression(Class<? super R> type, Expression<T> expr) {
-        this.type = (Class)type;
+        this.type = (Class) type;
         this.expr = expr;
     }
 
@@ -69,7 +69,7 @@ public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T
     @Override
     public boolean equals(Object o) {
         if (o != null && getClass().equals(o.getClass())) {
-            return ((GroupExpression<?,?>)o).getExpression().equals(expr);
+            return ((GroupExpression<?,?>) o).getExpression().equals(expr);
         } else {
             return false;
         }

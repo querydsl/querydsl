@@ -28,6 +28,8 @@ import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
 
 /**
+ * {@code KeyDataFactory} is a factory for table key data
+ *
  * @author tiwe
  *
  */
@@ -67,10 +69,10 @@ public class KeyDataFactory {
     }
 
     public Map<String, InverseForeignKeyData> getExportedKeys(DatabaseMetaData md,
-            String catalog, String schema, String tableName) throws SQLException{
+            String catalog, String schema, String tableName) throws SQLException {
         ResultSet foreignKeys = md.getExportedKeys(catalog, schema, tableName);
         Map<String,InverseForeignKeyData> inverseForeignKeyData = new HashMap<String,InverseForeignKeyData>();
-        try{
+        try {
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
                 String parentColumnName = namingStrategy.normalizeColumnName(foreignKeys.getString(FK_PARENT_COLUMN_NAME));
@@ -90,7 +92,7 @@ public class KeyDataFactory {
                 data.add(parentColumnName, foreignColumn);
             }
             return inverseForeignKeyData;
-        }finally{
+        } finally {
             foreignKeys.close();
         }
     }
@@ -99,7 +101,7 @@ public class KeyDataFactory {
             String catalog, String schema, String tableName) throws SQLException {
         ResultSet foreignKeys = md.getImportedKeys(catalog, schema, tableName);
         Map<String,ForeignKeyData> foreignKeyData = new HashMap<String,ForeignKeyData>();
-        try{
+        try {
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
                 String parentSchemaName = namingStrategy.normalizeSchemaName(foreignKeys.getString(FK_PARENT_SCHEMA_NAME));
@@ -119,7 +121,7 @@ public class KeyDataFactory {
                 data.add(foreignColumn, parentColumnName);
             }
             return foreignKeyData;
-        }finally{
+        } finally {
             foreignKeys.close();
         }
     }
@@ -128,7 +130,7 @@ public class KeyDataFactory {
             String catalog, String schema, String tableName) throws SQLException {
         ResultSet primaryKeys = md.getPrimaryKeys(catalog, schema, tableName);
         Map<String,PrimaryKeyData> primaryKeyData = new HashMap<String,PrimaryKeyData>();
-        try{
+        try {
             while (primaryKeys.next()) {
                 String name = primaryKeys.getString(PK_NAME);
                 String columnName = primaryKeys.getString(PK_COLUMN_NAME);
@@ -144,7 +146,7 @@ public class KeyDataFactory {
                 data.add(columnName);
             }
             return primaryKeyData;
-        }finally{
+        } finally {
             primaryKeys.close();
         }
     }

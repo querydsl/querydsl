@@ -21,17 +21,17 @@ import javax.persistence.*;
  * The Class Show.
  */
 @Entity
-@Table(name="show_")
+@Table(name = "show_")
 public class Show {
 
     @Id
     long id;
 
     @ElementCollection
-    @MapKeyColumn(name="acts_key")
+    @MapKeyColumn(name = "acts_key")
     public Map<String, String> acts;
 
-    public Show() {}
+    public Show() { }
 
     public Show(int id) {
         this.id = id;

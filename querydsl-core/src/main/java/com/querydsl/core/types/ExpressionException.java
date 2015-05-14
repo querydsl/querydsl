@@ -19,7 +19,7 @@ package com.querydsl.core.types;
  * @author tiwe
  *
  */
-public class ExpressionException extends RuntimeException{
+public class ExpressionException extends RuntimeException {
 
     private static final long serialVersionUID = 6031724386976562965L;
 

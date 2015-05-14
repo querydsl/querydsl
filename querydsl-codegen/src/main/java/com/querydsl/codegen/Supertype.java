@@ -63,7 +63,7 @@ public class Supertype {
         if (o == this) {
             return true;
         } else if (o instanceof Supertype) {
-            return ((Supertype)o).type.equals(type);
+            return ((Supertype) o).type.equals(type);
         } else {
             return false;
         }

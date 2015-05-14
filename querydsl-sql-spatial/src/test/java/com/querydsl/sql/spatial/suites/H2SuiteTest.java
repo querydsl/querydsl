@@ -9,7 +9,7 @@ import com.querydsl.sql.suites.AbstractSuite;
 
 public class H2SuiteTest extends AbstractSuite {
 
-    public static class Spatial extends SpatialBase {}
+    public static class Spatial extends SpatialBase { }
 
     @BeforeClass
     public static void setUp() throws Exception {

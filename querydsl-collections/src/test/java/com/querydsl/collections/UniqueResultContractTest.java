@@ -18,9 +18,9 @@ import org.junit.Test;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.types.Expression;
 
-public class UniqueResultContractTest extends AbstractQueryTest{
+public class UniqueResultContractTest extends AbstractQueryTest {
 
-    @Test(expected=NonUniqueResultException.class)
+    @Test(expected = NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results() {
         CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).fetchOne();
     }

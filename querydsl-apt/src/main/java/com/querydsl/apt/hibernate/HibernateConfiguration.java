@@ -52,7 +52,7 @@ public class HibernateConfiguration extends JPAConfiguration {
             List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
             annotations.addAll(super.getAnnotations());
             for (String simpleName : Arrays.asList("Type", "Cascade", "LazyCollection", "OnDelete")) {
-                annotations.add((Class<? extends Annotation>) Class.forName("org.hibernate.annotations."+simpleName));
+                annotations.add((Class<? extends Annotation>) Class.forName("org.hibernate.annotations." + simpleName));
             }
             return annotations;
         } catch (ClassNotFoundException e) {

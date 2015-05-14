@@ -40,7 +40,7 @@ final class SpatialSupport {
         additions.put("PolyHedralSurface", "PolyhedralSurfacePath");
         for (Map.Entry<String, String> entry : additions.entrySet()) {
             typeMappings.register(
-                    new SimpleType("org.geolatte.geom."+ entry.getKey()),
+                    new SimpleType("org.geolatte.geom." + entry.getKey()),
                     new SimpleType("com.querydsl.spatial." + entry.getValue()));
         }
     }
@@ -58,7 +58,7 @@ final class SpatialSupport {
         additions.put("Polygon", "JTSPolygonPath");
         for (Map.Entry<String, String> entry : additions.entrySet()) {
             typeMappings.register(
-                    new SimpleType("com.vividsolutions.jts.geom."+ entry.getKey()),
+                    new SimpleType("com.vividsolutions.jts.geom." + entry.getKey()),
                     new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
         }
     }
@@ -83,5 +83,5 @@ final class SpatialSupport {
         addImports(module,"com.querydsl.spatial.jts.path");
     }
 
-    private SpatialSupport() {}
+    private SpatialSupport() { }
 }

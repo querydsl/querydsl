@@ -10,12 +10,12 @@ import org.junit.Test;
 
 public class Generic10Test extends AbstractTest {
 
-    public interface Tradable {}
+    public interface Tradable { }
 
-    public interface Market<T extends Tradable> {}
+    public interface Market<T extends Tradable> { }
 
     @Entity
-    public static class FutureTrade implements Tradable {}
+    public static class FutureTrade implements Tradable { }
 
     @MappedSuperclass
     public abstract static class AbstractTradingMarket<T extends Tradable> implements Market<T> {
@@ -25,13 +25,13 @@ public class Generic10Test extends AbstractTest {
     }
 
     @Entity
-    public abstract static class AbstractFuturesMarket extends AbstractTradingMarket<FutureTrade> {}
+    public abstract static class AbstractFuturesMarket extends AbstractTradingMarket<FutureTrade> { }
 
     @Entity
-    public static class CommonFuturesMarket extends AbstractFuturesMarket {}
+    public static class CommonFuturesMarket extends AbstractFuturesMarket { }
 
     @Entity
-    public static class TradingMarketLedger<M extends Market<? extends Tradable>> {}
+    public static class TradingMarketLedger<M extends Market<? extends Tradable>> { }
 
     @Test
     public void test() {

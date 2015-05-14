@@ -118,7 +118,7 @@ public class LuceneSerializer {
             return ge(operation, metadata);
         } else if (op == LuceneOps.LUCENE_QUERY) {
             @SuppressWarnings("unchecked") //This is the expected type
-            Query rv = ((Constant<Query>)operation.getArg(0)).getConstant();
+            Query rv = ((Constant<Query>) operation.getArg(0)).getConstant();
             return rv;
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
@@ -368,7 +368,7 @@ public class LuceneSerializer {
             //this is not necessarily safe, but compile time checking
             //on the user side mandates these types to be interchangeable
             @SuppressWarnings("unchecked")
-            Class<Number> unboundedNumType = (Class<Number>)numType;
+            Class<Number> unboundedNumType = (Class<Number>) numType;
             return numericRange(unboundedNumType, field, minConstant == null ? null
                     : minConstant.getConstant(), maxConstant == null ? null
                             : maxConstant.getConstant(), minInc, maxInc);
@@ -420,11 +420,11 @@ public class LuceneSerializer {
 
     private Path<?> getPath(Expression<?> leftHandSide) {
         if (leftHandSide instanceof Path<?>) {
-            return (Path<?>)leftHandSide;
+            return (Path<?>) leftHandSide;
         } else if (leftHandSide instanceof Operation<?>) {
             Operation<?> operation = (Operation<?>) leftHandSide;
             if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
-                return (Path<?>)operation.getArg(0);
+                return (Path<?>) operation.getArg(0);
             }
         }
         throw new IllegalArgumentException("Unable to transform " + leftHandSide + " to path");
@@ -474,7 +474,7 @@ public class LuceneSerializer {
      */
     protected String[] convert(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
         if (rightHandSide instanceof Operation) {
-            Operation<?> operation = (Operation<?>)rightHandSide;
+            Operation<?> operation = (Operation<?>) rightHandSide;
             if (operation.getOperator() == LuceneOps.PHRASE) {
                 return Iterables.toArray(WS_SPLITTER.split(operation.getArg(0).toString()), String.class);
             } else if (operation.getOperator() == LuceneOps.TERM) {
@@ -490,7 +490,7 @@ public class LuceneSerializer {
             return convert(leftHandSide, value);
 
         } else if (rightHandSide instanceof Constant<?>) {
-            return convert(leftHandSide, ((Constant<?>)rightHandSide).getConstant());
+            return convert(leftHandSide, ((Constant<?>) rightHandSide).getConstant());
         } else {
             throw new IllegalArgumentException(rightHandSide.toString());
         }

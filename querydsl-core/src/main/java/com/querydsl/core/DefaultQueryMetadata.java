@@ -93,7 +93,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     /**
      * Create an empty DefaultQueryMetadata instance
      */
-    public DefaultQueryMetadata() {}
+    public DefaultQueryMetadata() { }
 
     /**
      * Disable validation
@@ -130,7 +130,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         if (e == null) {
             return;
         }
-        e = (Predicate)ExpressionUtils.extract(e);
+        e = (Predicate) ExpressionUtils.extract(e);
         if (e != null) {
             // having elements can't be validated, since they can refer to projection elements
             // that are declared later
@@ -154,7 +154,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void addJoin(JoinType joinType, Expression<?> expr) {
         addLastJoin();
         if (!exprInJoins.contains(expr)) {
-            if (expr instanceof Path && ((Path<?>)expr).getMetadata().isRoot()) {
+            if (expr instanceof Path && ((Path<?>) expr).getMetadata().isRoot()) {
                 exprInJoins = add(exprInJoins, expr);
             } else {
                 validate(expr);
@@ -193,7 +193,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             return;
         }
         addLastJoin();
-        e = (Predicate)ExpressionUtils.extract(e);
+        e = (Predicate) ExpressionUtils.extract(e);
         if (e != null) {
             validate(e);
             where = and(where, e);
@@ -366,7 +366,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public boolean equals(Object o) {
         if (o instanceof QueryMetadata) {
             addLastJoin();
-            QueryMetadata q = (QueryMetadata)o;
+            QueryMetadata q = (QueryMetadata) o;
             return q.getFlags().equals(flags)
                 && q.getGroupBy().equals(groupBy)
                 && Objects.equal(q.getHaving(), having)

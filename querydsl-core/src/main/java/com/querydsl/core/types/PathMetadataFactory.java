@@ -130,6 +130,6 @@ public final class PathMetadataFactory {
         return new PathMetadata(null, variable, PathType.VARIABLE);
     }
 
-    private PathMetadataFactory() {}
+    private PathMetadataFactory() { }
 
 }

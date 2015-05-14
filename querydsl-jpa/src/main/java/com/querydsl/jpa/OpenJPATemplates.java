@@ -22,7 +22,7 @@ import com.querydsl.core.types.PathType;
  * @author tiwe
  *
  */
-public class OpenJPATemplates extends JPQLTemplates{
+public class OpenJPATemplates extends JPQLTemplates {
 
     public static final OpenJPATemplates DEFAULT = new OpenJPATemplates();
 

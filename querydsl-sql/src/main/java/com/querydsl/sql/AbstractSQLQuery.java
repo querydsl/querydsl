@@ -91,7 +91,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      * @return this as alias
      */
     public SimpleExpression<T> as(Path<?> alias) {
-        return Expressions.as(this, (Path)alias);
+        return Expressions.as(this, (Path) alias);
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     @Nullable
     private <T> T get(ResultSet rs, Expression<?> expr, int i, Class<T> type) throws SQLException {
-        return configuration.get(rs, expr instanceof Path ? (Path<?>)expr : null, i, type);
+        return configuration.get(rs, expr instanceof Path ? (Path<?>) expr : null, i, type);
     }
 
     private void set(PreparedStatement stmt, Path<?> path, int i, Object value) throws SQLException {
@@ -289,7 +289,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                     public T produceNext(ResultSet rs) throws Exception {
                         Object[] rv = new Object[rs.getMetaData().getColumnCount()];
                         for (int i = 0; i < rv.length; i++) {
-                            rv[i] = rs.getObject(i+1);
+                            rv[i] = rs.getObject(i + 1);
                         }
                         return (T) rv;
                     }
@@ -361,9 +361,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                                 getLastCell = false;
                             }
                             for (int i = 0; i < row.length; i++) {
-                                row[i] = rs.getObject(i+1);
+                                row[i] = rs.getObject(i + 1);
                             }
-                            rv.add((T)row);
+                            rv.add((T) row);
                         }
                     } else {
                         while (rs.next()) {
@@ -420,7 +420,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                 long total;
                 if (!results.isEmpty()) {
                     if (lastCell instanceof Number) {
-                        total = ((Number)lastCell).longValue();
+                        total = ((Number) lastCell).longValue();
                     } else {
                         throw new IllegalStateException("Unsupported lastCell instance " + lastCell);
                     }
@@ -446,7 +446,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private <RT> RT newInstance(FactoryExpression<RT> c, ResultSet rs, int offset)
-        throws InstantiationException, IllegalAccessException, InvocationTargetException, SQLException{
+        throws InstantiationException, IllegalAccessException, InvocationTargetException, SQLException {
         Object[] args = new Object[c.getArgs().size()];
         for (int i = 0; i < args.length; i++) {
             args[i] = get(rs, c.getArgs().get(i), offset + i + 1, c.getArgs().get(i).getType());
@@ -474,7 +474,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                     }
                     o = params.get(o);
                 }
-                set(stmt, constantPaths.get(i), i+1, o);
+                set(stmt, constantPaths.get(i), i + 1, o);
             } catch (SQLException e) {
                 throw configuration.translate(e);
             }

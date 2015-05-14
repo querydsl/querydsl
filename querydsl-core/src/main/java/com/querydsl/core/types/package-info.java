@@ -13,6 +13,6 @@
  */
 
 /**
- * Contains Querydsl grammar types
+ * Expression types
  */
 package com.querydsl.core.types;

@@ -16,7 +16,7 @@ public class ExpressionSerializationTest {
         serialize(e.newInstance("a",1));
     }
 
-    private void serialize(Object obj) throws IOException, ClassNotFoundException{
+    private void serialize(Object obj) throws IOException, ClassNotFoundException {
         Object obj2 = Serialization.serialize(obj);
         obj2.hashCode();
     }

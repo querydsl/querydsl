@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import com.querydsl.jpa.domain.Cat;
 
-public class CollectionTest extends AbstractQueryTest{
+public class CollectionTest extends AbstractQueryTest {
 
     @Test
     public void Constant_InElements_Set() {

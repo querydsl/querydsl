@@ -16,6 +16,7 @@
   
   <properties>
     <character.encoding>UTF-8</character.encoding>
+    <checkstyle.skip>true</checkstyle.skip>
 
     <scala.version>2.10</scala.version>
     <scala.full.version>2.10.5</scala.full.version>

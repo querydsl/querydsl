@@ -20,7 +20,7 @@ import java.util.Locale;
 import javax.persistence.*;
 
 @Entity
-@Table(name="simpletypes_")
+@Table(name = "simpletypes_")
 public class SimpleTypes {
     transient int test;
     @Id

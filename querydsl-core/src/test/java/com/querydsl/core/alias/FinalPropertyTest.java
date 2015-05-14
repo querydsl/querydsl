@@ -17,7 +17,7 @@ import org.junit.Test;
 
 public class FinalPropertyTest {
 
-    public static class Entity{
+    public static class Entity {
 
         private Entity2 property;
 
@@ -31,7 +31,7 @@ public class FinalPropertyTest {
 
     }
 
-    public static final class Entity2{
+    public static final class Entity2 {
 
     }
 

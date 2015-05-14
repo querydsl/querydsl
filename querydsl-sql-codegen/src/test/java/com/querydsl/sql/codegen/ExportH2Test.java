@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 
 import com.querydsl.sql.Connections;
 
-public class ExportH2Test extends ExportBaseTest{
+public class ExportH2Test extends ExportBaseTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {

@@ -15,7 +15,7 @@ package com.querydsl.core.support;
 
 import com.querydsl.core.Query;
 
-public class DummyQuery extends QueryBase<DummyQuery> implements Query<DummyQuery>{
+public class DummyQuery extends QueryBase<DummyQuery> implements Query<DummyQuery> {
 
     public DummyQuery() {
         super(new QueryMixin<DummyQuery>());

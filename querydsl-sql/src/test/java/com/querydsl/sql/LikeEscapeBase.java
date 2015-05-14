@@ -25,10 +25,10 @@ import org.junit.Test;
 
 import com.querydsl.sql.dml.SQLInsertClause;
 
-public class LikeEscapeBase extends AbstractBaseTest{
+public class LikeEscapeBase extends AbstractBaseTest {
 
     @Before
-    public void setUp() throws SQLException{
+    public void setUp() throws SQLException {
         delete(survey).execute();
         SQLInsertClause insert = insert(survey);
         insert.set(survey.id, 5).set(survey.name, "aaa").addBatch();
@@ -38,7 +38,7 @@ public class LikeEscapeBase extends AbstractBaseTest{
     }
 
     @After
-    public void tearDown() throws SQLException{
+    public void tearDown() throws SQLException {
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
     }

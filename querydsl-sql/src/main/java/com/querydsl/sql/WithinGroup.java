@@ -26,6 +26,8 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.SimpleOperation;
 
 /**
+ * {@code WithinGroup} is a builder for {@code WIHIN GROUP} constructs
+ *
  * @author tiwe
  *
  * @param <T>
@@ -71,7 +73,7 @@ public class WithinGroup<T> extends SimpleOperation<T> {
                     args.add(ExpressionUtils.orderBy(orderBy));
                 }
                 builder.append(")");
-                value = Expressions.template((Class)WithinGroup.this.getType(), builder.toString(), args.build());
+                value = Expressions.template((Class) WithinGroup.this.getType(), builder.toString(), args.build());
             }
             return value;
         }

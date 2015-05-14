@@ -23,7 +23,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  * @author tiwe
  *
  */
-public final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpression<D> implements Constant<D>{
+public final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpression<D> implements Constant<D> {
 
     private static final long serialVersionUID = 4578416585568476532L;
 

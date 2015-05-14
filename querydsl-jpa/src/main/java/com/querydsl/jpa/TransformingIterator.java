@@ -38,7 +38,7 @@ public class TransformingIterator<T> implements CloseableIterator<T> {
     public TransformingIterator(Iterator<T> iterator, FactoryExpression<?> projection) {
         this.iterator = iterator;
         this.projection = projection;
-        this.closeable = iterator instanceof Closeable ? (Closeable)iterator : null;
+        this.closeable = iterator instanceof Closeable ? (Closeable) iterator : null;
     }
 
     public TransformingIterator(Iterator<T> iterator, Closeable closeable, FactoryExpression<?> projection) {
@@ -59,7 +59,7 @@ public class TransformingIterator<T> implements CloseableIterator<T> {
             if (!result.getClass().isArray()) {
                 result = new Object[]{result};
             }
-            return (T)projection.newInstance((Object[])result);
+            return (T) projection.newInstance((Object[]) result);
         } else {
             return null;
         }

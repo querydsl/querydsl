@@ -54,14 +54,14 @@ public class MetaDataExporterTest {
     private JavaCompiler compiler = new SimpleCompiler();
 
     @BeforeClass
-    public static void setUpClass() throws ClassNotFoundException, SQLException{
+    public static void setUpClass() throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
         String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
         connection = DriverManager.getConnection(url, "sa", "");
 
         Statement stmt = connection.createStatement();
 
-        try{
+        try {
             // reserved words
             stmt.execute("create table reserved (id int, while int)");
 
@@ -117,7 +117,7 @@ public class MetaDataExporterTest {
                     + "m_productbom_id int, "
                     + "constraint product_bom foreign key (m_productbom_id) references product(id))");
 
-        }finally{
+        } finally {
             stmt.close();
         }
 
@@ -125,7 +125,7 @@ public class MetaDataExporterTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws SQLException{
+    public static void tearDownClass() throws SQLException {
         connection.close();
     }
 
@@ -136,7 +136,7 @@ public class MetaDataExporterTest {
     }
 
     @After
-    public void tearDown() throws SQLException{
+    public void tearDown() throws SQLException {
         statement.close();
     }
 
@@ -183,12 +183,12 @@ public class MetaDataExporterTest {
             this.exportColumns = exportColumns;
             this.beanSerializer = beanSerializer;
             test(namePrefix, nameSuffix, beanPrefix, beanSuffix,
-                 ns, "target/multiple_"+counter, withBeans, withInnerClasses, withOriginalPositioning);
-        }}}}}}}}}}}}
+                 ns, "target/multiple_" + counter, withBeans, withInnerClasses, withOriginalPositioning);
+        } } } } } } } } } } } }
     }
 
     @Test
-    public void Explicit_Configuration() throws SQLException{
+    public void Explicit_Configuration() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
@@ -204,7 +204,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration() throws SQLException{
+    public void Minimal_Configuration() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -215,7 +215,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_tables() throws SQLException{
+    public void Minimal_Configuration_with_tables() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setTableNamePattern("RESERVED,UNDERSCORE,BEANGEN1");
@@ -230,7 +230,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_Suffix() throws SQLException{
+    public void Minimal_Configuration_with_Suffix() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -243,7 +243,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_without_keys() throws SQLException{
+    public void Minimal_Configuration_without_keys() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -257,7 +257,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_Bean_prefix() throws SQLException{
+    public void Minimal_Configuration_with_Bean_prefix() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -272,7 +272,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_Bean_suffix() throws SQLException{
+    public void Minimal_Configuration_with_Bean_suffix() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -288,7 +288,7 @@ public class MetaDataExporterTest {
 
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
             NamingStrategy namingStrategy, String target, boolean withBeans,
-            boolean withInnerClasses, boolean withOrdinalPositioning) throws SQLException{
+            boolean withInnerClasses, boolean withOrdinalPositioning) throws SQLException {
         File targetDir = new File(target);
         if (clean) {
             try {

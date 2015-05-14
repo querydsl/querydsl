@@ -115,7 +115,7 @@ public class QueryMixin<T> {
 
     private Path<?> normalizePath(Path<?> expr) {
         Context context = new Context();
-        Path<?> replaced = (Path<?>)expr.accept(collectionAnyVisitor, context);
+        Path<?> replaced = (Path<?>) expr.accept(collectionAnyVisitor, context);
         if (!replaced.equals(expr)) {
             for (int i = 0; i < context.paths.size(); i++) {
                 Path path = context.paths.get(i).getMetadata().getParent();
@@ -132,15 +132,15 @@ public class QueryMixin<T> {
     public <RT> Expression<RT> convert(Expression<RT> expr, Role role) {
         if (expandAnyPaths) {
             if (expr instanceof Path) {
-                expr = (Expression)normalizePath((Path)expr);
+                expr = (Expression) normalizePath((Path) expr);
             } else if (expr != null) {
-                expr = (Expression)expr.accept(replaceVisitor, null);
+                expr = (Expression) expr.accept(replaceVisitor, null);
             }
         }
         if (expr instanceof ProjectionRole<?>) {
             return convert(((ProjectionRole) expr).getProjection(), role);
         } else if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
-            return FactoryExpressionUtils.wrap((FactoryExpression<RT>)expr);
+            return FactoryExpressionUtils.wrap((FactoryExpression<RT>) expr);
         } else {
             return expr;
         }
@@ -152,7 +152,7 @@ public class QueryMixin<T> {
 
     protected <D> Expression<D> createAlias(Expression<?> expr, Path<D> alias) {
         assertRoot(alias);
-        return ExpressionUtils.as((Expression)expr, alias);
+        return ExpressionUtils.as((Expression) expr, alias);
     }
 
     public final T distinct() {
@@ -414,7 +414,7 @@ public class QueryMixin<T> {
         if (o == this) {
             return true;
         } else if (o instanceof QueryMixin<?>) {
-            QueryMixin<?> q = (QueryMixin<?>)o;
+            QueryMixin<?> q = (QueryMixin<?>) o;
             return q.metadata.equals(metadata);
         } else {
             return false;

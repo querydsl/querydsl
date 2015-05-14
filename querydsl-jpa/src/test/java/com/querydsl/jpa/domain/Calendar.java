@@ -25,11 +25,11 @@ import javax.persistence.*;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name="calendar_")
-public class Calendar implements Serializable{
+@Table(name = "calendar_")
+public class Calendar implements Serializable {
     @ElementCollection
     @Temporal(TemporalType.DATE)
-    @MapKeyColumn(name="holidays_key")
+    @MapKeyColumn(name = "holidays_key")
     Map<String, java.util.Date> holidays;
 
     @Id

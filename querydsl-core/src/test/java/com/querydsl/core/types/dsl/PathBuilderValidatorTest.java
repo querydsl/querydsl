@@ -16,7 +16,7 @@ public class PathBuilderValidatorTest {
         Map<String, Integer> map;
     }
 
-    public static class ExtendedCustomer extends Customer {}
+    public static class ExtendedCustomer extends Customer { }
 
     public static class Project {
         public String getName() {

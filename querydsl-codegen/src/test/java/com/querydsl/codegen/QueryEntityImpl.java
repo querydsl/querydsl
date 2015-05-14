@@ -18,7 +18,7 @@ import java.lang.annotation.Annotation;
 import com.querydsl.core.annotations.QueryEntity;
 
 @SuppressWarnings("all")
-public class QueryEntityImpl implements QueryEntity{
+public class QueryEntityImpl implements QueryEntity {
 
     @Override
     public Class<? extends Annotation> annotationType() {

@@ -27,12 +27,6 @@
 
     <module name="SuppressWarningsHolder"/>
 
-    <!-- FIXME
-    <module name="JavadocType">
-      <property name="scope" value="public"/>
-    </module>
-    <module name="JavadocMethod"/>
-    -->
     <!-- <module name="ConstantName"/> -->
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>
@@ -51,11 +45,11 @@
       <property name="processJavadoc" value="true"/>
     </module>
 
-    <!-- <module name="ImportOrder"> XXX
+    <!-- <module name="ImportOrder">
       <property name="groups" value="java,javax,org,com"/>
       <property name="ordered" value="false"/>
-      <property name="separated" value="true"/>
       <property name="option" value="top"/>
+      <property name="sortStaticImportsAlphabetically" value="true"/>
     </module> -->
 
     <!-- FIXME <module name="LineLength"> -->
@@ -67,10 +61,11 @@
     <module name="NoWhitespaceBefore"/>
     <module name="ParenPad"/>
     <module name="TypecastParenPad"/>
-    <!-- FIXME
-    <module name="WhitespaceAfter"/>
+
+    <module name="WhitespaceAfter">
+      <property name="tokens" value="SEMI, TYPECAST"/>
+    </module>
     <module name="WhitespaceAround"/>
-    -->
 
     <module name="ModifierOrder"/>
     <module name="RedundantModifier"/>

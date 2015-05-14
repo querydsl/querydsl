@@ -17,7 +17,7 @@ import static com.querydsl.jpa.Constants.*;
 
 import org.junit.Test;
 
-public class EJBQLTest extends AbstractQueryTest{
+public class EJBQLTest extends AbstractQueryTest {
 
     // Any function or operator defined by EJB-QL 3.0: substring(), trim(),
     // lower(), upper(), length(), locate(), abs(), sqrt(), bit_length(),

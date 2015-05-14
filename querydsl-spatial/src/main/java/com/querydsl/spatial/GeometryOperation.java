@@ -40,7 +40,7 @@ public class GeometryOperation<T extends Geometry> extends GeometryExpression<T>
 
     protected GeometryOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
-        this.opMixin = (OperationImpl<T>)mixin;
+        this.opMixin = (OperationImpl<T>) mixin;
     }
 
     @Override

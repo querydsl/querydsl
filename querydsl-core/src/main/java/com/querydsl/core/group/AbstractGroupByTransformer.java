@@ -70,11 +70,11 @@ abstract class AbstractGroupByTransformer<K, T> implements ResultTransformer<T> 
 
         for (Expression<?> expr : expressions) {
             if (expr instanceof GroupExpression<?,?>) {
-                GroupExpression<?,?> groupExpr = (GroupExpression<?,?>)expr;
+                GroupExpression<?,?> groupExpr = (GroupExpression<?,?>) expr;
                 groupExpressions.add(groupExpr);
                 Expression<?> colExpression = groupExpr.getExpression();
-                if (colExpression instanceof Operation && ((Operation)colExpression).getOperator() == Ops.ALIAS) {
-                    projection.add(((Operation)colExpression).getArg(0));
+                if (colExpression instanceof Operation && ((Operation) colExpression).getOperator() == Ops.ALIAS) {
+                    projection.add(((Operation) colExpression).getArg(0));
                 } else {
                     projection.add(colExpression);
                 }
@@ -94,7 +94,7 @@ abstract class AbstractGroupByTransformer<K, T> implements ResultTransformer<T> 
         List<Expression<?>> args = new ArrayList<Expression<?>>(expr.getArgs().size());
         for (Expression<?> arg : expr.getArgs()) {
             if (arg instanceof GroupExpression) {
-                args.add(((GroupExpression)arg).getExpression());
+                args.add(((GroupExpression) arg).getExpression());
             } else {
                 args.add(arg);
             }

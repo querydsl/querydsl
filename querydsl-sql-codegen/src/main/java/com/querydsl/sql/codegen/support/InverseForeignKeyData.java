@@ -21,10 +21,12 @@ import javax.annotation.Nullable;
 import com.mysema.codegen.model.Type;
 
 /**
+ * {@code InverseForeignKeyData} defines inverse foreign key data
+ *
  * @author tiwe
  *
  */
-public class InverseForeignKeyData implements KeyData{
+public class InverseForeignKeyData implements KeyData {
 
     private final String name;
 

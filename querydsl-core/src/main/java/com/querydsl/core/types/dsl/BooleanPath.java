@@ -36,7 +36,7 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
 
     protected BooleanPath(PathMetadata metadata) {
         super(ExpressionUtils.path(Boolean.class, metadata));
-        this.pathMixin = (PathImpl<Boolean>)mixin;
+        this.pathMixin = (PathImpl<Boolean>) mixin;
     }
 
     protected BooleanPath(String var) {

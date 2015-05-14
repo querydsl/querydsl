@@ -23,7 +23,7 @@ import org.hibernate.annotations.Type;
  * The Class Animal.
  */
 @Entity
-@Table(name="animal_")
+@Table(name = "animal_")
 @DiscriminatorValue("A")
 public class Animal {
     private boolean alive;
@@ -34,7 +34,7 @@ public class Animal {
     private int weight, toes;
 
     // needed for JPA tests
-    @Type(type="com.querydsl.jpa.ExtDoubleType")
+    @Type(type = "com.querydsl.jpa.ExtDoubleType")
     private double bodyWeight;
 
     private float floatProperty;
@@ -51,7 +51,7 @@ public class Animal {
 
     private java.sql.Time timeField;
 
-    public Animal() {}
+    public Animal() { }
 
     public Animal(int id) {
         setId(id);

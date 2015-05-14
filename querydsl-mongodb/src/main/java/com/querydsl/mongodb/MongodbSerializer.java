@@ -52,7 +52,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
     public Object visit(Constant<?> expr, Void context) {
         if (Enum.class.isAssignableFrom(expr.getType())) {
             @SuppressWarnings("unchecked") //Guarded by previous check
-            Constant<? extends Enum<?>> expectedExpr = (Constant<? extends Enum<?>>)expr;
+            Constant<? extends Enum<?>> expectedExpr = (Constant<? extends Enum<?>>) expr;
             return expectedExpr.getConstant().name();
         } else {
             return expr.getConstant();
@@ -176,7 +176,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString(), Pattern.CASE_INSENSITIVE));
 
         } else if (op == Ops.LIKE) {
-            String regex = ExpressionUtils.likeToRegex((Expression)expr.getArg(1)).toString();
+            String regex = ExpressionUtils.likeToRegex((Expression) expr.getArg(1)).toString();
             return asDBObject(asDBKey(expr, 0), Pattern.compile(regex));
 
         } else if (op == Ops.BETWEEN) {
@@ -271,8 +271,8 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
             } else if (entry.getKey().equals("$and")) {
                 BasicDBList list2 = new BasicDBList();
-                for (Object o : ((BasicDBList)entry.getValue())) {
-                    list2.add(negate((BasicDBObject)o));
+                for (Object o : ((BasicDBList) entry.getValue())) {
+                    list2.add(negate((BasicDBObject) o));
                 }
                 list.add(asDBObject("$or", list2));
 
@@ -304,7 +304,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
     }
 
     protected DBRef asReference(Operation<?> expr, int constIndex) {
-        return asReference(((Constant<?>)expr.getArg(constIndex)).getConstant());
+        return asReference(((Constant<?>) expr.getArg(constIndex)).getConstant());
     }
 
     protected abstract DBRef asReference(Object constant);

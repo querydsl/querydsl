@@ -106,7 +106,7 @@ public class EntityTest extends AbstractTest {
         QEntityTest_Supertype2.class.getConstructor(types);
     }
 
-    @Test(expected=NoSuchMethodException.class)
+    @Test(expected = NoSuchMethodException.class)
     public void Constructors2() throws SecurityException, NoSuchMethodException {
         Class[] types = new Class[]{Class.class, PathMetadata.class, PathInits.class};
         QEntityTest_EntityNoReferences.class.getConstructor(types);

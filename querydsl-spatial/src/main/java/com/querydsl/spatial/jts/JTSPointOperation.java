@@ -39,7 +39,7 @@ public class JTSPointOperation<T extends Point> extends JTSPointExpression<T> im
 
     protected JTSPointOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
-        this.opMixin = (OperationImpl<T>)mixin;
+        this.opMixin = (OperationImpl<T>) mixin;
     }
 
     @Override

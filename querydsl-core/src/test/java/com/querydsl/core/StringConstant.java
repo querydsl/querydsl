@@ -32,7 +32,7 @@ import com.querydsl.core.types.dsl.StringExpression;
  * @author tiwe
  *
  */
-public final class StringConstant extends StringExpression implements Constant<String>{
+public final class StringConstant extends StringExpression implements Constant<String> {
 
     private static final long serialVersionUID = 5182804405789674556L;
 
@@ -61,7 +61,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Override
     public StringExpression append(Expression<String> s) {
         if (s instanceof Constant<?>) {
-            return append(((Constant<String>)s).getConstant());
+            return append(((Constant<String>) s).getConstant());
         } else {
             return super.append(s);
         }
@@ -136,7 +136,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Override
     public StringExpression prepend(Expression<String> s) {
         if (s instanceof Constant<?>) {
-            return prepend(((Constant<String>)s).getConstant());
+            return prepend(((Constant<String>) s).getConstant());
         } else {
             return super.prepend(s);
         }

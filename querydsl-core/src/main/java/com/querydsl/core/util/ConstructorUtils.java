@@ -31,12 +31,13 @@ import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.ExpressionException;
 
 /**
+ * ConstructorUtils provides constructor resolving functionality
  *
  * @author Shredder121
  */
 public final class ConstructorUtils {
 
-    private ConstructorUtils() {}
+    private ConstructorUtils() { }
 
     /**
      * The parameter list for the default constructor;

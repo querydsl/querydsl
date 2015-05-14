@@ -15,7 +15,7 @@ public class DeepInitializationTest {
 
         @Id
         @Column(name = "ID")
-        @GeneratedValue(generator="SEQUENCE")
+        @GeneratedValue(generator = "SEQUENCE")
         private long id;
 
         public long getId() {

@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 
 public final class TemplateInfiniteLoop {
 
-    private TemplateInfiniteLoop() {}
+    private TemplateInfiniteLoop() { }
 
     static String[] templates = createTemplates();
 

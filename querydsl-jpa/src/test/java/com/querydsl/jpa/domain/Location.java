@@ -20,8 +20,8 @@ import javax.persistence.Table;
 /**
  * The Class Location.
  */
-@Entity(name="Location2")
-@Table(name="location_")
+@Entity(name = "Location2")
+@Table(name = "location_")
 public class Location {
     @Id
     long id;

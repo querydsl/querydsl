@@ -46,7 +46,7 @@ public class JTSMultiPointPath<T extends MultiPoint> extends JTSMultiPointExpres
 
     public JTSMultiPointPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public JTSMultiPointPath(String var) {

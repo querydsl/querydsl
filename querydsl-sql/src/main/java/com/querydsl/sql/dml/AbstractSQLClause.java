@@ -148,7 +148,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
                     }
                     o = params.get(o);
                 }
-                configuration.set(stmt, constantPaths.get(i), i+1, o);
+                configuration.set(stmt, constantPaths.get(i), i + 1, o);
             } catch (SQLException e) {
                 throw configuration.translate(e);
             }

@@ -33,7 +33,7 @@ public class ScalaTypeDump {
 
     @Test
     @Ignore
-    public void test() throws IOException{
+    public void test() throws IOException {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         classes.add(SimpleExpression.class);
         classes.add(ComparableExpression.class);
@@ -57,10 +57,10 @@ public class ScalaTypeDump {
             for (Method m : cl.getDeclaredMethods()) {
                 List<Parameter> params = new ArrayList<Parameter>();
                 for (Class<?> paramType : m.getParameterTypes()) {
-                    params.add(new Parameter("arg"+params.size(), new ClassType(paramType)));
+                    params.add(new Parameter("arg" + params.size(), new ClassType(paramType)));
                 }
                 Type returnType = new ClassType(m.getReturnType());
-                writer.beginPublicMethod(returnType, ":"+m.getName(), params.toArray(new Parameter[params.size()]));
+                writer.beginPublicMethod(returnType, ":" + m.getName(), params.toArray(new Parameter[params.size()]));
                 writer.end();
             }
             writer.end();

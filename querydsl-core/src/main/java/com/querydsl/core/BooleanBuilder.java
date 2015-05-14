@@ -55,7 +55,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
      * @param initial initial value
      */
     public BooleanBuilder(Predicate initial) {
-        predicate = (Predicate)ExpressionUtils.extract(initial);
+        predicate = (Predicate) ExpressionUtils.extract(initial);
     }
 
     @Override
@@ -109,7 +109,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
     }
 
     @Override
-    public BooleanBuilder clone() throws CloneNotSupportedException{
+    public BooleanBuilder clone() throws CloneNotSupportedException {
         return (BooleanBuilder) super.clone();
     }
 
@@ -118,7 +118,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
         if (o == this) {
             return true;
         } else if (o instanceof BooleanBuilder) {
-            return Objects.equal(((BooleanBuilder)o).getValue(), predicate);
+            return Objects.equal(((BooleanBuilder) o).getValue(), predicate);
         } else {
             return false;
         }

@@ -22,7 +22,7 @@ import com.querydsl.sql.domain.QSurvey;
 
 public final class Constants {
 
-    private Constants() {}
+    private Constants() { }
 
     public static final java.sql.Date date;
 
@@ -36,7 +36,7 @@ public final class Constants {
 
     public static final QSurvey survey2 = new QSurvey("s2");
 
-    static{
+    static {
         LocalDate localDate = new LocalDate(2000, 2, 10);
         date = new java.sql.Date(localDate.toDateMidnight().getMillis());
 

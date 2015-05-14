@@ -36,7 +36,7 @@ public class DslPath<T> extends DslExpression<T> implements Path<T> {
 
     protected DslPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     protected DslPath(Class<? extends T> type, String var) {

@@ -88,7 +88,7 @@ public class DefaultQueryEngine implements QueryEngine {
         if (!list.isEmpty() && list.get(0) != null && list.get(0).getClass().isArray()) {
             Set set = new HashSet(list.size());
             for (T o : list) {
-                if (set.add(ImmutableList.copyOf((Object[])o))) {
+                if (set.add(ImmutableList.copyOf((Object[]) o))) {
                     rv.add(o);
                 }
             }
@@ -155,14 +155,14 @@ public class DefaultQueryEngine implements QueryEngine {
         final Iterable<?> iterable = iterables.values().iterator().next();
         List<?> list;
         if (iterable instanceof List) {
-            list = (List)iterable;
+            list = (List) iterable;
         } else {
             list = IteratorAdapter.asList(iterable.iterator());
         }
 
         // from & where
         if (metadata.getWhere() != null) {
-            Evaluator<List<?>> evaluator = (Evaluator)evaluatorFactory
+            Evaluator<List<?>> evaluator = (Evaluator) evaluatorFactory
                     .createEvaluator(metadata, source, metadata.getWhere());
             list = evaluator.evaluate(list);
         }
@@ -215,8 +215,8 @@ public class DefaultQueryEngine implements QueryEngine {
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
         Expression<?> projection = metadata.getProjection();
         Operator aggregator = null;
-        if (projection instanceof Operation && Ops.aggOps.contains(((Operation)projection).getOperator())) {
-            Operation<?> aggregation = (Operation<?>)projection;
+        if (projection instanceof Operation && Ops.aggOps.contains(((Operation) projection).getOperator())) {
+            Operation<?> aggregation = (Operation<?>) projection;
             aggregator = aggregation.getOperator();
             projection = aggregation.getArg(0);
         }

@@ -21,7 +21,7 @@ import org.junit.Test;
 import com.querydsl.jdo.test.domain.Book;
 import com.querydsl.jdo.test.domain.QProduct;
 
-public class QuerySerializationTest extends AbstractTest{
+public class QuerySerializationTest extends AbstractTest {
 
     private QProduct product = QProduct.product;
 

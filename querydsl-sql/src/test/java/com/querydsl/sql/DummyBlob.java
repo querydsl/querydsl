@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 
-public class DummyBlob implements Blob{
+public class DummyBlob implements Blob {
 
     @Override
     public void free() throws SQLException {

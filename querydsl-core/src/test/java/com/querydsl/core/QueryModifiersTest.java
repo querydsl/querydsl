@@ -65,12 +65,12 @@ public class QueryModifiersTest {
         assertEquals(modifiers3.hashCode(), QueryModifiers.offset(1L).hashCode());
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void illegalLimit() {
         QueryModifiers.limit(-1);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void illegalOffset() {
         QueryModifiers.offset(-1);
     }

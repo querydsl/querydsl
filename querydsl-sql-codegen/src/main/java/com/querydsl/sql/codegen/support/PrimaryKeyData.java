@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * {@code PrimaryKeyData} defines primary key data
+ *
  * @author tiwe
  *
  */

@@ -71,7 +71,7 @@ public class LuceneSerializerTest {
     private static final String LONG_PREFIX_CODED = NumericUtils.longToPrefixCoded(1);
     private static final String SHORT_PREFIX_CODED = NumericUtils.intToPrefixCoded(1);
     private static final String BYTE_PREFIX_CODED = NumericUtils.intToPrefixCoded(1);
-    private static final String FLOAT_PREFIX_CODED = NumericUtils.floatToPrefixCoded((float)1.0);
+    private static final String FLOAT_PREFIX_CODED = NumericUtils.floatToPrefixCoded((float) 1.0);
 
     private IndexWriterConfig config;
     private RAMDirectory idx;
@@ -150,7 +150,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void QueryElement() throws Exception{
+    public void QueryElement() throws Exception {
         Query query1 = serializer.toQuery(author.like("Michael"), metadata);
         Query query2 = serializer.toQuery(text.like("Text"), metadata);
 
@@ -197,23 +197,23 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void Eq_with_deep_path() throws Exception{
+    public void Eq_with_deep_path() throws Exception {
         StringPath deepPath = entityPath.get("property1", Object.class).getString("property2");
         testQuery(deepPath.eq("good"), "property1.property2:good", 0);
     }
 
     @Test
-    public void FuzzyLike() throws Exception{
+    public void FuzzyLike() throws Exception {
         testQuery(LuceneExpressions.fuzzyLike(rating, "Good"), "rating:Good~0.5", 1);
     }
 
     @Test
-    public void FuzzyLike_with_Similarity() throws Exception{
+    public void FuzzyLike_with_Similarity() throws Exception {
         testQuery(LuceneExpressions.fuzzyLike(rating, "Good", 0.6f), "rating:Good~0.6", 1);
     }
 
     @Test
-    public void FuzzyLike_with_Similarity_and_prefix() throws Exception{
+    public void FuzzyLike_with_Similarity_and_prefix() throws Exception {
         testQuery(LuceneExpressions.fuzzyLike(rating, "Good", 0.6f, 0), "rating:Good~0.6", 1);
     }
 
@@ -228,11 +228,11 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void Eq_Numeric() throws Exception{
+    public void Eq_Numeric() throws Exception {
         testQuery(longField.eq(1L), "longField:" + LONG_PREFIX_CODED, 1);
-        testQuery(shortField.eq((short)1), "shortField:" + SHORT_PREFIX_CODED, 1);
-        testQuery(byteField.eq((byte)1), "byteField:" + BYTE_PREFIX_CODED, 1);
-        testQuery(floatField.eq((float)1.0), "floatField:" + FLOAT_PREFIX_CODED, 1);
+        testQuery(shortField.eq((short) 1), "shortField:" + SHORT_PREFIX_CODED, 1);
+        testQuery(byteField.eq((byte) 1), "byteField:" + BYTE_PREFIX_CODED, 1);
+        testQuery(floatField.eq((float) 1.0), "floatField:" + FLOAT_PREFIX_CODED, 1);
     }
 
     @Test
@@ -240,7 +240,7 @@ public class LuceneSerializerTest {
         testQuery(title.eq("Jurassic"), "title:jurassic", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Title_Equals_Ignore_Case_Or_Year_Equals() throws Exception {
         testQuery(title.equalsIgnoreCase("House").or(year.eq(1990)), "title:house year:" + YEAR_PREFIX_CODED, 1);
     }
@@ -255,7 +255,7 @@ public class LuceneSerializerTest {
         testQuery(title.eq("Jurassic Park").and(year.eq(1990)).and(author.eq("Michael Crichton")), "+(+title:\"jurassic park\" +year:" + YEAR_PREFIX_CODED + ") +author:\"michael crichton\"", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Equals_Ignore_Case_And_Or() throws Exception {
         testQuery(title.equalsIgnoreCase("Jurassic Park").and(rating.equalsIgnoreCase("Bad")).or(author.equalsIgnoreCase("Michael Crichton")), "(+title:\"jurassic park\" +rating:bad) author:\"michael crichton\"", 1);
     }
@@ -291,7 +291,7 @@ public class LuceneSerializerTest {
         testQuery(title.like("*H*e*").not(), "-title:*h*e* +*:*", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Title_Equals_Ignore_Case_Negation_Or_Rating_Equals_Ignore_Case() throws Exception {
         testQuery(title.equalsIgnoreCase("House").not().or(rating.equalsIgnoreCase("Good")), "-title:house rating:good", 1);
     }
@@ -341,7 +341,7 @@ public class LuceneSerializerTest {
         testQuery(title.startsWith("jurassic par"), "+title:jurassic* +title:*par*", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Starts_With_Ignore_Case_Phrase_Does_Not_Find_Results() throws Exception {
         testQuery(title.startsWithIgnoreCase("urassic Par"), "+title:urassic* +title:*par*", 0);
     }
@@ -351,12 +351,12 @@ public class LuceneSerializerTest {
         testQuery(title.endsWith("ark"), "title:*ark", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Ends_With_Ignore_Case_Phrase() throws Exception {
         testQuery(title.endsWithIgnoreCase("sic Park"), "+title:*sic* +title:*park", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Ends_With_Ignore_Case_Phrase_Does_Not_Find_Results() throws Exception {
         testQuery(title.endsWithIgnoreCase("sic Par"), "+title:*sic* +title:*par", 0);
     }
@@ -366,7 +366,7 @@ public class LuceneSerializerTest {
         testQuery(title.contains("rassi"), "title:*rassi*", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Contains_Ignore_Case_Phrase() throws Exception {
         testQuery(title.containsIgnoreCase("rassi Pa"), "+title:*rassi* +title:*pa*", 1);
     }
@@ -392,11 +392,11 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void Between_Numeric() throws Exception{
+    public void Between_Numeric() throws Exception {
         testQuery(longField.between(0L,2L), "longField:[0 TO 2]", 1);
-        testQuery(shortField.between((short)0,(short)2), "shortField:[0 TO 2]", 1);
-        testQuery(byteField.between((byte)0,(byte)2), "byteField:[0 TO 2]", 1);
-        testQuery(floatField.between((float)0.0,(float)2.0), "floatField:[0.0 TO 2.0]", 1);
+        testQuery(shortField.between((short) 0,(short) 2), "shortField:[0 TO 2]", 1);
+        testQuery(byteField.between((byte) 0,(byte) 2), "byteField:[0 TO 2]", 1);
+        testQuery(floatField.between((float) 0.0,(float) 2.0), "floatField:[0.0 TO 2.0]", 1);
     }
 
     @Test
@@ -607,7 +607,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void BooleanBuilder() throws Exception{
+    public void BooleanBuilder() throws Exception {
         testQuery(new BooleanBuilder(gross.goe(900.10)), "gross:[900.1 TO *]", 0);
     }
 
@@ -646,7 +646,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void various() throws Exception{
+    public void various() throws Exception {
         MatchingFiltersFactory filters = new MatchingFiltersFactory(Module.LUCENE, Target.LUCENE);
         for (Predicate filter : filters.string(title, StringConstant.create("jurassic park"))) {
             if (unsupportedOperation(filter)) {

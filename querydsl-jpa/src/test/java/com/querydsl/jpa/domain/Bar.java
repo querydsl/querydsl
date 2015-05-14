@@ -19,7 +19,7 @@ import javax.persistence.*;
  * The Class Bar.
  */
 @Entity
-@Table(name="bar_")
+@Table(name = "bar_")
 public class Bar {
     @Temporal(TemporalType.DATE)
     java.util.Date date;

@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.alias;
 
-public enum Gender{
+public enum Gender {
     MALE,
     FEMALE
 }

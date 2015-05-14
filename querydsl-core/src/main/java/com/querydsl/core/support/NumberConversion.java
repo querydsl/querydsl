@@ -54,9 +54,9 @@ public class NumberConversion<T> extends FactoryExpressionBase<T> {
     public T newInstance(Object... args) {
         if (args[0] != null) {
             if (getType().equals(Boolean.class)) {
-                return (T)Boolean.valueOf(((Number)args[0]).intValue() > 0);
+                return (T) Boolean.valueOf(((Number) args[0]).intValue() > 0);
             } else {
-                return (T)MathUtils.cast((Number)args[0], (Class)getType());
+                return (T) MathUtils.cast((Number) args[0], (Class) getType());
             }
         } else {
             return null;

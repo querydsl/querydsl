@@ -140,8 +140,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
     private void execute(List<String> expected, String genericExporterFolder, String aptFolder) throws IOException {
         List<String> failures = new ArrayList<String>();
         int successes = 0;
-        for (File file : new File("target/"+genericExporterFolder+"/com/querydsl/apt/domain").listFiles()) {
-            File other = new File("target/"+aptFolder+"/com/querydsl/apt/domain", file.getName());
+        for (File file : new File("target/" + genericExporterFolder + "/com/querydsl/apt/domain").listFiles()) {
+            File other = new File("target/" + aptFolder + "/com/querydsl/apt/domain", file.getName());
             if (!other.exists() || !other.isFile()) {
                 continue;
             }

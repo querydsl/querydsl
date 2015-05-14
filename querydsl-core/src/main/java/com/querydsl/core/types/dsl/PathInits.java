@@ -59,7 +59,7 @@ public class PathInits implements Serializable {
                 List<String> inits = Collections.emptyList();
                 if (initStr.contains(".")) {
                     key = initStr.substring(0, initStr.indexOf('.'));
-                    inits = ImmutableList.of(initStr.substring(key.length()+1));
+                    inits = ImmutableList.of(initStr.substring(key.length() + 1));
                 }
                 Collection<String> values = properties.get(key);
                 if (values == null) {

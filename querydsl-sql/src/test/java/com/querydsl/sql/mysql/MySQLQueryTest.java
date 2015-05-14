@@ -24,15 +24,13 @@ import com.querydsl.sql.MySQLTemplates;
 import com.querydsl.sql.domain.QSurvey;
 
 public class MySQLQueryTest {
-    private MySQLQuery query;
+    private MySQLQuery<?> query;
 
     private QSurvey survey = new QSurvey("survey");
 
     @Before
     public void setUp() {
-        query = new MySQLQuery(null, new MySQLTemplates() {{
-            newLineToSingleSpace();
-        }});
+        query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.orderBy(survey.name.asc());
         query.getMetadata().setProjection(survey.name);
@@ -83,9 +81,7 @@ public class MySQLQueryTest {
 
     @Test
     public void ForceIndex() {
-        query = new MySQLQuery(null, new MySQLTemplates() {{
-            newLineToSingleSpace();
-        }});
+        query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.forceIndex("col1_index");
         query.orderBy(survey.name.asc());
@@ -97,9 +93,7 @@ public class MySQLQueryTest {
 
     @Test
     public void IgnoreIndex() {
-        query = new MySQLQuery(null, new MySQLTemplates() {{
-            newLineToSingleSpace();
-        }});
+        query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.ignoreIndex("col1_index");
         query.orderBy(survey.name.asc());
@@ -111,9 +105,7 @@ public class MySQLQueryTest {
 
     @Test
     public void UseIndex() {
-        query = new MySQLQuery(null, new MySQLTemplates() {{
-            newLineToSingleSpace();
-        }});
+        query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.useIndex("col1_index");
         query.orderBy(survey.name.asc());
@@ -125,9 +117,7 @@ public class MySQLQueryTest {
 
     @Test
     public void UseIndex2() {
-        query = new MySQLQuery(null, new MySQLTemplates() {{
-            newLineToSingleSpace();
-        }});
+        query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.useIndex("col1_index","col2_index");
         query.orderBy(survey.name.asc());
@@ -244,7 +234,7 @@ public class MySQLQueryTest {
                      "order by survey.NAME asc lock in share mode", toString(query));
     }
 
-    private String toString(MySQLQuery query) {
+    private String toString(MySQLQuery<?> query) {
         return query.toString().replace('\n', ' ');
     }
 

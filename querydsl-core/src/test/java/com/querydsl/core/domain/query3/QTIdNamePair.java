@@ -28,7 +28,7 @@ public class QTIdNamePair extends BeanPath<IdNamePair<?>> {
 
     @SuppressWarnings("unchecked")
     public QTIdNamePair(String variable) {
-        super((Class)IdNamePair.class, forVariable(variable));
+        super((Class) IdNamePair.class, forVariable(variable));
     }
 
     public QTIdNamePair(Path<? extends IdNamePair<?>> entity) {
@@ -37,7 +37,7 @@ public class QTIdNamePair extends BeanPath<IdNamePair<?>> {
 
     @SuppressWarnings("unchecked")
     public QTIdNamePair(PathMetadata metadata) {
-        super((Class)IdNamePair.class, metadata);
+        super((Class) IdNamePair.class, metadata);
     }
 
 }

@@ -47,7 +47,7 @@ public class GeometryCollectionPath<T extends GeometryCollection> extends Geomet
 
     public GeometryCollectionPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public GeometryCollectionPath(String var) {

@@ -85,5 +85,5 @@ public final class ClassPathUtils {
         }
     }
 
-    private ClassPathUtils() {}
+    private ClassPathUtils() { }
 }

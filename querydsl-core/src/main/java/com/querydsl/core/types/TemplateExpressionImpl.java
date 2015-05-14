@@ -65,7 +65,7 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
        if (o == this) {
            return true;
        } else if (o instanceof TemplateExpression) {
-           TemplateExpression<?> c = (TemplateExpression<?>)o;
+           TemplateExpression<?> c = (TemplateExpression<?>) o;
            return c.getTemplate().equals(template)
                && c.getType().equals(getType())
                && c.getArgs().equals(args);

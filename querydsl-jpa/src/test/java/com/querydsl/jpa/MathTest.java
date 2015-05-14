@@ -20,7 +20,7 @@ import org.junit.Test;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.domain.QCat;
 
-public class MathTest extends AbstractQueryTest{
+public class MathTest extends AbstractQueryTest {
 
     @Test
     public void test() {

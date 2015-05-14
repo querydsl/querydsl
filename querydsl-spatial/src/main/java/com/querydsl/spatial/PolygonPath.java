@@ -47,7 +47,7 @@ public class PolygonPath<T extends Polygon> extends PolygonExpression<T> impleme
 
     public PolygonPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public PolygonPath(String var) {

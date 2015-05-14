@@ -48,7 +48,7 @@ class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
     @Override
     public TypeElement visitDeclared(DeclaredType t, Void p) {
         if (t.asElement() instanceof TypeElement) {
-            TypeElement typeElement = (TypeElement)t.asElement();
+            TypeElement typeElement = (TypeElement) t.asElement();
             switch (typeElement.getKind()) {
                 case ENUM:      return skipEnum ? null : typeElement;
                 case CLASS:     return typeElement;
@@ -62,13 +62,13 @@ class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
 
     private TypeElement visitInterface(DeclaredType t) {
         if (t.getTypeArguments().isEmpty()) {
-            return (TypeElement)t.asElement();
+            return (TypeElement) t.asElement();
         } else {
             int count = t.getTypeArguments().size();
             if (t.asElement().toString().startsWith("java.util")) {
                 return t.getTypeArguments().get(count - 1).accept(this, null);
             } else {
-                return (TypeElement)t.asElement();
+                return (TypeElement) t.asElement();
             }
         }
     }

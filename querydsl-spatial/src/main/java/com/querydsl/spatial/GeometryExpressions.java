@@ -254,5 +254,5 @@ public final class GeometryExpressions {
         return new PolygonOperation<Polygon>(Polygon.class, op, args);
     }
 
-    private GeometryExpressions() {}
+    private GeometryExpressions() { }
 }

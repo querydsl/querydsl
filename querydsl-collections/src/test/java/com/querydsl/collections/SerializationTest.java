@@ -23,7 +23,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QTuple;
 
-public class SerializationTest extends AbstractQueryTest{
+public class SerializationTest extends AbstractQueryTest {
 
     // TODO : order
 

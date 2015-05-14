@@ -28,8 +28,8 @@ import com.querydsl.core.annotations.QueryInit;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name="account_")
-public class Account implements Serializable{
+@Table(name = "account_")
+public class Account implements Serializable {
 
     @Transient
     public int transientField;

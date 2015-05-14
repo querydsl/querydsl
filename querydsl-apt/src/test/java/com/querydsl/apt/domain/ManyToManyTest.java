@@ -22,7 +22,7 @@ public class ManyToManyTest {
     @Entity
     public static class Person {
 
-        @ManyToMany(targetEntity=PhoneNumberImpl.class)
+        @ManyToMany(targetEntity = PhoneNumberImpl.class)
         Set<PhoneNumber> phones;
     }
 

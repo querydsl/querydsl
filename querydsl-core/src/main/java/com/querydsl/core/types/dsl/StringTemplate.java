@@ -32,7 +32,7 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
 
     protected StringTemplate(Template template, ImmutableList<?> args) {
         super(ExpressionUtils.template(String.class, template, args));
-        this.templateMixin = (TemplateExpressionImpl<String>)mixin;
+        this.templateMixin = (TemplateExpressionImpl<String>) mixin;
     }
 
     @Override

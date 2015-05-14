@@ -45,7 +45,7 @@ import com.querydsl.sql.domain.*;
 
 public class InsertBase extends AbstractBaseTest {
 
-    private void reset() throws SQLException{
+    private void reset() throws SQLException {
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
 
@@ -58,7 +58,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @After
-    public void tearDown() throws SQLException{
+    public void tearDown() throws SQLException {
         reset();
     }
 
@@ -232,7 +232,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys() throws SQLException{
+    public void Insert_With_Keys() throws SQLException {
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
         assertTrue(rs.getObject(1) != null);
@@ -241,13 +241,13 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys_Projected() throws SQLException{
+    public void Insert_With_Keys_Projected() throws SQLException {
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys_Projected2() throws SQLException{
+    public void Insert_With_Keys_Projected2() throws SQLException {
         Path<Object> idPath = ExpressionUtils.path(Object.class, "id");
         Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
         assertNotNull(id);
@@ -259,7 +259,7 @@ public class InsertBase extends AbstractBaseTest {
     public void Insert_With_Set() {
         assertEquals(1, insert(survey)
                 .set(survey.id, 5)
-                .set(survey.name, (String)null)
+                .set(survey.name, (String) null)
                 .execute());
     }
 
@@ -280,7 +280,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery() {
-        int count = (int)query().from(survey).fetchCount();
+        int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
             .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
@@ -328,7 +328,7 @@ public class InsertBase extends AbstractBaseTest {
         SQLQuery<?> sq = query().from(survey2);
         sq.set(param, 20);
 
-        int count = (int)query().from(survey).fetchCount();
+        int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
             .select(sq.select(survey2.id.add(param), survey2.name))
@@ -338,7 +338,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Via_Constructor() {
-        int count = (int)query().from(survey).fetchCount();
+        int count = (int) query().from(survey).fetchCount();
         SQLInsertClause insert = insert(survey, query().from(survey2));
         insert.set(survey.id, survey2.id.add(20));
         insert.set(survey.name, survey2.name);
@@ -348,7 +348,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Without_Columns() {
-        int count = (int)query().from(survey).fetchCount();
+        int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .select(query().from(survey2).select(survey2.id.add(10), survey2.name, survey2.name2))
             .execute());

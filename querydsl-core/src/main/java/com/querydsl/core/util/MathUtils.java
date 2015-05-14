@@ -24,18 +24,18 @@ import java.math.BigInteger;
  */
 public final class MathUtils {
 
-    private MathUtils() {}
+    private MathUtils() { }
 
     @SuppressWarnings("unchecked")
     public static <D extends Number> D sum(D num1, Number num2) {
         BigDecimal res = new BigDecimal(num1.toString()).add(new BigDecimal(num2.toString()));
-        return MathUtils.cast(res, (Class<D>)num1.getClass());
+        return MathUtils.cast(res, (Class<D>) num1.getClass());
     }
 
     @SuppressWarnings("unchecked")
     public static <D extends Number> D difference(D num1, Number num2) {
         BigDecimal res = new BigDecimal(num1.toString()).subtract(new BigDecimal(num2.toString()));
-        return MathUtils.cast(res, (Class<D>)num1.getClass());
+        return MathUtils.cast(res, (Class<D>) num1.getClass());
     }
 
     public static <D extends Number> D cast(Number num, Class<D> type) {

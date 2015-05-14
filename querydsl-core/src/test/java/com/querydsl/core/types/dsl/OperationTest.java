@@ -28,7 +28,7 @@ import com.querydsl.core.types.*;
 
 public class OperationTest {
 
-    enum ExampleEnum {A,B}
+    enum ExampleEnum { A, B }
 
     @SuppressWarnings("unchecked")
     @Test

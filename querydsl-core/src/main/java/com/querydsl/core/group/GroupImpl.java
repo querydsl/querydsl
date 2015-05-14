@@ -39,15 +39,15 @@ class GroupImpl implements Group {
     public GroupImpl(List<GroupExpression<?, ?>> columnDefinitions,  List<QPair<?, ?>> maps) {
         this.groupExpressions = columnDefinitions;
         this.maps = maps;
-        for (int i=0; i < columnDefinitions.size(); i++) {
+        for (int i = 0; i < columnDefinitions.size(); i++) {
             GroupExpression<?, ?> coldef = columnDefinitions.get(i);
             GroupCollector<?,?> collector = groupCollectorMap.get(coldef.getExpression());
             if (collector == null) {
                 collector = coldef.createGroupCollector();
                 Expression<?> coldefExpr = coldef.getExpression();
                 groupCollectorMap.put(coldefExpr, collector);
-                if (coldefExpr instanceof Operation && ((Operation)coldefExpr).getOperator() == Ops.ALIAS) {
-                    groupCollectorMap.put(((Operation)coldefExpr).getArg(1), collector);
+                if (coldefExpr instanceof Operation && ((Operation) coldefExpr).getOperator() == Ops.ALIAS) {
+                    groupCollectorMap.put(((Operation) coldefExpr).getArg(1), collector);
                 }
             }
             groupCollectors.add(collector);
@@ -56,7 +56,7 @@ class GroupImpl implements Group {
 
     @SuppressWarnings("unchecked")
     void add(Object[] row) {
-        int i=0;
+        int i = 0;
         for (GroupCollector groupCollector : groupCollectors) {
             groupCollector.add(row[i]);
             i++;

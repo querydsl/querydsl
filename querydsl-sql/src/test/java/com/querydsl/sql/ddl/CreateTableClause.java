@@ -68,7 +68,7 @@ public class CreateTableClause {
     }
 
     private ColumnData lastColumn() {
-        return columns.get(columns.size()-1);
+        return columns.get(columns.size() - 1);
     }
 
     /**
@@ -135,7 +135,7 @@ public class CreateTableClause {
      * @return
      */
     public CreateTableClause unique() {
-        indexes.get(indexes.size()-1).setUnique(true);
+        indexes.get(indexes.size() - 1).setUnique(true);
         return this;
     }
 
@@ -177,17 +177,17 @@ public class CreateTableClause {
         // primary key
         if (primaryKey != null) {
             StringBuilder line = new StringBuilder();
-            line.append("CONSTRAINT " + primaryKey.getName()+ " ");
-            line.append("PRIMARY KEY(" + COMMA_JOINER.join(primaryKey.getColumns()) +")");
+            line.append("CONSTRAINT " + primaryKey.getName() + " ");
+            line.append("PRIMARY KEY(" + COMMA_JOINER.join(primaryKey.getColumns()) + ")");
             lines.add(line.toString());
         }
 
         // foreign keys
         for (ForeignKeyData foreignKey : foreignKeys) {
             StringBuilder line = new StringBuilder();
-            line.append("CONSTRAINT " + foreignKey.getName()+ " ");
-            line.append("FOREIGN KEY(" + COMMA_JOINER.join(foreignKey.getForeignColumns())+ ") ");
-            line.append("REFERENCES " + foreignKey.getTable() + "(" + COMMA_JOINER.join(foreignKey.getParentColumns())+ ")");
+            line.append("CONSTRAINT " + foreignKey.getName() + " ");
+            line.append("FOREIGN KEY(" + COMMA_JOINER.join(foreignKey.getForeignColumns()) + ") ");
+            line.append("REFERENCES " + foreignKey.getTable() + "(" + COMMA_JOINER.join(foreignKey.getParentColumns()) + ")");
             lines.add(line.toString());
         }
         builder.append("  " + Joiner.on(",\n  ").join(lines));
@@ -195,7 +195,7 @@ public class CreateTableClause {
         logger.info(builder.toString());
 
         Statement stmt = null;
-        try{
+        try {
             stmt = connection.createStatement();
             stmt.execute(builder.toString());
 
@@ -206,14 +206,14 @@ public class CreateTableClause {
                 if (index.isUnique()) {
                     prefix = templates.getCreateUniqueIndex();
                 }
-                String sql = prefix + index.getName() + templates.getOn() + table + "(" + indexColumns+ ")";
+                String sql = prefix + index.getName() + templates.getOn() + table + "(" + indexColumns + ")";
                 logger.info(sql);
                 stmt.execute(sql);
             }
         } catch (SQLException e) {
             System.err.println(builder.toString());
             throw new QueryException(e.getMessage(), e);
-        }finally{
+        } finally {
             if (stmt != null) {
                 try {
                     stmt.close();

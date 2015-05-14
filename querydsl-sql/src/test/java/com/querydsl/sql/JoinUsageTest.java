@@ -22,7 +22,7 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class JoinUsageTest {
 
-    @Test(expected=IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     @Ignore
     public void Join_Already_Declared() {
         QSurvey survey = QSurvey.survey;

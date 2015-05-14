@@ -26,7 +26,7 @@ import com.google.common.base.Objects;
  * @author tiwe
  */
 @Immutable
-public final class PathMetadata implements Serializable{
+public final class PathMetadata implements Serializable {
 
     private static final long serialVersionUID = -1055994185028970065L;
 
@@ -68,7 +68,7 @@ public final class PathMetadata implements Serializable{
 
     public String getName() {
         if (pathType == PathType.VARIABLE || pathType == PathType.PROPERTY) {
-            return (String)element;
+            return (String) element;
         } else {
             throw new IllegalStateException("name property not available for path of type " + pathType +
                     ". Use getElement() to access the generic path element.");

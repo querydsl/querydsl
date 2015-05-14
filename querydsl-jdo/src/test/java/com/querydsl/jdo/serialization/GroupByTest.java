@@ -13,9 +13,9 @@ public class GroupByTest extends AbstractTest {
     public void GroupBy() {
         QEmployee employee = QEmployee.employee;
         assertEquals(
-                "SELECT FROM com.querydsl.jdo.models.company.Employee "+
-                "PARAMETERS java.lang.String a1 "+
-                "GROUP BY this.emailAddress "+
+                "SELECT FROM com.querydsl.jdo.models.company.Employee " +
+                "PARAMETERS java.lang.String a1 " +
+                "GROUP BY this.emailAddress " +
                 "HAVING this.emailAddress != a1",
 
                 serialize(selectFrom(employee)

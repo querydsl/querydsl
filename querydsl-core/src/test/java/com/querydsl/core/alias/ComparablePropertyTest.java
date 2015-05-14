@@ -17,7 +17,7 @@ import org.junit.Test;
 
 public class ComparablePropertyTest {
 
-    public static class Entity{
+    public static class Entity {
 
         private ComparableType property;
 
@@ -31,7 +31,7 @@ public class ComparablePropertyTest {
 
     }
 
-    public static class ComparableType implements Comparable<ComparableType>{
+    public static class ComparableType implements Comparable<ComparableType> {
 
         @Override
         public int compareTo(ComparableType o) {

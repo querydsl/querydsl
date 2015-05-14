@@ -68,7 +68,7 @@ public final class FactoryExpressionUtils {
             if (o == this) {
                 return true;
             } else if (o instanceof FactoryExpression) {
-                FactoryExpression<?> e = (FactoryExpression<?>)o;
+                FactoryExpression<?> e = (FactoryExpression<?>) o;
                 return args.equals(e.getArgs()) && getType().equals(e.getType());
             } else {
                 return false;
@@ -113,7 +113,7 @@ public final class FactoryExpressionUtils {
                 expr = ((ProjectionRole) expr).getProjection();
             }
             if (expr instanceof FactoryExpression<?>) {
-                rv.addAll(expand(((FactoryExpression<?>)expr).getArgs()));
+                rv.addAll(expand(((FactoryExpression<?>) expr).getArgs()));
             } else {
                 rv.add(expr);
             }
@@ -125,10 +125,10 @@ public final class FactoryExpressionUtils {
         int counter = 0;
         for (Expression<?> arg : expr.getArgs()) {
             if (arg instanceof ProjectionRole) {
-                arg = ((ProjectionRole)arg).getProjection();
+                arg = ((ProjectionRole) arg).getProjection();
             }
             if (arg instanceof FactoryExpression<?>) {
-                counter += countArguments((FactoryExpression<?>)arg);
+                counter += countArguments((FactoryExpression<?>) arg);
             } else {
                 counter++;
             }
@@ -145,7 +145,7 @@ public final class FactoryExpressionUtils {
                 expr = ((ProjectionRole) expr).getProjection();
             }
             if (expr instanceof FactoryExpression<?>) {
-                FactoryExpression<?> fe = (FactoryExpression<?>)expr;
+                FactoryExpression<?> fe = (FactoryExpression<?>) expr;
                 int fullArgsLength = countArguments(fe);
                 Object[] compressed = compress(fe.getArgs(), ArrayUtils.subarray(args, offset, offset + fullArgsLength));
                 rv[i] = fe.newInstance(compressed);
@@ -158,6 +158,6 @@ public final class FactoryExpressionUtils {
         return rv;
     }
 
-    private FactoryExpressionUtils() {}
+    private FactoryExpressionUtils() { }
 
 }

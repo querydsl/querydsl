@@ -21,7 +21,7 @@ import javax.persistence.Table;
  * The Class Parameter.
  */
 @Entity
-@Table(name="parameter_")
+@Table(name = "parameter_")
 public class Parameter {
     @Id
     long id;

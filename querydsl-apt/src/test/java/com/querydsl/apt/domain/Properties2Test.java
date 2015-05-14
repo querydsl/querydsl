@@ -31,7 +31,7 @@ public class Properties2Test {
         }
     }
 
-    @Test(expected=NoSuchFieldException.class)
+    @Test(expected = NoSuchFieldException.class)
     public void test() throws NoSuchFieldException {
         QProperties2Test_ConcreteX.class.getDeclaredField("id");
     }

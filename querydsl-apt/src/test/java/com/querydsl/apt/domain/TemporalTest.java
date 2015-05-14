@@ -18,10 +18,10 @@ public class TemporalTest {
     @Entity
     public static class MyEntity {
 
-        @Temporal(value=TemporalType.DATE)
+        @Temporal(value = TemporalType.DATE)
         private Date date;
 
-        @Temporal(value=TemporalType.TIME)
+        @Temporal(value = TemporalType.TIME)
         private Date time;
     }
 

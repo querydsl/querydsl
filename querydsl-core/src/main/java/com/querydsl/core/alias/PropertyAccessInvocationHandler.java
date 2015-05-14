@@ -116,7 +116,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata pm = createMapAccessPath((Path<?>)hostExpression, args[0]);
+                PathMetadata pm = createMapAccessPath((Path<?>) hostExpression, args[0]);
                 Class<?> valueType = ((ParameterizedExpression<?>) hostExpression).getParameter(1);
                 rv = newInstance(valueType, valueType, proxy, propKey, pm);
             }
@@ -160,19 +160,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = (byte) RETURN_VALUE;
 
         } else if (java.util.Date.class.equals(type)) {
-            path = pathFactory.createDateTimePath((Class)type, metadata);
+            path = pathFactory.createDateTimePath((Class) type, metadata);
             rv = new Date();
 
         } else if (java.sql.Timestamp.class.equals(type)) {
-            path = pathFactory.createDateTimePath((Class)type, metadata);
+            path = pathFactory.createDateTimePath((Class) type, metadata);
             rv = new Timestamp(System.currentTimeMillis());
 
         } else if (java.sql.Date.class.equals(type)) {
-            path = pathFactory.createDatePath((Class)type, metadata);
+            path = pathFactory.createDatePath((Class) type, metadata);
             rv = new java.sql.Date(System.currentTimeMillis());
 
         } else if (java.sql.Time.class.equals(type)) {
-            path = pathFactory.createTimePath((Class)type, metadata);
+            path = pathFactory.createTimePath((Class) type, metadata);
             rv = new java.sql.Time(System.currentTimeMillis());
 
         } else if (Long.class.equals(type) || long.class.equals(type)) {
@@ -192,11 +192,11 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = (float) RETURN_VALUE;
 
         } else if (BigInteger.class.equals(type)) {
-            path = pathFactory.createNumberPath((Class)type, metadata);
+            path = pathFactory.createNumberPath((Class) type, metadata);
             rv = BigInteger.valueOf(RETURN_VALUE);
 
         } else if (BigDecimal.class.equals(type)) {
-            path = pathFactory.createNumberPath((Class)type, metadata);
+            path = pathFactory.createNumberPath((Class) type, metadata);
             rv = BigDecimal.valueOf(RETURN_VALUE);
 
         } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
@@ -204,13 +204,13 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = Boolean.TRUE;
 
         } else if (typeSystem.isMapType(type)) {
-            Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
-            Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
+            Class<Object> keyType = (Class) ReflectionUtils.getTypeParameter(genericType, 0);
+            Class<Object> valueType = (Class) ReflectionUtils.getTypeParameter(genericType, 1);
             path = pathFactory.createMapPath(keyType, valueType, metadata);
             rv = aliasFactory.createAliasForProperty(type, path);
 
         } else if (typeSystem.isListType(type)) {
-            Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
+            Class<Object> elementType = (Class) ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createListPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, path);
 
@@ -225,18 +225,18 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = aliasFactory.createAliasForProperty(type, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {
-            path = pathFactory.createEnumPath((Class)type, metadata);
+            path = pathFactory.createEnumPath((Class) type, metadata);
             rv = type.getEnumConstants()[0];
 
         } else if (type.isArray()) {
-            path = pathFactory.createArrayPath((Class)type, metadata);
+            path = pathFactory.createArrayPath((Class) type, metadata);
             rv = Array.newInstance(type.getComponentType(), 5);
 
         } else {
             if (Number.class.isAssignableFrom(type)) {
-                path = pathFactory.createNumberPath((Class)type, metadata);
+                path = pathFactory.createNumberPath((Class) type, metadata);
             } else if (Comparable.class.isAssignableFrom(type)) {
-                path = pathFactory.createComparablePath((Class)type, metadata);
+                path = pathFactory.createComparablePath((Class) type, metadata);
             } else {
                 path = pathFactory.createEntityPath(type, metadata);
             }

@@ -25,7 +25,7 @@ import com.google.common.collect.ImmutableList;
  *
  */
 @Immutable
-public class PredicateTemplate extends TemplateExpressionImpl<Boolean> implements Predicate{
+public class PredicateTemplate extends TemplateExpressionImpl<Boolean> implements Predicate {
 
     private static final long serialVersionUID = -5371430939203772072L;
 

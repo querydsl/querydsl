@@ -32,7 +32,7 @@ public class CodegenModuleTest {
         assertNotNull(module.get(TypeMappings.class));
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void Get_With_Unknown_Key() {
         module.get(String.class, "XXX");
     }

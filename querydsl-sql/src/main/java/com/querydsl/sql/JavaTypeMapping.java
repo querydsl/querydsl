@@ -35,7 +35,7 @@ class JavaTypeMapping {
 
     private static final Map<Class<?>,Type<?>> defaultTypes = new HashMap<Class<?>,Type<?>>();
 
-    static{
+    static {
         registerDefault(new BigIntegerType());
         registerDefault(new BigDecimalType());
         registerDefault(new BlobType());
@@ -100,7 +100,7 @@ class JavaTypeMapping {
             if (resolvedType != null) {
                 resolvedTypesByClass.put(clazz, resolvedType);
             } else {
-                return (Type)DEFAULT;
+                return (Type) DEFAULT;
             }
         }
         return (Type<T>) resolvedType;
@@ -110,14 +110,14 @@ class JavaTypeMapping {
     private Type<?> findType(Class<?> clazz) {
         //Look for a registered type in the class hierarchy
         Class<?> cl = clazz;
-        do{
+        do {
             if (typeByClass.containsKey(cl)) {
                 return typeByClass.get(cl);
             } else if (defaultTypes.containsKey(cl)) {
                 return defaultTypes.get(cl);
             }
             cl = cl.getSuperclass();
-        } while(!cl.equals(Object.class));
+        } while (!cl.equals(Object.class));
 
         //Look for a registered type in any implemented interfaces
         Set<Class<?>> interfaces = ReflectionUtils.getImplementedInterfaces(clazz);

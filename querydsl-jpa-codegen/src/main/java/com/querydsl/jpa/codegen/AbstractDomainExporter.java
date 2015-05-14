@@ -84,13 +84,6 @@ public abstract class AbstractDomainExporter {
 
     private final Set<File> generatedFiles = new HashSet<File>();
 
-    /**
-     * @param namePrefix
-     * @param nameSuffix
-     * @param targetFolder
-     * @param serializerConfig
-     * @param charset
-     */
     public AbstractDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             SerializerConfig serializerConfig, Charset charset) {
         this.targetFolder = targetFolder;
@@ -298,10 +291,10 @@ public abstract class AbstractDomainExporter {
         File targetFile = new File(targetFolder, path);
         generatedFiles.add(targetFile);
         Writer w = writerFor(targetFile);
-        try{
+        try {
             CodeWriter writer = new JavaWriter(w);
             serializer.serialize(type, serializerConfig, writer);
-        }finally{
+        } finally {
             w.close();
         }
     }

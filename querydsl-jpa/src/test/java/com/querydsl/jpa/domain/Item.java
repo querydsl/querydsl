@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * The Class Item.
  */
 @Entity
-@Table(name="item_")
+@Table(name = "item_")
 public class Item {
     @Id
     long id;

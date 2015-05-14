@@ -75,6 +75,6 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
     }
 
     protected V transform(Group group) {
-        return (V)group;
+        return (V) group;
     }
 }

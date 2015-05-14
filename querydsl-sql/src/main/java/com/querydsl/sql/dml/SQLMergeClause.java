@@ -142,7 +142,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     @SuppressWarnings("unchecked")
     @Nullable
     public <T> T executeWithKey(Path<T> path) {
-        return executeWithKey((Class<T>)path.getType(), path);
+        return executeWithKey((Class<T>) path.getType(), path);
     }
 
     /**
@@ -159,7 +159,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = executeWithKeys();
-        try{
+        try {
             if (rs.next()) {
                 return configuration.get(rs, path, 1, type);
             } else {
@@ -167,7 +167,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             }
         } catch (SQLException e) {
             throw configuration.translate(e);
-        }finally{
+        } finally {
             close(rs);
         }
     }
@@ -183,7 +183,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
      */
     @SuppressWarnings("unchecked")
     public <T> List<T> executeWithKeys(Path<T> path) {
-        return executeWithKeys((Class<T>)path.getType(), path);
+        return executeWithKeys((Class<T>) path.getType(), path);
     }
 
     public <T> List<T> executeWithKeys(Class<T> type) {
@@ -192,7 +192,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = null;
-        try{
+        try {
             rs = executeWithKeys();
             List<T> rv = new ArrayList<T>();
             while (rs.next()) {
@@ -201,7 +201,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             return rv;
         } catch (SQLException e) {
             throw configuration.translate(e);
-        }finally {
+        } finally {
             if (rs != null) {
                 close(rs);
             }
@@ -308,12 +308,12 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private void addKeyConditions(FilteredClause<?> query) {
         List<? extends Path<?>> keys = getKeys();
-        for (int i=0; i < columns.size(); i++) {
+        for (int i = 0; i < columns.size(); i++) {
             if (keys.contains(columns.get(i))) {
                 if (values.get(i) instanceof NullExpression) {
                     query.where(ExpressionUtils.isNull(columns.get(i)));
                 } else {
-                    query.where(ExpressionUtils.eq(columns.get(i),(Expression)values.get(i)));
+                    query.where(ExpressionUtils.eq(columns.get(i),(Expression) values.get(i)));
                 }
             }
         }
@@ -339,7 +339,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     @SuppressWarnings("unchecked")
     private void populate(StoreClause<?> clause) {
         for (int i = 0; i < columns.size(); i++) {
-            clause.set((Path)columns.get(i), (Object)values.get(i));
+            clause.set((Path) columns.get(i), (Object) values.get(i));
         }
     }
 

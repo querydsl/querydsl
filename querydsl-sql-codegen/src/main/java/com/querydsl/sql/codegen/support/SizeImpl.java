@@ -19,6 +19,8 @@ import javax.validation.Payload;
 import javax.validation.constraints.Size;
 
 /**
+ * {@code SizeImpl} is an implementation of the {@link Size} interface
+ *
  * @author tiwe
  *
  */

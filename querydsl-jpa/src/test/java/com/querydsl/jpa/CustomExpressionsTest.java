@@ -22,7 +22,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.TemplateFactory;
 import com.querydsl.core.types.dsl.StringTemplate;
 
-public class CustomExpressionsTest extends AbstractQueryTest{
+public class CustomExpressionsTest extends AbstractQueryTest {
 
     public static class MyCustomExpr extends StringTemplate {
 

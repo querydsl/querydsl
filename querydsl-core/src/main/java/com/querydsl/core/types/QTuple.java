@@ -59,8 +59,8 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
         Map<Expression<?>, Integer> map = Maps.newHashMap();
         for (int i = 0; i < exprs.size(); i++) {
             Expression<?> e = exprs.get(i);
-            if (e instanceof Operation && ((Operation<?>)e).getOperator() == Ops.ALIAS) {
-                map.put(((Operation<?>)e).getArg(1), i);
+            if (e instanceof Operation && ((Operation<?>) e).getOperator() == Ops.ALIAS) {
+                map.put(((Operation<?>) e).getArg(1), i);
             }
             map.put(e, i);
         }
@@ -182,7 +182,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
         if (obj == this) {
             return true;
         } else if (obj instanceof FactoryExpression) {
-            FactoryExpression<?> c = (FactoryExpression<?>)obj;
+            FactoryExpression<?> c = (FactoryExpression<?>) obj;
             return args.equals(c.getArgs()) && getType().equals(c.getType());
         } else {
             return false;

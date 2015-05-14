@@ -35,7 +35,7 @@ public class GeneratedKeysMySQLTest {
     private Statement stmt;
 
     @Before
-    public void setUp() throws ClassNotFoundException, SQLException{
+    public void setUp() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/querydsl";
         conn = DriverManager.getConnection(url, "querydsl", "querydsl");
@@ -43,16 +43,16 @@ public class GeneratedKeysMySQLTest {
     }
 
     @After
-    public void tearDown() throws SQLException{
-        try{
+    public void tearDown() throws SQLException {
+        try {
             stmt.close();
-        }finally{
+        } finally {
             conn.close();
         }
     }
 
     @Test
-    public void test() throws SQLException{
+    public void test() throws SQLException {
         stmt.execute("drop table if exists GENERATED_KEYS");
         stmt.execute("create table GENERATED_KEYS(" +
                  "ID int AUTO_INCREMENT PRIMARY KEY, " +

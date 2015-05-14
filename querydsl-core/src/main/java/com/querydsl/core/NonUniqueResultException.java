@@ -20,7 +20,7 @@ package com.querydsl.core;
  * @author tiwe
  *
  */
-public class NonUniqueResultException extends QueryException{
+public class NonUniqueResultException extends QueryException {
 
     private static final long serialVersionUID = -1757423191400510323L;
 

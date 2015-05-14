@@ -27,7 +27,7 @@ import com.querydsl.codegen.QueryTypeFactory;
  * @author tiwe
  *
  */
-public final class SQLQueryTypeFactory implements QueryTypeFactory{
+public final class SQLQueryTypeFactory implements QueryTypeFactory {
 
     private final String packageName, beanPackageName;
 
@@ -61,7 +61,7 @@ public final class SQLQueryTypeFactory implements QueryTypeFactory{
             packageName = this.packageName + packageName.substring(beanPackageName.length());
         }
         String simpleName = type.getSimpleName();
-        simpleName = prefix + simpleName.substring(stripStart, simpleName.length()-stripEnd) + suffix;
+        simpleName = prefix + simpleName.substring(stripStart, simpleName.length() - stripEnd) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
     }
 

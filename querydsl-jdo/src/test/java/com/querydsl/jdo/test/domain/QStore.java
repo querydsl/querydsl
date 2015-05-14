@@ -22,7 +22,7 @@ import com.querydsl.core.types.dsl.*;
  *
  */
 @SuppressWarnings("serial")
-public class QStore extends EntityPathBase<com.querydsl.jdo.test.domain.Store>{
+public class QStore extends EntityPathBase<com.querydsl.jdo.test.domain.Store> {
 
     public static final QStore store = new QStore("store");
 

@@ -19,7 +19,7 @@ public class Comment {
 
     private String text;
 
-    public Comment() {}
+    public Comment() { }
 
     public Comment(Integer id, String text) {
         this.id = id;

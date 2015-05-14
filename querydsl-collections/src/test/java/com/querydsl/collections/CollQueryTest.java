@@ -37,10 +37,12 @@ public class CollQueryTest extends AbstractQueryTest {
 
     @Test
     public void CustomTemplates() {
-        CollQueryTemplates templates = new CollQueryTemplates() {{
-            add(Ops.DateTimeOps.MONTH, "{0}.getMonthOfYear()");
-            add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
-        }};
+        CollQueryTemplates templates = new CollQueryTemplates() {
+            {
+                add(Ops.DateTimeOps.MONTH, "{0}.getMonthOfYear()");
+                add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
+            }
+        };
         new CollQuery(templates);
     }
 
@@ -68,7 +70,7 @@ public class CollQueryTest extends AbstractQueryTest {
         // select pairs of cats with different names
         query().from(cat, cats).from(otherCat, cats).where(cat.name.ne(otherCat.name))
                .select(cat.name, otherCat.name).fetch();
-        assertEquals(4*3, last.res.size());
+        assertEquals(4 * 3, last.res.size());
     }
 
     @Test
@@ -163,12 +165,12 @@ public class CollQueryTest extends AbstractQueryTest {
         }
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void GroupBy() {
         query().from(cat, cats).groupBy(cat.name);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Having() {
         query().from(cat, cats).having(cat.name.isNull());
     }

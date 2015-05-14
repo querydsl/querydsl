@@ -50,9 +50,9 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
 
     @SuppressWarnings("unchecked")
     protected ArrayPath(Class<? super A> type, PathMetadata metadata) {
-        super(ExpressionUtils.path((Class)type, metadata));
-        this.pathMixin = (PathImpl<A>)mixin;
-        this.componentType = Primitives.wrap((Class<E>)type.getComponentType());
+        super(ExpressionUtils.path((Class) type, metadata));
+        this.pathMixin = (PathImpl<A>) mixin;
+        this.componentType = Primitives.wrap((Class<E>) type.getComponentType());
     }
 
     @Override

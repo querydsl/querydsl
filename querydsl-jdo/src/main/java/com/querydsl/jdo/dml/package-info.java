@@ -13,6 +13,6 @@
  */
 
 /**
- * DML operations support for Querydsl JDOQL
+ * DML operations support
  */
 package com.querydsl.jdo.dml;

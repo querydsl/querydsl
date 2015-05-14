@@ -80,13 +80,13 @@ public class SerializerTest {
     }
 
     @Test
-    public void SupertypeSerializer() throws IOException{
+    public void SupertypeSerializer() throws IOException {
         new SupertypeSerializer(typeMappings,Collections.<String>emptyList())
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
-    public void DTOSerializer() throws IOException{
+    public void DTOSerializer() throws IOException {
         new ProjectionSerializer(typeMappings)
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }

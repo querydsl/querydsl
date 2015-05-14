@@ -33,7 +33,7 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
 
     protected EnumTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(ExpressionUtils.template(type, template, args));
-        templateMixin = (TemplateExpressionImpl<T>)mixin;
+        templateMixin = (TemplateExpressionImpl<T>) mixin;
     }
 
     @Override

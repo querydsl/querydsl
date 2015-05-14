@@ -43,7 +43,7 @@ public class ParsingTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Basic() throws RecognitionException, TokenStreamException{
+    public void Basic() throws RecognitionException, TokenStreamException {
         query().from(cat, fatcat).select(cat.name, fatcat.name).parse();
     }
 
@@ -452,13 +452,13 @@ public class ParsingTest extends AbstractQueryTest {
 
     @Test
     @NoOpenJPA
-    public void Fetch() throws RecognitionException, TokenStreamException{
+    public void Fetch() throws RecognitionException, TokenStreamException {
         query().from(cat).innerJoin(cat.mate, mate).fetchJoin().parse();
     }
 
     @Test
     @NoOpenJPA
-    public void Fetch2() throws RecognitionException, TokenStreamException{
+    public void Fetch2() throws RecognitionException, TokenStreamException {
         query().from(cat).innerJoin(cat.mate, mate).fetchJoin().fetchJoin().parse();
     }
 
@@ -474,40 +474,40 @@ public class ParsingTest extends AbstractQueryTest {
 
     @Test
     @NoEclipseLink @NoOpenJPA
-    public void JoinFlags1() throws RecognitionException, TokenStreamException{
+    public void JoinFlags1() throws RecognitionException, TokenStreamException {
         query().from(cat).fetchAll().parse();
     }
 
     @Test
     @NoEclipseLink @NoOpenJPA @NoBatooJPA
-    public void JoinFlags2() throws RecognitionException, TokenStreamException{
+    public void JoinFlags2() throws RecognitionException, TokenStreamException {
         query().from(cat).fetchAll().from(cat1).fetchAll().parse();
     }
 
     @Test
     @NoEclipseLink @NoOpenJPA @NoBatooJPA
-    public void JoinFlags3() throws RecognitionException, TokenStreamException{
+    public void JoinFlags3() throws RecognitionException, TokenStreamException {
         query().from(cat).fetchAll().from(cat1).fetchAll().parse();
     }
 
     @Test
-    public void Joins() throws RecognitionException, TokenStreamException{
+    public void Joins() throws RecognitionException, TokenStreamException {
         query().from(cat).join(cat.mate, mate).select(cat).parse();
     }
 
     @Test
-    public void InnerJoin() throws RecognitionException, TokenStreamException{
+    public void InnerJoin() throws RecognitionException, TokenStreamException {
         query().from(cat).innerJoin(cat.mate, mate).select(cat).parse();
     }
 
     @Test
-    public void LeftJoin()  throws RecognitionException, TokenStreamException{
+    public void LeftJoin()  throws RecognitionException, TokenStreamException {
         query().from(cat).leftJoin(cat.mate, mate).select(cat).parse();
     }
 
     @Test
     @NoOpenJPA @NoBatooJPA
-    public void Joins2() throws RecognitionException, TokenStreamException{
+    public void Joins2() throws RecognitionException, TokenStreamException {
         query().from(cat).join(cat.mate, mate).on(mate.name.eq("Bob")).parse();
     }
 

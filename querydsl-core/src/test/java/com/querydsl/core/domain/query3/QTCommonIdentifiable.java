@@ -43,7 +43,7 @@ public class QTCommonIdentifiable extends EntityPathBase<CommonIdentifiable<? ex
 
     @SuppressWarnings("unchecked")
     public QTCommonIdentifiable(String variable) {
-        super((Class)CommonIdentifiable.class, forVariable(variable));
+        super((Class) CommonIdentifiable.class, forVariable(variable));
     }
 
     public QTCommonIdentifiable(BeanPath<? extends CommonIdentifiable<? extends java.io.Serializable>> entity) {
@@ -52,7 +52,7 @@ public class QTCommonIdentifiable extends EntityPathBase<CommonIdentifiable<? ex
 
     @SuppressWarnings("unchecked")
     public QTCommonIdentifiable(PathMetadata metadata) {
-        super((Class)CommonIdentifiable.class, metadata);
+        super((Class) CommonIdentifiable.class, metadata);
     }
 
 }

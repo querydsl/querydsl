@@ -12,4 +12,7 @@
  * limitations under the License.
  */
 
+/**
+ * MongoDB support
+ */
 package com.querydsl.mongodb;

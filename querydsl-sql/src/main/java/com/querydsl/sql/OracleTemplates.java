@@ -100,8 +100,8 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.MathOps.LOG, "log({1},{0})");
         add(Ops.MathOps.COT, "(cos({0}) / sin({0}))");
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
-        add(Ops.MathOps.DEG, "({0} * 180 / "+Math.PI+")");
-        add(Ops.MathOps.RAD, "({0} * "+Math.PI+" / 180)");
+        add(Ops.MathOps.DEG, "({0} * 180 / " + Math.PI + ")");
+        add(Ops.MathOps.RAD, "({0} * " + Math.PI + " / 180)");
 
         // Date / time
         add(Ops.DateTimeOps.DATE, "trunc({0})");

@@ -17,7 +17,7 @@ import static com.querydsl.jpa.Constants.*;
 
 import org.junit.Test;
 
-public class AggregationTest extends AbstractQueryTest{
+public class AggregationTest extends AbstractQueryTest {
 
     @Test
     public void Max() {

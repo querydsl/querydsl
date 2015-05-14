@@ -118,7 +118,7 @@ public class SelectOracleBase extends AbstractBaseTest {
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void SumOver() throws SQLException{
+    public void SumOver() throws SQLException {
 //        SQL> select deptno,
 //        2  ename,
 //        3  sal,

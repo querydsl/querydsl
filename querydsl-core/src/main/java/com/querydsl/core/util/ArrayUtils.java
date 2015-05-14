@@ -58,6 +58,6 @@ public final class ArrayUtils {
         return array == null || array.length == 0;
     }
 
-    private ArrayUtils() {}
+    private ArrayUtils() { }
 
 }

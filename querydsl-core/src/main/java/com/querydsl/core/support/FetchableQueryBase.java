@@ -49,12 +49,12 @@ public abstract class FetchableQueryBase<T, Q extends FetchableQueryBase<T, Q>>
     }
 
     public <T> T transform(ResultTransformer<T> transformer) {
-        return transformer.transform((FetchableQuery<?,?>)this);
+        return transformer.transform((FetchableQuery<?,?>) this);
     }
 
     @Nullable
     protected <T> T uniqueResult(CloseableIterator<T> it) {
-        try{
+        try {
             if (it.hasNext()) {
                 T rv = it.next();
                 if (it.hasNext()) {
@@ -64,7 +64,7 @@ public abstract class FetchableQueryBase<T, Q extends FetchableQueryBase<T, Q>>
             } else {
                 return null;
             }
-        }finally{
+        } finally {
             it.close();
         }
     }
@@ -74,7 +74,7 @@ public abstract class FetchableQueryBase<T, Q extends FetchableQueryBase<T, Q>>
         if (o == this) {
             return true;
         } else if (o instanceof SubQueryExpression) {
-            SubQueryExpression<?> s = (SubQueryExpression<?>)o;
+            SubQueryExpression<?> s = (SubQueryExpression<?>) o;
             return s.getMetadata().equals(queryMixin.getMetadata());
         } else {
             return false;

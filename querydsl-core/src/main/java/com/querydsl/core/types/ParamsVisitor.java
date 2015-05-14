@@ -29,7 +29,7 @@ public final class ParamsVisitor implements Visitor<Void, QueryMetadata> {
 
     public static final ParamsVisitor DEFAULT = new ParamsVisitor();
 
-    private ParamsVisitor() {}
+    private ParamsVisitor() { }
 
     @Override
     public Void visit(Constant<?> expr, QueryMetadata context) {
@@ -62,7 +62,7 @@ public final class ParamsVisitor implements Visitor<Void, QueryMetadata> {
     public Void visit(SubQueryExpression<?> expr, QueryMetadata context) {
         QueryMetadata md = expr.getMetadata();
         for (Map.Entry<ParamExpression<?>, Object> entry : md.getParams().entrySet()) {
-            context.setParam((ParamExpression)entry.getKey(), entry.getValue());
+            context.setParam((ParamExpression) entry.getKey(), entry.getValue());
         }
         visit(md.getGroupBy(), context);
         visit(md.getHaving(), context);
@@ -80,7 +80,7 @@ public final class ParamsVisitor implements Visitor<Void, QueryMetadata> {
     public Void visit(TemplateExpression<?> expr, QueryMetadata context) {
         for (Object arg : expr.getArgs()) {
             if (arg instanceof Expression<?>) {
-                ((Expression<?>)arg).accept(this, context);
+                ((Expression<?>) arg).accept(this, context);
             }
         }
         return null;

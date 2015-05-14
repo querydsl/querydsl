@@ -49,7 +49,7 @@ final class TypeResolver {
         // rewrap entity type
         if (type instanceof EntityType) {
             if (!unwrap(type).equals(resolved)) {
-                resolved = new EntityType(resolved, ((EntityType)type).getSuperTypes());
+                resolved = new EntityType(resolved, ((EntityType) type).getSuperTypes());
             } else {
                 // reset to original type
                 resolved = type;
@@ -107,9 +107,9 @@ final class TypeResolver {
 
     private static String getVarName(Type type) {
         if (type instanceof TypeExtends) {
-            return ((TypeExtends)type).getVarName();
+            return ((TypeExtends) type).getVarName();
         } else if (type instanceof TypeSuper) {
-            return ((TypeSuper)type).getVarName();
+            return ((TypeSuper) type).getVarName();
         } else {
             return null;
         }
@@ -117,11 +117,11 @@ final class TypeResolver {
 
     private static Type unwrap(Type type) {
         if (type instanceof EntityType) {
-            return ((EntityType)type).getInnerType();
+            return ((EntityType) type).getInnerType();
         } else {
             return type;
         }
     }
 
-    private TypeResolver() {}
+    private TypeResolver() { }
 }

@@ -21,7 +21,7 @@ import javax.persistence.*;
  * The Class Store.
  */
 @Entity
-@Table(name="store_")
+@Table(name = "store_")
 public class Store {
     @OneToMany
     List<Customer> customers;

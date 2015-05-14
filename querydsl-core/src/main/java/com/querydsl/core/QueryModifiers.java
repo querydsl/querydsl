@@ -26,7 +26,7 @@ import com.google.common.base.Objects;
  *
  * @author tiwe
  */
-public final class QueryModifiers implements Serializable{
+public final class QueryModifiers implements Serializable {
 
     private static final long serialVersionUID = 2934344588433680339L;
 
@@ -126,7 +126,7 @@ public final class QueryModifiers implements Serializable{
         if (o == this) {
             return true;
         } else if (o instanceof QueryModifiers) {
-            QueryModifiers qm = (QueryModifiers)o;
+            QueryModifiers qm = (QueryModifiers) o;
             return Objects.equal(qm.getLimit(), limit) && Objects.equal(qm.getOffset(), offset);
         } else {
             return false;

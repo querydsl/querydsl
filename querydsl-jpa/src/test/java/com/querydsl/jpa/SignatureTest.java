@@ -23,9 +23,9 @@ public class SignatureTest {
 
     @Test
     public void test() {
-        meet((JPAQuery)null);
-        meet((HibernateQuery)null);
-        meet((JPQLQuery)null);
+        meet((JPAQuery) null);
+        meet((HibernateQuery) null);
+        meet((JPQLQuery) null);
     }
 
     public static <T extends FilteredClause<? super T>> T meet(T query) {

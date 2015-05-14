@@ -111,12 +111,12 @@ public class AntMetaDataExporter extends Task {
     private String namingStrategyClass;
 
     /**
-     *
+     * bean serializer class
      */
     private String beanSerializerClass;
 
     /**
-     *
+     * serializer class to override
      */
     private String serializerClass;
 
@@ -126,22 +126,22 @@ public class AntMetaDataExporter extends Task {
     private boolean exportBeans;
 
     /**
-     *
+     * additional bean inerfaces
      */
     private String[] beanInterfaces;
 
     /**
-     *
+     * toString() method addition to beans
      */
     private boolean beanAddToString;
 
     /**
-     *
+     * full constructor addition to beans
      */
     private boolean beanAddFullConstructor;
 
     /**
-     *
+     * use supertype in beans
      */
     private boolean beanPrintSupertype;
 
@@ -161,47 +161,47 @@ public class AntMetaDataExporter extends Task {
     private boolean columnAnnotations;
 
     /**
-     *
+     * custom types to use
      */
     private String[] customTypes;
 
     /**
-     *
+     * scala generation mode
      */
     private boolean createScalaSources;
 
     /**
-     *
+     * append schema name to package
      */
     private boolean schemaToPackage;
 
     /**
-     *
+     * lower case normalization of names
      */
     private boolean lowerCase;
 
     /**
-     *
+     * export tables
      */
     private boolean exportTables;
 
     /**
-     *
+     * export views
      */
     private boolean exportViews;
 
     /**
-     *
+     * export all
      */
     private boolean exportAll;
 
     /**
-     *
+     * export primary keys
      */
     private boolean exportPrimaryKeys;
 
     /**
-     *
+     * export foreign keys
      */
     private boolean exportForeignKeys;
 
@@ -211,7 +211,7 @@ public class AntMetaDataExporter extends Task {
     private String columnComparatorClass;
 
     /**
-     *
+     * spatial type support
      */
     private boolean spatial;
 

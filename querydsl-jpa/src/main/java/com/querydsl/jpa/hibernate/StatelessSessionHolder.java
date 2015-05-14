@@ -23,7 +23,7 @@ import org.hibernate.StatelessSession;
  * @author tiwe
  *
  */
-public class StatelessSessionHolder implements SessionHolder{
+public class StatelessSessionHolder implements SessionHolder {
 
     private final StatelessSession session;
 

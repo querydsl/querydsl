@@ -40,7 +40,7 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
         if (o == this) {
             return true;
         } else if (o instanceof SubQueryExpression) {
-            SubQueryExpression<T> s = (SubQueryExpression<T>)o;
+            SubQueryExpression<T> s = (SubQueryExpression<T>) o;
             return s.getMetadata().equals(metadata);
         } else {
             return false;

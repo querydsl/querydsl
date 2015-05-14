@@ -179,7 +179,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         if (o == this) {
             return true;
         } else if (o instanceof QueryBase) {
-            QueryBase q = (QueryBase)o;
+            QueryBase q = (QueryBase) o;
             return q.queryMixin.equals(queryMixin);
         } else {
             return false;

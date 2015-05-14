@@ -46,7 +46,7 @@ public class BasicsTest extends AbstractJDOTest {
     private final QProduct product2 = new QProduct("product2");
 
     @Test
-    public void Serialization() throws IOException{
+    public void Serialization() throws IOException {
         JDOQuery<?> query = query();
 
         assertEquals("FROM com.querydsl.jdo.test.domain.Product", query.from(product).toString());
@@ -59,7 +59,7 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void SubQuerySerialization() throws IOException{
+    public void SubQuerySerialization() throws IOException {
         JDOQuery<?> query = query();
 
         assertEquals("FROM com.querydsl.jdo.test.domain.Product", query.from(product).toString());
@@ -107,13 +107,13 @@ public class BasicsTest extends AbstractJDOTest {
         assertFalse(query().from(product).groupBy(productBean).select(productBean).fetch().isEmpty());
     }
 
-    @Test(expected=NonUniqueResultException.class)
+    @Test(expected = NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results() {
         query().from(product).select(product).fetchOne();
     }
 
     @Test
-    public void SimpleTest() throws IOException{
+    public void SimpleTest() throws IOException {
         JDOQuery<?> query = new JDOQuery<Void>(pm, templates, false);
         assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman"))
                 .select(product.name).fetchOne());

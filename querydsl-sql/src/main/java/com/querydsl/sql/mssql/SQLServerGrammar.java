@@ -22,7 +22,7 @@ package com.querydsl.sql.mssql;
  */
 final class SQLServerGrammar {
 
-    private SQLServerGrammar() {}
+    private SQLServerGrammar() { }
 
     static String tableHints(SQLServerTableHints... tableHints) {
         StringBuilder hints = new StringBuilder(" with ").append("(");

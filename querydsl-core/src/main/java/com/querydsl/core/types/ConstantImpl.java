@@ -86,7 +86,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
 
     public static Constant<Long> create(long i) {
         if (i >= 0 && i < CACHE_SIZE) {
-            return LONGS[(int)i];
+            return LONGS[(int) i];
         } else {
             return new ConstantImpl<Long>(Long.class, i);
         }
@@ -117,7 +117,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
      */
     @SuppressWarnings("unchecked") //The class of the constant will mandate the type
     private ConstantImpl(T constant) {
-        this((Class)constant.getClass(), constant);
+        this((Class) constant.getClass(), constant);
     }
 
     /**
@@ -141,7 +141,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
         if (o == this) {
             return true;
         } else if (o instanceof Constant<?>) {
-            return ((Constant<?>)o).getConstant().equals(constant);
+            return ((Constant<?>) o).getConstant().equals(constant);
         } else {
             return false;
         }

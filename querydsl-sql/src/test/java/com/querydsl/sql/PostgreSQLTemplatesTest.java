@@ -25,7 +25,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 
 
-public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest{
+public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     protected SQLTemplates createTemplates() {

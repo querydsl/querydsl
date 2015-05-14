@@ -28,7 +28,8 @@ public class ToStringVisitorTest {
         {
             add(PathType.PROPERTY, "{0}_{1}");
             add(PathType.COLLECTION_ANY, "{0}");
-        }};
+        }
+    };
 
     @Test
     public void Operation() {

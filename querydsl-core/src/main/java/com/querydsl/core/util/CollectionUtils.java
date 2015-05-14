@@ -132,6 +132,6 @@ public final class CollectionUtils {
         }
     }
 
-    private CollectionUtils() {}
+    private CollectionUtils() { }
 
 }

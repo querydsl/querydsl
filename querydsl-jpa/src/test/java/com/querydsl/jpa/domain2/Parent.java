@@ -19,7 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="parent_")
+@Table(name = "parent_")
 public class Parent {
 
     @Id

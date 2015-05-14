@@ -19,7 +19,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Table(name="userprop_")
+@Table(name = "userprop_")
 public class UserProp {
 
     @Id

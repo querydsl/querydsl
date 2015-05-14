@@ -44,7 +44,7 @@ public class MultiComparator<T> implements Comparator<T>, Serializable {
     @Override
     public int compare(T o1, T o2) {
         if (o1.getClass().isArray()) {
-            return innerCompare(ev.evaluate((Object[])o1), ev.evaluate((Object[])o2));
+            return innerCompare(ev.evaluate((Object[]) o1), ev.evaluate((Object[]) o2));
         } else {
             return innerCompare(ev.evaluate(o1), ev.evaluate(o2));
         }

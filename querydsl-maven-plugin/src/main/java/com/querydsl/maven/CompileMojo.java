@@ -43,43 +43,59 @@ public class CompileMojo extends AbstractMojo {
     private static final String[] ALL_JAVA_FILES_FILTER = new String[] {"**" + JAVA_FILE_FILTER};
 
     /**
+     * maven project
+     *
      * @parameter default-value="${project}"
      * @readonly
      */
     private MavenProject project;
 
     /**
+     * source folder
+     *
      * @parameter
      * @required
      */
     private File sourceFolder;
 
     /**
+     * source encoding
+     *
      * @parameter
      */
     private String sourceEncoding;
 
     /**
+     * source option
+     *
      * @parameter
      */
     private String source;
 
     /**
+     * target option
+     *
      * @parameter
      */
     private String target;
 
     /**
+     * test classpath
+     *
      * @parameter default-value=false
      */
     private boolean testClasspath;
 
     /**
+     * compiler options
+     *
      * @parameter
      */
     private Map<String, String> compilerOptions;
 
     /**
+     * build context
+     *
      * @component
      */
     private BuildContext buildContext;

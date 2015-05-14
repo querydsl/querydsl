@@ -26,7 +26,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 
 
-public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
+public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     @Test

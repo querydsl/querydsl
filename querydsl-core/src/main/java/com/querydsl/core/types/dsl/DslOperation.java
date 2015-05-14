@@ -37,7 +37,7 @@ public class DslOperation<T> extends DslExpression<T> implements Operation<T> {
 
     protected DslOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
-        this.opMixin = (OperationImpl<T>)mixin;
+        this.opMixin = (OperationImpl<T>) mixin;
     }
 
     @Override

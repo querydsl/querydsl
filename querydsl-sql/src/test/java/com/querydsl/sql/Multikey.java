@@ -68,7 +68,7 @@ public class Multikey {
         if (!(o instanceof Multikey)) {
             return false;
         }
-        Multikey obj = (Multikey)o;
+        Multikey obj = (Multikey) o;
         return id.equals(obj.id) && id2.equals(obj.id2) && id3.equals(obj.id3);
     }
 
@@ -87,7 +87,7 @@ public class Multikey {
 
     @Override
     public String toString() {
-        return "Multikey#" + id+ ";" + id2+ ";" + id3;
+        return "Multikey#" + id + ";" + id2 + ";" + id3;
     }
 
 }

@@ -49,7 +49,6 @@ public interface JPQLQuery<T> extends FetchableQuery<T, JPQLQuery<T>>, Query<JPQ
      * Create a inner join with the given target.
      * Use fetchJoin() to add the fetchJoin parameter to this join.
      *
-     *
      * @param <P>
      * @param target target
      * @return the current object
@@ -137,6 +136,9 @@ public interface JPQLQuery<T> extends FetchableQuery<T, JPQLQuery<T>>, Query<JPQ
     <P> JPQLQuery<T> join(CollectionExpression<?,P> target);
 
     /**
+     * Create a join with the given target
+     * Use fetchJoin() to add the fetchJoin parameter to this join
+     *
      * @param <P>
      * @param target target
      * @param alias alias

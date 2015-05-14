@@ -69,6 +69,6 @@ public final class LuceneExpressions {
         return new QueryElement(new FuzzyQuery(term, maxEdits, prefixLength));
     }
 
-    private LuceneExpressions() {}
+    private LuceneExpressions() { }
 
 }

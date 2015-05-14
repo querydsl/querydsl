@@ -46,7 +46,7 @@ public class JTSMultiPolygonPath<T extends MultiPolygon> extends JTSMultiPolygon
 
     public JTSMultiPolygonPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public JTSMultiPolygonPath(String var) {

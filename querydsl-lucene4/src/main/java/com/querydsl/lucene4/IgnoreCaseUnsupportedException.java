@@ -19,7 +19,7 @@ package com.querydsl.lucene4;
  * @author tiwe
  *
  */
-public class IgnoreCaseUnsupportedException extends UnsupportedOperationException{
+public class IgnoreCaseUnsupportedException extends UnsupportedOperationException {
 
     private static final long serialVersionUID = 412913389929530788L;
 

@@ -96,14 +96,14 @@ public class PathBuilder<T> extends EntityPathBase<T> {
 
     private <P extends Path<?>> P  addMetadataOf(P newPath, Path<?> path) {
         if (path.getMetadata().getParent() instanceof EntityPath) {
-            EntityPath<?> parent = (EntityPath)path.getMetadata().getParent();
+            EntityPath<?> parent = (EntityPath) path.getMetadata().getParent();
             propertyMetadata.put(newPath, parent.getMetadata(path));
         }
         return newPath;
     }
 
     protected <T> Class<? extends T> validate(String property, Class<T> propertyType) {
-        Class<T> validatedType = (Class)validator.validate(getType(), property, propertyType);
+        Class<T> validatedType = (Class) validator.validate(getType(), property, propertyType);
         if (validatedType != null) {
             return validatedType;
         } else {
@@ -224,7 +224,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> ComparablePath<A> get(ComparablePath<A> path) {
-        ComparablePath<A> newPath = getComparable(toString(path), (Class<A>)path.getType());
+        ComparablePath<A> newPath = getComparable(toString(path), (Class<A>) path.getType());
         return addMetadataOf(newPath, path);
     }
 
@@ -238,7 +238,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A extends Comparable<?>> ComparablePath<A> getComparable(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
-        return super.createComparable(property, (Class)vtype);
+        return super.createComparable(property, (Class) vtype);
     }
 
     /**
@@ -250,7 +250,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> DatePath<A> get(DatePath<A> path) {
-        DatePath<A> newPath = getDate(toString(path), (Class<A>)path.getType());
+        DatePath<A> newPath = getDate(toString(path), (Class<A>) path.getType());
         return addMetadataOf(newPath, path);
     }
 
@@ -264,7 +264,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A extends Comparable<?>> DatePath<A> getDate(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
-        return super.createDate(property, (Class)vtype);
+        return super.createDate(property, (Class) vtype);
     }
 
     /**
@@ -276,7 +276,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> DateTimePath<A> get(DateTimePath<A> path) {
-        DateTimePath<A> newPath = getDateTime(toString(path), (Class<A>)path.getType());
+        DateTimePath<A> newPath = getDateTime(toString(path), (Class<A>) path.getType());
         return addMetadataOf(newPath, path);
     }
 
@@ -290,7 +290,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A extends Comparable<?>> DateTimePath<A> getDateTime(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
-        return super.createDateTime(property, (Class)vtype);
+        return super.createDateTime(property, (Class) vtype);
     }
 
     /**
@@ -315,7 +315,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Enum<A>> EnumPath<A> get(EnumPath<A> path) {
-        EnumPath<A> newPath = getEnum(toString(path), (Class<A>)path.getType());
+        EnumPath<A> newPath = getEnum(toString(path), (Class<A>) path.getType());
         return addMetadataOf(newPath, path);
     }
 
@@ -386,7 +386,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<?>> NumberPath<A> get(NumberPath<A> path) {
-        NumberPath<A> newPath = getNumber(toString(path), (Class<A>)path.getType());
+        NumberPath<A> newPath = getNumber(toString(path), (Class<A>) path.getType());
         return addMetadataOf(newPath, path);
     }
 
@@ -400,7 +400,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A extends Number & Comparable<?>> NumberPath<A> getNumber(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
-        return super.createNumber(property, (Class)vtype);
+        return super.createNumber(property, (Class) vtype);
     }
 
     /**
@@ -439,7 +439,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A> SimplePath<A> get(Path<A> path) {
-        SimplePath<A> newPath = getSimple(toString(path), (Class<A>)path.getType());
+        SimplePath<A> newPath = getSimple(toString(path), (Class<A>) path.getType());
         return addMetadataOf(newPath, path);
     }
 
@@ -453,7 +453,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A> SimplePath<A> getSimple(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
-        return super.createSimple(property, (Class)vtype);
+        return super.createSimple(property, (Class) vtype);
     }
 
     /**
@@ -487,7 +487,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> TimePath<A> get(TimePath<A> path) {
-        TimePath<A> newPath = getTime(toString(path), (Class<A>)path.getType());
+        TimePath<A> newPath = getTime(toString(path), (Class<A>) path.getType());
         return addMetadataOf(newPath, path);
     }
 
@@ -501,7 +501,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      */
     public <A extends Comparable<?>> TimePath<A> getTime(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
-        return super.createTime(property, (Class)vtype);
+        return super.createTime(property, (Class) vtype);
     }
 
     /**

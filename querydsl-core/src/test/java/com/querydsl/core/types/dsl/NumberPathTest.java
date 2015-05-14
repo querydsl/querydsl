@@ -32,9 +32,9 @@ public class NumberPathTest {
         Operation<?> operation = (Operation<?>) bytePath.in(1, 2, 3);
         Constant<List<Byte>> rightArg = (Constant<List<Byte>>) operation.getArg(1);
         List<Byte> numbers = rightArg.getConstant();
-        assertEquals(Byte.valueOf((byte)1), numbers.get(0));
-        assertEquals(Byte.valueOf((byte)2), numbers.get(1));
-        assertEquals(Byte.valueOf((byte)3), numbers.get(2));
+        assertEquals(Byte.valueOf((byte) 1), numbers.get(0));
+        assertEquals(Byte.valueOf((byte) 2), numbers.get(1));
+        assertEquals(Byte.valueOf((byte) 3), numbers.get(2));
     }
 
     @SuppressWarnings("unchecked")
@@ -43,8 +43,8 @@ public class NumberPathTest {
         Operation<?> operation = (Operation<?>) bytePath.notIn(1, 2, 3);
         Constant<List<Byte>> rightArg = (Constant<List<Byte>>) operation.getArg(1);
         List<Byte> numbers = rightArg.getConstant();
-        assertEquals(Byte.valueOf((byte)1), numbers.get(0));
-        assertEquals(Byte.valueOf((byte)2), numbers.get(1));
-        assertEquals(Byte.valueOf((byte)3), numbers.get(2));
+        assertEquals(Byte.valueOf((byte) 1), numbers.get(0));
+        assertEquals(Byte.valueOf((byte) 2), numbers.get(1));
+        assertEquals(Byte.valueOf((byte) 3), numbers.get(2));
     }
 }

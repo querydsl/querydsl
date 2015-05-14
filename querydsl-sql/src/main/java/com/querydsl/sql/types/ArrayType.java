@@ -57,7 +57,7 @@ public class ArrayType<T> extends AbstractType<T> {
     public T getValue(ResultSet rs, int startIndex) throws SQLException {
         Array arr = rs.getArray(startIndex);
         if (arr != null) {
-            Object[] rv = (Object[])arr.getArray();
+            Object[] rv = (Object[]) arr.getArray();
             if (convertPrimitives) {
                 // primitives out
                 Object rv2 = java.lang.reflect.Array.newInstance(type.getComponentType(), rv.length);
@@ -78,9 +78,9 @@ public class ArrayType<T> extends AbstractType<T> {
             int length = java.lang.reflect.Array.getLength(value);
             Object value2 = java.lang.reflect.Array.newInstance(Primitives.wrap(type.getComponentType()), length);
             copy(value, value2, length);
-            value = (T)value2;
+            value = (T) value2;
         }
-        Array arr = st.getConnection().createArrayOf(typeName, (Object[])value);
+        Array arr = st.getConnection().createArrayOf(typeName, (Object[]) value);
         st.setArray(startIndex, arr);
     }
 }

@@ -25,7 +25,7 @@ import com.querydsl.core.types.dsl.StringExpression;
 
 public class CaseForEqBuilderTest {
 
-    public static class Customer{
+    public static class Customer {
         private long annualSpending;
         public long getAnnualSpending() {
             return annualSpending;

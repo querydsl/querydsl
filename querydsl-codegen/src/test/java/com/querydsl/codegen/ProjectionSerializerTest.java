@@ -29,7 +29,7 @@ import com.mysema.codegen.model.*;
 public class ProjectionSerializerTest {
 
     @Test
-    public void Constructors() throws IOException{
+    public void Constructors() throws IOException {
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false,false);
         EntityType type = new EntityType(typeModel);
 

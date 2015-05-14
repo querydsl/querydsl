@@ -24,7 +24,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
 
-public class StringOperationsTest extends AbstractQueryTest{
+public class StringOperationsTest extends AbstractQueryTest {
 
     @Test
     public void StringConcatenations() {

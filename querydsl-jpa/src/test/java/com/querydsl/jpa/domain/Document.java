@@ -21,7 +21,7 @@ import javax.persistence.*;
  * The Class Document.
  */
 @Entity
-@Table(name="document_")
+@Table(name = "document_")
 public class Document {
     @Id
     int id;

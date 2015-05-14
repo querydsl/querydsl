@@ -22,7 +22,7 @@ import org.junit.Test;
 import com.querydsl.jdo.models.fitness.QGym;
 import com.querydsl.jdo.models.fitness.Wardrobe;
 
-public class ContainerTest extends AbstractTest{
+public class ContainerTest extends AbstractTest {
 
     private QGym gym = QGym.gym1;
 

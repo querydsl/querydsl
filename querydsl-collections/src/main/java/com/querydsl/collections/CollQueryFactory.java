@@ -82,6 +82,6 @@ public final class CollQueryFactory {
         return new CollUpdateClause<A>(path, col);
     }
 
-    private CollQueryFactory() {}
+    private CollQueryFactory() { }
 
 }

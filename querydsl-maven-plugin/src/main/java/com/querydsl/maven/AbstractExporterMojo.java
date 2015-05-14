@@ -77,6 +77,8 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean handleMethods = true;
 
     /**
+     * maven project
+     *
      * @parameter default-value="${project}"
      * @readonly
      */
@@ -97,6 +99,8 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean testClasspath;
 
     /**
+     * build context
+     *
      * @component
      */
     private BuildContext buildContext;

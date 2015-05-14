@@ -26,7 +26,9 @@ import com.querydsl.core.types.Expression;
 public interface Group {
 
     /**
-     * @return Groups elements as an array
+     * Groups elements as an array
+     *
+     * @return elements as an array
      */
     Object[] toArray();
 

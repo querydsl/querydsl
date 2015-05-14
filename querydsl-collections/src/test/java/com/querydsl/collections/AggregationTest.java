@@ -52,7 +52,7 @@ public class AggregationTest extends AbstractQueryTest {
         assertEquals(2, query.select(cat.weight.min()).fetchOne());
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Min_And_Max() {
         query.select(cat.weight.min(), cat.weight.max()).fetchOne();
     }

@@ -90,13 +90,13 @@ public final class CaseBuilder {
             if (constant != null) {
                 return otherwise(ConstantImpl.create(constant));
             } else {
-                return otherwise((Q)NullExpression.DEFAULT);
+                return otherwise((Q) NullExpression.DEFAULT);
             }
         }
 
         public Q otherwise(Expression<A> expr) {
             if (expr == null) {
-                expr = (Expression)NullExpression.DEFAULT;
+                expr = (Expression) NullExpression.DEFAULT;
             }
             cases.add(0, new CaseElement<A>(null, expr));
             Expression<A> last = null;

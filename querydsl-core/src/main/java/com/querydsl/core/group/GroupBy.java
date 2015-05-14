@@ -332,6 +332,6 @@ public final class GroupBy {
         return new GMap.Mixin<K, V, T, U, SortedMap<T, U>>(key, value, GMap.createSorted(QPair.create(key, value), comparator));
     }
 
-    private GroupBy() {}
+    private GroupBy() { }
 
 }

@@ -56,9 +56,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     protected Expression<?> extractEntityExpression(Expression<?> expr) {
         if (expr instanceof Operation) {
-            return ((Operation<?>)expr).getArg(0);
+            return ((Operation<?>) expr).getArg(0);
         } else if (expr instanceof TemplateExpression) {
-            return (Expression<?>) ((TemplateExpression<?>)expr).getArg(0);
+            return (Expression<?>) ((TemplateExpression<?>) expr).getArg(0);
         } else {
             return expr;
         }

@@ -21,7 +21,7 @@ class GOne<T> extends AbstractGroupExpression<T, T> {
 
     @SuppressWarnings("unchecked")
     public GOne(Expression<T> expr) {
-        super((Class)expr.getType(), expr);
+        super((Class) expr.getType(), expr);
     }
 
     @Override

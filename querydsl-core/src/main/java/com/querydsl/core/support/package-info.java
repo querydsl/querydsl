@@ -14,6 +14,5 @@
 
 /**
  * Various support classes
- *
  */
 package com.querydsl.core.support;

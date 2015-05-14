@@ -133,7 +133,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
 
         QCat cat = QCat.cat;
         long amount = update(cat).where(cat.name.eq("Bob"))
-            .set(cat.name, (String)null)
+            .set(cat.name, (String) null)
             .set(cat.alive, false)
             .execute();
         assertEquals(1, amount);
@@ -151,7 +151,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     }
 
     @Test
-    public void Collection() throws Exception{
+    public void Collection() throws Exception {
         List<Cat> cats = Arrays.asList(new Cat("Bob",10), new Cat("Steve",11));
         for (Cat cat : cats) {
             session.save(cat);

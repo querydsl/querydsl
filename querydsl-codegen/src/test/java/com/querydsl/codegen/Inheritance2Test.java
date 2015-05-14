@@ -59,8 +59,8 @@ public class Inheritance2Test {
         Field field = Base.class.getDeclaredField("base2");
         Type type = typeFactory.get(field.getType(), field.getGenericType());
         assertEquals(2, type.getParameters().size());
-        assertNull(((TypeExtends)type.getParameters().get(0)).getVarName());
-        assertNull(((TypeExtends)type.getParameters().get(1)).getVarName());
+        assertNull(((TypeExtends) type.getParameters().get(0)).getVarName());
+        assertNull(((TypeExtends) type.getParameters().get(1)).getVarName());
     }
 
     @Test

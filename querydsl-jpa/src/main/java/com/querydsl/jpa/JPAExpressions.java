@@ -142,6 +142,6 @@ public final class JPAExpressions {
         return Expressions.stringOperation(JPQLOps.TYPE, path);
     }
 
-    private JPAExpressions() {}
+    private JPAExpressions() { }
 
 }

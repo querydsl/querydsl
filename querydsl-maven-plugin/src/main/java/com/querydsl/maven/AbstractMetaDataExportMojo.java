@@ -38,9 +38,11 @@ import com.querydsl.sql.types.Type;
  *
  * @author tiwe
  */
-public class AbstractMetaDataExportMojo extends AbstractMojo{
+public class AbstractMetaDataExportMojo extends AbstractMojo {
 
     /**
+     * maven project
+     *
      * @parameter default-value="${project}"
      * @readonly
      */
@@ -395,7 +397,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
             if (serializerClass != null) {
                 try {
-                    exporter.setSerializerClass((Class)Class.forName(serializerClass));
+                    exporter.setSerializerClass((Class) Class.forName(serializerClass));
                 } catch (ClassNotFoundException e) {
                     getLog().error(e);
                     throw new MojoExecutionException(e.getMessage(), e);
@@ -403,7 +405,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             }
             if (exportBeans) {
                 if (beanSerializerClass != null) {
-                    exporter.setBeanSerializerClass((Class)Class.forName(beanSerializerClass));
+                    exporter.setBeanSerializerClass((Class) Class.forName(beanSerializerClass));
                 } else {
                     BeanSerializer serializer = new BeanSerializer();
                     if (beanInterfaces != null) {
@@ -425,7 +427,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
                 }
 
             }
-            String sourceEncoding = (String)project.getProperties().get("project.build.sourceEncoding");
+            String sourceEncoding = (String) project.getProperties().get("project.build.sourceEncoding");
             if (sourceEncoding != null) {
                 exporter.setSourceEncoding(sourceEncoding);
             }
@@ -464,7 +466,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
             Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-            try{
+            try {
                 exporter.export(conn.getMetaData());
             } finally {
                 if (conn != null) {

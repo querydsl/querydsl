@@ -36,7 +36,7 @@ public class TimePath<T extends Comparable> extends TimeExpression<T> implements
 
     protected TimePath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     protected TimePath(Class<? extends T> type, String var) {

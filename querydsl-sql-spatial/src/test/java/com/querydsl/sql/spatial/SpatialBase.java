@@ -244,7 +244,7 @@ public class SpatialBase extends AbstractBaseTest {
 
         List<Expression<?>> expressions = Lists.newArrayList();
         expressions.addAll(createExpressions(shapes1.geometry.asPoint(), shapes2.geometry.asPoint()));
-        expressions.addAll(createExpressions(shapes1.geometry.asPoint(), ConstantImpl.create((Point)Wkt.fromWkt("Point(2 2)"))));
+        expressions.addAll(createExpressions(shapes1.geometry.asPoint(), ConstantImpl.create((Point) Wkt.fromWkt("Point(2 2)"))));
 
         for (Expression<?> expr : expressions) {
             boolean logged = false;

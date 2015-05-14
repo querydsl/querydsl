@@ -37,6 +37,6 @@ final class Constants {
         return typedClasses.contains(cl);
     }
 
-    private Constants() {}
+    private Constants() { }
 
 }

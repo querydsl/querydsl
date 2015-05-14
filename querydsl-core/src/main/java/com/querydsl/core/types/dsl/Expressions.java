@@ -43,7 +43,7 @@ public final class Expressions {
 
     public static final BooleanExpression FALSE = booleanTemplate("false");
 
-    private Expressions() {}
+    private Expressions() { }
 
     /**
      * Create a {@code source as alias} expression
@@ -147,7 +147,7 @@ public final class Expressions {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <D> SimpleExpression<D> constantAs(D source, Path<D> alias) {
         if (source == null) {
-            return as((Expression)nullExpression(), alias);
+            return as((Expression) nullExpression(), alias);
         } else {
             return as(ConstantImpl.create(source), alias);
         }
@@ -1255,7 +1255,7 @@ public final class Expressions {
      * @return list expression
      */
     public static <T> SimpleExpression<T> list(Class<T> clazz, SimpleExpression<?>... exprs) {
-        SimpleExpression<T> rv = (SimpleExpression<T>)exprs[0];
+        SimpleExpression<T> rv = (SimpleExpression<T>) exprs[0];
         for (int i = 1; i < exprs.length; i++) {
             rv = new SimpleOperation<T>(clazz, Ops.LIST, rv, exprs[i]);
         }

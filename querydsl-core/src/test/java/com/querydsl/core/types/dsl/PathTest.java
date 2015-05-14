@@ -37,7 +37,7 @@ import com.querydsl.core.util.Annotations;
 
 public class PathTest {
 
-    enum ExampleEnum {A,B}
+    enum ExampleEnum { A, B }
 
     public static class Superclass {
 
@@ -48,7 +48,7 @@ public class PathTest {
     }
 
     @QueryEntity
-    public static class Entity extends Superclass{
+    public static class Entity extends Superclass {
 
         @Nullable
         private String property1;

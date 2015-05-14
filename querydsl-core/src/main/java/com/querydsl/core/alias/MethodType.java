@@ -29,7 +29,7 @@ import com.querydsl.core.types.EntityPath;
  * @author tiwe
  *
  */
-public enum MethodType{
+public enum MethodType {
     /**
      * __mappedPath invocation
      */

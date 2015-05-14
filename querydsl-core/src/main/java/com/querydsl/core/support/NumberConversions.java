@@ -73,15 +73,15 @@ public class NumberConversions<T> extends FactoryExpressionBase<T> {
             Class<?> type = expr.getArgs().get(i).getType();
             if (Enum.class.isAssignableFrom(type) && !type.isInstance(args[i])) {
                 if (args[i] instanceof String) {
-                    args[i] = Enum.valueOf((Class)type, (String)args[i]);
+                    args[i] = Enum.valueOf((Class) type, (String) args[i]);
                 } else if (args[i] instanceof Number) {
-                    args[i] = getValues((Class)type)[((Number)args[i]).intValue()];
+                    args[i] = getValues((Class) type)[((Number) args[i]).intValue()];
                 }
             } else if (args[i] instanceof Number && !type.isInstance(args[i])) {
                 if (type.equals(Boolean.class)) {
-                    args[i] = ((Number)args[i]).intValue() > 0;
-                } else if (Number.class.isAssignableFrom(type)){
-                    args[i] = MathUtils.cast((Number)args[i], (Class)type);
+                    args[i] = ((Number) args[i]).intValue() > 0;
+                } else if (Number.class.isAssignableFrom(type)) {
+                    args[i] = MathUtils.cast((Number) args[i], (Class) type);
                 }
             }
         }

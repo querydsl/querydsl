@@ -27,13 +27,13 @@ import org.hibernate.type.Type;
  * @author tiwe
  *
  */
-public class ExtendedDerbyDialect extends DerbyDialect{
+public class ExtendedDerbyDialect extends DerbyDialect {
 
     private static final CastFunction castFunction = new CastFunction() {
         @Override
         public String render(Type columnType, List args, SessionFactoryImplementor factory) {
             if (args.get(1).equals("string")) {
-                return super.render(columnType, Arrays.asList("char("+args.get(0)+")",args.get(1)), factory);
+                return super.render(columnType, Arrays.asList("char(" + args.get(0) + ")", args.get(1)), factory);
             } else {
                 return super.render(columnType, args, factory);
             }

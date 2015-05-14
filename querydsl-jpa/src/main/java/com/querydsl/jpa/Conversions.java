@@ -55,7 +55,7 @@ public final class Conversions {
     private static boolean isEntityPathAndNeedsWrapping(Expression<?> expr) {
         if ((expr instanceof Path && expr.getType().isAnnotationPresent(Entity.class)) ||
             (expr instanceof EntityPath && !RelationalPath.class.isInstance(expr))) {
-            Path<?> path = (Path<?>)expr;
+            Path<?> path = (Path<?>) expr;
             if (path.getMetadata().getParent() == null) {
                 return true;
             }
@@ -83,7 +83,7 @@ public final class Conversions {
         } else if (Enum.class.isAssignableFrom(expr.getType())) {
             return new EnumConversion<RT>(expr);
         } else if (expr instanceof FactoryExpression) {
-            FactoryExpression<RT> factoryExpr = (FactoryExpression<RT>)expr;
+            FactoryExpression<RT> factoryExpr = (FactoryExpression<RT>) expr;
             boolean numberConversions = false;
             boolean hasEntityPath = false;
             for (Expression<?> e : factoryExpr.getArgs()) {
@@ -106,6 +106,6 @@ public final class Conversions {
         return expr;
     }
 
-    private Conversions() {}
+    private Conversions() { }
 
 }

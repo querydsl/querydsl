@@ -29,7 +29,7 @@ public final class Naming {
         } else {
             StringBuilder sb = new StringBuilder(s.length() + 1);
             for (char c : s.toCharArray()) {
-                if(!Character.isJavaIdentifierPart(c)) {
+                if (!Character.isJavaIdentifierPart(c)) {
                     sb.append("_");
                 } else if (sb.length() == 0 && !Character.isJavaIdentifierStart(c)) {
                     sb.append("_").append(c);
@@ -41,6 +41,6 @@ public final class Naming {
         }
     }
 
-    private Naming() {}
+    private Naming() { }
 
 }

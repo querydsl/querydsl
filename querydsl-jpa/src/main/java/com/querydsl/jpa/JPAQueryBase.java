@@ -77,7 +77,7 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
 
     @Override
     public <P> Q from(CollectionExpression<?,P> target, Path<P> alias) {
-        return queryMixin.from(Expressions.as((Path)target, alias));
+        return queryMixin.from(Expressions.as((Path) target, alias));
     }
 
     @Override

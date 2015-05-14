@@ -44,7 +44,7 @@ public class AbstractClassesTest {
         String name;
         String description;
 
-        public BaseArchetype() {}
+        public BaseArchetype() { }
 
         public int compareTo(BaseArchetype o) {
             return 0;

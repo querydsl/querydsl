@@ -81,6 +81,6 @@ public final class APTOptions {
      */
     public static final String QUERYDSL_UNKNOWN_AS_EMBEDDABLE = "querydsl.unknownAsEmbeddable";
 
-    private APTOptions() {}
+    private APTOptions() { }
 
 }

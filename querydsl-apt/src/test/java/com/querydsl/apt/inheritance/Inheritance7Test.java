@@ -35,7 +35,7 @@ public class Inheritance7Test {
     }
 
     @QueryEntity
-    public static class Category<T extends Category<T>> implements Comparable<T>{
+    public static class Category<T extends Category<T>> implements Comparable<T> {
 
         private User owner;
 

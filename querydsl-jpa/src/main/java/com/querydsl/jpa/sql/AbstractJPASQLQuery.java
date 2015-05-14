@@ -114,7 +114,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
             ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
             Set<String> used = Sets.newHashSet();
             if (projection instanceof FactoryExpression) {
-                for (Expression<?> expr : ((FactoryExpression<?>)projection).getArgs()) {
+                for (Expression<?> expr : ((FactoryExpression<?>) projection).getArgs()) {
                     if (isEntityExpression(expr)) {
                         queryHandler.addEntity(query, extractEntityExpression(expr).toString(), expr.getType());
                     } else if (aliases.containsKey(expr)) {
@@ -158,8 +158,8 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
         this.projection = null; // necessary when query is reused
 
         if (projection instanceof FactoryExpression) {
-            if (!queryHandler.transform(query, (FactoryExpression<?>)projection)) {
-                this.projection = (FactoryExpression<?>)projection;
+            if (!queryHandler.transform(query, (FactoryExpression<?>) projection)) {
+                this.projection = (FactoryExpression<?>) projection;
             }
         }
 
@@ -188,7 +188,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
                     if (!o.getClass().isArray()) {
                         arr = new Object[]{o};
                     } else {
-                        arr = (Object[])o;
+                        arr = (Object[]) o;
                     }
                     if (projection.getArgs().size() < arr.length) {
                         Object[] shortened = new Object[projection.getArgs().size()];
@@ -220,7 +220,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
                 if (!result.getClass().isArray()) {
                     result = new Object[]{result};
                 }
-                return projection.newInstance((Object[])result);
+                return projection.newInstance((Object[]) result);
             } else {
                 return null;
             }
@@ -255,7 +255,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
         // TODO : handle entity projections as well
         try {
             Query query = createQuery(true);
-            long total = ((Number)query.getSingleResult()).longValue();
+            long total = ((Number) query.getSingleResult()).longValue();
             if (total > 0) {
                 QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
                 query = createQuery(false);
@@ -294,17 +294,17 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     @SuppressWarnings("unchecked")
     public T fetchOne() {
         Query query = createQuery();
-        return (T)uniqueResult(query);
+        return (T) uniqueResult(query);
     }
 
     @Nullable
     private Object uniqueResult(Query query) {
-        try{
+        try {
             return getSingleResult(query);
-        } catch(javax.persistence.NoResultException e) {
+        } catch (javax.persistence.NoResultException e) {
             logger.trace(e.getMessage(),e);
             return null;
-        } catch(javax.persistence.NonUniqueResultException e) {
+        } catch (javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         } finally {
             reset();
@@ -314,19 +314,19 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     @SuppressWarnings("unchecked")
     public Q setLockMode(LockModeType lockMode) {
         this.lockMode = lockMode;
-        return (Q)this;
+        return (Q) this;
     }
 
     @SuppressWarnings("unchecked")
     public Q setFlushMode(FlushModeType flushMode) {
         this.flushMode = flushMode;
-        return (Q)this;
+        return (Q) this;
     }
 
     @SuppressWarnings("unchecked")
     public Q setHint(String name, Object value) {
         hints.put(name, value);
-        return (Q)this;
+        return (Q) this;
     }
 
     @Override

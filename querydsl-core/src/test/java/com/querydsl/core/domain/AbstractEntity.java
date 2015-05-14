@@ -16,6 +16,6 @@ package com.querydsl.core.domain;
 import com.querydsl.core.annotations.QueryEntity;
 
 @QueryEntity
-public class AbstractEntity<T> extends GenericEntity<Integer, T>{
+public class AbstractEntity<T> extends GenericEntity<Integer, T> {
 
 }

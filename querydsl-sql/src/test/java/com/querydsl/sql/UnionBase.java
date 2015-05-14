@@ -169,7 +169,7 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn(FIREBIRD)
-    public void Union_Multi_Column_Projection_List() throws IOException{
+    public void Union_Multi_Column_Projection_List() throws IOException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.id.min(), employee.id.min().subtract(1));
 
@@ -182,24 +182,24 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn(FIREBIRD)
-    public void Union_Multi_Column_Projection_Iterate() throws IOException{
+    public void Union_Multi_Column_Projection_Iterate() throws IOException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.id.min(), employee.id.min().subtract(1));
 
         CloseableIterator<Tuple> iterator = query().union(sq1,sq2).iterate();
-        try{
+        try {
             assertTrue(iterator.hasNext());
             assertTrue(iterator.next() != null);
             assertTrue(iterator.next() != null);
             assertFalse(iterator.hasNext());
-        }finally{
+        } finally {
             iterator.close();
         }
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_Single_Column_Projections_List() throws IOException{
+    public void Union_Single_Column_Projections_List() throws IOException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
 
@@ -211,17 +211,17 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_Single_Column_Projections_Iterate() throws IOException{
+    public void Union_Single_Column_Projections_Iterate() throws IOException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
 
         CloseableIterator<Integer> iterator = query().union(sq1,sq2).iterate();
-        try{
+        try {
             assertTrue(iterator.hasNext());
             assertTrue(iterator.next() != null);
             assertTrue(iterator.next() != null);
             assertFalse(iterator.hasNext());
-        }finally{
+        } finally {
             iterator.close();
         }
     }

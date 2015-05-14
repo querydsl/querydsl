@@ -23,7 +23,7 @@ import org.hibernate.Session;
  * @author tiwe
  *
  */
-public class DefaultSessionHolder implements SessionHolder{
+public class DefaultSessionHolder implements SessionHolder {
 
     private final Session session;
 

@@ -29,7 +29,7 @@ public class EmbeddableInterfaceTest {
     @Entity
     public static class EntityClass {
 
-        @ElementCollection(targetClass=EmbeddableClass.class)
+        @ElementCollection(targetClass = EmbeddableClass.class)
         Collection<EmbeddableInterface> children;
 
     }
