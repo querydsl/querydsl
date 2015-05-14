@@ -88,24 +88,24 @@ public class DeepInitializationTest {
     @Embeddable
     public static class MyEmbeddable {
 
-        private String nummer;
+        private String number;
 
         public MyEmbeddable() {
         }
 
-        public String getNummer() {
-            return nummer;
+        public String getNumber() {
+            return number;
         }
 
-        public void setNummer(String nummer) {
-            this.nummer = nummer;
+        public void setNumber(String number) {
+            this.number = number;
         }
     }
 
     @Test
     public void Init_Via_Parent() {
         QDeepInitializationTest_Parent parent = QDeepInitializationTest_Parent.parent;
-        parent.children.any().subChild.myEmbeddable.nummer.eq("Test");
+        parent.children.any().subChild.myEmbeddable.number.eq("Test");
     }
 
 }
