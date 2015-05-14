@@ -25,6 +25,8 @@ import com.querydsl.core.types.dsl.Expressions;
 /**
  * {@code ReplaceVisitor} is a deep visitor that can be customized to replace segments of
  * expression trees
+ *
+ * @param <C> context type
  */
 public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
 

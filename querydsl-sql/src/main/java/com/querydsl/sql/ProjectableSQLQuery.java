@@ -37,6 +37,7 @@ import com.querydsl.core.types.dsl.Wildcard;
 /**
  * {@code ProjectableSQLQuery} is the base type for SQL query implementations
  *
+ * @param <T> result type
  * @param <Q> concrete subtype
  */
 public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>> extends FetchableSubQueryBase<T, Q>

@@ -21,6 +21,9 @@ import com.querydsl.core.types.dsl.Expressions;
 /**
  * {@code JPAQueryBase} is a base Query class for JPA queries
  *
+ * @param <T> result type
+ * @param <Q> concrete subtype
+ *
  * @author tiwe
  */
 public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends FetchableSubQueryBase<T, Q> implements JPQLQuery<T> {

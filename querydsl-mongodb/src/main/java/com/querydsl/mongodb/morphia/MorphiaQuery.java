@@ -38,6 +38,8 @@ import com.querydsl.mongodb.AbstractMongodbQuery;
  *     .fetch();
  * }</pre>
  *
+ * @param <K> result type
+ *
  * @author laimw
  * @author tiwe
  *

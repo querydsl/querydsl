@@ -20,6 +20,9 @@ import java.util.Map;
 import com.querydsl.codegen.Property;
 import com.querydsl.sql.ColumnMetadata;
 
+/**
+ * Compares {@link Property} instances based on their ordinal position in the table
+ */
 public class OrdinalPositionComparator implements Comparator<Property> {
 
     public OrdinalPositionComparator() {

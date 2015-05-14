@@ -19,6 +19,7 @@ import java.lang.reflect.AnnotatedElement;
  * {@code Path} represents a path expression. Paths refer to variables, properties and collection members access.
  *
  * @author tiwe
+ * @param <T> expression type
  */
 public interface Path<T> extends Expression<T> {
 

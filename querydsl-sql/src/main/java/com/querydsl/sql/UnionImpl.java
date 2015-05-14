@@ -25,9 +25,10 @@ import com.querydsl.core.types.*;
 /**
  * Default implementation of the Union interface
  *
- * @author tiwe
+ * @param <T> result type
+ * @param <Q> concrete query type
  *
- * @param <T>
+ * @author tiwe
  */
 public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  implements Union<T> {
 

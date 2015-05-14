@@ -24,6 +24,8 @@ import com.querydsl.core.types.*;
 /**
  * {@code SerializerBase} is a stub for Serializer implementations which serialize query metadata to Strings
  *
+ * @param <S> concrete subtype
+ *
  * @author tiwe
  */
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {

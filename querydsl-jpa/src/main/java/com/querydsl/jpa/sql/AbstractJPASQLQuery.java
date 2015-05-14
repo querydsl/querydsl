@@ -47,9 +47,10 @@ import com.querydsl.sql.SQLSerializer;
 /**
  * {@code AbstractJPASQLQuery} is the base class for JPA Native SQL queries
  *
- * @author tiwe
+ * @param <T> result type
+ * @param <Q> concrete subtype
  *
- * @param <Q>
+ * @author tiwe*
  */
 public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>> extends AbstractSQLQuery<T, Q> {
 

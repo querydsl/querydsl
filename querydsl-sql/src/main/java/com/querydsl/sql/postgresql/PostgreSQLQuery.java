@@ -25,9 +25,10 @@ import com.querydsl.sql.*;
 /**
  * {@code PostgreSQLQuery} provides PostgreSQL related extensions to SQLQuery
  *
- * @author tiwe
- * @see SQLQuery
+ * @param <T> result type
  *
+ * @see SQLQuery
+ * @author tiwe
  */
 public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> {
 

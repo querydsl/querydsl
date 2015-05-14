@@ -29,6 +29,9 @@ public class QueryFlag implements Serializable {
 
     private static final long serialVersionUID = -7131081607441961628L;
 
+    /**
+     * The different {@code QueryFlag} positions
+     */
     public enum Position {
 
         /**

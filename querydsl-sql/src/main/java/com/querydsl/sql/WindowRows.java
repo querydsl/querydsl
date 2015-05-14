@@ -22,9 +22,9 @@ import com.querydsl.core.types.Expression;
 /**
  * {@code WindowRows} provides the building of the rows/range part of the window function expression
  *
- * @author tiwe
+ * @param <A> expression type
  *
- * @param <A>
+ * @author tiwe
  */
 public class WindowRows<A> {
 
@@ -40,6 +40,9 @@ public class WindowRows<A> {
 
     private static final String UNBOUNDED = " unbounded";
 
+    /**
+     * Intermediate step
+     */
     public class Between {
 
         public BetweenAnd unboundedPreceding() {
@@ -76,6 +79,9 @@ public class WindowRows<A> {
         }
     }
 
+    /**
+     * Intermediate step
+     */
     public class BetweenAnd {
 
         public BetweenAnd() {

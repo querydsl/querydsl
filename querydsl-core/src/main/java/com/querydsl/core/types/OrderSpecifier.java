@@ -28,6 +28,9 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
 
     private static final long serialVersionUID = 3427652988262514678L;
 
+    /**
+     * Behaviour for order of null values
+     */
     public enum NullHandling { Default, NullsFirst, NullsLast }
 
     private final Order order;

@@ -28,6 +28,8 @@ import com.querydsl.core.types.dsl.Expressions;
 /**
  * {@code PrimaryKey} defines a primary key on table
  *
+ * @param <E> expression type
+ *
  * @author tiwe
  */
 @Immutable

@@ -19,6 +19,7 @@ import java.util.List;
  * {@code Operation} represents an operation with operator and arguments
  *
  * @author tiwe
+ * @param <T> expression type
  */
 public interface Operation<T> extends Expression<T> {
 

@@ -11,6 +11,12 @@
 
   <module name="TreeWalker">
 
+    <module name="JavadocType">
+      <property name="scope" value="public"/>
+      <!-- needed for Maven plugin javadocs -->
+      <property name="allowUnknownTags" value="true"/>
+    </module>
+
     <module name="JavadocStyle">
       <property name="checkFirstSentence" value="false"/>
       <property name="checkEmptyJavadoc" value="true"/>

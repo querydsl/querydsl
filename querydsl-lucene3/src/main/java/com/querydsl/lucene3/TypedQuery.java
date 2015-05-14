@@ -23,6 +23,8 @@ import com.google.common.base.Function;
  *
  * <p>Converts Lucene documents to typed results via a constructor supplied transformer</p>
  *
+ * @param <T> result type
+ *
  * @author laim
  * @author tiwe
  */

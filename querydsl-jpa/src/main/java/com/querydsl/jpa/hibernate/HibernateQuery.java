@@ -27,8 +27,9 @@ import com.querydsl.jpa.JPQLTemplates;
 /**
  * {@code HibernateQuery} is the default implementation of the JPQLQuery interface for Hibernate
  *
- * @author tiwe
+ * @param <T> result type
  *
+ * @author tiwe
  */
 public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<T>> implements JPQLQuery<T> {
 

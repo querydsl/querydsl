@@ -21,8 +21,9 @@ import com.querydsl.sql.RelationalPath;
 /**
  * Create a Map of updates for a given domain object
  *
- * @author tiwe
+ * @param <T> object type
  *
+ * @author tiwe
  */
 public interface Mapper<T> {
 

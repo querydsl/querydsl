@@ -17,8 +17,11 @@ package com.querydsl.core.types;
  * {@code Visitor} defines a visitor signature for {@link Expression} instances.
  *
  * @author tiwe
+ *
+ * @param <R> Return type
+ * @param <C> Context type
  */
-public interface Visitor<R,C> {
+public interface Visitor<R, C> {
 
     /**
      * Visit a Contant instance with the given context

@@ -26,8 +26,9 @@ import com.querydsl.core.types.ProjectionRole;
  * RelationalPath extends {@link EntityPath} to provide access to relational
  * metadata
  *
- * @author tiwe
+ * @param <T> expression type
  *
+ * @author tiwe
  */
 public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
 

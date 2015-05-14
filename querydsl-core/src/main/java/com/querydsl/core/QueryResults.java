@@ -23,6 +23,8 @@ import com.google.common.collect.ImmutableList;
 /**
  * {@code QueryResults} bundles data for paged query results
  *
+ * @param <T> type of result elements
+ *
  * @author tiwe
  */
 public final class QueryResults<T> implements Serializable {

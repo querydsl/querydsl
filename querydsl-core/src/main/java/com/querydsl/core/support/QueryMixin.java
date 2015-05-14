@@ -22,12 +22,15 @@ import com.querydsl.core.types.FactoryExpressionUtils.FactoryExpressionAdapter;
 /**
  * Mixin style Query implementation
  *
- * @author tiwe
- *
  * @param <T> type of wrapped query
+ *
+ * @author tiwe
  */
 public class QueryMixin<T> {
 
+    /**
+     * Role of expression in conversion
+     */
     public enum Role { SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY }
 
     private final QueryMetadata metadata;

@@ -27,6 +27,8 @@ import com.querydsl.sql.SQLTemplates;
  * {@code HibernateSQLQuery} is an SQLQuery implementation that uses Hibernate's Native SQL functionality
  * to execute queries
  *
+ * @param <T> result type
+ *
  * @author tiwe
  *
  */

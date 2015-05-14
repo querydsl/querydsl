@@ -29,6 +29,9 @@ import com.querydsl.core.types.SubQueryExpression;
  * {@code FetchableQueryBase} extends the {@link QueryBase} class to provide default
  * implementations of the methods of the {@link com.querydsl.core.Fetchable} interface
  *
+ * @param <T> result type
+ * @param <Q> concrete subtype
+ *
  * @author tiwe
  */
 public abstract class FetchableQueryBase<T, Q extends FetchableQueryBase<T, Q>>
