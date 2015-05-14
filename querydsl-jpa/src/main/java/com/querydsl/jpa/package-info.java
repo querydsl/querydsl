@@ -12,8 +12,7 @@
  * limitations under the License.
  */
 
-
 /**
- * Query implementations for HQL and JPQL
+ * JPA support
  */
 package com.querydsl.jpa;

@@ -13,7 +13,7 @@
  */
 
 /**
- * Contains annotation for Domain and DTO types
+ * Annotations for Domain and DTO types
  */
 package com.querydsl.core.annotations;
 
