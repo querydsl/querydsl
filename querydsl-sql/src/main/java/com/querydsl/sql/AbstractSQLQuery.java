@@ -268,21 +268,21 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             listeners.executed(context);
 
             if (expr == null) {
-                return new SQLResultIterator<T>(configuration, stmt, rs) {
+                return new SQLResultIterator<T>(configuration, stmt, rs, listeners, context) {
                     @Override
                     public T produceNext(ResultSet rs) throws Exception {
                         return (T) rs.getObject(1);
                     }
                 };
             } else if (expr instanceof FactoryExpression) {
-                return new SQLResultIterator<T>(configuration, stmt, rs) {
+                return new SQLResultIterator<T>(configuration, stmt, rs, listeners, context) {
                     @Override
                     public T produceNext(ResultSet rs) throws Exception {
                         return newInstance((FactoryExpression<T>) expr, rs, 0);
                     }
                 };
             } else if (expr.equals(Wildcard.all)) {
-                return new SQLResultIterator<T>(configuration, stmt, rs) {
+                return new SQLResultIterator<T>(configuration, stmt, rs, listeners, context) {
                     @Override
                     public T produceNext(ResultSet rs) throws Exception {
                         Object[] rv = new Object[rs.getMetaData().getColumnCount()];
@@ -293,7 +293,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                     }
                 };
             } else {
-                return new SQLResultIterator<T>(configuration, stmt, rs) {
+                return new SQLResultIterator<T>(configuration, stmt, rs, listeners, context) {
                     @Override
                     public T produceNext(ResultSet rs) throws Exception {
                         return get(rs, expr, 1, expr.getType());
@@ -303,9 +303,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
         } catch (SQLException e) {
             onException(context, e);
+            endContext(context);
             throw configuration.translate(queryString, constants, e);
         } finally {
-            endContext(context);
             reset();
         }
     }
