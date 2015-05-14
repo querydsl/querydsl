@@ -95,7 +95,7 @@ public class GenericExporter {
 
     private final CodegenModule codegenModule = new CodegenModule();
 
-    private final SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
+    private SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
 
     private boolean handleFields = true, handleMethods = true;
 
@@ -721,6 +721,15 @@ public class GenericExporter {
      */
     public void setStrictMode(boolean s) {
         strictMode = s;
+    }
+
+    /**
+     * Set the serializer configuration to use
+     *
+     * @param serializerConfig
+     */
+    public void setSerializerConfig(SerializerConfig serializerConfig) {
+        this.serializerConfig = serializerConfig;
     }
 
     /**
