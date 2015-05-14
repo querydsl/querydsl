@@ -175,8 +175,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         listeners.end(context);
     }
 
-
-
     /**
      * Get the results as an JDBC result set
      *

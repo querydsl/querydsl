@@ -21,7 +21,11 @@ import com.querydsl.core.QueryException;
 /**
  * {@code SQLCloseListener} closes the JDBC connection at the end of the query or clause execution
  */
-public class SQLCloseListener extends SQLBaseListener {
+public final class SQLCloseListener extends SQLBaseListener {
+
+    public static final SQLCloseListener DEFAULT = new SQLCloseListener();
+
+    private SQLCloseListener() { }
 
     @Override
     public void end(SQLListenerContext context) {
