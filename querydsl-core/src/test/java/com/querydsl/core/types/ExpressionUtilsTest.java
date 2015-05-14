@@ -14,6 +14,7 @@
 package com.querydsl.core.types;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
+import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
@@ -148,6 +150,12 @@ public class ExpressionUtilsTest {
     }
 
     @Test
+    public void In_SubQuery() {
+        String s = ExpressionUtils.in(str, new SubQueryExpressionImpl<String>(String.class, new DefaultQueryMetadata())).toString();
+        assertTrue(s.startsWith("str in com.querydsl.core.DefaultQueryMetadata@c"));
+    }
+
+    @Test
     public void InAny() {
         ImmutableSet<List<String>> of = ImmutableSet.of(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
         assertEquals("str in [a, b, c] || str in [d, e, f]",
@@ -179,6 +187,12 @@ public class ExpressionUtilsTest {
         ImmutableSet<List<String>> of = ImmutableSet.of(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
         assertEquals("str not in [a, b, c] && str not in [d, e, f]",
                 ExpressionUtils.notInAny(str, of).toString());
+    }
+
+    @Test
+    public void NotIn_SubQuery() {
+        String s = ExpressionUtils.notIn(str, new SubQueryExpressionImpl<String>(String.class, new DefaultQueryMetadata())).toString();
+        assertTrue(s.startsWith("str not in com.querydsl.core.DefaultQueryMetadata@c"));
     }
 
 }
