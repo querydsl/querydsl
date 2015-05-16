@@ -22,7 +22,7 @@ import com.querydsl.core.types.FactoryExpressionBase;
 import com.querydsl.core.types.Visitor;
 
 /**
- * {@code EnumConversion} ensures that the results of an enum projection confirm to the type of the
+ * {@code EnumConversion} ensures that the results of an enum projection conform to the type of the
  * projection expression
  *
  * @author tiwe

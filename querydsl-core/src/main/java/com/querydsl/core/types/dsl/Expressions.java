@@ -1051,7 +1051,7 @@ public final class Expressions {
      * @param type type of expression
      * @param metadata path metadata
      * @param <T> type of expression
-     * @return new path instane
+     * @return new path instance
      */
     public static <T extends Comparable<?>> DatePath<T> datePath(Class<? extends T> type, PathMetadata metadata) {
         return new DatePath<T>(type, metadata);

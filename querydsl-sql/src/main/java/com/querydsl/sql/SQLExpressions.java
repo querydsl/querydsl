@@ -152,7 +152,7 @@ public final class SQLExpressions {
     }
 
     /**
-     * Create a new detached SQLQuery isntance with one as the projection
+     * Create a new detached SQLQuery instance with one as the projection
      *
      * @return select(1)
      */
@@ -469,7 +469,7 @@ public final class SQLExpressions {
      * Add the given amount of minutes to the date
      *
      * @param date datetime
-     * @param minutes minues to add
+     * @param minutes minutes to add
      * @return converted datetime
      */
     public static <D extends Comparable> DateTimeExpression<D> addMinutes(DateTimeExpression<D> date, int minutes) {

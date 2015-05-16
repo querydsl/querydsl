@@ -25,7 +25,7 @@ import com.querydsl.core.util.MathUtils;
 
 /**
  * {@code NumberConversions} ensures that the results of a projection involving numeric expressions
- * confirm to the types of the numeric expressions
+ * conform to the types of the numeric expressions
  *
  * @author tiwe
  *
