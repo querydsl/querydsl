@@ -13,6 +13,9 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
@@ -47,15 +50,19 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
 
     @Override
     public NumberSubQuery<Long> count() {
-        StringBuilder count = new StringBuilder();
+        StringBuilder count = new StringBuilder("count(");
+        List<Expression<?>> args = Lists.newArrayList();
         for (JoinExpression join : queryMixin.getMetadata().getJoins()) {
             if (join.getType() == JoinType.DEFAULT) {
-                count.append(count.length() == 0 ? "count(" : ", ");
-                count.append(join.getTarget().toString());
+                if (!args.isEmpty()) {
+                    count.append(", ");
+                }
+                count.append("{" + args.size() + "}");
+                args.add(join.getTarget());
             }
         }
         count.append(")");
-        return unique(NumberTemplate.create(Long.class, count.toString()));
+        return unique(NumberTemplate.create(Long.class, count.toString(), args.toArray()));
     }
 
     public Q from(EntityPath<?> o) {
