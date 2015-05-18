@@ -2,11 +2,11 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
         <!ENTITY versionNumber "4.0.0">
         <!ENTITY copyrightYear "2007-2015">
-        <!ENTITY copyrightHolder "Original authors">
+        <!ENTITY copyrightHolder "The Querydsl Team">
 ]>
 <book xmlns:xi="http://www.w3.org/2001/XInclude">
     <bookinfo>
-        <title>Querydsl - Reference Documentation</title>
+        <title>Querydsl Reference Guide</title>
         <!-- Type-safe queries for Java -->
         <productname>Querydsl</productname>
         <releaseinfo>&versionNumber;</releaseinfo>
