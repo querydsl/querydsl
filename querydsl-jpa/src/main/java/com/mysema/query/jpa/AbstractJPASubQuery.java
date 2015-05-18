@@ -245,13 +245,27 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
     }
 
     @Override
+    @Deprecated
     public Q limit(long l) {
         throw new UnsupportedOperationException("JPQL doesn't support limit on subqueries");
     }
 
     @Override
+    @Deprecated
     public Q offset(long o) {
         throw new UnsupportedOperationException("JPQL doesn't support offset on subqueries");
+    }
+
+    @Override
+    @Deprecated
+    public Q orderBy(OrderSpecifier<?> o) {
+        throw new UnsupportedOperationException("JPQL doesn't support order by on subqueries");
+    }
+
+    @Override
+    @Deprecated
+    public Q orderBy(OrderSpecifier<?>... o) {
+        throw new UnsupportedOperationException("JPQL doesn't support order by on subqueries");
     }
 
     @Override
