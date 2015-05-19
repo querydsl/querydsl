@@ -180,4 +180,10 @@ public class QBeanTest {
         assertFalse(bean.equals(bean.skipNulls()));
     }
 
+    @Test
+    public void Alias() {
+        QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name.as("name2"));
+        assertEquals(name.as("name2"), beanProjection.getArgs().get(0));
+    }
+
 }
