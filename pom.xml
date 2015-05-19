@@ -315,6 +315,10 @@
               <packages>com.querydsl.lucene4*</packages>
             </group>
             <group>
+              <title>Lucene 5</title>
+              <packages>com.querydsl.lucene5*</packages>
+            </group>
+            <group>
               <title>Hibernate Search</title>
               <packages>com.querydsl.hibernate.search*</packages>
             </group>
@@ -484,6 +488,7 @@
         <!-- Lucene related -->
         <module>querydsl-lucene3</module>
         <module>querydsl-lucene4</module>
+        <module>querydsl-lucene5</module>
         <module>querydsl-hibernate-search</module>
 
         <!-- NoSQL -->
@@ -544,6 +549,7 @@
         <module>querydsl-codegen</module>
         <module>querydsl-apt</module>
         <module>querydsl-lucene3</module>
+        <module>querydsl-lucene4</module>
         <module>querydsl-lucene4</module>
       </modules>
     </profile>
