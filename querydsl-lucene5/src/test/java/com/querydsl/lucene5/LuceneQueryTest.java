@@ -33,11 +33,14 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.IntField;
+import org.apache.lucene.document.NumericDocValuesField;
+import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.DocValuesType;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -46,6 +49,7 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.BytesRef;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -80,17 +84,77 @@ public class LuceneQueryTest {
     private RAMDirectory idx;
     private IndexWriter writer;
     private IndexSearcher searcher;
+    private Document doc = new Document();
+    private Field titleField = null;
+    private SortedDocValuesField titleSortedField;
+    private TextField authorField = null;
+    private SortedDocValuesField authorSortedField;
+    private TextField textField = null;
+    private IntField yearField = null;
+    private DoubleField grossField = null;
+    private SortedDocValuesField textSortedField;
+    private NumericDocValuesField yearSortedField;
 
     private Document createDocument(final String docTitle,
             final String docAuthor, final String docText, final int docYear,
             final double docGross) {
-        final Document doc = new Document();
+        // Reusing field for performance
+        if (titleField == null) {
+            titleField = new TextField("title", docTitle, Store.YES);
+            doc.add(titleField);
+            titleSortedField = new SortedDocValuesField("title", new BytesRef(
+                    docTitle));
+            doc.add(titleSortedField);
+        } else {
+            titleField.setStringValue(docTitle);
+            titleSortedField.setBytesValue(new BytesRef(docTitle));
+        }
+        if (authorField == null) {
+            authorField = new TextField("author", docAuthor, Store.YES);
+            doc.add(authorField);
+            authorSortedField = new SortedDocValuesField("author",
+                    new BytesRef(docAuthor));
+            doc.add(authorSortedField);
 
-        doc.add(new TextField("title", docTitle, Store.YES));
-        doc.add(new TextField("author", docAuthor, Store.YES));
-        doc.add(new TextField("text", docText, Store.YES));
-        doc.add(new IntField("year", docYear, Store.YES));
-        doc.add(new DoubleField("gross", docGross, Store.YES));
+        } else {
+            authorField.setStringValue(docAuthor);
+            authorSortedField.setBytesValue(new BytesRef(docAuthor));
+        }
+        if (textField == null) {
+            textField = new TextField("text", docText, Store.YES);
+            doc.add(textField);
+            textSortedField = new SortedDocValuesField("text", new BytesRef(
+                    docText));
+            doc.add(textSortedField);
+        } else {
+            textField.setStringValue(docText);
+            textSortedField.setBytesValue(new BytesRef(docText));
+        }
+        if (yearField == null) {
+//            FieldType numericSortedStoredFieldType = new FieldType(
+//                    IntField.TYPE_STORED);
+//            numericSortedStoredFieldType
+//                    .setDocValuesType(DocValuesType.SORTED_NUMERIC);
+            yearField = new IntField("year", docYear, Store.YES);
+            doc.add(yearField);
+            yearSortedField = new NumericDocValuesField("year", docYear);
+            doc.add(yearSortedField);
+        } else {
+            yearField.setIntValue(docYear);
+            yearSortedField.setLongValue(docYear);
+        }
+
+        if (grossField == null) {
+            FieldType numericSortedStoredFieldType = new FieldType(
+                    DoubleField.TYPE_STORED);
+            numericSortedStoredFieldType
+                    .setDocValuesType(DocValuesType.SORTED_NUMERIC);
+            grossField = new DoubleField("gross", docGross,
+                    numericSortedStoredFieldType);
+            doc.add(grossField);
+        } else {
+            grossField.setDoubleValue(docGross);
+        }
 
         return doc;
     }
@@ -204,16 +268,16 @@ public class LuceneQueryTest {
         Document d1 = new Document();
         Document d2 = new Document();
         Document d3 = new Document();
-        d1.add(new Field("sort", "a\u00c4", Store.YES, Index.NOT_ANALYZED));
-        d2.add(new Field("sort", "ab", Store.YES, Index.NOT_ANALYZED));
-        d3.add(new Field("sort", "aa", Store.YES, Index.NOT_ANALYZED));
+        d1.add(new TextField("sort", "a\u00c4", Store.YES));
+        d2.add(new TextField("sort", "ab", Store.YES));
+        d3.add(new TextField("sort", "aa", Store.YES));
         writer = createWriter(idx);
         writer.addDocument(d1);
         writer.addDocument(d2);
         writer.addDocument(d3);
         writer.close();
 
-        IndexReader reader = DirectoryReader.open(idx);
+        IndexReader reader = DirectoryReader.open(writer, true);
         searcher = new IndexSearcher(reader);
         query = new LuceneQuery(
                 new LuceneSerializer(true, true, Locale.ENGLISH), searcher);
@@ -565,8 +629,8 @@ public class LuceneQueryTest {
     @Ignore
     public void UniqueResult_Finds_No_Results_Because_No_Documents_In_Index()
             throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
-                "maxDoc").createMock();
+        IndexSearcher searcher = createMockBuilder(IndexSearcher.class)
+                .addMockedMethod("maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.getIndexReader().maxDoc()).andReturn(0);
         replay(searcher);
@@ -578,8 +642,8 @@ public class LuceneQueryTest {
     @Ignore
     public void UniqueResult_Sorted_Index_Problem_In_Max_Doc()
             throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
-                "maxDoc").createMock();
+        IndexSearcher searcher = createMockBuilder(IndexSearcher.class)
+                .addMockedMethod("maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.getIndexReader().maxDoc()).andThrow(
                 new IllegalArgumentException());
@@ -593,8 +657,8 @@ public class LuceneQueryTest {
     @Ignore
     public void Count_Returns_0_Because_No_Documents_In_Index()
             throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
-                "maxDoc").createMock();
+        IndexSearcher searcher = createMockBuilder(IndexSearcher.class)
+                .addMockedMethod("maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.getIndexReader().maxDoc()).andReturn(0);
         replay(searcher);
@@ -734,7 +798,7 @@ public class LuceneQueryTest {
         writer = createWriter(idx);
         writer.close();
         IndexReader reader = DirectoryReader.open(idx);
-        searcher = new IndexSearcher(reader);
+        IndexSearcher searcher = new IndexSearcher(reader);
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         assertTrue(query.fetch().isEmpty());
     }

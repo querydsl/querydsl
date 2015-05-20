@@ -37,6 +37,7 @@ import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.SortedNumericSortField;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.WildcardQuery;
@@ -592,7 +593,7 @@ public class LuceneSerializer {
             boolean reverse = !order.isAscending();
             Path<?> path = getPath(order.getTarget());
             if (Number.class.isAssignableFrom(type)) {
-                sorts.add(new SortField(toField(path), sortFields.get(type),
+                sorts.add(new SortedNumericSortField(toField(path), sortFields.get(type),
                         reverse));
             } else {
                 sorts.add(new SortField(toField(path), SortField.Type.STRING,
