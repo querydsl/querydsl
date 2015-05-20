@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.DoubleDocValuesField;
 import org.apache.lucene.document.DoubleField;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
@@ -94,6 +95,7 @@ public class LuceneQueryTest {
     private DoubleField grossField = null;
     private SortedDocValuesField textSortedField;
     private NumericDocValuesField yearSortedField;
+    private DoubleDocValuesField grossSortedField;
 
     private Document createDocument(final String docTitle,
             final String docAuthor, final String docText, final int docYear,
@@ -131,10 +133,6 @@ public class LuceneQueryTest {
             textSortedField.setBytesValue(new BytesRef(docText));
         }
         if (yearField == null) {
-//            FieldType numericSortedStoredFieldType = new FieldType(
-//                    IntField.TYPE_STORED);
-//            numericSortedStoredFieldType
-//                    .setDocValuesType(DocValuesType.SORTED_NUMERIC);
             yearField = new IntField("year", docYear, Store.YES);
             doc.add(yearField);
             yearSortedField = new NumericDocValuesField("year", docYear);
@@ -145,15 +143,13 @@ public class LuceneQueryTest {
         }
 
         if (grossField == null) {
-            FieldType numericSortedStoredFieldType = new FieldType(
-                    DoubleField.TYPE_STORED);
-            numericSortedStoredFieldType
-                    .setDocValuesType(DocValuesType.SORTED_NUMERIC);
-            grossField = new DoubleField("gross", docGross,
-                    numericSortedStoredFieldType);
+            grossField = new DoubleField("gross", docGross, Store.YES);
             doc.add(grossField);
+            grossSortedField = new DoubleDocValuesField("gross", docGross);
+            doc.add(grossSortedField);
         } else {
             grossField.setDoubleValue(docGross);
+            grossSortedField.setDoubleValue(docGross);
         }
 
         return doc;
