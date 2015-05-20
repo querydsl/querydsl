@@ -550,7 +550,7 @@
         <module>querydsl-apt</module>
         <module>querydsl-lucene3</module>
         <module>querydsl-lucene4</module>
-        <module>querydsl-lucene4</module>
+        <module>querydsl-lucene5</module>
       </modules>
     </profile>
 
