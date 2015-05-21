@@ -27,6 +27,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Primitives;
+import com.mysema.query.group.GroupExpression;
 
 /**
  * QBean is a JavaBean populating projection type
@@ -60,7 +61,11 @@ public class QBean<T> extends FactoryExpressionBase<T> {
                 Operation<?> operation = (Operation<?>)expr;
                 if (operation.getOperator() == Ops.ALIAS && operation.getArg(1) instanceof Path<?>) {
                     Path<?> path = (Path<?>)operation.getArg(1);
-                    rv.put(path.getMetadata().getName(), operation.getArg(0));
+                    if (isCompoundExpression(operation.getArg(0))) {
+                        rv.put(path.getMetadata().getName(), operation.getArg(0));
+                    } else {
+                        rv.put(path.getMetadata().getName(), operation);
+                    }
                 } else {
                     throw new IllegalArgumentException("Unsupported expression " + expr);
                 }
@@ -70,6 +75,10 @@ public class QBean<T> extends FactoryExpressionBase<T> {
             }
         }
         return rv.build();
+    }
+
+    private static boolean isCompoundExpression(Expression<?> expr) {
+        return expr instanceof FactoryExpression || expr instanceof GroupExpression;
     }
 
     private static Class<?> normalize(Class<?> cl) {

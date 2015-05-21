@@ -13,14 +13,16 @@
  */
 package com.mysema.query.types;
 
+import static org.junit.Assert.*;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.mysema.query.support.Expressions;
-import com.mysema.query.types.path.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.path.*;
 
 
 public class QBeanTest {
@@ -177,6 +179,12 @@ public class QBeanTest {
         assertEquals(bean.skipNulls(), bean.skipNulls());
         assertFalse(bean.skipNulls().equals(bean));
         assertFalse(bean.equals(bean.skipNulls()));
+    }
+
+    @Test
+    public void Alias() {
+        QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name.as("name2"));
+        assertEquals(name.as("name2"), beanProjection.getArgs().get(0));
     }
 
 }
