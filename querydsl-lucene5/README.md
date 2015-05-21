@@ -1,6 +1,6 @@
 ## Querydsl Lucene 5
 
-The Lucene module provides integration with the Lucene 4 indexing library.
+The Lucene module provides integration with the Lucene 5 indexing library.
 
 **Maven integration**
 
