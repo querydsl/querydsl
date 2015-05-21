@@ -13,7 +13,7 @@
     단순 문자열과 비교해서 Fluent API를 사용할 때의 장점은 다음과 같다.
   </para>
 
-  <orderedlist>
+  <itemizedlist>
     <listitem>
       <para>IDE의 코드 자동 완성 기능 사용</para>
     </listitem>
@@ -26,7 +26,7 @@
     <listitem>
       <para>도메인 타입의 리팩토링을 더 잘 할 수 있음</para>
     </listitem>
-  </orderedlist>
+  </itemizedlist>
 
   <!-- more -->
 
