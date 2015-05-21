@@ -13,7 +13,7 @@
  */
 
 /**
- * Lucene 4 support
+ * Lucene 5 support
  */
 package com.querydsl.lucene5;
 
