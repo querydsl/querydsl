@@ -20,7 +20,7 @@ import java.util.List;
  * @author tiwe
  *
  */
-public class Concatenation extends ExpressionBase<String> implements FactoryExpression<String>{
+public class Concatenation extends FactoryExpressionBase<String> {
 
     private static final long serialVersionUID = -355693583588722395L;
 

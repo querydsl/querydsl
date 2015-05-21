@@ -82,4 +82,16 @@ public abstract class FactoryExpressionBase<T> extends ExpressionBase<T> impleme
         return new FactoryExpressionWrapper<T>(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (o instanceof FactoryExpression) {
+            return getClass().equals(o.getClass())
+                    && getArgs().equals(((FactoryExpression) o).getArgs());
+        } else {
+            return false;
+        }
+    }
+
 }
