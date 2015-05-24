@@ -37,6 +37,26 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
 
     private final Provider<EntityManager> entityManager;
 
+    public JPAQueryFactory(final EntityManager entityManager) {
+        this.entityManager = new Provider<EntityManager>() {
+            @Override
+            public EntityManager get() {
+                return entityManager;
+            }
+        };
+        this.templates = null;
+    }
+
+    public JPAQueryFactory(JPQLTemplates templates, final EntityManager entityManager) {
+        this.entityManager = new Provider<EntityManager>() {
+            @Override
+            public EntityManager get() {
+                return entityManager;
+            }
+        };
+        this.templates = templates;
+    }
+
     public JPAQueryFactory(Provider<EntityManager> entityManager) {
         this.entityManager = entityManager;
         this.templates = null;

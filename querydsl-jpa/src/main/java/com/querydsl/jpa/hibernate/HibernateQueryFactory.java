@@ -37,6 +37,20 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
 
     private final Provider<Session> session;
 
+    public HibernateQueryFactory(Session session) {
+        this(HQLTemplates.DEFAULT, session);
+    }
+
+    public HibernateQueryFactory(JPQLTemplates templates, final Session session) {
+        this.session = new Provider<Session>() {
+            @Override
+            public Session get() {
+                return session;
+            }
+        };
+        this.templates = templates;
+    }
+
     public HibernateQueryFactory(Provider<Session> session) {
         this(HQLTemplates.DEFAULT, session);
     }
