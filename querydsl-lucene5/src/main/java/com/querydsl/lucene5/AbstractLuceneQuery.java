@@ -105,7 +105,7 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
             if (maxDoc == 0) {
                 return 0;
             }
-            return searcher.search(createSearchedQuery(), maxDoc,
+            return searcher.search(createQuery(), maxDoc,
                     Sort.INDEXORDER, false, false).totalHits;
         } catch (IOException e) {
             throw new QueryException(e);
@@ -120,11 +120,25 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
     }
 
     protected Query createQuery() {
+        Query returnedQuery = null;
+        Query originalQuery = null;
         if (queryMixin.getMetadata().getWhere() == null) {
-            return new MatchAllDocsQuery();
+            originalQuery = new MatchAllDocsQuery();
+        } else {
+            originalQuery = serializer.toQuery(queryMixin.getMetadata()
+                    .getWhere(), queryMixin.getMetadata());
         }
-        return serializer.toQuery(queryMixin.getMetadata().getWhere(),
-                queryMixin.getMetadata());
+        Filter filter = getFilter();
+        if (filter != null) {
+            BooleanQuery booleanQuery = new BooleanQuery();
+            booleanQuery.add(originalQuery, Occur.MUST);
+            booleanQuery.add(filter, Occur.FILTER);
+            returnedQuery = booleanQuery;
+        } else {
+            returnedQuery = originalQuery;
+        }
+
+        return returnedQuery;
     }
 
     /**
@@ -226,11 +240,11 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
                         + ") cause an integer overflow.");
             }
             if (sort != null) {
-                scoreDocs = searcher.search(createSearchedQuery(),
-//                        sumOfLimitAndOffset).scoreDocs;
+                scoreDocs = searcher.search(createQuery(),
+                // sumOfLimitAndOffset).scoreDocs;
                         sumOfLimitAndOffset, sort, false, false).scoreDocs;
             } else {
-                scoreDocs = searcher.search(createSearchedQuery(),
+                scoreDocs = searcher.search(createQuery(),
                         sumOfLimitAndOffset, Sort.INDEXORDER, false, false).scoreDocs;
             }
             if (offset < scoreDocs.length) {
@@ -241,21 +255,6 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
         } catch (final IOException e) {
             throw new QueryException(e);
         }
-    }
-
-    private Query createSearchedQuery() {
-        Query returnedQuery = null;
-        Query originalQuery = createQuery();
-        Filter filter = getFilter();
-        if (filter != null) {
-            BooleanQuery booleanQuery = new BooleanQuery();
-            booleanQuery.add(originalQuery, Occur.MUST);
-            booleanQuery.add(filter, Occur.FILTER);
-            returnedQuery = booleanQuery;
-        } else {
-            returnedQuery = originalQuery;
-        }
-        return returnedQuery;
     }
 
     private List<T> innerList() {
@@ -345,8 +344,8 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
             if (maxDoc == 0) {
                 return null;
             }
-            final ScoreDoc[] scoreDocs = searcher.search(createSearchedQuery(), maxDoc,
-                    Sort.INDEXORDER, false, false).scoreDocs;
+            final ScoreDoc[] scoreDocs = searcher.search(createQuery(),
+                    maxDoc, Sort.INDEXORDER, false, false).scoreDocs;
             int index = 0;
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             Long offset = modifiers.getOffset();
