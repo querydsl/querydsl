@@ -623,7 +623,7 @@ public class LuceneQueryTest {
     @Ignore
     public void UniqueResult_Finds_No_Results_Because_No_Documents_In_Index()
             throws IOException {
-        IndexSearcher searcher = createMockBuilder(IndexSearcher.class)
+        searcher = createMockBuilder(IndexSearcher.class)
                 .addMockedMethod("maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.getIndexReader().maxDoc()).andReturn(0);
@@ -636,7 +636,7 @@ public class LuceneQueryTest {
     @Ignore
     public void UniqueResult_Sorted_Index_Problem_In_Max_Doc()
             throws IOException {
-        IndexSearcher searcher = createMockBuilder(IndexSearcher.class)
+        searcher = createMockBuilder(IndexSearcher.class)
                 .addMockedMethod("maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.getIndexReader().maxDoc()).andThrow(
@@ -651,7 +651,7 @@ public class LuceneQueryTest {
     @Ignore
     public void Count_Returns_0_Because_No_Documents_In_Index()
             throws IOException {
-        IndexSearcher searcher = createMockBuilder(IndexSearcher.class)
+        searcher = createMockBuilder(IndexSearcher.class)
                 .addMockedMethod("maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.getIndexReader().maxDoc()).andReturn(0);
@@ -792,7 +792,7 @@ public class LuceneQueryTest {
         writer = createWriter(idx);
         writer.close();
         IndexReader reader = DirectoryReader.open(idx);
-        IndexSearcher searcher = new IndexSearcher(reader);
+        searcher = new IndexSearcher(reader);
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         assertTrue(query.fetch().isEmpty());
     }
