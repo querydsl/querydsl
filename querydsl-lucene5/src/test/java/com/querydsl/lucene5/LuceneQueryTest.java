@@ -83,7 +83,6 @@ public class LuceneQueryTest {
     private RAMDirectory idx;
     private IndexWriter writer;
     private IndexSearcher searcher;
-    private Document doc = new Document();
     private Field titleField = null;
     private SortedDocValuesField titleSortedField;
     private TextField authorField = null;
@@ -98,6 +97,7 @@ public class LuceneQueryTest {
     private Document createDocument(final String docTitle,
             final String docAuthor, final String docText, final int docYear,
             final double docGross) {
+        Document doc = new Document();
         // Reusing field for performance
         if (titleField == null) {
             titleField = new TextField("title", docTitle, Store.YES);
@@ -108,6 +108,8 @@ public class LuceneQueryTest {
         } else {
             titleField.setStringValue(docTitle);
             titleSortedField.setBytesValue(new BytesRef(docTitle));
+            doc.add(titleField);
+            doc.add(titleSortedField);
         }
         if (authorField == null) {
             authorField = new TextField("author", docAuthor, Store.YES);
@@ -119,6 +121,8 @@ public class LuceneQueryTest {
         } else {
             authorField.setStringValue(docAuthor);
             authorSortedField.setBytesValue(new BytesRef(docAuthor));
+            doc.add(authorField);
+            doc.add(authorSortedField);
         }
         if (textField == null) {
             textField = new TextField("text", docText, Store.YES);
@@ -129,6 +133,8 @@ public class LuceneQueryTest {
         } else {
             textField.setStringValue(docText);
             textSortedField.setBytesValue(new BytesRef(docText));
+            doc.add(textField);
+            doc.add(textSortedField);
         }
         if (yearField == null) {
             yearField = new IntField("year", docYear, Store.YES);
@@ -138,6 +144,8 @@ public class LuceneQueryTest {
         } else {
             yearField.setIntValue(docYear);
             yearSortedField.setLongValue(docYear);
+            doc.add(yearField);
+            doc.add(yearSortedField);
         }
 
         if (grossField == null) {
@@ -148,6 +156,8 @@ public class LuceneQueryTest {
         } else {
             grossField.setDoubleValue(docGross);
             grossSortedField.setDoubleValue(docGross);
+            doc.add(grossField);
+            doc.add(grossSortedField);
         }
 
         return doc;
