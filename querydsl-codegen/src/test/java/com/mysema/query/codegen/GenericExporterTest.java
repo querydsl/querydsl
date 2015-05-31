@@ -117,5 +117,11 @@ public class GenericExporterTest {
         exporter.export(Cat.class.getPackage());
     }
 
-
+    @Test
+    public void Export_SerializerConfig() {
+        exporter.setTargetFolder(new File("target/gen7"));
+        exporter.setSerializerConfig(new SimpleSerializerConfig(true, true, true, true, ""));
+        exporter.export(Cat.class.getPackage());
+    }
+    
 }

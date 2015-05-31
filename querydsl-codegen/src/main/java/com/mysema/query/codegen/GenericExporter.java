@@ -13,12 +13,13 @@
  */
 package com.mysema.query.codegen;
 
-import javax.annotation.Nullable;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.nio.charset.Charset;
 import java.util.*;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -95,7 +96,7 @@ public class GenericExporter {
 
     private final CodegenModule codegenModule = new CodegenModule();
 
-    private final SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
+    private SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
 
     private boolean handleFields = true, handleMethods = true;
 
@@ -721,6 +722,15 @@ public class GenericExporter {
      */
     public void setStrictMode(boolean s) {
         strictMode = s;
+    }
+
+    /**
+     * Set the serializer configuration to use
+     *
+     * @param serializerConfig
+     */
+    public void setSerializerConfig(SerializerConfig serializerConfig) {
+        this.serializerConfig = serializerConfig;
     }
 
     /**
