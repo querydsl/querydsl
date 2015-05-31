@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>4.0.1.BUILD-SNAPSHOT</version>
+  <version>4.0.1</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -237,6 +237,9 @@
             <configuration>
               <rules>
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
+                  <excludes>
+                    <exclude>com/querydsl/core/types/dsl/PathBuilderValidator</exclude>
+                  </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>
