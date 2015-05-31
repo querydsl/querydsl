@@ -117,5 +117,17 @@ public class GenericExporterTest {
         exporter.export(Cat.class.getPackage());
     }
 
+    @Test
+    public void Export_SerializerConfig() {
+        exporter.setTargetFolder(new File("target/gen7"));
+        exporter.setSerializerConfig(new SimpleSerializerConfig(true, true, true, true, ""));
+        exporter.export(getClass().getPackage());
+        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleEmbedded.java").exists());
+        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleEntity.java").exists());
+        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleEntityInterface.java").exists());
+        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File("target/gen7/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+    }
 
 }
