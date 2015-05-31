@@ -21,6 +21,8 @@ import com.mysema.commons.lang.CloseableIterator;
  * {@code Fetchable} defines default projection methods for {@link Query} implementations.
  * All Querydsl query implementations should implement this interface.
  *
+ * @param <T> result type
+ *
  * @author tiwe
  */
 public interface Fetchable<T> {

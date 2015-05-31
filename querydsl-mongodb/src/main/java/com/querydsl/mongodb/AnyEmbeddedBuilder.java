@@ -23,9 +23,10 @@ import com.querydsl.core.types.Predicate;
 /**
  * {@code AnyEmbeddedBuilder} is a builder for constraints on embedded objects
  *
- * @author tiwe
+ * @param <Q> query type
+ * @param <K> result type
  *
- * @param <K>
+ * @author tiwe
  */
 public class AnyEmbeddedBuilder<Q extends AbstractMongodbQuery<K, Q>, K> {
 

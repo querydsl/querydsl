@@ -25,8 +25,9 @@ import com.querydsl.jpa.JPQLTemplates;
 /**
  * {@code JPAQuery} is the default implementation of the {@link JPQLQuery} interface for JPA
  *
- * @author tiwe
+ * @param <T> result type
  *
+ * @author tiwe
  */
 public class JPAQuery<T> extends AbstractJPAQuery<T, JPAQuery<T>> {
 

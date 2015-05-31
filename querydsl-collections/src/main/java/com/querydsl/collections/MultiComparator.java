@@ -22,9 +22,10 @@ import com.querydsl.core.util.NullSafeComparableComparator;
 /**
  * {@code MultiComparator} compares arrays
  *
+ * @param <T> element type
+ *
  * @author tiwe
  */
-
 public class MultiComparator<T> implements Comparator<T>, Serializable {
 
     @SuppressWarnings("unchecked")

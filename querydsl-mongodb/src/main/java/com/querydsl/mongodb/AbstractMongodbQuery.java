@@ -36,8 +36,8 @@ import com.querydsl.core.types.dsl.CollectionPathBase;
  *
  * @author laimw
  *
- * @param <K>
- * @param <Q>
+ * @param <K> result type
+ * @param <Q> concrete subtype
  */
 public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, Q>> implements SimpleQuery<Q>, Fetchable<K> {
 

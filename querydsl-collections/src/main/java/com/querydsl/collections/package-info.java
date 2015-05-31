@@ -13,6 +13,6 @@
  */
 
 /**
- * Implementations of Querydsl query interfaces for JavaBean collections
+ * Java Bean collections support
  */
 package com.querydsl.collections;

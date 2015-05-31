@@ -24,7 +24,7 @@ import com.querydsl.core.types.*;
  * {@code CollectionOperation} is a collection typed operation
  *
  * @author tiwe
- *
+ * @param <E> element type
  */
 public class CollectionOperation<E> extends CollectionExpressionBase<Collection<E>, E> {
 

@@ -46,9 +46,10 @@ import com.querydsl.sql.SQLSerializer;
 /**
  * {@code AbstractHibernateSQLQuery} is the base class for Hibernate Native SQL queries
  *
- * @author tiwe
+ * @param <T> result type
+ * @param <Q> concrete subtype
  *
- * @param <Q>
+ * @author tiwe
  */
 public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQLQuery<T, Q>> extends AbstractSQLQuery<T, Q> {
 

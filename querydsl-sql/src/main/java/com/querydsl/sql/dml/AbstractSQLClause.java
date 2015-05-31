@@ -33,6 +33,8 @@ import com.querydsl.sql.*;
 /**
  * {@code AbstractSQLClause} is a superclass for SQL based DMLClause implementations
  *
+ * @param <C> concrete subtype
+ *
  * @author tiwe
  */
 public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implements DMLClause<C> {

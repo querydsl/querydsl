@@ -42,9 +42,10 @@ import com.querydsl.core.util.ResultSetAdapter;
 /**
  * {@code AbstractSQLQuery} is the base type for SQL query implementations
  *
- * @author tiwe
- *
+ * @param <T> result type
  * @param <Q> concrete subtype
+ *
+ * @author tiwe
  */
 public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
 

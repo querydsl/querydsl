@@ -37,9 +37,10 @@ import com.querydsl.jpa.*;
 /**
  * Abstract base class for Hibernate API based implementations of the JPQL interface
  *
- * @author tiwe
+ * @param <T> result type
+ * @param <Q> concrete subtype
  *
- * @param <Q>
+ * @author tiwe
  */
 public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery<T, Q>> extends JPAQueryBase<T, Q> {
 

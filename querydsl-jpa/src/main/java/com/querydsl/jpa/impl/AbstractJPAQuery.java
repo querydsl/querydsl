@@ -41,9 +41,10 @@ import com.querydsl.jpa.QueryHandler;
 /**
  * Abstract base class for JPA API based implementations of the JPQLQuery interface
  *
- * @author tiwe
+ * @param <T> result type
+ * @param <Q> concrete subtype
  *
- * @param <Q>
+ * @author tiwe
  */
 public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> extends JPAQueryBase<T, Q> {
 

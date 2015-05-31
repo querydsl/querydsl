@@ -29,8 +29,9 @@ import com.querydsl.core.types.PathMetadata;
  *
  * @author tiwe
  *
+ * @param <C> collection type
  * @param <E> component type
- * @param <Q> component query type
+ * @param <Q> expression type for {@code any()} results
  */
 public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends SimpleExpression<? super E>>
     extends CollectionExpressionBase<C, E> implements Path<C> {

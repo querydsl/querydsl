@@ -27,9 +27,10 @@ import com.querydsl.sql.ProjectableSQLQuery;
 /**
  * Abstract super class for SQLQuery implementation for JPA and Hibernate
  *
- * @author tiwe
- *
+ * @param <T> result type
  * @param <Q> concrete subtype
+ *
+ * @author tiwe
  */
 public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
 

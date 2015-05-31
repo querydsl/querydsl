@@ -27,8 +27,10 @@ import com.querydsl.core.types.*;
 /**
  * {@code AbstractCollQuery} provides a base class for {@link Collection} query implementations.
  *
- * @see CollQuery
+ * @param <T> result type
+ * @param <Q> concrete subtype
  *
+ * @see CollQuery
  * @author tiwe
  */
 public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> extends FetchableQueryBase<T, Q>

@@ -22,8 +22,9 @@ import com.querydsl.core.types.Expression;
 /**
  * {@code CollQuery} is the default implementation of the {@link FetchableQuery} interface for collections
  *
- * @author tiwe
+ * @param <T> result type
  *
+ * @author tiwe
  */
 public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements Cloneable {
 

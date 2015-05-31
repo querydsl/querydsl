@@ -33,6 +33,9 @@ import com.querydsl.lucene3.LuceneSerializer;
 
 /**
  * Abstract base class for Hibernate Search query classes
+ *
+ * @param <T> result type
+ * @param <Q> concrete subtype
  */
 public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>> implements SimpleQuery<Q>, Fetchable<T> {
 

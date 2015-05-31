@@ -29,6 +29,8 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 /**
  * {@code WindowFunction} is a builder for window function expressions
  *
+ * @param <A> expression type
+ *
  * @author tiwe
  */
 public class WindowFunction<A> extends MutableExpressionBase<A> {

@@ -26,11 +26,13 @@ import com.querydsl.core.types.ExpressionUtils;
  * <p>{@code JoinFlag} instances can be used in Querydsl modules which serialize queries to String form.</p>
  *
  * @author tiwe
- *
  */
 @Immutable
 public class JoinFlag implements Serializable {
 
+    /**
+     * The different {@code JoinFlag} positions
+     */
     public enum Position {
 
         /**

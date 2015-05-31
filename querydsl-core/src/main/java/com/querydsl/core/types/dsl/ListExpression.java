@@ -26,6 +26,7 @@ import com.querydsl.core.types.Expression;
  * @author tiwe
  *
  * @param <E> component type
+ * @param <Q> result type for {@code any()} and {@code get(int)} results
  * @see java.util.List
  */
 public interface ListExpression<E, Q extends SimpleExpression<? super E>> extends CollectionExpression<List<E>, E> {

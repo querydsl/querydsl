@@ -13,6 +13,6 @@
  */
 
 /**
- * JDO support for Querydsl
+ * JDO support
  */
 package com.querydsl.jdo;

@@ -124,6 +124,9 @@ public class SQLTemplates extends Templates {
 
     private final Set<String> reservedWords;
 
+    /**
+     * Fluent builder for {@code SQLTemplates} instances     *
+     */
     public abstract static class Builder {
 
         protected boolean printSchema, quote, newLineToSingleSpace;

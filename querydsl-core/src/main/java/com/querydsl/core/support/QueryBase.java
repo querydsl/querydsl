@@ -24,6 +24,8 @@ import com.querydsl.core.types.Predicate;
 /**
  * {@code QueryBase} provides a stub for Query implementations
  *
+ * @param <Q> concrete subtype
+ *
  * @author tiwe
  */
 public abstract class QueryBase<Q extends QueryBase<Q>> {

@@ -21,7 +21,7 @@ import com.querydsl.core.QueryMetadata;
  * {@code SubQueryExpressionImpl} is the default implementation of the {@link SubQueryExpression} interface
  *
  * @author tiwe
- *
+ * @param <T> Result type
  */
 @Immutable
 public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQueryExpression<T> {
