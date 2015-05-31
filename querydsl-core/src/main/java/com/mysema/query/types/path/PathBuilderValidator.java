@@ -13,6 +13,7 @@
  */
 package com.mysema.query.types.path;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -25,7 +26,7 @@ import com.mysema.util.ReflectionUtils;
 /**
  * PathBuilderValidator validates PathBuilder properties at creation time
  */
-public interface PathBuilderValidator {
+public interface PathBuilderValidator extends Serializable {
 
     /**
      * Validates the given property of given class
