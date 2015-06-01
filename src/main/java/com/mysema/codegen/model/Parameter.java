@@ -17,7 +17,6 @@ package com.mysema.codegen.model;
  * Parameter represents a parameter in a Constructor
  * 
  * @author tiwe
- * @version $Id$
  */
 public final class Parameter {
 
@@ -35,7 +34,8 @@ public final class Parameter {
         if (o == this) {
             return true;
         } else if (o instanceof Parameter) {
-            return type.equals(((Parameter) o).type);
+            Parameter t = (Parameter) o;
+            return type.equals(t.type) && name.equals(t.name);
         } else {
             return false;
         }
