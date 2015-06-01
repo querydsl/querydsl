@@ -18,8 +18,6 @@ cd querydsl-docs
 mkdir -p ../target/dist/reference
 mvn -Dxslthl.config=http://docbook.sourceforge.net/release/xsl/current/highlighting/xslthl-config.xml clean package
 cp -R target/docbook/publish/en-US/* ../target/dist/reference/
-mvn -Dxslthl.config=http://docbook.sourceforge.net/release/xsl/current/highlighting/xslthl-config.xml -Dtranslation=ko-KR clean package
-cp -R target/docbook/publish/ko-KR ../target/dist/reference/
 cd ..
 
 echo "done."
