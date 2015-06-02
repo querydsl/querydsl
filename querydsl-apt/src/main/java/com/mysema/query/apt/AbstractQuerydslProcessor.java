@@ -13,6 +13,11 @@
  */
 package com.mysema.query.apt;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.util.*;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
@@ -26,10 +31,6 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.annotation.Annotation;
-import java.util.*;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Parameter;
@@ -183,11 +184,11 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             Type superType = superTypes.pop();
             if (!context.allTypes.containsKey(superType.getFullName())) {
                 TypeElement typeElement = processingEnv.getElementUtils().getTypeElement(superType.getFullName());
-                if (conf.isStrictMode() && !TypeUtils.hasAnnotationOfType(typeElement, conf.getEntityAnnotations())) {
-                    continue;
-                }
                 if (typeElement == null) {
                     throw new IllegalStateException("Found no type for " + superType.getFullName());
+                }
+                if (conf.isStrictMode() && !TypeUtils.hasAnnotationOfType(typeElement, conf.getEntityAnnotations())) {
+                    continue;
                 }
                 EntityType superEntityType = elementHandler.handleEntityType(typeElement);
                 if (superEntityType.getSuperType() != null) {
