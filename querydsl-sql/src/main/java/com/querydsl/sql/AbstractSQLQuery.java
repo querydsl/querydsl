@@ -48,6 +48,8 @@ import com.querydsl.core.util.ResultSetAdapter;
  */
 public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
 
+    protected static final String PARENT_CONTEXT = AbstractSQLQuery.class.getName() + "#PARENT_CONTEXT";
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
     private static final QueryFlag rowCountFlag = new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() ");
@@ -62,6 +64,8 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private boolean getLastCell;
 
     private Object lastCell;
+
+    private SQLListenerContext parentContext;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata());
@@ -151,6 +155,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      */
     protected SQLListenerContextImpl startContext(Connection connection, QueryMetadata metadata) {
         SQLListenerContextImpl context = new SQLListenerContextImpl(metadata, connection);
+        if (parentContext != null) {
+            context.setData(PARENT_CONTEXT, parentContext);
+        }
         listeners.start(context);
         return context;
     }
@@ -402,6 +409,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     @Override
     public QueryResults<T> fetchResults() {
+        parentContext = startContext(conn, queryMixin.getMetadata());
         Expression<T> expr = (Expression<T>) queryMixin.getMetadata().getProjection();
         QueryModifiers originalModifiers = queryMixin.getMetadata().getModifiers();
         try {
@@ -438,8 +446,10 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             }
 
         } finally {
-            getLastCell = false;
+            endContext(parentContext);
             reset();
+            getLastCell = false;
+            parentContext = null;
         }
     }
 
