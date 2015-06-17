@@ -49,6 +49,8 @@ import com.querydsl.core.util.ResultSetAdapter;
  */
 public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
 
+    protected static final String PARENT_CONTEXT = AbstractSQLQuery.class.getName() + "#PARENT_CONTEXT";
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
     private static final QueryFlag rowCountFlag = new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() ");
@@ -63,6 +65,8 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private boolean getLastCell;
 
     private Object lastCell;
+
+    private SQLListenerContext parentContext;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata());
@@ -152,6 +156,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      */
     protected SQLListenerContextImpl startContext(Connection connection, QueryMetadata metadata) {
         SQLListenerContextImpl context = new SQLListenerContextImpl(metadata, connection);
+        if (parentContext != null) {
+            context.setData(PARENT_CONTEXT, parentContext);
+        }
         listeners.start(context);
         return context;
     }
@@ -175,8 +182,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     protected void endContext(SQLListenerContext context) {
         listeners.end(context);
     }
-
-
 
     /**
      * Get the results as an JDBC result set
@@ -271,21 +276,21 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             listeners.executed(context);
 
             if (expr == null) {
-                return new SQLResultIterator<T>(configuration, stmt, rs) {
+                return new SQLResultIterator<T>(configuration, stmt, rs, listeners, context) {
                     @Override
                     public T produceNext(ResultSet rs) throws Exception {
                         return (T) rs.getObject(1);
                     }
                 };
             } else if (expr instanceof FactoryExpression) {
-                return new SQLResultIterator<T>(configuration, stmt, rs) {
+                return new SQLResultIterator<T>(configuration, stmt, rs, listeners, context) {
                     @Override
                     public T produceNext(ResultSet rs) throws Exception {
                         return newInstance((FactoryExpression<T>) expr, rs, 0);
                     }
                 };
             } else if (expr.equals(Wildcard.all)) {
-                return new SQLResultIterator<T>(configuration, stmt, rs) {
+                return new SQLResultIterator<T>(configuration, stmt, rs, listeners, context) {
                     @Override
                     public T produceNext(ResultSet rs) throws Exception {
                         Object[] rv = new Object[rs.getMetaData().getColumnCount()];
@@ -296,7 +301,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                     }
                 };
             } else {
-                return new SQLResultIterator<T>(configuration, stmt, rs) {
+                return new SQLResultIterator<T>(configuration, stmt, rs, listeners, context) {
                     @Override
                     public T produceNext(ResultSet rs) throws Exception {
                         return get(rs, expr, 1, expr.getType());
@@ -306,9 +311,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
         } catch (SQLException e) {
             onException(context, e);
+            endContext(context);
             throw configuration.translate(queryString, constants, e);
         } finally {
-            endContext(context);
             reset();
         }
     }
@@ -405,6 +410,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     @Override
     public QueryResults<T> fetchResults() {
+        parentContext = startContext(conn, queryMixin.getMetadata());
         Expression<T> expr = (Expression<T>) queryMixin.getMetadata().getProjection();
         QueryModifiers originalModifiers = queryMixin.getMetadata().getModifiers();
         try {
@@ -441,8 +447,10 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             }
 
         } finally {
-            getLastCell = false;
+            endContext(parentContext);
             reset();
+            getLastCell = false;
+            parentContext = null;
         }
     }
 
