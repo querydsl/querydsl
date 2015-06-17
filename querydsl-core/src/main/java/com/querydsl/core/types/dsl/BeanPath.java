@@ -15,8 +15,8 @@ package com.querydsl.core.types.dsl;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
@@ -33,7 +33,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = -1845524024957822731L;
 
-    private final Map<Class<?>, Object> casts = new HashMap<Class<?>, Object>();
+    private final Map<Class<?>, Object> casts = new ConcurrentHashMap<Class<?>, Object>();
 
     @Nullable
     private final PathInits inits;
