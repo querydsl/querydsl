@@ -264,21 +264,22 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Coalesce() {
         Coalesce<String> c = new Coalesce<String>(employee.firstname, employee.lastname).add("xxx");
-        query().from(employee).where(c.getValue().eq("xxx")).select(employee.id).fetch();
+        assertEquals(Arrays.asList(),
+                query().from(employee).where(c.getValue().eq("xxx")).select(employee.id).fetch());
     }
 
     @Test
     public void Compact_Join() {
         // verbose
-        query().from(employee)
+        assertEquals(8, query().from(employee)
             .innerJoin(employee2)
             .on(employee.superiorId.eq(employee2.id))
-            .select(employee.id, employee2.id).fetch();
+            .select(employee.id, employee2.id).fetch().size());
 
         // compact
-        query().from(employee)
+        assertEquals(8, query().from(employee)
             .innerJoin(employee.superiorIdKey, employee2)
-            .select(employee.id, employee2.id).fetch();
+            .select(employee.id, employee2.id).fetch().size());
 
     }
 
@@ -346,17 +347,17 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Count_With_PK() {
-        query().from(employee).fetchCount();
+        assertEquals(10, query().from(employee).fetchCount());
     }
 
     @Test
     public void Count_Without_PK() {
-        query().from(QEmployeeNoPK.employee).fetchCount();
+        assertEquals(10, query().from(QEmployeeNoPK.employee).fetchCount());
     }
 
     @Test
     public void Count2() {
-        query().from(employee).select(employee.count()).fetchFirst();
+        assertEquals(10, query().from(employee).select(employee.count()).fetchFirst().intValue());
     }
 
     @Test
@@ -365,7 +366,7 @@ public class SelectBase extends AbstractBaseTest {
     public void Count_All() {
         expectedQuery = "select count(*) as rc from EMPLOYEE e";
         NumberPath<Long> rowCount = Expressions.numberPath(Long.class, "rc");
-        query().from(employee).select(Wildcard.count.as(rowCount)).fetchOne();
+        assertEquals(10, query().from(employee).select(Wildcard.count.as(rowCount)).fetchOne().intValue());
     }
 
     @Test
@@ -374,17 +375,17 @@ public class SelectBase extends AbstractBaseTest {
     public void Count_All_Oracle() {
         expectedQuery = "select count(*) rc from EMPLOYEE e";
         NumberPath<Long> rowCount = Expressions.numberPath(Long.class, "rc");
-        query().from(employee).select(Wildcard.count.as(rowCount)).fetchOne();
+        assertEquals(0, query().from(employee).select(Wildcard.count.as(rowCount)).fetchOne().intValue());
     }
 
     @Test
     public void Count_Distinct_With_PK() {
-        query().from(employee).distinct().fetchCount();
+        assertEquals(10, query().from(employee).distinct().fetchCount());
     }
 
     @Test
     public void Count_Distinct_Without_PK() {
-        query().from(QEmployeeNoPK.employee).distinct().fetchCount();
+        assertEquals(10, query().from(QEmployeeNoPK.employee).distinct().fetchCount());
     }
 
     @Test
@@ -688,9 +689,9 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({H2, SQLITE, DERBY, CUBRID, MYSQL})
     public void Full_Join() throws SQLException {
-        query().from(employee).fullJoin(employee2)
+        assertEquals(18, query().from(employee).fullJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
-            .select(employee.id, employee2.id).fetch();
+            .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
@@ -737,20 +738,20 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void GroupBy_YearMonth() {
-        query().from(employee)
+        assertEquals(Arrays.asList(10L), query().from(employee)
                .groupBy(employee.datefield.yearMonth())
                .orderBy(employee.datefield.yearMonth().asc())
-               .select(employee.id.count()).fetch();
+               .select(employee.id.count()).fetch());
     }
 
     @Test
     @ExcludeIn({H2, DB2, DERBY, ORACLE, SQLSERVER})
     public void GroupBy_Validate() {
         NumberPath<BigDecimal> alias = Expressions.numberPath(BigDecimal.class, "alias");
-        query().from(employee)
+        assertEquals(8, query().from(employee)
                .groupBy(alias)
                 .select(employee.salary.multiply(100).as(alias),
-                        employee.salary.avg()).fetch();
+                        employee.salary.avg()).fetch().size());
     }
 
     @Test
@@ -795,12 +796,14 @@ public class SelectBase extends AbstractBaseTest {
     public void IllegalUnion() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.max());
-        query().from(employee).union(sq1, sq2).list();
+        assertEquals(0, query().from(employee).union(sq1, sq2).list().size());
     }
 
     @Test
     public void In() {
-        query().from(employee).where(employee.id.in(Arrays.asList(1, 2))).select(employee);
+        assertEquals(2, query().from(employee)
+                .where(employee.id.in(Arrays.asList(1, 2)))
+                .select(employee).fetch().size());
     }
 
     @Test
@@ -838,17 +841,17 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Inner_Join() throws SQLException {
-        query().from(employee).innerJoin(employee2)
+        assertEquals(8, query().from(employee).innerJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
-            .select(employee.id, employee2.id).fetch();
+            .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
     public void Inner_Join_2Conditions() {
-        query().from(employee).innerJoin(employee2)
+        assertEquals(8, query().from(employee).innerJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
             .on(employee2.firstname.isNotNull())
-            .select(employee.id, employee2.id).fetch();
+            .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
@@ -871,15 +874,15 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Left_Join() throws SQLException {
-        query().from(employee).leftJoin(employee2)
+        assertEquals(10, query().from(employee).leftJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
-            .select(employee.id, employee2.id).fetch();
+            .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
     public void Like() {
-        query().from(employee).where(employee.firstname.like("\\")).fetchCount();
-        query().from(employee).where(employee.firstname.like("\\\\")).fetchCount();
+        assertEquals(0, query().from(employee).where(employee.firstname.like("\\")).fetchCount());
+        assertEquals(0, query().from(employee).where(employee.firstname.like("\\\\")).fetchCount());
     }
 
     @Test
@@ -905,9 +908,9 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Limit() throws SQLException {
-        query().from(employee)
+        assertEquals(Arrays.asList(23, 22, 21, 20), query().from(employee)
             .orderBy(employee.firstname.asc())
-            .limit(4).select(employee.id).fetch();
+            .limit(4).select(employee.id).fetch());
     }
 
     @Test
@@ -1169,31 +1172,31 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Offset_Only() {
-        query().from(employee)
+        assertEquals(Arrays.asList(20, 13, 10, 2, 1, 11, 12), query().from(employee)
             .orderBy(employee.firstname.asc())
             .offset(3)
-            .select(employee.id).fetch();
+            .select(employee.id).fetch());
     }
 
     @Test
     public void Operation_in_Constant_list() {
-        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a'))).fetchCount();
-        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b'))).fetchCount();
-        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b','c'))).fetchCount();
+        assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a'))).fetchCount());
+        assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b'))).fetchCount());
+        assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b','c'))).fetchCount());
     }
 
     @Test
     public void Order_NullsFirst() {
-        query().from(survey)
+        assertEquals(Arrays.asList("Hello World"), query().from(survey)
             .orderBy(survey.name.asc().nullsFirst())
-            .select(survey.name).fetch();
+            .select(survey.name).fetch());
     }
 
     @Test
     public void Order_NullsLast() {
-        query().from(survey)
+        assertEquals(Arrays.asList("Hello World"), query().from(survey)
             .orderBy(survey.name.asc().nullsLast())
-            .select(survey.name).fetch();
+            .select(survey.name).fetch());
     }
 
     @Test
@@ -1239,9 +1242,9 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Path_in_Constant_list() {
-        query().from(survey).where(survey.name.in(Arrays.asList("a"))).fetchCount();
-        query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).fetchCount();
-        query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).fetchCount();
+        assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a"))).fetchCount());
+        assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).fetchCount());
+        assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).fetchCount());
     }
 
     @Test
@@ -1366,38 +1369,38 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void RelationalPath_Eq() {
-        query().from(employee, employee2)
+        assertEquals(10, query().from(employee, employee2)
                 .where(employee.eq(employee2))
-                .select(employee.id, employee2.id).fetch();
+                .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
     public void RelationalPath_Ne() {
-        query().from(employee, employee2)
+        assertEquals(90, query().from(employee, employee2)
                 .where(employee.ne(employee2))
-                .select(employee.id, employee2.id).fetch();
+                .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
     public void RelationalPath_Eq2() {
-        query().from(survey, survey2)
+        assertEquals(1, query().from(survey, survey2)
                 .where(survey.eq(survey2))
-                .select(survey.id, survey2.id).fetch();
+                .select(survey.id, survey2.id).fetch().size());
     }
 
     @Test
     public void RelationalPath_Ne2() {
-        query().from(survey, survey2)
+        assertEquals(0, query().from(survey, survey2)
                 .where(survey.ne(survey2))
-                .select(survey.id, survey2.id).fetch();
+                .select(survey.id, survey2.id).fetch().size());
     }
 
     @Test
     @ExcludeIn(SQLITE)
     public void Right_Join() throws SQLException {
-        query().from(employee).rightJoin(employee2)
+        assertEquals(16, query().from(employee).rightJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
-            .select(employee.id, employee2.id).fetch();
+            .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
@@ -1440,7 +1443,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({SQLITE, SQLSERVER, CUBRID, TERADATA})
     public void Select_For_Update() {
-        query().from(survey).forUpdate().select(survey.id).fetch();
+        assertEquals(1, query().from(survey).forUpdate().select(survey.id).fetch().size());
     }
 
     @Test
@@ -1452,7 +1455,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @SkipForQuoted
     public void Serialization() {
-        SQLQuery query = query();
+        SQLQuery<?> query = query();
         query.from(survey);
         assertEquals("from SURVEY s", query.toString());
         query.from(survey2);
@@ -1500,7 +1503,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void SpecialChars() {
-        query().from(survey).where(survey.name.in("\n", "\r", "\\", "\'", "\"")).exists();
+        assertEquals(0, query().from(survey).where(survey.name.in("\n", "\r", "\\", "\'", "\"")).fetchCount());
     }
 
     @Test
@@ -1591,31 +1594,31 @@ public class SelectBase extends AbstractBaseTest {
     public void Substring() {
         //SELECT * FROM account where SUBSTRING(name, -x, 1) = SUBSTRING(name, -y, 1)
         query().from(employee)
-               .where(employee.firstname.substring(-3, 1).eq(employee.firstname.substring(-2, 1)))
-               .select(employee.id).fetch();
+                .where(employee.firstname.substring(-3, 1).eq(employee.firstname.substring(-2, 1)))
+                .select(employee.id).fetch();
     }
 
     @Test
     public void Syntax_For_Employee() throws SQLException {
-        query().from(employee).groupBy(employee.superiorId)
+        assertEquals(3, query().from(employee).groupBy(employee.superiorId)
             .orderBy(employee.superiorId.asc())
-            .select(employee.salary.avg(), employee.id.max()).fetch();
+            .select(employee.salary.avg(), employee.id.max()).fetch().size());
 
-        query().from(employee).groupBy(employee.superiorId)
+        assertEquals(2, query().from(employee).groupBy(employee.superiorId)
             .having(employee.id.max().gt(5))
             .orderBy(employee.superiorId.asc())
-            .select(employee.salary.avg(), employee.id.max()).fetch();
+            .select(employee.salary.avg(), employee.id.max()).fetch().size());
 
-        query().from(employee).groupBy(employee.superiorId)
+        assertEquals(2, query().from(employee).groupBy(employee.superiorId)
             .having(employee.superiorId.isNotNull())
             .orderBy(employee.superiorId.asc())
-            .select(employee.salary.avg(), employee.id.max()).fetch();
+            .select(employee.salary.avg(), employee.id.max()).fetch().size());
     }
 
     @Test
     public void TemplateExpression() {
         NumberExpression<Integer> one = Expressions.numberTemplate(Integer.class, "1");
-        query().from(survey).select(one.as("col1")).fetch();
+        assertEquals(Arrays.asList(1), query().from(survey).select(one.as("col1")).fetch());
     }
 
     @Test
@@ -1648,9 +1651,9 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DB2, DERBY})
     public void Tuple2() {
-        query().from(employee)
+        assertEquals(10, query().from(employee)
                 .select(Expressions.as(ConstantImpl.create("1"), "code"),
-                        employee.id).fetch();
+                        employee.id).fetch().size());
     }
 
     @Test
@@ -1720,70 +1723,70 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void Where_Exists() throws SQLException {
         SQLQuery<Integer> sq1 = query().from(employee).select(employee.id.max());
-        query().from(employee).where(sq1.exists()).fetchCount();
+        assertEquals(10, query().from(employee).where(sq1.exists()).fetchCount());
     }
 
     @Test
     public void Where_Exists_Not() throws SQLException {
         SQLQuery<Integer> sq1 = query().from(employee).select(employee.id.max());
-        query().from(employee).where(sq1.exists().not()).fetchCount();
+        assertEquals(0, query().from(employee).where(sq1.exists().not()).fetchCount());
     }
 
     @Test
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void With() {
-        query().with(employee2, query().from(employee)
+        assertEquals(100, query().with(employee2, query().from(employee)
                 .where(employee.firstname.eq("Tom"))
                 .select(Wildcard.all))
                .from(employee, employee2)
-               .select(employee.id, employee2.id).fetch();
+               .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void With2() {
         QEmployee employee3 = new QEmployee("e3");
-        query().with(employee2, query().from(employee)
+        assertEquals(1000, query().with(employee2, query().from(employee)
                 .where(employee.firstname.eq("Tom"))
                 .select(Wildcard.all))
                .with(employee2, query().from(employee)
                        .where(employee.firstname.eq("Tom"))
                        .select(Wildcard.all))
                .from(employee, employee2, employee3)
-               .select(employee.id, employee2.id, employee3.id).fetch();
+               .select(employee.id, employee2.id, employee3.id).fetch().size());
     }
 
     @Test
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void With3() {
-        query().with(employee2, employee2.all()).as(
+        assertEquals(100, query().with(employee2, employee2.all()).as(
                 query().from(employee)
                         .where(employee.firstname.eq("Tom"))
                         .select(Wildcard.all))
                .from(employee, employee2)
-               .select(employee.id, employee2.id).fetch();
+               .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
     @IncludeIn({ORACLE, POSTGRESQL})
     public void With_Recursive() {
-        query().withRecursive(employee2, query().from(employee)
+        assertEquals(100, query().withRecursive(employee2, query().from(employee)
                 .where(employee.firstname.eq("Tom"))
                 .select(Wildcard.all))
                .from(employee, employee2)
-               .select(employee.id, employee2.id).fetch();
+               .select(employee.id, employee2.id).fetch().size());
     }
 
 
     @Test
     @IncludeIn({ORACLE, POSTGRESQL})
     public void With_Recursive2() {
-        query().withRecursive(employee2, employee2.all()).as(
+        assertEquals(100, query().withRecursive(employee2, employee2.all()).as(
                 query().from(employee)
                         .where(employee.firstname.eq("Tom"))
                         .select(Wildcard.all))
                .from(employee, employee2)
-               .select(employee.id, employee2.id).fetch();
+               .select(employee.id, employee2.id).fetch().size());
     }
 
     @Test
@@ -1806,8 +1809,8 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Wildcard_All2() {
-        query().from(new RelationalPathBase<Object>(Object.class, "employee", "public", "EMPLOYEE"))
-                .select(Wildcard.all).fetch();
+        assertEquals(10, query().from(new RelationalPathBase<Object>(Object.class, "employee", "public", "EMPLOYEE"))
+                .select(Wildcard.all).fetch().size());
     }
 
     @Test

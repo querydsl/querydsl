@@ -142,7 +142,7 @@ public class CollQueryStandardTest {
 
     @Test
     public void Limit() {
-        CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).fetch();
+        assertEquals(data, CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).fetch());
     }
 
 }

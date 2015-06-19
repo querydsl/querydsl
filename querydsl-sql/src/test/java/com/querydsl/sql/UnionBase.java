@@ -129,7 +129,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union4() {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.id, employee.firstname);
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.id, employee.firstname);
-        query().union(employee, sq1, sq2).select(employee.id.count()).fetch();
+        assertEquals(1, query().union(employee, sq1, sq2).select(employee.id.count()).fetch().size());
     }
 
     // FIXME for CUBRID
@@ -250,7 +250,7 @@ public class UnionBase extends AbstractBaseTest {
 
         SQLQuery<?> query = query();
         query.union(sq1, sq2);
-        query.clone().select(idAlias).fetch();
+        assertEquals(10, query.clone().select(idAlias).fetch().size());
     }
 
 }

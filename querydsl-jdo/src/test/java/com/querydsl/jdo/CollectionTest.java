@@ -13,8 +13,7 @@
  */
 package com.querydsl.jdo;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Transaction;
+import java.util.Arrays;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -84,22 +83,9 @@ public class CollectionTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        // Persistence of a Product and a Book.
-        PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx = pm.currentTransaction();
-        try {
-            tx.begin();
-            pm.makePersistent(new Product("Sony Discman","A standard discman from Sony", 200.00, 3));
-            pm.makePersistent(new Book("Lord of the Rings by Tolkien","The classic story", 49.99, 5, "JRR Tolkien", "12345678","MyBooks Factory"));
-            tx.commit();
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            pm.close();
-        }
-        System.out.println("");
-
+        doPersist(Arrays.asList(
+                new Product("Sony Discman", "A standard discman from Sony", 200.00, 3),
+                new Book("Lord of the Rings by Tolkien","The classic story", 49.99, 5, "JRR Tolkien", "12345678","MyBooks Factory")));
     }
 
 }

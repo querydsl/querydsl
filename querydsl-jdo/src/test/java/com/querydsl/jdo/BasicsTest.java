@@ -17,9 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.Transaction;
+import java.util.Arrays;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -83,12 +81,17 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void List_Distinct() {
-        query().from(product).distinct().select(product).fetch();
+        // XXX List implementation of JDO provider has weird equals implementation
+        assertEquals(
+                ImmutableList.copyOf(query().from(product).orderBy(product.name.asc()).select(product.name).fetch()),
+                ImmutableList.copyOf(query().from(product).orderBy(product.name.asc()).distinct().select(product.name).fetch()));
     }
 
     @Test
     public void List_Distinct_Two_Sources() {
-        query().from(product, product2).distinct().select(product, product2).fetch();
+        assertEquals(
+                query().from(product, product2).select(product, product2).fetch(),
+                query().from(product, product2).distinct().select(product, product2).fetch());
     }
 
     @Test
@@ -264,22 +267,9 @@ public class BasicsTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        // Persistence of a Product and a Book.
-        PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx = pm.currentTransaction();
-        try {
-            tx.begin();
-            pm.makePersistent(new Product("Sony Discman","A standard discman from Sony", 200.00, 3));
-            pm.makePersistent(new Book("Lord of the Rings by Tolkien","The classic story", 49.99, 5, "JRR Tolkien", "12345678","MyBooks Factory"));
-            tx.commit();
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            pm.close();
-        }
-        System.out.println("");
-
+        doPersist(Arrays.asList(
+                new Product("Sony Discman", "A standard discman from Sony", 200.00, 3),
+                new Book("Lord of the Rings by Tolkien", "The classic story", 49.99, 5, "JRR Tolkien", "12345678", "MyBooks Factory")));
     }
 
 }
