@@ -60,7 +60,6 @@ public class TypeFactoryTest {
         Field field = Entity.class.getDeclaredField("field");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
-        System.out.println(type.getParameters().get(0));
         assertEquals(Types.OBJECT, type.getParameters().get(0));
     }
 

@@ -135,7 +135,7 @@ public class CollQueryTest extends AbstractQueryTest {
         for (Tuple strs : from(a, "aa", "bb", "cc")
                 .from(b, Arrays.asList("a","b"))
                 .where(a.startsWith(b)).select(a, b).fetch()) {
-            System.out.println(strs);
+            assertEquals(strs.get(a), strs.get(b) + strs.get(b));
         }
 
         query().from(cat, cats).select(cat.mate).fetch();
@@ -155,14 +155,7 @@ public class CollQueryTest extends AbstractQueryTest {
         NumberPath<BigDecimal> a = Expressions.numberPath(BigDecimal.class, "cost");
         List<BigDecimal> nums = from(a, new BigDecimal("2.1"), new BigDecimal("20.21"),
                 new BigDecimal("44.4")).where(a.lt(new BigDecimal("35.1"))).select(a).fetch();
-
-        for (BigDecimal num : nums) {
-            System.out.println(num);
-        }
-        assertEquals(2, nums.size());
-        for (BigDecimal num : nums) {
-            assertEquals(-1, num.compareTo(new BigDecimal("35")));
-        }
+        assertEquals(Arrays.asList(new BigDecimal("2.1"), new BigDecimal("20.21")), nums);
     }
 
     @Test(expected = UnsupportedOperationException.class)

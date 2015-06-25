@@ -45,7 +45,7 @@ public class DateExtensionsTest extends AbstractProcessorTest {
         assertTrue(qType.exists());
         long modified = qType.lastModified();
         Thread.sleep(1000);
-        System.out.println(Files.toString(qType, Charsets.UTF_8).contains("QDate"));
+        assertTrue(Files.toString(qType, Charsets.UTF_8).contains("QDate"));
 
         // EntityWithExtensions has not changed, QEntityWithExtensions is not overwritten
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite3");

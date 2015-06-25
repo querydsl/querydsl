@@ -76,7 +76,8 @@ public abstract class AbstractSQLTest {
                 .select(Projections.constructor(Cat.class, cat.name, cat.id)).fetch();
         assertEquals(6, cats.size());
         for (Cat c : cats) {
-            System.out.println(c.getName());
+            assertNotNull(c.getName());
+            assertTrue(c.getId() > 0);
         }
     }
 
@@ -87,7 +88,7 @@ public abstract class AbstractSQLTest {
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).select(catEntity).fetch();
         assertEquals(6, cats.size());
         for (Cat c : cats) {
-            System.out.println(c.getName());
+            assertNotNull(c.getName());
         }
     }
 

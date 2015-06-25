@@ -310,15 +310,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Constructor() throws Exception {
-        for (IdName idName : query().from(survey).select(new QIdName(survey.id, survey.name)).fetch()) {
-            System.out.println("id and name : " + idName.getId() + "," + idName.getName());
-        }
-    }
-
-    @Test
     public void Constructor_Projection() {
-        // constructor projection
         for (IdName idAndName : query().from(survey).select(new QIdName(survey.id, survey.name)).fetch()) {
             assertNotNull(idAndName);
             assertNotNull(idAndName.getId());
@@ -698,7 +690,8 @@ public class SelectBase extends AbstractBaseTest {
     public void GetResultSet() throws IOException, SQLException {
         ResultSet results = query().from(survey).getResults(survey.id, survey.name);
         while (results.next()) {
-            System.out.println(results.getInt(1) + "," + results.getString(2));
+            assertNotNull(results.getObject(1));
+            assertNotNull(results.getObject(2));
         }
         results.close();
     }
@@ -858,7 +851,7 @@ public class SelectBase extends AbstractBaseTest {
     public void Join() throws Exception {
         for (String name : query().from(survey, survey2)
                 .where(survey.id.eq(survey2.id)).select(survey.name).fetch()) {
-            System.out.println(name);
+            assertNotNull(name);
         }
     }
 
@@ -868,7 +861,8 @@ public class SelectBase extends AbstractBaseTest {
                 .on(employee.superiorId.eq(employee2.superiorId))
                 .where(employee2.id.eq(10))
                 .select(employee.id, employee2.id).fetch()) {
-            System.out.println(row.get(employee.id) + ", " + row.get(employee2.id));
+            assertNotNull(row.get(employee.id));
+            assertNotNull(row.get(employee2.id));
         }
     }
 
@@ -1321,21 +1315,23 @@ public class SelectBase extends AbstractBaseTest {
         for (Tuple row : query().from(survey)
                 .where(survey.id.eq(1))
                 .select(survey.id, survey.name).fetch()) {
-            System.out.println(row.get(survey.id) + ", " + row.get(survey.name));
+            assertNotNull(row.get(survey.id));
+            assertNotNull(row.get(survey.name));
         }
     }
 
     @Test
     public void Query1() throws Exception {
         for (String s : query().from(survey).select(survey.name).fetch()) {
-            System.out.println(s);
+            assertNotNull(s);
         }
     }
 
     @Test
     public void Query2() throws Exception {
         for (Tuple row : query().from(survey).select(survey.id, survey.name).fetch()) {
-            System.out.println(row.get(survey.id) + ", " + row.get(survey.name));
+            assertNotNull(row.get(survey.id));
+            assertNotNull(row.get(survey.name));
         }
     }
 
@@ -1436,7 +1432,11 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Select_Concat() throws SQLException {
-        System.out.println(query().from(survey).select(survey.name.append("Hello World")).fetch());
+        for (Tuple row : query().from(survey).select(survey.name, survey.name.append("Hello World")).fetch()) {
+            assertEquals(
+                    row.get(survey.name) + "Hello World",
+                    row.get(survey.name.append("Hello World")));
+        }
     }
 
     @Test

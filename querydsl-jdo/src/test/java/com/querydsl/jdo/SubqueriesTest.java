@@ -13,6 +13,9 @@
  */
 package com.querydsl.jdo;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -45,10 +48,11 @@ public class SubqueriesTest extends AbstractJDOTest {
 
     @Test
     public void Gt_Subquery() {
+        double avg = query().from(product).select(product.price.avg()).fetchFirst();
         for (double price : query().from(product)
                 .where(product.price.gt(query().from(other).select(other.price.avg())))
                 .select(product.price).fetch()) {
-            System.out.println(price);
+            assertTrue(price > avg);
         }
     }
 
@@ -63,10 +67,11 @@ public class SubqueriesTest extends AbstractJDOTest {
 
     @Test
     public void Eq_Subquery() {
+        double avg = query().from(product).select(product.price.avg()).fetchFirst();
         for (double price : query().from(product)
                 .where(product.price.eq(query().from(other).select(other.price.avg())))
                 .select(product.price).fetch()) {
-            System.out.println(price);
+            assertEquals(avg, price, 0.0001);
         }
     }
 

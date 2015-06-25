@@ -31,7 +31,6 @@ public class TimeConstantTest {
         cal.set(Calendar.MINUTE,      30);
         cal.set(Calendar.SECOND,      12);
         cal.set(Calendar.MILLISECOND,  3);
-        System.out.println(cal.getTime());
 
         TimeExpression<Time> time = TimeConstant.create(new Time(cal.getTimeInMillis()));
         assertEquals("13",   time.hour().toString());

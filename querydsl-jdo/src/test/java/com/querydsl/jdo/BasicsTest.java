@@ -15,6 +15,7 @@ package com.querydsl.jdo;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -142,7 +143,7 @@ public class BasicsTest extends AbstractJDOTest {
     @Ignore
     public void DetachedResults() {
         for (Product p : detachedQuery().from(product).select(product).fetch()) {
-            System.out.println(p);
+            assertNotNull(p);
         }
     }
 
