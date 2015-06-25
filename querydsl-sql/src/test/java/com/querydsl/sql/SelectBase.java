@@ -1287,7 +1287,6 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Projection2() throws IOException {
-        // TODO : add assertions
         CloseableIterator<Tuple> results = query().from(survey).select(survey.id, survey.name).iterate();
         assertTrue(results.hasNext());
         while (results.hasNext()) {
