@@ -10,8 +10,8 @@
     <title>Maven integration</title>
 
     <para>
-      Querydsl Lucene can be used via the querydsl-lucene3 module for Lucene 3 and querydsl-lucene4
-      for Lucene 4
+      Querydsl Lucene can be used via the querydsl-lucene3 module for Lucene 3, querydsl-lucene4
+      for Lucene 4 and querydsl-lucene5 for Lucene 5
     </para>
 
     <para>Lucene 3:</para>
@@ -46,6 +46,22 @@
 </dependency>
 ]]></programlisting>
 
+
+ <para>Lucene 5:</para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.querydsl</groupId>
+  <artifactId>querydsl-lucene5</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>
+]]></programlisting>
   </sect2>
 
   <sect2>
