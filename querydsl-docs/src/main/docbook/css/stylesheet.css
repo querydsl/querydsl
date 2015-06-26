@@ -139,8 +139,8 @@ span.productname {
 }
 
 .code {
-	font-size: 14px;
-	/*color: 0000C0;*/
+    font-size: 14px;
+    /*color: 0000C0;*/
 }
 
 div.table td, div.table th {
@@ -148,7 +148,7 @@ div.table td, div.table th {
 }
 
 a {
-	text-decoration: none;
+    text-decoration: none;
     color: #4183C4;
 }
 

@@ -8,30 +8,30 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>src/apt</directory>	
-	  <outputDirectory>/</outputDirectory>
-	</fileSet>	
-  </fileSets>	
+      <directory>src/apt</directory>    
+      <outputDirectory>/</outputDirectory>
+    </fileSet>    
+  </fileSets>    
   <dependencySets>
     <dependencySet>
       <unpack>true</unpack>
       <scope>compile</scope>
-	  <excludes>
-	  	<exclude>cglib:cglib</exclude>
-		<exclude>com.querydsl:querydsl-sql</exclude>
-		<exclude>com.querydsl:querydsl-jdo</exclude>
-		<exclude>org.slf4j:slf4j-api</exclude>
-		<exclude>org.slf4j:slf4j-log4j12</exclude>					
-	  </excludes>
+      <excludes>
+        <exclude>cglib:cglib</exclude>
+        <exclude>com.querydsl:querydsl-sql</exclude>
+        <exclude>com.querydsl:querydsl-jdo</exclude>
+        <exclude>org.slf4j:slf4j-api</exclude>
+        <exclude>org.slf4j:slf4j-log4j12</exclude>                    
+      </excludes>
     </dependencySet>
     <dependencySet>
       <unpack>true</unpack>
-	  <scope>provided</scope>
-	  <includes>
-	  	<include>com.querydsl:*</include>
-	  	<include>com.mysema.codegen:*</include>							
-	  </includes>
-    </dependencySet>		
+      <scope>provided</scope>
+      <includes>
+        <include>com.querydsl:*</include>
+        <include>com.mysema.codegen:*</include>
+      </includes>
+    </dependencySet>        
   </dependencySets>
 </assembly>
 
