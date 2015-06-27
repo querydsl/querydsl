@@ -44,7 +44,7 @@ public final class QueryResults<T> implements Serializable {
     private final List<T> results;
 
     /**
-     * Create a new QueryResults instance
+     * Create a new {@link QueryResults} instance
      *
      * @param results paged results
      * @param limit used limit
@@ -59,7 +59,7 @@ public final class QueryResults<T> implements Serializable {
     }
 
     /**
-     * Create a new QueryResults instance
+     * Create a new {@link QueryResults} instance
      *
      * @param results paged results
      * @param mod limit and offset
@@ -81,7 +81,7 @@ public final class QueryResults<T> implements Serializable {
     }
 
     /**
-     * Get the number of total results
+     * Get the total number of results
      *
      * @return total rows
      */
