@@ -49,11 +49,11 @@ class ScalaEntitySerializerTest {
     val str = writer.toString
     //System.err.println(str)
     assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata) " +
-    		"extends EntityPathImpl[Person](cl, md) {"))
+            "extends EntityPathImpl[Person](cl, md) {"))
     assertTrue(str.contains("def this(variable: String) = " +
-    		"this(classOf[Person], forVariable(variable))"))
+            "this(classOf[Person], forVariable(variable))"))
     assertTrue(str.contains("def this(parent: Path[_], variable: String) = " +
-    		"this(classOf[Person], forProperty(parent, variable))"))
+            "this(classOf[Person], forProperty(parent, variable))"))
   }
 
   @Test

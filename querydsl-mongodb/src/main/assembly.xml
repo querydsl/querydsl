@@ -8,14 +8,14 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>src/apt</directory>	
-	  <outputDirectory>/</outputDirectory>
-	</fileSet>
+      <directory>src/apt</directory>    
+      <outputDirectory>/</outputDirectory>
+    </fileSet>
     <fileSet>
-      <directory>src/license</directory>	
-	  <outputDirectory>/license</outputDirectory>
-	</fileSet>			
-  </fileSets>	
+      <directory>src/license</directory>    
+      <outputDirectory>/license</outputDirectory>
+    </fileSet>            
+  </fileSets>    
   <dependencySets>
     <dependencySet>
       <unpack>true</unpack>

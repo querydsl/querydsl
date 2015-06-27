@@ -26,6 +26,8 @@ import com.google.common.base.Function;
  * transformer
  * </p>
  *
+ * @param <T> result type
+ *
  * @author laim
  * @author tiwe
  */
