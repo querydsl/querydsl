@@ -1,7 +1,7 @@
 package com.querydsl.example.jpa.repository;
 
 import com.google.inject.persist.Transactional;
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.example.jpa.model.Tweet;
 
 import java.util.List;
@@ -21,6 +21,6 @@ public class TweetRepository extends AbstractRepository<Tweet> {
     }
 
     public List<Tweet> findAll(Predicate expr) {
-        return from(tweet).where(expr).list(tweet);
+        return queryFactory().selectFrom(tweet).where(expr).fetch();
     }
 }

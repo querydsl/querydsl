@@ -14,7 +14,7 @@
     
     <hibernate.version>4.1.7.Final</hibernate.version>
     <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>    
-    <querydsl.version>3.2.4</querydsl.version>
+    <querydsl.version>4.0.1</querydsl.version>
     <guice.version>3.0</guice.version>    
     <h2.version>1.3.170</h2.version>
   </properties>
@@ -104,12 +104,12 @@
       <version>1.0.0.Final</version>      
     </dependency>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
       <version>${querydsl.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${querydsl.version}</version>
     </dependency>
@@ -179,7 +179,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+              <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>
