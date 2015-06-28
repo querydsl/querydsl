@@ -1,10 +1,10 @@
 package com.querydsl.example.sql.repository;
 
-import com.mysema.query.sql.dml.SQLInsertClause;
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.example.sql.guice.Transactional;
 import com.querydsl.example.sql.model.Tweet;
 import com.querydsl.example.sql.model.TweetUser;
+import com.querydsl.sql.dml.SQLInsertClause;
 
 import java.util.List;
 
@@ -40,35 +40,35 @@ public class TweetRepository extends AbstractRepository {
     
     @Transactional
     public Tweet findById(Long id) {
-        return from(tweet).where(tweet.id.eq(id)).singleResult(tweet);
+        return queryFactory().selectFrom(tweet).where(tweet.id.eq(id)).fetchOne();
     }
     
     @Transactional
     public List<Tweet> findOfUser(String username) {
-        return from(user)
+        return queryFactory().select(tweet).from(user)
                 .innerJoin(tweet).on(tweet.posterId.eq(user.id))
-                .list(tweet);
+                .fetch();
     }
     
     @Transactional
     public List<Tweet> findWithMentioned(Long userId) {
-        return from(tweet)
+        return queryFactory().selectFrom(tweet)
                 .innerJoin(tweetUser).on(tweet.id.eq(tweetUser.tweetId))
                 .where(tweetUser.mentionsId.eq(userId))
-                .list(tweet);
+                .fetch();
     }
     
     @Transactional
     public List<Tweet> findOfArea(double[] pointA, double[] pointB) {
-        return from(tweet)
+        return queryFactory().selectFrom(tweet)
                 .innerJoin(location).on(tweet.locationId.eq(location.id))
                 .where(location.longitude.between(pointA[0], pointB[0]),
                        location.latitude.between(pointA[1], pointB[1]))
-                .list(tweet);                       
+                .fetch();
     }
 
     @Transactional
     public List<Tweet> findAll(Predicate expr) {
-        return from(tweet).where(expr).list(tweet);
+        return queryFactory().selectFrom(tweet).where(expr).fetch();
     }
 }

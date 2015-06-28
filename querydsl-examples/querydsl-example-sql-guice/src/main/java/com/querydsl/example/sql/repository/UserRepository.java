@@ -1,7 +1,7 @@
 package com.querydsl.example.sql.repository;
 
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.Projections;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
 import com.querydsl.example.sql.guice.Transactional;
 import com.querydsl.example.sql.model.User;
 
@@ -13,7 +13,7 @@ import static com.querydsl.example.sql.model.QUser.user;
 public class UserRepository extends AbstractRepository {
     @Transactional
     public User findById(Long id) {
-        return from(user).where(user.id.eq(id)).singleResult(user);
+        return queryFactory().selectFrom(user).where(user.id.eq(id)).fetchOne();
     }
 
     @Transactional
@@ -28,20 +28,20 @@ public class UserRepository extends AbstractRepository {
 
     @Transactional
     public List<UserInfo> allWithTweetCount() {
-        return from(user)
+        return queryFactory().select(Projections.constructor(UserInfo.class, user.username, tweet.id.count())).from(user)
                 .leftJoin(tweet).on(user.id.eq(tweet.posterId))
                 .groupBy(user.username)
-                .list(Projections.constructor(UserInfo.class, user.username, tweet.id.count()));
+                .fetch();
     }
     
     @Transactional
     public List<User> findAll(Predicate expr) {
-        return from(user).where(expr).list(user);
+        return queryFactory().selectFrom(user).where(expr).fetch();
     }
     
     @Transactional
     public List<User> all() {
-        return from(user).list(user);
+        return queryFactory().selectFrom(user).fetch();
     }
     
 }

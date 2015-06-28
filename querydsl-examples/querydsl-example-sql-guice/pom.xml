@@ -12,7 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failIfNoTests>false</failIfNoTests>
     
-    <querydsl.version>3.2.4</querydsl.version>
+    <querydsl.version>4.0.1</querydsl.version>
     <guice.version>3.0</guice.version>    
     <h2.version>1.3.170</h2.version>
   </properties>
@@ -50,7 +50,7 @@
     
     <!-- persistence -->
     <dependency>
-      <groupId>com.mysema.querydsl</groupId>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${querydsl.version}</version>
     </dependency>    
@@ -104,7 +104,7 @@
       </plugin>
 
       <plugin>
-        <groupId>com.mysema.querydsl</groupId>
+        <groupId>com.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${querydsl.version}</version>
         <executions>

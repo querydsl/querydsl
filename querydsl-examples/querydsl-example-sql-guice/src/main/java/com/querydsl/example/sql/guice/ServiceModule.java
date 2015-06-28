@@ -6,10 +6,10 @@ import com.google.inject.Scopes;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.mchange.v2.c3p0.DataSources;
-import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.H2Templates;
 import com.querydsl.example.sql.repository.TweetRepository;
 import com.querydsl.example.sql.repository.UserRepository;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.H2Templates;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
