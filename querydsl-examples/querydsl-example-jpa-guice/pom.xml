@@ -3,11 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.querydsl</groupId>
-  <artifactId>querydsl-jpa-example</artifactId>
+  <artifactId>querydsl-example-jpa-guice</artifactId>
   <packaging>jar</packaging>
   <version>0.0.1</version>
-  <name>Querydsl JPA example</name>
-  <description></description>
+  <name>Querydsl JPA Guice example</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -154,7 +153,7 @@
   </dependencies>
 
   <build>
-    <finalName>querydsl-jpa-example</finalName>
+    <finalName>querydsl-example-jpa-guice</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-eclipse-plugin</artifactId>

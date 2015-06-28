@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.querydsl</groupId>
-  <artifactId>querydsl-customer-dao</artifactId>
+  <artifactId>querydsl-example-sql-spring</artifactId>
   <packaging>jar</packaging>
   <version>0.2.0</version>
-  <name>Querydsl Customer DAO</name>
+  <name>Querydsl SQL Spring example</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
@@ -109,6 +109,7 @@
   </dependencies>
 
   <build>
+    <finalName>querydsl-example-sql-spring</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-eclipse-plugin</artifactId>
