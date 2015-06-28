@@ -614,6 +614,9 @@
 
     <profile>
       <id>travis</id>
+      <modules>
+        <module>querydsl-examples</module>
+      </modules>
       <build>
         <plugins>
           <plugin>
