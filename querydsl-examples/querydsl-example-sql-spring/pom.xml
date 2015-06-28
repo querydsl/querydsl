@@ -6,7 +6,7 @@
   <artifactId>querydsl-example-sql-spring</artifactId>
   <packaging>jar</packaging>
   <version>0.2.0</version>
-  <name>Querydsl Sql</name>
+  <name>Querydsl example - SQL Spring</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 

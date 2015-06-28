@@ -6,7 +6,7 @@
   <artifactId>querydsl-example-jpa-guice</artifactId>
   <packaging>jar</packaging>
   <version>0.0.1</version>
-  <name>Querydsl JPA Guice example</name>
+  <name>Querydsl example - JPA Guice</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
