@@ -1,23 +1,21 @@
 package com.querydsl.example.jpa.repository;
 
+import com.google.inject.persist.Transactional;
+import com.querydsl.example.jpa.guice.GuiceTestRunner;
+import org.hibernate.Session;
+import org.hibernate.jdbc.Work;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.persistence.EntityManager;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.persistence.EntityManager;
-
-import org.hibernate.Session;
-import org.hibernate.jdbc.Work;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-
-import com.google.inject.persist.Transactional;
-import com.querydsl.example.jpa.guice.GuiceTestRunner;
 
 @RunWith(GuiceTestRunner.class)
 public abstract class AbstractPersistenceTest {

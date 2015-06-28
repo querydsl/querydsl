@@ -1,9 +1,9 @@
 package com.querydsl.example.dao;
 
-import java.util.List;
-
 import com.querydsl.core.types.Predicate;
 import com.querydsl.example.dto.Order;
+
+import java.util.List;
 
 public interface OrderDao {
 

@@ -1,14 +1,14 @@
 package com.querydsl.example.sql.repository;
 
-import static com.querydsl.example.sql.model.QTweet.tweet;
-import static com.querydsl.example.sql.model.QUser.user;
-
-import java.util.List;
-
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.Projections;
 import com.querydsl.example.sql.guice.Transactional;
 import com.querydsl.example.sql.model.User;
+
+import java.util.List;
+
+import static com.querydsl.example.sql.model.QTweet.tweet;
+import static com.querydsl.example.sql.model.QUser.user;
 
 public class UserRepository extends AbstractRepository {
     @Transactional

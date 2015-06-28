@@ -1,18 +1,5 @@
 package com.querydsl.example.config;
 
-import java.sql.Connection;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.sql.DataSource;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
-
 import com.jolbox.bonecp.BoneCPDataSource;
 import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.SQLQueryFactory;
@@ -21,6 +8,17 @@ import com.querydsl.sql.spring.SpringConnectionProvider;
 import com.querydsl.sql.spring.SpringExceptionTranslator;
 import com.querydsl.sql.types.DateTimeType;
 import com.querydsl.sql.types.LocalDateType;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.sql.DataSource;
+import java.sql.Connection;
 
 @Configuration
 @PropertySource({"classpath:jdbc.properties"})

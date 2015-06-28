@@ -1,14 +1,12 @@
 package com.querydsl.example.dao;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
+import com.querydsl.example.dto.Person;
 import org.junit.Test;
 
-import com.querydsl.example.dto.Person;
+import javax.annotation.Resource;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class PersonDaoTest extends AbstractDaoTest {
     

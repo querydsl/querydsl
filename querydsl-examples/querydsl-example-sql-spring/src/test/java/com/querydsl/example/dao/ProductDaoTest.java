@@ -1,16 +1,14 @@
 package com.querydsl.example.dao;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.junit.Test;
-
 import com.google.common.collect.ImmutableSet;
 import com.querydsl.example.dto.Product;
 import com.querydsl.example.dto.ProductL10n;
+import org.junit.Test;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class ProductDaoTest extends AbstractDaoTest {
     

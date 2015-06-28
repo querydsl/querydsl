@@ -1,26 +1,24 @@
 package com.querydsl.example.dao;
 
-import static com.querydsl.core.types.Projections.bean;
-import static com.querydsl.example.sql.QAddress.address;
-import static com.querydsl.example.sql.QCustomer.customer;
-import static com.querydsl.example.sql.QCustomerAddress.customerAddress;
-import static com.querydsl.example.sql.QPerson.person;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import com.querydsl.core.group.GroupBy;
-import com.querydsl.sql.SQLQueryFactory;
-import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.QBean;
 import com.querydsl.example.dto.Address;
 import com.querydsl.example.dto.Customer;
 import com.querydsl.example.dto.CustomerAddress;
 import com.querydsl.example.dto.Person;
+import com.querydsl.sql.SQLQueryFactory;
+import com.querydsl.sql.dml.SQLInsertClause;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static com.querydsl.core.types.Projections.bean;
+import static com.querydsl.example.sql.QAddress.address;
+import static com.querydsl.example.sql.QCustomer.customer;
+import static com.querydsl.example.sql.QCustomerAddress.customerAddress;
+import static com.querydsl.example.sql.QPerson.person;
 
 @Transactional
 public class CustomerDaoImpl implements CustomerDao {

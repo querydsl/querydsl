@@ -1,10 +1,9 @@
 package com.querydsl.example.sql.guice;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class ConnectionContext {
 

@@ -1,17 +1,17 @@
 package com.querydsl.example.sql.repository;
 
-import static com.querydsl.example.sql.model.QLocation.location;
-import static com.querydsl.example.sql.model.QTweet.tweet;
-import static com.querydsl.example.sql.model.QTweetUser.tweetUser;
-import static com.querydsl.example.sql.model.QUser.user;
-
-import java.util.List;
-
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.types.Predicate;
 import com.querydsl.example.sql.guice.Transactional;
 import com.querydsl.example.sql.model.Tweet;
 import com.querydsl.example.sql.model.TweetUser;
+
+import java.util.List;
+
+import static com.querydsl.example.sql.model.QLocation.location;
+import static com.querydsl.example.sql.model.QTweet.tweet;
+import static com.querydsl.example.sql.model.QTweetUser.tweetUser;
+import static com.querydsl.example.sql.model.QUser.user;
 
 public class TweetRepository extends AbstractRepository {
     @Transactional

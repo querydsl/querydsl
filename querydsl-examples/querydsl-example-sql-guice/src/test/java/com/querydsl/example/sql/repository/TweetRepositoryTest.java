@@ -1,16 +1,15 @@
 package com.querydsl.example.sql.repository;
 
-import static com.querydsl.example.sql.model.QTweet.tweet;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
-import javax.inject.Inject;
-
+import com.querydsl.example.sql.model.Tweet;
+import com.querydsl.example.sql.model.User;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.example.sql.model.Tweet;
-import com.querydsl.example.sql.model.User;
+import javax.inject.Inject;
+
+import static com.querydsl.example.sql.model.QTweet.tweet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class TweetRepositoryTest extends AbstractPersistenceTest {
     @Inject

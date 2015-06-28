@@ -1,12 +1,12 @@
 package com.querydsl.example.jpa.repository;
 
-import static com.querydsl.example.jpa.model.QUser.user;
-
-import java.util.List;
-
 import com.google.inject.persist.Transactional;
 import com.mysema.query.types.Predicate;
 import com.querydsl.example.jpa.model.User;
+
+import java.util.List;
+
+import static com.querydsl.example.jpa.model.QUser.user;
 
 @Transactional
 public class UserRepository extends AbstractRepository<User> {

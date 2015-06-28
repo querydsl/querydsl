@@ -1,10 +1,9 @@
 package com.querydsl.example.dto;
 
-import java.util.Set;
-
+import lombok.Data;
 import org.joda.time.LocalDate;
 
-import lombok.Data;
+import java.util.Set;
 
 @Data
 public class Order {

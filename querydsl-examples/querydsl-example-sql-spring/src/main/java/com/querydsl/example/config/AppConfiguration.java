@@ -1,14 +1,13 @@
 package com.querydsl.example.config;
 
-import javax.inject.Inject;
-
+import com.querydsl.example.dao.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.querydsl.example.dao.*;
+import javax.inject.Inject;
 
 @Configuration
 @EnableTransactionManagement

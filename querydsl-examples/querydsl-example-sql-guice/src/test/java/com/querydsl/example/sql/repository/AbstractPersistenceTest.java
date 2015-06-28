@@ -1,20 +1,18 @@
 package com.querydsl.example.sql.repository;
 
+import com.querydsl.example.sql.guice.GuiceTestRunner;
+import com.querydsl.example.sql.guice.Transactional;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+
+import javax.inject.Inject;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.sql.DataSource;
-
-import org.junit.Before;
-import org.junit.runner.RunWith;
-
-import com.querydsl.example.sql.guice.GuiceTestRunner;
-import com.querydsl.example.sql.guice.Transactional;
 
 @RunWith(GuiceTestRunner.class)
 public abstract class AbstractPersistenceTest {

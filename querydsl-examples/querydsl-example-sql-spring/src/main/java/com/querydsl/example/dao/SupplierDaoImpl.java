@@ -1,18 +1,16 @@
 package com.querydsl.example.dao;
 
-import static com.querydsl.core.types.Projections.bean;
-import static com.querydsl.example.sql.QSupplier.supplier;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import com.querydsl.sql.SQLQueryFactory;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.QBean;
 import com.querydsl.example.dto.Supplier;
+import com.querydsl.sql.SQLQueryFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static com.querydsl.core.types.Projections.bean;
+import static com.querydsl.example.sql.QSupplier.supplier;
 
 @Transactional
 public class SupplierDaoImpl implements SupplierDao {

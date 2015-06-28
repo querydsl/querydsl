@@ -1,14 +1,5 @@
 package com.querydsl.example.sql.guice;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Map.Entry;
-import java.util.Properties;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.sql.DataSource;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
@@ -19,6 +10,14 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.H2Templates;
 import com.querydsl.example.sql.repository.TweetRepository;
 import com.querydsl.example.sql.repository.UserRepository;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 public class ServiceModule extends AbstractModule {
     @Override

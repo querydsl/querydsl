@@ -1,12 +1,12 @@
 package com.querydsl.example.jpa.repository;
 
-import static com.querydsl.example.jpa.model.QTweet.tweet;
-
-import java.util.List;
-
 import com.google.inject.persist.Transactional;
 import com.mysema.query.types.Predicate;
 import com.querydsl.example.jpa.model.Tweet;
+
+import java.util.List;
+
+import static com.querydsl.example.jpa.model.QTweet.tweet;
 
 @Transactional
 public class TweetRepository extends AbstractRepository<Tweet> {

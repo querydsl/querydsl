@@ -1,25 +1,23 @@
 package com.querydsl.example.dao;
 
-import static com.querydsl.core.types.Projections.bean;
-import static com.querydsl.example.sql.QCustomerOrder.customerOrder;
-import static com.querydsl.example.sql.QCustomerOrderProduct.customerOrderProduct;
-import static com.querydsl.example.sql.QCustomerPaymentMethod.customerPaymentMethod;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import com.querydsl.core.dml.StoreClause;
 import com.querydsl.core.group.GroupBy;
-import com.querydsl.sql.SQLQueryFactory;
-import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.QBean;
 import com.querydsl.example.dto.CustomerPaymentMethod;
 import com.querydsl.example.dto.Order;
 import com.querydsl.example.dto.OrderProduct;
+import com.querydsl.sql.SQLQueryFactory;
+import com.querydsl.sql.dml.SQLInsertClause;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static com.querydsl.core.types.Projections.bean;
+import static com.querydsl.example.sql.QCustomerOrder.customerOrder;
+import static com.querydsl.example.sql.QCustomerOrderProduct.customerOrderProduct;
+import static com.querydsl.example.sql.QCustomerPaymentMethod.customerPaymentMethod;
 
 @Transactional
 public class OrderDaoImpl implements OrderDao {

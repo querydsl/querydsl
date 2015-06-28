@@ -1,12 +1,11 @@
 package com.querydsl.example.sql.guice;
 
-import static org.junit.Assert.*;
-
+import com.google.inject.Inject;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.inject.Inject;
+import static org.junit.Assert.*;
 
 @RunWith(GuiceTestRunner.class)
 public class ConnectionContextTest {

@@ -1,25 +1,23 @@
 package com.querydsl.example.dao;
 
-import static com.querydsl.core.types.Projections.bean;
-import static com.querydsl.example.sql.QProduct.product;
-import static com.querydsl.example.sql.QProductL10n.productL10n;
-import static com.querydsl.example.sql.QSupplier.supplier;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import com.querydsl.core.dml.StoreClause;
 import com.querydsl.core.group.GroupBy;
-import com.querydsl.sql.SQLQueryFactory;
-import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.QBean;
 import com.querydsl.example.dto.Product;
 import com.querydsl.example.dto.ProductL10n;
 import com.querydsl.example.dto.Supplier;
+import com.querydsl.sql.SQLQueryFactory;
+import com.querydsl.sql.dml.SQLInsertClause;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static com.querydsl.core.types.Projections.bean;
+import static com.querydsl.example.sql.QProduct.product;
+import static com.querydsl.example.sql.QProductL10n.productL10n;
+import static com.querydsl.example.sql.QSupplier.supplier;
 
 @Transactional
 public class ProductDaoImpl implements ProductDao {

@@ -1,19 +1,17 @@
 package com.querydsl.example.jpa.repository;
 
-import static com.querydsl.example.jpa.model.QTweet.tweet;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.junit.Test;
-
 import com.google.common.collect.Lists;
 import com.querydsl.example.jpa.model.Tweet;
 import com.querydsl.example.jpa.model.User;
+import org.junit.Test;
+
+import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
+
+import static com.querydsl.example.jpa.model.QTweet.tweet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TweetRepositoryTest extends AbstractPersistenceTest {
     @Inject

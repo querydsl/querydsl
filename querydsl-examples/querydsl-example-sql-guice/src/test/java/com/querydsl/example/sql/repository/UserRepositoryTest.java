@@ -1,18 +1,13 @@
 package com.querydsl.example.sql.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.junit.Test;
-
 import com.querydsl.example.sql.model.Tweet;
 import com.querydsl.example.sql.model.User;
+import org.junit.Test;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class UserRepositoryTest extends AbstractPersistenceTest {
     @Inject

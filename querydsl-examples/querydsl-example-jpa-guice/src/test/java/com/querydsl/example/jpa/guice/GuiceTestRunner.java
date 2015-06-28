@@ -1,11 +1,10 @@
 package com.querydsl.example.jpa.guice;
 
-import org.junit.runners.BlockJUnit4ClassRunner;
-import org.junit.runners.model.InitializationError;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.querydsl.example.jpa.guice.ServiceModule;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.InitializationError;
 
 public class GuiceTestRunner extends BlockJUnit4ClassRunner {
 

@@ -1,9 +1,5 @@
 package com.querydsl.example.sql.repository;
 
-import java.sql.Connection;
-
-import javax.inject.Inject;
-
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
@@ -12,6 +8,9 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
 import com.querydsl.example.sql.guice.ConnectionContext;
+
+import javax.inject.Inject;
+import java.sql.Connection;
 
 public abstract class AbstractRepository {
     @Inject

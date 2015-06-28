@@ -1,7 +1,7 @@
 package com.querydsl.example.dao;
 
-import javax.annotation.Resource;
-
+import com.querydsl.example.config.TestConfiguration;
+import com.querydsl.example.config.TestDataService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -9,8 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.querydsl.example.config.TestConfiguration;
-import com.querydsl.example.config.TestDataService;
+import javax.annotation.Resource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={TestConfiguration.class})
