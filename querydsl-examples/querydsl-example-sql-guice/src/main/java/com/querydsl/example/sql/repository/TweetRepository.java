@@ -23,7 +23,7 @@ public class TweetRepository extends AbstractRepository {
         return insert(tweet).populate(entity)
                 .executeWithKey(user.id);
     }
-    
+
     @Transactional
     public Long save(Tweet tweet, Long... mentions) {
         Long tweetId = save(tweet);
@@ -32,24 +32,24 @@ public class TweetRepository extends AbstractRepository {
             TweetUser tu = new TweetUser();
             tu.setTweetId(tweetId);
             tu.setMentionsId(mentionsId);
-            insert.populate(tu).addBatch();                        
+            insert.populate(tu).addBatch();
         }
         insert.execute();
         return tweetId;
     }
-    
+
     @Transactional
     public Tweet findById(Long id) {
         return queryFactory().selectFrom(tweet).where(tweet.id.eq(id)).fetchOne();
     }
-    
+
     @Transactional
     public List<Tweet> findOfUser(String username) {
         return queryFactory().select(tweet).from(user)
                 .innerJoin(tweet).on(tweet.posterId.eq(user.id))
                 .fetch();
     }
-    
+
     @Transactional
     public List<Tweet> findWithMentioned(Long userId) {
         return queryFactory().selectFrom(tweet)
@@ -57,7 +57,7 @@ public class TweetRepository extends AbstractRepository {
                 .where(tweetUser.mentionsId.eq(userId))
                 .fetch();
     }
-    
+
     @Transactional
     public List<Tweet> findOfArea(double[] pointA, double[] pointB) {
         return queryFactory().selectFrom(tweet)

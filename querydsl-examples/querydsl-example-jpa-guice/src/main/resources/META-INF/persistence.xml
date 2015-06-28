@@ -15,7 +15,7 @@
       <property name="hibernate.flushMode" value="FLUSH_AUTO" />
       <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
-      
+
     </properties>
   </persistence-unit>
 </persistence>

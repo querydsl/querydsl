@@ -14,5 +14,5 @@ public class TestConfiguration {
     public TestDataService testDataService() {
         return new TestDataServiceImpl();
     }
-    
+
 }

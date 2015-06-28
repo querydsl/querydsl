@@ -33,15 +33,15 @@ public class UserRepository extends AbstractRepository {
                 .groupBy(user.username)
                 .fetch();
     }
-    
+
     @Transactional
     public List<User> findAll(Predicate expr) {
         return queryFactory().selectFrom(user).where(expr).fetch();
     }
-    
+
     @Transactional
     public List<User> all() {
         return queryFactory().selectFrom(user).fetch();
     }
-    
+
 }

@@ -8,13 +8,13 @@ import java.util.List;
 public interface ProductDao {
 
     Product findById(long id);
-    
+
     List<Product> findAll(Predicate... where);
-    
+
     Product save(Product p);
-    
+
     long count();
-    
+
     void delete(Product p);
-    
+
 }

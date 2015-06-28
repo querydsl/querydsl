@@ -11,28 +11,28 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class ProductDaoTest extends AbstractDaoTest {
-    
+
     @Resource SupplierDao supplierDao;
-    
+
     @Resource ProductDao productDao;
-    
+
     @Test
     public void FindAll() {
         List<Product> products = productDao.findAll();
         assertFalse(products.isEmpty());
     }
-    
+
     @Test
     public void FindById() {
         assertNotNull(productDao.findById(1));
     }
-    
+
     @Test
     public void Update() {
         Product product = productDao.findById(1);
         productDao.save(product);
     }
-    
+
     @Test
     public void Delete() {
         Product product = new Product();

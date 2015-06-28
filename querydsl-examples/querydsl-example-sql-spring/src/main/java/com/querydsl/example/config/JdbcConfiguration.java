@@ -26,16 +26,16 @@ public class JdbcConfiguration {
 
     @Inject Environment env;
 
-    @Bean 
+    @Bean
     public DataSource dataSource() {
         BoneCPDataSource dataSource = new BoneCPDataSource();
         dataSource.setDriverClass(env.getRequiredProperty("jdbc.driver"));
         dataSource.setJdbcUrl(env.getRequiredProperty("jdbc.url"));
         dataSource.setUsername(env.getRequiredProperty("jdbc.user"));
-        dataSource.setPassword(env.getRequiredProperty("jdbc.password"));        
+        dataSource.setPassword(env.getRequiredProperty("jdbc.password"));
         return dataSource;
     }
-    
+
     @Bean
     public PlatformTransactionManager transactionManager() {
         return new DataSourceTransactionManager(dataSource());
@@ -47,14 +47,14 @@ public class JdbcConfiguration {
         com.querydsl.sql.Configuration configuration = new com.querydsl.sql.Configuration(templates);
         configuration.setExceptionTranslator(new SpringExceptionTranslator());
         configuration.register(new DateTimeType());
-        configuration.register(new LocalDateType());        
+        configuration.register(new LocalDateType());
         return configuration;
     }
-    
+
     @Bean
     public SQLQueryFactory queryFactory() {
         Provider<Connection> provider = new SpringConnectionProvider(dataSource());
         return new SQLQueryFactory(querydslConfiguration(), provider);
     }
-    
-}    
+
+}

@@ -8,13 +8,13 @@ import java.util.List;
 public interface OrderDao {
 
     Order findById(long id);
-    
+
     List<Order> findAll(Predicate... where);
-    
+
     Order save(Order order);
-    
+
     long count();
-        
+
     void delete(Order p);
 
 }

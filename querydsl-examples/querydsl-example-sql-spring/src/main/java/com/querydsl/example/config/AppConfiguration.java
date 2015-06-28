@@ -13,32 +13,32 @@ import javax.inject.Inject;
 @EnableTransactionManagement
 @Import(JdbcConfiguration.class)
 public class AppConfiguration {
-    
+
    @Inject Environment env;
-   
+
    @Bean
    public CustomerDao customerDao() {
        return new CustomerDaoImpl();
    }
-   
+
    @Bean
    public OrderDao orderDao() {
        return new OrderDaoImpl();
    }
-   
+
    @Bean
    public PersonDao personDao() {
        return new PersonDaoImpl();
    }
-   
+
    @Bean
    public ProductDao productDao() {
        return new ProductDaoImpl();
    }
-   
+
    @Bean
    public SupplierDao supplierDao() {
        return new SupplierDaoImpl();
    }
-   
+
 }

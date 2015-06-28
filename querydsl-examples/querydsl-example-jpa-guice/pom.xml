@@ -11,17 +11,17 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failIfNoTests>false</failIfNoTests>
-    
+
     <hibernate.version>4.1.7.Final</hibernate.version>
-    <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>    
+    <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
     <querydsl.version>4.0.1</querydsl.version>
-    <guice.version>3.0</guice.version>    
+    <guice.version>3.0</guice.version>
     <h2.version>1.3.170</h2.version>
   </properties>
 
   <dependencies>
 
-    <!-- guice -->    
+    <!-- guice -->
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
@@ -54,7 +54,7 @@
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
     </dependency>
-    
+
     <!-- persistence -->
    <dependency>
       <groupId>org.hibernate</groupId>
@@ -97,11 +97,11 @@
       <artifactId>hibernate-c3p0</artifactId>
       <version>${hibernate.version}</version>
     </dependency>
- 
+
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <version>1.0.0.Final</version>      
+      <version>1.0.0.Final</version>
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
@@ -199,6 +199,6 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-  
+
 </project>
 

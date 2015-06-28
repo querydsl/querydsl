@@ -8,11 +8,11 @@ import java.util.Set;
 public class Customer {
 
     private Long id;
-    
+
     private Person contactPerson;
 
     private String name;
-    
+
     private Set<CustomerAddress> addresses;
 
 }

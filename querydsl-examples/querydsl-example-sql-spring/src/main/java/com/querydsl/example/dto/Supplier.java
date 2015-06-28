@@ -6,7 +6,7 @@ import lombok.Data;
 public class Supplier {
 
     private Long id;
-    
+
     private String code;
 
     private String name;

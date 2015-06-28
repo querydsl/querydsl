@@ -12,12 +12,12 @@ public class ConnectionContextTest {
 
     @Inject
     private ConnectionContext context;
-    
+
     @After
     public void tearDown() {
         context.removeConnection();
     }
-    
+
     @Test
     public void get_connection() {
         assertNotNull(context.getConnection(true));

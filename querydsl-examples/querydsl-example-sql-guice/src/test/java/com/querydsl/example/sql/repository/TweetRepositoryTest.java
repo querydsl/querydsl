@@ -17,9 +17,9 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
 
     @Inject
     private UserRepository userRepository;
-    
+
     private Long posterId;
-    
+
     @Before
     public void setUp() {
         User poster = new User();
@@ -28,7 +28,7 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
     }
 
     @Test
-    public void save_and_find_by_id() {       
+    public void save_and_find_by_id() {
         String content = "I am alive! #YOLO";
         Tweet tweet = new Tweet();
         tweet.setContent(content);
@@ -36,7 +36,7 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
         Long id = repository.save(tweet);
         assertEquals(content, repository.findById(id).getContent());
     }
-    
+
     @Test
     public void save_and_find_by_username() {
         String content = "I am alive! #YOLO";
@@ -44,7 +44,7 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
         tweet.setContent(content);
         tweet.setPosterId(posterId);
         repository.save(tweet);
-        
+
         assertFalse(repository.findOfUser("dr_frank").isEmpty());
     }
 
@@ -53,16 +53,16 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
         User other = new User();
         other.setUsername("dexter");
         Long otherId = userRepository.save(other);
-        
+
         String content = "I am alive! #YOLO";
         Tweet tweet = new Tweet();
         tweet.setContent(content);
         tweet.setPosterId(posterId);
         Long tweetId = repository.save(tweet, otherId);
-        
+
         assertEquals(tweetId, repository.findWithMentioned(otherId).get(0).getId());
     }
-    
+
     @Test
     public void find_list_by_predicate() {
         Tweet tw1 = new Tweet();
@@ -82,5 +82,5 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
 
         assertEquals(1, repository.findAll(tweet.content.contains("#YOLO")).size());
     }
-    
+
 }

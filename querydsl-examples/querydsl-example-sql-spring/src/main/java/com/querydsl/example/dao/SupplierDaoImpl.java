@@ -14,12 +14,12 @@ import static com.querydsl.example.sql.QSupplier.supplier;
 
 @Transactional
 public class SupplierDaoImpl implements SupplierDao {
-    
+
     @Inject
     SQLQueryFactory queryFactory;
-    
+
     final QBean<Supplier> supplierBean = bean(Supplier.class, supplier.all());
-    
+
     @Override
     public Supplier findById(long id) {
         List<Supplier> suppliers = findAll(supplier.id.eq(id));
@@ -38,19 +38,19 @@ public class SupplierDaoImpl implements SupplierDao {
     public Supplier save(Supplier s) {
         if (s.getId() == null) {
             Long id = queryFactory.insert(supplier)
-                .set(supplier.code, s.getCode())    
+                .set(supplier.code, s.getCode())
                 .set(supplier.name, s.getName())
                 .executeWithKey(supplier.id);
             s.setId(id);
         } else {
             queryFactory.update(supplier)
-                .set(supplier.code, s.getCode())    
+                .set(supplier.code, s.getCode())
                 .set(supplier.name, s.getName())
                 .where(supplier.id.eq(s.getId()))
                 .execute();
         }
-        
-        return s;    
+
+        return s;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SupplierDaoImpl implements SupplierDao {
     public void delete(Supplier s) {
         queryFactory.delete(supplier)
             .where(supplier.id.eq(s.getId()))
-            .execute();        
+            .execute();
     }
 
 }

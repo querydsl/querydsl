@@ -6,7 +6,7 @@ import lombok.Data;
 public class Address {
 
     private Long id;
-    
+
     private String street, zip, town, state, country;
 
     private String otherDetails;

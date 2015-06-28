@@ -24,20 +24,20 @@ public class ProductDaoImpl implements ProductDao {
 
     @Inject
     SQLQueryFactory queryFactory;
-    
-    final QBean<ProductL10n> productL10nBean = bean(ProductL10n.class, 
+
+    final QBean<ProductL10n> productL10nBean = bean(ProductL10n.class,
             productL10n.description, productL10n.lang, productL10n.name);
-    
-    final QBean<Product> productBean = bean(Product.class, 
+
+    final QBean<Product> productBean = bean(Product.class,
             product.id, product.name, product.otherProductDetails, product.price,
             bean(Supplier.class, supplier.all()).as("supplier"),
             GroupBy.set(productL10nBean).as("localizations"));
-    
+
     @Override
     public Product findById(long id) {
         List<Product> persons = findAll(product.id.eq(id));
         return persons.isEmpty() ? null : persons.get(0);
-    }    
+    }
 
     @Override
     public List<Product> findAll(Predicate... where) {
@@ -54,11 +54,11 @@ public class ProductDaoImpl implements ProductDao {
             .set(product.price, p.getPrice())
             .set(product.supplierId, p.getSupplier().getId());
     }
-    
+
     @Override
     public Product save(Product p) {
         Long id = p.getId();
-        
+
         if (id == null) {
             id = populate(queryFactory.insert(product), p)
                 .executeWithKey(product.id);
@@ -67,13 +67,13 @@ public class ProductDaoImpl implements ProductDao {
             populate(queryFactory.update(product), p)
                 .where(product.id.eq(id))
                 .execute();
-            
+
             // delete l10n rows
             queryFactory.delete(productL10n)
                 .where(productL10n.productId.eq(id))
                 .execute();
         }
-        
+
         SQLInsertClause insert = queryFactory.insert(productL10n);
         for (ProductL10n l10n : p.getLocalizations()) {
             insert.set(productL10n.productId, id)
@@ -83,25 +83,25 @@ public class ProductDaoImpl implements ProductDao {
                 .addBatch();
         }
         insert.execute();
-        
+
         return p;
     }
 
     @Override
     public long count() {
         return queryFactory.from(product).fetchCount();
-    }    
-    
+    }
+
     @Override
     public void delete(Product p) {
-        // TODO use combined delete clause        
+        // TODO use combined delete clause
         queryFactory.delete(productL10n)
             .where(productL10n.productId.eq(p.getId()))
             .execute();
-        
+
         queryFactory.delete(product)
             .where(product.id.eq(p.getId()))
             .execute();
     }
-    
+
 }

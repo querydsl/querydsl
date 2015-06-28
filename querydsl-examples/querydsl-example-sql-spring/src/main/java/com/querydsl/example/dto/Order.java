@@ -17,7 +17,7 @@ public class Order {
     private String orderStatus;
 
     private Double totalOrderPrice;
-    
+
     private Set<OrderProduct> orderProducts;
 
 }

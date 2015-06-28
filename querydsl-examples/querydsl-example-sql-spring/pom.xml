@@ -9,7 +9,7 @@
   <name>Querydsl example - SQL Spring</name>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <querydsl.version>4.0.1</querydsl.version>
     <spring.version>4.1.6.RELEASE</spring.version>
     <guava.version>18.0</guava.version>
@@ -35,14 +35,14 @@
        <artifactId>spring-jdbc</artifactId>
        <version>${spring.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.12.4</version>
       <scope>provided</scope>
-    </dependency>    
-    
+    </dependency>
+
     <!-- persistence -->
     <dependency>
       <groupId>com.querydsl</groupId>
@@ -92,7 +92,7 @@
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
     </dependency>
-    
+
     <!-- TEST dependencies -->
     <dependency>
       <groupId>junit</groupId>
@@ -134,7 +134,7 @@
             <goals>
               <goal>export</goal>
             </goals>
-          </execution>            
+          </execution>
         </executions>
         <configuration>
           <jdbcDriver>org.h2.Driver</jdbcDriver>
@@ -154,7 +154,7 @@
             <version>${h2.version}</version>
           </dependency>
         </dependencies>
-      </plugin>  
+      </plugin>
     </plugins>
   </build>
 
@@ -170,6 +170,6 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-  
+
 </project>
 

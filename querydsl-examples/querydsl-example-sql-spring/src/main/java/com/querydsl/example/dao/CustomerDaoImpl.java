@@ -25,13 +25,13 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Inject
     SQLQueryFactory queryFactory;
-    
+
     final QBean<CustomerAddress> customerAddressBean = bean(CustomerAddress.class,
             customerAddress.addressTypeCode, customerAddress.fromDate, customerAddress.toDate,
             bean(Address.class, address.all()).as("address"));
-    
+
     final QBean<Customer> customerBean = bean(Customer.class,
-            customer.id, customer.name, 
+            customer.id, customer.name,
             bean(Person.class, person.all()).as("contactPerson"),
             GroupBy.set(customerAddressBean).as("addresses"));
 
@@ -40,7 +40,7 @@ public class CustomerDaoImpl implements CustomerDao {
         List<Customer> customers = findAll(customer.id.eq(id));
         return customers.isEmpty() ? null : customers.get(0);
     }
-    
+
     @Override
     public List<Customer> findAll(Predicate... where) {
         return queryFactory.from(customer)
@@ -50,16 +50,16 @@ public class CustomerDaoImpl implements CustomerDao {
             .where(where)
             .transform(GroupBy.groupBy(customer.id).list(customerBean));
     }
-  
+
     @Override
     public Customer save(Customer c) {
         Long id = c.getId();
-        
+
         if (id == null) {
             id = queryFactory.insert(customer)
                     .set(customer.name, c.getName())
                     .set(customer.contactPersonId, c.getContactPerson().getId())
-                    .executeWithKey(customer.id);    
+                    .executeWithKey(customer.id);
             c.setId(id);
         } else {
             queryFactory.update(customer)
@@ -67,13 +67,13 @@ public class CustomerDaoImpl implements CustomerDao {
                 .set(customer.contactPersonId, c.getContactPerson().getId())
                 .where(customer.id.eq(c.getId()))
                 .execute();
-            
+
             // delete address rows
             queryFactory.delete(customerAddress)
                 .where(customerAddress.customerId.eq(id))
                 .execute();
         }
-        
+
         SQLInsertClause insert = queryFactory.insert(customerAddress);
         for (CustomerAddress ca : c.getAddresses()) {
             if (ca.getAddress().getId() == null) {
@@ -89,26 +89,26 @@ public class CustomerDaoImpl implements CustomerDao {
                 .addBatch();
         }
         insert.execute();
-        
+
         c.setId(id);
-        return c;        
+        return c;
     }
-        
+
     @Override
     public long count() {
         return queryFactory.from(customer).fetchCount();
     }
-    
+
     @Override
-    public void delete(Customer c) {   
+    public void delete(Customer c) {
         // TODO use combined delete clause
         queryFactory.delete(customerAddress)
             .where(customerAddress.customerId.eq(c.getId()))
-            .execute();                    
-        
+            .execute();
+
         queryFactory.delete(customer)
             .where(customer.id.eq(c.getId()))
             .execute();
     }
-    
+
 }

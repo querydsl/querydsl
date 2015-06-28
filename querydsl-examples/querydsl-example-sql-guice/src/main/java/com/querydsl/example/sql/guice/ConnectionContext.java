@@ -8,14 +8,14 @@ import java.sql.SQLException;
 public class ConnectionContext {
 
     private final DataSource dataSource;
-    
+
     private final ThreadLocal<Connection> connectionHolder = new ThreadLocal<Connection>();
 
     @Inject
     public ConnectionContext(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
     public Connection getConnection(boolean create) {
         Connection connection = connectionHolder.get();
         if (!create || connection != null) {
@@ -29,7 +29,7 @@ public class ConnectionContext {
         connectionHolder.set(connection);
         return connection;
     }
-    
+
     public Connection getConnection() {
         return connectionHolder.get();
     }

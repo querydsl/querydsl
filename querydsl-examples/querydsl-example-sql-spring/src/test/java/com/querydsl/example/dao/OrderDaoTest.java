@@ -12,35 +12,35 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class OrderDaoTest extends AbstractDaoTest {
-    
+
     @Resource OrderDao orderDao;
-    
+
     @Test
     public void FindAll() {
         List<Order> orders = orderDao.findAll();
         assertFalse(orders.isEmpty());
     }
-    
+
     @Test
     public void FindById() {
         assertNotNull(orderDao.findById(1));
     }
-    
+
     @Test
     public void Update() {
         Order order = orderDao.findById(1);
         orderDao.save(order);
     }
-    
+
     @Test
     public void Delete() {
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setProductId(1l);
         orderProduct.setQuantity(1);
-        
+
         // FIXME
         CustomerPaymentMethod paymentMethod = new CustomerPaymentMethod();
-        
+
         Order order = new Order();
         order.setCustomerPaymentMethod(paymentMethod);
         order.setOrderProducts(ImmutableSet.of(orderProduct));

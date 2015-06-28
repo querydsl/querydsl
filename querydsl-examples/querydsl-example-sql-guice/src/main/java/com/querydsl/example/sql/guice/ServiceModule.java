@@ -32,14 +32,14 @@ public class ServiceModule extends AbstractModule {
             bind(String.class).annotatedWith(Names.named((String)entry.getKey()))
                     .toInstance((String) entry.getValue());
         }
-        
+
         bind(ConnectionContext.class).in(Scopes.SINGLETON);
         bind(TweetRepository.class).in(Scopes.SINGLETON);
         bind(UserRepository.class).in(Scopes.SINGLETON);
 
         TransactionInterceptor interceptor = new TransactionInterceptor();
         requestInjection(interceptor);
-        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Transactional.class), interceptor);        
+        bindInterceptor(Matchers.any(), Matchers.annotatedWith(Transactional.class), interceptor);
     }
 
     @Provides

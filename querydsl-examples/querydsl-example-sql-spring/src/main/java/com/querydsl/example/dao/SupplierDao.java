@@ -8,13 +8,13 @@ import java.util.List;
 public interface SupplierDao {
 
     Supplier findById(long id);
-    
+
     List<Supplier> findAll(Predicate... where);
-    
+
     Supplier save(Supplier s);
-    
+
     long count();
-    
+
     void delete(Supplier s);
-    
+
 }

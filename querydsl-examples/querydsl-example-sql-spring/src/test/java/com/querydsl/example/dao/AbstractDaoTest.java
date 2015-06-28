@@ -16,9 +16,9 @@ import javax.annotation.Resource;
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
 public abstract class AbstractDaoTest {
-    
+
     @Resource TestDataService testDataService;
-    
+
     @Before
     public void setUp() {
         testDataService.addTestData();
