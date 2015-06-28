@@ -613,10 +613,14 @@
     </profile>
 
     <profile>
-      <id>travis</id>
+      <id>examples</id>
       <modules>
         <module>querydsl-examples</module>
       </modules>
+    </profile>
+
+    <profile>
+      <id>travis</id>
       <build>
         <plugins>
           <plugin>
