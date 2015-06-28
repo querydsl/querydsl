@@ -117,7 +117,7 @@
         </executions>
         <configuration>
           <jdbcDriver>org.h2.Driver</jdbcDriver>
-          <jdbcUrl>jdbc:h2:h2</jdbcUrl>
+          <jdbcUrl>jdbc:h2:${project.basedir}/h2</jdbcUrl>
           <jdbcUser>sa</jdbcUser>
           <packageName>com.querydsl.example.sql.model</packageName>
           <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>

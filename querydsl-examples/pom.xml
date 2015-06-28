@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.querydsl</groupId>
+    <artifactId>querydsl-root</artifactId>
+    <version>4.0.2.BUILD-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.querydsl</groupId>
+  <artifactId>querydsl-examples</artifactId>
+  <name>Querydsl - Examples module</name>
+  <description>Querydsl examples</description>
+  <url>${project.homepage}</url>
+  <packaging>pom</packaging>
+
+  <scm>
+    <connection>${project.checkout}</connection>
+    <developerConnection>${project.checkout}</developerConnection>
+    <url>${project.githubpage}</url>
+  </scm>
+
+  <modules>
+    <module>querydsl-example-sql-spring</module>
+    <module>querydsl-example-sql-guice</module>
+    <module>querydsl-example-jpa-guice</module>
+  </modules>
+</project>
