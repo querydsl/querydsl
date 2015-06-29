@@ -1506,7 +1506,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    public void TupleProjection_As_SearchResults() {
+    public void TupleProjection_As_QueryResults() {
         QueryResults<Tuple> tuples = query().from(cat).limit(1)
                 .select(cat.name, cat).fetchResults();
         assertEquals(1, tuples.getResults().size());

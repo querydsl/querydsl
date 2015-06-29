@@ -92,7 +92,7 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void SearchResults() {
+    public void QueryResults() {
         QueryResults<String> results = query().from(product).orderBy(
                 product.name.asc()).limit(2).select(product.name).fetchResults();
         assertEquals(Arrays.asList("A0", "A1"), results.getResults());
