@@ -20,7 +20,7 @@ import javax.persistence.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
-import org.hibernate.jpa.HibernateQuery;
+import org.hibernate.ejb.HibernateQuery;
 import org.hibernate.transform.ResultTransformer;
 
 import com.mysema.commons.lang.CloseableIterator;
