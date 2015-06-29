@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={TestConfiguration.class})
+@ContextConfiguration(classes = {TestConfiguration.class})
 @TransactionConfiguration(defaultRollback = true)
 @Transactional
 public abstract class AbstractDaoTest {

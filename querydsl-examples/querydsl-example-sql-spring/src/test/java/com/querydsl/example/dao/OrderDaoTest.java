@@ -35,7 +35,7 @@ public class OrderDaoTest extends AbstractDaoTest {
     @Test
     public void Delete() {
         OrderProduct orderProduct = new OrderProduct();
-        orderProduct.setProductId(1l);
+        orderProduct.setProductId(1L);
         orderProduct.setQuantity(1);
 
         // FIXME

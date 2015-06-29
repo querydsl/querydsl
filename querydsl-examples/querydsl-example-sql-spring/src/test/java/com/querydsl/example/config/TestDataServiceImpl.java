@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 @Transactional
-public class TestDataServiceImpl implements TestDataService{
+public class TestDataServiceImpl implements TestDataService {
 
     @Resource CustomerDao customerDao;
     @Resource OrderDao orderDao;
@@ -36,15 +36,15 @@ public class TestDataServiceImpl implements TestDataService{
         product.setPrice(12.0);
         product.setSupplier(supplier);
 
-        ProductL10n l10n_en = new ProductL10n();
-        l10n_en.setLang("en");
-        l10n_en.setName("Screwdriver");
+        ProductL10n l10nEn = new ProductL10n();
+        l10nEn.setLang("en");
+        l10nEn.setName("Screwdriver");
 
-        ProductL10n l10n_de = new ProductL10n();
-        l10n_de.setLang("de");
-        l10n_de.setName("Schraubenzieher");
+        ProductL10n l10nDe = new ProductL10n();
+        l10nDe.setLang("de");
+        l10nDe.setName("Schraubenzieher");
 
-        product.setLocalizations(ImmutableSet.of(l10n_en, l10n_de));
+        product.setLocalizations(ImmutableSet.of(l10nEn, l10nDe));
         productDao.save(product);
 
         Product product2 = new Product();
@@ -52,11 +52,11 @@ public class TestDataServiceImpl implements TestDataService{
         product2.setPrice(5.0);
         product2.setSupplier(supplier2);
 
-        l10n_en = new ProductL10n();
-        l10n_en.setLang("en");
-        l10n_en.setName("Hammer");
+        l10nEn = new ProductL10n();
+        l10nEn.setLang("en");
+        l10nEn.setName("Hammer");
 
-        product2.setLocalizations(ImmutableSet.of(l10n_en));
+        product2.setLocalizations(ImmutableSet.of(l10nEn));
         productDao.save(product2);
 
         // persons
