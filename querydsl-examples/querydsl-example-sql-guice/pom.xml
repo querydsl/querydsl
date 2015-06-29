@@ -2,10 +2,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>com.querydsl</groupId>
+    <artifactId>querydsl-examples</artifactId>
+    <version>4.0.2.BUILD-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
+
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-example-sql-guice</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.1</version>
   <name>Querydsl example - SQL Guice</name>
 
   <properties>
@@ -133,19 +139,5 @@
 
     </plugins>
   </build>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>sonatype-oss-public</id>
-      <url>https://oss.sonatype.org/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-
 </project>
 

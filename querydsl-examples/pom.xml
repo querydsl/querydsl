@@ -15,15 +15,23 @@
   <url>${project.homepage}</url>
   <packaging>pom</packaging>
 
-  <scm>
-    <connection>${project.checkout}</connection>
-    <developerConnection>${project.checkout}</developerConnection>
-    <url>${project.githubpage}</url>
-  </scm>
+  <properties>
+    <checkstyle.skip>true</checkstyle.skip>
+  </properties>
 
   <modules>
     <module>querydsl-example-sql-spring</module>
     <module>querydsl-example-sql-guice</module>
     <module>querydsl-example-jpa-guice</module>
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-core</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+  </dependencies>
 </project>
