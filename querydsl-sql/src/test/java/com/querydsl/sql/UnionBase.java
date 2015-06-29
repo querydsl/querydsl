@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
@@ -37,11 +38,24 @@ public class UnionBase extends AbstractBaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
+    @ExcludeIn(FIREBIRD) // order is not properly supported
     public void Union() throws SQLException {
+        SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max().as("ID"));
+        SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min().as("ID"));
+        assertEquals(
+                ImmutableList.of(query().select(employee.id.min()).from(employee).fetchFirst(),
+                                 query().select(employee.id.max()).from(employee).fetchFirst()),
+                query().union(sq1, sq2).orderBy(employee.id.asc()).fetch());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union_List() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
-        List<Integer> list = query().union(sq1, sq2).list();
-        assertFalse(list.isEmpty());
+        assertEquals(
+                query().union(sq1, sq2).fetch(),
+                query().union(sq1, sq2).list());
     }
 
     @Test
@@ -49,7 +63,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union_All() {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
-        List<Integer> list = query().unionAll(sq1, sq2).list();
+        List<Integer> list = query().unionAll(sq1, sq2).fetch();
         assertFalse(list.isEmpty());
     }
 
@@ -58,7 +72,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union_Multiple_Columns() throws SQLException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.firstname, employee.lastname);
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.lastname, employee.firstname);
-        List<Tuple> list = query().union(sq1, sq2).list();
+        List<Tuple> list = query().union(sq1, sq2).fetch();
         assertFalse(list.isEmpty());
         for (Tuple row : list) {
             assertNotNull(row.get(0, Object.class));
@@ -101,7 +115,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union_Empty_Result() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).where(employee.firstname.eq("XXX")).select(employee.id);
         SubQueryExpression<Integer> sq2 = query().from(employee).where(employee.firstname.eq("YYY")).select(employee.id);
-        List<Integer> list = query().union(sq1, sq2).list();
+        List<Integer> list = query().union(sq1, sq2).fetch();
         assertTrue(list.isEmpty());
     }
 
@@ -110,7 +124,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union2() throws SQLException {
         List<Integer> list = query().union(
                 query().from(employee).select(employee.id.max()),
-                query().from(employee).select(employee.id.min())).list();
+                query().from(employee).select(employee.id.min())).fetch();
         assertFalse(list.isEmpty());
 
     }
@@ -120,7 +134,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union3() throws SQLException {
         SubQueryExpression<Tuple> sq3 = query().from(employee).select(new Expression[]{employee.id.max()});
         SubQueryExpression<Tuple> sq4 = query().from(employee).select(new Expression[]{employee.id.min()});
-        List<Tuple> list2 = query().union(sq3, sq4).list();
+        List<Tuple> list2 = query().union(sq3, sq4).fetch();
         assertFalse(list2.isEmpty());
     }
 
@@ -150,7 +164,7 @@ public class UnionBase extends AbstractBaseTest {
                 .select(employee.id, employee.firstname, superior.id.as("sup_id"), superior.firstname.as("sup_name"));
         SubQueryExpression<Tuple> sq2 = query().from(employee)
                 .select(employee.id, employee.firstname, null, null);
-        List<Tuple> results = query().union(sq1, sq2).orderBy(employee.id.asc()).list();
+        List<Tuple> results = query().union(sq1, sq2).orderBy(employee.id.asc()).fetch();
         for (Tuple result : results) {
             System.err.println(Arrays.asList(result));
         }
@@ -162,7 +176,7 @@ public class UnionBase extends AbstractBaseTest {
     public void Union_With_Order() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id);
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id);
-        List<Integer> list = query().union(sq1, sq2).orderBy(employee.id.asc()).list();
+        List<Integer> list = query().union(sq1, sq2).orderBy(employee.id.asc()).fetch();
         assertFalse(list.isEmpty());
     }
 

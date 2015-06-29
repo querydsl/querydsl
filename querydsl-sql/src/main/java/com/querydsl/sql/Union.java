@@ -16,6 +16,7 @@ package com.querydsl.sql;
 import java.util.List;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.Fetchable;
 import com.querydsl.core.types.*;
 
 /**
@@ -25,13 +26,14 @@ import com.querydsl.core.types.*;
  *
  * @param <RT> return type of projection
  */
-public interface Union<RT> extends SubQueryExpression<RT> {
+public interface Union<RT> extends SubQueryExpression<RT>, Fetchable<RT> {
 
     /**
      * Get the projection as a typed List
      *
-     * @return results
+     * @deprecated Use {@link Union#fetch()}
      */
+    @Deprecated
     List<RT> list();
 
     /**
