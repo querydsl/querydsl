@@ -48,6 +48,7 @@ public class H2Templates extends SQLTemplates {
     public H2Templates(char escape, boolean quote) {
         super("\"", escape, quote);
         setNativeMerge(true);
+        setMaxLimit(2 ^ 31);
         setLimitRequired(true);
         setCountDistinctMultipleColumns(true);
 

@@ -45,7 +45,7 @@ public class EntityExtensionsTest extends AbstractProcessorTest {
         assertTrue(qType.exists());
         long modified = qType.lastModified();
         Thread.sleep(1000);
-        System.out.println(Files.toString(qType, Charsets.UTF_8).contains("extension()"));
+        assertTrue(Files.toString(qType, Charsets.UTF_8).contains("extension()"));
 
         // EntityWithExtensions has not changed, QEntityWithExtensions is not overwritten
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite2");

@@ -155,7 +155,7 @@ public class UpdateBase extends AbstractBaseTest {
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(selectOne().from(employee).where(survey1.id.eq(employee.id)).exists());
-        update.execute();
+        assertEquals(1, update.execute());
     }
 
     @Test
@@ -170,7 +170,7 @@ public class UpdateBase extends AbstractBaseTest {
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(sq.exists());
-        update.execute();
+        assertEquals(0, update.execute());
     }
 
     @Test
@@ -180,7 +180,7 @@ public class UpdateBase extends AbstractBaseTest {
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(selectOne().from(employee).where(survey1.name.eq(employee.lastname)).exists());
-        update.execute();
+        assertEquals(0, update.execute());
     }
 
     @Test
@@ -190,17 +190,17 @@ public class UpdateBase extends AbstractBaseTest {
         SQLUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(query().from(employee).where(survey1.id.eq(employee.id)).notExists());
-        update.execute();
+        assertEquals(0, update.execute());
     }
 
     @Test
     @ExcludeIn(TERADATA)
     public void Update_With_TemplateExpression_In_Batch() {
-        update(survey)
+        assertEquals(1, update(survey)
             .set(survey.id, 3)
             .set(survey.name, Expressions.stringTemplate("'Hello'"))
             .addBatch()
-            .execute();
+            .execute());
     }
 
 }

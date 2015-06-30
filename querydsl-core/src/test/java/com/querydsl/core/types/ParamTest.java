@@ -15,6 +15,7 @@ package com.querydsl.core.types;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -38,7 +39,7 @@ public class ParamTest {
 
     @Test
     public void Anon() {
-        System.out.println(param4.getName());
+        assertNotNull(param4.getName());
     }
 
     @Test

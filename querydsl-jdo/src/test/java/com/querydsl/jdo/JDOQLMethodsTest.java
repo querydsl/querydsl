@@ -16,12 +16,10 @@ package com.querydsl.jdo;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Transaction;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;
@@ -80,24 +78,12 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        // Persistence of a Product and a Book.
-        PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx = pm.currentTransaction();
-        try {
-            tx.begin();
-            for (int i = 0; i < 10; i++) {
-                pm.makePersistent(new Product("C" + i, "F" + i, i * 200.00, 2));
-                pm.makePersistent(new Product("B" + i, "E" + i, i * 200.00, 4));
-                pm.makePersistent(new Product("A" + i, "D" + i, i * 200.00, 6));
-            }
-            tx.commit();
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            pm.close();
+        List<Object> entities = Lists.newArrayList();
+        for (int i = 0; i < 10; i++) {
+            entities.add(new Product("C" + i, "F" + i, i * 200.00, 2));
+            entities.add(new Product("B" + i, "E" + i, i * 200.00, 4));
+            entities.add(new Product("A" + i, "D" + i, i * 200.00, 6));
         }
-        System.out.println("");
-
+        doPersist(entities);
     }
 }

@@ -96,7 +96,7 @@ public class DeleteBase extends AbstractBaseTest {
         SQLDeleteClause delete = delete(survey1);
         delete.where(survey1.name.eq("XXX"),
                 query().from(employee).where(survey1.id.eq(employee.id)).exists());
-        delete.execute();
+        assertEquals(0, delete.execute());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class DeleteBase extends AbstractBaseTest {
 
         SQLDeleteClause delete = delete(survey1);
         delete.where(survey1.name.eq("XXX"), sq.exists());
-        delete.execute();
+        assertEquals(0, delete.execute());
     }
 
     @Test
@@ -120,15 +120,17 @@ public class DeleteBase extends AbstractBaseTest {
         SQLDeleteClause delete = delete(survey1);
         delete.where(survey1.name.eq("XXX"),
                 query().from(employee).where(survey1.name.eq(employee.lastname)).exists());
-        delete.execute();
+        assertEquals(0, delete.execute());
     }
 
 
     @Test
+    @ExcludeIn({CUBRID, SQLITE})
     public void Delete_With_TempateExpression_In_Batch() {
-        delete(survey)
-            .where(Expressions.booleanTemplate("true"))
-            .addBatch();
+        assertEquals(1, delete(survey)
+            .where(survey.name.eq(Expressions.stringTemplate("'Hello World'")))
+            .addBatch()
+            .execute());
     }
 
 

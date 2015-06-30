@@ -286,6 +286,8 @@ public class SQLTemplates extends Templates {
 
     private boolean supportsUnquotedReservedWordsAsIdentifier = false;
 
+    private int maxLimit = Integer.MAX_VALUE;
+
     @Deprecated
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         this(SQL_RESERVED_WORDS, quoteStr, escape, useQuotes);
@@ -946,7 +948,7 @@ public class SQLTemplates extends Templates {
         if (mod.getLimit() != null) {
             context.handle(limitTemplate, mod.getLimit());
         } else if (limitRequired) {
-            context.handle(limitTemplate, Integer.MAX_VALUE);
+            context.handle(limitTemplate, maxLimit);
         }
         if (mod.getOffset() != null) {
             context.handle(offsetTemplate, mod.getOffset());
@@ -1167,6 +1169,10 @@ public class SQLTemplates extends Templates {
 
     protected void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
         this.supportsUnquotedReservedWordsAsIdentifier = b;
+    }
+
+    protected void setMaxLimit(int i) {
+        this.maxLimit = i;
     }
 
 }

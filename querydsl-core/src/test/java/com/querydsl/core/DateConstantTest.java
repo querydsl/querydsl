@@ -31,7 +31,6 @@ public class DateConstantTest {
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.MONTH, 0);
         cal.set(Calendar.YEAR,  2000);
-        System.out.println(cal.getTime());
 
         DateExpression<Date> date = DateConstant.create(new Date(cal.getTimeInMillis()));
         assertEquals("1",   date.dayOfMonth().toString());

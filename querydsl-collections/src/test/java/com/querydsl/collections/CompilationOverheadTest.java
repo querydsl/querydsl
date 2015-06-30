@@ -40,7 +40,6 @@ public class CompilationOverheadTest {
         for (BooleanExpression condition : conditions) {
             query(condition);
         }
-        System.err.println();
 
         // 2nd
         for (BooleanExpression condition : conditions) {
