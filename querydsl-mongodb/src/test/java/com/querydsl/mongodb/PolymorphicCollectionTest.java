@@ -59,8 +59,6 @@ public class PolymorphicCollectionTest {
 
     @Test
     public void countFishFromNameAndBreedWithCast() {
-        // Fails because generated query is { "name" : "f1" , "food.breed" : "unknown"}
-        // instead of { "name" : "f1" , "breed" : "unknown"}
         assertEquals(where(QFood.food.name.eq("f1")
                 .and(QFood.food.as(QFish.class).breed.eq("unknown"))).fetchCount(), 1);
     }
@@ -68,11 +66,6 @@ public class PolymorphicCollectionTest {
     @Test
     public void countFishes() {
         assertEquals(where(isFish()).fetchCount(), 2);
-    }
-
-    @Test
-    public void countFishesWithInstanceOf() {
-        assertEquals(where(QFood.food.instanceOf(Fish.class)).fetchCount(), 2);
     }
 
     private Predicate isFish() {
