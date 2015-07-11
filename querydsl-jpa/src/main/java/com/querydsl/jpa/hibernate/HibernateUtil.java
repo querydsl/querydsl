@@ -67,6 +67,9 @@ public final class HibernateUtil {
     private static void setValue(Query query, String key, Object val) {
         if (val instanceof Collection<?>) {
             query.setParameterList(key, (Collection<?>) val);
+        } else if (val.getClass().equals(byte[].class)) {
+            // This is here because a byte[] is not considered primitive and is considered an array.
+            query.setParameter(key, val);
         } else if (val.getClass().isArray()) {
             query.setParameterList(key, (Object[]) val);
         } else if (TYPES.containsKey(val.getClass())) {
