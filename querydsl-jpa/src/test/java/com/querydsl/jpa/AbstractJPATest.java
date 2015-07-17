@@ -406,7 +406,7 @@ public abstract class AbstractJPATest {
     public void Case5() {
         assertEquals(ImmutableList.of(0, 1, 1, 1),
                 query().from(cat).orderBy(cat.id.asc())
-                       .select(cat.mate.when(savedCats.get(0)).then(0).otherwise(1)).fetch());
+                        .select(cat.mate.when(savedCats.get(0)).then(0).otherwise(1)).fetch());
     }
 
     private static <T> void assertInstancesOf(Class<T> clazz, Iterable<T> rows) {
@@ -657,8 +657,8 @@ public abstract class AbstractJPATest {
 
         assertEquals(Arrays.asList(),
                 query().from(entity, entity2)
-                .where(entity.iint.divide(entity2.iint).loe(2))
-                .select(entity).fetch());
+                        .where(entity.iint.divide(entity2.iint).loe(2))
+                        .select(entity).fetch());
     }
 
     @Test
@@ -837,6 +837,15 @@ public abstract class AbstractJPATest {
         assertEquals(1, ids.size());
         assertEquals(1, results.getResults().size());
         assertEquals(1, results.getTotal());
+    }
+
+    @Test
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-1902
+    public void GroupBy_Select() {
+        // select length(my_column) as column_size from my_table group by column_size
+        NumberPath<Integer> length = Expressions.numberPath(Integer.class, "len");
+        assertEquals(ImmutableList.of(4, 6, 7, 8),
+                query().select(cat.name.length().as(length)).from(cat).orderBy(length.asc()).groupBy(length).fetch());
     }
 
     @Test
