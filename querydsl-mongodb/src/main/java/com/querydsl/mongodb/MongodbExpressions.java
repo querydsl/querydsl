@@ -40,4 +40,16 @@ public final class MongodbExpressions {
         return Expressions.booleanOperation(MongodbOps.NEAR, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
     }
 
+    /**
+     * Finds the closest points relative to the given location on a sphere and orders the results with decreasing proximity
+     *
+     * @param expr location
+     * @param latVal latitude
+     * @param longVal longitude
+     * @return predicate
+     */
+    public static BooleanExpression nearSphere(Expression<Double[]> expr, double latVal, double longVal) {
+        return Expressions.booleanOperation(MongodbOps.NEAR_SPHERE, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
+    }
+
 }
