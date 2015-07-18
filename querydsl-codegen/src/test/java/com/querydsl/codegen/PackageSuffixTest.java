@@ -31,7 +31,7 @@ public class PackageSuffixTest {
 
     private final TypeMappings typeMappings = new JavaTypeMappings();
 
-    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet());
+    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet(), UncapitalizedCaseTransformer.class.getCanonicalName());
 
     private final StringWriter writer = new StringWriter();
 
