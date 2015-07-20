@@ -17,6 +17,7 @@
 
   <properties>
     <checkstyle.skip>true</checkstyle.skip>
+    <enforcer.skip>true</enforcer.skip>
   </properties>
 
   <modules>
