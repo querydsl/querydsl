@@ -21,6 +21,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
@@ -66,6 +67,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private boolean inUnion = false;
 
     private boolean inJoin = false;
+
+    private boolean inSubquery = false;
 
     private boolean useLiterals = false;
 
@@ -163,6 +166,25 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         handleTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
+    public final SQLSerializer handleSelect(final String sep, final List<? extends Expression<?>> expressions) {
+        if (inSubquery) {
+            Set<String> names = Sets.newHashSet();
+            List<Expression<?>> replacements = Lists.newArrayList();
+            for (Expression<?> expr : expressions) {
+                if (expr instanceof Path) {
+                    String name = ColumnMetadata.getName((Path<?>) expr);
+                    if (!names.add(name)) {
+                        expr = ExpressionUtils.as(expr, "col__" + name + replacements.size());
+                    }
+                }
+                replacements.add(expr);
+            }
+            return handle(sep, replacements);
+        } else {
+            return handle(sep, expressions);
+        }
+    }
+
     protected void handleJoinTarget(JoinExpression je) {
         // type specifier
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
@@ -191,6 +213,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
+        boolean oldInSubquery = inSubquery;
+        inSubquery = inSubquery || getLength() > 0;
         boolean oldSkipParent = skipParent;
         skipParent = false;
         final Expression<?> select = metadata.getProjection();
@@ -276,7 +300,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     append(templates.getFrom());
                     append("(");
                     append(templates.getSelectDistinct());
-                    handle(COMMA, columns);
+                    handleSelect(COMMA, columns);
                     suffix = ") internal";
                 } else if (columns.size() == 1) {
                     append(templates.getDistinctCountStart());
@@ -284,7 +308,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     append(templates.getDistinctCountEnd());
                 } else if (templates.isCountDistinctMultipleColumns()) {
                     append(templates.getDistinctCountStart());
-                    append("(").handle(COMMA, columns).append(")");
+                    append("(").handleSelect(COMMA, columns).append(")");
                     append(templates.getDistinctCountEnd());
                 } else {
                     // select count(*) from (select distinct ...)
@@ -292,7 +316,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     append(templates.getFrom());
                     append("(");
                     append(templates.getSelectDistinct());
-                    handle(COMMA, columns);
+                    handleSelect(COMMA, columns);
                     suffix = ") internal";
                 }
             }
@@ -307,7 +331,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 serialize(Position.AFTER_SELECT, flags);
             }
 
-            handle(COMMA, sqlSelect);
+            handleSelect(COMMA, sqlSelect);
         }
         if (hasFlags) {
             serialize(Position.AFTER_PROJECTION, flags);
@@ -379,6 +403,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         // reset stage
         stage = oldStage;
         skipParent = oldSkipParent;
+        inSubquery = oldInSubquery;
     }
 
     protected void handleOrderBy(List<OrderSpecifier<?>> orderBy) {
@@ -813,6 +838,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     public Void visit(SubQueryExpression<?> query, Void context) {
+        boolean oldInSubsuery = inSubquery;
+        inSubquery = true;
         if (inUnion && !templates.isUnionsWrapped()) {
             serialize(query.getMetadata(), false);
         } else {
@@ -820,6 +847,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             serialize(query.getMetadata(), false);
             append(")");
         }
+        inSubquery = oldInSubsuery;
         return null;
     }
 
