@@ -942,6 +942,10 @@ public final class Connections {
         dropTable(templates, "XML_TEST");
         stmt.execute("create table \"XML_TEST\"(\"COL\" XML)");
 
+        // numeric
+        dropTable(templates, "NUMERIC");
+        stmt.execute("create table \"NUMERIC\" (\"COL1\" NUMERIC, \"COL2\" NUMERIC(1,0), \"COL3\" NUMERIC(2,1))");
+
         postgresqlInited = true;
     }
 
