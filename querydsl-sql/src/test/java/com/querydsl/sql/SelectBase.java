@@ -1440,13 +1440,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, CUBRID, TERADATA})
+    @ExcludeIn({SQLITE, CUBRID, TERADATA})
     public void Select_For_Update() {
         assertEquals(1, query().from(survey).forUpdate().select(survey.id).fetch().size());
     }
 
     @Test
-    @ExcludeIn({SQLITE, SQLSERVER, CUBRID, TERADATA})
+    @ExcludeIn({SQLITE, CUBRID, TERADATA})
     public void Select_For_Update_UniqueResult() {
         query().from(survey).forUpdate().select(survey.id).fetchOne();
     }
