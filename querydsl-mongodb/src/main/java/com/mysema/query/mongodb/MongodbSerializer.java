@@ -330,7 +330,8 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         if (metadata.getParent() != null) {
             if (metadata.getPathType() == PathType.COLLECTION_ANY) {
                 return visit(metadata.getParent(), context);
-            } else if (metadata.getParent().getMetadata().getPathType() != PathType.VARIABLE) {
+            } else if (metadata.getParent().getMetadata().getPathType() != PathType.VARIABLE
+                    && metadata.getParent().getMetadata().getPathType() != PathType.DELEGATE) {
                 String rv = getKeyForPath(expr, metadata);
                 return visit(metadata.getParent(), context) + "." + rv;
             }
