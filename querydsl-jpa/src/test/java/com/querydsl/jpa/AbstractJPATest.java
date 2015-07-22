@@ -320,6 +320,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-8653
     public void Case_Date() {
         List<LocalDate> rv = query().from(cat).select(cat.name.when("Bob").then(new LocalDate())
                 .otherwise(new LocalDate().plusDays(1))).fetch();
@@ -327,6 +328,8 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-8653
+    @NoEclipseLink({MYSQL, POSTGRESQL})
     public void Case_Date2() {
         List<java.sql.Date> rv = query().from(cat).select(cat.name.when("Bob").then(new java.sql.Date(0))
                 .otherwise(new java.sql.Date(0))).fetch();
@@ -335,6 +338,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-8653
     public void Case_Time() {
         List<LocalTime> rv = query().from(cat).select(cat.name.when("Bob").then(new LocalTime())
                 .otherwise(new LocalTime().plusHours(1))).fetch();
@@ -342,6 +346,8 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-8653
+    @NoEclipseLink({MYSQL, POSTGRESQL})
     public void Case_Time2() {
         List<java.sql.Time> rv = query().from(cat).select(cat.name.when("Bob").then(new java.sql.Time(0))
                 .otherwise(new java.sql.Time(0))).fetch();
@@ -350,6 +356,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-8653
     public void Case_Timestamp() {
         List<DateTime> rv = query().from(cat).select(cat.name.when("Bob").then(new DateTime())
                 .otherwise(new DateTime().plusHours(1))).fetch();
@@ -357,6 +364,8 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoHibernate // https://hibernate.atlassian.net/browse/HHH-8653
+    @NoEclipseLink({MYSQL, POSTGRESQL})
     public void Case_Timestamp2() {
         List<java.sql.Timestamp> rv = query().from(cat).select(cat.name.when("Bob").then(new java.sql.Timestamp(0))
                 .otherwise(new java.sql.Timestamp(0))).fetch();
