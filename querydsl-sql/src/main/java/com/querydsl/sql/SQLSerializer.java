@@ -318,39 +318,39 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serializeSources(joins);
 
         // where
+        if (hasFlags) {
+            serialize(Position.BEFORE_FILTERS, flags);
+        }
         if (where != null) {
             stage = Stage.WHERE;
-            if (hasFlags) {
-                serialize(Position.BEFORE_FILTERS, flags);
-            }
             append(templates.getWhere()).handle(where);
-            if (hasFlags) {
-                serialize(Position.AFTER_FILTERS, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_FILTERS, flags);
         }
 
         // group by
+        if (hasFlags) {
+            serialize(Position.BEFORE_GROUP_BY, flags);
+        }
         if (!groupBy.isEmpty()) {
             stage = Stage.GROUP_BY;
-            if (hasFlags) {
-                serialize(Position.BEFORE_GROUP_BY, flags);
-            }
             append(templates.getGroupBy()).handle(COMMA, groupBy);
-            if (hasFlags) {
-                serialize(Position.AFTER_GROUP_BY, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_GROUP_BY, flags);
         }
 
         // having
+        if (hasFlags) {
+            serialize(Position.BEFORE_HAVING, flags);
+        }
         if (having != null) {
             stage = Stage.HAVING;
-            if (hasFlags) {
-                serialize(Position.BEFORE_HAVING, flags);
-            }
             append(templates.getHaving()).handle(having);
-            if (hasFlags) {
-                serialize(Position.AFTER_HAVING, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_HAVING, flags);
         }
 
         // order by
@@ -361,9 +361,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             stage = Stage.ORDER_BY;
             append(templates.getOrderBy());
             handleOrderBy(orderBy);
-            if (hasFlags) {
-                serialize(Position.AFTER_ORDER, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_ORDER, flags);
         }
 
         // modifiers

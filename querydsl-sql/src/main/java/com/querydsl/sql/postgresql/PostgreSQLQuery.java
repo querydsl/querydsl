@@ -16,6 +16,7 @@ package com.querydsl.sql.postgresql;
 import java.sql.Connection;
 
 import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
@@ -54,7 +55,8 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
      * @return the current object
      */
     public PostgreSQLQuery<T> forShare() {
-        return addFlag(SQLOps.FOR_SHARE_FLAG);
+        QueryFlag forShareFlag = configuration.getTemplates().getForShareFlag();
+        return addFlag(forShareFlag);
     }
 
     /**
@@ -64,7 +66,8 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
      * @return the current object
      */
     public PostgreSQLQuery<T> noWait() {
-        return addFlag(SQLOps.NO_WAIT_FLAG);
+        QueryFlag noWaitFlag = configuration.getTemplates().getNoWaitFlag();
+        return addFlag(noWaitFlag);
     }
 
     /**
