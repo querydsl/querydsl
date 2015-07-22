@@ -29,6 +29,8 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.group.Group;
@@ -1060,6 +1062,47 @@ public abstract class AbstractJPATest {
         QNumeric numeric = QNumeric.numeric;
         BigDecimal singleResult = query().from(numeric).select(numeric.value).fetchFirst();
         assertEquals(26.9, singleResult.doubleValue(), 0.001);
+    }
+
+    @Test
+    @ExcludeIn(POSTGRESQL)
+    public void Num_Cast_From_Boolean() {
+        Map<Class<?>, Object> values = Maps.newHashMap();
+        put(values, Integer.class, 0);
+        put(values, Long.class, 0L);
+        put(values, Float.class, 0.0f);
+        put(values, Double.class, 0.0, MYSQL);
+        put(values, BigInteger.class, BigInteger.ZERO);
+        put(values, BigDecimal.class, BigDecimal.ZERO);
+
+        for (Map.Entry<Class<?>, Object> entry : values.entrySet()) {
+            Comparable result = (Comparable) query().from(cat).limit(1)
+                    .select(cat.alive.castToNum((Class) entry.getKey())).fetchFirst();
+            assertEquals(entry.getKey().getName(), 0, result.compareTo(entry.getValue()));
+        }
+    }
+
+    @Test
+    public void Num_Cast_From_Integer() {
+        Map<Class<?>, Object> values = Maps.newHashMap();
+        put(values, Integer.class, 0);
+        put(values, Long.class, 0L);
+        put(values, Float.class, 0.0f);
+        put(values, Double.class, 0.0, MYSQL);
+        put(values, BigInteger.class, BigInteger.ZERO);
+        put(values, BigDecimal.class, BigDecimal.ZERO);
+
+        for (Map.Entry<Class<?>, Object> entry : values.entrySet()) {
+            Comparable result = (Comparable) query().from(cat).limit(1)
+                    .select(cat.breed.castToNum((Class) entry.getKey())).fetchFirst();
+            assertEquals(entry.getKey().getName(), 0, result.compareTo(entry.getValue()));
+        }
+    }
+
+    private <K, V> void put(Map<K, V> map, K key, V value, Target... targets) {
+        if (targets.length == 0 || !Sets.newHashSet(targets).contains(getTarget())) {
+            map.put(key, value);
+        }
     }
 
     @Test
