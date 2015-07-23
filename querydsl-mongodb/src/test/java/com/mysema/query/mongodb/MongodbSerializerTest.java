@@ -235,6 +235,18 @@ public class MongodbSerializerTest {
     }
 
     @Test
+    public void Near() {
+        assertQuery(MongodbExpressions.near(new Point("point"), 1.0, 2.0),
+                dbo("point", dbo("$near", dblist(1.0, 2.0))));
+    }
+
+    @Test
+    public void Near_Sphere() {
+        assertQuery(MongodbExpressions.nearSphere(new Point("point"), 1.0, 2.0),
+                dbo("point", dbo("$nearSphere", dblist(1.0, 2.0))));
+    }
+
+    @Test
     public void Not() {
         assertQuery(title.eq("A").not(), dbo("title", dbo("$ne","A")));
 

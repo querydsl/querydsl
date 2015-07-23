@@ -28,6 +28,8 @@ public final class MongodbOps {
 
     public static final Operator<Boolean> ELEM_MATCH = new OperatorImpl<Boolean>(NS, "ELEM_MATCH");
 
+    public static final Operator<Boolean> NEAR_SPHERE = new OperatorImpl<Boolean>(NS, "NEAR_SPHERE");
+
     private MongodbOps() {}
 
 }
