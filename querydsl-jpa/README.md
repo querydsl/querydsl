@@ -47,7 +47,7 @@ And now, configure the Maven APT plugin :
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
             <version>${querydsl.version}</version>
-          </dependency
+          </dependency>
         </dependencies>
       </plugin>
       ...
