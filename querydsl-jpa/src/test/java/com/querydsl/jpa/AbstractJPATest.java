@@ -554,12 +554,16 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoEclipseLink({DERBY, HSQLDB})
+    @NoHibernate({DERBY, POSTGRESQL})
     public void Date_YearWeek() {
         int value = query().from(cat).select(cat.birthdate.yearWeek()).fetchFirst();
         assertTrue(value == 200006 || value == 200005);
     }
 
     @Test
+    @NoEclipseLink({DERBY, HSQLDB})
+    @NoHibernate({DERBY, POSTGRESQL})
     public void Date_Week() {
         int value = query().from(cat).select(cat.birthdate.week()).fetchFirst();
         assertTrue(value == 6 || value == 5);
