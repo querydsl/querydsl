@@ -48,6 +48,11 @@ public class CodegenModule  extends AbstractModule {
      */
     public static final String IMPORTS = "imports";
 
+    /**
+     * key for the variable name function class
+     */
+    public static final String VARIABLE_NAME_FUNCTION_CLASS = "variableNameFunction";
+
     @Override
     protected void configure() {
         bind(TypeMappings.class, JavaTypeMappings.class);
@@ -63,6 +68,7 @@ public class CodegenModule  extends AbstractModule {
         bind(PACKAGE_SUFFIX, "");
         bind(KEYWORDS, Collections.<String>emptySet());
         bind(IMPORTS, Collections.<String>emptySet());
+        bind(VARIABLE_NAME_FUNCTION_CLASS, DefaultVariableNameFunction.INSTANCE);
     }
 
 }

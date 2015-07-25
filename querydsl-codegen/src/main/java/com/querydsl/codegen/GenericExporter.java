@@ -21,6 +21,7 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -204,7 +205,7 @@ public class GenericExporter {
     private void innerExport() {
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
-        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
+        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation), codegenModule.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
 
         // copy annotations helpers to typeFactory
         for (AnnotationHelper helper : annotationHelpers) {
