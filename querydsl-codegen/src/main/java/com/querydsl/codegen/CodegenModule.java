@@ -48,6 +48,11 @@ public class CodegenModule  extends AbstractModule {
      */
     public static final String IMPORTS = "imports";
 
+    /**
+     * key for the keywords set
+     */
+    public static final String QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS = "variableNameFunctionClass";
+
     @Override
     protected void configure() {
         bind(TypeMappings.class, JavaTypeMappings.class);
@@ -56,6 +61,7 @@ public class CodegenModule  extends AbstractModule {
         bind(EmbeddableSerializer.class);
         bind(ProjectionSerializer.class);
         bind(SupertypeSerializer.class);
+        bind(String.class);
 
         // configuration for QueryTypeFactory
         bind(PREFIX, "Q");
@@ -63,6 +69,7 @@ public class CodegenModule  extends AbstractModule {
         bind(PACKAGE_SUFFIX, "");
         bind(KEYWORDS, Collections.<String>emptySet());
         bind(IMPORTS, Collections.<String>emptySet());
+        bind(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS, DefaultVariableNameFunction.class.getCanonicalName());
     }
 
 }

@@ -52,16 +52,27 @@ public class EntitySerializer implements Serializer {
 
     protected final Collection<String> keywords;
 
+    private Function<EntityType, String> variableNameFunction;
+
     /**
      * Create a new {@code EntitySerializer} instance
      *
      * @param mappings type mappings to be used
      * @param keywords keywords to be used
+     * @param variableNameFunctionClass variable name generation strategy class
      */
+    @SuppressWarnings("unchecked")
     @Inject
-    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords) {
+    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords, String variableNameFunctionClass) {
         this.typeMappings = mappings;
         this.keywords = keywords;
+        try {
+            this.variableNameFunction = (Function<EntityType, String>) Class.forName(variableNameFunctionClass).newInstance();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+           this.variableNameFunction = new DefaultVariableNameFunction();
+        }
     }
 
     protected void constructors(EntityType model, SerializerConfig config,
@@ -315,7 +326,7 @@ public class EntitySerializer implements Serializer {
     }
 
     protected void introDefaultInstance(CodeWriter writer, EntityType model, String defaultName) throws IOException {
-        String simpleName = !defaultName.isEmpty() ? defaultName : model.getUncapSimpleName();
+        String simpleName = !defaultName.isEmpty() ? defaultName : variableNameFunction.apply(model);
         Type queryType = typeMappings.getPathType(model, model, true);
         String alias = simpleName;
         if (keywords.contains(simpleName.toUpperCase())) {

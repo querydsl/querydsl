@@ -43,10 +43,11 @@ public final class EmbeddableSerializer extends EntitySerializer {
      *
      * @param typeMappings type mappings to be used
      * @param keywords keywords to be used
+     * @param variableNameFunctionClass variable name generation strategy class
      */
     @Inject
-    public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
-        super(typeMappings, keywords);
+    public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords, String variableNameFunctionClass) {
+        super(typeMappings, keywords, variableNameFunctionClass);
     }
 
     @Override
