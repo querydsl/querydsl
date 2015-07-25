@@ -556,6 +556,13 @@
     </profile>
 
     <profile>
+      <id>examples</id>
+      <modules>
+        <module>querydsl-examples</module>
+      </modules>
+    </profile>
+
+    <profile>
       <id>travis</id>
       <build>
         <plugins>
