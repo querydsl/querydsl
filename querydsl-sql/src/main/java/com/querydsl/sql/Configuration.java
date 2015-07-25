@@ -202,7 +202,7 @@ public final class Configuration {
      *
      * @param key schema and table
      * @param column column
-     * @return overriden column
+     * @return overridden column
      */
     public String getColumnOverride(SchemaAndTable key, String column) {
         return nameMapping.getColumnOverride(key, column);

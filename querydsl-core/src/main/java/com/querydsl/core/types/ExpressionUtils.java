@@ -556,7 +556,7 @@ public final class ExpressionUtils {
     }
 
     /**
-     * Creat a list expression for the given arguments
+     * Create a list expression for the given arguments
      *
      * @param exprs list elements
      * @return list expression
@@ -661,7 +661,7 @@ public final class ExpressionUtils {
     /**
      * Create a {@code left not in right} expression
      *
-     * @param <D> type of epressions
+     * @param <D> type of expressions
      * @param left lhs of expression
      * @param right rhs of expression
      * @return left not in right
@@ -673,7 +673,7 @@ public final class ExpressionUtils {
     /**
      * Create a {@code left not in right} expression
      *
-     * @param <D> type of epressions
+     * @param <D> type of expressions
      * @param left lhs of expression
      * @param right rhs of expression
      * @return left not in right
@@ -685,7 +685,7 @@ public final class ExpressionUtils {
     /**
      * Create a {@code left not in right} expression
      *
-     * @param <D> tyoe of expressions
+     * @param <D> type of expressions
      * @param left lhs of expression
      * @param right rhs of expression
      * @return left not in right

@@ -59,7 +59,7 @@ public enum MethodType {
      */
     TO_STRING("toString",String.class, Object.class),
     /**
-     * Scala getter inovication
+     * Scala getter invocation
      */
     SCALA_GETTER(".+", Object.class, Object.class),
     /**

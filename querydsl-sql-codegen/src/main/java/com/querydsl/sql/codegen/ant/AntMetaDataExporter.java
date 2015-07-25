@@ -126,7 +126,7 @@ public class AntMetaDataExporter extends Task {
     private boolean exportBeans;
 
     /**
-     * additional bean inerfaces
+     * additional bean interfaces
      */
     private String[] beanInterfaces;
 

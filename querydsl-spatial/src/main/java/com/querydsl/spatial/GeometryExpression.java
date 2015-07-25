@@ -274,7 +274,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
     /**
      * Returns 1 (TRUE) if this geometric object is “spatially within” anotherGeometry.
      *
-     * @param geometry other goemetry
+     * @param geometry other geometry
      * @return true, if within
      */
     public BooleanExpression within(Geometry geometry) {
@@ -496,7 +496,7 @@ public abstract class GeometryExpression<T extends Geometry> extends SimpleExpre
      * Point set symmetric difference of this geometric object with anotherGeometry.
      *
      * @param geometry other geometry
-     * @return symmetric difference between this and the other goemetry
+     * @return symmetric difference between this and the other geometry
      */
     public GeometryExpression<Geometry> symDifference(Geometry geometry) {
         return symDifference(ConstantImpl.create(geometry));

@@ -262,7 +262,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     }
 
     /**
-     * Create a new Simpe path
+     * Create a new Simple path
      *
      * @param <A>
      * @param property property name

@@ -74,7 +74,7 @@ public final class JPAExpressions {
     }
 
     /**
-     * Create a new detached JPQLQuery instacne with the projection zero
+     * Create a new detached JPQLQuery instance with the projection zero
      *
      * @return select(0)
      */
@@ -83,7 +83,7 @@ public final class JPAExpressions {
     }
 
     /**
-     * Create a new detached JPQLQuery instacne with the projection one
+     * Create a new detached JPQLQuery instance with the projection one
      *
      * @return select(1)
      */

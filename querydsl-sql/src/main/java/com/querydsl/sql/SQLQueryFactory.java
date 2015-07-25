@@ -70,7 +70,7 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
     /**
      * Create a new SQLQuery instance with the given projection
      *
-     * @param expr projetion
+     * @param expr projection
      * @param <T>
      * @return select(expr)
      */
@@ -130,7 +130,7 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
     /**
      * Create a new detached SQLQuery instance with the given projection and source
      *
-     * @param expr query source andd projection
+     * @param expr query source and projection
      * @param <T>
      * @return select(expr).from(expr)
      */

@@ -147,7 +147,7 @@ public interface QueryMetadata extends Serializable {
     /**
      * Get the parameter bindings
      *
-     * @return parameteter bindings
+     * @return parameter bindings
      */
     Map<ParamExpression<?>,Object> getParams();
 
@@ -187,7 +187,7 @@ public interface QueryMetadata extends Serializable {
     void setDistinct(boolean distinct);
 
     /**
-     * Set the maxmium amount of rows
+     * Set the maximum number of rows
      *
      * @param limit limit
      */
@@ -201,7 +201,7 @@ public interface QueryMetadata extends Serializable {
     void setModifiers(QueryModifiers restriction);
 
     /**
-     * Set the amount of skipped rows
+     * Set the number of skipped rows
      *
      * @param offset offset
      */

@@ -72,7 +72,7 @@ public class JPAQuery<T> extends AbstractJPAQuery<T, JPAQuery<T>> {
      * Creates a new query
      *
      * @param em entity manager
-     * @param templates temoplates
+     * @param templates templates
      * @param metadata query metadata
      */
     public JPAQuery(EntityManager em, JPQLTemplates templates, QueryMetadata metadata) {

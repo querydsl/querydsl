@@ -104,7 +104,7 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
     /**
      * Create a {@code this.size()} expression
      *
-     * <p>Gets the amounnt of elements in this collection</p>
+     * <p>Gets the number of elements in this collection</p>
      *
      * @return this.size()
      */

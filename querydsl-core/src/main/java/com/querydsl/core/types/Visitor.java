@@ -24,7 +24,7 @@ package com.querydsl.core.types;
 public interface Visitor<R, C> {
 
     /**
-     * Visit a Contant instance with the given context
+     * Visit a Constant instance with the given context
      *
      * @param expr expression to visit
      * @param context context of the visit or null, if not used
@@ -42,7 +42,7 @@ public interface Visitor<R, C> {
     R visit(FactoryExpression<?> expr, C context);
 
     /**
-     * Vist a Operation instance with the given context
+     * Visit an Operation instance with the given context
      *
      * @param expr expression to visit
      * @param context context of the visit or null, if not used

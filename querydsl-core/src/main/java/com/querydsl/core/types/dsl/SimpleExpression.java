@@ -161,7 +161,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
-     * Create a {@code this == all right} expresion
+     * Create a {@code this == all right} expression
      *
      * @param right
      * @return this == all right

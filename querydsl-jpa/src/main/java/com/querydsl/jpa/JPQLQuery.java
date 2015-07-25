@@ -233,7 +233,7 @@ public interface JPQLQuery<T> extends FetchableQuery<T, JPQLQuery<T>>, Query<JPQ
      * Use fetchJoin() to add the fetchJoin parameter to this join.
      *
      * @param <P>
-     * @param target targt
+     * @param target target
      * @return the current object
      */
     <P> JPQLQuery<T> rightJoin(EntityPath<P> target);
