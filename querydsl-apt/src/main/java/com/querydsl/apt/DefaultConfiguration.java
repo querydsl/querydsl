@@ -177,6 +177,10 @@ public class DefaultConfiguration implements Configuration {
             }
         }
 
+        if (options.containsKey(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)) {
+            module.bind(CodegenModule.QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS, options.get(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS));
+        }
+
         try {
             // register additional mappings if querydsl-spatial is on the classpath
             Class.forName("com.querydsl.spatial.GeometryExpression");
