@@ -13,8 +13,8 @@
  */
 package com.mysema.query.codegen;
 
-import com.google.common.collect.ImmutableList;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
@@ -23,19 +23,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Primitives;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.TypeExtends;
-import com.mysema.codegen.model.TypeSuper;
-import com.mysema.codegen.model.Types;
+import com.mysema.codegen.model.*;
 import com.mysema.util.ReflectionUtils;
-import java.lang.reflect.AnnotatedElement;
 
 /**
  * TypeFactory is a factory class for {@link Type} instances
@@ -57,12 +52,19 @@ public final class TypeFactory {
 
     private boolean unknownAsEntity = false;
 
+    private Function<EntityType, String> variableNameFunction;
+
     public TypeFactory() {
-        this(Lists.<Class<? extends Annotation>>newArrayList());
+        this(Lists.<Class<? extends Annotation>>newArrayList(), DefaultVariableNameFunction.INSTANCE);
     }
 
     public TypeFactory(List<Class<? extends Annotation>> entityAnnotations) {
+        this(entityAnnotations, DefaultVariableNameFunction.INSTANCE);
+    }
+
+    public TypeFactory(List<Class<? extends Annotation>> entityAnnotations, Function<EntityType, String> variableNameFunction) {
         this.entityAnnotations = entityAnnotations;
+        this.variableNameFunction = variableNameFunction;
     }
 
     public EntityType getEntityType(Class<?> cl) {
@@ -110,7 +112,7 @@ public final class TypeFactory {
         if (cache.containsKey(key)) {
             Type value = cache.get(key);
             if (entity && !(value instanceof EntityType)) {
-                value = new EntityType(value);
+                value = new EntityType(value, variableNameFunction);
                 cache.put(key, value);
             }
             return value;
@@ -167,7 +169,7 @@ public final class TypeFactory {
         }
 
         if (entity && !(value instanceof EntityType)) {
-            value = new EntityType(value);
+            value = new EntityType(value, variableNameFunction);
         }
         return value;
     }

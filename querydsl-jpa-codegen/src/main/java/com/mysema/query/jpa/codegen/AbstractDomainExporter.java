@@ -13,9 +13,6 @@
  */
 package com.mysema.query.jpa.codegen;
 
-import javax.annotation.Nullable;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -24,6 +21,14 @@ import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.*;
 
+import javax.annotation.Nullable;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -38,8 +43,6 @@ import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.*;
 import com.mysema.util.Annotations;
 import com.mysema.util.ReflectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * AbstractDomainExporter is a common supertype for DomainExporters
@@ -83,6 +86,8 @@ public abstract class AbstractDomainExporter {
 
     private final Set<File> generatedFiles = new HashSet<File>();
 
+    private final Function<EntityType, String> variableNameFunction;
+
     /**
      * @param namePrefix
      * @param nameSuffix
@@ -90,6 +95,7 @@ public abstract class AbstractDomainExporter {
      * @param serializerConfig
      * @param charset
      */
+    @SuppressWarnings("unchecked")
     public AbstractDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             SerializerConfig serializerConfig, Charset charset) {
         this.targetFolder = targetFolder;
@@ -104,6 +110,7 @@ public abstract class AbstractDomainExporter {
         this.embeddableSerializer = module.get(EmbeddableSerializer.class);
         this.entitySerializer = module.get(EntitySerializer.class);
         this.supertypeSerializer = module.get(SupertypeSerializer.class);
+        this.variableNameFunction = module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS);
     }
 
     /**
@@ -202,7 +209,7 @@ public abstract class AbstractDomainExporter {
         if (allTypes.containsKey(key)) {
             return allTypes.get(key);
         } else {
-            EntityType entityType = new EntityType(type);
+            EntityType entityType = new EntityType(type, variableNameFunction);
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
             Class<?> superClass = key.getSuperclass();
             if (entityType.getSuperType() == null && superClass != null && !superClass.equals(Object.class)) {

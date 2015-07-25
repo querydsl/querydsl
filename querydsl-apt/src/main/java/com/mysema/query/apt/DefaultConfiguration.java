@@ -24,6 +24,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 
+import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.mysema.codegen.model.ClassType;
@@ -73,6 +74,8 @@ public class DefaultConfiguration implements Configuration {
     private boolean useFields = true, useGetters = true;
 
     private boolean strictMode;
+
+    private Function<EntityType, String> variableNameFunction;
 
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
@@ -184,6 +187,21 @@ public class DefaultConfiguration implements Configuration {
         if (options.containsKey(QUERYDSL_USE_GETTERS)) {
             useGetters = Boolean.valueOf(options.get(QUERYDSL_USE_GETTERS));
         }
+
+        if (options.containsKey(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)) {
+            try {
+                @SuppressWarnings("unchecked")
+                Class<Function<EntityType, String>> variableNameFunctionClass = (Class<Function<EntityType, String>>) Class.forName(options.get(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS));
+                variableNameFunction = variableNameFunctionClass.newInstance();
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+               variableNameFunction = DefaultVariableNameFunction.INSTANCE;
+            }
+        } else {
+            variableNameFunction = DefaultVariableNameFunction.INSTANCE;
+        }
+        module.bind(CodegenModule.VARIABLE_NAME_FUNCTION_CLASS, variableNameFunction);
 
         try {
             // register additional mappings, if querydsl-spatial is on the classpath
@@ -473,6 +491,11 @@ public class DefaultConfiguration implements Configuration {
 
     public void setUnknownAsEmbedded(boolean unknownAsEmbedded) {
         this.unknownAsEmbedded = unknownAsEmbedded;
+    }
+
+    @Override
+    public Function<EntityType, String> getVariableNameFunction() {
+        return variableNameFunction;
     }
 
 }
