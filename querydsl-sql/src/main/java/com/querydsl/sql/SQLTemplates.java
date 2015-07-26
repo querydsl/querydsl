@@ -466,8 +466,10 @@ public class SQLTemplates extends Templates {
         addTypeNameToCode("nvarchar", Types.NVARCHAR);
         addTypeNameToCode("rowid", Types.ROWID);
         addTypeNameToCode("timestamp", Types.TIMESTAMP);
+        addTypeNameToCode("timestamp", TIMESTAMP_WITH_TIMEZONE);
         addTypeNameToCode("bit", Types.BIT);
         addTypeNameToCode("time", Types.TIME);
+        addTypeNameToCode("time", TIME_WITH_TIMEZONE);
         addTypeNameToCode("tinyint", Types.TINYINT);
         addTypeNameToCode("other", Types.OTHER);
         addTypeNameToCode("bigint", Types.BIGINT);
