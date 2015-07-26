@@ -15,5 +15,5 @@ before_script:
   - ./travis/cubrid.sh
   - ./travis/firebird.sh
 script:
-  - sh -c 'mvn -B test -Pall,travis'
+  - sh -c 'mvn -B test -Pall,travis,examples'
 
