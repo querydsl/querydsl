@@ -51,7 +51,7 @@ public final class GroupBy {
     /**
      * Create a new GroupByBuilder for the given key expressions
      *
-     * @param keys keys for aggreation
+     * @param keys keys for aggregation
      * @return builder for further specification
      */
     public static GroupByBuilder<List<?>> groupBy(Expression<?>... keys) {

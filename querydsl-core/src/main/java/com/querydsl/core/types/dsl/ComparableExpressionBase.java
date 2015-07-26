@@ -67,7 +67,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     /**
      * Create a {@code coalesce(this, args...)} expression
      *
-     * @param args additonal arguments
+     * @param args additional arguments
      * @return coalesce
      */
     public final Coalesce<T> coalesce(T... args) {

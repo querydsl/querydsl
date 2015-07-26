@@ -182,7 +182,7 @@ public final class CaseForEqBuilder<D> {
      * Intermediate step
      *
      * @param <T> Result type
-     * @param <Q> Parent expreession type
+     * @param <Q> Parent expression type
      */
     public class CaseWhen<T, Q extends Expression<T>> {
 

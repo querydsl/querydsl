@@ -57,7 +57,7 @@ public abstract class LineStringExpression<T extends LineString> extends CurveEx
     /**
      * Returns the specified Point N in this LineString.
      *
-     * @param idx one basedindex of element
+     * @param idx one-based index of element
      * @return matched element
      */
     public PointExpression<Point> pointN(int idx) {

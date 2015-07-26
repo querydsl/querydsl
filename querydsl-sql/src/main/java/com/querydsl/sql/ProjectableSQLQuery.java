@@ -316,7 +316,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      *
      * @param <RT>
      * @param alias alias for union
-     * @param sq subqueryies
+     * @param sq subqueries
      * @return the current object
      */
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {

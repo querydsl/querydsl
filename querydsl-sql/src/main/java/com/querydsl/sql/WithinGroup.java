@@ -26,7 +26,7 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.SimpleOperation;
 
 /**
- * {@code WithinGroup} is a builder for {@code WIHIN GROUP} constructs
+ * {@code WithinGroup} is a builder for {@code WITHIN GROUP} constructs
  *
  * @param <T> expression type
  *

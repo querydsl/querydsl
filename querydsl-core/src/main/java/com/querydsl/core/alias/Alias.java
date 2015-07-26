@@ -36,7 +36,7 @@ import com.querydsl.core.types.dsl.*;
  * <p>Example:</p>
  *
  * <pre>{@code
- * Empoyee e = alias(Employee.class, "e");
+ * Employee e = alias(Employee.class, "e");
  * for (String name : query.from($(e),employees)
  *     .where($(e.getDepartment().getId()).eq(1001))
  *     .list($(e.getName()))) {
@@ -422,7 +422,7 @@ public final class Alias {
     }
 
     /**
-     * Create a new varibale path
+     * Create a new variable path
      *
      * @param arg alias
      * @param <D>

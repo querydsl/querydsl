@@ -63,16 +63,16 @@ public final class Conversions {
         return false;
     }
 
-    private static <RT> FactoryExpression<RT> createEntityPathConversions(FactoryExpression<RT> factorye) {
+    private static <RT> FactoryExpression<RT> createEntityPathConversions(FactoryExpression<RT> factoryExpr) {
         List<Expression<?>> conversions = Lists.newArrayList();
-        for (Expression<?> e : factorye.getArgs()) {
+        for (Expression<?> e : factoryExpr.getArgs()) {
             if (isEntityPathAndNeedsWrapping(e)) {
                 conversions.add(ExpressionUtils.operation(e.getType(), SQLOps.ALL, e));
             } else {
                 conversions.add(e);
             }
         }
-        return FactoryExpressionUtils.wrap(factorye, conversions);
+        return FactoryExpressionUtils.wrap(factoryExpr, conversions);
     }
 
     public static <RT> Expression<RT> convertForNativeQuery(Expression<RT> expr) {

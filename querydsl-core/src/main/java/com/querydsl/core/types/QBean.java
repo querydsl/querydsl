@@ -40,7 +40,7 @@ import com.querydsl.core.group.GroupExpression;
  * List<EmployeeInfo> result = query.from(employee)
  *      .where(employee.valid.eq(true))
  *      .select(Projections.bean(EmployeeInfo.class, employee.firstName, employee.lastName))
- *      .fech();
+ *      .fetch();
  * }
  * </pre>
  *

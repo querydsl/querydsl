@@ -102,7 +102,7 @@ class AliasFactory {
      *
      * @param <A>
      * @param cl type for alias
-     * @param var variable name for the underyling expression
+     * @param var variable name for the underlying expression
      * @return alias instance
      */
     @SuppressWarnings("unchecked")
