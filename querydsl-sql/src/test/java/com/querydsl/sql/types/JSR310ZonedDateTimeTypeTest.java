@@ -32,6 +32,19 @@ public class JSR310ZonedDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<
     }
 
     @Test
+    public void JodaSet() throws SQLException {
+        ZonedDateTime value = ZonedDateTime.now();
+        Timestamp ts = new Timestamp(value.toInstant().toEpochMilli());
+
+        PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
+        stmt.setTimestamp(1, ts, UTC);
+        EasyMock.replay(stmt);
+
+        new DateTimeType().setValue(stmt, 1, toJoda(value));
+        EasyMock.verify(stmt);
+    }
+
+    @Test
     public void Get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
         EasyMock.expect(resultSet.getTimestamp(1, UTC)).andReturn(new Timestamp(UTC.getTimeInMillis()));

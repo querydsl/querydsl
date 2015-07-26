@@ -32,6 +32,19 @@ public class JSR310LocalDateTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     }
 
     @Test
+    public void JodaSet() throws SQLException {
+        LocalDate value = LocalDate.now();
+        Date date = Date.valueOf(value);
+
+        PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
+        stmt.setDate(1, date);
+        EasyMock.replay(stmt);
+
+        new LocalDateType().setValue(stmt, 1, toJoda(value));
+        EasyMock.verify(stmt);
+    }
+
+    @Test
     public void Get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
         EasyMock.expect(resultSet.getDate(1)).andReturn(new Date(UTC.getTimeInMillis()));

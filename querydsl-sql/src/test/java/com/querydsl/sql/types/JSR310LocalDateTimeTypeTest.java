@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -22,13 +21,26 @@ public class JSR310LocalDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<
     @Test
     public void Set() throws SQLException {
         LocalDateTime value = LocalDateTime.now();
-        Timestamp ts = new Timestamp(value.toInstant(ZoneOffset.UTC).toEpochMilli());
+        Timestamp ts = Timestamp.valueOf(value);
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         stmt.setTimestamp(1, ts, UTC);
         EasyMock.replay(stmt);
 
         type.setValue(stmt, 1, value);
+        EasyMock.verify(stmt);
+    }
+
+    @Test
+    public void JodaSet() throws SQLException {
+        LocalDateTime value = LocalDateTime.now();
+        Timestamp ts = Timestamp.valueOf(value);
+
+        PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
+        stmt.setTimestamp(1, ts, UTC);
+        EasyMock.replay(stmt);
+
+        new LocalDateTimeType().setValue(stmt, 1, toJoda(value));
         EasyMock.verify(stmt);
     }
 
