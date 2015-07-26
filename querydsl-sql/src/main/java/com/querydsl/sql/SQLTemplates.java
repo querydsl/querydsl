@@ -47,6 +47,10 @@ public class SQLTemplates extends Templates {
     protected static final Expression<?> NO_WAIT = ExpressionUtils.operation(
             Object.class, SQLOps.NO_WAIT, ImmutableList.<Expression<?>>of());
 
+    protected static final int TIME_WITH_TIMEZONE = 2013;
+
+    protected static final int TIMESTAMP_WITH_TIMEZONE = 2014;
+
     protected static final Set<String> SQL_RESERVED_WORDS
             = ImmutableSet.of(
                     "ABS", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE",
@@ -486,10 +490,12 @@ public class SQLTemplates extends Templates {
     public String serialize(String literal, int jdbcType) {
         switch (jdbcType) {
             case Types.TIMESTAMP:
+            case TIMESTAMP_WITH_TIMEZONE:
                 return "(timestamp '" + literal + "')";
             case Types.DATE:
                 return "(date '" + literal + "')";
             case Types.TIME:
+            case TIME_WITH_TIMEZONE:
                 return "(time '" + literal + "')";
             case Types.CHAR:
             case Types.CLOB:

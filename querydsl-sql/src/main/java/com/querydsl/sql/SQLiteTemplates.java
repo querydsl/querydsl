@@ -112,14 +112,17 @@ public class SQLiteTemplates extends SQLTemplates {
     @Override
     public String serialize(String literal, int jdbcType) {
         // XXX doesn't work with LocalDate, LocalDateTime and LocalTime
-        if (jdbcType == Types.TIMESTAMP) {
-            return String.valueOf(dateTimeFormatter.parseDateTime(literal).getMillis());
-        } else if (jdbcType == Types.DATE) {
-            return String.valueOf(dateFormatter.parseDateTime(literal).getMillis());
-        } else if (jdbcType == Types.TIME) {
-            return String.valueOf(timeFormatter.parseDateTime(literal).getMillis());
-        } else {
-            return super.serialize(literal, jdbcType);
+        switch (jdbcType) {
+            case Types.TIMESTAMP:
+            case TIMESTAMP_WITH_TIMEZONE:
+                return String.valueOf(dateTimeFormatter.parseDateTime(literal).getMillis());
+            case Types.DATE:
+                return String.valueOf(dateFormatter.parseDateTime(literal).getMillis());
+            case Types.TIME:
+            case TIME_WITH_TIMEZONE:
+                return String.valueOf(timeFormatter.parseDateTime(literal).getMillis());
+            default:
+                return super.serialize(literal, jdbcType);
         }
     }
 

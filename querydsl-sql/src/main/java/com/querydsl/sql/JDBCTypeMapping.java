@@ -45,7 +45,7 @@ final class JDBCTypeMapping {
 
     static {
         registerDefault(-101, Object.class);
-        registerDefault(-102, java.sql.Timestamp.class); // Oracle: TIMESTAMP(6) WITH LOCAL TIME ZONE
+        registerDefault(-102, Timestamp.class); // Oracle: TIMESTAMP(6) WITH LOCAL TIME ZONE
         registerDefault(2012, Object.class); // REF_CURSOR
         registerDefault(2013, Time.class);   // TIME_WITH_TIMEZONE
         registerDefault(2014, Timestamp.class); // TIMESTAMP_WIH_TIMEZONE
