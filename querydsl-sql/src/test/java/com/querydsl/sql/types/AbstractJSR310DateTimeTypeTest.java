@@ -6,6 +6,7 @@ import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 public abstract class AbstractJSR310DateTimeTypeTest<T extends Temporal> {
@@ -38,12 +39,15 @@ public abstract class AbstractJSR310DateTimeTypeTest<T extends Temporal> {
                                                value.get(ChronoField.MILLI_OF_SECOND));
     }
 
-
     protected static org.joda.time.LocalTime toJoda(LocalTime value) {
         return new org.joda.time.LocalTime(value.getHour(),
                                            value.getMinute(),
                                            value.getSecond(),
                                            value.get(ChronoField.MILLI_OF_SECOND));
+    }
+
+    protected static DateTime toJoda(Instant value) {
+        return new DateTime(value.toEpochMilli(), DateTimeZone.UTC);
     }
 
 

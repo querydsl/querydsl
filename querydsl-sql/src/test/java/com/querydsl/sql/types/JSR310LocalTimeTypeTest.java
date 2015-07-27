@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.time.temporal.ChronoField;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class JSR310LocalTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     @Test
     public void Set() throws SQLException {
         LocalTime value = LocalTime.now();
-        Time time = Time.valueOf(value);
+        Time time = new Time(value.get(ChronoField.MILLI_OF_DAY));
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         stmt.setTime(1, time, UTC);
@@ -34,7 +35,7 @@ public class JSR310LocalTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     @Test
     public void JodaSet() throws SQLException {
         LocalTime value = LocalTime.now();
-        Time time = Time.valueOf(value);
+        Time time = new Time(value.get(ChronoField.MILLI_OF_DAY));
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         stmt.setTime(1, time, UTC);

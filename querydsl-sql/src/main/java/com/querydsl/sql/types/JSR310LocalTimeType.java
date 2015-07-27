@@ -2,6 +2,7 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 import java.time.LocalTime;
+import java.time.temporal.ChronoField;
 
 import javax.annotation.Nullable;
 
@@ -37,11 +38,11 @@ public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
     @Override
     public LocalTime getValue(ResultSet rs, int startIndex) throws SQLException {
         Time time = rs.getTime(startIndex, utc());
-        return time != null ? time.toLocalTime() : null;
+        return time != null ? LocalTime.ofNanoOfDay(time.getTime() * 1000000) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalTime value) throws SQLException {
-        st.setTime(startIndex, Time.valueOf(value), utc());
+        st.setTime(startIndex, new Time(value.get(ChronoField.MILLI_OF_DAY)), utc());
     }
 }
