@@ -50,11 +50,13 @@ public abstract class AbstractJSR310DateTimeTypeTest<T extends Temporal> {
         return new DateTime(value.toEpochMilli(), DateTimeZone.UTC);
     }
 
-
     protected static org.joda.time.DateTime toJoda(ZonedDateTime value) {
         DateTimeZone zone = DateTimeZone.forID(value.getZone().getId());
         return new org.joda.time.DateTime(value.toInstant().toEpochMilli(), zone);
     }
 
+    protected static org.joda.time.DateTime toJoda(OffsetDateTime value) {
+        return new org.joda.time.DateTime(value.toInstant().toEpochMilli());
+    }
 
 }

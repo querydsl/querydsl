@@ -39,12 +39,11 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
     @Override
     public OffsetDateTime getValue(ResultSet rs, int startIndex) throws SQLException {
         Timestamp timestamp = rs.getTimestamp(startIndex, utc());
-        return timestamp != null ? OffsetDateTime.of(timestamp.toLocalDateTime(), ZoneOffset.UTC) : null;
+        return timestamp != null ? OffsetDateTime.ofInstant(timestamp.toInstant(), ZoneOffset.UTC) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, OffsetDateTime value) throws SQLException {
-        OffsetDateTime normalized = value.withOffsetSameInstant(ZoneOffset.UTC);
-        st.setTimestamp(startIndex, Timestamp.valueOf(normalized.toLocalDateTime()), utc());
+        st.setTimestamp(startIndex, new Timestamp(value.toInstant().toEpochMilli()), utc());
     }
 }

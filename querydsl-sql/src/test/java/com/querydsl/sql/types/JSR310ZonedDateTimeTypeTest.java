@@ -37,7 +37,7 @@ public class JSR310ZonedDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<
         Timestamp ts = new Timestamp(value.toInstant().toEpochMilli());
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
-        stmt.setTimestamp(1, ts, UTC);
+        stmt.setTimestamp(1, ts);
         EasyMock.replay(stmt);
 
         new DateTimeType().setValue(stmt, 1, toJoda(value));

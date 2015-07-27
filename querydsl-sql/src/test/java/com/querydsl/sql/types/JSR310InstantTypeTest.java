@@ -32,6 +32,19 @@ public class JSR310InstantTypeTest extends AbstractJSR310DateTimeTypeTest<Instan
     }
 
     @Test
+    public void JodaSet() throws SQLException {
+        Instant value = Instant.now();
+        Timestamp ts = new Timestamp(value.toEpochMilli());
+
+        PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
+        stmt.setTimestamp(1, ts);
+        EasyMock.replay(stmt);
+
+        new DateTimeType().setValue(stmt, 1, toJoda(value));
+        EasyMock.verify(stmt);
+    }
+
+    @Test
     public void Get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
         EasyMock.expect(resultSet.getTimestamp(1, UTC)).andReturn(new Timestamp(UTC.getTimeInMillis()));

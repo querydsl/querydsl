@@ -37,13 +37,12 @@ public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDat
     @Nullable
     @Override
     public ZonedDateTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Timestamp timestamp = rs.getTimestamp(startIndex, utc());
-        return timestamp != null ? ZonedDateTime.of(timestamp.toLocalDateTime(), ZoneOffset.UTC) : null;
+        Timestamp ts = rs.getTimestamp(startIndex, utc());
+        return ts != null ? ZonedDateTime.ofInstant(ts.toInstant(), ZoneOffset.UTC) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, ZonedDateTime value) throws SQLException {
-        ZonedDateTime normalized = value.withZoneSameInstant(ZoneOffset.UTC);
-        st.setTimestamp(startIndex, Timestamp.valueOf(normalized.toLocalDateTime()), utc());
+        st.setTimestamp(startIndex, new Timestamp(value.toInstant().toEpochMilli()), utc());
     }
 }
