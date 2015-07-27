@@ -7,4 +7,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface NoHibernate {
 
+    com.querydsl.core.Target[] value() default {};
 }

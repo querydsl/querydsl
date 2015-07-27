@@ -82,6 +82,7 @@ public class EclipseLinkTemplates extends JPQLTemplates {
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
 
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})");
+        add(Ops.DateTimeOps.YEAR_WEEK, "extract(year from {0}) * 100 + extract(week from {0})");
 
     }
 

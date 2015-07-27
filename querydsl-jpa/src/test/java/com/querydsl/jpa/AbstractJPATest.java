@@ -547,11 +547,26 @@ public abstract class AbstractJPATest {
         assertEquals(2000,   query().from(cat).select(cat.birthdate.year()).fetchFirst().intValue());
         assertEquals(200002, query().from(cat).select(cat.birthdate.yearMonth()).fetchFirst().intValue());
         assertEquals(2,      query().from(cat).select(cat.birthdate.month()).fetchFirst().intValue());
-        //query().from(cat).select(cat.birthdate.week());
         assertEquals(2,      query().from(cat).select(cat.birthdate.dayOfMonth()).fetchFirst().intValue());
         assertEquals(3,      query().from(cat).select(cat.birthdate.hour()).fetchFirst().intValue());
         assertEquals(4,      query().from(cat).select(cat.birthdate.minute()).fetchFirst().intValue());
         assertEquals(0,      query().from(cat).select(cat.birthdate.second()).fetchFirst().intValue());
+    }
+
+    @Test
+    @NoEclipseLink({DERBY, HSQLDB})
+    @NoHibernate({DERBY, POSTGRESQL})
+    public void Date_YearWeek() {
+        int value = query().from(cat).select(cat.birthdate.yearWeek()).fetchFirst();
+        assertTrue(value == 200006 || value == 200005);
+    }
+
+    @Test
+    @NoEclipseLink({DERBY, HSQLDB})
+    @NoHibernate({DERBY, POSTGRESQL})
+    public void Date_Week() {
+        int value = query().from(cat).select(cat.birthdate.week()).fetchFirst();
+        assertTrue(value == 6 || value == 5);
     }
 
     @Test
@@ -700,8 +715,8 @@ public abstract class AbstractJPATest {
             .from(author)
             .join(author.books, book)
             .transform(GroupBy
-                .groupBy(author.id)
-                .as(GroupBy.list(QPair.create(book.id, book.title))));
+                    .groupBy(author.id)
+                    .as(GroupBy.list(QPair.create(book.id, book.title))));
 
         for (Entry<Long, List<Pair<Long, String>>> entry : map.entrySet()) {
             System.out.println("author = " + entry.getKey());
@@ -888,7 +903,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void Limit_and_offset() {
-        List<String> names3 = Arrays.asList("Felix123","Mary_123");
+        List<String> names3 = Arrays.asList("Felix123", "Mary_123");
         assertEquals(names3, query().from(cat).orderBy(cat.name.asc()).limit(2).offset(2).select(cat.name).fetch());
     }
 
@@ -1136,16 +1151,16 @@ public abstract class AbstractJPATest {
     @NoBatooJPA
     public void Order_NullsFirst() {
         assertNull(query().from(cat)
-            .orderBy(cat.dateField.asc().nullsFirst())
-            .select(cat.dateField).fetchFirst());
+                .orderBy(cat.dateField.asc().nullsFirst())
+                .select(cat.dateField).fetchFirst());
     }
 
     @Test
     @NoBatooJPA
     public void Order_NullsLast() {
         assertNotNull(query().from(cat)
-            .orderBy(cat.dateField.asc().nullsLast())
-            .select(cat.dateField).fetchFirst());
+                .orderBy(cat.dateField.asc().nullsLast())
+                .select(cat.dateField).fetchFirst());
     }
 
     @Test
@@ -1596,7 +1611,7 @@ public abstract class AbstractJPATest {
     @Test
     @NoOpenJPA
     public void Type_Order() {
-        assertEquals(Arrays.asList(10,1,2,3,4,5,6),
+        assertEquals(Arrays.asList(10, 1, 2, 3, 4, 5, 6),
                 query().from(animal).orderBy(JPAExpressions.type(animal).asc(), animal.id.asc())
                         .select(animal.id).fetch());
     }

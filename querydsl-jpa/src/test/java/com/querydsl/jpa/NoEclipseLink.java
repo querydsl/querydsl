@@ -7,4 +7,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface NoEclipseLink {
 
+    com.querydsl.core.Target[] value() default {};
 }
