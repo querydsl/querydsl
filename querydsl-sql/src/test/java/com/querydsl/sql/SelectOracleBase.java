@@ -130,8 +130,8 @@ public class SelectOracleBase extends AbstractBaseTest {
 //        9  from emp
 //       10  order by deptno, sal;
         expectedQuery = "select e.LASTNAME, e.SALARY, " +
-            "sum(e.SALARY) over (partition by e.SUPERIOR_ID order by e.LASTNAME, e.SALARY), " +
-            "sum(e.SALARY) over (order by e.SUPERIOR_ID, e.SALARY), " +
+            "sum(e.SALARY) over (partition by e.SUPERIOR_ID order by e.LASTNAME asc, e.SALARY asc), " +
+            "sum(e.SALARY) over (order by e.SUPERIOR_ID asc, e.SALARY asc), " +
             "sum(e.SALARY) over () from EMPLOYEE e order by e.SALARY asc, e.SUPERIOR_ID asc";
 
         oracleQuery().from(employee)
