@@ -52,6 +52,8 @@ public class EntitySerializer implements Serializer {
 
     protected final Collection<String> keywords;
 
+    private CaseTransformer caseTransformer;
+
     /**
      * Create a new {@code EntitySerializer} instance
      *
@@ -59,9 +61,14 @@ public class EntitySerializer implements Serializer {
      * @param keywords keywords to be used
      */
     @Inject
-    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords) {
+    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords, @Named(CodegenModule.CASE_TRANSFORMER_CLASS) String caseTransfomerClass) {
         this.typeMappings = mappings;
         this.keywords = keywords;
+        try {
+           this.caseTransformer = (CaseTransformer) Class.forName(caseTransfomerClass).newInstance();
+        } catch (Exception e) {
+          this.caseTransformer = new UncapitalizedCaseTransformer();
+        }
     }
 
     protected void constructors(EntityType model, SerializerConfig config,
@@ -315,7 +322,7 @@ public class EntitySerializer implements Serializer {
     }
 
     protected void introDefaultInstance(CodeWriter writer, EntityType model, String defaultName) throws IOException {
-        String simpleName = !defaultName.isEmpty() ? defaultName : model.getUncapSimpleName();
+        String simpleName = !defaultName.isEmpty() ? defaultName : caseTransformer.transform(model.getInnerType().getSimpleName());
         Type queryType = typeMappings.getPathType(model, model, true);
         String alias = simpleName;
         if (keywords.contains(simpleName.toUpperCase())) {

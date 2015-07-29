@@ -176,6 +176,10 @@ public class DefaultConfiguration implements Configuration {
                 includedClasses.addAll(classes);
             }
         }
+        
+        if (options.containsKey(QUERYDSL_CASE_TRANSFORMER_CLASS)) {
+            module.bind(CodegenModule.CASE_TRANSFORMER_CLASS, options.get(QUERYDSL_CASE_TRANSFORMER_CLASS));
+        }
 
         try {
             // register additional mappings if querydsl-spatial is on the classpath

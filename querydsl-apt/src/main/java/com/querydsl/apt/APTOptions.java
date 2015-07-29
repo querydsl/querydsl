@@ -80,6 +80,11 @@ public final class APTOptions {
      * set whether unknown non-annotated classes should be treated as embeddable (default: false)
      */
     public static final String QUERYDSL_UNKNOWN_AS_EMBEDDABLE = "querydsl.unknownAsEmbeddable";
+    
+    /**
+     * set the case transformer class
+     */
+    public static final String QUERYDSL_CASE_TRANSFORMER_CLASS = "querydsl.caseTransformerClass";
 
     private APTOptions() { }
 
