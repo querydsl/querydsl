@@ -128,7 +128,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      * @return the current object
      */
     public Q forUpdate() {
-        return addFlag(SQLOps.FOR_UPDATE_FLAG);
+        QueryFlag forUpdateFlag = configuration.getTemplates().getForUpdateFlag();
+        return addFlag(forUpdateFlag);
+
     }
 
     @Override

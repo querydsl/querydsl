@@ -23,14 +23,12 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.querydsl.core.JoinType;
-import com.querydsl.core.QueryException;
+import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.*;
 import com.querydsl.sql.types.Type;
 
@@ -41,6 +39,13 @@ import com.querydsl.sql.types.Type;
  * @author tiwe
  */
 public class SQLTemplates extends Templates {
+
+    protected static final Expression<?> FOR_SHARE = ExpressionUtils.operation(
+            Object.class, SQLOps.FOR_SHARE, ImmutableList.<Expression<?>>of());
+    protected static final Expression<?> FOR_UPDATE = ExpressionUtils.operation(
+            Object.class, SQLOps.FOR_UPDATE, ImmutableList.<Expression<?>>of());
+    protected static final Expression<?> NO_WAIT = ExpressionUtils.operation(
+            Object.class, SQLOps.NO_WAIT, ImmutableList.<Expression<?>>of());
 
     protected static final Set<String> SQL_RESERVED_WORDS
             = ImmutableSet.of(
@@ -287,6 +292,12 @@ public class SQLTemplates extends Templates {
     private boolean supportsUnquotedReservedWordsAsIdentifier = false;
 
     private int maxLimit = Integer.MAX_VALUE;
+
+    private QueryFlag forShareFlag = new QueryFlag(Position.END, FOR_SHARE);
+
+    private QueryFlag forUpdateFlag = new QueryFlag(Position.END, FOR_UPDATE);
+
+    private QueryFlag noWaitFlag = new QueryFlag(Position.END, NO_WAIT);
 
     @Deprecated
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
@@ -792,6 +803,18 @@ public class SQLTemplates extends Templates {
         return supportsUnquotedReservedWordsAsIdentifier;
     }
 
+    public final QueryFlag getForShareFlag() {
+        return forShareFlag;
+    }
+
+    public final QueryFlag getForUpdateFlag() {
+        return forUpdateFlag;
+    }
+
+    public final QueryFlag getNoWaitFlag() {
+        return noWaitFlag;
+    }
+
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
@@ -1173,6 +1196,18 @@ public class SQLTemplates extends Templates {
 
     protected void setMaxLimit(int i) {
         this.maxLimit = i;
+    }
+
+    protected void setForShareFlag(QueryFlag flag) {
+        forShareFlag = flag;
+    }
+
+    protected void setForUpdateFlag(QueryFlag flag) {
+        forUpdateFlag = flag;
+    }
+
+    protected void setNoWaitFlag(QueryFlag flag) {
+        noWaitFlag = flag;
     }
 
 }

@@ -59,6 +59,7 @@ public class SQLServerTemplates extends SQLTemplates {
         setNullsLast(null);
         setDefaultValues("\ndefault values");
         setArraysSupported(false);
+        setForUpdateFlag(new QueryFlag(Position.BEFORE_FILTERS, FOR_UPDATE));
 
         setPrecedence(Precedence.ARITH_LOW, Ops.NEGATE);
         setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
@@ -81,6 +82,8 @@ public class SQLServerTemplates extends SQLTemplates {
         add(Ops.SUBSTR_1ARG, "substring({0},{1}+1,255)");
         add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2s}-{1s})");
         add(Ops.TRIM, "ltrim(rtrim({0}))");
+
+        add(SQLOps.FOR_UPDATE, "\nwith (updlock)");
 
         add(Ops.StringOps.LOCATE, "charindex({0},{1})");
         add(Ops.StringOps.LOCATE2, "charindex({0},{1},{2})");
