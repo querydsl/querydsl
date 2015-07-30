@@ -329,40 +329,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     public void visitLiteral(Object constant) {
-        if (constant instanceof Boolean) {
-            append(constant.toString());
-        } else if (constant instanceof Number) {
-            append(constant.toString());
-        } else if (constant instanceof String) {
-            append("'");
-            append(escapeLiteral(constant.toString()));
-            append("'");
-        } else if (constant instanceof Enum<?>) {
-            append(constant.getClass().getName());
-            append(".");
-            append(((Enum<?>) constant).name());
-        } else {
-            // TODO date time literals
-            throw new IllegalArgumentException("Unsupported constant " + constant);
-        }
-    }
-
-    private String escapeLiteral(String str) {
-        StringBuilder builder = new StringBuilder();
-        for (char ch : str.toCharArray()) {
-            if (ch == '\n') {
-                builder.append("\\n");
-                continue;
-            } else if (ch == '\r') {
-                builder.append("\\r");
-                continue;
-            } else if (ch == '\'') {
-                builder.append("''");
-                continue;
-            }
-            builder.append(ch);
-        }
-        return builder.toString();
+        append(templates.asLiteral(constant));
     }
 
     @Override

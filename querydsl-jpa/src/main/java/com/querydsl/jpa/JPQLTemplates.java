@@ -190,4 +190,35 @@ public class JPQLTemplates extends Templates {
         return false;
     }
 
+    public String asLiteral(Object constant) {
+        if (constant instanceof Boolean) {
+            return constant.toString();
+        } else if (constant instanceof Number) {
+            return constant.toString();
+        } else if (constant instanceof String) {
+            return "'" + escapeLiteral(constant.toString()) + "'";
+        } else if (constant instanceof Enum) {
+            return constant.getClass().getName() + "." + ((Enum) constant).name();
+        } else {
+            return "'" + constant.toString() + "'";
+        }
+    }
+
+    private String escapeLiteral(String str) {
+        StringBuilder builder = new StringBuilder();
+        for (char ch : str.toCharArray()) {
+            if (ch == '\n') {
+                builder.append("\\n");
+                continue;
+            } else if (ch == '\r') {
+                builder.append("\\r");
+                continue;
+            } else if (ch == '\'') {
+                builder.append("''");
+                continue;
+            }
+            builder.append(ch);
+        }
+        return builder.toString();
+    }
 }
