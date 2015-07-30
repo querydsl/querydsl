@@ -64,4 +64,6 @@ public class SimpleTypes {
 
 //    @Temporal(TemporalType.TIMESTAMP)
     java.sql.Timestamp timestamp;
+
+    byte[] byteArray;
 }
