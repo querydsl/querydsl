@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" default-lazy="false">
+ <class abstract="true"
+  name="com.mysema.query.jpa.domain18.Route1" table="ROUTES">
+  <composite-id access="field" name="routeKey" class="com.mysema.query.jpa.domain18.RouteDbKey">
+   <key-property name="type" type="string" column="ROUTE_TYPE"/>
+   <key-property name="key" type="string" column="ROUTE_KEY"/>
+  </composite-id>
+  <discriminator force="false" insert="false" not-null="true">
+   <column name="ROUTE_TYPE"/>
+  </discriminator>
+  <version access="field" column="VERSION" generated="never"
+   name="version" type="int"/>
+  <property access="field" generated="never" lazy="false" name="cost" type="int">
+   <column name="COST"/>
+  </property>
+ </class>
+</hibernate-mapping>
