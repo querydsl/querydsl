@@ -673,6 +673,21 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Duplicate_Columns() {
+        assertEquals(10, query().from(employee)
+                .select(employee.id, employee.id).fetch().size());
+    }
+
+    @Test
+    public void Duplicate_Columns_In_Subquery() {
+        QEmployee employee2 = new QEmployee("e2");
+        assertEquals(10, query().from(employee).where(
+                query().from(employee2)
+                        .where(employee2.id.eq(employee.id))
+                        .select(employee2.id, employee2.id).exists()).fetchCount());
+    }
+
+    @Test
     public void FactoryExpression_In_GroupBy() {
         Expression<Employee> empBean = Projections.bean(Employee.class, employee.id, employee.superiorId);
         assertTrue(query().from(employee).groupBy(empBean).select(empBean).fetchFirst() != null);
@@ -914,6 +929,15 @@ public class SelectBase extends AbstractBaseTest {
                    .orderBy(employee.firstname.asc())
                    .limit(4).offset(3)
                    .select(employee.id).fetch());
+    }
+
+    @Test
+    public void Limit_and_Offset_Group() {
+        assertEquals(9,
+                query().from(employee)
+                       .orderBy(employee.id.asc())
+                       .limit(100).offset(1)
+                .transform(GroupBy.groupBy(employee.id).as(employee)).size());
     }
 
     @Test
