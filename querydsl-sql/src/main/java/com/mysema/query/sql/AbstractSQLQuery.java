@@ -13,7 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,6 +23,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
 import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
@@ -31,9 +36,6 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.*;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.util.ResultSetAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * AbstractSQLQuery is the base type for SQL query implementations
@@ -58,6 +60,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     private boolean getLastCell;
 
     private Object lastCell;
+
+    private StatementOptions statementOptions = StatementOptions.DEFAULT;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata().noValidate());
@@ -176,7 +180,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
             constants = serializer.getConstants();
 
             listeners.prePrepare(context);
-            final PreparedStatement stmt = conn.prepareStatement(queryString);
+            final PreparedStatement stmt = getPreparedStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), getMetadata().getParams());
             context.addPreparedStatement(stmt);
             listeners.prepared(context);
@@ -202,6 +206,23 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
             reset();
             endContext(context);
         }
+    }
+
+    private PreparedStatement getPreparedStatement(String queryString) throws SQLException {
+        PreparedStatement statement = conn.prepareStatement(queryString);
+        if (statementOptions.getFetchSize() != null) {
+            statement.setFetchSize(statementOptions.getFetchSize());
+        }
+        if (statementOptions.getMaxFieldSize() != null) {
+            statement.setMaxFieldSize(statementOptions.getMaxFieldSize());
+        }
+        if (statementOptions.getQueryTimeout() != null) {
+            statement.setQueryTimeout(statementOptions.getQueryTimeout());
+        }
+        if (statementOptions.getMaxRows() != null) {
+            statement.setMaxRows(statementOptions.getMaxRows());
+        }
+        return statement;
     }
 
     protected Configuration getConfiguration() {
@@ -233,7 +254,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
             constants = serializer.getConstants();
 
             listeners.prePrepare(context);
-            final PreparedStatement stmt = conn.prepareStatement(queryString);
+            final PreparedStatement stmt = getPreparedStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), metadata.getParams());
             context.addPreparedStatement(stmt);
             listeners.prepared(context);
@@ -305,7 +326,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
             constants = serializer.getConstants();
 
             listeners.prePrepare(context);
-            final PreparedStatement stmt = conn.prepareStatement(queryString);
+            final PreparedStatement stmt = getPreparedStatement(queryString);
             try {
                 setParameters(stmt, constants, serializer.getConstantPaths(), queryMixin.getMetadata().getParams());
                 context.addPreparedStatement(stmt);
@@ -482,7 +503,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
             constants = serializer.getConstants();
             listeners.prePrepare(context);
 
-            stmt = conn.prepareStatement(queryString);
+            stmt = getPreparedStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), getMetadata().getParams());
 
             context.addPreparedStatement(stmt);
@@ -547,5 +568,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     }
     
     public abstract Q clone(Connection connection);
+
+    public void setStatementOptions(StatementOptions statementOptions) {
+        this.statementOptions = statementOptions;
+    }
 
 }
