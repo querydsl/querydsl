@@ -164,14 +164,17 @@ public class OracleTemplates extends SQLTemplates {
 
     @Override
     public String serialize(String literal, int jdbcType) {
-        if (jdbcType == Types.DATE) {
-            return "date '" + literal + "'";
-        } else if (jdbcType == Types.TIMESTAMP) {
-            return "timestamp '" + literal + "'";
-        } else if (jdbcType == Types.TIME) {
-            return "timestamp '1970-01-01 " + literal + "'";
-        } else {
-            return super.serialize(literal, jdbcType);
+        switch (jdbcType) {
+            case Types.TIMESTAMP:
+            case TIMESTAMP_WITH_TIMEZONE:
+                return "timestamp '" + literal + "'";
+            case Types.DATE:
+                return "date '" + literal + "'";
+            case Types.TIME:
+            case TIME_WITH_TIMEZONE:
+                return "timestamp '1970-01-01 " + literal + "'";
+            default:
+                return super.serialize(literal, jdbcType);
         }
     }
 

@@ -24,10 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
+import org.joda.time.*;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -434,6 +431,18 @@ public class SelectBase extends AbstractBaseTest {
         data.add(new LocalTime(ts));
         data.add(new LocalTime(tsTime));
 
+        java.time.Instant javaInstant = java.time.Instant.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS);
+        java.time.LocalDateTime javaDateTime = java.time.LocalDateTime.ofInstant(javaInstant, java.time.ZoneId.of("Z"));
+        java.time.LocalDate javaDate = javaDateTime.toLocalDate();
+        java.time.LocalTime javaTime = javaDateTime.toLocalTime();
+        data.add(javaInstant);                                      //java.time.Instant
+        data.add(javaDateTime);                                     //java.time.LocalDateTime
+        data.add(javaDate);                                         //java.time.LocalDate
+        data.add(javaTime);                                         //java.time.LocalTime
+        data.add(javaDateTime.atOffset(java.time.ZoneOffset.UTC));  //java.time.OffsetDateTime
+        data.add(javaTime.atOffset(java.time.ZoneOffset.UTC));      //java.time.OffsetTime
+        data.add(javaDateTime.atZone(java.time.ZoneId.of("Z")));    //java.time.ZonedDateTime
+
         Map<Object, Object> failures = Maps.newIdentityHashMap();
         for (Object dt : data) {
             Object dt2 = firstResult(Expressions.constant(dt));
@@ -447,6 +456,32 @@ public class SelectBase extends AbstractBaseTest {
                         + ": " + entry.getKey() + " != " + entry.getValue());
             }
             Assert.fail("Failed with " + failures);
+        }
+    }
+
+    @Test
+    @Ignore // FIXME
+    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLITE, TERADATA})
+    public void Dates_CST() {
+        TimeZone tz = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(TimeZone.getTimeZone("CST")); // -6:00
+            Dates();
+        } finally {
+            TimeZone.setDefault(tz);
+        }
+    }
+
+    @Test
+    @Ignore // FIXME
+    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLITE, TERADATA})
+    public void Dates_IOT() {
+        TimeZone tz = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(TimeZone.getTimeZone("IOT")); // +6:00
+            Dates();
+        } finally {
+            TimeZone.setDefault(tz);
         }
     }
 
