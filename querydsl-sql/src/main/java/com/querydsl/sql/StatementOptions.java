@@ -16,10 +16,15 @@ package com.querydsl.sql;
 
 import java.sql.Statement;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * {@code StatementOptions} holds parameters that should be applied to {@link Statement}s.
  */
+@Immutable
 public class StatementOptions {
+
+    public static final StatementOptions DEFAULT = new StatementOptions(null, null, null, null);
 
     private final Integer maxFieldSize;
     private final Integer maxRows;
@@ -49,14 +54,20 @@ public class StatementOptions {
         return fetchSize;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     /**
      * Builder for {@link StatementOptions}
      */
-    public static class Builder {
-        private Integer maxFieldSize = 0;
-        private Integer maxRows = 0;
-        private Integer queryTimeout = 0;
-        private Integer fetchSize = 0;
+    public static final class Builder {
+        private Integer maxFieldSize;
+        private Integer maxRows;
+        private Integer queryTimeout;
+        private Integer fetchSize;
+
+        private Builder() {}
 
         public Builder setMaxFieldSize(Integer maxFieldSize) {
             this.maxFieldSize = maxFieldSize;

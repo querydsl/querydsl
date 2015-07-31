@@ -67,7 +67,8 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private Object lastCell;
 
     private SQLListenerContext parentContext;
-    private StatementOptions statementOptions = new StatementOptions.Builder().build();
+
+    private StatementOptions statementOptions = StatementOptions.DEFAULT;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata());
@@ -240,12 +241,18 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     private PreparedStatement getPreparedStatement(String queryString) throws SQLException {
         PreparedStatement statement = conn.prepareStatement(queryString);
-
-        statement.setFetchSize(statementOptions.getFetchSize());
-        statement.setMaxFieldSize(statementOptions.getMaxFieldSize());
-        statement.setQueryTimeout(statementOptions.getQueryTimeout());
-        statement.setMaxRows(statementOptions.getMaxRows());
-
+        if (statementOptions.getFetchSize() != null) {
+            statement.setFetchSize(statementOptions.getFetchSize());
+        }
+        if (statementOptions.getMaxFieldSize() != null) {
+            statement.setMaxFieldSize(statementOptions.getMaxFieldSize());
+        }
+        if (statementOptions.getQueryTimeout() != null) {
+            statement.setQueryTimeout(statementOptions.getQueryTimeout());
+        }
+        if (statementOptions.getMaxRows() != null) {
+            statement.setMaxRows(statementOptions.getMaxRows());
+        }
         return statement;
     }
 
