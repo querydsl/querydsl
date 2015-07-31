@@ -67,6 +67,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private Object lastCell;
 
     private SQLListenerContext parentContext;
+    private StatementOptions statementOptions = new StatementOptions.Builder().build();
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata());
@@ -209,7 +210,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             constants = serializer.getConstants();
 
             listeners.prePrepare(context);
-            final PreparedStatement stmt = conn.prepareStatement(queryString);
+            final PreparedStatement stmt = getPreparedStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), getMetadata().getParams());
             context.addPreparedStatement(stmt);
             listeners.prepared(context);
@@ -235,6 +236,17 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             reset();
             endContext(context);
         }
+    }
+
+    private PreparedStatement getPreparedStatement(String queryString) throws SQLException {
+        PreparedStatement statement = conn.prepareStatement(queryString);
+
+        statement.setFetchSize(statementOptions.getFetchSize());
+        statement.setMaxFieldSize(statementOptions.getMaxFieldSize());
+        statement.setQueryTimeout(statementOptions.getQueryTimeout());
+        statement.setMaxRows(statementOptions.getMaxRows());
+
+        return statement;
     }
 
     protected Configuration getConfiguration() {
@@ -266,7 +278,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             constants = serializer.getConstants();
 
             listeners.prePrepare(context);
-            final PreparedStatement stmt = conn.prepareStatement(queryString);
+            final PreparedStatement stmt = getPreparedStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), metadata.getParams());
             context.addPreparedStatement(stmt);
             listeners.prepared(context);
@@ -338,7 +350,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             constants = serializer.getConstants();
 
             listeners.prePrepare(context);
-            final PreparedStatement stmt = conn.prepareStatement(queryString);
+            final PreparedStatement stmt = getPreparedStatement(queryString);
             try {
                 setParameters(stmt, constants, serializer.getConstantPaths(), queryMixin.getMetadata().getParams());
                 context.addPreparedStatement(stmt);
@@ -508,7 +520,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             constants = serializer.getConstants();
             listeners.prePrepare(context);
 
-            stmt = conn.prepareStatement(queryString);
+            stmt = getPreparedStatement(queryString);
             setParameters(stmt, constants, serializer.getConstantPaths(), getMetadata().getParams());
 
             context.addPreparedStatement(stmt);
@@ -574,4 +586,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     public abstract Q clone(Connection connection);
 
+    public void setStatementOptions(StatementOptions statementOptions) {
+        this.statementOptions = statementOptions;
+    }
 }
