@@ -67,7 +67,7 @@ public class StatementOptions {
         private Integer queryTimeout;
         private Integer fetchSize;
 
-        private Builder() {}
+        private Builder() { }
 
         public Builder setMaxFieldSize(Integer maxFieldSize) {
             this.maxFieldSize = maxFieldSize;
