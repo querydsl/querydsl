@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-        <!ENTITY versionNumber "4.0.2">
+        <!ENTITY versionNumber "4.0.3">
         <!ENTITY copyrightYear "2007-2015">
         <!ENTITY copyrightHolder "The Querydsl Team">
 ]>
