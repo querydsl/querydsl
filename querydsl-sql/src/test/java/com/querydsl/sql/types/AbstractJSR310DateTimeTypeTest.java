@@ -1,5 +1,6 @@
 package com.querydsl.sql.types;
 
+import java.sql.SQLException;
 import java.time.*;
 import java.time.temporal.ChronoField;
 import java.time.temporal.Temporal;
@@ -8,6 +9,9 @@ import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public abstract class AbstractJSR310DateTimeTypeTest<T extends Temporal> {
 
@@ -57,6 +61,46 @@ public abstract class AbstractJSR310DateTimeTypeTest<T extends Temporal> {
 
     protected static org.joda.time.DateTime toJoda(OffsetDateTime value) {
         return new org.joda.time.DateTime(value.toInstant().toEpochMilli());
+    }
+
+    private TimeZone tz;
+
+    @Before
+    public void before() {
+        tz = TimeZone.getDefault();
+    }
+
+    @After
+    public void after() {
+        TimeZone.setDefault(tz);
+    }
+
+    public abstract void Set() throws SQLException;
+
+    public abstract void Get() throws SQLException;
+
+    @Test
+    public void Set_CST() throws SQLException {
+        TimeZone.setDefault(TimeZone.getTimeZone("CST")); // -6:00
+        Set();
+    }
+
+    @Test
+    public void Set_IOT() throws SQLException {
+        TimeZone.setDefault(TimeZone.getTimeZone("IOT")); // +6:00
+        Set();
+    }
+
+    @Test
+    public void Get_CST() throws SQLException {
+        TimeZone.setDefault(TimeZone.getTimeZone("CST")); // -6:00
+        Get();
+    }
+
+    @Test
+    public void Get_IOT() throws SQLException {
+        TimeZone.setDefault(TimeZone.getTimeZone("IOT")); // +6:00
+        Get();
     }
 
 }

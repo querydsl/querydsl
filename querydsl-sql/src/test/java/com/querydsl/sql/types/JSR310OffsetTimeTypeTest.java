@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.OffsetTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoField;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -21,7 +23,8 @@ public class JSR310OffsetTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Off
     @Test
     public void Set() throws SQLException {
         OffsetTime value = OffsetTime.now();
-        Time time = Time.valueOf(value.toLocalTime());
+        OffsetTime normalized = value.withOffsetSameInstant(ZoneOffset.UTC);
+        Time time = new Time(normalized.get(ChronoField.MILLI_OF_DAY));
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         stmt.setTime(1, time, UTC);
