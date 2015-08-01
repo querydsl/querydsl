@@ -1872,4 +1872,22 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(Integer.valueOf(200007), query.singleResult(employee.datefield.yearWeek()));
     }
 
+    @Test
+    public void StatementOptions() {
+        StatementOptions options = StatementOptions.builder().setFetchSize(15).setMaxRows(150).build();
+        TestQuery query = query().from(employee).orderBy(employee.id.asc());
+        query.setStatementOptions(options);
+        query.addListener(new TestLoggingListener() {
+            public void preExecute(SQLListenerContext context) {
+                try {
+                    assertEquals(15, context.getPreparedStatement().getFetchSize());
+                    assertEquals(150, context.getPreparedStatement().getMaxRows());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        query.list(employee.id);
+    }
+
 }
