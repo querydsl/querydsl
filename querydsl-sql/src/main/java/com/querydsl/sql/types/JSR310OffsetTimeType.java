@@ -1,8 +1,10 @@
 package com.querydsl.sql.types;
 
 import java.sql.*;
+import java.time.Instant;
 import java.time.OffsetTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoField;
 
 import javax.annotation.Nullable;
 
@@ -38,12 +40,12 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
     @Override
     public OffsetTime getValue(ResultSet rs, int startIndex) throws SQLException {
         Time time = rs.getTime(startIndex, utc());
-        return time != null ? OffsetTime.of(time.toLocalTime(), ZoneOffset.UTC) : null;
+        return time != null ? OffsetTime.ofInstant(Instant.ofEpochMilli(time.getTime()), ZoneOffset.UTC) : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, OffsetTime value) throws SQLException {
         OffsetTime normalized = value.withOffsetSameInstant(ZoneOffset.UTC);
-        st.setTime(startIndex, Time.valueOf(normalized.toLocalTime()), utc());
+        st.setTime(startIndex, new Time(normalized.get(ChronoField.MILLI_OF_DAY)), utc());
     }
 }
