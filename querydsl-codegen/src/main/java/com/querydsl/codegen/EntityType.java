@@ -14,16 +14,22 @@
 package com.querydsl.codegen;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Function;
 import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeAdapter;
 import com.mysema.codegen.model.TypeCategory;
-import com.querydsl.core.util.JavaSyntaxUtils;
 
 /**
  * {@code EntityType} represents a model of a query domain type with properties
@@ -50,15 +56,18 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     private final Map<Object, Object> data = new HashMap<Object,Object>();
 
-    private String uncapSimpleName;
+    private Function<EntityType, String> variableNameFunction;
+
+    private String modifiedSimpleName;
 
     /**
      * Create a new {@code EntityType} instance for the given type
      *
      * @param type
+     * @param variableNameFunction
      */
-    public EntityType(Type type) {
-        this(type, new LinkedHashSet<Supertype>());
+    public EntityType(Type type, Function<EntityType, String> variableNameFunction) {
+        this(type, new LinkedHashSet<Supertype>(), variableNameFunction);
     }
 
     /**
@@ -66,14 +75,13 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
      *
      * @param type
      * @param superTypes
+     * @param variableNameFunction
      */
-    public EntityType(Type type, Set<Supertype> superTypes) {
+    public EntityType(Type type, Set<Supertype> superTypes, Function<EntityType, String> variableNameFunction) {
         super(type);
-        this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
-        if (JavaSyntaxUtils.isReserved(uncapSimpleName)) {
-            this.uncapSimpleName = uncapSimpleName + "$";
-        }
+        this.modifiedSimpleName = variableNameFunction.apply(this);
         this.superTypes = superTypes;
+        this.variableNameFunction = variableNameFunction;
     }
 
     public void addAnnotation(Annotation annotation) {
@@ -172,8 +180,8 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return superTypes;
     }
 
-    public String getUncapSimpleName() {
-        return uncapSimpleName;
+    public String getModifiedSimpleName() {
+        return modifiedSimpleName;
     }
 
     @Override
@@ -234,10 +242,10 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
 
     private Property validateField(Property field) {
-        if (field.getName().equals(uncapSimpleName) || field.getEscapedName().equals(uncapSimpleName)) {
+        if (field.getName().equals(modifiedSimpleName) || field.getEscapedName().equals(modifiedSimpleName)) {
             do {
-                uncapSimpleName = StringUtils.uncapitalize(getType().getSimpleName()) + (escapeSuffix++);
-            } while (propertyNames.contains(uncapSimpleName));
+                modifiedSimpleName = StringUtils.uncapitalize(getType().getSimpleName()) + (escapeSuffix++);
+            } while (propertyNames.contains(modifiedSimpleName));
         }
         return field;
     }
@@ -253,4 +261,9 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     public Type getInnerType() {
         return type;
     }
+
+    public Function<EntityType, String> getVariableNameFunction() {
+        return variableNameFunction;
+    }
+
 }

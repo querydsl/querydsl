@@ -27,6 +27,7 @@ import javax.persistence.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -66,7 +67,7 @@ public abstract class AbstractDomainExporter {
 
     @SuppressWarnings("unchecked")
     protected final TypeFactory typeFactory = new TypeFactory(Arrays.asList(Entity.class,
-            javax.persistence.MappedSuperclass.class, Embeddable.class));
+            javax.persistence.MappedSuperclass.class, Embeddable.class), new DefaultVariableNameFunction());
 
     private final QueryTypeFactory queryTypeFactory;
 
@@ -84,6 +85,9 @@ public abstract class AbstractDomainExporter {
 
     private final Set<File> generatedFiles = new HashSet<File>();
 
+    private Function<EntityType, String> variableNameFunction;
+
+    @SuppressWarnings("unchecked")
     public AbstractDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             SerializerConfig serializerConfig, Charset charset) {
         this.targetFolder = targetFolder;
@@ -93,11 +97,13 @@ public abstract class AbstractDomainExporter {
         module.bind(CodegenModule.PREFIX, namePrefix);
         module.bind(CodegenModule.SUFFIX, nameSuffix);
         module.bind(CodegenModule.KEYWORDS, Constants.keywords);
+        module.bind(Function.class, DefaultVariableNameFunction.class);
         this.queryTypeFactory = module.get(QueryTypeFactory.class);
         this.typeMappings = module.get(TypeMappings.class);
         this.embeddableSerializer = module.get(EmbeddableSerializer.class);
         this.entitySerializer = module.get(EntitySerializer.class);
         this.supertypeSerializer = module.get(SupertypeSerializer.class);
+        this.variableNameFunction = module.get(Function.class);
     }
 
     /**
@@ -196,7 +202,7 @@ public abstract class AbstractDomainExporter {
         if (allTypes.containsKey(key)) {
             return allTypes.get(key);
         } else {
-            EntityType entityType = new EntityType(type);
+            EntityType entityType = new EntityType(type, variableNameFunction);
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
             Class<?> superClass = key.getSuperclass();
             if (entityType.getSuperType() == null && superClass != null && !superClass.equals(Object.class)) {

@@ -28,8 +28,8 @@ public class TypeMappingsTest {
     @Test
     public void GetPathType_Of_InnerClass() {
         TypeMappings typeMappings = new JavaTypeMappings();
-        EntityType model = new EntityType(new ClassType(TypeMappingsTest.class));
-        EntityType type = new EntityType(new ClassType(Entity.class));
+        EntityType model = new EntityType(new ClassType(TypeMappingsTest.class), new DefaultVariableNameFunction());
+        EntityType type = new EntityType(new ClassType(Entity.class), new DefaultVariableNameFunction());
         typeMappings.register(type, new QueryTypeFactoryImpl("Q","","").create(type));
 
         Type pathType = typeMappings.getPathType(type, model, false);

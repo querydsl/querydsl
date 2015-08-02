@@ -14,7 +14,11 @@
 package com.querydsl.codegen;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Objects;
 import com.mysema.codegen.model.Type;
@@ -81,7 +85,7 @@ public final class Property implements Comparable<Property> {
 
     public Property createCopy(EntityType targetModel) {
         if (!declaringType.getParameters().isEmpty()) {
-            Type newType = TypeResolver.resolve(type, declaringType, targetModel);
+            Type newType = TypeResolver.resolve(type, declaringType, targetModel, targetModel.getVariableNameFunction());
             if (!newType.equals(type) || !newType.getClass().equals(type.getClass())) {
                 return new Property(targetModel, name, newType, inits, false);
             } else {

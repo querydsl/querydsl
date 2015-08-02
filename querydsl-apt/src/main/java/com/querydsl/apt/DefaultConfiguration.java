@@ -24,6 +24,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 
+import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.mysema.codegen.model.ClassType;
@@ -74,6 +75,9 @@ public class DefaultConfiguration implements Configuration {
 
     private boolean strictMode;
 
+    private Function<EntityType, String> variableNameFunction;
+
+    @SuppressWarnings("unchecked")
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
             Map<String, String> options,
@@ -178,8 +182,17 @@ public class DefaultConfiguration implements Configuration {
         }
 
         if (options.containsKey(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)) {
-            module.bind(CodegenModule.QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS, options.get(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS));
+            try {
+                variableNameFunction = (Function<EntityType, String>) Class.forName(options.get(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)).newInstance();
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+               variableNameFunction = new DefaultVariableNameFunction();
+            }
+        } else {
+            variableNameFunction = new DefaultVariableNameFunction();
         }
+        module.bind(Function.class, variableNameFunction);
 
         try {
             // register additional mappings if querydsl-spatial is on the classpath
@@ -469,6 +482,11 @@ public class DefaultConfiguration implements Configuration {
 
     public void setUnknownAsEmbedded(boolean unknownAsEmbedded) {
         this.unknownAsEmbedded = unknownAsEmbedded;
+    }
+
+    @Override
+    public Function<EntityType, String> getVariableNameFunction() {
+        return variableNameFunction;
     }
 
 }

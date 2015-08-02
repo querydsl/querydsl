@@ -21,6 +21,7 @@ import org.junit.Test;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.DefaultVariableNameFunction;
 import com.querydsl.codegen.EntityType;
 
 public class MetaDataTest {
@@ -35,7 +36,7 @@ public class MetaDataTest {
         String className = namingStrategy.getClassName(tableName);
 
         Type classTypeModel = new SimpleType(TypeCategory.ENTITY, packageName + "." + className, packageName, className, false, false);
-        classModel = new EntityType(classTypeModel);
+        classModel = new EntityType(classTypeModel, new DefaultVariableNameFunction());
 //        classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
         classModel.getData().put("table", namingStrategy.normalizeTableName(tableName));
     }

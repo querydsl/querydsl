@@ -28,7 +28,7 @@ public class PropertyTest {
     @Test
     public void Equals_And_HashCode() {
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false,false);
-        EntityType type = new EntityType(typeModel);
+        EntityType type = new EntityType(typeModel, new DefaultVariableNameFunction());
         Property p1 = new Property(type, "property", type, Collections.<String>emptyList());
         Property p2 = new Property(type, "property", type, Collections.<String>emptyList());
         assertEquals(p1, p1);
@@ -39,7 +39,7 @@ public class PropertyTest {
     @Test
     public void EscapedName() {
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false,false);
-        EntityType type = new EntityType(typeModel);
+        EntityType type = new EntityType(typeModel, new DefaultVariableNameFunction());
         Property property = new Property(type, "boolean", type, Collections.<String>emptyList());
         assertEquals("boolean$", property.getEscapedName());
     }

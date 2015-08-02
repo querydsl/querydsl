@@ -170,7 +170,7 @@ final class TypeElementHandler {
 
     public EntityType handleProjectionType(TypeElement e) {
         Type c = typeFactory.getType(e.asType(), true);
-        EntityType entityType = new EntityType(c.as(TypeCategory.ENTITY));
+        EntityType entityType = new EntityType(c.as(TypeCategory.ENTITY), configuration.getVariableNameFunction());
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
         List<? extends Element> elements = e.getEnclosedElements();
         handleConstructors(entityType, elements);

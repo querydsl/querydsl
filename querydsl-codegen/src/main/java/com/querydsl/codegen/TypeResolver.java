@@ -13,6 +13,7 @@
  */
 package com.querydsl.codegen;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -36,20 +37,20 @@ final class TypeResolver {
      * @param context target context of type
      * @return resolved type
      */
-    public static Type resolve(Type type, Type declaringType, EntityType context) {
+    public static Type resolve(Type type, Type declaringType, EntityType context, Function<EntityType, String> variableNameFunction) {
         Type resolved = unwrap(type);
 
         String varName = getVarName(resolved);
         if (varName != null) {
             resolved = resolveVar(resolved, varName, declaringType, context);
         } else if (!resolved.getParameters().isEmpty()) {
-            resolved = resolveWithParameters(resolved, declaringType, context);
+            resolved = resolveWithParameters(resolved, declaringType, context, variableNameFunction);
         }
 
         // rewrap entity type
         if (type instanceof EntityType) {
             if (!unwrap(type).equals(resolved)) {
-                resolved = new EntityType(resolved, ((EntityType) type).getSuperTypes());
+                resolved = new EntityType(resolved, ((EntityType) type).getSuperTypes(), variableNameFunction);
             } else {
                 // reset to original type
                 resolved = type;
@@ -86,13 +87,13 @@ final class TypeResolver {
         }
     }
 
-    private static Type resolveWithParameters(Type type, Type declaringType, EntityType context) {
+    private static Type resolveWithParameters(Type type, Type declaringType, EntityType context, Function<EntityType, String> variableNameFunction) {
         Type[] params = new Type[type.getParameters().size()];
         boolean transformed = false;
         for (int i = 0; i < type.getParameters().size(); i++) {
             Type param = type.getParameters().get(i);
             if (param != null && !param.getFullName().equals(type.getFullName())) {
-                params[i] = resolve(param, declaringType, context);
+                params[i] = resolve(param, declaringType, context, variableNameFunction);
                 if (!params[i].equals(param)) {
                     transformed = true;
                 }

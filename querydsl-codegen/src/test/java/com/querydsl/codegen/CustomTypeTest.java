@@ -32,14 +32,14 @@ public class CustomTypeTest {
 
     private final TypeMappings typeMappings = new JavaTypeMappings();
 
-    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet(), DefaultVariableNameFunction.class.getCanonicalName());
+    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet());
 
     private final StringWriter writer = new StringWriter();
 
     @Test
     public void CustomType() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
-        EntityType entityType = new EntityType(type);
+        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
         entityType.addProperty(new Property(entityType, "property", new ClassType(Double[].class)));
         typeMappings.register(new ClassType(Double[].class), new ClassType(Point.class));
         typeMappings.register(entityType, queryTypeFactory.create(entityType));

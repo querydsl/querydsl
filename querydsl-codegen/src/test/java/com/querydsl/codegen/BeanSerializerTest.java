@@ -41,7 +41,7 @@ public class BeanSerializerTest {
     @Before
     public void setUp() {
         typeModel = new SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false,false);
-        type = new EntityType(typeModel);
+        type = new EntityType(typeModel, new DefaultVariableNameFunction());
     }
 
     @Test

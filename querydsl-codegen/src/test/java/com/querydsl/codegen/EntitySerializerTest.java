@@ -35,7 +35,7 @@ public class EntitySerializerTest {
 
     private final TypeMappings typeMappings = new JavaTypeMappings();
 
-    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet(), DefaultVariableNameFunction.class.getCanonicalName());
+    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet());
 
     private final StringWriter writer = new StringWriter();
 
@@ -45,7 +45,7 @@ public class EntitySerializerTest {
 
     @Test
     public void Javadocs_For_InnerClass() throws IOException {
-        EntityType entityType = new EntityType(new ClassType(Entity.class));
+        EntityType entityType = new EntityType(new ClassType(Entity.class), new DefaultVariableNameFunction());
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
@@ -56,7 +56,7 @@ public class EntitySerializerTest {
     public void Different_Package() throws IOException {
         queryTypeFactory = new QueryTypeFactoryImpl("Q", "", ".gen");
 
-        EntityType entityType = new EntityType(new ClassType(Entity.class));
+        EntityType entityType = new EntityType(new ClassType(Entity.class), new DefaultVariableNameFunction());
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
@@ -68,7 +68,7 @@ public class EntitySerializerTest {
     @Test
     public void No_Package() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
-        EntityType entityType = new EntityType(type);
+        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
@@ -90,7 +90,7 @@ public class EntitySerializerTest {
 
         for (Map.Entry<TypeCategory, String> entry : categoryToSuperClass.entrySet()) {
             SimpleType type = new SimpleType(entry.getKey(), "Entity", "", "Entity",false,false);
-            EntityType entityType = new EntityType(type);
+            EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
             serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
@@ -102,7 +102,7 @@ public class EntitySerializerTest {
     @Test
     public void Correct_Superclass() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "java.util.Locale", "java.util", "Locale",false,false);
-        EntityType entityType = new EntityType(type);
+        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
@@ -113,7 +113,7 @@ public class EntitySerializerTest {
     @Test
     public void Primitive_Array() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
-        EntityType entityType = new EntityType(type);
+        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
         entityType.addProperty(new Property(entityType, "bytes", new ClassType(byte[].class)));
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("public final SimplePath<byte[]> bytes"));
@@ -122,7 +122,7 @@ public class EntitySerializerTest {
     @Test
     public void Include() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
-        EntityType entityType = new EntityType(type);
+        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
         entityType.addProperty(new Property(entityType, "b", new ClassType(TypeCategory.BOOLEAN, Boolean.class)));
         entityType.addProperty(new Property(entityType, "c", new ClassType(TypeCategory.COMPARABLE, String.class)));
         entityType.addProperty(new Property(entityType, "cu", new ClassType(TypeCategory.CUSTOM, PropertyType.class)));
@@ -133,7 +133,7 @@ public class EntitySerializerTest {
         entityType.addProperty(new Property(entityType, "s", new ClassType(TypeCategory.STRING, String.class)));
         entityType.addProperty(new Property(entityType, "t", new ClassType(TypeCategory.TIME, Time.class)));
 
-        EntityType subType = new EntityType(new SimpleType(TypeCategory.ENTITY, "Entity2", "", "Entity2",false,false));
+        EntityType subType = new EntityType(new SimpleType(TypeCategory.ENTITY, "Entity2", "", "Entity2",false,false), new DefaultVariableNameFunction());
         subType.include(new Supertype(type,entityType));
 
         serializer.serialize(subType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
@@ -143,7 +143,7 @@ public class EntitySerializerTest {
     @Test
     public void Properties() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
-        EntityType entityType = new EntityType(type);
+        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
         entityType.addProperty(new Property(entityType, "b", new ClassType(TypeCategory.BOOLEAN, Boolean.class)));
         entityType.addProperty(new Property(entityType, "c", new ClassType(TypeCategory.COMPARABLE, String.class)));
         entityType.addProperty(new Property(entityType, "cu", new ClassType(TypeCategory.CUSTOM, PropertyType.class)));
@@ -160,9 +160,9 @@ public class EntitySerializerTest {
 
     @Test
     public void SuperType() throws IOException {
-        EntityType superType = new EntityType(new SimpleType(TypeCategory.ENTITY, "Entity2", "", "Entity2",false,false));
+        EntityType superType = new EntityType(new SimpleType(TypeCategory.ENTITY, "Entity2", "", "Entity2",false,false), new DefaultVariableNameFunction());
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
-        EntityType entityType = new EntityType(type, Collections.singleton(new Supertype(superType, superType)));
+        EntityType entityType = new EntityType(type, Collections.singleton(new Supertype(superType, superType)), new DefaultVariableNameFunction());
         typeMappings.register(superType, queryTypeFactory.create(superType));
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
@@ -173,7 +173,7 @@ public class EntitySerializerTest {
     @Test
     public void Delegates() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
-        EntityType entityType = new EntityType(type);
+        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
         Delegate delegate = new Delegate(type, type, "test", Collections.<Parameter>emptyList(), Types.STRING);
         entityType.addDelegate(delegate);
 

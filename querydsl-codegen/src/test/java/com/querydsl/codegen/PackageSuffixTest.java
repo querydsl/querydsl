@@ -31,14 +31,14 @@ public class PackageSuffixTest {
 
     private final TypeMappings typeMappings = new JavaTypeMappings();
 
-    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet(), DefaultVariableNameFunction.class.getCanonicalName());
+    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet());
 
     private final StringWriter writer = new StringWriter();
 
     @Test
     public void Correct_Imports() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "test.Entity", "test", "Entity",false,false);
-        EntityType entityType = new EntityType(type);
+        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
