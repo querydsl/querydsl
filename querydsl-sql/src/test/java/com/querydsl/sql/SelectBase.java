@@ -216,6 +216,14 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Between() {
+        // 11-13
+        assertEquals(ImmutableList.of(11, 12, 13),
+                query().from(employee).where(employee.id.between(11, 13)).orderBy(employee.id.asc())
+                       .select(employee.id).fetch());
+    }
+
+    @Test
     @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DB2, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void Boolean_All() {
         assertTrue(query().from(employee).select(SQLExpressions.all(employee.firstname.isNotNull())).fetchOne());
