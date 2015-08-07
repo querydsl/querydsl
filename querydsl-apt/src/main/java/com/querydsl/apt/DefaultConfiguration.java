@@ -193,7 +193,7 @@ public class DefaultConfiguration implements Configuration {
             variableNameFunction = new DefaultVariableNameFunction();
         }
         module.bind(CodegenModule.VARIABLE_NAME_FUNCTION_CLASS, variableNameFunction);
-        
+
         try {
             // register additional mappings if querydsl-spatial is on the classpath
             Class.forName("com.querydsl.spatial.GeometryExpression");
