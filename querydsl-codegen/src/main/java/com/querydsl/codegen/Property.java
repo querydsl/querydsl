@@ -85,7 +85,7 @@ public final class Property implements Comparable<Property> {
 
     public Property createCopy(EntityType targetModel) {
         if (!declaringType.getParameters().isEmpty()) {
-            Type newType = TypeResolver.resolve(type, declaringType, targetModel, targetModel.getVariableNameFunction());
+            Type newType = TypeResolver.resolve(type, declaringType, targetModel);
             if (!newType.equals(type) || !newType.getClass().equals(type.getClass())) {
                 return new Property(targetModel, name, newType, inits, false);
             } else {

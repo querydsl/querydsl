@@ -108,7 +108,7 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
 
   def writeCompanionObject(model: EntityType, queryType: Type, writer: ScalaWriter) = {
     val queryTypeName = writer.getRawName(queryType)
-    val variable = model.getModifiedSimpleName
+    val variable = model.getUncapSimpleName
 
     writer.beginObject(queryTypeName + " extends "+queryTypeName+"(\""+variable+"\")")
     writer.line("override def as(variable: String) = new ", queryTypeName, "(variable)")

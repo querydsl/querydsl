@@ -97,7 +97,6 @@ public abstract class AbstractDomainExporter {
         module.bind(CodegenModule.PREFIX, namePrefix);
         module.bind(CodegenModule.SUFFIX, nameSuffix);
         module.bind(CodegenModule.KEYWORDS, Constants.keywords);
-        module.bind(Function.class, DefaultVariableNameFunction.class);
         this.queryTypeFactory = module.get(QueryTypeFactory.class);
         this.typeMappings = module.get(TypeMappings.class);
         this.embeddableSerializer = module.get(EmbeddableSerializer.class);

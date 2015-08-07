@@ -192,7 +192,6 @@ public class DefaultConfiguration implements Configuration {
         } else {
             variableNameFunction = new DefaultVariableNameFunction();
         }
-        module.bind(Function.class, variableNameFunction);
 
         try {
             // register additional mappings if querydsl-spatial is on the classpath

@@ -55,7 +55,7 @@ object Serializer {
     val queryType = typeMappings.getPathType(model, model, true)
     val modelName = writer.getRawName(model)
     val queryTypeName = writer.getRawName(queryType)
-    val variable = model.getModifiedSimpleName
+    val variable = model.getUncapSimpleName
 
     writer.beginObject(modelName + " extends "+queryTypeName+"(\""+variable+"\")")
     writer.line("override def as(variable: String) = new ", queryTypeName, "(variable)")

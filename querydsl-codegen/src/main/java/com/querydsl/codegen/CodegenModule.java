@@ -15,8 +15,6 @@ package com.querydsl.codegen;
 
 import java.util.Collections;
 
-import com.google.common.base.Function;
-
 /**
  * {@code CodegenModule} provides a module for general serialization
  *
@@ -50,6 +48,11 @@ public class CodegenModule  extends AbstractModule {
      */
     public static final String IMPORTS = "imports";
 
+    /**
+     * key for the custom imports set
+     */
+    public static final String VARIABLE_NAME_FUNCTION_CLASS = "variableNameFunction";
+
     @Override
     protected void configure() {
         bind(TypeMappings.class, JavaTypeMappings.class);
@@ -58,7 +61,6 @@ public class CodegenModule  extends AbstractModule {
         bind(EmbeddableSerializer.class);
         bind(ProjectionSerializer.class);
         bind(SupertypeSerializer.class);
-        bind(Function.class, DefaultVariableNameFunction.class);
 
         // configuration for QueryTypeFactory
         bind(PREFIX, "Q");
@@ -66,6 +68,7 @@ public class CodegenModule  extends AbstractModule {
         bind(PACKAGE_SUFFIX, "");
         bind(KEYWORDS, Collections.<String>emptySet());
         bind(IMPORTS, Collections.<String>emptySet());
+        bind(VARIABLE_NAME_FUNCTION_CLASS, new DefaultVariableNameFunction());
     }
 
 }

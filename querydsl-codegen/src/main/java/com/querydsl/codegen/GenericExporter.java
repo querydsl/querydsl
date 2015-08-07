@@ -203,7 +203,7 @@ public class GenericExporter {
     private void innerExport() {
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
-        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation), codegenModule.get(Function.class));
+        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation), codegenModule.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
 
         // copy annotations helpers to typeFactory
         for (AnnotationHelper helper : annotationHelpers) {

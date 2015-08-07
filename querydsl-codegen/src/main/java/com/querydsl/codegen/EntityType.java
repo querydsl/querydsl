@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Function;
 import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeAdapter;
 import com.mysema.codegen.model.TypeCategory;
@@ -56,9 +57,16 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     private final Map<Object, Object> data = new HashMap<Object,Object>();
 
-    private Function<EntityType, String> variableNameFunction;
-
     private String modifiedSimpleName;
+
+    /**
+     * Create a new {@code EntityType} instance for the given type
+     *
+     * @param type
+     */
+    public EntityType(Type type) {
+        this(type, new DefaultVariableNameFunction());
+    }
 
     /**
      * Create a new {@code EntityType} instance for the given type
@@ -67,7 +75,20 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
      * @param variableNameFunction
      */
     public EntityType(Type type, Function<EntityType, String> variableNameFunction) {
-        this(type, new LinkedHashSet<Supertype>(), variableNameFunction);
+        this(type, new LinkedHashSet<Supertype>());
+        this.modifiedSimpleName = variableNameFunction.apply(this);
+    }
+
+    /**
+     * Create a new {@code EntityType} instance for the given type and superTypes
+     *
+     * @param type
+     * @param superTypes
+     */
+    public EntityType(Type type, Set<Supertype> superTypes) {
+        super(type);
+        this.superTypes = superTypes;
+        this.modifiedSimpleName = new DefaultVariableNameFunction().apply(this);
     }
 
     /**
@@ -77,11 +98,10 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
      * @param superTypes
      * @param variableNameFunction
      */
-    public EntityType(Type type, Set<Supertype> superTypes, Function<EntityType, String> variableNameFunction) {
+    public EntityType(SimpleType type, Set<Supertype> superTypes, DefaultVariableNameFunction variableNameFunction) {
         super(type);
-        this.modifiedSimpleName = variableNameFunction.apply(this);
         this.superTypes = superTypes;
-        this.variableNameFunction = variableNameFunction;
+        this.modifiedSimpleName = variableNameFunction.apply(this);
     }
 
     public void addAnnotation(Annotation annotation) {
@@ -180,6 +200,14 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return superTypes;
     }
 
+    /**
+     * Use {@link #getModifiedSimpleName()}
+     */
+    @Deprecated
+    public String getUncapSimpleName() {
+        return modifiedSimpleName;
+    }
+
     public String getModifiedSimpleName() {
         return modifiedSimpleName;
     }
@@ -260,10 +288,6 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     public Type getInnerType() {
         return type;
-    }
-
-    public Function<EntityType, String> getVariableNameFunction() {
-        return variableNameFunction;
     }
 
 }

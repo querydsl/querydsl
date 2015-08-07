@@ -38,7 +38,7 @@ public class PackageSuffixTest {
     @Test
     public void Correct_Imports() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "test.Entity", "test", "Entity",false,false);
-        EntityType entityType = new EntityType(type, new DefaultVariableNameFunction());
+        EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));

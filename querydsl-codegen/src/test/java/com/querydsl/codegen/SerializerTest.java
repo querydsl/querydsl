@@ -38,7 +38,7 @@ public class SerializerTest {
     public void setUp() {
         // type
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false, false);
-        type = new EntityType(typeModel, new DefaultVariableNameFunction());
+        type = new EntityType(typeModel);
 
         // property
         type.addProperty(new Property(type, "entityField", type));
