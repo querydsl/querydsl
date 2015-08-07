@@ -22,7 +22,7 @@ class ScalaMetaDataSerializerTest {
     // type
     val typeModel = new SimpleType(TypeCategory.ENTITY,
         "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false, false)
-    entityType = new EntityType(typeModel, new DefaultVariableNameFunction())
+    entityType = new EntityType(typeModel)
     //entityType.addAnnotation(new TableImpl("DOMAIN_TYPE"))
     entityType.getData.put("table", "DOMAIN_TYPE")
 

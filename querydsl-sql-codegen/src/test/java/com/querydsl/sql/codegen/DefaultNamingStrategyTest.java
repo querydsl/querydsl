@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.model.Types;
-import com.querydsl.codegen.DefaultVariableNameFunction;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 
@@ -31,7 +30,7 @@ public class DefaultNamingStrategyTest {
 
     @Before
     public void setUp() {
-        entityModel = new EntityType(Types.OBJECT, new DefaultVariableNameFunction());
+        entityModel = new EntityType(Types.OBJECT);
         //entityModel.addAnnotation(new TableImpl("OBJECT"));
         entityModel.getData().put("table", "OBJECT");
     }

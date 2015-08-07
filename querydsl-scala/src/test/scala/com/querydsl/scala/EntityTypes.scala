@@ -10,7 +10,7 @@ object EntityTypes {
 
     val typeModel = new SimpleType(TypeCategory.ENTITY,
         "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false, false)
-    val entityType = new EntityType(typeModel, new DefaultVariableNameFunction())
+    val entityType = new EntityType(typeModel)
 
     // properties
     for ( (name, clazz) <- List(

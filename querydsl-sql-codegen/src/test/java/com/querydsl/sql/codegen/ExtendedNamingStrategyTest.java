@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.model.Types;
-import com.querydsl.codegen.DefaultVariableNameFunction;
 import com.querydsl.codegen.EntityType;
 
 public class ExtendedNamingStrategyTest {
@@ -30,7 +29,7 @@ public class ExtendedNamingStrategyTest {
 
     @Before
     public void setUp() {
-        entityModel = new EntityType(Types.OBJECT, new DefaultVariableNameFunction());
+        entityModel = new EntityType(Types.OBJECT);
         //entityModel.addAnnotation(new TableImpl("OBJECT"));
         entityModel.getData().put("table", "OBJECT");
     }

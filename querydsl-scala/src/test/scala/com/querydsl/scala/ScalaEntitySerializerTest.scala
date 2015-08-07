@@ -17,7 +17,7 @@ class ScalaEntitySerializerTest {
   @Before
   def setUp() {
     val typeModel = new ClassType(TypeCategory.ENTITY, classOf[Person])
-    entityType = new EntityType(typeModel, new DefaultVariableNameFunction())
+    entityType = new EntityType(typeModel)
     for ( (name, t) <- List(
         ("scalaInt", Types.INT),
         ("javaInt", Types.INTEGER),
