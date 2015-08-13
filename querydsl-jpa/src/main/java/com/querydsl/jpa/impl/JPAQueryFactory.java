@@ -21,6 +21,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.JPQLTemplates;
 
@@ -112,7 +113,17 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
+    public <T> JPQLQuery<Tuple> selectFrom(EntityPath<T>... from) {
+        return select(from).from(from);
+    }
+
+    @Override
     public JPAQuery<?> from(EntityPath<?> from) {
+        return query().from(from);
+    }
+
+    @Override
+    public JPQLQuery<?> from(EntityPath<?>... from) {
         return query().from(from);
     }
 
