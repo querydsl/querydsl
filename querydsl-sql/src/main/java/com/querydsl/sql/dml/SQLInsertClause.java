@@ -333,7 +333,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
                 listeners.preExecute(context);
                 stmt.executeUpdate();
-                listeners.preExecute(context);
+                listeners.executed(context);
             } else {
                 Collection<PreparedStatement> stmts = createStatements(true);
                 if (stmts != null && stmts.size() > 1) {
