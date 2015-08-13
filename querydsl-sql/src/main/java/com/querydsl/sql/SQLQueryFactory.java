@@ -59,7 +59,14 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
     }
 
     public SQLQueryFactory(Configuration configuration, DataSource dataSource) {
+        this(configuration, dataSource, true);
+    }
+
+    public SQLQueryFactory(Configuration configuration, DataSource dataSource, boolean release) {
         super(configuration, new DataSourceProvider(dataSource));
+        if (release) {
+            configuration.addListener(SQLCloseListener.DEFAULT);
+        }
     }
 
     @Override
