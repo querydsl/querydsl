@@ -77,6 +77,13 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean handleMethods = true;
 
     /**
+     * switch for usage of field types instead of getter types
+     *
+     * @parameter default-value-false
+     */
+    private boolean useFieldTypes = false;
+
+    /**
      * maven project
      *
      * @parameter default-value="${project}"
@@ -135,9 +142,9 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         if (scala) {
             try {
                 exporter.setSerializerClass((Class<? extends Serializer>) Class
-                        .forName("com.querydsl.scala.ScalaEntitySerializer"));
+                                                                               .forName("com.querydsl.scala.ScalaEntitySerializer"));
                 exporter.setTypeMappingsClass((Class<? extends TypeMappings>) Class
-                        .forName("com.querydsl.scala.ScalaTypeMappings"));
+                                                                                   .forName("com.querydsl.scala.ScalaTypeMappings"));
                 exporter.setCreateScalaSources(true);
             } catch (ClassNotFoundException e) {
                 throw new MojoFailureException(e.getMessage(), e);
@@ -154,11 +161,12 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     protected void configure(GenericExporter exporter) {
         exporter.setHandleFields(handleFields);
         exporter.setHandleMethods(handleMethods);
+        exporter.setUseFieldTypes(useFieldTypes);
     }
 
     @SuppressWarnings("unchecked")
     protected ClassLoader getProjectClassLoader() throws DependencyResolutionRequiredException,
-            MalformedURLException {
+                                                 MalformedURLException {
         List<String> classpathElements;
         if (testClasspath) {
             classpathElements = project.getTestClasspathElements();
@@ -179,7 +187,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean hasSourceChanges() {
         if (buildContext != null) {
             List sourceRoots = testClasspath ? project.getTestCompileSourceRoots() :
-                                               project.getCompileSourceRoots();
+                                            project.getCompileSourceRoots();
             for (Object path : sourceRoots) {
                 if (buildContext.hasDelta(new File(path.toString()))) {
                     return true;
@@ -225,5 +233,9 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
 
     public void setHandleMethods(boolean handleMethods) {
         this.handleMethods = handleMethods;
+    }
+
+    public void setUseFieldTypes(boolean useFieldTypes) {
+        this.useFieldTypes = useFieldTypes;
     }
 }
