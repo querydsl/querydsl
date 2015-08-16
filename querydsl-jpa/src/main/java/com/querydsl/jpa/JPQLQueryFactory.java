@@ -94,15 +94,6 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<?>> {
     <T> JPQLQuery<T> selectFrom(EntityPath<T> from);
 
     /**
-     * Create a new JPQLQuery instance with the given source and projection
-     *
-     * @param from projection and source
-     * @param <T>
-     * @return select(from).from(from)
-     */
-    <T> JPQLQuery<Tuple> selectFrom(EntityPath<T>... from);
-
-    /**
      * Create a new Query with the given source
      *
      * @param from from

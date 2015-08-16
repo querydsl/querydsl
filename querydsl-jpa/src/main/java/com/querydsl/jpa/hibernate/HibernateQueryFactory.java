@@ -102,11 +102,6 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
     }
 
     @Override
-    public <T> JPQLQuery<Tuple> selectFrom(EntityPath<T>... from) {
-        return select(from).from(from);
-    }
-
-    @Override
     public HibernateQuery<?> from(EntityPath<?> from) {
         return query().from(from);
     }

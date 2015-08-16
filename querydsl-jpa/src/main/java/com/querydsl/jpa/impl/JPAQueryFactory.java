@@ -113,11 +113,6 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
-    public <T> JPQLQuery<Tuple> selectFrom(EntityPath<T>... from) {
-        return select(from).from(from);
-    }
-
-    @Override
     public JPAQuery<?> from(EntityPath<?> from) {
         return query().from(from);
     }
