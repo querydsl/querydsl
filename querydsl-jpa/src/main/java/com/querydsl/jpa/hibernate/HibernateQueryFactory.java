@@ -15,7 +15,6 @@ package com.querydsl.jpa.hibernate;
 
 import javax.inject.Provider;
 
-import com.querydsl.jpa.JPQLQuery;
 import org.hibernate.Session;
 
 import com.querydsl.core.Tuple;
