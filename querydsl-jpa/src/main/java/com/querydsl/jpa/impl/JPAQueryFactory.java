@@ -118,7 +118,7 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
-    public JPQLQuery<?> from(EntityPath<?>... from) {
+    public JPAQuery<?> from(EntityPath<?>... from) {
         return query().from(from);
     }
 
