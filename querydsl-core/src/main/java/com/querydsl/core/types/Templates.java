@@ -30,6 +30,7 @@ public class Templates {
      */
     protected static class Precedence {
         public static final int HIGHEST = -1;
+        public static final int DOT = 5;
         public static final int NOT_HIGH = 10;
         public static final int NEGATE = 20;
         public static final int ARITH_HIGH = 30;
