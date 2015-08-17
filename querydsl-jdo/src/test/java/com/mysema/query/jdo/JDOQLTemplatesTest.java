@@ -5,9 +5,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.TemplatesTestUtils;
+import com.mysema.query.types.path.StringPath;
 
 public class JDOQLTemplatesTest {
 
@@ -53,5 +56,15 @@ public class JDOQLTemplatesTest {
     @Test
     public void Generic_Precedence() {
         TemplatesTestUtils.testPrecedence(JDOQLTemplates.DEFAULT);
+    }
+
+    @Test
+    public void Concat() {
+        StringPath a = Expressions.stringPath("a");
+        StringPath b = Expressions.stringPath("b");
+        StringPath c = Expressions.stringPath("c");
+        Expression<?> expr = a.append(b).toLowerCase();
+        String str = new JDOQLSerializer(JDOQLTemplates.DEFAULT, c).handle(expr).toString();
+        assertEquals("(a + b).toLowerCase()", str);
     }
 }
