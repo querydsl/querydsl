@@ -1,9 +1,10 @@
 package com.querydsl.example.sql.repository;
 
 import com.querydsl.example.sql.guice.ConnectionContext;
+import com.querydsl.core.types.Expression;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.RelationalPath;
-import com.querydsl.sql.SQLQueryFactory;
+import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.dml.SQLDeleteClause;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.dml.SQLUpdateClause;
@@ -26,8 +27,12 @@ public abstract class AbstractRepository {
         return context.getConnection();
     }
 
-    protected SQLQueryFactory queryFactory() {
-        return new SQLQueryFactory(configuration, datasource);
+    protected <T> SQLQuery<T> selectFrom(RelationalPath<T> entity) {
+        return select(entity).from(entity);
+    }
+
+    protected <T> SQLQuery<T> select(Expression<T> entity) {
+        return new SQLQuery<Void>(getConnection(), configuration).select(entity);
     }
 
     protected SQLInsertClause insert(RelationalPath<?> path) {
