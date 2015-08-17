@@ -183,12 +183,12 @@ public class AntMetaDataExporter extends Task {
     /**
      * export tables
      */
-    private boolean exportTables;
+    private boolean exportTables = true;
 
     /**
      * export views
      */
-    private boolean exportViews;
+    private boolean exportViews = true;
 
     /**
      * export all
@@ -198,12 +198,12 @@ public class AntMetaDataExporter extends Task {
     /**
      * export primary keys
      */
-    private boolean exportPrimaryKeys;
+    private boolean exportPrimaryKeys = true;
 
     /**
      * export foreign keys
      */
-    private boolean exportForeignKeys;
+    private boolean exportForeignKeys = true;
 
     /**
      * override default column order (default: alphabetical)
