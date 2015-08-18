@@ -1,10 +1,11 @@
 package com.querydsl.example.jpa.repository;
 
 import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
 import com.querydsl.example.jpa.model.Identifiable;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.impl.JPADeleteClause;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -15,8 +16,12 @@ public abstract class AbstractRepository<T extends Identifiable> implements Repo
     @Inject
     private Provider<EntityManager> em;
 
-    protected JPAQueryFactory queryFactory() {
-        return new JPAQueryFactory(HQLTemplates.DEFAULT, em);
+    protected <T> JPAQuery<T> selectFrom(EntityPath<T> entity) {
+        return select(entity).from(entity);
+    }
+
+    protected <T> JPAQuery<T> select(Expression<T> select) {
+        return new JPAQuery<>(em.get(), HQLTemplates.DEFAULT).select(select);
     }
 
     protected JPADeleteClause delete(EntityPath<?> entity) {

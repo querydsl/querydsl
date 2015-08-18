@@ -21,6 +21,6 @@ public class TweetRepository extends AbstractRepository<Tweet> {
     }
 
     public List<Tweet> findAll(Predicate expr) {
-        return queryFactory().selectFrom(tweet).where(expr).fetch();
+        return selectFrom(tweet).where(expr).fetch();
     }
 }

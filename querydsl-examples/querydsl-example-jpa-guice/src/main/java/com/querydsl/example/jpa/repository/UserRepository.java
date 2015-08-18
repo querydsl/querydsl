@@ -21,10 +21,10 @@ public class UserRepository extends AbstractRepository<User> {
     }
 
     public List<User> findAll(Predicate expr) {
-        return queryFactory().selectFrom(user).where(expr).fetch();
+        return selectFrom(user).where(expr).fetch();
     }
 
     public List<User> all() {
-        return queryFactory().selectFrom(user).fetch();
+        return selectFrom(user).fetch();
     }
 }
