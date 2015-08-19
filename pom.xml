@@ -26,8 +26,8 @@
   </licenses>
   
   <scm>
-    <connection>scm:git:git@github.com:mysema/codegen.git</connection>
-    <url>git@github.com:mysema/codegen.git</url>
+    <connection>scm:git:git@github.com:querydsl/codegen.git</connection>
+    <url>git@github.com:querydsl/codegen.git</url>
   </scm>    
   
   <properties>
