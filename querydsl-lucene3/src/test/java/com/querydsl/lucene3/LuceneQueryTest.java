@@ -134,6 +134,11 @@ public class LuceneQueryTest {
     }
 
     @Test
+    public void Between() {
+        assertEquals(3, query.where(year.between(1950, 1990)).fetchCount());
+    }
+
+    @Test
     public void Count_Empty_Where_Clause() {
         assertEquals(4, query.fetchCount());
     }

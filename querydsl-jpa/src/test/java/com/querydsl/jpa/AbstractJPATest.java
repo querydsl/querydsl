@@ -301,6 +301,12 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Between() {
+        assertEquals(ImmutableList.of(2, 3, 4, 5),
+                query().from(cat).where(cat.id.between(2, 5)).orderBy(cat.id.asc()).select(cat.id).fetch());
+    }
+
+    @Test
     @NoBatooJPA
     public void Case() {
         assertEquals(ImmutableList.of(1, 2, 2, 2, 2, 2),
