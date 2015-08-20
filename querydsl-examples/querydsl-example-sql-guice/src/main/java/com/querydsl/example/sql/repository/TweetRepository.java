@@ -40,19 +40,19 @@ public class TweetRepository extends AbstractRepository {
 
     @Transactional
     public Tweet findById(Long id) {
-        return queryFactory().selectFrom(tweet).where(tweet.id.eq(id)).fetchOne();
+        return selectFrom(tweet).where(tweet.id.eq(id)).fetchOne();
     }
 
     @Transactional
     public List<Tweet> findOfUser(String username) {
-        return queryFactory().select(tweet).from(user)
+        return select(tweet).from(user)
                 .innerJoin(tweet).on(tweet.posterId.eq(user.id))
                 .fetch();
     }
 
     @Transactional
     public List<Tweet> findWithMentioned(Long userId) {
-        return queryFactory().selectFrom(tweet)
+        return selectFrom(tweet)
                 .innerJoin(tweetUser).on(tweet.id.eq(tweetUser.tweetId))
                 .where(tweetUser.mentionsId.eq(userId))
                 .fetch();
@@ -60,7 +60,7 @@ public class TweetRepository extends AbstractRepository {
 
     @Transactional
     public List<Tweet> findOfArea(double[] pointA, double[] pointB) {
-        return queryFactory().selectFrom(tweet)
+        return selectFrom(tweet)
                 .innerJoin(location).on(tweet.locationId.eq(location.id))
                 .where(location.longitude.between(pointA[0], pointB[0]),
                        location.latitude.between(pointA[1], pointB[1]))
@@ -69,6 +69,6 @@ public class TweetRepository extends AbstractRepository {
 
     @Transactional
     public List<Tweet> findAll(Predicate expr) {
-        return queryFactory().selectFrom(tweet).where(expr).fetch();
+        return selectFrom(tweet).where(expr).fetch();
     }
 }

@@ -13,7 +13,7 @@ import static com.querydsl.example.sql.model.QUser.user;
 public class UserRepository extends AbstractRepository {
     @Transactional
     public User findById(Long id) {
-        return queryFactory().selectFrom(user).where(user.id.eq(id)).fetchOne();
+        return selectFrom(user).where(user.id.eq(id)).fetchOne();
     }
 
     @Transactional
@@ -28,7 +28,7 @@ public class UserRepository extends AbstractRepository {
 
     @Transactional
     public List<UserInfo> allWithTweetCount() {
-        return queryFactory().select(Projections.constructor(UserInfo.class, user.username, tweet.id.count())).from(user)
+        return select(Projections.constructor(UserInfo.class, user.username, tweet.id.count())).from(user)
                 .leftJoin(tweet).on(user.id.eq(tweet.posterId))
                 .groupBy(user.username)
                 .fetch();
@@ -36,12 +36,12 @@ public class UserRepository extends AbstractRepository {
 
     @Transactional
     public List<User> findAll(Predicate expr) {
-        return queryFactory().selectFrom(user).where(expr).fetch();
+        return selectFrom(user).where(expr).fetch();
     }
 
     @Transactional
     public List<User> all() {
-        return queryFactory().selectFrom(user).fetch();
+        return selectFrom(user).fetch();
     }
 
 }
