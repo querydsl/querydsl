@@ -95,9 +95,10 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
      * @param exprs
      * @return
      */
-    public PostgreSQLQuery<T> distinct(Expression<?>... exprs) {
-        return addFlag(Position.AFTER_SELECT, Expressions
-            .template(Object.class, "distinct on({0}) ", ExpressionUtils.list(Object.class, exprs)));
+    public PostgreSQLQuery<T> distinctOn(Expression<?>... exprs) {
+        return addFlag(Position.AFTER_SELECT,
+            Expressions.template(Object.class, "distinct on({0}) ",
+            ExpressionUtils.list(Object.class, exprs)));
     }
 
 
