@@ -55,6 +55,7 @@ public class AntMetaDataExporterTest {
         exporter.execute();
 
         assertTrue(new File("target/AntMetaDataExporterTest").exists());
+        assertTrue(new File("target/AntMetaDataExporterTest/test/QTest.java").exists());
     }
 
     @Test
@@ -66,13 +67,15 @@ public class AntMetaDataExporterTest {
         exporter.setPackageName("test");
         exporter.setTargetFolder("target/AntMetaDataExporterTest2");
         exporter.setExportBeans(true);
-        exporter.setNamePrefix("");
-        exporter.setNameSuffix("Q");
+        exporter.setNamePrefix("Q");
+        exporter.setNameSuffix("");
         exporter.setBeanPrefix("");
         exporter.setBeanSuffix("Bean");
         exporter.execute();
 
         assertTrue(new File("target/AntMetaDataExporterTest2").exists());
+        assertTrue(new File("target/AntMetaDataExporterTest2/test/QTest.java").exists());
+        assertTrue(new File("target/AntMetaDataExporterTest2/test/TestBean.java").exists());
     }
 
 
@@ -85,13 +88,15 @@ public class AntMetaDataExporterTest {
         exporter.setPackageName("test");
         exporter.setTargetFolder("target/AntMetaDataExporterTest3");
         exporter.setExportBeans(true);
-        exporter.setNamePrefix("");
-        exporter.setNameSuffix("Q");
+        exporter.setNamePrefix("Q");
+        exporter.setNameSuffix("");
         exporter.setBeanPrefix("");
         exporter.setBeanSuffix("Bean");
         exporter.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
         exporter.execute();
 
         assertTrue(new File("target/AntMetaDataExporterTest3").exists());
+        assertTrue(new File("target/AntMetaDataExporterTest3/test/QTest.java").exists());
+        assertTrue(new File("target/AntMetaDataExporterTest3/test/TestBean.java").exists());
     }
 }
