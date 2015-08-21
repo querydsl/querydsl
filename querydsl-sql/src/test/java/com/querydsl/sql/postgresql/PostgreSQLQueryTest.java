@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.querydsl.sql.PostgreSQLTemplates;
+import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
 
 public class PostgreSQLQueryTest {
@@ -13,6 +14,8 @@ public class PostgreSQLQueryTest {
     private PostgreSQLQuery<?> query;
 
     private QSurvey survey = new QSurvey("survey");
+
+    private QEmployee employee = new QEmployee("employee");
 
     @Before
     public void setUp() {
@@ -23,6 +26,7 @@ public class PostgreSQLQueryTest {
     public void Syntax() {
 //        [ WITH [ RECURSIVE ] with_query [, ...] ]
 //        SELECT [ ALL | DISTINCT [ ON ( expression [, ...] ) ] ]
+        query.distinct(survey.name);
 //            * | expression [ [ AS ] output_name ] [, ...]
 //            [ FROM from_item [, ...] ]
         query.from(survey);
@@ -83,6 +87,18 @@ public class PostgreSQLQueryTest {
     public void ForUpdate_Of() {
         query.from(survey).forUpdate().of(survey);
         assertEquals("from SURVEY survey for update of SURVEY", toString(query));
+    }
+
+    @Test
+    public void Distinct_On() {
+        query.from(employee)
+            .distinct(employee.datefield, employee.timefield)
+            .orderBy(employee.datefield.asc(), employee.timefield.asc(), employee.salary.asc())
+            .select(employee.id);
+
+        assertEquals(
+            "select distinct on(employee.DATEFIELD, employee.TIMEFIELD) employee.ID from EMPLOYEE employee order by employee.DATEFIELD asc, employee.TIMEFIELD asc, employee.SALARY asc",
+            toString(query));
     }
 
     private String toString(PostgreSQLQuery query) {
