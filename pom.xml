@@ -603,14 +603,16 @@
     </profile>
     
     <profile>
-      <id>jenkins</id>      
+      <id>jenkins</id>
+      <properties>
+        <excludedGroups>com.querydsl.core.testutil.Performance</excludedGroups>
+      </properties>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>          
-              <excludedGroups>com.querydsl.core.testutil.Performance</excludedGroups>
               <excludes>
                 <exclude>**/*$*</exclude>
                 <exclude>**/DB2*SuiteTest.java</exclude>
@@ -632,13 +634,15 @@
 
     <profile>
       <id>travis</id>
+      <properties>
+        <excludedGroups>com.querydsl.core.testutil.Performance,com.querydsl.core.testutil.ReportingOnly</excludedGroups>
+      </properties>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
-              <excludedGroups>com.querydsl.core.testutil.Performance,com.querydsl.core.testutil.ReportingOnly</excludedGroups>
               <disableXmlReport>true</disableXmlReport>
               <printSummary>false</printSummary>
               <excludes>
