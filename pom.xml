@@ -25,6 +25,9 @@
     <project.homepage>http://www.querydsl.com</project.homepage>
     <project.githubpage>http://github.com/querydsl/querydsl</project.githubpage>
     <project.checkout>scm:git:git@github.com:querydsl/querydsl.git</project.checkout>
+
+    <!-- default groups to exclude from surefire plugin -->
+    <excludedGroups>com.querydsl.core.testutil.ExternalDB,com.querydsl.core.testutil.SlowTest</excludedGroups>
     
     <!-- deps -->
     <derby.version>10.11.1.1</derby.version>
@@ -388,7 +391,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>-Xms256m -Xmx512m</argLine>
-          <excludedGroups>com.querydsl.core.testutil.ExternalDB,com.querydsl.core.testutil.SlowTest</excludedGroups>
+          <excludedGroups>${excludedGroups}</excludedGroups>
         </configuration>
         <dependencies>
           <dependency>
