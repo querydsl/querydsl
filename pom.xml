@@ -388,7 +388,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>-Xms256m -Xmx512m</argLine>
-          <excludedGroups>com.querydsl.core.testutil.ExternalDB</excludedGroups>
+          <excludedGroups>com.querydsl.core.testutil.ExternalDB,com.querydsl.core.testutil.SlowTest</excludedGroups>
         </configuration>
         <dependencies>
           <dependency>
