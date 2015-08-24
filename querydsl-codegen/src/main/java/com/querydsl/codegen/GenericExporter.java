@@ -99,6 +99,8 @@ public class GenericExporter {
 
     private boolean handleFields = true, handleMethods = true;
 
+    private boolean useFieldTypes = false;
+
     @Nullable
     private File targetFolder;
 
@@ -391,7 +393,7 @@ public class GenericExporter {
                     AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
                     Method method = ReflectionUtils.getGetterOrNull(cl, field.getName(), field.getType());
                     Type propertyType = null;
-                    if (method != null) {
+                    if (method != null && !useFieldTypes) {
                         propertyType = getPropertyType(cl, annotated, method.getReturnType(), method.getGenericReturnType());
                     } else {
                         propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
@@ -705,6 +707,15 @@ public class GenericExporter {
      */
     public void setHandleMethods(boolean b) {
         handleMethods = b;
+    }
+
+    /**
+     * Set whether field types should be used instead of getter return types (default false)
+     *
+     * @param b
+     */
+    public void setUseFieldTypes(boolean b) {
+        useFieldTypes = b;
     }
 
     /**

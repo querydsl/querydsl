@@ -77,6 +77,13 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean handleMethods = true;
 
     /**
+     * switch for usage of field types instead of getter types
+     *
+     * @parameter default-value=false
+     */
+    private boolean useFieldTypes = false;
+
+    /**
      * maven project
      *
      * @parameter default-value="${project}"
@@ -154,6 +161,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     protected void configure(GenericExporter exporter) {
         exporter.setHandleFields(handleFields);
         exporter.setHandleMethods(handleMethods);
+        exporter.setUseFieldTypes(useFieldTypes);
     }
 
     @SuppressWarnings("unchecked")
@@ -225,5 +233,9 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
 
     public void setHandleMethods(boolean handleMethods) {
         this.handleMethods = handleMethods;
+    }
+
+    public void setUseFieldTypes(boolean useFieldTypes) {
+        this.useFieldTypes = useFieldTypes;
     }
 }

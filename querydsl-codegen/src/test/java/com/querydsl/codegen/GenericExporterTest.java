@@ -130,4 +130,17 @@ public class GenericExporterTest {
         assertTrue(new File("target/gen7/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
     }
 
+    @Test
+    public void Export_UseFieldTypes() {
+        exporter.setTargetFolder(new File("target/gen8"));
+        exporter.export(getClass().getPackage());
+        exporter.setUseFieldTypes(true);
+        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleEmbedded.java").exists());
+        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleEntity.java").exists());
+        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleEntityInterface.java").exists());
+        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File("target/gen8/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+    }
+
 }
