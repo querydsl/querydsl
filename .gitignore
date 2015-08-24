@@ -10,3 +10,4 @@ test-output
 /.metadata
 .cache
 derby.log
+nb-configuration.xml

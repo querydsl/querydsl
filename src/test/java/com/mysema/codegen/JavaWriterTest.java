@@ -45,7 +45,7 @@ public class JavaWriterTest {
 
     private static void match(String resource, String text) throws IOException {
         // TODO : try to compile ?
-        String expected = Resources.toString(JavaWriterTest.class.getResource(resource), Charsets.UTF_8)        
+        String expected = Resources.toString(JavaWriterTest.class.getResource(resource), Charsets.UTF_8)
                 .replace("\r\n", "\n").trim();
         String actual = text.trim();
         assertEquals(expected, actual);
@@ -334,5 +334,13 @@ public class JavaWriterTest {
         writer.privateField(Types.STRING, "test");
 
         match("/testSuppressWarnings", w.toString());
+    }
+
+    @Test
+    public void SuppressWarnings2() throws IOException {
+        writer.suppressWarnings("all", "unused");
+        writer.privateField(Types.STRING, "test");
+
+        match("/testSuppressWarnings2", w.toString());
     }
 }

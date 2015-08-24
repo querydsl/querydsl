@@ -109,4 +109,6 @@ public interface CodeWriter extends Appendable {
 
     CodeWriter suppressWarnings(String type) throws IOException;
 
+    CodeWriter suppressWarnings(String... types) throws IOException;
+
 }
