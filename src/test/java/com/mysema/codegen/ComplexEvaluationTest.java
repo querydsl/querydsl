@@ -38,8 +38,9 @@ public class ComplexEvaluationTest {
         source.append("}\n");
         source.append("return rv;");
 
+        @SuppressWarnings("rawtypes") // cannot specify further than List.class
         Evaluator<List> evaluator = factory.createEvaluator(source.toString(), resultType,
-                new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class[] {
+                new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
 
         List<String> a_ = Arrays.asList("1", "2", "3", "4");
@@ -70,8 +71,9 @@ public class ComplexEvaluationTest {
         List<Cat> b_ = Arrays.asList(mittens, sparkles);
 
         ClassType argType = new ClassType(TypeCategory.LIST, List.class, new ClassType(Cat.class));
+        @SuppressWarnings("rawtypes") // cannot specify further than List.class
         Evaluator<List> evaluator = factory.createEvaluator(source.toString(), resultType,
-                new String[] { "cat_", "otherCat_" }, new Type[] { argType, argType }, new Class[] {
+                new String[] { "cat_", "otherCat_" }, new Type[] { argType, argType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
         
         Object[][] expResults = { {fuzzy, mittens}, {fuzzy, sparkles}, {spot, mittens}, {spot, sparkles} };
@@ -101,8 +103,9 @@ public class ComplexEvaluationTest {
         source.append("}\n");
         source.append("return rv;");
 
+        @SuppressWarnings("rawtypes") // cannot specify further than List.class
         Evaluator<List> evaluator = factory.createEvaluator(source.toString(), resultType,
-                new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class[] {
+                new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
 
         List<String> a_ = Arrays.asList("1", "2", "3", "4");
@@ -126,8 +129,9 @@ public class ComplexEvaluationTest {
         source.append("}\n");
         source.append("return rv;");
 
+        @SuppressWarnings("rawtypes") // cannot specify further than List.class
         Evaluator<List> evaluator = factory.createEvaluator(source.toString(), resultType,
-                new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class[] {
+                new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
 
         List<Boolean> a_ = Arrays.asList(true, true, true);
@@ -151,8 +155,9 @@ public class ComplexEvaluationTest {
         source.append("}\n");
         source.append("return rv;} private static class TestEmbedded { public TestEmbedded() {} public boolean DO_RETURN() { return true; } ");
 
+        @SuppressWarnings("rawtypes") // cannot specify further than List.class
         Evaluator<List> evaluator = factory.createEvaluator(source.toString(), resultType,
-                new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class[] {
+                new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
 
         List<Boolean> a_ = Arrays.asList(true, true, true);
@@ -183,7 +188,7 @@ public class ComplexEvaluationTest {
         List<Cat> cats = Arrays.asList(new Cat("fuzzy"), new Cat("spot"));
         String[] names = new String[] { "cat_" };
         Type[] types = new Type[] { new ClassType(TypeCategory.LIST, List.class, new ClassType(Cat.class)) };
-        Class<?>[] classes = new Class[] { List.class };
+        Class<?>[] classes = new Class<?>[] { List.class };
 
         // first pass
         factory.createEvaluator(

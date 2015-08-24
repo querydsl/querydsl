@@ -14,7 +14,7 @@ public class NotNullImpl implements NotNull {
 
     @Override
     public Class<?>[] groups() {
-        return new Class[0];
+        return new Class<?>[0];
     }
 
     @Override
@@ -23,8 +23,9 @@ public class NotNullImpl implements NotNull {
     }
 
     @Override
+    @SuppressWarnings("unchecked") // Empty array
     public Class<? extends ConstraintPayload>[] payload() {
-        return new Class[0];
+        return (Class<? extends ConstraintPayload>[]) new Class<?>[0];
     }
 
     @Override

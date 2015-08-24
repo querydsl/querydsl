@@ -221,7 +221,7 @@ public class ScalaWriterTest {
         Max annotation = new MaxImpl(0l) {
             @Override
             public Class<?>[] groups() {
-                return new Class[] { Object.class, String.class, int.class };
+                return new Class<?>[] { Object.class, String.class, int.class };
             }
         };
         writer.annotation(annotation);

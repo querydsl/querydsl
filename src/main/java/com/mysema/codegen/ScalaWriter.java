@@ -174,7 +174,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         } else if (value instanceof Number || value instanceof Boolean) {
             append(value.toString());
         } else if (value instanceof Enum) {
-            Enum enumValue = (Enum) value;
+            Enum<?> enumValue = (Enum<?>) value;
             if (classes.contains(enumValue.getClass().getName())
                     || packages.contains(enumValue.getClass().getPackage().getName())) {
                 append(enumValue.name());
