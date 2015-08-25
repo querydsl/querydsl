@@ -35,7 +35,7 @@ public final class ClassPathUtils {
      * @param classLoader classloader to be used
      * @param pkg package to scan
      * @return set of found classes
-     * @throws IOException
+     * @throws IOException if an I/O exception of some sort has occurred
      */
     public static Set<Class<?>> scanPackage(ClassLoader classLoader, Package pkg) throws IOException {
         return scanPackage(classLoader, pkg.getName());
@@ -47,7 +47,7 @@ public final class ClassPathUtils {
      * @param classLoader classloader to be used
      * @param pkg package to scan
      * @return set of found classes
-     * @throws IOException
+     * @throws IOException if an I/O exception of some sort has occurred
      */
     public static Set<Class<?>> scanPackage(ClassLoader classLoader, String pkg) throws IOException {
         Reflections reflections = new Reflections(new ConfigurationBuilder()

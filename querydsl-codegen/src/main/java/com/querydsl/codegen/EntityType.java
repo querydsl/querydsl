@@ -62,7 +62,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     /**
      * Create a new {@code EntityType} instance for the given type
      *
-     * @param type
+     * @param type the type to be used
      */
     public EntityType(Type type) {
         this(type, new DefaultVariableNameFunction());
@@ -71,8 +71,8 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     /**
      * Create a new {@code EntityType} instance for the given type
      *
-     * @param type
-     * @param variableNameFunction
+     * @param type the type to be used
+     * @param variableNameFunction the variable name function to be used
      */
     public EntityType(Type type, Function<EntityType, String> variableNameFunction) {
         this(type, new LinkedHashSet<Supertype>());
@@ -82,8 +82,8 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     /**
      * Create a new {@code EntityType} instance for the given type and superTypes
      *
-     * @param type
-     * @param superTypes
+     * @param type the type to be used
+     * @param superTypes the super types to be used
      */
     public EntityType(Type type, Set<Supertype> superTypes) {
         super(type);
@@ -94,9 +94,9 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     /**
      * Create a new {@code EntityType} instance for the given type and superTypes
      *
-     * @param type
-     * @param superTypes
-     * @param variableNameFunction
+     * @param type the type to be used
+     * @param superTypes the super types to be used
+     * @param variableNameFunction the variable name function to be used
      */
     public EntityType(SimpleType type, Set<Supertype> superTypes, DefaultVariableNameFunction variableNameFunction) {
         super(type);
@@ -202,6 +202,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     /**
      * Use {@link #getModifiedSimpleName()}
+     * @return the uncapitalized entity type simple name
      */
     @Deprecated
     public String getUncapSimpleName() {

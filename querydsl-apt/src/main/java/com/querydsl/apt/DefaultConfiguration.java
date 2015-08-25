@@ -46,9 +46,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -78,8 +75,6 @@ import com.querydsl.core.util.Annotations;
  *
  */
 public class DefaultConfiguration implements Configuration {
-
-    private static final Logger logger = LoggerFactory.getLogger(DefaultConfiguration.class);
 
     private static final Splitter DEFAULT_SPLITTER = Splitter.on(",");
 
@@ -226,9 +221,6 @@ public class DefaultConfiguration implements Configuration {
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {
-               if (logger.isDebugEnabled()) {
-                  logger.debug(String.format("An exception occurred while loading or instantiating tha variable name function of type %s.", options.get(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)), e);
-               }
                variableNameFunction = new DefaultVariableNameFunction();
             }
         } else {
