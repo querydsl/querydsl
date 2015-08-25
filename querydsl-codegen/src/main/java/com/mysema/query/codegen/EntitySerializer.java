@@ -64,10 +64,11 @@ public class EntitySerializer implements Serializer {
         this.keywords = keywords;
     }
 
-	private boolean superTypeHasEntityFields(EntityType model) {
-		Supertype superType = model.getSuperType();
-		return null != superType && null != superType.getEntityType() && superType.getEntityType().hasEntityFields();
-	}
+    private boolean superTypeHasEntityFields(EntityType model) {
+        Supertype superType = model.getSuperType();
+        return null != superType && null != superType.getEntityType()
+                && superType.getEntityType().hasEntityFields();
+    }
 	
     protected void constructors(EntityType model, SerializerConfig config,
             CodeWriter writer) throws IOException {
