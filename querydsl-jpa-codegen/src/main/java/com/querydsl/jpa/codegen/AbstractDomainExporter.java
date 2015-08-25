@@ -102,7 +102,7 @@ public abstract class AbstractDomainExporter {
         this.embeddableSerializer = module.get(EmbeddableSerializer.class);
         this.entitySerializer = module.get(EntitySerializer.class);
         this.supertypeSerializer = module.get(SupertypeSerializer.class);
-        this.variableNameFunction = module.get(Function.class);
+        this.variableNameFunction = module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS);
     }
 
     /**
