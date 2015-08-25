@@ -26,10 +26,12 @@ import java.util.Set;
 import javax.tools.JavaCompiler;
 
 import org.junit.*;
+import org.junit.experimental.categories.Category;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.codegen.Serializer;
+import com.querydsl.core.testutil.SlowTest;
 import com.querydsl.core.util.FileUtils;
 
 public class MetaDataExporterTest {
@@ -160,6 +162,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
+    @Category(SlowTest.class)
     public void Multiple() throws SQLException {
         // TODO : refactor this to use new JUnit constructs
         List<String> emptyString = Collections.singletonList("");
