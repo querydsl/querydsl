@@ -49,7 +49,7 @@ public class CodegenModule  extends AbstractModule {
     public static final String IMPORTS = "imports";
 
     /**
-     * key for the custom imports set
+     * key for the variable name function class
      */
     public static final String VARIABLE_NAME_FUNCTION_CLASS = "variableNameFunction";
 
