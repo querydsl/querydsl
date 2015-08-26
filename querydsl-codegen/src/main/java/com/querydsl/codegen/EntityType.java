@@ -64,7 +64,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
      * @param type the type to be used
      */
     public EntityType(Type type) {
-        this(type, new DefaultVariableNameFunction());
+        this(type, new LinkedHashSet<Supertype>(), new DefaultVariableNameFunction());
     }
 
     /**
@@ -74,8 +74,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
      * @param variableNameFunction the variable name function to be used
      */
     public EntityType(Type type, Function<EntityType, String> variableNameFunction) {
-        this(type, new LinkedHashSet<Supertype>());
-        this.modifiedSimpleName = variableNameFunction.apply(this);
+        this(type, new LinkedHashSet<Supertype>(), variableNameFunction);
     }
 
     /**
@@ -85,11 +84,21 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
      * @param superTypes the super types to be used
      */
     public EntityType(Type type, Set<Supertype> superTypes) {
-        super(type);
-        this.superTypes = superTypes;
-        this.modifiedSimpleName = new DefaultVariableNameFunction().apply(this);
+        this(type, superTypes, new DefaultVariableNameFunction());
     }
 
+    /**
+     * Create a new {@code EntityType} instance for the given type and superTypes
+     *
+     * @param type the type to be used
+     * @param superTypes the super types to be used
+     * @param variableNameFunction the variable name function to be used
+     */
+    private EntityType(Type type, Set<Supertype> superTypes, Function<EntityType, String> variableNameFunction) {
+        super(type);
+        this.superTypes = superTypes;
+        this.modifiedSimpleName = variableNameFunction.apply(this);
+    }
 
     public void addAnnotation(Annotation annotation) {
         annotations.put(annotation.annotationType(), annotation);
