@@ -27,7 +27,6 @@ import javax.annotation.Nullable;
 import com.google.common.base.Function;
 import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.Constructor;
-import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeAdapter;
 import com.mysema.codegen.model.TypeCategory;
@@ -91,18 +90,6 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         this.modifiedSimpleName = new DefaultVariableNameFunction().apply(this);
     }
 
-    /**
-     * Create a new {@code EntityType} instance for the given type and superTypes
-     *
-     * @param type the type to be used
-     * @param superTypes the super types to be used
-     * @param variableNameFunction the variable name function to be used
-     */
-    public EntityType(SimpleType type, Set<Supertype> superTypes, DefaultVariableNameFunction variableNameFunction) {
-        super(type);
-        this.superTypes = superTypes;
-        this.modifiedSimpleName = variableNameFunction.apply(this);
-    }
 
     public void addAnnotation(Annotation annotation) {
         annotations.put(annotation.annotationType(), annotation);
