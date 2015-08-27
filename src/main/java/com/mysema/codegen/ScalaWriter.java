@@ -131,7 +131,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
                     } else {
                         append("(");
                     }
-                    append(escape(method.getName()) + "=");
+                    append(escape(method.getName())).append("=");
                     annotationConstant(value);
                 } catch (IllegalArgumentException e) {
                     throw new CodegenException(e);
@@ -179,10 +179,10 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
                     || packages.contains(enumValue.getClass().getPackage().getName())) {
                 append(enumValue.name());
             } else {
-                append(enumValue.getDeclaringClass().getName() + DOT + enumValue.name());
+                append(enumValue.getDeclaringClass().getName()).append(DOT).append(enumValue.name());
             }
         } else if (value instanceof String) {
-            append(QUOTE + StringUtils.escapeJava(value.toString()) + QUOTE);
+            append(QUOTE).append(StringUtils.escapeJava(value.toString())).append(QUOTE);
         } else {
             throw new IllegalArgumentException("Unsupported annotation value : " + value);
         }
@@ -223,7 +223,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         packages.add(type.getPackageName());
         beginLine(PUBLIC_CLASS, getGenericName(false, type));
         if (superClass != null) {
-            append(EXTENDS + getGenericName(false, superClass));
+            append(EXTENDS).append(getGenericName(false, superClass));
         }
         if (interfaces.length > 0) {
             if (superClass == null) {
@@ -255,20 +255,20 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     @Override
     public <T> ScalaWriter beginConstructor(Collection<T> parameters,
             Function<T, Parameter> transformer) throws IOException {
-        beginLine(DEF + THIS).params(parameters, transformer).append(" {").nl();
+        beginLine(DEF, THIS).params(parameters, transformer).append(" {").nl();
         return goIn();
     }
 
     @Override
     public ScalaWriter beginConstructor(Parameter... params) throws IOException {
-        beginLine(DEF + THIS).params(params).append(" {").nl();
+        beginLine(DEF, THIS).params(params).append(" {").nl();
         return goIn();
     }
 
     @Override
     public ScalaWriter beginInterface(Type type, Type... interfaces) throws IOException {
         packages.add(type.getPackageName());
-        beginLine(TRAIT + getGenericName(false, type));
+        beginLine(TRAIT, getGenericName(false, type));
         if (interfaces.length > 0) {
             append(EXTENDS);
             append(getGenericName(false, interfaces[0]));
@@ -292,10 +292,10 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     private ScalaWriter beginMethod(String modifiers, Type returnType, String methodName,
             Parameter... args) throws IOException {
         if (returnType.equals(Types.VOID)) {
-            beginLine(modifiers + escape(methodName)).params(args).append(" {").nl();
+            beginLine(modifiers, escape(methodName)).params(args).append(" {").nl();
         } else {
-            beginLine(modifiers + escape(methodName)).params(args)
-                    .append(": " + getGenericName(true, returnType)).append(" {").nl();
+            beginLine(modifiers, escape(methodName)).params(args)
+                    .append(": ").append(getGenericName(true, returnType)).append(" {").nl();
         }
 
         return goIn();
@@ -337,18 +337,18 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     public ScalaWriter field(Type type, String name) throws IOException {
-        line(VAR + escape(name) + ": " + getGenericName(true, type));
+        line(VAR, escape(name), ": ", getGenericName(true, type));
         return compact ? this : nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name) throws IOException {
-        line(modifier + escape(name) + ": " + getGenericName(true, type));
+        line(modifier, escape(name), ": ", getGenericName(true, type));
         return compact ? this : nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name, String value)
             throws IOException {
-        line(modifier + escape(name) + ": " + getGenericName(true, type) + ASSIGN + value);
+        line(modifier, escape(name), ": ", getGenericName(true, type), ASSIGN, value);
         return compact ? this : nl();
     }
 
@@ -421,7 +421,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     public ScalaWriter imports(Class<?>... imports) throws IOException {
         for (Class<?> cl : imports) {
             classes.add(cl.getName());
-            line(IMPORT + cl.getName());
+            line(IMPORT, cl.getName());
         }
         nl();
         return this;
@@ -431,7 +431,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     public ScalaWriter imports(Package... imports) throws IOException {
         for (Package p : imports) {
             packages.add(p.getName());
-            line(IMPORT + p.getName() + "._");
+            line(IMPORT, p.getName(), "._");
         }
         nl();
         return this;
@@ -441,7 +441,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     public ScalaWriter importClasses(String... imports) throws IOException {
         for (String cl : imports) {
             classes.add(cl);
-            line(IMPORT + cl);
+            line(IMPORT, cl);
         }
         nl();
         return this;
@@ -451,7 +451,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     public ScalaWriter importPackages(String... imports) throws IOException {
         for (String p : imports) {
             packages.add(p);
-            line(IMPORT + p + "._");
+            line(IMPORT, p, "._");
         }
         nl();
         return this;
@@ -461,7 +461,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     public ScalaWriter javadoc(String... lines) throws IOException {
         line("/**");
         for (String line : lines) {
-            line(" * " + line);
+            line(" * ", line);
         }
         return line(" */");
     }
@@ -469,7 +469,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     @Override
     public ScalaWriter packageDecl(String packageName) throws IOException {
         packages.add(packageName);
-        return line(PACKAGE + packageName).nl();
+        return line(PACKAGE, packageName).nl();
     }
 
     private <T> ScalaWriter params(Collection<T> parameters, Function<T, Parameter> transformer)
@@ -569,14 +569,14 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     @Override
     public ScalaWriter staticimports(Class<?>... imports) throws IOException {
         for (Class<?> cl : imports) {
-            line(IMPORT_STATIC + cl.getName() + "._;");
+            line(IMPORT_STATIC, cl.getName(), "._;");
         }
         return this;
     }
 
     @Override
     public ScalaWriter suppressWarnings(String type) throws IOException {
-        return line("@SuppressWarnings(\"" + type + "\")");
+        return line("@SuppressWarnings(\"", type, "\")");
     }
 
     private <T> Parameter[] transform(Collection<T> parameters,
