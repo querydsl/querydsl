@@ -13,9 +13,10 @@
  */
 package com.mysema.query.support;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
@@ -109,11 +110,7 @@ public class ReplaceVisitor implements Visitor<Expression<?>, Void> {
         }
         for (OrderSpecifier<?> os : expr.getMetadata().getOrderBy()) {
             OrderSpecifier<?> os2 = new OrderSpecifier(os.getOrder(), os.getTarget().accept(this,
-                    null));
-            switch (os.getNullHandling()) {
-                case NullsFirst: os2 = os2.nullsFirst(); break;
-                case NullsLast: os2 = os2.nullsLast(); break;
-            }
+                    null), os.getNullHandling());
             md.addOrderBy(os2);
         }
         for (Map.Entry<ParamExpression<?>, Object> entry : expr.getMetadata().getParams()

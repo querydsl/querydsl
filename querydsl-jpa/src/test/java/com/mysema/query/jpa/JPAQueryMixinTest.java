@@ -15,6 +15,7 @@ import com.mysema.query.jpa.domain.QDepartment;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.StringPath;
@@ -215,5 +216,15 @@ public class JPAQueryMixinTest {
         assertEquals(Arrays.asList(new StringPath(bookVersion.definition.bookMarks, "comment").asc()),
                 md.getOrderBy());
 
+    }
+
+    @Test
+    public void OrderBy_NullsLast() {
+        QCat cat = QCat.cat;
+        mixin.from(cat);
+        mixin.orderBy(cat.mate.name.asc().nullsLast());
+        assertEquals(
+                OrderSpecifier.NullHandling.NullsLast,
+                mixin.getMetadata().getOrderBy().get(0).getNullHandling());
     }
 }
