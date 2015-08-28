@@ -13,6 +13,7 @@ public class MockTuple implements Tuple {
         this.a = a;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T get(int index, Class<T> type) {
         return (T) a[index];

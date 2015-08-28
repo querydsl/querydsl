@@ -34,6 +34,7 @@ class JPAListAccessVisitor extends ReplaceVisitor<Void> {
         this.metadata = metadata;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Path<?> expr, @Nullable Void context) {
         expr = (Path<?>) super.visit(expr, null);

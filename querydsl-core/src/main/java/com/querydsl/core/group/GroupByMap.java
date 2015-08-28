@@ -38,6 +38,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
         super(key, expressions);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Map<K, V> transform(FetchableQuery<?,?> query) {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
@@ -72,6 +73,7 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
 
     }
 
+    @SuppressWarnings("unchecked")
     protected Map<K, V> transform(Map<K, Group> groups) {
         return (Map<K,V>) groups;
     }

@@ -62,6 +62,7 @@ public class WithinGroup<T> extends SimpleOperation<T> {
             super(WithinGroup.this.getType());
         }
 
+        @SuppressWarnings("unchecked")
         public SimpleExpression<T> getValue() {
             if (value == null) {
                 int size = 0;

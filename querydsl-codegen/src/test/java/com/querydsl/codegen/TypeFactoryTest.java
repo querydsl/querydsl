@@ -206,6 +206,7 @@ public class TypeFactoryTest {
         assertEquals("java.lang", bo.getPackageName());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void SimpleType() {
         for (Class<?> cl : Arrays.asList(Blob.class, Clob.class, Locale.class, Class.class, Serializable.class)) {

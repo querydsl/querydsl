@@ -61,6 +61,7 @@ public class DefaultPathFactory implements PathFactory {
         return Expressions.dateTimePath(type, metadata);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> Path<T> createEntityPath(Class<T> type, PathMetadata metadata) {
         if (Comparable.class.isAssignableFrom(type)) {

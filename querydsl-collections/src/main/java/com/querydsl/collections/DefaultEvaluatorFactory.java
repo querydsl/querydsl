@@ -128,6 +128,7 @@ public class DefaultEvaluatorFactory {
      * @param filter filter of the query
      * @return evaluator
      */
+    @SuppressWarnings("unchecked")
     public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata,
             Expression<? extends T> source, Predicate filter) {
         String typeName = ClassUtils.getName(source.getType());
@@ -165,6 +166,7 @@ public class DefaultEvaluatorFactory {
      * @param filter where condition
      * @return evaluator
      */
+    @SuppressWarnings("unchecked")
     public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata,
             List<JoinExpression> joins, @Nullable Predicate filter) {
         List<String> sourceNames = new ArrayList<String>();

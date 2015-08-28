@@ -36,6 +36,7 @@ public class FirebirdTemplatesTest extends AbstractSQLTemplatesTest {
         // uses additional casts
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Override
     public void Union() {

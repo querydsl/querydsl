@@ -47,6 +47,7 @@ class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor6<R, P> {
         getBoundsMethod = availableMethod;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public R visitUnknown(TypeMirror t, P p) {
         if (intersectionTypeClass != null && intersectionTypeClass.isInstance(t)) {

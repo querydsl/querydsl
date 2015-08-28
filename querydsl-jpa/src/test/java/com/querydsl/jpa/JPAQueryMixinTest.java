@@ -184,6 +184,7 @@ public class JPAQueryMixinTest {
                 md.getOrderBy());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void OrderBy_Embeddable2() {
         QArticle article = QArticle.article;
@@ -200,6 +201,7 @@ public class JPAQueryMixinTest {
                 md.getOrderBy());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void OrderBy_Embeddable_Collection() {
         QBookVersion bookVersion = QBookVersion.bookVersion;

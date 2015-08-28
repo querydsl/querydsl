@@ -153,6 +153,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Object execute(Query query, boolean forCount) {
         Object rv;
         if (!orderedConstants.isEmpty()) {
@@ -226,6 +227,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @Nullable
     public T fetchOne() {

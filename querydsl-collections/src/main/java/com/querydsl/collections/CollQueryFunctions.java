@@ -47,6 +47,7 @@ public final class CollQueryFunctions {
     };
 
     private static final BinaryFunction MAX = new BinaryFunction() {
+        @SuppressWarnings("unchecked")
         @Override
         public Number apply(Number num1, Number num2) {
             if (num1.getClass().equals(num2.getClass()) && num1 instanceof Comparable) {
@@ -60,6 +61,7 @@ public final class CollQueryFunctions {
     };
 
     private static final BinaryFunction MIN = new BinaryFunction() {
+        @SuppressWarnings("unchecked")
         @Override
         public Number apply(Number num1, Number num2) {
             if (num1.getClass().equals(num2.getClass()) && num1 instanceof Comparable) {
@@ -188,6 +190,7 @@ public final class CollQueryFunctions {
         return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.WEEK_OF_YEAR);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Collection<T> leftJoin(Collection<T> coll) {
         if (coll.isEmpty()) {
             return (List) nullList;
@@ -205,6 +208,7 @@ public final class CollQueryFunctions {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public static Number aggregate(Collection<Number> source, Expression<?> expr, Operator aggregator) {
         if (aggregator == Ops.AggOps.AVG_AGG) {
             Number sum = reduce(source, SUM);
@@ -253,6 +257,7 @@ public final class CollQueryFunctions {
         return like(str, like);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T get(Object parent, String f) {
         try {
             Field field = ReflectionUtils.getFieldOrNull(parent.getClass(), f);

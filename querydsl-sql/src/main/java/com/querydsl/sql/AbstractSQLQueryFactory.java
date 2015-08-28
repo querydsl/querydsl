@@ -49,16 +49,19 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
         return new SQLDeleteClause(connection.get(), configuration, path);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public final Q from(Expression<?> from) {
         return (Q) query().from(from);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public final Q from(Expression<?>... args) {
         return (Q) query().from(args);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public final Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return (Q) query().from(subQuery, alias);

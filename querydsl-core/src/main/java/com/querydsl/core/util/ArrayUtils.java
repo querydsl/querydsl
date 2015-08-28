@@ -23,6 +23,7 @@ import java.lang.reflect.Array;
  */
 public final class ArrayUtils {
 
+    @SuppressWarnings("unchecked")
     public static <T> T[] combine(Class<T> type, T first, T second, T... rest) {
         T[] array = (T[]) Array.newInstance(type, rest.length + 2);
         array[0] = first;

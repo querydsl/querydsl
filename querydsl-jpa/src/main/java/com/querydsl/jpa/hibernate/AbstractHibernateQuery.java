@@ -321,6 +321,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
         return (Q) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T fetchOne() {
         try {

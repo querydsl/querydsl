@@ -61,6 +61,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
      * @param transformer result transformer
      * @param serializer serializer
      */
+    @SuppressWarnings("unchecked")
     public AbstractMongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
         this.queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata(), false);
         this.transformer = transformer;
@@ -114,6 +115,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         return filter;
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     protected Predicate createJoinFilter(QueryMetadata metadata) {
         Multimap<Expression<?>, Predicate> predicates = HashMultimap.create();

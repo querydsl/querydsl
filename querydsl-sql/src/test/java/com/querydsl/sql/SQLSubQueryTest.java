@@ -50,6 +50,7 @@ public class SQLSubQueryTest {
             .where(Expressions.booleanOperation(op, employee.id)).toString();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void List() {
         SubQueryExpression<?> subQuery = select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
@@ -80,6 +81,7 @@ public class SQLSubQueryTest {
         QEmployee.employee.id.in(ints);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void In_Union() {
         SubQueryExpression<Integer> ints1 = select(employee.id).from(employee);
@@ -87,6 +89,7 @@ public class SQLSubQueryTest {
         QEmployee.employee.id.in(union(ints1, ints2));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void In_Union2() {
         SubQueryExpression<Integer> ints1 = select(employee.id).from(employee);
@@ -94,6 +97,7 @@ public class SQLSubQueryTest {
         QEmployee.employee.id.in(union(ints1, ints2));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Unique() {
         SubQueryExpression<?> subQuery = select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
@@ -140,6 +144,7 @@ public class SQLSubQueryTest {
         select(Wildcard.all).from(e);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Union() {
         QSurvey survey = QSurvey.survey;
@@ -149,6 +154,7 @@ public class SQLSubQueryTest {
         union(q1);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Union_With() {
         QSurvey survey1 = new QSurvey("survey1");

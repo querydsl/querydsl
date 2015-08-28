@@ -94,12 +94,14 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
         return q;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> PostgreSQLQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (PostgreSQLQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public PostgreSQLQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

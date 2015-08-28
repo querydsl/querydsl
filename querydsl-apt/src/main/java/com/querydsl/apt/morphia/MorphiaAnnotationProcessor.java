@@ -38,6 +38,7 @@ import com.querydsl.core.annotations.QuerySupertype;
 @SupportedAnnotationTypes({"com.querydsl.core.annotations.*","org.mongodb.morphia.annotations.*"})
 public class MorphiaAnnotationProcessor extends AbstractQuerydslProcessor {
 
+    @SuppressWarnings("unchecked")
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
         Class<? extends Annotation> entities = QueryEntities.class;

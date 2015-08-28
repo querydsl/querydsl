@@ -92,6 +92,7 @@ public final class CaseForEqBuilder<D> {
         return then(ConstantImpl.create(then));
     }
 
+    @SuppressWarnings("unchecked")
     public <T> Cases<T,Expression<T>> thenNull() {
         return then((Expression<T>) NullExpression.DEFAULT);
     }

@@ -88,6 +88,7 @@ public class SQLCodegenModule extends CodegenModule {
         return get(String.class, PACKAGE_NAME);
     }
 
+    @SuppressWarnings("unchecked")
     public Set<String> getImports() {
         return get(Set.class, IMPORTS);
     }

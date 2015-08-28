@@ -32,6 +32,7 @@ public class JTSPolygonPath<T extends Polygon> extends JTSPolygonExpression<T> i
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public JTSPolygonPath(Path<?> parent, String property) {
         this((Class<? extends T>) Polygon.class, parent, property);
     }
@@ -40,6 +41,7 @@ public class JTSPolygonPath<T extends Polygon> extends JTSPolygonExpression<T> i
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public JTSPolygonPath(PathMetadata metadata) {
         this((Class<? extends T>) Polygon.class, metadata);
     }
@@ -49,6 +51,7 @@ public class JTSPolygonPath<T extends Polygon> extends JTSPolygonExpression<T> i
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public JTSPolygonPath(String var) {
         this((Class<? extends T>) Polygon.class, PathMetadataFactory.forVariable(var));
     }

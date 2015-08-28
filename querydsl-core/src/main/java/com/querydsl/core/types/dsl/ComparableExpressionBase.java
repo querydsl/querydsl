@@ -56,6 +56,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @param exprs additional arguments
      * @return coalesce
      */
+    @SuppressWarnings("unchecked")
     public final Coalesce<T> coalesce(Expression<?>...exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (Expression expr : exprs) {

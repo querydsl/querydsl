@@ -154,6 +154,7 @@ public class MetaDataSerializer extends EntitySerializer {
         writer.publicStaticFinal(queryType, variableName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         super.introImports(writer, config, model);

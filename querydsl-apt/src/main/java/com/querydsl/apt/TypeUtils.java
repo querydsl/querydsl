@@ -62,6 +62,7 @@ public final class TypeUtils {
         return annotationClassName.equals(className);
     }
 
+    @SuppressWarnings("unchecked")
     public static Set<TypeElement> getAnnotationValuesAsElements(AnnotationMirror mirror, String method) {
         Set<TypeElement> elements = new HashSet<TypeElement>();
         for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {

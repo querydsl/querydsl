@@ -86,6 +86,7 @@ public final class CaseBuilder {
 
         protected abstract Q createResult(Class<? extends A> type, Expression<A> last);
 
+        @SuppressWarnings("unchecked")
         public Q otherwise(A constant) {
             if (constant != null) {
                 return otherwise(ConstantImpl.create(constant));
@@ -94,6 +95,7 @@ public final class CaseBuilder {
             }
         }
 
+        @SuppressWarnings("unchecked")
         public Q otherwise(Expression<A> expr) {
             if (expr == null) {
                 expr = (Expression) NullExpression.DEFAULT;
@@ -161,6 +163,7 @@ public final class CaseBuilder {
             this.when = b;
         }
 
+        @SuppressWarnings("unchecked")
         public <A> Cases<A, SimpleExpression<A>> then(Expression<A> expr) {
             if (expr instanceof Predicate) {
                 return (Cases) then((Predicate) expr);
