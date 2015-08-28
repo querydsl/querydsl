@@ -110,11 +110,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         }
         for (OrderSpecifier<?> os : expr.getMetadata().getOrderBy()) {
             OrderSpecifier<?> os2 = new OrderSpecifier(os.getOrder(), os.getTarget().accept(this,
-                    context));
-            switch (os.getNullHandling()) {
-                case NullsFirst: os2 = os2.nullsFirst(); break;
-                case NullsLast: os2 = os2.nullsLast(); break;
-            }
+                    context), os.getNullHandling());
             md.addOrderBy(os2);
         }
         for (Map.Entry<ParamExpression<?>, Object> entry : expr.getMetadata().getParams()
