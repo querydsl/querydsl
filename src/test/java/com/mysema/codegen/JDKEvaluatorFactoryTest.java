@@ -116,7 +116,7 @@ public class JDKEvaluatorFactoryTest {
     private Object evaluate(String source, Class<?> projectionType, List<String> names,
             List<Class<?>> types, List<?> args, Map<String, Object> constants) {
         Evaluator<?> evaluator = factory.createEvaluator("return " + source + ";", projectionType,
-                names.toArray(new String[names.size()]), types.toArray(new Class[types.size()]),
+                names.toArray(new String[names.size()]), types.toArray(new Class<?>[types.size()]),
                 constants);
         return evaluator.evaluate(args.toArray());
     }

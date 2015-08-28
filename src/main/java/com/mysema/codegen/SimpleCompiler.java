@@ -58,7 +58,7 @@ public class SimpleCompiler implements JavaCompiler {
                 // manifest only jars in the classpath correctly
                 URL url = cl.findResource("META-INF/MANIFEST.MF");
                 Manifest manifest = new Manifest(url.openStream());
-                String classpath = (String) manifest.getMainAttributes().getValue("Class-Path");
+                String classpath = manifest.getMainAttributes().getValue("Class-Path");
                 for (String entry : classpath.split(" ")) {
                     URL entryUrl = new URL(entry);
                     String decodedPath = URLDecoder.decode(entryUrl.getPath(), "UTF-8");

@@ -40,7 +40,7 @@ public class SimpleCompilerTest {
         
         // create classpath
         StringBuilder path = new StringBuilder();
-        for (URL url : ((URLClassLoader) classLoader).getURLs()) {
+        for (URL url : classLoader.getURLs()) {
             if (path.length() > 0) {
                 path.append(File.pathSeparator);
             }
