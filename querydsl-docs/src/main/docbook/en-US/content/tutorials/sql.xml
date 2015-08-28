@@ -346,9 +346,8 @@
 
     <para>Imports can be used to add cross-schema foreign keys support.</para>
 
-    <para>Renamings of schemas, tables and columns can also be applied using the plugin. At first an
-    example of a schema rename</para>
-
+    <para>Schemas, tables and columns can also be renamed using the plugin. Here are some examples:</para>
+    <para>Renaming a schema:</para>
     <programlisting language="xml"><![CDATA[
 <renameMappings>
   <renameMapping>
@@ -358,8 +357,7 @@
 </renameMappings>
 ]]></programlisting>
 
-    <para>And for a specific table</para>
-
+    <para>Renaming a table:</para>
     <programlisting language="xml"><![CDATA[
 <renameMappings>
   <renameMapping>
@@ -370,8 +368,7 @@
 </renameMappings>
 ]]></programlisting>
 
-    <para>And for a column</para>
-
+    <para>Renaming a column:</para>
     <programlisting language="xml"><![CDATA[
 <renameMappings>
   <renameMapping>
@@ -383,7 +380,7 @@
 </renameMappings>
 ]]></programlisting>
 
-    <para>Table and column renames work also without the fromSchema element.</para>
+    <para>Note: fromSchema can be omitted when renaming tables and columns.</para>
 
     <para>Compared to APT based code generation certain functionality is not available such as QueryDelegate annotation handling.</para>
 
