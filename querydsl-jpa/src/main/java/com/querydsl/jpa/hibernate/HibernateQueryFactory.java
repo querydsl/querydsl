@@ -106,6 +106,11 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
     }
 
     @Override
+    public HibernateQuery<?> from(EntityPath<?>... from) {
+        return query().from(from);
+    }
+
+    @Override
     public HibernateUpdateClause update(EntityPath<?> path) {
         return new HibernateUpdateClause(session.get(), path, templates);
     }

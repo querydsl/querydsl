@@ -117,6 +117,11 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
+    public JPAQuery<?> from(EntityPath<?>... from) {
+        return query().from(from);
+    }
+
+    @Override
     public JPAUpdateClause update(EntityPath<?> path) {
         if (templates != null) {
             return new JPAUpdateClause(entityManager.get(), path, templates);

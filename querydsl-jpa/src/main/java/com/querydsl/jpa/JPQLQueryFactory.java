@@ -102,6 +102,14 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<?>> {
     JPQLQuery<?> from(EntityPath<?> from);
 
     /**
+     * Create a new Query with the given source
+     *
+     * @param from from
+     * @return from(from)
+     */
+    JPQLQuery<?> from(EntityPath<?>... from);
+
+    /**
      * Create a new UPDATE clause
      *
      * @param path entity to update
