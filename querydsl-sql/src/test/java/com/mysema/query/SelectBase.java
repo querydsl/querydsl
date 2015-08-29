@@ -1777,6 +1777,33 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn({HSQLDB, ORACLE, POSTGRES})
+    public void With_Limit() {
+        assertEquals(50, query().with(employee2, employee2.all()).as(
+                sq().from(employee)
+                        .where(employee.firstname.eq("Tom"))
+                        .list(Wildcard.all))
+                .from(employee, employee2)
+                .limit(50)
+                .orderBy(employee.id.asc(), employee2.id.asc())
+                .list(employee.id, employee2.id).size());
+    }
+
+    @Test
+    @IncludeIn({HSQLDB, ORACLE, POSTGRES})
+    public void With_LimitOffset() {
+        assertEquals(50, query().with(employee2, employee2.all()).as(
+                sq().from(employee)
+                        .where(employee.firstname.eq("Tom"))
+                        .list(Wildcard.all))
+                .from(employee, employee2)
+                .limit(50)
+                .offset(10)
+                .orderBy(employee.id.asc(), employee2.id.asc())
+                .list(employee.id, employee2.id).size());
+    }
+
+    @Test
     @IncludeIn({ORACLE, POSTGRES})
     public void With_Recursive() {
         query().withRecursive(employee2, sq().from(employee)
