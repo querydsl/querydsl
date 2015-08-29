@@ -739,10 +739,11 @@ public abstract class AbstractJPATest {
     public void FactoryExpressions() {
         QCat cat = QCat.cat;
         QCat cat2 = new QCat("cat2");
-        JPQLQuery<Tuple> query = query().from(cat).leftJoin(cat.kittens, cat2)
-                .select(Projections.tuple(cat.id, cat.name,
-                        Projections.tuple(cat2.id, cat2.name,
-                                Projections.tuple(cat2.birthdate).skipNulls()).skipNulls()));
+        QCat kitten = new QCat("kitten");
+        JPQLQuery<Tuple> query = query().from(cat)
+                .leftJoin(cat.mate, cat2)
+                .leftJoin(cat2.kittens, kitten)
+                .select(Projections.tuple(cat.id, new QFamily(cat, cat2, kitten).skipNulls()));
         assertEquals(6, query.fetch().size());
         assertNotNull(query.limit(1).fetchOne());
     }
