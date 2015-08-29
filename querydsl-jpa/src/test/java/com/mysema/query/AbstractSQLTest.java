@@ -1,9 +1,14 @@
 package com.mysema.query;
 
+import static org.junit.Assert.*;
+
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.domain.Cat;
@@ -16,9 +21,6 @@ import com.mysema.query.types.*;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.testutil.ExcludeIn;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 public abstract class AbstractSQLTest {
 
@@ -180,6 +182,13 @@ public abstract class AbstractSQLTest {
     @Test
     public void List_Limit_And_Offset2() {
         List<Tuple> tuples = query().from(cat).offset(3).limit(3).list(cat.id, cat.name);
+        assertEquals(3, tuples.size());
+        assertEquals(2, tuples.get(0).size());
+    }
+
+    @Test
+    public void List_Limit_And_Offset3() {
+        List<Tuple> tuples = query().from(cat).offset(3).limit(3).list(Projections.tuple(cat.id, cat.name));
         assertEquals(3, tuples.size());
         assertEquals(2, tuples.get(0).size());
     }

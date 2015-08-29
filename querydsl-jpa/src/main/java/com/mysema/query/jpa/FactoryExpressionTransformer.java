@@ -42,11 +42,6 @@ public final class FactoryExpressionTransformer implements ResultTransformer {
 
     @Override
     public Object transformTuple(Object[] tuple, String[] aliases) {
-        if (projection.getArgs().size() < tuple.length) {
-            Object[] shortened = new Object[projection.getArgs().size()];
-            System.arraycopy(tuple, 0, shortened, 0, shortened.length);
-            tuple = shortened;
-        }
         return projection.newInstance(tuple);
     }
 
