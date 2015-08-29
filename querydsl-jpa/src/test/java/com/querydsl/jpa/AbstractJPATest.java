@@ -736,6 +736,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoEclipseLink(HSQLDB)
     public void FactoryExpressions() {
         QCat cat = QCat.cat;
         QCat cat2 = new QCat("cat2");
