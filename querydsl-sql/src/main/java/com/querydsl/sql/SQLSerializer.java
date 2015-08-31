@@ -688,27 +688,27 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         handle(union);
 
         // group by
+        if (hasFlags) {
+            serialize(Position.BEFORE_GROUP_BY, flags);
+        }
         if (!groupBy.isEmpty()) {
             stage = Stage.GROUP_BY;
-            if (hasFlags) {
-                serialize(Position.BEFORE_GROUP_BY, flags);
-            }
             append(templates.getGroupBy()).handle(COMMA, groupBy);
-            if (hasFlags) {
-                serialize(Position.AFTER_GROUP_BY, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_GROUP_BY, flags);
         }
 
         // having
+        if (hasFlags) {
+            serialize(Position.BEFORE_HAVING, flags);
+        }
         if (having != null) {
             stage = Stage.HAVING;
-            if (hasFlags) {
-                serialize(Position.BEFORE_HAVING, flags);
-            }
             append(templates.getHaving()).handle(having);
-            if (hasFlags) {
-                serialize(Position.AFTER_HAVING, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_HAVING, flags);
         }
 
         // order by
@@ -721,9 +721,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             skipParent = true;
             handleOrderBy(orderBy);
             skipParent = false;
-            if (hasFlags) {
-                serialize(Position.AFTER_ORDER, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_ORDER, flags);
         }
 
         // end
