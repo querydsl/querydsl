@@ -238,7 +238,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         // with
         if (hasFlags) {
-            boolean handled = false;
+            List<Expression<?>> withFlags = Lists.newArrayList();
             boolean recursive = false;
             for (QueryFlag flag : flags) {
                 if (flag.getPosition() == Position.WITH) {
@@ -246,19 +246,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                         recursive = true;
                         continue;
                     }
-                    if (handled) {
-                        append(", ");
-                    }
-                    handle(flag.getFlag());
-                    handled = true;
+                    withFlags.add(flag.getFlag());
                 }
             }
-            if (handled) {
+            if (!withFlags.isEmpty()) {
                 if (recursive) {
-                    prepend(templates.getWithRecursive());
+                    append(templates.getWithRecursive());
                 } else {
-                    prepend(templates.getWith());
+                    append(templates.getWith());
                 }
+                handle(", ", withFlags);
                 append("\n");
             }
         }
