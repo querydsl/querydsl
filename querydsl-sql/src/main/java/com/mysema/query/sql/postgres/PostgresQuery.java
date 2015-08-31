@@ -25,6 +25,9 @@ import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLOps;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 
 /**
  * PostgresQuery provides Postgres related extensions to SQLQuery
@@ -79,7 +82,19 @@ public class PostgresQuery extends AbstractSQLQuery<PostgresQuery> {
         }
         return addFlag(Position.END, builder.toString());
     }
- 
+
+    /**
+     * adds a DISTINCT ON clause
+     *
+     * @param exprs
+     * @return
+     */
+    public PostgresQuery distinctOn(Expression<?>... exprs) {
+        return addFlag(Position.AFTER_SELECT,
+            Expressions.template(Object.class, "distinct on({0}) ",
+            ExpressionUtils.list(Object.class, exprs)));
+    }
+
     @Override
     public PostgresQuery clone(Connection conn) {
         PostgresQuery q = new PostgresQuery(conn, getConfiguration(), getMetadata().clone());
