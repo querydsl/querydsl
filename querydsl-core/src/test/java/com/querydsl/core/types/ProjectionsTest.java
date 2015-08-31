@@ -13,18 +13,18 @@
  */
 package com.querydsl.core.types;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import com.querydsl.core.types.QBeanPropertyTest.Entity;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class ProjectionsTest {
 
     public static class VarArgs {
-
         String[] args;
 
         public VarArgs(String... strs) {
@@ -33,7 +33,6 @@ public class ProjectionsTest {
     }
 
     public static class VarArgs2 {
-
         String arg;
         String[] args;
 
@@ -41,6 +40,26 @@ public class ProjectionsTest {
             arg = s;
             args = strs;
         }
+    }
+
+    public static class Entity1 {
+        String arg1, arg2;
+
+        public Entity1(String arg1, String arg2) {
+            this.arg1 = arg1;
+            this.arg2 = arg2;
+        }
+    }
+
+    public static class Entity2 {
+        String arg1;
+        Entity1 entity;
+
+        public Entity2(String arg1, Entity1 entity) {
+            this.arg1 = arg1;
+            this.entity = entity;
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -119,4 +138,69 @@ public class ProjectionsTest {
         assertEquals(Entity.class, beanProjection.newInstance(1, 2).getClass());
     }
 
+    @Test
+    public void Nested() {
+        StringPath str1 = Expressions.stringPath("str1");
+        StringPath str2 = Expressions.stringPath("str2");
+        StringPath str3 = Expressions.stringPath("str3");
+        FactoryExpression<Entity1> entity = Projections.constructor(Entity1.class, str1, str2);
+        FactoryExpression<Entity2> wrapper = Projections.constructor(Entity2.class, str3, entity);
+        FactoryExpression<Entity2> wrapped = FactoryExpressionUtils.wrap(wrapper);
+
+        Entity2 w = wrapped.newInstance("a", "b", "c");
+        assertEquals("a", w.arg1);
+        assertEquals("b", w.entity.arg1);
+        assertEquals("c", w.entity.arg2);
+
+        w = wrapped.newInstance("a", null, null);
+        assertEquals("a", w.arg1);
+        assertNotNull(w.entity);
+
+        w = wrapped.newInstance(null, null, null);
+        assertNotNull(w.entity);
+    }
+
+    @Test
+    public void NestedSkipNulls() {
+        StringPath str1 = Expressions.stringPath("str1");
+        StringPath str2 = Expressions.stringPath("str2");
+        StringPath str3 = Expressions.stringPath("str3");
+        FactoryExpression<Entity1> entity = Projections.constructor(Entity1.class, str1, str2).skipNulls();
+        FactoryExpression<Entity2> wrapper = Projections.constructor(Entity2.class, str3, entity);
+        FactoryExpression<Entity2> wrapped = FactoryExpressionUtils.wrap(wrapper);
+
+        Entity2 w = wrapped.newInstance("a", "b", "c");
+        assertEquals("a", w.arg1);
+        assertEquals("b", w.entity.arg1);
+        assertEquals("c", w.entity.arg2);
+
+        w = wrapped.newInstance("a", null, null);
+        assertEquals("a", w.arg1);
+        assertNull(w.entity);
+
+        w = wrapped.newInstance(null, null, null);
+        assertNull(w.entity);
+    }
+
+    @Test
+    public void NestedSkipNulls2() {
+        StringPath str1 = Expressions.stringPath("str1");
+        StringPath str2 = Expressions.stringPath("str2");
+        StringPath str3 = Expressions.stringPath("str3");
+        FactoryExpression<Entity1> entity = Projections.constructor(Entity1.class, str1, str2).skipNulls();
+        FactoryExpression<Entity2> wrapper = Projections.constructor(Entity2.class, str3, entity).skipNulls();
+        FactoryExpression<Entity2> wrapped = FactoryExpressionUtils.wrap(wrapper);
+
+        Entity2 w = wrapped.newInstance("a", "b", "c");
+        assertEquals("a", w.arg1);
+        assertEquals("b", w.entity.arg1);
+        assertEquals("c", w.entity.arg2);
+
+        w = wrapped.newInstance("a", null, null);
+        assertEquals("a", w.arg1);
+        assertNull(w.entity);
+
+        w = wrapped.newInstance(null, null, null);
+        assertNull(w);
+    }
 }
