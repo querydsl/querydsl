@@ -254,6 +254,7 @@
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>
+                  <previousVersion>4.0.0</previousVersion>
                 </requireBackwardCompatibility>
               </rules>
             </configuration>

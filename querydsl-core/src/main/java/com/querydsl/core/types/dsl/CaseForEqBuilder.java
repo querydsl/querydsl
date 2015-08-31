@@ -13,15 +13,14 @@
  */
 package com.querydsl.core.types.dsl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.NullExpression;
-import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.*;
 
 /**
  * {@code CaseForEqBuilder} enables the construction of typesafe case-when-then-else constructs
@@ -78,14 +77,34 @@ public final class CaseForEqBuilder<D> {
         this.other = other;
     }
 
-    public <T> Cases<T,Expression<T>> then(Expression<T> then) {
-        type = then.getType();
+    public <T> Cases<T,Expression<T>> then(Expression<T> expr) {
+        if (expr instanceof Predicate) {
+            return (Cases) then((Predicate) expr);
+        } else if (expr instanceof StringExpression) {
+            return (Cases) then((StringExpression) expr);
+        } else if (expr instanceof NumberExpression) {
+            return then((NumberExpression) expr);
+        } else if (expr instanceof DateExpression) {
+            return then((DateExpression) expr);
+        } else if (expr instanceof DateTimeExpression) {
+            return then((DateTimeExpression) expr);
+        } else if (expr instanceof TimeExpression) {
+            return then((TimeExpression) expr);
+        } else if (expr instanceof ComparableExpression) {
+            return then((ComparableExpression) expr);
+        } else {
+            return thenSimple(expr);
+        }
+    }
+
+    private <T> Cases<T, Expression<T>> thenSimple(Expression<T> expr) {
+        type = expr.getType();
         return new Cases<T,Expression<T>>() {
             @Override
             protected Expression<T> createResult(Class<T> type, Expression<T> last) {
                 return Expressions.operation(type, Ops.CASE_EQ, base, last);
             }
-        }.when(other).then(then);
+        }.when(other).then(expr);
     }
 
     public <T> Cases<T,Expression<T>> then(T then) {
@@ -97,7 +116,118 @@ public final class CaseForEqBuilder<D> {
         return then((Expression<T>) NullExpression.DEFAULT);
     }
 
-    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then) {
+    // Boolean
+
+    public Cases<Boolean, BooleanExpression> then(Boolean then) {
+        return thenBoolean(ConstantImpl.create(then));
+    }
+
+    public Cases<Boolean, BooleanExpression> then(BooleanExpression then) {
+        return thenBoolean(then);
+    }
+
+    private Cases<Boolean, BooleanExpression> thenBoolean(Expression<Boolean> then) {
+        type = then.getType();
+        return new Cases<Boolean, BooleanExpression>() {
+            @Override
+            protected BooleanExpression createResult(Class<Boolean> type, Expression<Boolean> last) {
+                return Expressions.booleanOperation(Ops.CASE_EQ, base, last);
+            }
+
+        }.when(other).then(then);
+    }
+
+    // Comparable
+
+    public <T extends Comparable> Cases<T, ComparableExpression<T>> then(T then) {
+        return thenComparable(ConstantImpl.create(then));
+    }
+
+    public <T extends Comparable> Cases<T, ComparableExpression<T>> then(ComparableExpression<T> then) {
+        return thenComparable(then);
+    }
+
+    private <T extends Comparable> Cases<T, ComparableExpression<T>> thenComparable(Expression<T> then) {
+        type = then.getType();
+        return new Cases<T, ComparableExpression<T>>() {
+            @Override
+            protected ComparableExpression<T> createResult(Class<T> type, Expression<T> last) {
+                return Expressions.comparableOperation(type, Ops.CASE_EQ, base, last);
+            }
+
+        }.when(other).then(then);
+    }
+
+    // Date
+
+    public Cases<java.sql.Date, DateExpression<java.sql.Date>> then(java.sql.Date then) {
+        return thenDate(ConstantImpl.create(then));
+    }
+
+    public <T extends Comparable> Cases<T, DateExpression<T>> then(DateExpression<T> then) {
+        return thenDate(then);
+    }
+
+    private <T extends Comparable> Cases<T, DateExpression<T>> thenDate(Expression<T> then) {
+        type = then.getType();
+        return new Cases<T, DateExpression<T>>() {
+            @Override
+            protected DateExpression<T> createResult(Class<T> type, Expression<T> last) {
+                return Expressions.dateOperation(type, Ops.CASE_EQ, base, last);
+            }
+
+        }.when(other).then(then);
+    }
+
+    // DateTime
+
+    public Cases<Date, DateTimeExpression<Date>> then(Date then) {
+        return thenDateTime(ConstantImpl.create(then));
+    }
+
+    public Cases<Timestamp, DateTimeExpression<Timestamp>> then(Timestamp then) {
+        return thenDateTime(ConstantImpl.create(then));
+    }
+
+    public <T extends Comparable> Cases<T, DateTimeExpression<T>> then(DateTimeExpression<T> then) {
+        return thenDateTime(then);
+    }
+
+    private <T extends Comparable> Cases<T, DateTimeExpression<T>> thenDateTime(Expression<T> then) {
+        type = then.getType();
+        return new Cases<T, DateTimeExpression<T>>() {
+            @Override
+            protected DateTimeExpression<T> createResult(Class<T> type, Expression<T> last) {
+                return Expressions.dateTimeOperation(type, Ops.CASE_EQ, base, last);
+            }
+
+        }.when(other).then(then);
+    }
+
+    // Enum
+
+    public <T extends Enum<T>> Cases<T, EnumExpression<T>> then(T then) {
+        return thenEnum(ConstantImpl.create(then));
+    }
+
+    public <T extends Enum<T>> Cases<T, EnumExpression<T>> then(EnumExpression<T> then) {
+        return thenEnum(then);
+    }
+
+    private <T extends Enum<T>> Cases<T, EnumExpression<T>> thenEnum(Expression<T> then) {
+        type = then.getType();
+        return new Cases<T, EnumExpression<T>>() {
+            @Override
+            protected EnumExpression<T> createResult(Class<T> type, Expression<T> last) {
+                return Expressions.enumOperation(type, Ops.CASE_EQ, base, last);
+            }
+
+        }.when(other).then(then);
+    }
+
+    // Number
+
+    public <T extends Number & Comparable<?>> Cases<T, NumberExpression<T>> then(T then) {
         return thenNumber(ConstantImpl.create(then));
     }
 
@@ -117,12 +247,14 @@ public final class CaseForEqBuilder<D> {
         }.when(other).then(then);
     }
 
-    public Cases<String,StringExpression> then(StringExpression then) {
-        return thenString(then);
-    }
+    // String
 
     public Cases<String,StringExpression> then(String then) {
         return thenString(ConstantImpl.create(then));
+    }
+
+    public Cases<String,StringExpression> then(StringExpression then) {
+        return thenString(then);
     }
 
     private Cases<String,StringExpression> thenString(Expression<String> then) {
@@ -132,6 +264,27 @@ public final class CaseForEqBuilder<D> {
             @Override
             protected StringExpression createResult(Class<String> type, Expression<String> last) {
                 return Expressions.stringOperation(Ops.CASE_EQ, base, last);
+            }
+
+        }.when(other).then(then);
+    }
+
+    // Time
+
+    public Cases<java.sql.Time, TimeExpression<java.sql.Time>> then(java.sql.Time then) {
+        return thenTime(ConstantImpl.create(then));
+    }
+
+    public <T extends Comparable> Cases<T, TimeExpression<T>> then(TimeExpression<T> then) {
+        return thenTime(then);
+    }
+
+    private <T extends Comparable> Cases<T, TimeExpression<T>> thenTime(Expression<T> then) {
+        type = then.getType();
+        return new Cases<T, TimeExpression<T>>() {
+            @Override
+            protected TimeExpression<T> createResult(Class<T> type, Expression<T> last) {
+                return Expressions.timeOperation(type, Ops.CASE_EQ, base, last);
             }
 
         }.when(other).then(then);
