@@ -1254,6 +1254,7 @@ public final class Expressions {
      * @param exprs list elements
      * @return list expression
      */
+    @SuppressWarnings("unchecked")
     public static <T> SimpleExpression<T> list(Class<T> clazz, SimpleExpression<?>... exprs) {
         SimpleExpression<T> rv = (SimpleExpression<T>) exprs[0];
         for (int i = 1; i < exprs.length; i++) {

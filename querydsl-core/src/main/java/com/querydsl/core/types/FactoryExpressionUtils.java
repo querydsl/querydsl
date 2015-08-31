@@ -81,6 +81,7 @@ public final class FactoryExpressionUtils {
 
     }
 
+    @SuppressWarnings("unchecked")
     public static FactoryExpression<?> wrap(List<? extends Expression<?>> projection) {
         boolean usesFactoryExpressions = false;
         for (Expression<?> e : projection) {

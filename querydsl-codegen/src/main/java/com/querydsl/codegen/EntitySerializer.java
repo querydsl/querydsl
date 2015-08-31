@@ -396,6 +396,7 @@ public class EntitySerializer implements Serializer {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected void introImports(CodeWriter writer, SerializerConfig config,
             EntityType model) throws IOException {
         writer.staticimports(PathMetadataFactory.class);

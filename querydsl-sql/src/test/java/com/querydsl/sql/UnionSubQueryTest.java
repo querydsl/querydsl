@@ -36,6 +36,7 @@ public class UnionSubQueryTest {
 
     private SQLSerializer serializer = new SQLSerializer(new Configuration(templates));
 
+    @SuppressWarnings("unchecked")
     @Test
     public void In_Union() {
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
@@ -50,6 +51,7 @@ public class UnionSubQueryTest {
             "(select 2 from dual))", serializer.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Union_SubQuery() {
         SimplePath<Integer> col1 = Expressions.path(Integer.class, "col1");
@@ -67,6 +69,7 @@ public class UnionSubQueryTest {
                 "(select 3 from dual)", serializer.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void UnionAll_SubQuery() {
         SimplePath<Integer> col1 = Expressions.path(Integer.class,"col1");

@@ -321,6 +321,7 @@ public class GenericExporter {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     private EntityType createEntityType(Class<?> cl, Map<Class<?>, EntityType> types) {
         if (types.get(cl) != null) {
             return types.get(cl);

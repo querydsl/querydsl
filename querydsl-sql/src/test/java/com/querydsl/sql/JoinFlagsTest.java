@@ -32,6 +32,7 @@ public class JoinFlagsTest {
 
     private SQLQuery query;
 
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
         s1 = new QSurvey("s");
@@ -44,6 +45,7 @@ public class JoinFlagsTest {
         query.from(s1);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void JoinFlags_BeforeCondition() {
         query.innerJoin(s2).on(s1.eq(s2));
@@ -54,6 +56,7 @@ public class JoinFlagsTest {
                 "on s.ID = s2.ID", query.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void JoinFlags_BeforeTarget() {
         query.innerJoin(s3).on(s1.eq(s3));
@@ -64,6 +67,7 @@ public class JoinFlagsTest {
                 "on s.ID = s3.ID", query.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void JoinFlags_End() {
         query.innerJoin(s4).on(s1.eq(s4));
@@ -74,6 +78,7 @@ public class JoinFlagsTest {
                 "on s.ID = s4.ID c", query.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void JoinFlags_Override() {
         query.innerJoin(s5).on(s1.eq(s5));
@@ -83,6 +88,7 @@ public class JoinFlagsTest {
                 "on s.ID = s5.ID", query.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void JoinFlags_Start() {
         query.innerJoin(s6).on(s1.eq(s6));

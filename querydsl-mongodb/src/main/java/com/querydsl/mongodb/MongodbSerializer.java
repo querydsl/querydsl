@@ -85,6 +85,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         return new BasicDBObject(key, value);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Object visit(Operation<?> expr, Void context) {
         Operator op = expr.getOperator();

@@ -469,7 +469,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         super.visitOperation(type, operator, args);
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private SingularAttribute<?,?> getIdProperty(EntityType entity) {
         final Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
         for (final SingularAttribute singularAttribute : singularAttributes) {
@@ -498,6 +498,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 args);
     }
 
+    @SuppressWarnings("unchecked")
     private List<? extends Expression<?>> normalizeNumericArgs(List<? extends Expression<?>> args) {
         //we do not yet let it produce these types
         //we verify the types with isAssignableFrom()

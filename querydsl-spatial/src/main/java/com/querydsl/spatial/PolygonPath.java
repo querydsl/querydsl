@@ -33,6 +33,7 @@ public class PolygonPath<T extends Polygon> extends PolygonExpression<T> impleme
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public PolygonPath(Path<?> parent, String property) {
         this((Class<? extends T>) Polygon.class, parent, property);
     }
@@ -41,6 +42,7 @@ public class PolygonPath<T extends Polygon> extends PolygonExpression<T> impleme
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public PolygonPath(PathMetadata metadata) {
         this((Class<? extends T>) Polygon.class, metadata);
     }
@@ -50,6 +52,7 @@ public class PolygonPath<T extends Polygon> extends PolygonExpression<T> impleme
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public PolygonPath(String var) {
         this((Class<? extends T>) Polygon.class, PathMetadataFactory.forVariable(var));
     }

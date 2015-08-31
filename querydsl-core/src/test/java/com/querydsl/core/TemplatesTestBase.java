@@ -39,6 +39,7 @@ public class TemplatesTestBase {
 
     private final String modulePrefix = getClass().getPackage().getName();
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Default_Instance() {
         Set<Class<? extends Templates>> templates = querydsl.getSubTypesOf(Templates.class);

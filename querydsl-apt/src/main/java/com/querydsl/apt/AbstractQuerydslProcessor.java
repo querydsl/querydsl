@@ -423,6 +423,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Set<TypeElement> processDelegateMethods() {
         Set<Element> delegateMethods = (Set) getElements(QueryDelegate.class);
         Set<TypeElement> typeElements = new HashSet<TypeElement>();
@@ -471,6 +472,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         return typeElements;
     }
 
+    @SuppressWarnings("unchecked")
     private void validateMetaTypes() {
         for (Collection<EntityType> entityTypes : Arrays.asList(
                 context.supertypes.values(),

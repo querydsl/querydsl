@@ -90,12 +90,14 @@ public abstract class AbstractQueryTest {
             return rv;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public <U> TestQuery<U> select(Expression<U> expr) {
             queryMixin.setProjection(expr);
             return (TestQuery<U>) this;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public TestQuery<Tuple> select(Expression<?>... exprs) {
             queryMixin.setProjection(exprs);

@@ -306,6 +306,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return query.select(Expressions.ONE).fetchFirst() != null;
     }
 
+    @SuppressWarnings("unchecked")
     private void addKeyConditions(FilteredClause<?> query) {
         List<? extends Path<?>> keys = getKeys();
         for (int i = 0; i < columns.size(); i++) {

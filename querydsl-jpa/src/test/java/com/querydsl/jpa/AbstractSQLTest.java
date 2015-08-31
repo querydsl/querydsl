@@ -291,6 +291,7 @@ public abstract class AbstractSQLTest {
         assertFalse(list.isEmpty());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({Target.DERBY, Target.POSTGRESQL})
     @Ignore // FIXME
@@ -306,6 +307,7 @@ public abstract class AbstractSQLTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn(Target.DERBY)
     @Ignore // FIXME
@@ -327,6 +329,7 @@ public abstract class AbstractSQLTest {
         assertEquals(6, nulls);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({Target.DERBY, Target.POSTGRESQL})
     @Ignore // FIXME
@@ -337,6 +340,7 @@ public abstract class AbstractSQLTest {
         .select(cat.name, cat.id).fetch();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({Target.DERBY, Target.ORACLE})
     public void Union5() {

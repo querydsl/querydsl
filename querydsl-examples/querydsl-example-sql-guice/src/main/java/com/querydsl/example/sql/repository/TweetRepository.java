@@ -43,6 +43,7 @@ public class TweetRepository extends AbstractRepository {
         return selectFrom(tweet).where(tweet.id.eq(id)).fetchOne();
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional
     public List<Tweet> findOfUser(String username) {
         return select(tweet).from(user)
@@ -50,6 +51,7 @@ public class TweetRepository extends AbstractRepository {
                 .fetch();
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional
     public List<Tweet> findWithMentioned(Long userId) {
         return selectFrom(tweet)
@@ -58,6 +60,7 @@ public class TweetRepository extends AbstractRepository {
                 .fetch();
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional
     public List<Tweet> findOfArea(double[] pointA, double[] pointB) {
         return selectFrom(tweet)
@@ -67,6 +70,7 @@ public class TweetRepository extends AbstractRepository {
                 .fetch();
     }
 
+    @SuppressWarnings("unchecked")
     @Transactional
     public List<Tweet> findAll(Predicate expr) {
         return selectFrom(tweet).where(expr).fetch();

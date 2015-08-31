@@ -131,7 +131,7 @@ public class QueryMixin<T> {
         }
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public <RT> Expression<RT> convert(Expression<RT> expr, Role role) {
         if (expandAnyPaths) {
             if (expr instanceof Path) {
@@ -153,6 +153,7 @@ public class QueryMixin<T> {
         return condition;
     }
 
+    @SuppressWarnings("unchecked")
     protected <D> Expression<D> createAlias(Expression<?> expr, Path<D> alias) {
         assertRoot(alias);
         return ExpressionUtils.as((Expression) expr, alias);
@@ -336,6 +337,7 @@ public class QueryMixin<T> {
         return self;
     }
 
+    @SuppressWarnings("unchecked")
     public final T orderBy(OrderSpecifier<?> spec) {
         Expression<?> e = convert(spec.getTarget(), Role.ORDER_BY);
         if (!spec.getTarget().equals(e)) {

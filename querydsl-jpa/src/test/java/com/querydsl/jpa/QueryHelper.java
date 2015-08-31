@@ -91,12 +91,14 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> QueryHelper<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (QueryHelper<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public QueryHelper<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

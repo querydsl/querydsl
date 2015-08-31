@@ -38,6 +38,7 @@ public class CollectionOperation<E> extends CollectionExpressionBase<Collection<
         this(type, op, ImmutableList.copyOf(args));
     }
 
+    @SuppressWarnings("unchecked")
     protected CollectionOperation(Class<? super E> type, Operator op, ImmutableList<Expression<?>> args) {
         super(ExpressionUtils.operation((Class) Collection.class, op, args));
         this.opMixin = (OperationImpl) super.mixin;

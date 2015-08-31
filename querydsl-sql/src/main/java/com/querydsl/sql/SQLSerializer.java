@@ -735,6 +735,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         stage = oldStage;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void visitConstant(Object constant) {
         if (useLiterals) {
@@ -861,6 +862,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         boolean pathAdded = false;

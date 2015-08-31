@@ -270,6 +270,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         return innerUnion((List) ImmutableList.copyOf(sq));
     }
 
+    @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(List<SubQueryExpression<RT>> sq) {
         queryMixin.setProjection(sq.get(0).getMetadata().getProjection());
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
@@ -319,6 +320,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * @param sq subqueries
      * @return the current object
      */
+    @SuppressWarnings("unchecked")
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
     }
@@ -356,6 +358,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * @param sq subqueries
      * @return the current object
      */
+    @SuppressWarnings("unchecked")
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
         return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, true));
     }
@@ -429,6 +432,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         return paths;
     }
 
+    @SuppressWarnings("unchecked")
     private Collection<? extends Expression<?>> expandProjection(Expression<?> expr) {
         if (expr instanceof FactoryExpression) {
             return ((FactoryExpression) expr).getArgs();
@@ -437,6 +441,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected SQLSerializer serialize(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (union != null) {

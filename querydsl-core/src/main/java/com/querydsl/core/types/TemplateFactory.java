@@ -89,6 +89,7 @@ public class TemplateFactory {
 
     private final Function<Object,Object> toStartsWithViaLikeLower =
             new Function<Object,Object>() {
+                @SuppressWarnings("unchecked")
                 @Override
                 public Object apply(Object arg) {
                     if (arg instanceof Constant<?>) {
@@ -118,6 +119,7 @@ public class TemplateFactory {
 
     private final Function<Object,Object> toEndsWithViaLikeLower =
             new Function<Object,Object>() {
+                @SuppressWarnings("unchecked")
                 @Override
                 public Object apply(Object arg) {
                     if (arg instanceof Constant<?>) {
@@ -133,6 +135,7 @@ public class TemplateFactory {
 
     private final Function<Object,Object> toContainsViaLike =
             new Function<Object,Object>() {
+                @SuppressWarnings("unchecked")
                 @Override
                 public Object apply(Object arg) {
                     if (arg instanceof Constant<?>) {
@@ -148,6 +151,7 @@ public class TemplateFactory {
 
     private final Function<Object,Object> toContainsViaLikeLower =
             new Function<Object,Object>() {
+                @SuppressWarnings("unchecked")
                 @Override
                 public Object apply(Object arg) {
                     if (arg instanceof Constant<?>) {

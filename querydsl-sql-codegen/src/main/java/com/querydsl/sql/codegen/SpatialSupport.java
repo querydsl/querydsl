@@ -70,6 +70,7 @@ public final class SpatialSupport {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static void addImports(AbstractModule module) {
         Set<String> imports = module.get(Set.class, CodegenModule.IMPORTS);
         String packageName = GeometryPath.class.getPackage().getName();

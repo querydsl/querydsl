@@ -51,6 +51,7 @@ class EclipseLinkHandler implements QueryHandler {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
         Iterator<T> iterator = null;

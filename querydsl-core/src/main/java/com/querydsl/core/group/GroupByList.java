@@ -39,6 +39,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
         super(key, expressions);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<V> transform(FetchableQuery<?,?> query) {
         // create groups
@@ -74,6 +75,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
         return list;
     }
 
+    @SuppressWarnings("unchecked")
     protected V transform(Group group) {
         return (V) group;
     }

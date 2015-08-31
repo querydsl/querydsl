@@ -51,6 +51,7 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
 
     private transient volatile PolyhedralSurfacePath<PolyHedralSurface> polyhedralSurface;
 
+    @SuppressWarnings("unchecked")
     public GeometryPath(Path<?> parent, String property) {
         this((Class<? extends T>) Geometry.class, parent, property);
     }
@@ -59,6 +60,7 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public GeometryPath(PathMetadata metadata) {
         this((Class<? extends T>) Geometry.class, metadata);
     }
@@ -68,6 +70,7 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public GeometryPath(String var) {
         this((Class<? extends T>) Geometry.class, PathMetadataFactory.forVariable(var));
     }

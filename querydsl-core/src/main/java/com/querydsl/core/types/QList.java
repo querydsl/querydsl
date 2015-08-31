@@ -38,6 +38,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      *
      * @param args
      */
+    @SuppressWarnings("unchecked")
     protected QList(Expression<?>... args) {
         super((Class) List.class);
         this.args = ImmutableList.copyOf(args);
@@ -48,6 +49,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      *
      * @param args
      */
+    @SuppressWarnings("unchecked")
     protected QList(ImmutableList<Expression<?>> args) {
         super((Class) List.class);
         this.args = args;
@@ -58,6 +60,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
      *
      * @param args
      */
+    @SuppressWarnings("unchecked")
     protected QList(Expression<?>[]... args) {
         super((Class) List.class);
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();

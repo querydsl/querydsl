@@ -130,12 +130,14 @@ public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
 
     // TODO : sys connect path
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> OracleQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (OracleQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public OracleQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

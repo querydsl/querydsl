@@ -99,6 +99,7 @@ class GroupImpl implements Group {
         throw new NoSuchElementException("GMap(" + key + ", " + value + ")");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <K, V> SortedMap<K, V> getSortedMap(Expression<K> key, Expression<V> value) {
         for (QPair<?, ?> pair : maps) {
