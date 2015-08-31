@@ -659,6 +659,18 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(HSQLDB)
+    public void FactoryExpressions() {
+        QCat cat = QCat.cat;
+        QCat cat2 = new QCat("cat2");
+        QCat kitten = new QCat("kitten");
+        assertEquals(6, query().from(cat)
+                .leftJoin(cat.mate, cat2)
+                .leftJoin(cat2.kittens, kitten)
+                .list(Projections.tuple(cat.id, new QFamily(cat, cat2, kitten).skipNulls())).size());
+    }
+
+    @Test
     @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Fetch() {
         QMammal mammal = QMammal.mammal;
