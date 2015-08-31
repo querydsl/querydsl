@@ -869,6 +869,20 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void GroupBy_Results() {
+        QueryResults<Integer> results = query().from(cat).groupBy(cat.id).select(cat.id).fetchResults();
+        assertEquals(6, results.getTotal());
+        assertEquals(6, results.getResults().size());
+    }
+
+    @Test
+    public void GroupBy_Results2() {
+        QueryResults<Integer> results = query().from(cat).groupBy(cat.birthdate).select(cat.id.max()).fetchResults();
+        assertEquals(1, results.getTotal());
+        assertEquals(1, results.getResults().size());
+    }
+
+    @Test
     public void In() {
         assertEquals(3L, query().from(cat).where(cat.name.in("Bob123", "Ruth123", "Felix123")).fetchCount());
         assertEquals(3L, query().from(cat).where(cat.id.in(Arrays.asList(1, 2, 3))).fetchCount());
