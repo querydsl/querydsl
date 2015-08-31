@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.domain.QCat;
@@ -212,5 +213,15 @@ public class JPAQueryMixinTest {
                 md.getJoins());
         assertEquals(Arrays.asList(Expressions.stringPath(bookVersion.definition.bookMarks, "comment").asc()),
                 md.getOrderBy());
+    }
+
+    @Test
+    public void OrderBy_NullsLast() {
+        QCat cat = QCat.cat;
+        mixin.from(cat);
+        mixin.orderBy(cat.mate.name.asc().nullsLast());
+        assertEquals(
+                OrderSpecifier.NullHandling.NullsLast,
+                mixin.getMetadata().getOrderBy().get(0).getNullHandling());
     }
 }
