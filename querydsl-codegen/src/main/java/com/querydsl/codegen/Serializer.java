@@ -31,7 +31,7 @@ public interface Serializer {
      * @param type EntityType to serialize
      * @param serializerConfig serializer configuration
      * @param writer serialization target
-     * @throws IOException
+     * @throws IOException if an I/O exception of some sort has occurred
      */
     void serialize(EntityType type, SerializerConfig serializerConfig, CodeWriter writer) throws IOException;
 

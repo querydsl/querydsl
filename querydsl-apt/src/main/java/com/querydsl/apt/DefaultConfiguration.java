@@ -13,21 +13,55 @@
  */
 package com.querydsl.apt;
 
-import static com.querydsl.apt.APTOptions.*;
+import static com.querydsl.apt.APTOptions.QUERYDSL_CREATE_DEFAULT_VARIABLE;
+import static com.querydsl.apt.APTOptions.QUERYDSL_ENTITY_ACCESSORS;
+import static com.querydsl.apt.APTOptions.QUERYDSL_EXCLUDED_CLASSES;
+import static com.querydsl.apt.APTOptions.QUERYDSL_EXCLUDED_PACKAGES;
+import static com.querydsl.apt.APTOptions.QUERYDSL_INCLUDED_CLASSES;
+import static com.querydsl.apt.APTOptions.QUERYDSL_INCLUDED_PACKAGES;
+import static com.querydsl.apt.APTOptions.QUERYDSL_LIST_ACCESSORS;
+import static com.querydsl.apt.APTOptions.QUERYDSL_MAP_ACCESSORS;
+import static com.querydsl.apt.APTOptions.QUERYDSL_PACKAGE_SUFFIX;
+import static com.querydsl.apt.APTOptions.QUERYDSL_PREFIX;
+import static com.querydsl.apt.APTOptions.QUERYDSL_SUFFIX;
+import static com.querydsl.apt.APTOptions.QUERYDSL_UNKNOWN_AS_EMBEDDABLE;
+import static com.querydsl.apt.APTOptions.QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.*;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.mysema.codegen.model.ClassType;
-import com.querydsl.codegen.*;
+import com.querydsl.codegen.CodegenModule;
+import com.querydsl.codegen.DefaultVariableNameFunction;
+import com.querydsl.codegen.EmbeddableSerializer;
+import com.querydsl.codegen.EntitySerializer;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.ProjectionSerializer;
+import com.querydsl.codegen.QueryTypeFactory;
+import com.querydsl.codegen.Serializer;
+import com.querydsl.codegen.SerializerConfig;
+import com.querydsl.codegen.SimpleSerializerConfig;
+import com.querydsl.codegen.SupertypeSerializer;
+import com.querydsl.codegen.TypeMappings;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.annotations.QueryType;
@@ -73,6 +107,8 @@ public class DefaultConfiguration implements Configuration {
     private boolean useFields = true, useGetters = true;
 
     private boolean strictMode;
+
+    private Function<EntityType, String> variableNameFunction;
 
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
@@ -176,6 +212,25 @@ public class DefaultConfiguration implements Configuration {
                 includedClasses.addAll(classes);
             }
         }
+        
+        if (options.containsKey(QUERYDSL_CASE_TRANSFORMER_CLASS)) {
+            module.bind(CodegenModule.CASE_TRANSFORMER_CLASS, options.get(QUERYDSL_CASE_TRANSFORMER_CLASS));
+        }
+
+        if (options.containsKey(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)) {
+            try {
+                @SuppressWarnings("unchecked")
+                Class<Function<EntityType, String>> variableNameFunctionClass = (Class<Function<EntityType, String>>) Class.forName(options.get(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS));
+                variableNameFunction = variableNameFunctionClass.newInstance();
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+               variableNameFunction = new DefaultVariableNameFunction();
+            }
+        } else {
+            variableNameFunction = new DefaultVariableNameFunction();
+        }
+        module.bind(CodegenModule.VARIABLE_NAME_FUNCTION_CLASS, variableNameFunction);
 
         try {
             // register additional mappings if querydsl-spatial is on the classpath
@@ -465,6 +520,11 @@ public class DefaultConfiguration implements Configuration {
 
     public void setUnknownAsEmbedded(boolean unknownAsEmbedded) {
         this.unknownAsEmbedded = unknownAsEmbedded;
+    }
+
+    @Override
+    public Function<EntityType, String> getVariableNameFunction() {
+        return variableNameFunction;
     }
 
 }

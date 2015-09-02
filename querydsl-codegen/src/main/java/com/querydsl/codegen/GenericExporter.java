@@ -21,6 +21,7 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -204,7 +205,7 @@ public class GenericExporter {
     private void innerExport() {
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
-        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation));
+        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation), codegenModule.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
 
         // copy annotations helpers to typeFactory
         for (AnnotationHelper helper : annotationHelpers) {
@@ -650,7 +651,7 @@ public class GenericExporter {
     /**
      * Set whether Scala sources are generated
      *
-     * @param createScalaSources
+     * @param createScalaSources whether to create scala sources
      */
     public void setCreateScalaSources(boolean createScalaSources) {
         this.createScalaSources = createScalaSources;
@@ -659,7 +660,7 @@ public class GenericExporter {
     /**
      * Set the keywords to be used
      *
-     * @param keywords
+     * @param keywords the set keywords to set
      */
     public void setKeywords(Collection<String> keywords) {
         codegenModule.bind(CodegenModule.KEYWORDS, keywords);
@@ -668,7 +669,7 @@ public class GenericExporter {
     /**
      * Set the name prefix
      *
-     * @param prefix
+     * @param prefix the name prefix to set
      */
     public void setNamePrefix(String prefix) {
         codegenModule.bind(CodegenModule.PREFIX, prefix);
@@ -677,7 +678,7 @@ public class GenericExporter {
     /**
      * Set the name suffix
      *
-     * @param suffix
+     * @param suffix the name suffix to set
      */
     public void setNameSuffix(String suffix) {
         codegenModule.bind(CodegenModule.SUFFIX, suffix);
@@ -686,7 +687,7 @@ public class GenericExporter {
     /**
      * Set the package suffix
      *
-     * @param suffix
+     * @param suffix the package suffix to set
      */
     public void setPackageSuffix(String suffix) {
         codegenModule.bind(CodegenModule.PACKAGE_SUFFIX, suffix);
@@ -695,7 +696,7 @@ public class GenericExporter {
     /**
      * Set whether fields are handled (default true)
      *
-     * @param b
+     * @param b whether fields are handled
      */
     public void setHandleFields(boolean b) {
         handleFields = b;
@@ -704,7 +705,7 @@ public class GenericExporter {
     /**
      * Set whether fields are handled (default true)
      *
-     * @param b
+     * @param b whether fields are handled
      */
     public void setHandleMethods(boolean b) {
         handleMethods = b;
@@ -722,7 +723,7 @@ public class GenericExporter {
     /**
      * Add a stop class to be used (default Object.class and Enum.class)
      *
-     * @param cl
+     * @param cl the stop class to be used
      */
     public void addStopClass(Class<?> cl) {
         stopClasses.add(cl);
@@ -731,7 +732,7 @@ public class GenericExporter {
     /**
      * Set whether annotationless superclasses are handled or not (default: true)
      *
-     * @param s
+     * @param s whether annotationless superclasses are handled or not
      */
     public void setStrictMode(boolean s) {
         strictMode = s;
@@ -749,7 +750,7 @@ public class GenericExporter {
     /**
      * Add a annotation helper object to process custom annotations
      *
-     * @param annotationHelper
+     * @param annotationHelper the annotation helper object to add
      */
     public void addAnnotationHelper(AnnotationHelper annotationHelper) {
         annotationHelpers.add(annotationHelper);
