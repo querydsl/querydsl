@@ -30,6 +30,7 @@ import com.querydsl.sql.SQLTemplates;
  * {@code OracleQuery} provides Oracle specific extensions to the base SQL query type
  *
  * @author tiwe
+ * @param <T> result type
  */
 public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
 

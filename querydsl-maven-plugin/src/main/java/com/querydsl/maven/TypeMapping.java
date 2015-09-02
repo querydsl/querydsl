@@ -35,7 +35,7 @@ public class TypeMapping implements Mapping {
         try {
             Class<?> typeClass = Class.forName(type);
             if (Type.class.isAssignableFrom(typeClass)) {
-                configuration.register(table, column, (Type<?>)typeClass.newInstance());
+                configuration.register(table, column, (Type<?>) typeClass.newInstance());
             } else {
                 configuration.register(table, column, typeClass);
             }

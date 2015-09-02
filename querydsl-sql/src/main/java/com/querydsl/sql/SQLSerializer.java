@@ -39,7 +39,7 @@ import com.querydsl.sql.types.Null;
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
-    protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS}
+    protected enum Stage { SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS }
 
     private static final Expression<?> Q = Expressions.template(Object.class, "?");
 
@@ -83,7 +83,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     protected void appendAsColumnName(Path<?> path, boolean precededByDot) {
         String column = ColumnMetadata.getName(path);
         if (path.getMetadata().getParent() instanceof RelationalPath) {
-            RelationalPath<?> parent = (RelationalPath<?>)path.getMetadata().getParent();
+            RelationalPath<?> parent = (RelationalPath<?>) path.getMetadata().getParent();
             column = configuration.getColumnOverride(parent.getSchemaAndTable(), column);
         }
         append(templates.quoteIdentifier(column, precededByDot));
@@ -120,7 +120,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (joins.size() == 1) {
             JoinExpression join = joins.get(0);
             if (join.getTarget() instanceof RelationalPath) {
-                return ((RelationalPath)join.getTarget()).getColumns();
+                return ((RelationalPath) join.getTarget()).getColumns();
             } else {
                 return Collections.emptyList();
             }
@@ -130,7 +130,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             int counter = 0;
             for (JoinExpression join : joins) {
                 if (join.getTarget() instanceof RelationalPath) {
-                    RelationalPath path = (RelationalPath)join.getTarget();
+                    RelationalPath path = (RelationalPath) join.getTarget();
                     List<Expression<?>> columns;
                     if (path.getPrimaryKey() != null) {
                         columns = path.getPrimaryKey().getLocalColumns();
@@ -205,7 +205,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         List<? extends Expression<?>> sqlSelect;
         if (select instanceof FactoryExpression) {
-            sqlSelect = ((FactoryExpression<?>)select).getArgs();
+            sqlSelect = ((FactoryExpression<?>) select).getArgs();
         } else if (select != null) {
             sqlSelect = ImmutableList.of(select);
         } else {
@@ -213,7 +213,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
 
         // with
-        if (hasFlags){
+        if (hasFlags) {
             boolean handled = false;
             boolean recursive = false;
             for (QueryFlag flag : flags) {
@@ -635,7 +635,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         final boolean hasFlags = !flags.isEmpty();
 
         // with
-        if (hasFlags){
+        if (hasFlags) {
             boolean handled = false;
             boolean recursive = false;
             for (QueryFlag flag : flags) {
@@ -719,7 +719,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             if (constant instanceof Collection) {
                 append("(");
                 boolean first = true;
-                for (Object o : ((Collection)constant)) {
+                for (Object o : ((Collection) constant)) {
                     if (!first) {
                         append(COMMA);
                     }
@@ -844,11 +844,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
          && args.get(0) instanceof Path<?>
          && args.get(1) instanceof Constant<?>
          && operator != Ops.NUMCAST) {
-            Object constant = ((Constant<?>)args.get(1)).getConstant();
-            if (!Collection.class.isInstance(constant) || !((Collection)constant).isEmpty()) {
+            Object constant = ((Constant<?>) args.get(1)).getConstant();
+            if (!Collection.class.isInstance(constant) || !((Collection) constant).isEmpty()) {
                 for (Element element : templates.getTemplate(operator).getElements()) {
-                    if (element instanceof Template.ByIndex && ((Template.ByIndex)element).getIndex() == 1) {
-                        constantPaths.add((Path<?>)args.get(0));
+                    if (element instanceof Template.ByIndex && ((Template.ByIndex) element).getIndex() == 1) {
+                        constantPaths.add((Path<?>) args.get(0));
                         pathAdded = true;
                         break;
                     }
@@ -896,7 +896,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             //The type of the constant expression is compatible with the left
             //expression, since the compile time checking mandates it to be.
             @SuppressWarnings("unchecked")
-            Collection<Object> coll = ((Constant<Collection<Object>>)args.get(1)).getConstant();
+            Collection<Object> coll = ((Constant<Collection<Object>>) args.get(1)).getConstant();
             if (coll.isEmpty()) {
                 super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
                         ImmutableList.of(Expressions.ONE, Expressions.TWO));
@@ -930,7 +930,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             skipParent = oldSkipParent;
 
         } else if (operator == Ops.ORDER) {
-            List<OrderSpecifier<?>> order = ((Constant<List<OrderSpecifier<?>>>)args.get(0)).getConstant();
+            List<OrderSpecifier<?>> order = ((Constant<List<OrderSpecifier<?>>>) args.get(0)).getConstant();
             handleOrderBy(order);
 
         } else {

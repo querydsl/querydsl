@@ -19,6 +19,9 @@ import com.mysema.codegen.Evaluator;
 /**
  * Function implementation which uses an {@link Evaluator} for transformation
  *
+ * @param <S> source type
+ * @param <T> target type
+ *
  * @author tiwe
  */
 public class EvaluatorFunction<S, T> implements Function<S, T> {

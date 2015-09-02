@@ -18,13 +18,11 @@ import static org.junit.Assert.*;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Transaction;
-
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
@@ -53,19 +51,21 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
         assertEquals(30L, sql().from(product).fetchCount());
     }
 
-    @Test(expected=NonUniqueResultException.class)
+    @Test(expected = NonUniqueResultException.class)
     public void UniqueResult() {
-        sql().from(product).select(product.name).fetchOne();
+        sql().from(product).orderBy(product.name.asc()).select(product.name).fetchOne();
     }
 
     @Test
     public void SingleResult() {
-        sql().from(product).select(product.name).fetchFirst();
+        assertEquals("A0", sql().from(product).orderBy(product.name.asc())
+                .select(product.name).fetchFirst());
     }
 
     @Test
     public void SingleResult_With_Array() {
-        sql().from(product).select(new Expression[]{product.name}).fetchFirst();
+        assertEquals("A0", sql().from(product).orderBy(product.name.asc())
+                .select(new Expression<?>[]{product.name}).fetchFirst().get(product.name));
     }
 
     @Test
@@ -79,9 +79,9 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
     @Test
     public void Eq_Count() {
         for (int i = 0; i < 10; i++) {
-            assertEquals(1L, sql().from(product).where(product.name.eq("A"+i)).fetchCount());
-            assertEquals(1L, sql().from(product).where(product.name.eq("B"+i)).fetchCount());
-            assertEquals(1L, sql().from(product).where(product.name.eq("C"+i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("A" + i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("B" + i)).fetchCount());
+            assertEquals(1L, sql().from(product).where(product.name.eq("C" + i)).fetchCount());
         }
     }
 
@@ -158,25 +158,13 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        // Persistence of a Product and a Book.
-        PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx = pm.currentTransaction();
-        try {
-            tx.begin();
-            for (int i = 0; i < 10; i++) {
-                pm.makePersistent(new Product("C" + i, "F", 200.00, 2));
-                pm.makePersistent(new Product("B" + i, "E", 400.00, 4));
-                pm.makePersistent(new Product("A" + i, "D", 600.00, 6));
-            }
-            tx.commit();
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            pm.close();
+        List<Object> entities = Lists.newArrayList();
+        for (int i = 0; i < 10; i++) {
+            entities.add(new Product("C" + i, "F", 200.00, 2));
+            entities.add(new Product("B" + i, "E", 400.00, 4));
+            entities.add(new Product("A" + i, "D", 600.00, 6));
         }
-        System.out.println("");
-
+        doPersist(entities);
     }
 
 }

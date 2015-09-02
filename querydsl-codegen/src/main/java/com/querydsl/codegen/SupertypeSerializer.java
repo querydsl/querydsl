@@ -34,8 +34,8 @@ public final class SupertypeSerializer extends EntitySerializer {
      * @param keywords keywords to be used
      */
     @Inject
-    public SupertypeSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
-        super(typeMappings, keywords);
+    public SupertypeSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords, @Named(CodegenModule.CASE_TRANSFORMER_CLASS) String caseTransfomerClass) {
+        super(typeMappings, keywords, caseTransfomerClass);
     }
 
 }

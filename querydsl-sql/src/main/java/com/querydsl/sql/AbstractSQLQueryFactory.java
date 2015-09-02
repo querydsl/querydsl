@@ -28,8 +28,9 @@ import com.querydsl.sql.dml.SQLUpdateClause;
 /**
  * {@code AbstractSQLQueryFactory} is the base class for {@link SQLCommonQueryFactory} implementations
  *
- * @author tiwe
+ * @param <Q> query type
  *
+ * @author tiwe
  */
 public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> implements SQLCommonQueryFactory<Q,
     SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {

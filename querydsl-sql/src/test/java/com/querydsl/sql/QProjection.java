@@ -22,7 +22,7 @@ import com.querydsl.core.types.ExpressionBase;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.core.types.Visitor;
 
-public class QProjection extends ExpressionBase<Projection> implements FactoryExpression<Projection>{
+public class QProjection extends ExpressionBase<Projection> implements FactoryExpression<Projection> {
 
     private static final long serialVersionUID = -7330905848558102164L;
 
@@ -57,7 +57,7 @@ public class QProjection extends ExpressionBase<Projection> implements FactoryEx
 
             @Override
             public <T> Expression<T> getExpr(int index, Class<T> type) {
-                T val = (T)args[index];
+                T val = (T) args[index];
                 return val != null ? SimpleConstant.create(val) : null;
             }
 

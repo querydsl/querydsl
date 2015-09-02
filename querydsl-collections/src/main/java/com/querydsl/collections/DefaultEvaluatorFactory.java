@@ -132,11 +132,11 @@ public class DefaultEvaluatorFactory {
             Expression<? extends T> source, Predicate filter) {
         String typeName = ClassUtils.getName(source.getType());
         CollQuerySerializer ser = new CollQuerySerializer(templates);
-        ser.append("java.util.List<"+typeName+"> rv = new java.util.ArrayList<"+typeName+">();\n");
-        ser.append("for (" + typeName + " "+ source + " : " + source + "_) {\n");
+        ser.append("java.util.List<" + typeName + "> rv = new java.util.ArrayList<" + typeName + ">();\n");
+        ser.append("for (" + typeName + " " + source + " : " + source + "_) {\n");
         ser.append("    try {\n");
         ser.append("        if (").handle(filter).append(") {\n");
-        ser.append("            rv.add("+source+");\n");
+        ser.append("            rv.add(" + source + ");\n");
         ser.append("        }\n");
         ser.append("    } catch (NullPointerException npe) { }\n");
         ser.append("}\n");
@@ -151,7 +151,7 @@ public class DefaultEvaluatorFactory {
         return factory.createEvaluator(
                 ser.toString(),
                 sourceListType,
-                new String[]{source+"_"},
+                new String[]{source + "_"},
                 new Type[]{sourceListType},
                 new Class[]{Iterable.class},
                 constants);
@@ -185,16 +185,16 @@ public class DefaultEvaluatorFactory {
             }
             switch (join.getType()) {
             case DEFAULT:
-                ser.append("for (" + typeName + " "+ target + " : " + target + "_) {\n");
+                ser.append("for (" + typeName + " " + target + " : " + target + "_) {\n");
                 vars.append(target);
-                sourceNames.add(target+"_");
+                sourceNames.add(target + "_");
                 sourceTypes.add(new SimpleType(Types.ITERABLE, new ClassType(TypeCategory.SIMPLE,target.getType())));
                 sourceClasses.add(Iterable.class);
                 break;
 
             case INNERJOIN:
             case LEFTJOIN:
-                Operation<?> alias = (Operation<?>)join.getTarget();
+                Operation<?> alias = (Operation<?>) join.getTarget();
                 boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
                 boolean leftJoin = join.getType() == JoinType.LEFTJOIN;
                 String matcher = null;
@@ -205,7 +205,7 @@ public class DefaultEvaluatorFactory {
                 }
                 ser.append("for (" + typeName + " " + alias.getArg(1) + " : ");
                 if (leftJoin) {
-                    ser.append(CollQueryFunctions.class.getName()+".leftJoin(");
+                    ser.append(CollQueryFunctions.class.getName() + ".leftJoin(");
                 }
                 if (colAnyJoin) {
                     Context context = new Context();
@@ -239,13 +239,13 @@ public class DefaultEvaluatorFactory {
             ser.append("if (");
             ser.handle(filter).append(") {\n");
             for (String matcher : anyJoinMatchers) {
-                ser.append("    "+ matcher + " = true;\n");
+                ser.append("    " + matcher + " = true;\n");
             }
-            ser.append("    rv.add(new Object[]{"+vars+"});\n");
+            ser.append("    rv.add(new Object[]{" + vars + "});\n");
             ser.append("}\n");
             ser.append("} catch (NullPointerException npe) { }\n");
         } else {
-            ser.append("rv.add(new Object[]{"+vars+"});\n");
+            ser.append("rv.add(new Object[]{" + vars + "});\n");
         }
 
         // closing context

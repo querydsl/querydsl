@@ -168,7 +168,7 @@ public class LuceneQueryTest {
         verify(searcher);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void CountDistinct() {
         query.where(year.between(1900, 3000));
         assertEquals(3, query.distinct().fetchCount());
@@ -480,7 +480,7 @@ public class LuceneQueryTest {
         assertEquals("The Lord of the Rings", query.where(title.ne("")).limit(1).offset(2).fetchFirst().get("title"));
     }
 
-    @Test(expected=NonUniqueResultException.class)
+    @Test(expected = NonUniqueResultException.class)
     public void UniqueResult_Contract() {
         query.where(title.ne("")).fetchOne();
     }
@@ -588,7 +588,7 @@ public class LuceneQueryTest {
         verify(searcher);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void ListDistinct() {
         query.where(year.between(1900, 2000).or(title.startsWith("Jura")));
         query.orderBy(year.asc());
@@ -611,7 +611,7 @@ public class LuceneQueryTest {
         assertEquals(4, results.getTotal());
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void ListDistinctResults() {
         query.where(year.between(1800, 2000).or(
                 title.eq("The Lord of the Rings")));

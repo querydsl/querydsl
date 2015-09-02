@@ -9,13 +9,6 @@ The JPA module provides integration with the JPA 2 persistence API.
 ```XML
 <dependency>
   <groupId>com.querydsl</groupId>
-  <artifactId>querydsl-apt</artifactId>
-  <version>${querydsl.version}</version>
-  <scope>provided</scope>
-</dependency>    
-    
-<dependency>
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jpa</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
@@ -49,6 +42,13 @@ And now, configure the Maven APT plugin :
             </configuration>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>${querydsl.version}</version>
+          </dependency
+        </dependencies>
       </plugin>
       ...
     </plugins>

@@ -8,12 +8,12 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>src/apt/jdo</directory>	
-	  <outputDirectory>/</outputDirectory>
-	</fileSet>
+      <directory>src/apt/jdo</directory>    
+      <outputDirectory>/</outputDirectory>
+    </fileSet>
     <fileSet>
-      <directory>${project.build.outputDirectory}</directory>	
-	  <outputDirectory>/</outputDirectory>
-	</fileSet>			
+      <directory>${project.build.outputDirectory}</directory>    
+      <outputDirectory>/</outputDirectory>
+    </fileSet>            
   </fileSets>  
 </assembly>

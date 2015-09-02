@@ -23,7 +23,7 @@ import com.querydsl.jpa.domain4.Library;
 
 public final class Domain {
 
-    private Domain() {}
+    private Domain() { }
 
     public static final List<Class<?>> classes = Arrays.asList(
             Account.class,

@@ -74,7 +74,7 @@ public final class ForeignKey<E> implements Serializable, ProjectionRole<Tuple> 
     public Predicate on(RelationalPath<E> entity) {
         BooleanBuilder builder = new BooleanBuilder();
         for (int i = 0; i < localColumns.size(); i++) {
-            Expression<Object> local = (Expression<Object>)localColumns.get(i);
+            Expression<Object> local = (Expression<Object>) localColumns.get(i);
             Expression<?> foreign = ExpressionUtils.path(local.getType(), entity, foreignColumns.get(i));
             builder.and(ExpressionUtils.eq(local,foreign));
         }

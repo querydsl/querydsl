@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>4.0.1.BUILD-SNAPSHOT</version>
+    <version>4.0.2.BUILD-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -17,6 +17,7 @@
   <properties>
     <translation>en-US</translation>
     <xslthl.config>http://docbook.sourceforge.net/release/xsl/current/highlighting/xslthl-config.xml</xslthl.config>
+    <checkstyle.skip>true</checkstyle.skip>
   </properties>
 
   <build>

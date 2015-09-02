@@ -25,7 +25,7 @@ import com.querydsl.core.types.dsl.StringPath;
  *
  */
 @SuppressWarnings("serial")
-public class QBook extends EntityPathBase<com.querydsl.jdo.test.domain.Book>{
+public class QBook extends EntityPathBase<com.querydsl.jdo.test.domain.Book> {
 
     public static final QBook book = new QBook("book");
 

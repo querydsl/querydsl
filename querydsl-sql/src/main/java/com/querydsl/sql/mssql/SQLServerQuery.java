@@ -28,8 +28,9 @@ import com.querydsl.sql.SQLTemplates;
 /**
  * {@code SQLServerQuery} provides SQL Server related extensions to SQLQuery
  *
- * @author tiwe
+ * @param <T> result type
  *
+ * @author tiwe
  */
 public class SQLServerQuery<T> extends AbstractSQLQuery<T, SQLServerQuery<T>> {
 

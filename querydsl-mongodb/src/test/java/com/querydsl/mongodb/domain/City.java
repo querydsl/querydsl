@@ -16,7 +16,7 @@ package com.querydsl.mongodb.domain;
 
 public final class City {
 
-    public City() {}
+    public City() { }
 
     public City(String name, Double latitude, Double longitude) {
         this.name = name;

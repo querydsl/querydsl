@@ -14,7 +14,7 @@
 package com.querydsl.core.alias;
 
 /**
- * {@code TypeSystem} defines an interface for detecting whether a given class confirms to certain Collection
+ * {@code TypeSystem} defines an interface for detecting whether a given class conforms to a certain Collection
  * contract
  *
  * @author tiwe

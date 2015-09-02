@@ -20,7 +20,7 @@ package com.querydsl.core.types;
  * <p>Usually FactoryExpression instances are used as the custom projection.</p>
  *
  * @author tiwe
- *
+ * @param <T> expression type
  */
 public interface ProjectionRole<T> {
 

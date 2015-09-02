@@ -1051,7 +1051,7 @@ public final class Expressions {
      * @param type type of expression
      * @param metadata path metadata
      * @param <T> type of expression
-     * @return new path instane
+     * @return new path instance
      */
     public static <T extends Comparable<?>> DatePath<T> datePath(Class<? extends T> type, PathMetadata metadata) {
         return new DatePath<T>(type, metadata);
@@ -1416,6 +1416,33 @@ public final class Expressions {
                                                                                        Class<E> queryType,
                                                                                        PathMetadata metadata) {
         return new MapPath<K,V,E>(keyType, valueType, queryType, metadata);
+    }
+
+    /**
+     * Create a new Path expression
+     *
+     * @param arrayType array type
+     * @param variable variable name
+     * @param <A> array type
+     * @param <E> element type
+     * @return path expression
+     */
+    public static <A, E> ArrayPath<A, E> arrayPath(Class<A> arrayType, String variable) {
+        return new ArrayPath<A, E>(arrayType, variable);
+    }
+
+    /**
+     * Create a new Path expression
+     *
+     * @param arrayType array type
+     * @param parent path metadata
+     * @param property property name
+     * @param <A> array type
+     * @param <E> element type
+     * @return path expression
+     */
+    public static <A, E> ArrayPath<A, E> arrayPath(Class<A> arrayType, Path<?> parent, String property) {
+        return new ArrayPath<A, E>(arrayType, parent, property);
     }
 
     /**

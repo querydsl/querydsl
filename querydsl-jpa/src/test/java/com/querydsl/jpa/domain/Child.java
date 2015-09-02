@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-@Entity(name="Child2")
+@Entity(name = "Child2")
 public class Child {
 
     @Id

@@ -19,13 +19,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Transaction;
-
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.querydsl.core.*;
 import com.querydsl.core.types.ArrayConstructorExpression;
 import com.querydsl.core.types.ParamNotSetException;
@@ -41,7 +39,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     public static class Projection {
 
-        public Projection(String str) {}
+        public Projection(String str) { }
 
     }
 
@@ -66,36 +64,24 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        // Persistence of a Product and a Book.
-        PersistenceManager pm = pmf.getPersistenceManager();
-        Transaction tx = pm.currentTransaction();
-        try {
-            tx.begin();
-            for (int i = 0; i < 10; i++) {
-                // Product instances
-                pm.makePersistent(new Product("ABC" + i, "F" + i, i * 200.00, 2, publicationDate));
-                pm.makePersistent(new Product("DEF" + i, "E" + i, i * 200.00, 4, publicationDate));
-                pm.makePersistent(new Product("GHI" + i, "D" + i, i * 200.00, 6, publicationDate));
+        List<Object> entities = Lists.newArrayList();
+        for (int i = 0; i < 10; i++) {
+            // Product instances
+            entities.add(new Product("ABC" + i, "F" + i, i * 200.00, 2, publicationDate));
+            entities.add(new Product("DEF" + i, "E" + i, i * 200.00, 4, publicationDate));
+            entities.add(new Product("GHI" + i, "D" + i, i * 200.00, 6, publicationDate));
 
-                // Product of Store
-                Product product = new Product(productName,"A",100.0,1, publicationDate);
-                pm.makePersistent(product);
+            // Product of Store
+            Product product = new Product(productName,"A",100.0,1, publicationDate);
+            entities.add(product);
 
-                // Store instances
-                Store store = new Store();
-                store.getProducts().add(product);
-                store.getProductsByName().put(productName, product);
-                pm.makePersistent(store);
-            }
-            tx.commit();
-        } finally {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            pm.close();
+            // Store instances
+            Store store = new Store();
+            store.getProducts().add(product);
+            store.getProductsByName().put(productName, product);
+            entities.add(store);
         }
-        System.out.println("");
-
+        doPersist(entities);
     }
 
     private final QueryExecution standardTest = new QueryExecution(Module.JDO, Target.H2) {
@@ -192,7 +178,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
                 .select(product.name).fetchFirst());
     }
 
-    @Test(expected=ParamNotSetException.class)
+    @Test(expected = ParamNotSetException.class)
     public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name))

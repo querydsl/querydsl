@@ -27,8 +27,9 @@ import com.querydsl.sql.*;
 /**
  * {@code TeradataQuery} provides Teradata related extensions to SQLQuery
  *
- * @author tiwe
+ * @param <T> result type
  *
+ * @author tiwe
  */
 public class TeradataQuery<T> extends AbstractSQLQuery<T, TeradataQuery<T>> {
 

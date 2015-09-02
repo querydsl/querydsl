@@ -76,7 +76,8 @@ public abstract class AbstractSQLTest {
                 .select(Projections.constructor(Cat.class, cat.name, cat.id)).fetch();
         assertEquals(6, cats.size());
         for (Cat c : cats) {
-            System.out.println(c.getName());
+            assertNotNull(c.getName());
+            assertTrue(c.getId() > 0);
         }
     }
 
@@ -87,7 +88,7 @@ public abstract class AbstractSQLTest {
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).select(catEntity).fetch();
         assertEquals(6, cats.size());
         for (Cat c : cats) {
-            System.out.println(c.getName());
+            assertNotNull(c.getName());
         }
     }
 
@@ -106,7 +107,7 @@ public abstract class AbstractSQLTest {
     @Test
     public void EntityQueries3() {
         QCat catEntity = new QCat("animal_");
-        query().from(catEntity).select(catEntity.toes.max()).fetch();
+        assertEquals(0, query().from(catEntity).select(catEntity.toes.max()).fetchFirst().intValue());
     }
 
     @Test
@@ -156,7 +157,8 @@ public abstract class AbstractSQLTest {
     @Test
     public void EntityQueries7() {
         QCompany company = QCompany.company;
-        query().from(company).select(company.officialName).fetch();
+        assertEquals(Arrays.asList(),
+                query().from(company).select(company.officialName).fetch());
     }
 
     @Test
@@ -261,7 +263,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void Single_Result_Multiple() {
-        query().from(cat).select(new Expression[]{cat.id}).fetchFirst();
+        assertEquals(1, query().from(cat).orderBy(cat.id.asc()).select(new Expression<?>[]{cat.id}).fetchFirst().get(cat.id).intValue());
     }
 
     @Test
@@ -347,12 +349,14 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void Unique_Result() {
-        query().from(cat).limit(1).select(cat.id).fetchOne();
+        assertEquals(1,
+                query().from(cat).orderBy(cat.id.asc()).limit(1).select(cat.id).fetchOne().intValue());
     }
 
     @Test
     public void Unique_Result_Multiple() {
-        query().from(cat).limit(1).select(new Expression[]{cat.id}).fetchOne();
+        assertEquals(1,
+                query().from(cat).orderBy(cat.id.asc()).limit(1).select(new Expression<?>[]{cat.id}).fetchOne().get(cat.id).intValue());
     }
 
     @Test

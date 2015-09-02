@@ -15,6 +15,7 @@ package com.querydsl.jpa;
 
 import static org.junit.Assert.assertEquals;
 import static com.querydsl.jpa.Constants.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -106,7 +107,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
         HibernateQuery<?> query = new HibernateQuery<Void>(session);
         ScrollableResults results = query.from(cat).select(cat).scroll(ScrollMode.SCROLL_INSENSITIVE);
         while (results.next()) {
-            System.out.println(results.get(0));
+            assertNotNull(results.get(0));
         }
         results.close();
     }
@@ -133,7 +134,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
 
         QCat cat = QCat.cat;
         long amount = update(cat).where(cat.name.eq("Bob"))
-            .set(cat.name, (String)null)
+            .set(cat.name, (String) null)
             .set(cat.alive, false)
             .execute();
         assertEquals(1, amount);

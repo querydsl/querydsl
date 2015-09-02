@@ -38,9 +38,9 @@ class HibernateHandler implements QueryHandler {
     @Override
     public void addEntity(Query query, String alias, Class<?> type) {
         if (query instanceof HibernateQuery) {
-            org.hibernate.Query hibernateQuery = ((HibernateQuery)query).getHibernateQuery();
+            org.hibernate.Query hibernateQuery = ((HibernateQuery) query).getHibernateQuery();
             if (hibernateQuery instanceof SQLQuery) {
-                ((SQLQuery)hibernateQuery).addEntity(alias, type);
+                ((SQLQuery) hibernateQuery).addEntity(alias, type);
             }
         }
     }
@@ -48,9 +48,9 @@ class HibernateHandler implements QueryHandler {
     @Override
     public void addScalar(Query query, String alias, Class<?> type) {
         if (query instanceof HibernateQuery) {
-            org.hibernate.Query hibernateQuery = ((HibernateQuery)query).getHibernateQuery();
+            org.hibernate.Query hibernateQuery = ((HibernateQuery) query).getHibernateQuery();
             if (hibernateQuery instanceof SQLQuery) {
-                ((SQLQuery)hibernateQuery).addScalar(alias);
+                ((SQLQuery) hibernateQuery).addScalar(alias);
             }
         }
     }
@@ -63,7 +63,7 @@ class HibernateHandler implements QueryHandler {
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
         if (query instanceof HibernateQuery) {
-            HibernateQuery hQuery = (HibernateQuery)query;
+            HibernateQuery hQuery = (HibernateQuery) query;
             ScrollableResults results = hQuery.getHibernateQuery().scroll(ScrollMode.FORWARD_ONLY);
             CloseableIterator<T> iterator = new ScrollableResultsIterator<T>(results);
             if (projection != null) {
@@ -84,7 +84,7 @@ class HibernateHandler implements QueryHandler {
     public boolean transform(Query query, FactoryExpression<?> projection) {
         if (query instanceof HibernateQuery) {
             ResultTransformer transformer = new FactoryExpressionTransformer(projection);
-            ((HibernateQuery)query).getHibernateQuery().setResultTransformer(transformer);
+            ((HibernateQuery) query).getHibernateQuery().setResultTransformer(transformer);
             return true;
         } else {
             return false;

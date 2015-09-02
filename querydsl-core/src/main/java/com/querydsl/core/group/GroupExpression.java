@@ -21,12 +21,13 @@ import com.querydsl.core.types.Expression;
  * GroupExpressions are stateless wrappers for Expressions that know how to
  * collect row values into a group.
  *
+ * @param <T> Element type
+ * @param <R> Target type (e.g. List, Set)
+ *
  * @author sasa
  * @author tiwe
- *
- * @param <T>
  */
-public interface GroupExpression<T,R> extends Expression<R> {
+public interface GroupExpression<T, R> extends Expression<R> {
 
     /**
      * Get the expression wrapped by this group definition

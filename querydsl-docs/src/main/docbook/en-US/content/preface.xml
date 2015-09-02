@@ -13,7 +13,7 @@
     The benefits of using a fluent API in comparison to simple strings are for example
   </para>
 
-  <orderedlist>
+  <itemizedlist>
     <listitem>
       <para>code completion in IDE</para>
     </listitem>
@@ -26,7 +26,7 @@
     <listitem>
       <para>adopts better to refactoring changes in domain types</para>
     </listitem>
-  </orderedlist>
+  </itemizedlist>
 
   <!-- more -->
 

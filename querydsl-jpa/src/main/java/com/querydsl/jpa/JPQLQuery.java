@@ -22,6 +22,8 @@ import com.querydsl.core.types.*;
 /**
  * Query interface for JPQL queries
  *
+ * @param <T> result type
+ *
  * @author tiwe
  *
  */

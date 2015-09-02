@@ -100,7 +100,7 @@ class JavaTypeMapping {
             if (resolvedType != null) {
                 resolvedTypesByClass.put(clazz, resolvedType);
             } else {
-                return (Type)DEFAULT;
+                return (Type) DEFAULT;
             }
         }
         return (Type<T>) resolvedType;
@@ -117,7 +117,7 @@ class JavaTypeMapping {
                 return defaultTypes.get(cl);
             }
             cl = cl.getSuperclass();
-        } while(!cl.equals(Object.class));
+        } while (!cl.equals(Object.class));
 
         //Look for a registered type in any implemented interfaces
         Set<Class<?>> interfaces = ReflectionUtils.getImplementedInterfaces(clazz);

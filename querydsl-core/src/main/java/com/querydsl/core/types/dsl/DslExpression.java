@@ -23,7 +23,7 @@ import com.querydsl.core.types.Path;
  * for scalar Expressions
  *
  * @author tiwe
- *
+ * @param <T> expression type
  */
 public abstract class DslExpression<T> implements Expression<T> {
 

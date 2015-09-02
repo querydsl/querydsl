@@ -43,9 +43,11 @@ public class JPAQueryMutability2Test implements JPATest {
         }
     };
 
-    private final JPQLTemplates customTemplates = new HQLTemplates() {{
+    private final JPQLTemplates customTemplates = new HQLTemplates() {
+        {
             add(customOperator, "sign({0})");
-    }};
+        }
+    };
 
     protected JPAQuery<?> query() {
         return new JPAQuery<Void>(entityManager);

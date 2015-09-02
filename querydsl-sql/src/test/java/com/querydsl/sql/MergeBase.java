@@ -93,7 +93,7 @@ public class MergeBase extends AbstractBaseTest {
         // keys + columns + values
         assertEquals(1, merge(survey).keys(survey.id)
             .set(survey.id, 5)
-            .set(survey.name, (String)null).execute());
+            .set(survey.name, (String) null).execute());
     }
 
     @Test
@@ -183,8 +183,7 @@ public class MergeBase extends AbstractBaseTest {
             .select(query().from(survey2).select(survey2.id.add(40), survey2.name))
             .addBatch();
 
-        merge.execute();
-//        assertEquals(1, insert.execute());
+        assertEquals(1, merge.execute());
     }
 
     @Test
@@ -196,7 +195,7 @@ public class MergeBase extends AbstractBaseTest {
                 .set(survey.name, Expressions.stringTemplate("'5'"))
                 .addBatch();
 
-        merge.execute();
+        assertEquals(1, merge.execute());
     }
 
 

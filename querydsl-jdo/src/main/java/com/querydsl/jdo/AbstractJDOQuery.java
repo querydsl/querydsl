@@ -96,7 +96,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     @Override
     public Q addFetchGroup(String fetchGroupName) {
         fetchGroups.add(fetchGroupName);
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         if (!forCount) {
             Expression<?> projection = queryMixin.getMetadata().getProjection();
             if (projection instanceof FactoryExpression) {
-                this.projection = (FactoryExpression<?>)projection;
+                this.projection = (FactoryExpression<?>) projection;
             }
             if (!fetchGroups.isEmpty()) {
                 query.getFetchPlan().setGroups(fetchGroups);
@@ -187,7 +187,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         if (row == null) {
             return null;
         } else if (row.getClass().isArray()) {
-            return expr.newInstance((Object[])row);
+            return expr.newInstance((Object[]) row);
         } else {
             return expr.newInstance(new Object[]{row});
         }
@@ -206,10 +206,10 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         }
         if (projection != null && !forCount) {
             if (rv instanceof List) {
-                List<?> original = (List<?>)rv;
+                List<?> original = (List<?>) rv;
                 rv = Lists.newArrayList();
                 for (Object o : original) {
-                    ((List)rv).add(project(projection, o));
+                    ((List) rv).add(project(projection, o));
                 }
             } else {
                 rv = project(projection, rv);
@@ -226,7 +226,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
 
     @Override
     public <U> Q from(CollectionExpression<?, U> path, Path<U> alias) {
-        return queryMixin.from(ExpressionUtils.as((Path)path, alias));
+        return queryMixin.from(ExpressionUtils.as((Path) path, alias));
     }
 
     public JDOQLTemplates getTemplates() {
@@ -246,7 +246,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     public List<T> fetch() {
         try {
             Object rv = execute(createQuery(false), false);
-            return rv instanceof List ? (List<T>)rv : Collections.singletonList((T)rv);
+            return rv instanceof List ? (List<T>) rv : Collections.singletonList((T) rv);
         } finally {
             reset();
         }
@@ -290,7 +290,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     @Override
     public Q setMaxFetchDepth(int depth) {
         maxFetchDepth = depth;
-        return (Q)this;
+        return (Q) this;
     }
 
     @Override
@@ -315,7 +315,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
             Query query = createQuery(false);
             Object rv = execute(query, false);
             if (rv instanceof List) {
-                List<?> list = (List)rv;
+                List<?> list = (List) rv;
                 if (!list.isEmpty()) {
                     if (list.size() > 1) {
                         throw new NonUniqueResultException();

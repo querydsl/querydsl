@@ -24,7 +24,7 @@ import javax.persistence.Table;
  * The Class NameList.
  */
 @Entity
-@Table(name="namelist_")
+@Table(name = "namelist_")
 public class NameList {
     @Id
     long id;

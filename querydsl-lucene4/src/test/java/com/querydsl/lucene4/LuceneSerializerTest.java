@@ -230,9 +230,9 @@ public class LuceneSerializerTest {
     @Ignore
     public void Eq_Numeric() throws Exception {
         testQuery(longField.eq(1L), "longField:" + LONG_PREFIX_CODED, 1);
-        testQuery(shortField.eq((short)1), "shortField:" + SHORT_PREFIX_CODED, 1);
-        testQuery(byteField.eq((byte)1), "byteField:" + BYTE_PREFIX_CODED, 1);
-        testQuery(floatField.eq((float)1.0), "floatField:" + FLOAT_PREFIX_CODED, 1);
+        testQuery(shortField.eq((short) 1), "shortField:" + SHORT_PREFIX_CODED, 1);
+        testQuery(byteField.eq((byte) 1), "byteField:" + BYTE_PREFIX_CODED, 1);
+        testQuery(floatField.eq((float) 1.0), "floatField:" + FLOAT_PREFIX_CODED, 1);
     }
 
     @Test
@@ -240,7 +240,7 @@ public class LuceneSerializerTest {
         testQuery(title.eq("Jurassic"), "title:jurassic", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Title_Equals_Ignore_Case_Or_Year_Equals() throws Exception {
         testQuery(title.equalsIgnoreCase("House").or(year.eq(1990)), "title:house year:" + YEAR_PREFIX_CODED, 1);
     }
@@ -257,7 +257,7 @@ public class LuceneSerializerTest {
         testQuery(title.eq("Jurassic Park").and(year.eq(1990)).and(author.eq("Michael Crichton")), "+(+title:\"jurassic park\" +year:" + YEAR_PREFIX_CODED + ") +author:\"michael crichton\"", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Equals_Ignore_Case_And_Or() throws Exception {
         testQuery(title.equalsIgnoreCase("Jurassic Park").and(rating.equalsIgnoreCase("Bad")).or(author.equalsIgnoreCase("Michael Crichton")), "(+title:\"jurassic park\" +rating:bad) author:\"michael crichton\"", 1);
     }
@@ -293,7 +293,7 @@ public class LuceneSerializerTest {
         testQuery(title.like("*H*e*").not(), "-title:*h*e* +*:*", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Title_Equals_Ignore_Case_Negation_Or_Rating_Equals_Ignore_Case() throws Exception {
         testQuery(title.equalsIgnoreCase("House").not().or(rating.equalsIgnoreCase("Good")), "-title:house rating:good", 1);
     }
@@ -343,7 +343,7 @@ public class LuceneSerializerTest {
         testQuery(title.startsWith("jurassic par"), "+title:jurassic* +title:*par*", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Starts_With_Ignore_Case_Phrase_Does_Not_Find_Results() throws Exception {
         testQuery(title.startsWithIgnoreCase("urassic Par"), "+title:urassic* +title:*par*", 0);
     }
@@ -353,12 +353,12 @@ public class LuceneSerializerTest {
         testQuery(title.endsWith("ark"), "title:*ark", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Ends_With_Ignore_Case_Phrase() throws Exception {
         testQuery(title.endsWithIgnoreCase("sic Park"), "+title:*sic* +title:*park", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Ends_With_Ignore_Case_Phrase_Does_Not_Find_Results() throws Exception {
         testQuery(title.endsWithIgnoreCase("sic Par"), "+title:*sic* +title:*par", 0);
     }
@@ -368,7 +368,7 @@ public class LuceneSerializerTest {
         testQuery(title.contains("rassi"), "title:*rassi*", 1);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Contains_Ignore_Case_Phrase() throws Exception {
         testQuery(title.containsIgnoreCase("rassi Pa"), "+title:*rassi* +title:*pa*", 1);
     }
@@ -396,9 +396,9 @@ public class LuceneSerializerTest {
     @Test
     public void Between_Numeric() throws Exception {
         testQuery(longField.between(0L,2L), "longField:[0 TO 2]", 1);
-        testQuery(shortField.between((short)0,(short)2), "shortField:[0 TO 2]", 1);
-        testQuery(byteField.between((byte)0,(byte)2), "byteField:[0 TO 2]", 1);
-        testQuery(floatField.between((float)0.0,(float)2.0), "floatField:[0.0 TO 2.0]", 1);
+        testQuery(shortField.between((short) 0,(short) 2), "shortField:[0 TO 2]", 1);
+        testQuery(byteField.between((byte) 0,(byte) 2), "byteField:[0 TO 2]", 1);
+        testQuery(floatField.between((float) 0.0,(float) 2.0), "floatField:[0.0 TO 2.0]", 1);
     }
 
     @Test

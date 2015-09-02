@@ -17,6 +17,7 @@ import static com.querydsl.collections.CollQueryFactory.from;
 import static com.querydsl.core.alias.Alias.*;
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import org.junit.Before;
@@ -43,41 +44,26 @@ public class AliasTest extends AbstractQueryTest {
     public void AliasVariations1() {
         // 1st
         QCat cat = new QCat("cat");
-        for (String name : from(cat, cats).where(cat.kittens.size().gt(0)).select(cat.name).fetch()) {
-            assertNotNull(name);
-            System.out.println(name);
-        }
+        assertEquals(Arrays.asList("Kitty", "Bob", "Alex", "Francis"),
+                from(cat, cats).where(cat.kittens.size().gt(0)).select(cat.name).fetch());
 
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        for (String name : from(c, cats).where($(c.getKittens()).size().gt(0)).select($(c.getName())).fetch()) {
-            assertNotNull(name);
-            System.out.println(name);
-        }
-
-        // 2nd - variation 1
-//        for (String name : from(c, cats).where($(c.getKittens().size()).gt(0))
-//                .fetch(c.getName())) {
-//            System.out.println(name);
-//        }
-
+        assertEquals(Arrays.asList("Kitty", "Bob", "Alex", "Francis"),
+                from(c, cats).where($(c.getKittens()).size().gt(0)).select($(c.getName())).fetch());
     }
 
     @Test
     public void AliasVariations2() {
         // 1st
         QCat cat = new QCat("cat");
-        for (String name : from(cat, cats).where(cat.name.matches("fri.*")).select(cat.name).fetch()) {
-            assertNotNull(name);
-            System.out.println(name);
-        }
+        assertEquals(Arrays.asList(),
+                from(cat, cats).where(cat.name.matches("fri.*")).select(cat.name).fetch());
 
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        for (String name : from(c, cats).where($(c.getName()).matches("fri.*")).select($(c.getName())).fetch()) {
-            assertNotNull(name);
-            System.out.println(name);
-        }
+        assertEquals(Arrays.asList(),
+                from(c, cats).where($(c.getName()).matches("fri.*")).select($(c.getName())).fetch());
     }
 
     @Test
@@ -144,27 +130,21 @@ public class AliasTest extends AbstractQueryTest {
     @Test
     public void Various1() {
         StringPath str = Expressions.stringPath("str");
-        for (String s : from(str, "a", "ab", "cd", "de").where(str.startsWith("a")).select(str).fetch()) {
-            assertTrue(s.equals("a") || s.equals("ab"));
-            System.out.println(s);
-        }
+        assertEquals(Arrays.asList("a", "ab"),
+                from(str, "a", "ab", "cd", "de").where(str.startsWith("a")).select(str).fetch());
     }
 
     @Test
     public void Various2() {
-        for (Object o : from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).select(var()).fetch()) {
-            int i = (Integer) o;
-            assertTrue(i > 0 && i < 6);
-            System.out.println(o);
-        }
+        assertEquals(Arrays.asList(1, 2, 5, 3),
+                from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).select(var()).fetch());
     }
 
     @Test
     public void Various3() {
         NumberPath<Integer> num = Expressions.numberPath(Integer.class, "num");
-        for (Integer i : from(num, 1, 2, 3, 4).where(num.lt(4)).select(num).fetch()) {
-            System.out.println(i);
-        }
+        assertEquals(Arrays.asList(1, 2, 3),
+                from(num, 1, 2, 3, 4).where(num.lt(4)).select(num).fetch());
     }
 
 }

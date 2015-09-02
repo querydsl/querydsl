@@ -26,7 +26,7 @@ import com.querydsl.core.types.dsl.Expressions;
  */
 public final class MongodbExpressions {
 
-    private MongodbExpressions() {}
+    private MongodbExpressions() { }
 
     /**
      * Finds the closest points relative to the given location and orders the results with decreasing proximity

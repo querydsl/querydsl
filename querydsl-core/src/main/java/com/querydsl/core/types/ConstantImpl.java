@@ -19,6 +19,7 @@ import javax.annotation.concurrent.Immutable;
  * {@code ConstantImpl} is the default implementation of the {@link Constant} interface
  *
  * @author tiwe
+ * @param <T> expression type
  */
 @Immutable
 public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {

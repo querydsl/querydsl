@@ -47,7 +47,7 @@ public class Cat extends Animal {
     @ManyToOne
     private Cat mate;
 
-    public Cat() {}
+    public Cat() { }
 
     public Cat(int id) {
         setId(id);
@@ -73,7 +73,7 @@ public class Cat extends Animal {
     public Cat(String name, int id, double bodyWeight) {
         this(name, id);
         setBodyWeight(bodyWeight);
-        setFloatProperty((float)bodyWeight);
+        setFloatProperty((float) bodyWeight);
     }
 
     public int getBreed() {

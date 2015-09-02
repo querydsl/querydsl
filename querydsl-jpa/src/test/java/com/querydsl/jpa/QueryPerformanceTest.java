@@ -55,7 +55,7 @@ public class QueryPerformanceTest implements JPATest {
     public void ById_Raw() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            Cat cat = (Cat)entityManager.createQuery("select cat from Cat cat where id = ?")
+            Cat cat = (Cat) entityManager.createQuery("select cat from Cat cat where id = ?")
                 .setParameter(1, i + 100).getSingleResult();
             assertNotNull(cat);
         }
@@ -67,7 +67,7 @@ public class QueryPerformanceTest implements JPATest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
-            Cat c = query().from(cat).where(cat.id.eq(i+100)).select(cat).fetchOne();
+            Cat c = query().from(cat).where(cat.id.eq(i + 100)).select(cat).fetchOne();
             assertNotNull(c);
         }
         System.err.println("by id - dsl" + (System.currentTimeMillis() - start));
@@ -77,7 +77,7 @@ public class QueryPerformanceTest implements JPATest {
     public void ById_TwoCols_Raw() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            Object[] row = (Object[])entityManager.createQuery(
+            Object[] row = (Object[]) entityManager.createQuery(
                     "select cat.id, cat.name from Cat cat where id = ?")
                 .setParameter(1, i + 100).getSingleResult();
             assertNotNull(row);
@@ -90,7 +90,7 @@ public class QueryPerformanceTest implements JPATest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
-            Tuple row = query().from(cat).where(cat.id.eq(i+100)).select(cat.id, cat.name).fetchOne();
+            Tuple row = query().from(cat).where(cat.id.eq(i + 100)).select(cat.id, cat.name).fetchOne();
             assertNotNull(row);
         }
         System.err.println("by id - 2 cols - dsl" + (System.currentTimeMillis() - start));

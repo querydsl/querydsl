@@ -21,7 +21,7 @@ import javax.persistence.Table;
  * The Class Name.
  */
 @Entity
-@Table(name="name_")
+@Table(name = "name_")
 public class Name {
     String firstName, lastName, nickName;
 

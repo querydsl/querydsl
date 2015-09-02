@@ -27,6 +27,11 @@ import com.querydsl.core.util.ArrayUtils;
  */
 public final class FactoryExpressionUtils {
 
+    /**
+     * {@code FactoryExpressionAdapter} provides an adapter implementation of the {@link FactoryExpression} interface
+     *
+     * @param <T>
+     */
     public static class FactoryExpressionAdapter<T> extends ExpressionBase<T> implements FactoryExpression<T> {
 
         private static final long serialVersionUID = -2742333128230913512L;
@@ -40,7 +45,6 @@ public final class FactoryExpressionUtils {
             this.inner = inner;
             this.args = expand(inner.getArgs());
         }
-
 
         FactoryExpressionAdapter(FactoryExpression<T> inner, List<Expression<?>> args) {
             super(inner.getType());

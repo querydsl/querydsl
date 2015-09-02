@@ -151,7 +151,7 @@ public class GroupByTest {
 //        group.getSet(qComment);
 //    }
 
-    @Test(expected=ClassCastException.class)
+    @Test(expected = ClassCastException.class)
     public void ClassCastException() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))

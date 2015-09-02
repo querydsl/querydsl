@@ -53,6 +53,11 @@ public class CodegenModule  extends AbstractModule {
      */
     public static final String VARIABLE_NAME_FUNCTION_CLASS = "variableNameFunction";
 
+    /**
+     * key for the keywords set
+     */
+    public static final String CASE_TRANSFORMER_CLASS = "caseTransformerClass";
+
     @Override
     protected void configure() {
         bind(TypeMappings.class, JavaTypeMappings.class);
@@ -69,6 +74,7 @@ public class CodegenModule  extends AbstractModule {
         bind(KEYWORDS, Collections.<String>emptySet());
         bind(IMPORTS, Collections.<String>emptySet());
         bind(VARIABLE_NAME_FUNCTION_CLASS, new DefaultVariableNameFunction());
+        bind(CASE_TRANSFORMER_CLASS, UncapitalizedCaseTransformer.class.getCanonicalName());
     }
 
 }

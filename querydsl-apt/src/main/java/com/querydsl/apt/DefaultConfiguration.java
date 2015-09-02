@@ -212,6 +212,10 @@ public class DefaultConfiguration implements Configuration {
                 includedClasses.addAll(classes);
             }
         }
+        
+        if (options.containsKey(QUERYDSL_CASE_TRANSFORMER_CLASS)) {
+            module.bind(CodegenModule.CASE_TRANSFORMER_CLASS, options.get(QUERYDSL_CASE_TRANSFORMER_CLASS));
+        }
 
         if (options.containsKey(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)) {
             try {

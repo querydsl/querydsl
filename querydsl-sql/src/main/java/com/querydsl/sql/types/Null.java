@@ -28,6 +28,6 @@ public final class Null {
 
     public static final Constant<Null> CONSTANT = ConstantImpl.create(DEFAULT);
 
-    private Null() {}
+    private Null() { }
 
 }

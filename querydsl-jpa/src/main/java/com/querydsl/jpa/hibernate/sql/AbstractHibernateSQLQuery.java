@@ -46,9 +46,10 @@ import com.querydsl.sql.SQLSerializer;
 /**
  * {@code AbstractHibernateSQLQuery} is the base class for Hibernate Native SQL queries
  *
- * @author tiwe
+ * @param <T> result type
+ * @param <Q> concrete subtype
  *
- * @param <Q>
+ * @author tiwe
  */
 public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQLQuery<T, Q>> extends AbstractSQLQuery<T, Q> {
 
@@ -95,7 +96,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
             // set entity paths
             Expression<?> projection = queryMixin.getMetadata().getProjection();
             if (projection instanceof FactoryExpression) {
-                for (Expression<?> expr : ((FactoryExpression<?>)projection).getArgs()) {
+                for (Expression<?> expr : ((FactoryExpression<?>) projection).getArgs()) {
                     if (isEntityExpression(expr)) {
                         query.addEntity(extractEntityExpression(expr).toString(), expr.getType());
                     } else if (aliases.containsKey(expr)) {
@@ -174,7 +175,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
         // TODO : handle entity projections as well
         try {
             Query query = createQuery(true);
-            long total = ((Number)query.uniqueResult()).longValue();
+            long total = ((Number) query.uniqueResult()).longValue();
             if (total > 0) {
                 QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
                 query = createQuery(false);
@@ -213,7 +214,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     public T fetchOne() {
         try {
             Query query = createQuery();
-            return (T)uniqueResult(query);
+            return (T) uniqueResult(query);
         } finally {
             reset();
         }
@@ -235,7 +236,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     @SuppressWarnings("unchecked")
     public Q setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -246,7 +247,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     @SuppressWarnings("unchecked")
     public Q setCacheRegion(String cacheRegion) {
         this.cacheRegion = cacheRegion;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -256,7 +257,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     @SuppressWarnings("unchecked")
     public Q setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -268,7 +269,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     @SuppressWarnings("unchecked")
     public Q setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -278,7 +279,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     @SuppressWarnings("unchecked")
     public Q setTimeout(int timeout) {
         this.timeout = timeout;
-        return (Q)this;
+        return (Q) this;
     }
 
     @Override

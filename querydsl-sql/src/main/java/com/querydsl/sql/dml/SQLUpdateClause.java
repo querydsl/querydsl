@@ -235,7 +235,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
-            updates.put(path, (Expression<?>)value);
+            updates.put(path, (Expression<?>) value);
         } else if (value != null) {
             updates.put(path, ConstantImpl.create(value));
         } else {
@@ -327,7 +327,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         Map<Path<?>, Object> values = mapper.createMap(entity, obj);
         for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {
             if (!primaryKeyColumns.contains(entry.getKey())) {
-                set((Path)entry.getKey(), entry.getValue());
+                set((Path) entry.getKey(), entry.getValue());
             }
         }
         return this;

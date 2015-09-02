@@ -21,6 +21,9 @@ import com.querydsl.core.types.dsl.Expressions;
 /**
  * {@code JPAQueryBase} is a base Query class for JPA queries
  *
+ * @param <T> result type
+ * @param <Q> concrete subtype
+ *
  * @author tiwe
  */
 public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends FetchableSubQueryBase<T, Q> implements JPQLQuery<T> {
@@ -77,7 +80,7 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
 
     @Override
     public <P> Q from(CollectionExpression<?,P> target, Path<P> alias) {
-        return queryMixin.from(Expressions.as((Path)target, alias));
+        return queryMixin.from(Expressions.as((Path) target, alias));
     }
 
     @Override

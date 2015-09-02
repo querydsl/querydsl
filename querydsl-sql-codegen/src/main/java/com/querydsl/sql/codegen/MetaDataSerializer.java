@@ -195,10 +195,10 @@ public class MetaDataSerializer extends EntitySerializer {
         Set<String> packages = new HashSet<String>();
         Set<String> classes = new HashSet<String>();
 
-        for (String javaImport : imports){
+        for (String javaImport : imports) {
             //true if the character next to the dot is an upper case or if no dot is found (-1+1=0) the first character
             boolean isClass = Character.isUpperCase(javaImport.charAt(javaImport.lastIndexOf(".") + 1));
-            if (isClass){
+            if (isClass) {
                 classes.add(javaImport);
             } else {
                 packages.add(javaImport);
@@ -254,7 +254,7 @@ public class MetaDataSerializer extends EntitySerializer {
         Collection<ForeignKeyData> foreignKeys =
             (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
         Collection<InverseForeignKeyData> inverseForeignKeys =
-            (Collection<InverseForeignKeyData>)model.getData().get(InverseForeignKeyData.class);
+            (Collection<InverseForeignKeyData>) model.getData().get(InverseForeignKeyData.class);
 
         if (innerClassesForKeys) {
             Type primaryKeyType = new SimpleType(namingStrategy.getPrimaryKeysClassName());
@@ -286,13 +286,13 @@ public class MetaDataSerializer extends EntitySerializer {
                 writer.publicFinal(
                         primaryKeyType,
                         namingStrategy.getPrimaryKeysVariable(model),
-                        "new "+primaryKeyType.getSimpleName()+"()");
+                        "new " + primaryKeyType.getSimpleName() + "()");
             }
             if (foreignKeys != null || inverseForeignKeys != null) {
                 writer.publicFinal(
                         foreignKeysType,
                         namingStrategy.getForeignKeysVariable(model),
-                        "new "+foreignKeysType.getSimpleName()+"()");
+                        "new " + foreignKeysType.getSimpleName() + "()");
             }
 
         } else {
@@ -373,9 +373,9 @@ public class MetaDataSerializer extends EntitySerializer {
                         foreign.append(", ");
                     }
                     local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(i), model));
-                    foreign.append("\"" +foreignKey.getParentColumns().get(i) + "\"");
+                    foreign.append("\"" + foreignKey.getParentColumns().get(i) + "\"");
                 }
-                value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
+                value.append("Arrays.asList(" + local + "), Arrays.asList(" + foreign + ")");
             }
             value.append(")");
             Type type = new ClassType(ForeignKey.class, foreignKey.getType());

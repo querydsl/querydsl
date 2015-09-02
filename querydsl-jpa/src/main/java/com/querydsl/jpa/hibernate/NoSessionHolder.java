@@ -26,7 +26,7 @@ public final class NoSessionHolder implements SessionHolder {
 
     public static final SessionHolder DEFAULT = new NoSessionHolder();
 
-    private NoSessionHolder() {}
+    private NoSessionHolder() { }
 
     @Override
     public Query createQuery(String queryString) {

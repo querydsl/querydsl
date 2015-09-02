@@ -50,7 +50,7 @@ public final class CollQueryFunctions {
         @Override
         public Number apply(Number num1, Number num2) {
             if (num1.getClass().equals(num2.getClass()) && num1 instanceof Comparable) {
-                return ((Comparable)num1).compareTo(num2) < 0 ? num2 : num1;
+                return ((Comparable) num1).compareTo(num2) < 0 ? num2 : num1;
             } else {
                 BigDecimal n1 = new BigDecimal(num1.toString());
                 BigDecimal n2 = new BigDecimal(num2.toString());
@@ -63,7 +63,7 @@ public final class CollQueryFunctions {
         @Override
         public Number apply(Number num1, Number num2) {
             if (num1.getClass().equals(num2.getClass()) && num1 instanceof Comparable) {
-                return ((Comparable)num1).compareTo(num2) < 0 ? num1 : num2;
+                return ((Comparable) num1).compareTo(num2) < 0 ? num1 : num2;
             } else {
                 BigDecimal n1 = new BigDecimal(num1.toString());
                 BigDecimal n2 = new BigDecimal(num2.toString());
@@ -217,11 +217,11 @@ public final class CollQueryFunctions {
             }
             return (long) source.size();
         } else if (aggregator == Ops.AggOps.MAX_AGG) {
-            return MathUtils.cast(reduce(source, MAX), (Class<Number>)expr.getType());
+            return MathUtils.cast(reduce(source, MAX), (Class<Number>) expr.getType());
         } else if (aggregator == Ops.AggOps.MIN_AGG) {
-            return MathUtils.cast(reduce(source, MIN), (Class<Number>)expr.getType());
+            return MathUtils.cast(reduce(source, MIN), (Class<Number>) expr.getType());
         } else if (aggregator == Ops.AggOps.SUM_AGG) {
-            return MathUtils.cast(reduce(source, SUM), (Class<Number>)expr.getType());
+            return MathUtils.cast(reduce(source, SUM), (Class<Number>) expr.getType());
         } else {
             throw new IllegalArgumentException("Unknown operator " + aggregator);
         }
@@ -258,7 +258,7 @@ public final class CollQueryFunctions {
             Field field = ReflectionUtils.getFieldOrNull(parent.getClass(), f);
             if (field != null) {
                 field.setAccessible(true);
-                return (T)field.get(parent);
+                return (T) field.get(parent);
             } else {
                 throw new IllegalArgumentException("No field " + f + " for " + parent.getClass());
             }
@@ -267,7 +267,7 @@ public final class CollQueryFunctions {
         }
     }
 
-    private CollQueryFunctions() {}
+    private CollQueryFunctions() { }
 
 
 }

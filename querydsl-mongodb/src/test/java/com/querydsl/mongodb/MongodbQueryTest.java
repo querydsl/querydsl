@@ -73,7 +73,7 @@ public class MongodbQueryTest {
         ds.delete(ds.createQuery(MapEntity.class));
 
         tampere = new City("Tampere", 61.30, 23.50);
-        helsinki= new City("Helsinki", 60.15, 20.03);
+        helsinki = new City("Helsinki", 60.15, 20.03);
 
         u1 = addUser("Jaakko", "Jantunen", 20, new Address("Aakatu", "00100", helsinki),
                 new Address("Aakatu1", "00100", helsinki),
@@ -221,7 +221,7 @@ public class MongodbQueryTest {
         assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).fetchOne().getLastName());
     }
 
-    @Test(expected=NonUniqueResultException.class)
+    @Test(expected = NonUniqueResultException.class)
     public void UniqueResultContract() {
         where(user.firstName.isNotNull()).fetchOne();
     }

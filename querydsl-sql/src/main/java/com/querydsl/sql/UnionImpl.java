@@ -20,14 +20,16 @@ import javax.annotation.Nullable;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.Query;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.*;
 
 /**
  * Default implementation of the Union interface
  *
- * @author tiwe
+ * @param <T> result type
+ * @param <Q> concrete query type
  *
- * @param <T>
+ * @author tiwe
  */
 public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  implements Union<T> {
 
@@ -43,8 +45,33 @@ public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  imple
     }
 
     @Override
+    public List<T> fetch() {
+        return query.fetch();
+    }
+
+    @Override
+    public T fetchFirst() {
+        return query.fetchFirst();
+    }
+
+    @Override
+    public T fetchOne() {
+        return query.fetchOne();
+    }
+
+    @Override
     public CloseableIterator<T> iterate() {
         return query.iterate();
+    }
+
+    @Override
+    public QueryResults<T> fetchResults() {
+        return query.fetchResults();
+    }
+
+    @Override
+    public long fetchCount() {
+        return query.fetchCount();
     }
 
     @Override
@@ -58,7 +85,6 @@ public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  imple
         query.having(o);
         return this;
     }
-
 
     @Override
     public Union<T> orderBy(OrderSpecifier<?>... o) {

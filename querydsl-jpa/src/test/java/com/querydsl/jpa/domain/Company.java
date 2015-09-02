@@ -23,7 +23,7 @@ import org.batoo.jpa.annotations.Index;
  * The Class Company.
  */
 @Entity
-@Table(name="company_")
+@Table(name = "company_")
 public class Company {
 
     public enum Rating { A, AA, AAA }
@@ -46,6 +46,6 @@ public class Company {
 
     public String name;
 
-    @Column(name="official_name")
+    @Column(name = "official_name")
     public String officialName;
 }

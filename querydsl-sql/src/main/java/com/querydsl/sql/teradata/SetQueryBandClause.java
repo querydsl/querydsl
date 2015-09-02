@@ -59,7 +59,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
         return this;
     }
 
-    public SetQueryBandClause forTransaction(){
+    public SetQueryBandClause forTransaction() {
         queryString = null;
         forSession = false;
         return this;

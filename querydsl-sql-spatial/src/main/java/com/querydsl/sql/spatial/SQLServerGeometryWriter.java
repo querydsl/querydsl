@@ -87,8 +87,8 @@ class SQLServerGeometryWriter {
         ByteBuffer buffer = ByteBuffer.allocate(bytes);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putInt(geometry.getSRID());
-        buffer.put((byte)1);
-        buffer.put((byte)((geometry.is3D() ? 1 : 0)
+        buffer.put((byte) 1);
+        buffer.put((byte) ((geometry.is3D() ? 1 : 0)
                  + (geometry.isMeasured() ? 2 : 0)
                  + 4 // is valid
                  + (singlePoint ? 8 : 0)
@@ -114,14 +114,14 @@ class SQLServerGeometryWriter {
         if (!singlePoint) {
             buffer.putInt(figures.size());
             for (Figure figure : figures) {
-                buffer.put((byte)figure.attributes);
+                buffer.put((byte) figure.attributes);
                 buffer.putInt(figure.pointOffset);
             }
             buffer.putInt(shapes.size());
             for (Shape shape : shapes) {
                 buffer.putInt(shape.parentOffset);
                 buffer.putInt(shape.figureOffset);
-                buffer.put((byte)shape.type);
+                buffer.put((byte) shape.type);
             }
         }
         return buffer.array();
@@ -129,13 +129,13 @@ class SQLServerGeometryWriter {
 
     private void visit(Geometry geometry, int parent) {
         switch (geometry.getGeometryType()) {
-        case POINT: visit((Point)geometry, parent); break;
-        case POLYGON: visit((Polygon)geometry, parent); break;
-        case LINE_STRING: visit((LineString)geometry, parent); break;
-        case MULTI_POINT: visit((MultiPoint)geometry, parent); break;
-        case MULTI_LINE_STRING: visit((MultiLineString)geometry, parent); break;
-        case MULTI_POLYGON: visit((MultiPolygon)geometry, parent); break;
-        case GEOMETRY_COLLECTION: visit((GeometryCollection)geometry, parent); break;
+        case POINT: visit((Point) geometry, parent); break;
+        case POLYGON: visit((Polygon) geometry, parent); break;
+        case LINE_STRING: visit((LineString) geometry, parent); break;
+        case MULTI_POINT: visit((MultiPoint) geometry, parent); break;
+        case MULTI_LINE_STRING: visit((MultiLineString) geometry, parent); break;
+        case MULTI_POLYGON: visit((MultiPolygon) geometry, parent); break;
+        case GEOMETRY_COLLECTION: visit((GeometryCollection) geometry, parent); break;
         default: throw new IllegalArgumentException(geometry.toString());
         }
     }

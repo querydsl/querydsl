@@ -29,6 +29,8 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 /**
  * {@code WindowFunction} is a builder for window function expressions
  *
+ * @param <A> expression type
+ *
  * @author tiwe
  */
 public class WindowFunction<A> extends MutableExpressionBase<A> {
@@ -118,7 +120,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
         if (o == this) {
             return true;
         } else if (o instanceof WindowFunction) {
-            WindowFunction<?> so = (WindowFunction<?>)o;
+            WindowFunction<?> so = (WindowFunction<?>) o;
             return so.target.equals(target)
                 && so.partitionBy.equals(partitionBy)
                 && so.orderBy.equals(orderBy);

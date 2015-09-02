@@ -45,8 +45,8 @@ public final class EmbeddableSerializer extends EntitySerializer {
      * @param keywords keywords to be used
      */
     @Inject
-    public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
-        super(typeMappings, keywords);
+    public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords, @Named(CodegenModule.CASE_TRANSFORMER_CLASS) String caseTransfomerClass) {
+        super(typeMappings, keywords, caseTransfomerClass);
     }
 
     @Override

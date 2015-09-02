@@ -12,8 +12,7 @@
  * limitations under the License.
  */
 
-
 /**
- * SQL/JDBC support for Querydsl
+ * SQL/JDBC support
  */
 package com.querydsl.sql;

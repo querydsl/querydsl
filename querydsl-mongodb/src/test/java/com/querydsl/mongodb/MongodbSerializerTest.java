@@ -123,8 +123,8 @@ public class MongodbSerializerTest {
         assertQuery(year.eq(1), dbo("year",1));
         assertQuery(gross.eq(1.0D), dbo("gross", 1.0D));
         assertQuery(longField.eq(1L), dbo("longField", 1L));
-        assertQuery(shortField.eq((short)1), dbo("shortField", 1));
-        assertQuery(byteField.eq((byte)1), dbo("byteField", 1L));
+        assertQuery(shortField.eq((short) 1), dbo("shortField", 1));
+        assertQuery(byteField.eq((byte) 1), dbo("byteField", 1L));
         assertQuery(floatField.eq(1.0F), dbo("floatField", 1.0F));
 
         assertQuery(date.eq(dateVal), dbo("date", dateVal));

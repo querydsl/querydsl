@@ -225,7 +225,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
                 }
                 constants.add(constant);
-                b.append(((Param<?>)entry.getKey()).getType().getName());
+                b.append(((Param<?>) entry.getKey()).getType().getName());
             } else {
                 constants.add(entry.getKey());
                 b.append(entry.getKey().getClass().getName());
@@ -296,20 +296,20 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
         // not exists
         } else if (operator == Ops.NOT && args.get(0) instanceof Operation
-                && ((Operation)args.get(0)).getOperator().equals(Ops.EXISTS)) {
-            final SubQueryExpression subQuery = (SubQueryExpression) ((Operation)args.get(0)).getArg(0);
+                && ((Operation) args.get(0)).getOperator().equals(Ops.EXISTS)) {
+            final SubQueryExpression subQuery = (SubQueryExpression) ((Operation) args.get(0)).getArg(0);
             append("(");
             serialize(subQuery.getMetadata(), true, true);
             append(") == 0");
 
         } else if (operator == Ops.NUMCAST) {
             @SuppressWarnings("unchecked") //This is the expected type for castToNum
-            Constant<Class<?>> rightArg = (Constant<Class<?>>)args.get(1);
+            Constant<Class<?>> rightArg = (Constant<Class<?>>) args.get(1);
             Class<?> clazz = rightArg.getConstant();
             if (Number.class.isAssignableFrom(clazz) && Primitives.isWrapperType(clazz)) {
                 clazz = Primitives.unwrap(clazz);
             }
-            append("("+clazz.getSimpleName()+")").handle(args.get(0));
+            append("(" + clazz.getSimpleName() + ")").handle(args.get(0));
 
         } else {
             super.visitOperation(type, operator, args);

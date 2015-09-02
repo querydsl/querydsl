@@ -120,8 +120,8 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         NumberPath<Double> doublePath = Expressions.numberPath(Double.class, "doublePath");
         serializer.handle(doublePath.add(1));
-        serializer.handle(doublePath.between((float)1.0, 1L));
-        serializer.handle(doublePath.lt((byte)1));
+        serializer.handle(doublePath.between((float) 1.0, 1L));
+        serializer.handle(doublePath.lt((byte) 1));
         for (Object constant : serializer.getConstantToLabel().keySet()) {
             assertEquals(Double.class, constant.getClass());
         }

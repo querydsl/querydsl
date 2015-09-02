@@ -124,6 +124,9 @@ public class SQLTemplates extends Templates {
 
     private final Set<String> reservedWords;
 
+    /**
+     * Fluent builder for {@code SQLTemplates} instances     *
+     */
     public abstract static class Builder {
 
         protected boolean printSchema, quote, newLineToSingleSpace;
@@ -283,6 +286,8 @@ public class SQLTemplates extends Templates {
 
     private boolean supportsUnquotedReservedWordsAsIdentifier = false;
 
+    private int maxLimit = Integer.MAX_VALUE;
+
     @Deprecated
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         this(SQL_RESERVED_WORDS, quoteStr, escape, useQuotes);
@@ -372,13 +377,13 @@ public class SQLTemplates extends Templates {
         add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
 
         // like with escape
-        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'", Precedence.COMPARISON);
-        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'", Precedence.COMPARISON);
+        add(Ops.LIKE, "{0} like {1} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.ENDS_WITH, "{0} like {%1} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.STARTS_WITH, "{0} like {1%} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '" + escape + "'", Precedence.COMPARISON);
+        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '" + escape + "'", Precedence.COMPARISON);
 
         add(SQLOps.CAST, "cast({0} as {1s})");
         add(SQLOps.UNION, "{0}\nunion\n{1}", Precedence.OR + 1);
@@ -943,7 +948,7 @@ public class SQLTemplates extends Templates {
         if (mod.getLimit() != null) {
             context.handle(limitTemplate, mod.getLimit());
         } else if (limitRequired) {
-            context.handle(limitTemplate, Integer.MAX_VALUE);
+            context.handle(limitTemplate, maxLimit);
         }
         if (mod.getOffset() != null) {
             context.handle(offsetTemplate, mod.getOffset());
@@ -1164,6 +1169,10 @@ public class SQLTemplates extends Templates {
 
     protected void setSupportsUnquotedReservedWordsAsIdentifier(boolean b) {
         this.supportsUnquotedReservedWordsAsIdentifier = b;
+    }
+
+    protected void setMaxLimit(int i) {
+        this.maxLimit = i;
     }
 
 }

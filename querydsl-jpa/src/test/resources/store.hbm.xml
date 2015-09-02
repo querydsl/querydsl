@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-	<class name="com.querydsl.jpa.domain3.Store" table="STORE" discriminator-value="S">
+    <class name="com.querydsl.jpa.domain3.Store" table="STORE" discriminator-value="S">
 
 <!--  
        <discriminator column="subclass" type="character"/>
@@ -41,9 +41,9 @@
 
         <subclass name="com.querydsl.jpa.domain3.HardwareStore" discriminator-value="D">
 
-           <property name="storeCode">
-           		<column name="STORE_CODE"/>
-           </property>
+        <property name="storeCode">
+            <column name="STORE_CODE"/>
+        </property>
 
         </subclass>
 

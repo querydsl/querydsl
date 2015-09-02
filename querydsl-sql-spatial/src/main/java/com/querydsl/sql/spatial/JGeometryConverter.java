@@ -27,19 +27,19 @@ final class JGeometryConverter {
 
     public static JGeometry convert(Geometry geometry) {
         switch (geometry.getGeometryType()) {
-        case POINT: return convert((Point)geometry);
+        case POINT: return convert((Point) geometry);
 //        case CURVE:
 //        case SURFACE:
-        case GEOMETRY_COLLECTION: return convert((GeometryCollection)geometry);
-        case LINE_STRING: return convert((LineString)geometry);
-        case LINEAR_RING: return convert((LinearRing)geometry);
-        case POLYGON: return convert((Polygon)geometry);
-        case POLYHEDRAL_SURFACE: return convert((PolyHedralSurface)geometry);
+        case GEOMETRY_COLLECTION: return convert((GeometryCollection) geometry);
+        case LINE_STRING: return convert((LineString) geometry);
+        case LINEAR_RING: return convert((LinearRing) geometry);
+        case POLYGON: return convert((Polygon) geometry);
+        case POLYHEDRAL_SURFACE: return convert((PolyHedralSurface) geometry);
 //        case MULTI_SURFACE:
-        case MULTI_POINT: return convert((MultiPoint)geometry);
+        case MULTI_POINT: return convert((MultiPoint) geometry);
 //        case TIN
-        case MULTI_POLYGON: return convert((MultiPolygon)geometry);
-        case MULTI_LINE_STRING: return convert((MultiLineString)geometry);
+        case MULTI_POLYGON: return convert((MultiPolygon) geometry);
+        case MULTI_LINE_STRING: return convert((MultiLineString) geometry);
         default: throw new IllegalArgumentException(geometry.toString());
         }
     }
@@ -270,6 +270,6 @@ final class JGeometryConverter {
         return new GeometryCollection(geometries);
     }
 
-    private JGeometryConverter() {}
+    private JGeometryConverter() { }
 
 }

@@ -28,7 +28,7 @@ import com.querydsl.core.types.*;
  * @author tiwe
  *
  * @param <E> component type
- * @param <Q> component query type
+ * @param <Q> result type for {@code get(int)} and {@code any()} results
  */
 public class ListPath<E, Q extends SimpleExpression<? super E>> extends CollectionPathBase<List<E>, E, Q> implements ListExpression<E, Q> {
 

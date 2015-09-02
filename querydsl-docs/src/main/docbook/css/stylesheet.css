@@ -1,95 +1,129 @@
-@IMPORT url("highlight.css");
+@import url("highlight.css");
 
 html {
-  padding:       0pt;
-  margin:        0pt;
+    padding:       0pt;
+    margin:        0pt;
 }
 
 body {
-  color: #333333;  
-  font-family:   Arial, Sans-serif;
-  margin: 15px 30px;
+    color: #333333;
+    font-family:   Arial, Sans-serif;
+    margin: 15px 30px;
+    display: block;
 }
 
-div.book, div.chapter, div.appendix, div.part, body > div.sect1 {
-  margin-left: 10%;
-  margin-right: 10%;	
-}	
+div.book {
+    margin-top: 5em;
+    margin-left: 10%;
+    margin-right: 10%;
+}
 
 div {
-  margin:        0pt;
+    margin:        0pt;
 }
 
 p {
-  text-align:    justify;
+    text-align:    justify;
 }
 
 hr {
-    background: none repeat scroll 0 0 #CCCCFF;
-    border: 1px solid #CCCCC;
+    border: 1px solid #CCCCCC;
+    background: #CCCCCC;
 }
 
-h1,h2,h3,h4 {
-  /*color:         #234623;*/
-  font-family:   Arial, Sans-serif;
+h1,h2,h3,h4,h5,h6 {
+    color: #000000;
+    cursor: text;
+    font-weight: bold;
+    margin: 30px 0 10px;
+    padding: 0;
+}
+
+h1,h2,h3 {
+    margin: 40px 0 10px;
+}
+
+h1 {
+    margin: 70px 0 30px;
+    padding-top: 20px;
+}
+
+div.part h1 {
+    border-top: 1px dotted #CCCCCC;
+}
+
+h1,h1 code {
+    font-size: 32px;
+}
+
+h2,h2 code {
+    font-size: 24px;
+}
+
+h3,h3 code {
+    font-size: 20px;
+}
+
+h4,h1 code,h5,h5 code,h6,h6 code {
+    font-size: 18px;
 }
 
 pre {
-  line-height:   1.0;
-  /*color:         black;*/
+    line-height:   1.0;
+    /*color:         black;*/
 }
 
 pre.programlisting {
-  font-size:     10pt;
-  padding:       6pt 10pt;
-  border: 1px solid #CCCCCC;
-  border-radius: 3px 3px 3px 3px;
-  background:    #f8f8f8;
-  clear:         both;
+    font-size:     10pt;
+    padding:       6pt 10pt;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    background:    #f8f8f8;
+    clear:         both;
 }
 
 div.table {
-  margin:        1em;
-  padding:       0.5em;
-  text-align:    center;
+    margin:        1em;
+    padding:       0.5em;
+    text-align:    center;
 }
 
 div.table table {
-  display:       table;
-  width:         100%;
+    display:       table;
+    width:         100%;
 }
 
 div.table td {
-  padding-left:  7px;
-  padding-right: 7px;
+    padding-left:  7px;
+    padding-right: 7px;
 }
 
 .sidebar {
-  float: right;
-  margin: 10px 0 10px 30px;
-  padding: 10px 20px 20px 20px;
-  width: 33%;
-  border: 1px solid black;
-  background-color: #F4F4F4;
-  font-size: 14px;
+    float: right;
+    margin: 10px 0 10px 30px;
+    padding: 10px 20px 20px 20px;
+    width: 33%;
+    border: 1px solid black;
+    background-color: #F4F4F4;
+    font-size: 14px;
 }
 
 .mediaobject {
-  padding-top: 30px; 
-  padding-bottom: 30px; 
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 .legalnotice {
-  font-family: Verdana, Arial, helvetica, sans-serif;
-  font-size: 12px;
-  font-style: italic;
+    font-family: Verdana, Arial, helvetica, sans-serif;
+    font-size: 12px;
+    font-style: italic;
 }
 
 p.releaseinfo {
-  font-size: 100%;
-  font-weight: bold;
-  font-family: Verdana, Arial, helvetica, sans-serif;
-  padding-top: 10px;
+    font-size: 100%;
+    font-weight: bold;
+    font-family: Verdana, Arial, helvetica, sans-serif;
+    padding-top: 10px;
 }
 
 p.pubdate {
@@ -105,8 +139,8 @@ span.productname {
 }
 
 .code {
-	font-size: 14px;
-	/*color: 0000C0;*/
+    font-size: 14px;
+    /*color: 0000C0;*/
 }
 
 div.table td, div.table th {
@@ -114,6 +148,57 @@ div.table td, div.table th {
 }
 
 a {
-	text-decoration: none;
-	/*color: #3030D8;*/
+    text-decoration: none;
+    color: #4183C4;
+}
+
+/* toc font sizes */
+
+div.toc {
+    line-height: 1.2;
+}
+
+dl,dt {
+    margin-top: 1px;
+    margin-bottom: 0;
+}
+
+div.toc>dl>dt {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 30px 0 10px 0;
+    display: block;
+}
+
+div.toc>dl>dd>dl>dt {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    display: block;
+}
+
+div.toc>dl>dd>dl>dd>dl>dt {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px 0 0 0;
+}
+
+/* authorgroup */
+
+.authorgroup .author {
+    display: inline;
+}
+
+.authorgroup .author h3 {
+    font-size: 1em;
+    font-weight: normal;
+    display: inline;
+}
+
+.authorgroup > .author:before {
+    content: ", ";
+}
+
+.authorgroup > .author:first-child:before {
+    content: "";
 }

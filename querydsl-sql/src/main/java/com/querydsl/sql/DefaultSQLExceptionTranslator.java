@@ -55,5 +55,5 @@ public final class DefaultSQLExceptionTranslator implements SQLExceptionTranslat
         return e.getNextException() != null;
     }
 
-    private DefaultSQLExceptionTranslator() {}
+    private DefaultSQLExceptionTranslator() { }
 }

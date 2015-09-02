@@ -57,6 +57,11 @@ public class ExpressionsTest {
                 assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, Template.class, ImmutableList.class));
             }
         }
+
+        // arrays
+        assertReturnType(Expressions.class.getMethod("arrayPath", Class.class, String.class));
+        assertReturnType(Expressions.class.getMethod("arrayPath", Class.class, Path.class, String.class));
+        assertReturnType(Expressions.class.getMethod("arrayPath", Class.class, PathMetadata.class));
     }
 
     private void assertReturnType(Method method) {

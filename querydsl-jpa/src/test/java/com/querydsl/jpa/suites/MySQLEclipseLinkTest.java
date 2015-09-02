@@ -45,9 +45,9 @@ public class MySQLEclipseLinkTest extends AbstractJPASuite {
         }
     }
 
-    public static class JPASQL extends JPASQLBase {}
-    public static class JPAIntegration extends JPAIntegrationBase {}
-    public static class Serialization extends SerializationBase {}
+    public static class JPASQL extends JPASQLBase { }
+    public static class JPAIntegration extends JPAIntegrationBase { }
+    public static class Serialization extends SerializationBase { }
 
     @BeforeClass
     public static void setUp() throws Exception {

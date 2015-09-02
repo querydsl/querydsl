@@ -12,7 +12,7 @@ import com.querydsl.sql.SQLTemplates;
 
 public class SQLDeleteClauseTest {
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     @Ignore
     public void Error() {
         QEmployee emp1 = new QEmployee("emp1");

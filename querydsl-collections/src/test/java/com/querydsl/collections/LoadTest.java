@@ -43,7 +43,7 @@ public class LoadTest {
             long s = System.currentTimeMillis();
             evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name.startsWith("Bob"));
             long e = System.currentTimeMillis();
-            System.out.println(" " + (e-s)+"ms");
+            System.out.println(" " + (e - s) + "ms");
         }
         System.out.println();
 
@@ -52,7 +52,7 @@ public class LoadTest {
             long s = System.currentTimeMillis();
             evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name.startsWith("Bob" + i));
             long e = System.currentTimeMillis();
-            System.out.println(" " + (e-s)+"ms");
+            System.out.println(" " + (e - s) + "ms");
         }
         System.out.println();
     }
@@ -77,7 +77,7 @@ public class LoadTest {
             List<Cat> bobs1 = CollQueryFactory.from(cat, data).where(cat.name.startsWith("Bob")).fetch();
             assertEquals(1000, bobs1.size());
             long e1 = System.currentTimeMillis();
-            System.out.println(" " + (e1-s1)+"ms");
+            System.out.println(" " + (e1 - s1) + "ms");
         }
         System.out.println();
 
@@ -93,7 +93,7 @@ public class LoadTest {
             }
             assertEquals(1000, bobs2.size());
             long e2 = System.currentTimeMillis();
-            System.out.println(" " + (e2-s2)+"ms");
+            System.out.println(" " + (e2 - s2) + "ms");
         }
         System.out.println();
     }

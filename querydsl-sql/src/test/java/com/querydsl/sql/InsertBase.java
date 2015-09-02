@@ -105,7 +105,7 @@ public class InsertBase extends AbstractBaseTest {
           .innerJoin(emp2)
            .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname)));
 
-        insert.execute();
+        assertEquals(0, insert.execute());
     }
 
     @Test
@@ -196,7 +196,7 @@ public class InsertBase extends AbstractBaseTest {
         SQLInsertClause sic = insert(survey);
         sic.columns(survey.name, survey.name2).values(null, null).addBatch();
         sic.columns(survey.name, survey.name2).values(null, "X").addBatch();
-        sic.execute();
+        assertEquals(2, sic.execute());
     }
 
     @Test
@@ -219,7 +219,7 @@ public class InsertBase extends AbstractBaseTest {
         e = new Employee();
         e.setFirstname("X");
         sic.populate(e, mapper).addBatch();
-        sic.execute();
+        assertEquals(0, sic.execute());
 
     }
 
@@ -259,7 +259,7 @@ public class InsertBase extends AbstractBaseTest {
     public void Insert_With_Set() {
         assertEquals(1, insert(survey)
                 .set(survey.id, 5)
-                .set(survey.name, (String)null)
+                .set(survey.name, (String) null)
                 .execute());
     }
 
@@ -274,13 +274,13 @@ public class InsertBase extends AbstractBaseTest {
         clause.addFlag(Position.START_OVERRIDE, "insert ignore into ");
 
         assertEquals("insert ignore into SURVEY (ID, NAME) values (?, ?)", clause.toString());
-        clause.execute();
+        assertEquals(1, clause.execute());
     }
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery() {
-        int count = (int)query().from(survey).fetchCount();
+        int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
             .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
@@ -328,7 +328,7 @@ public class InsertBase extends AbstractBaseTest {
         SQLQuery<?> sq = query().from(survey2);
         sq.set(param, 20);
 
-        int count = (int)query().from(survey).fetchCount();
+        int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
             .select(sq.select(survey2.id.add(param), survey2.name))
@@ -338,7 +338,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Via_Constructor() {
-        int count = (int)query().from(survey).fetchCount();
+        int count = (int) query().from(survey).fetchCount();
         SQLInsertClause insert = insert(survey, query().from(survey2));
         insert.set(survey.id, survey2.id.add(20));
         insert.set(survey.name, survey2.name);
@@ -348,7 +348,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD) // too slow
     public void Insert_With_SubQuery_Without_Columns() {
-        int count = (int)query().from(survey).fetchCount();
+        int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .select(query().from(survey2).select(survey2.id.add(10), survey2.name, survey2.name2))
             .execute());
@@ -375,8 +375,7 @@ public class InsertBase extends AbstractBaseTest {
             .select(query().from(survey2).select(survey2.id.add(40), survey2.name))
             .addBatch();
 
-        insert.execute();
-//        assertEquals(1, insert.execute());
+        assertEquals(1, insert.execute());
     }
 
     @Test
@@ -416,10 +415,11 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     public void Insert_With_TempateExpression_In_Batch() {
-        insert(survey)
+        assertEquals(1, insert(survey)
                 .set(survey.id, 3)
                 .set(survey.name, Expressions.stringTemplate("'Hello'"))
-                .addBatch();
+                .addBatch()
+                .execute());
     }
 
     @Test

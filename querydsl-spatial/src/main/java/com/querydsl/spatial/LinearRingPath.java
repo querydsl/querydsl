@@ -47,7 +47,7 @@ public class LinearRingPath<T extends LinearRing> extends LinearRingExpression<T
 
     public LinearRingPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public LinearRingPath(String var) {

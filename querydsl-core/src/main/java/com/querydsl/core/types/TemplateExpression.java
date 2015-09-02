@@ -20,6 +20,7 @@ import java.util.List;
  * serialization templates
  *
  * @author tiwe
+ * @param <T> expression type
  */
 public interface TemplateExpression<T> extends Expression<T> {
 

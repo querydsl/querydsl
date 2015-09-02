@@ -41,10 +41,21 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
 
     private final Statement stmt;
 
+    private final SQLDetailedListener listener;
+
+    private final SQLListenerContext context;
+
     public SQLResultIterator(Configuration conf, Statement stmt, ResultSet rs) {
+        this(conf, stmt, rs, null, null);
+    }
+
+    public SQLResultIterator(Configuration conf, Statement stmt, ResultSet rs,
+                             SQLDetailedListener listener, SQLListenerContext context) {
         this.configuration = conf;
         this.stmt = stmt;
         this.rs = rs;
+        this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -59,8 +70,12 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
                     stmt.close();
                 }
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw configuration.translate(e);
+        } finally {
+            if (listener != null) {
+                listener.end(context);
+            }
         }
     }
 

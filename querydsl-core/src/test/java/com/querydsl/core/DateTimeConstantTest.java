@@ -34,7 +34,6 @@ public class DateTimeConstantTest {
         cal.set(Calendar.MINUTE,      30);
         cal.set(Calendar.SECOND,      12);
         cal.set(Calendar.MILLISECOND,  3);
-        System.out.println(cal.getTime());
 
         DateTimeExpression<Date> date = DateTimeConstant.create(cal.getTime());
         assertEquals("1",    date.dayOfMonth().toString());

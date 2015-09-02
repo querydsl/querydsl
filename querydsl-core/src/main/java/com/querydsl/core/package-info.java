@@ -13,7 +13,7 @@
  */
 
 /**
- * Contains basic Query elements
+ * Basic Query elements
  */
 package com.querydsl.core;
 

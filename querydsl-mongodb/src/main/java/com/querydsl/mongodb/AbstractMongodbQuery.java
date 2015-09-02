@@ -36,13 +36,13 @@ import com.querydsl.core.types.dsl.CollectionPathBase;
  *
  * @author laimw
  *
- * @param <K>
- * @param <Q>
+ * @param <K> result type
+ * @param <Q> concrete subtype
  */
 public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, Q>> implements SimpleQuery<Q>, Fetchable<K> {
 
     @SuppressWarnings("serial")
-    private static class NoResults extends RuntimeException {}
+    private static class NoResults extends RuntimeException { }
 
     private final MongodbSerializer serializer;
 
@@ -62,7 +62,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
      * @param serializer serializer
      */
     public AbstractMongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
-        this.queryMixin = new QueryMixin<Q>((Q)this, new DefaultQueryMetadata(), false);
+        this.queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata(), false);
         this.transformer = transformer;
         this.collection = collection;
         this.serializer = serializer;
@@ -120,8 +120,8 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         List<JoinExpression> joins = metadata.getJoins();
         for (int i = joins.size() - 1; i >= 0; i--) {
             JoinExpression join = joins.get(i);
-            Path source = (Path)((Operation<?>)join.getTarget()).getArg(0);
-            Path target = (Path)((Operation<?>)join.getTarget()).getArg(1);
+            Path source = (Path) ((Operation<?>) join.getTarget()).getArg(0);
+            Path target = (Path) ((Operation<?>) join.getTarget()).getArg(1);
             Collection<Predicate> extraFilters = predicates.get(target.getRoot());
             Predicate filter = ExpressionUtils.allOf(join.getCondition(), allOf(extraFilters));
             List<Object> ids = getIds(target.getType(), filter);
@@ -131,7 +131,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
             Path path = ExpressionUtils.path(String.class, source, "$id");
             predicates.put(source.getRoot(), ExpressionUtils.in(path, ids));
         }
-        Path source = (Path)((Operation)joins.get(0).getTarget()).getArg(0);
+        Path source = (Path) ((Operation) joins.get(0).getTarget()).getArg(0);
         return allOf(predicates.get(source.getRoot()));
     }
 
@@ -287,9 +287,9 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
     private DBObject createProjection(Expression<?> projection) {
         if (projection instanceof FactoryExpression) {
             DBObject obj = new BasicDBObject();
-            for (Object expr : ((FactoryExpression)projection).getArgs()) {
+            for (Object expr : ((FactoryExpression) projection).getArgs()) {
                 if (expr instanceof Expression) {
-                    obj.put((String)serializer.handle((Expression) expr), 1);
+                    obj.put((String) serializer.handle((Expression) expr), 1);
                 }
             }
             return obj;

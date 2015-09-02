@@ -46,7 +46,7 @@ public class JTSGeometryCollectionPath<T extends GeometryCollection> extends JTS
 
     public JTSGeometryCollectionPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public JTSGeometryCollectionPath(String var) {

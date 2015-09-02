@@ -47,7 +47,7 @@ public class MultiLineStringPath<T extends MultiLineString> extends MultiLineStr
 
     public MultiLineStringPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public MultiLineStringPath(String var) {

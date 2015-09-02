@@ -37,10 +37,12 @@ public class CollQueryTest extends AbstractQueryTest {
 
     @Test
     public void CustomTemplates() {
-        CollQueryTemplates templates = new CollQueryTemplates() {{
-            add(Ops.DateTimeOps.MONTH, "{0}.getMonthOfYear()");
-            add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
-        }};
+        CollQueryTemplates templates = new CollQueryTemplates() {
+            {
+                add(Ops.DateTimeOps.MONTH, "{0}.getMonthOfYear()");
+                add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
+            }
+        };
         new CollQuery(templates);
     }
 
@@ -68,7 +70,7 @@ public class CollQueryTest extends AbstractQueryTest {
         // select pairs of cats with different names
         query().from(cat, cats).from(otherCat, cats).where(cat.name.ne(otherCat.name))
                .select(cat.name, otherCat.name).fetch();
-        assertEquals(4*3, last.res.size());
+        assertEquals(4 * 3, last.res.size());
     }
 
     @Test
@@ -133,7 +135,7 @@ public class CollQueryTest extends AbstractQueryTest {
         for (Tuple strs : from(a, "aa", "bb", "cc")
                 .from(b, Arrays.asList("a","b"))
                 .where(a.startsWith(b)).select(a, b).fetch()) {
-            System.out.println(strs);
+            assertEquals(strs.get(a), strs.get(b) + strs.get(b));
         }
 
         query().from(cat, cats).select(cat.mate).fetch();
@@ -153,22 +155,15 @@ public class CollQueryTest extends AbstractQueryTest {
         NumberPath<BigDecimal> a = Expressions.numberPath(BigDecimal.class, "cost");
         List<BigDecimal> nums = from(a, new BigDecimal("2.1"), new BigDecimal("20.21"),
                 new BigDecimal("44.4")).where(a.lt(new BigDecimal("35.1"))).select(a).fetch();
-
-        for (BigDecimal num : nums) {
-            System.out.println(num);
-        }
-        assertEquals(2, nums.size());
-        for (BigDecimal num : nums) {
-            assertEquals(-1, num.compareTo(new BigDecimal("35")));
-        }
+        assertEquals(Arrays.asList(new BigDecimal("2.1"), new BigDecimal("20.21")), nums);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void GroupBy() {
         query().from(cat, cats).groupBy(cat.name);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void Having() {
         query().from(cat, cats).having(cat.name.isNull());
     }

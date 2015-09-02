@@ -106,7 +106,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     private boolean isEntityPath(Path<?> path) {
         if (path instanceof CollectionPathBase) {
-            return isEntityPath((Path<?>) ((CollectionPathBase)path).any());
+            return isEntityPath((Path<?>) ((CollectionPathBase) path).any());
         } else {
             return path instanceof EntityPath
                 || path.getType().isAnnotationPresent(Entity.class);
@@ -115,7 +115,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     private <T> Class<T> getElementTypeOrType(Path<T> path) {
         if (path instanceof CollectionExpression) {
-            return ((CollectionExpression)path).getParameter(0);
+            return ((CollectionExpression) path).getParameter(0);
         } else {
             return (Class<T>) path.getType();
         }
@@ -189,9 +189,9 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         expr = (Expression<RT>) expr.accept(listAccessVisitor, null);
         if (role == Role.ORDER_BY) {
             if (expr instanceof Path) {
-                expr = convertPathForOrder((Path)expr);
+                expr = convertPathForOrder((Path) expr);
             } else {
-                expr = (Expression<RT>)expr.accept(replaceVisitor, null);
+                expr = (Expression<RT>) expr.accept(replaceVisitor, null);
             }
         }
         return Conversions.convert(super.convert(expr, role));
@@ -219,13 +219,13 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     private void addCondition(Context context, int i, Path<?> path, boolean where) {
         paths.add(path);
         EntityPath<?> alias = context.replacements.get(i);
-        leftJoin((Expression)path.getMetadata().getParent(), context.replacements.get(i));
+        leftJoin((Expression) path.getMetadata().getParent(), context.replacements.get(i));
         Expression index = ExpressionUtils.operation(Integer.class, JPQLOps.INDEX, alias);
         Object element = path.getMetadata().getElement();
         if (!(element instanceof Expression)) {
             element = ConstantImpl.create(element);
         }
-        Predicate condition = ExpressionUtils.eq(index, (Expression)element);
+        Predicate condition = ExpressionUtils.eq(index, (Expression) element);
         if (where) {
             super.where(condition);
         } else {

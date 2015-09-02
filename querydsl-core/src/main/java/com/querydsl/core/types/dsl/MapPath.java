@@ -29,6 +29,7 @@ import com.querydsl.core.types.*;
  *
  * @param <K> key type
  * @param <V> value type
+ * @param <E> result type for {@code get(K)} results
  */
 public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExpressionBase<K, V, E> implements Path<Map<K, V>> {
 

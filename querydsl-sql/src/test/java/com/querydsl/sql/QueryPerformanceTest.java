@@ -120,7 +120,7 @@ public class QueryPerformanceTest {
                 for (int i = 0; i < times; i++) {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
-                    query.from(companies).where(companies.id.eq((long)i))
+                    query.from(companies).where(companies.id.eq((long) i))
                         .select(companies.name).fetch();
                 }
             }
@@ -136,7 +136,7 @@ public class QueryPerformanceTest {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
                     CloseableIterator<String> it = query.from(companies)
-                            .where(companies.id.eq((long)i)).select(companies.name).iterate();
+                            .where(companies.id.eq((long) i)).select(companies.name).iterate();
                     try {
                         while (it.hasNext()) {
                             it.next();
@@ -158,7 +158,7 @@ public class QueryPerformanceTest {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
                     ResultSet rs = query.from(companies)
-                            .where(companies.id.eq((long)i)).getResults(companies.name);
+                            .where(companies.id.eq((long) i)).getResults(companies.name);
                     try {
                         while (rs.next()) {
                             rs.getString(1);
@@ -179,7 +179,7 @@ public class QueryPerformanceTest {
                 for (int i = 0; i < times; i++) {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf, new DefaultQueryMetadata());
-                    query.from(companies).where(companies.id.eq((long)i))
+                    query.from(companies).where(companies.id.eq((long) i))
                         .select(companies.name).fetch();
                 }
             }
@@ -194,7 +194,7 @@ public class QueryPerformanceTest {
                 for (int i = 0; i < times; i++) {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
-                    query.from(companies).where(companies.id.eq((long)i))
+                    query.from(companies).where(companies.id.eq((long) i))
                         .select(companies.id, companies.name).fetch();
                 }
             }

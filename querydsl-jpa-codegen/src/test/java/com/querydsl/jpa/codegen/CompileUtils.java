@@ -11,7 +11,7 @@ import com.mysema.codegen.SimpleCompiler;
 
 public final class CompileUtils {
 
-    private CompileUtils() {}
+    private CompileUtils() { }
 
     private static final SimpleCompiler compiler = new SimpleCompiler();
 

@@ -136,13 +136,19 @@ public final class CaseForEqBuilder<D> {
         }.when(other).then(then);
     }
 
+    /**
+     * Intermediate step
+     *
+     * @param <T> Result type
+     * @param <Q> Parent expression type
+     */
     public abstract class Cases<T, Q extends Expression<T>> {
 
-        public CaseWhen<T,Q> when(Expression<? extends D> when) {
+        public CaseWhen<T, Q> when(Expression<? extends D> when) {
             return new CaseWhen<T,Q>(this, when);
         }
 
-        public CaseWhen<T,Q> when(D when) {
+        public CaseWhen<T, Q> when(D when) {
             return when(ConstantImpl.create(when));
         }
 
@@ -172,6 +178,12 @@ public final class CaseForEqBuilder<D> {
         }
     }
 
+    /**
+     * Intermediate step
+     *
+     * @param <T> Result type
+     * @param <Q> Parent expreession type
+     */
     public class CaseWhen<T, Q extends Expression<T>> {
 
         private final Cases<T, Q> cases;

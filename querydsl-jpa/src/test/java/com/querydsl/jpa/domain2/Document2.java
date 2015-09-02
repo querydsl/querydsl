@@ -18,7 +18,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Table(name="document2_")
+@Table(name = "document2_")
 public class Document2 {
 
     @Id

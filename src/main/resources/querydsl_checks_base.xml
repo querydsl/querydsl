@@ -61,10 +61,11 @@
     <module name="NoWhitespaceBefore"/>
     <module name="ParenPad"/>
     <module name="TypecastParenPad"/>
-    <!-- FIXME
-    <module name="WhitespaceAfter"/>
+
+    <module name="WhitespaceAfter">
+      <property name="tokens" value="SEMI, TYPECAST"/>
+    </module>
     <module name="WhitespaceAround"/>
-    -->
 
     <module name="ModifierOrder"/>
     <module name="RedundantModifier"/>

@@ -18,7 +18,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringPath;
 
 //@Table("GENERATED_KEYS")
-public class QGeneratedKeysEntity extends RelationalPathBase<QGeneratedKeysEntity>{
+public class QGeneratedKeysEntity extends RelationalPathBase<QGeneratedKeysEntity> {
 
     private static final long serialVersionUID = 2002306246819687158L;
 

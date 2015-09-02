@@ -62,7 +62,7 @@ public class JTSGeometryPath<T extends Geometry> extends JTSGeometryExpression<T
 
     public JTSGeometryPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public JTSGeometryPath(String var) {

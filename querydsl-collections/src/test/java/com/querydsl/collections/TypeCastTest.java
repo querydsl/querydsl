@@ -22,12 +22,11 @@ import com.querydsl.core.types.dsl.PathInits;
 
 public class TypeCastTest {
 
-    @Test(expected=IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     @Ignore
     public void Cast() {
         QAnimal animal = QAnimal.animal;
         QCat cat = new QCat(animal.getMetadata(), new PathInits("*"));
-        System.out.println(cat);
         CollQueryFactory.from(animal, Collections.<Animal> emptyList()).from(cat, Collections.<Cat> emptyList());
     }
 

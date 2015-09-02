@@ -30,7 +30,7 @@ import com.querydsl.sql.*;
  *
  * @author tiwe
  * @see SQLQuery
- *
+ * @param <T> result type
  */
 public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
 

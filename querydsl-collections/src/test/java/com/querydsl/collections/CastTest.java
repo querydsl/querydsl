@@ -2,6 +2,8 @@ package com.querydsl.collections;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 public class CastTest extends AbstractQueryTest {
@@ -14,9 +16,10 @@ public class CastTest extends AbstractQueryTest {
 
     @Test
     public void Cast() {
-        query().from(QAnimal.animal, cats)
-            .where(QAnimal.animal.as(QCat.class).breed.eq(0))
-            .select(QAnimal.animal).fetch();
+        assertEquals(Arrays.asList(c1, c2, c3, c4),
+            query().from(QAnimal.animal, cats)
+                .where(QAnimal.animal.as(QCat.class).breed.eq(0))
+                .select(QAnimal.animal).fetch());
     }
 
     @Test

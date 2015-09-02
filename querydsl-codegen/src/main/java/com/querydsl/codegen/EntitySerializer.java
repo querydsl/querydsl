@@ -52,6 +52,8 @@ public class EntitySerializer implements Serializer {
 
     protected final Collection<String> keywords;
 
+    private CaseTransformer caseTransformer;
+
     /**
      * Create a new {@code EntitySerializer} instance
      *
@@ -59,9 +61,14 @@ public class EntitySerializer implements Serializer {
      * @param keywords keywords to be used
      */
     @Inject
-    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords) {
+    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords, @Named(CodegenModule.CASE_TRANSFORMER_CLASS) String caseTransfomerClass) {
         this.typeMappings = mappings;
         this.keywords = keywords;
+        try {
+           this.caseTransformer = (CaseTransformer) Class.forName(caseTransfomerClass).newInstance();
+        } catch (Exception e) {
+          this.caseTransformer = new UncapitalizedCaseTransformer();
+        }
     }
 
     protected void constructors(EntityType model, SerializerConfig config,

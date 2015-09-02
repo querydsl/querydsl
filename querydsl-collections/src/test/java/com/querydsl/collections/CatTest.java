@@ -21,7 +21,7 @@ import com.querydsl.core.types.dsl.SimplePath;
 
 public class CatTest {
 
-    @Test(expected=NoSuchFieldException.class)
+    @Test(expected = NoSuchFieldException.class)
     public void SkippedField() throws SecurityException, NoSuchFieldException {
         QCat.class.getField("skippedField");
     }

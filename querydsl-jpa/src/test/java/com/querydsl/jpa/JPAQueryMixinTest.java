@@ -24,7 +24,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void Where_Null() {
-        mixin.where((Predicate)null);
+        mixin.where((Predicate) null);
     }
 
     @Test

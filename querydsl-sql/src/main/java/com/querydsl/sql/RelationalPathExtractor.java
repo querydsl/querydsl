@@ -87,7 +87,7 @@ public final class RelationalPathExtractor implements Visitor<Set<RelationalPath
     public Set<RelationalPath<?>> visit(Path<?> expr, Set<RelationalPath<?>> known) {
         if (expr.getMetadata().isRoot()) {
             if (expr instanceof RelationalPath) {
-                known = add(known, (RelationalPath<?>)expr);
+                known = add(known, (RelationalPath<?>) expr);
             }
         } else {
             known = expr.getMetadata().getParent().accept(this, known);
@@ -123,7 +123,7 @@ public final class RelationalPathExtractor implements Visitor<Set<RelationalPath
     public Set<RelationalPath<?>> visit(TemplateExpression<?> expr, Set<RelationalPath<?>> known) {
         for (Object arg : expr.getArgs()) {
             if (arg instanceof Expression<?>) {
-                known = ((Expression<?>)arg).accept(this, known);
+                known = ((Expression<?>) arg).accept(this, known);
             }
         }
         return known;
@@ -139,6 +139,6 @@ public final class RelationalPathExtractor implements Visitor<Set<RelationalPath
         return known;
     }
 
-    private RelationalPathExtractor() {}
+    private RelationalPathExtractor() { }
 
 }

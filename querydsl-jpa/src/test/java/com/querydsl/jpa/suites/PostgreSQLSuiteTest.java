@@ -10,12 +10,12 @@ import com.querydsl.jpa.*;
 @Category(ExternalDB.class)
 public class PostgreSQLSuiteTest extends AbstractSuite {
 
-    public static class JPA extends JPABase {}
-    public static class JPASQL extends JPASQLBase {}
-    public static class JPAIntegration extends JPAIntegrationBase {}
-    public static class Serialization extends SerializationBase {}
-    public static class Hibernate extends HibernateBase {}
-    public static class HibernateSQL extends HibernateSQLBase {}
+    public static class JPA extends JPABase { }
+    public static class JPASQL extends JPASQLBase { }
+    public static class JPAIntegration extends JPAIntegrationBase { }
+    public static class Serialization extends SerializationBase { }
+    public static class Hibernate extends HibernateBase { }
+    public static class HibernateSQL extends HibernateSQLBase { }
 
     @BeforeClass
     public static void setUp() throws Exception {

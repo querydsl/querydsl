@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 
 public final class TypesDump {
 
-    private TypesDump() {}
+    private TypesDump() { }
 
     public static void main(String[] args) throws Exception {
         Map<Integer, String> typeConstants = Maps.newHashMap();

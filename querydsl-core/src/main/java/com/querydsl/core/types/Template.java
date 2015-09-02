@@ -33,6 +33,9 @@ public final class Template implements Serializable {
 
     private static final long serialVersionUID = -1697705745769542204L;
 
+    /**
+     * General template element
+     */
     @Immutable
     public abstract static class Element implements Serializable {
 
@@ -44,6 +47,9 @@ public final class Template implements Serializable {
 
     }
 
+    /**
+     * Expression as string
+     */
     public static final class AsString extends Element {
 
         private static final long serialVersionUID = -655362047873616197L;
@@ -75,6 +81,9 @@ public final class Template implements Serializable {
 
     }
 
+    /**
+     * Static text element
+     */
     public static final class StaticText extends Element {
 
         private static final long serialVersionUID = -2791869625053368023L;
@@ -105,6 +114,9 @@ public final class Template implements Serializable {
 
     }
 
+    /**
+     * Transformed expression
+     */
     public static final class Transformed extends Element {
 
         private static final long serialVersionUID = 702677732175745567L;
@@ -138,6 +150,9 @@ public final class Template implements Serializable {
 
     }
 
+    /**
+     * Argument by index
+     */
     public static final class ByIndex extends Element {
 
         private static final long serialVersionUID = 4711323946026029998L;

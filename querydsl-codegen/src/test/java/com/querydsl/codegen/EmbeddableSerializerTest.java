@@ -35,7 +35,7 @@ public class EmbeddableSerializerTest {
 
     private final TypeMappings typeMappings = new JavaTypeMappings();
 
-    private final EntitySerializer serializer = new EmbeddableSerializer(typeMappings, Collections.<String>emptySet());
+    private final EntitySerializer serializer = new EmbeddableSerializer(typeMappings, Collections.<String>emptySet(), UncapitalizedCaseTransformer.class.getCanonicalName());
 
     private final StringWriter writer = new StringWriter();
 
@@ -45,16 +45,17 @@ public class EmbeddableSerializerTest {
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "b", new ClassType(TypeCategory.BOOLEAN, Boolean.class)));
         entityType.addProperty(new Property(entityType, "c", new ClassType(TypeCategory.COMPARABLE, String.class)));
-        entityType.addProperty(new Property(entityType, "cu", new ClassType(TypeCategory.CUSTOM, PropertyType.class)));
+        //entityType.addProperty(new Property(entityType, "cu", new ClassType(TypeCategory.CUSTOM, PropertyType.class)));
         entityType.addProperty(new Property(entityType, "d", new ClassType(TypeCategory.DATE, Date.class)));
         entityType.addProperty(new Property(entityType, "e", new ClassType(TypeCategory.ENUM, PropertyType.class)));
         entityType.addProperty(new Property(entityType, "dt", new ClassType(TypeCategory.DATETIME, Date.class)));
         entityType.addProperty(new Property(entityType, "i", new ClassType(TypeCategory.NUMERIC, Integer.class)));
         entityType.addProperty(new Property(entityType, "s", new ClassType(TypeCategory.STRING, String.class)));
         entityType.addProperty(new Property(entityType, "t", new ClassType(TypeCategory.TIME, Time.class)));
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        // TODO : assertions
+        CompileUtils.assertCompiles("QEntity", writer.toString());
     }
 
     @Test
@@ -71,12 +72,13 @@ public class EmbeddableSerializerTest {
         categoryToSuperClass.put(TypeCategory.BOOLEAN, "BooleanPath");
 
         for (Map.Entry<TypeCategory, String> entry : categoryToSuperClass.entrySet()) {
+            StringWriter w = new StringWriter();
             SimpleType type = new SimpleType(entry.getKey(), "Entity", "", "Entity",false,false);
             EntityType entityType = new EntityType(type);
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
-            serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-            assertTrue(entry.toString(), writer.toString().contains("public class QEntity extends " + entry.getValue() + " {"));
+            serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(w));
+            assertTrue(entry.getValue() + " is missing from " + w, w.toString().contains("public class QEntity extends " + entry.getValue() + " {"));
         }
 
     }
@@ -85,9 +87,10 @@ public class EmbeddableSerializerTest {
     public void Empty() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        // TODO : assertions
+        CompileUtils.assertCompiles("QEntity", writer.toString());
     }
 
     @Test
@@ -97,6 +100,7 @@ public class EmbeddableSerializerTest {
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("public class QEntity extends BeanPath<Entity> {"));
+        CompileUtils.assertCompiles("QEntity", writer.toString());
     }
 
     @Test
@@ -105,8 +109,8 @@ public class EmbeddableSerializerTest {
         EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        //System.out.println(writer);
         assertTrue(writer.toString().contains("public class QLocale extends BeanPath<Locale> {"));
+        CompileUtils.assertCompiles("QLocale", writer.toString());
     }
 
     @Test
@@ -114,8 +118,11 @@ public class EmbeddableSerializerTest {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "bytes", new ClassType(byte[].class)));
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+
         assertTrue(writer.toString().contains("public final SimplePath<byte[]> bytes"));
+        CompileUtils.assertCompiles("QEntity", writer.toString());
     }
 
     @Test
@@ -124,7 +131,7 @@ public class EmbeddableSerializerTest {
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "b", new ClassType(TypeCategory.BOOLEAN, Boolean.class)));
         entityType.addProperty(new Property(entityType, "c", new ClassType(TypeCategory.COMPARABLE, String.class)));
-        entityType.addProperty(new Property(entityType, "cu", new ClassType(TypeCategory.CUSTOM, PropertyType.class)));
+        //entityType.addProperty(new Property(entityType, "cu", new ClassType(TypeCategory.CUSTOM, PropertyType.class)));
         entityType.addProperty(new Property(entityType, "d", new ClassType(TypeCategory.DATE, Date.class)));
         entityType.addProperty(new Property(entityType, "e", new ClassType(TypeCategory.ENUM, PropertyType.class)));
         entityType.addProperty(new Property(entityType, "dt", new ClassType(TypeCategory.DATETIME, Date.class)));
@@ -135,8 +142,11 @@ public class EmbeddableSerializerTest {
         EntityType subType = new EntityType(new SimpleType(TypeCategory.ENTITY, "Entity2", "", "Entity2",false,false));
         subType.include(new Supertype(type,entityType));
 
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
+        typeMappings.register(subType, queryTypeFactory.create(subType));
+
         serializer.serialize(subType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        // TODO : assertions
+        CompileUtils.assertCompiles("QEntity2", writer.toString());
     }
 
     @Test
@@ -149,6 +159,7 @@ public class EmbeddableSerializerTest {
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("public final QEntity2 _super = new QEntity2(this);"));
+        //CompileUtils.assertCompiles("QEntity", writer.toString());
     }
 
     @Test
@@ -157,9 +168,11 @@ public class EmbeddableSerializerTest {
         EntityType entityType = new EntityType(type);
         Delegate delegate = new Delegate(type, type, "test", Collections.<Parameter>emptyList(), Types.STRING);
         entityType.addDelegate(delegate);
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("return Entity.test(this);"));
+        CompileUtils.assertCompiles("QEntity", writer.toString());
     }
 
 }

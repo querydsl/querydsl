@@ -134,7 +134,7 @@ public class CollQueryStandardTest {
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne());
     }
 
-    @Test(expected=ParamNotSetException.class)
+    @Test(expected = ParamNotSetException.class)
     public void Params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).select(cat.name).fetchOne());
@@ -142,7 +142,7 @@ public class CollQueryStandardTest {
 
     @Test
     public void Limit() {
-        CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).fetch();
+        assertEquals(data, CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).fetch());
     }
 
 }

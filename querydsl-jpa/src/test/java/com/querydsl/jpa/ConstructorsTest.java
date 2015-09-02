@@ -45,7 +45,7 @@ public class ConstructorsTest extends AbstractQueryTest {
                         com.querydsl.jpa.domain.Cat.class,
                         new Class[]{String.class},
                         cat.name);
-        assertToString("new " + com.querydsl.jpa.domain.Cat.class.getName()+ "(cat.name)", c);
+        assertToString("new " + com.querydsl.jpa.domain.Cat.class.getName() + "(cat.name)", c);
         assertToString("new " + getClass().getName() + "$BookmarkDTO(cat.name)",new QBookmarkDTO(cat.name));
     }
 

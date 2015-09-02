@@ -69,7 +69,7 @@ public class SerializationTest {
     public void Update() {
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
-        updateClause.set(survey.name, (String)null);
+        updateClause.set(survey.name, (String) null);
         assertEquals("update SURVEY\nset ID = ?, NAME = ?", updateClause.toString());
     }
 
@@ -77,7 +77,7 @@ public class SerializationTest {
     public void Update_Where() {
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
-        updateClause.set(survey.name, (String)null);
+        updateClause.set(survey.name, (String) null);
         updateClause.where(survey.name.eq("XXX"));
         assertEquals("update SURVEY\nset ID = ?, NAME = ?\nwhere SURVEY.NAME = ?", updateClause.toString());
     }
@@ -86,7 +86,7 @@ public class SerializationTest {
     public void Insert() {
         SQLInsertClause insertClause = new SQLInsertClause(connection,SQLTemplates.DEFAULT,survey);
         insertClause.set(survey.id, 1);
-        insertClause.set(survey.name, (String)null);
+        insertClause.set(survey.name, (String) null);
         assertEquals("insert into SURVEY (ID, NAME)\nvalues (?, ?)", insertClause.toString());
     }
 
@@ -175,7 +175,7 @@ public class SerializationTest {
             "from SURVEY SURVEY)\n" +
             "union\n" +
             "(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
-            "from SURVEY SURVEY)\n"+
+            "from SURVEY SURVEY)\n" +
             "group by SURVEY.ID", q.toString());
 
     }
@@ -186,7 +186,7 @@ public class SerializationTest {
                 select(survey.all()).from(survey),
                 select(survey.all()).from(survey));
 
-        assertEquals("from ((select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n"+
+        assertEquals("from ((select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
             "from SURVEY SURVEY)\n" +
             "union\n" +
             "(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +

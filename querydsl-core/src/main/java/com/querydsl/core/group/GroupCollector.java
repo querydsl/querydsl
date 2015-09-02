@@ -16,8 +16,10 @@ package com.querydsl.core.group;
 /**
  * A stateful collector of column values for a group.
  *
- * @author sasa
+ * @param <T> Element type
  * @param <R> Target type (e.g. List, Set)
+ *
+ * @author sasa
  */
 public interface GroupCollector<T, R> {
 

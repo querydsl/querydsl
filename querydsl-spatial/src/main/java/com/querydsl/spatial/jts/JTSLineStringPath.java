@@ -46,7 +46,7 @@ public class JTSLineStringPath<T extends LineString> extends JTSLineStringExpres
 
     public JTSLineStringPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
-        this.pathMixin = (PathImpl<T>)mixin;
+        this.pathMixin = (PathImpl<T>) mixin;
     }
 
     public JTSLineStringPath(String var) {

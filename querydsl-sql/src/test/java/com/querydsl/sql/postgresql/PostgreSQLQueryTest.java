@@ -16,9 +16,7 @@ public class PostgreSQLQueryTest {
 
     @Before
     public void setUp() {
-        query = new PostgreSQLQuery<Void>(null, new PostgreSQLTemplates() {{
-            newLineToSingleSpace();
-        }});
+        query = new PostgreSQLQuery<Void>(null, PostgreSQLTemplates.builder().newLineToSingleSpace().build());
     }
 
     @Test

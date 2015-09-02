@@ -6,7 +6,7 @@ import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.QCat;
 
-public class QProjection extends ConstructorExpression<Projection>{
+public class QProjection extends ConstructorExpression<Projection> {
 
     private static final long serialVersionUID = -5866362075090550839L;
 

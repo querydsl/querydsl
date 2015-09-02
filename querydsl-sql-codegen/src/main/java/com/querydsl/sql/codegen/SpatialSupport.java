@@ -96,6 +96,6 @@ public final class SpatialSupport {
         addImports(module);
     }
 
-    private SpatialSupport() {}
+    private SpatialSupport() { }
 
 }

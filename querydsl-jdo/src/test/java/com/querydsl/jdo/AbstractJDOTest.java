@@ -92,4 +92,19 @@ public abstract class AbstractJDOTest {
         }
     }
 
+    protected static void doPersist(List<?> entities) {
+        PersistenceManager pm = pmf.getPersistenceManager();
+        Transaction tx = pm.currentTransaction();
+        try {
+            tx.begin();
+            pm.makePersistentAll(entities);
+            tx.commit();
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            pm.close();
+        }
+    }
+
 }

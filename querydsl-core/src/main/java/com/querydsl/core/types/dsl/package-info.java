@@ -13,6 +13,6 @@
  */
 
 /**
- * Operations represent typed operations with operator and arguments
+ * DSL expression types
  */
 package com.querydsl.core.types.dsl;

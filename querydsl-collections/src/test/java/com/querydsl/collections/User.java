@@ -24,7 +24,7 @@ public class User {
 
     private Post latestPost;
 
-    public User() {}
+    public User() { }
 
     @QueryProjection
     public User(String name) {

@@ -33,6 +33,9 @@ import com.querydsl.lucene3.LuceneSerializer;
 
 /**
  * Abstract base class for Hibernate Search query classes
+ *
+ * @param <T> result type
+ * @param <Q> concrete subtype
  */
 public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>> implements SimpleQuery<Q>, Fetchable<T> {
 
@@ -45,7 +48,7 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
     private final FullTextSession session;
 
     public AbstractSearchQuery(FullTextSession session, EntityPath<T> path) {
-        this.queryMixin = new QueryMixin<Q>((Q)this);
+        this.queryMixin = new QueryMixin<Q>((Q) this);
         this.session = session;
         this.path = path;
         this.serializer = SearchSerializer.DEFAULT;

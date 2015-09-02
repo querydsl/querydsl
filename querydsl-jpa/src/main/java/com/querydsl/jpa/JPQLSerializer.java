@@ -128,17 +128,17 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
             handle(je.getTarget());
         } else if (je.getTarget() instanceof Operation) {
-            Operation<?> op = (Operation)je.getTarget();
+            Operation<?> op = (Operation) je.getTarget();
             if (op.getOperator() == Ops.ALIAS) {
                 boolean treat = false;
                 if (Collection.class.isAssignableFrom(op.getArg(0).getType())) {
                     if (op.getArg(0) instanceof CollectionExpression) {
-                        Class<?> par = ((CollectionExpression)op.getArg(0)).getParameter(0);
+                        Class<?> par = ((CollectionExpression) op.getArg(0)).getParameter(0);
                         treat = !par.equals(op.getArg(1).getType());
                     }
                 } else if (Map.class.isAssignableFrom(op.getArg(0).getType())) {
                     if (op.getArg(0) instanceof MapExpression) {
-                        Class<?> par = ((MapExpression)op.getArg(0)).getParameter(1);
+                        Class<?> par = ((MapExpression) op.getArg(0)).getParameter(1);
                         treat = !par.equals(op.getArg(1).getType());
                     }
                 } else {
@@ -298,7 +298,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             if (constant instanceof Collection) {
                 append("(");
                 boolean first = true;
-                for (Object o : (Collection)constant) {
+                for (Object o : (Collection) constant) {
                     if (!first) {
                         append(", ");
                     }
@@ -316,7 +316,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
             append("?");
             if (!getConstantToLabel().containsKey(constant)) {
-                final String constLabel = String.valueOf(getConstantToLabel().size()+1);
+                final String constLabel = String.valueOf(getConstantToLabel().size() + 1);
                 getConstantToLabel().put(constant, constLabel);
                 append(constLabel);
             } else {
@@ -369,7 +369,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     public Void visit(ParamExpression<?> param, Void context) {
         append("?");
         if (!getConstantToLabel().containsKey(param)) {
-            final String paramLabel = String.valueOf(getConstantToLabel().size()+1);
+            final String paramLabel = String.valueOf(getConstantToLabel().size() + 1);
             getConstantToLabel().put(param, paramLabel);
             append(paramLabel);
         } else {
@@ -411,13 +411,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         wrapElements = templates.wrapElements(operator);
 
         if (operator == Ops.EQ && args.get(1) instanceof Operation &&
-                ((Operation)args.get(1)).getOperator() == Ops.QuantOps.ANY) {
-            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation)args.get(1)).getArg(0));
+                ((Operation) args.get(1)).getOperator() == Ops.QuantOps.ANY) {
+            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation) args.get(1)).getArg(0));
             visitOperation(type, Ops.IN, args);
 
         } else if (operator == Ops.NE && args.get(1) instanceof Operation &&
-                ((Operation)args.get(1)).getOperator() == Ops.QuantOps.ANY) {
-            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation)args.get(1)).getArg(0));
+                ((Operation) args.get(1)).getOperator() == Ops.QuantOps.ANY) {
+            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation) args.get(1)).getArg(0));
             visitOperation(type, Ops.NOT_IN, args);
 
         } else if (operator == Ops.IN || operator == Ops.NOT_IN) {
@@ -514,7 +514,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             Constant<? extends Enum<?>> expectedConstant = (Constant<? extends Enum<?>>) args.get(0);
 
             final Enum<?> constant = expectedConstant.getConstant();
-            final Enumerated enumerated = ((Path<?>)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
+            final Enumerated enumerated = ((Path<?>) args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
             if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
                 args = ImmutableList.of(ConstantImpl.create(constant.ordinal()), args.get(1));
             } else {

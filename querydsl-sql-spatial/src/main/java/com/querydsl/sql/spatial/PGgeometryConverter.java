@@ -22,23 +22,23 @@ final class PGgeometryConverter {
 
     public static org.postgis.Geometry convert(Geometry geometry) {
         if (geometry instanceof Point) {
-            return convert((Point)geometry);
+            return convert((Point) geometry);
         } else if (geometry instanceof LinearRing) {
-            return convert((LinearRing)geometry);
+            return convert((LinearRing) geometry);
         } else if (geometry instanceof LineString) {
-            return convert((LineString)geometry);
+            return convert((LineString) geometry);
         } else if (geometry instanceof MultiLineString) {
-            return convert((MultiLineString)geometry);
+            return convert((MultiLineString) geometry);
         } else if (geometry instanceof Polygon) {
-            return convert((Polygon)geometry);
+            return convert((Polygon) geometry);
         } else if (geometry instanceof PolyHedralSurface) {
-            return convert((PolyHedralSurface)geometry);
+            return convert((PolyHedralSurface) geometry);
         } else if (geometry instanceof MultiPoint) {
-            return convert((MultiPoint)geometry);
+            return convert((MultiPoint) geometry);
         } else if (geometry instanceof MultiPolygon) {
-            return convert((MultiPolygon)geometry);
+            return convert((MultiPolygon) geometry);
         } else if (geometry instanceof GeometryCollection) {
-            return convert((GeometryCollection)geometry);
+            return convert((GeometryCollection) geometry);
         } else {
             throw new IllegalArgumentException(geometry.getClass().getName());
         }
@@ -101,7 +101,7 @@ final class PGgeometryConverter {
         org.postgis.LinearRing[] rings = new org.postgis.LinearRing[numRings + 1];
         rings[0] = convert(polygon.getExteriorRing());
         for (int i = 0; i < numRings; i++) {
-            rings[i+1] = convert(polygon.getInteriorRingN(i));
+            rings[i + 1] = convert(polygon.getInteriorRingN(i));
         }
         org.postgis.Polygon pgPolygon = new org.postgis.Polygon(rings);
         pgPolygon.setSrid(polygon.getSRID());
@@ -144,21 +144,21 @@ final class PGgeometryConverter {
     public static Geometry convert(org.postgis.Geometry geometry) {
         switch (geometry.getType()) {
         case org.postgis.Geometry.POINT:
-            return convert((org.postgis.Point)geometry);
+            return convert((org.postgis.Point) geometry);
         case org.postgis.Geometry.LINESTRING:
-            return convert((org.postgis.LineString)geometry);
+            return convert((org.postgis.LineString) geometry);
         case org.postgis.Geometry.LINEARRING:
-            return convert((org.postgis.LinearRing)geometry);
+            return convert((org.postgis.LinearRing) geometry);
         case org.postgis.Geometry.POLYGON:
-            return convert((org.postgis.Polygon)geometry);
+            return convert((org.postgis.Polygon) geometry);
         case org.postgis.Geometry.MULTILINESTRING:
-            return convert((org.postgis.MultiLineString)geometry);
+            return convert((org.postgis.MultiLineString) geometry);
         case org.postgis.Geometry.MULTIPOINT:
-            return convert((org.postgis.MultiPoint)geometry);
+            return convert((org.postgis.MultiPoint) geometry);
         case org.postgis.Geometry.MULTIPOLYGON:
-            return convert((org.postgis.MultiPolygon)geometry);
+            return convert((org.postgis.MultiPolygon) geometry);
         case org.postgis.Geometry.GEOMETRYCOLLECTION:
-            return convert((org.postgis.GeometryCollection)geometry);
+            return convert((org.postgis.GeometryCollection) geometry);
         }
         throw new IllegalArgumentException(geometry.toString());
     }
@@ -245,6 +245,6 @@ final class PGgeometryConverter {
         return new LineString(points);
     }
 
-    private PGgeometryConverter() {}
+    private PGgeometryConverter() { }
 
 }

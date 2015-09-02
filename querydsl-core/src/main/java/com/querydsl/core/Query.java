@@ -24,6 +24,8 @@ import com.querydsl.core.types.Predicate;
  *
  * @author tiwe
  * @see SimpleQuery
+ *
+ * @param <Q> concrete subtype
  */
 public interface Query<Q extends Query<Q>> extends SimpleQuery<Q> {
 

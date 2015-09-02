@@ -29,7 +29,7 @@ public class Post {
 
     private Set<Comment> comments;
 
-    public Post() {}
+    public Post() { }
 
     @QueryProjection
     public Post(int id, String name, User user) {

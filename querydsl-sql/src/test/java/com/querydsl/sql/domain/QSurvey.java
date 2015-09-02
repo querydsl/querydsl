@@ -25,7 +25,7 @@ import com.querydsl.sql.RelationalPathBase;
 
 //@Schema("PUBLIC")
 //@Table("SURVEY")
-public class QSurvey extends RelationalPathBase<QSurvey>{
+public class QSurvey extends RelationalPathBase<QSurvey> {
 
     private static final long serialVersionUID = -7427577079709192842L;
 

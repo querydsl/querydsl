@@ -98,7 +98,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
                         append(CollQueryFunctions.class.getName() + ".<");
                         append((path.getType()).getName()).append(">get(");
                         handle(parent);
-                        append(", \""+property+"\")");
+                        append(", \"" + property + "\")");
                     }
                 }
             } catch (Exception e) {
@@ -121,7 +121,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             for (Template.Element element : template.getElements()) {
                 Object rv = element.convert(args);
                 if (rv instanceof Expression) {
-                    ((Expression<?>)rv).accept(this, context);
+                    ((Expression<?>) rv).accept(this, context);
                 } else if (element.isString()) {
                     append(rv.toString());
                 } else {
@@ -137,8 +137,8 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(owner);
             PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
-            for(PropertyDescriptor pd : descriptors) {
-                if(pd.getName().equals(property)) {
+            for (PropertyDescriptor pd : descriptors) {
+                if (pd.getName().equals(property)) {
                     return pd.getReadMethod();
                 }
             }

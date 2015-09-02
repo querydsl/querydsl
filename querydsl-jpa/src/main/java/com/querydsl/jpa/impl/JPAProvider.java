@@ -35,7 +35,7 @@ public final class JPAProvider {
     private static void addMapping(String className, JPQLTemplates templates) {
         try {
             mappings.put(Class.forName(className), templates);
-        } catch (Exception e) {}
+        } catch (Exception e) { }
     }
 
     static {
@@ -74,6 +74,6 @@ public final class JPAProvider {
         return JPQLTemplates.DEFAULT;
     }
 
-    private JPAProvider() {}
+    private JPAProvider() { }
 
 }

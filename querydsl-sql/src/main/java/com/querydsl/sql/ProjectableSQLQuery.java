@@ -37,6 +37,7 @@ import com.querydsl.core.types.dsl.Wildcard;
 /**
  * {@code ProjectableSQLQuery} is the base type for SQL query implementations
  *
+ * @param <T> result type
  * @param <Q> concrete subtype
  */
 public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>> extends FetchableSubQueryBase<T, Q>
@@ -92,7 +93,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     @SuppressWarnings("unchecked")
     public Q addJoinFlag(String flag, JoinFlag.Position position) {
         queryMixin.addJoinFlag(new JoinFlag(flag, position));
-        return (Q)this;
+        return (Q) this;
     }
 
     /**
@@ -430,7 +431,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
 
     private Collection<? extends Expression<?>> expandProjection(Expression<?> expr) {
         if (expr instanceof FactoryExpression) {
-            return ((FactoryExpression)expr).getArgs();
+            return ((FactoryExpression) expr).getArgs();
         } else {
             return ImmutableList.of(expr);
         }

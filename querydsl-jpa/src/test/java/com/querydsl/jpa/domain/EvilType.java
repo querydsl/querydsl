@@ -19,7 +19,7 @@ import javax.persistence.*;
  * The Class EvilType.
  */
 @Entity
-@Table(name="eviltype_")
+@Table(name = "eviltype_")
 public class EvilType {
     @ManyToOne
     @JoinColumn(name = "_asc")

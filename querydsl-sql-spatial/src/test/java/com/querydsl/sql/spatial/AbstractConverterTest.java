@@ -34,7 +34,7 @@ public abstract class AbstractConverterTest {
         // linestring
         data.add(LineString.createEmpty());
         for (int i = 0; i < 6; i++) {
-            data.add(new LineString(createSequence(crs, (Point)data.get(i), (Point)data.get(i))));
+            data.add(new LineString(createSequence(crs, (Point) data.get(i), (Point) data.get(i))));
         }
 
         // polygon
@@ -43,7 +43,7 @@ public abstract class AbstractConverterTest {
         // multipoint
         data.add(MultiPoint.createEmpty());
         for (int i = 0; i < 6; i++) {
-            data.add(new MultiPoint(new Point[]{(Point)data.get(i)}));
+            data.add(new MultiPoint(new Point[]{(Point) data.get(i)}));
         }
 
         // multilinestring
@@ -51,7 +51,7 @@ public abstract class AbstractConverterTest {
         data.add(MultiLineString.createEmpty());
         for (int i = 0; i < size; i++) {
             if (data.get(i) instanceof LineString) {
-                data.add(new MultiLineString(new LineString[]{(LineString)data.get(i)}));
+                data.add(new MultiLineString(new LineString[]{(LineString) data.get(i)}));
             }
         }
 
@@ -59,7 +59,7 @@ public abstract class AbstractConverterTest {
         data.add(MultiPolygon.createEmpty());
         for (int i = 0; i < size; i++) {
             if (data.get(i) instanceof Polygon) {
-                data.add(new MultiPolygon(new Polygon[]{(Polygon)data.get(i)}));
+                data.add(new MultiPolygon(new Polygon[]{(Polygon) data.get(i)}));
             }
         }
 

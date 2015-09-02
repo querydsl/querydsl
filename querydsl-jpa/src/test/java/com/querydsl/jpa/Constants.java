@@ -18,7 +18,7 @@ import com.querydsl.jpa.domain.QPerson;
 
 public final class Constants {
 
-    private Constants() {}
+    private Constants() { }
 
     static final QAccount account = new QAccount("account");
 
