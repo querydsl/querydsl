@@ -9,6 +9,8 @@ import com.mysema.codegen.StringUtils;
 public class UncapitalizedCaseTransformer implements CaseTransformer {
 
     /**
+     * Uncapitalizes the first letter of a name.
+     *
      * @see com.querydsl.codegen.CaseTransformer#transform(java.lang.String)
      */
     @Override
