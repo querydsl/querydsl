@@ -488,7 +488,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private void reset() {
-        queryMixin.getMetadata().reset();
         cleanupMDC();
     }
 

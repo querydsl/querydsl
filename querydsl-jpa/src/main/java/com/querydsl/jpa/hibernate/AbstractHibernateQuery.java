@@ -213,7 +213,6 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     @Override
     protected void reset() {
-        super.reset();
         cleanupMDC();
     }
 

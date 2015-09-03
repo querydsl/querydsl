@@ -241,7 +241,6 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
 
     @Override
     protected void reset() {
-        super.reset();
         cleanupMDC();
     }
 

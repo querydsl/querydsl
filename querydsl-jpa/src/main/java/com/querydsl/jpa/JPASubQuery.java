@@ -36,6 +36,11 @@ class JPASubQuery<T> extends JPAQueryBase<T, JPASubQuery<T>> {
     }
 
     @Override
+    protected void reset() {
+        // do nothing
+    }
+
+    @Override
     public JPASubQuery<T> clone() {
         return new JPASubQuery<T>(getMetadata().clone());
     }

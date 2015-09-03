@@ -55,9 +55,7 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
         return serializer;
     }
 
-    protected void reset() {
-        queryMixin.getMetadata().reset();
-    }
+    protected abstract void reset();
 
     @Override
     public Q fetchJoin() {
