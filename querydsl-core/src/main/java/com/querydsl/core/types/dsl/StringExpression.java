@@ -784,4 +784,28 @@ public abstract class StringExpression extends LiteralExpression<String> {
         return upper;
     }
 
+    @Override
+    public StringExpression nullif(Expression<String> other) {
+        return Expressions.stringOperation(Ops.NULLIF, this, other);
+    }
+
+    @Override
+    public StringExpression nullif(String other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    @Override
+    public StringExpression coalesce(SimpleExpression<String> other) {
+        return Expressions.stringOperation(Ops.COALESCE, Expressions.list(this, other));
+    }
+
+    @Override
+    public StringExpression coalesce(SimpleExpression<String>... exprs) {
+        if (exprs.length == 0) {
+            return this;
+        } else {
+            return Expressions.stringOperation(Ops.COALESCE, Expressions.list(this, Expressions.list(exprs)));
+        }
+    }
+
 }

@@ -17,6 +17,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.querydsl.core.types.Expression;
+
 public class CoalesceTest {
 
     private final StringPath firstname = new StringPath("firstname");
@@ -67,7 +69,7 @@ public class CoalesceTest {
 
     @Test
     public void Dsl2() {
-        assertEquals("coalesce(firstname, lastname, xxx)", firstname.coalesce(lastname).add("xxx").toString());
+        assertEquals("coalesce(firstname, lastname, xxx)", firstname.coalesce((Expression) lastname).add("xxx").toString());
     }
 
     @Test

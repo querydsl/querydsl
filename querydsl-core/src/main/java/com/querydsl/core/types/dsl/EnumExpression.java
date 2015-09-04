@@ -13,10 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.*;
 
 /**
  * {@code EnumExpression} represents Enum typed expressions
@@ -55,6 +52,30 @@ public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpressio
             ordinal = Expressions.numberOperation(Integer.class, Ops.ORDINAL, mixin);
         }
         return ordinal;
+    }
+
+    @Override
+    public EnumExpression<T> nullif(Expression<T> other) {
+        return Expressions.enumOperation(getType(), Ops.NULLIF, this, other);
+    }
+
+    @Override
+    public EnumExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    @Override
+    public EnumExpression<T> coalesce(SimpleExpression<T> other) {
+        return Expressions.enumOperation(getType(), Ops.COALESCE, Expressions.list(this, other));
+    }
+
+    @Override
+    public EnumExpression<T> coalesce(SimpleExpression<T>... exprs) {
+        if (exprs.length == 0) {
+            return this;
+        } else {
+            return Expressions.enumOperation(getType(), Ops.COALESCE, Expressions.list(this, Expressions.list(exprs)));
+        }
     }
 
 }

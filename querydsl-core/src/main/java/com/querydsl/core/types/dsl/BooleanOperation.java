@@ -68,4 +68,28 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
         }
     }
 
+    @Override
+    public BooleanExpression nullif(Expression<Boolean> other) {
+        return Expressions.booleanOperation(Ops.NULLIF, this, other);
+    }
+
+    @Override
+    public BooleanExpression nullif(Boolean other) {
+        return nullif(ConstantImpl.create(other.booleanValue()));
+    }
+
+    @Override
+    public BooleanExpression coalesce(SimpleExpression<Boolean> other) {
+        return Expressions.booleanOperation(Ops.COALESCE, Expressions.list(this, other));
+    }
+
+    @Override
+    public BooleanExpression coalesce(SimpleExpression<Boolean>... exprs) {
+        if (exprs.length == 0) {
+            return this;
+        } else {
+            return Expressions.booleanOperation(Ops.COALESCE, Expressions.list(this, Expressions.list(exprs)));
+        }
+    }
+
 }

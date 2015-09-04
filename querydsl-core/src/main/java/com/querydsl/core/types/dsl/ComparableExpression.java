@@ -363,4 +363,28 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
         return loe(ExpressionUtils.any(right));
     }
 
+    @Override
+    public ComparableExpression<T> nullif(Expression<T> other) {
+        return Expressions.comparableOperation(getType(), Ops.NULLIF, this, other);
+    }
+
+    @Override
+    public ComparableExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    @Override
+    public ComparableExpression<T> coalesce(SimpleExpression<T> other) {
+        return Expressions.comparableOperation(getType(), Ops.COALESCE, Expressions.list(this, other));
+    }
+
+    @Override
+    public ComparableExpression<T> coalesce(SimpleExpression<T>... exprs) {
+        if (exprs.length == 0) {
+            return this;
+        } else {
+            return Expressions.comparableOperation(getType(), Ops.COALESCE, Expressions.list(this, Expressions.list(exprs)));
+        }
+    }
+
 }

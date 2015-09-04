@@ -17,10 +17,7 @@ import java.sql.Time;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.*;
 
 /**
  * {@code TimeExpression} represents Time expressions
@@ -117,6 +114,30 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      */
     public static <T extends Comparable> TimeExpression<T> currentTime(Class<T> cl) {
         return Expressions.timeOperation(cl, Ops.DateTimeOps.CURRENT_TIME);
+    }
+
+    @Override
+    public TimeExpression<T> nullif(Expression<T> other) {
+        return Expressions.timeOperation(getType(), Ops.NULLIF, this, other);
+    }
+
+    @Override
+    public TimeExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    @Override
+    public TimeExpression<T> coalesce(SimpleExpression<T> other) {
+        return Expressions.timeOperation(getType(), Ops.COALESCE, Expressions.list(this, other));
+    }
+
+    @Override
+    public TimeExpression<T> coalesce(SimpleExpression<T>... exprs) {
+        if (exprs.length == 0) {
+            return this;
+        } else {
+            return Expressions.timeOperation(getType(), Ops.COALESCE, Expressions.list(this, Expressions.list(exprs)));
+        }
     }
 
 }

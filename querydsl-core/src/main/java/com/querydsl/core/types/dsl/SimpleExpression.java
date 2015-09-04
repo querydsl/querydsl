@@ -321,8 +321,6 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         return Expressions.booleanOperation(Ops.NOT_IN, mixin, right);
     }
 
-
-
     /**
      * Create a {@code nullif(this, other)} expression
      *
@@ -330,7 +328,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return nullif(this, other)
      */
     public SimpleExpression<T> nullif(Expression<T> other) {
-        return Expressions.operation(this.getType(), Ops.NULLIF, this, other);
+        return Expressions.operation(getType(), Ops.NULLIF, this, other);
     }
 
     /**
@@ -361,6 +359,30 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public CaseForEqBuilder<T> when(Expression<? extends T> other) {
         return new CaseForEqBuilder<T>(mixin, other);
+    }
+
+    /**
+     * Create a {@code coalesce(this, other)} expression
+     *
+     * @param other
+     * @return
+     */
+    public SimpleExpression<T> coalesce(SimpleExpression<T> other) {
+        return Expressions.simpleOperation(getType(), Ops.COALESCE, Expressions.list(this, other));
+    }
+
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs
+     * @return
+     */
+    public SimpleExpression<T> coalesce(SimpleExpression<T>... exprs) {
+        if (exprs.length == 0) {
+            return this;
+        } else {
+            return Expressions.simpleOperation(getType(), Ops.COALESCE, Expressions.list(this, Expressions.list(exprs)));
+        }
     }
 
 }

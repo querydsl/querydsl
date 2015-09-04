@@ -781,4 +781,28 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         return list;
     }
 
+    @Override
+    public NumberExpression<T> nullif(Expression<T> other) {
+        return Expressions.numberOperation(getType(), Ops.NULLIF, this, other);
+    }
+
+    @Override
+    public NumberExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    @Override
+    public NumberExpression<T> coalesce(SimpleExpression<T> other) {
+        return Expressions.numberOperation(getType(), Ops.COALESCE, Expressions.list(this, other));
+    }
+
+    @Override
+    public NumberExpression<T> coalesce(SimpleExpression<T>... exprs) {
+        if (exprs.length == 0) {
+            return this;
+        } else {
+            return Expressions.numberOperation(getType(), Ops.COALESCE, Expressions.list(this, Expressions.list(exprs)));
+        }
+    }
+
 }

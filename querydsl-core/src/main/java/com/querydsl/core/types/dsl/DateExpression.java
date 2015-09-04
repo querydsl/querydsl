@@ -17,10 +17,7 @@ import java.util.Date;
 
 import javax.annotation.Nullable;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.*;
 
 /**
  * {@code DateExpression} represents Date expressions
@@ -199,5 +196,29 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
             yearWeek = Expressions.numberOperation(Integer.class, Ops.DateTimeOps.YEAR_WEEK, mixin);
         }
         return yearWeek;
+    }
+
+    @Override
+    public DateExpression<T> nullif(Expression<T> other) {
+        return Expressions.dateOperation(getType(), Ops.NULLIF, this, other);
+    }
+
+    @Override
+    public DateExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    @Override
+    public DateExpression<T> coalesce(SimpleExpression<T> other) {
+        return Expressions.dateOperation(getType(), Ops.COALESCE, Expressions.list(this, other));
+    }
+
+    @Override
+    public DateExpression<T> coalesce(SimpleExpression<T>... exprs) {
+        if (exprs.length == 0) {
+            return this;
+        } else {
+            return Expressions.dateOperation(getType(), Ops.COALESCE, Expressions.list(this, Expressions.list(exprs)));
+        }
     }
 }
