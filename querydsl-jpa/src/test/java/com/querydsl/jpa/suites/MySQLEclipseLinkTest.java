@@ -4,10 +4,10 @@ import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
 import com.querydsl.core.Target;
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.MySQL;
 import com.querydsl.jpa.*;
 
-@Category(ExternalDB.class)
+@Category(MySQL.class)
 public class MySQLEclipseLinkTest extends AbstractJPASuite {
 
     public static class JPA extends JPABase {

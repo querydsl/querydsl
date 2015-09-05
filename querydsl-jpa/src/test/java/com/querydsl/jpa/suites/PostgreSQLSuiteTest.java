@@ -4,10 +4,10 @@ import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
 import com.querydsl.core.Target;
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.PostgreSQL;
 import com.querydsl.jpa.*;
 
-@Category(ExternalDB.class)
+@Category(PostgreSQL.class)
 public class PostgreSQLSuiteTest extends AbstractSuite {
 
     public static class JPA extends JPABase { }

@@ -39,7 +39,7 @@ public enum Target {
      */
     H2,
     /**
-     * HSSQLDB
+     * HSQLDB
      */
     HSQLDB,
     /**

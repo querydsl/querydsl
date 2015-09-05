@@ -27,7 +27,8 @@
     <project.checkout>scm:git:git@github.com:querydsl/querydsl.git</project.checkout>
 
     <!-- default groups to exclude from surefire plugin -->
-    <excludedGroups>com.querydsl.core.testutil.ExternalDB,com.querydsl.core.testutil.SlowTest</excludedGroups>
+    <excludedGroups>com.querydsl.core.testutil.ExternalDatabase,
+                    com.querydsl.core.testutil.SlowTest,com.querydsl.core.testutil.Performance</excludedGroups>
     
     <!-- deps -->
     <derby.version>10.11.1.1</derby.version>
@@ -634,9 +635,30 @@
     </profile>
 
     <profile>
+      <id>jenkins</id>
+      <properties>
+        <excludedGroups>
+          com.querydsl.core.testutil.Performance,
+
+          com.querydsl.core.testutil.DB2,
+          com.querydsl.core.testutil.SQLServer,
+          com.querydsl.core.testutil.Teradata
+        </excludedGroups>
+      </properties>
+    </profile>
+
+    <profile>
       <id>travis</id>
       <properties>
-        <excludedGroups>com.querydsl.core.testutil.Performance,com.querydsl.core.testutil.ReportingOnly</excludedGroups>
+        <excludedGroups>
+          com.querydsl.core.testutil.Performance,
+          com.querydsl.core.testutil.ReportingOnly,
+
+          com.querydsl.core.testutil.DB2,
+          com.querydsl.core.testutil.SQLServer,
+          com.querydsl.core.testutil.Teradata,
+          com.querydsl.core.testutil.Oracle
+        </excludedGroups>
       </properties>
       <build>
         <plugins>

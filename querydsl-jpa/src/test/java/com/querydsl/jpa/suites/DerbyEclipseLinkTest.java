@@ -1,10 +1,13 @@
 package com.querydsl.jpa.suites;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
 import com.querydsl.core.Target;
+import com.querydsl.core.testutil.Derby;
 import com.querydsl.jpa.*;
 
+@Category(Derby.class)
 public class DerbyEclipseLinkTest extends AbstractJPASuite {
 
     public static class JPA extends JPABase {

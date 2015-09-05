@@ -1,9 +1,12 @@
 package com.querydsl.sql.suites;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
+import com.querydsl.core.testutil.H2;
 import com.querydsl.sql.*;
 
+@Category(H2.class)
 public class H2LiteralsSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase { }

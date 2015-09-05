@@ -3,13 +3,13 @@ package com.querydsl.sql.spatial.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.PostgreSQL;
 import com.querydsl.sql.Connections;
 import com.querydsl.sql.spatial.PostGISTemplates;
 import com.querydsl.sql.spatial.SpatialBase;
 import com.querydsl.sql.suites.AbstractSuite;
 
-@Category(ExternalDB.class)
+@Category(PostgreSQL.class)
 public class PostgreSQLSuiteTest extends AbstractSuite {
 
     public static class Spatial extends SpatialBase { }

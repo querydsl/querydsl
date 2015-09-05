@@ -1,12 +1,15 @@
 package com.querydsl.sql.spatial.suites;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
+import com.querydsl.core.testutil.H2;
 import com.querydsl.sql.Connections;
 import com.querydsl.sql.spatial.GeoDBTemplates;
 import com.querydsl.sql.spatial.SpatialBase;
 import com.querydsl.sql.suites.AbstractSuite;
 
+@Category(H2.class)
 public class H2SuiteTest extends AbstractSuite {
 
     public static class Spatial extends SpatialBase { }

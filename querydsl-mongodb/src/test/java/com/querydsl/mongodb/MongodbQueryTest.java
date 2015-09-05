@@ -32,7 +32,7 @@ import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
@@ -42,7 +42,7 @@ import com.querydsl.mongodb.domain.*;
 import com.querydsl.mongodb.domain.User.Gender;
 import com.querydsl.mongodb.morphia.MorphiaQuery;
 
-@Category(ExternalDB.class)
+@Category(MongoDB.class)
 public class MongodbQueryTest {
 
     private final Mongo mongo;
