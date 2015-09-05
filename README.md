@@ -31,7 +31,6 @@ Free support is provided in the Querydsl Google Group https://groups.google.com/
 Querydsl provides releases via public Maven repositories, but you can build the sources also yourself like this
 
 ```BASH
-$ cd querydsl-root
 $ mvn -DskipTests=true clean install
 ```
 
