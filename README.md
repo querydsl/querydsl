@@ -20,11 +20,7 @@ Use these tutorials to get started
 
 **Examples**
 
-Querydsl example projects
-
-* [Querydsl JPA example](https://github.com/querydsl/querydsl-jpa-example)
-* [Querydsl SQL example](https://github.com/querydsl/querydsl-sql-example)
-* [Querydsl Customer DAO](https://github.com/querydsl/querydsl-customer-dao)
+[Querydsl example projects](https://github.com/querydsl/querydsl/tree/master/querydsl-examples)
 
 **Support**
 
