@@ -295,7 +295,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
             beginLine(modifiers, escape(methodName)).params(args).append(" {").nl();
         } else {
             beginLine(modifiers, escape(methodName)).params(args)
-                    .append(": ").append(getGenericName(true, returnType)).append(" {").nl();
+                    .append(": ").append(getGenericName(true, returnType)).append(" = {").nl();
         }
 
         return goIn();
