@@ -20,4 +20,5 @@ before_script:
   - ./travis/firebird.sh
 script: mvn -B test -Pall,travis,examples --projects ${MODULE} jacoco:report
 sudo: required
-
+after_success:
+  - mvn coveralls:report
