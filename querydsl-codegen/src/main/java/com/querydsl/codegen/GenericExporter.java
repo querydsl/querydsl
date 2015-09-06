@@ -702,7 +702,7 @@ public class GenericExporter {
     }
 
     /**
-     * Set whether fields are handled (default true)
+     * Set whether methods are handled (default true)
      *
      * @param b
      */
