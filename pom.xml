@@ -37,6 +37,8 @@
     <!-- groups to run with surefire plugin - intended to be overridden on the command line -->
     <groups></groups>
     
+    <argLine>-Xms256m -Xmx512m</argLine>
+
     <!-- deps -->
     <derby.version>10.11.1.1</derby.version>
     <hsqldb.version>2.3.2</hsqldb.version>
@@ -284,7 +286,25 @@
           </descriptors>
           <outputDirectory>../target/dist</outputDirectory>
         </configuration>
-      </plugin>     
+      </plugin>
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>4.0.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.5.201505241946</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -399,7 +419,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-Xms256m -Xmx512m</argLine>
           <excludedGroups>${excludedGroups}</excludedGroups>
           <groups>${groups}</groups>
         </configuration>
