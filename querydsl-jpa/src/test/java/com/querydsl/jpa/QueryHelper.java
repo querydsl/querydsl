@@ -52,6 +52,11 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
         return new JPQLSerializer(getTemplates());
     }
 
+    @Override
+    protected void reset() {
+        // do nothing
+    }
+
     public long fetchCount() {
         return 0;
     }

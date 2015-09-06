@@ -206,7 +206,6 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     }
 
     protected void reset() {
-        queryMixin.getMetadata().reset();
         cleanupMDC();
     }
 

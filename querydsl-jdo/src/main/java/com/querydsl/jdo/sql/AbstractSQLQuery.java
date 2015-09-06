@@ -96,7 +96,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public long fetchCount() {
         Query query = createQuery(true);
         query.setUnique(true);
-        reset();
         Long rv = (Long) execute(query, true);
         if (rv != null) {
             return rv;
@@ -191,7 +190,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     @SuppressWarnings("unchecked")
     public List<T> fetch() {
         Object rv = execute(createQuery(false), false);
-        reset();
         return rv instanceof List ? (List<T>) rv : Collections.singletonList((T) rv);
     }
 
@@ -204,16 +202,10 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             Query query = createQuery(false);
-            reset();
             return new QueryResults<T>((List<T>) execute(query, false), modifiers, total);
         } else {
-            reset();
             return QueryResults.emptyResults();
         }
-    }
-
-    private void reset() {
-        queryMixin.getMetadata().reset();
     }
 
     @Override
@@ -235,7 +227,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             limit(2);
         }
         Query query = createQuery(false);
-        reset();
         Object rv = execute(query, false);
         if (rv instanceof List) {
             List<?> list = (List<?>) rv;

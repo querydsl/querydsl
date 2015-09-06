@@ -277,7 +277,6 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     }
 
     private void reset() {
-        queryMixin.getMetadata().reset();
         cleanupMDC();
     }
 

@@ -49,13 +49,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
 
     @Override
     public long fetchCount() {
-        try {
-            return queryEngine.count(queryMixin.getMetadata(), iterables);
-        } catch (Exception e) {
-            throw new QueryException(e.getMessage(), e);
-        } finally {
-            reset();
-        }
+        return queryEngine.count(queryMixin.getMetadata(), iterables);
     }
 
     protected QueryMetadata getMetadata() {
@@ -182,23 +176,15 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     @SuppressWarnings("unchecked")
     @Override
     public CloseableIterator<T> iterate() {
-        try {
-            Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
-            return new IteratorAdapter<T>(queryEngine.list(getMetadata(), iterables, projection).iterator());
-        } finally {
-            reset();
-        }
+        Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
+        return new IteratorAdapter<T>(queryEngine.list(getMetadata(), iterables, projection).iterator());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<T> fetch() {
-        try {
-            Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
-            return queryEngine.list(getMetadata(), iterables, projection);
-        } finally {
-            reset();
-        }
+        Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
+        return queryEngine.list(getMetadata(), iterables, projection);
     }
 
     @SuppressWarnings("unchecked")
@@ -208,10 +194,8 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
         long count = queryEngine.count(getMetadata(), iterables);
         if (count > 0L) {
             List<T> list = queryEngine.list(getMetadata(), iterables, projection);
-            reset();
             return new QueryResults<T>(list, getMetadata().getModifiers(), count);
         } else {
-            reset();
             return QueryResults.<T>emptyResults();
         }
     }
@@ -225,8 +209,5 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
         return uniqueResult(iterate());
     }
 
-    private void reset() {
-        getMetadata().reset();
-    }
 
 }
