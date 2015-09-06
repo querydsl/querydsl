@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.bson.BSONObject;
+import org.bson.types.ObjectId;
 
 import com.google.common.collect.Sets;
 import com.mongodb.BasicDBList;
@@ -97,12 +98,11 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
                 } else {
                     throw new UnsupportedOperationException("Illegal operation " + expr);
                 }
-            } else if (isReference(expr, 0)) {
-                return asDBObject(asDBKey(expr, 0), asReference(expr, 1));
-            } else {
-                return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
+            } else if (expr.getArg(0) instanceof Path) {
+                Path<?> path = (Path<?>) expr.getArg(0);
+                Constant<?> constant = (Constant<?>) expr.getArg(1);
+                return asDBObject(asDBKey(expr, 0), convert(path, constant));
             }
-
         } else if (op == Ops.STRING_IS_EMPTY) {
             return asDBObject(asDBKey(expr, 0), "");
 
@@ -138,11 +138,9 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject("$or", list);
 
         } else if (op == Ops.NE) {
-            if (isReference(expr, 0)) {
-                return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asReference(expr, 1)));
-            } else {
-                return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
-            }
+            Path<?> path = (Path<?>) expr.getArg(0);
+            Constant<?> constant = (Constant<?>) expr.getArg(1);
+            return asDBObject(asDBKey(expr, 0), asDBObject("$ne", convert(path, constant)));
 
         } else if (op == Ops.STARTS_WITH) {
             return asDBObject(asDBKey(expr, 0),
@@ -197,11 +195,9 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
                 Collection<?> values = ((Constant<? extends Collection<?>>) expr.getArg(constIndex)).getConstant();
                 return asDBObject(asDBKey(expr, exprIndex), asDBObject("$in", values.toArray()));
             } else {
-                if (isReference(expr, exprIndex)) {
-                    return asDBObject(asDBKey(expr, exprIndex), asReference(expr, constIndex));
-                } else {
-                    return asDBObject(asDBKey(expr, exprIndex), asDBValue(expr, constIndex));
-                }
+                Path<?> path = (Path<?>) expr.getArg(exprIndex);
+                Constant<?> constant = (Constant<?>) expr.getArg(constIndex);
+                return asDBObject(asDBKey(expr, exprIndex), convert(path, constant));
             }
 
         } else if (op == Ops.NOT_IN) {
@@ -216,13 +212,9 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
                 Collection<?> values = ((Constant<? extends Collection<?>>) expr.getArg(constIndex)).getConstant();
                 return asDBObject(asDBKey(expr, exprIndex), asDBObject("$nin", values.toArray()));
             } else {
-                if (isReference(expr, exprIndex)) {
-                    return asDBObject(asDBKey(expr, exprIndex),
-                            asDBObject("$ne", asReference(expr, constIndex)));
-                } else {
-                    return asDBObject(asDBKey(expr, exprIndex),
-                            asDBObject("$ne", asDBValue(expr, constIndex)));
-                }
+                Path<?> path = (Path<?>) expr.getArg(exprIndex);
+                Constant<?> constant = (Constant<?>) expr.getArg(constIndex);
+                return asDBObject(asDBKey(expr, exprIndex), asDBObject("$ne", convert(path, constant)));
             }
 
         } else if (op == Ops.COL_IS_EMPTY) {
@@ -307,22 +299,32 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         }
     }
 
-    protected DBRef asReference(Operation<?> expr, int constIndex) {
-        return asReference(((Constant<?>) expr.getArg(constIndex)).getConstant());
+    protected Object convert(Path<?> property, Constant<?> constant) {
+        if (isReference(property)) {
+            return asReference(constant.getConstant());
+        } else if (isId(property)) {
+            if (isReference(property.getMetadata().getParent())) {
+                return asReferenceKey(property.getMetadata().getParent().getType(), constant.getConstant());
+            } else if (constant.getType().equals(String.class)) {
+                return new ObjectId((String) constant.getConstant());
+            }
+        }
+        return visit(constant, null);
+    }
+
+    protected DBRef asReferenceKey(Class<?> entity, Object id) {
+        // TODO override in subclass
+        throw new UnsupportedOperationException();
     }
 
     protected abstract DBRef asReference(Object constant);
 
-    protected boolean isReference(Operation<?> expr, int exprIndex) {
-        Expression<?> arg = expr.getArg(exprIndex);
-        if (arg instanceof Path) {
-            return isReference((Path<?>) arg);
-        } else {
-            return false;
-        }
-    }
-
     protected abstract boolean isReference(Path<?> arg);
+
+    protected boolean isId(Path<?> arg) {
+        // TODO override in subclass
+        return false;
+    }
 
     @Override
     public String visit(Path<?> expr, Void context) {
@@ -333,7 +335,8 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             } else if (metadata.getParent().getMetadata().getPathType() != PathType.VARIABLE
                     && metadata.getParent().getMetadata().getPathType() != PathType.DELEGATE) {
                 String rv = getKeyForPath(expr, metadata);
-                return visit(metadata.getParent(), context) + "." + rv;
+                String parent = visit(metadata.getParent(), context);
+                return rv != null ? parent + "." + rv : parent;
             }
         }
         return getKeyForPath(expr, metadata);
