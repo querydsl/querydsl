@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -51,12 +52,19 @@ public final class TypeFactory {
 
     private boolean unknownAsEntity = false;
 
+    private Function<EntityType, String> variableNameFunction;
+
     public TypeFactory() {
-        this(Lists.<Class<? extends Annotation>>newArrayList());
+        this(Lists.<Class<? extends Annotation>>newArrayList(), DefaultVariableNameFunction.INSTANCE);
     }
 
     public TypeFactory(List<Class<? extends Annotation>> entityAnnotations) {
+        this(entityAnnotations, DefaultVariableNameFunction.INSTANCE);
+    }
+
+    public TypeFactory(List<Class<? extends Annotation>> entityAnnotations, Function<EntityType, String> variableNameFunction) {
         this.entityAnnotations = entityAnnotations;
+        this.variableNameFunction = variableNameFunction;
     }
 
     public EntityType getEntityType(Class<?> cl) {
@@ -104,7 +112,7 @@ public final class TypeFactory {
         if (cache.containsKey(key)) {
             Type value = cache.get(key);
             if (entity && !(value instanceof EntityType)) {
-                value = new EntityType(value);
+                value = new EntityType(value, variableNameFunction);
                 cache.put(key, value);
             }
             return value;
@@ -161,7 +169,7 @@ public final class TypeFactory {
         }
 
         if (entity && !(value instanceof EntityType)) {
-            value = new EntityType(value);
+            value = new EntityType(value, variableNameFunction);
         }
         return value;
     }

@@ -25,6 +25,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
+import com.google.common.base.Function;
 import com.querydsl.codegen.*;
 import com.querydsl.core.util.Annotations;
 
@@ -110,5 +111,7 @@ public interface Configuration {
     void inspect(Element element, Annotations annotations);
 
     boolean isStrictMode();
+
+    Function<EntityType, String> getVariableNameFunction();
 
 }

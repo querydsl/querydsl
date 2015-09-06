@@ -80,7 +80,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         Set<Class<? extends Annotation>> entityAnnotations = conf.getEntityAnnotations();
         TypeMappings typeMappings = conf.getTypeMappings();
         QueryTypeFactory queryTypeFactory = conf.getQueryTypeFactory();
-        this.typeFactory = new ExtendedTypeFactory(processingEnv, entityAnnotations, typeMappings, queryTypeFactory);
+        this.typeFactory = new ExtendedTypeFactory(processingEnv, entityAnnotations, typeMappings, queryTypeFactory, conf.getVariableNameFunction());
         elementHandler = new TypeElementHandler(conf, typeFactory, typeMappings, queryTypeFactory);
         this.roundEnv = roundEnv;
 
