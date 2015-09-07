@@ -90,18 +90,20 @@ public abstract class AbstractQueryTest {
             return rv;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public <U> TestQuery<U> select(Expression<U> expr) {
             queryMixin.setProjection(expr);
-            return (TestQuery<U>) this;
+            @SuppressWarnings("unchecked") // This is the new projection's type
+            TestQuery<U> newType = (TestQuery<U>) queryMixin.getSelf();
+            return newType;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public TestQuery<Tuple> select(Expression<?>... exprs) {
             queryMixin.setProjection(exprs);
-            return (TestQuery<Tuple>) this;
+            @SuppressWarnings("unchecked") // This is the new projection's type
+            TestQuery<Tuple> newType = (TestQuery<Tuple>) queryMixin.getSelf();
+            return newType;
         }
     }
 }

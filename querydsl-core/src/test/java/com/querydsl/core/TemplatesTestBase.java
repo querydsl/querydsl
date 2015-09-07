@@ -39,12 +39,10 @@ public class TemplatesTestBase {
 
     private final String modulePrefix = getClass().getPackage().getName();
 
-    @SuppressWarnings("unchecked")
     @Test
     public void Default_Instance() {
         Set<Class<? extends Templates>> templates = querydsl.getSubTypesOf(Templates.class);
-        Set<Class<? extends Templates>> moduleSpecific = getAll(templates, topLevelClass,
-                withPattern("class " + modulePrefix + ".*"));
+        Set<Class<? extends Templates>> moduleSpecific = getAll(templates, MODULE_SPECIFIC);
 
         for (Class<? extends Templates> template : moduleSpecific) {
             try {
@@ -55,6 +53,11 @@ public class TemplatesTestBase {
             }
         }
     }
+
+    @SuppressWarnings("unchecked")
+    private final Predicate<Class<? extends Templates>>[] MODULE_SPECIFIC =
+            (Predicate<Class<? extends Templates>>[]) new Predicate<?>[] {topLevelClass, withPattern("class " + modulePrefix + ".*") };
+
     private static final Predicate<Class<?>> topLevelClass = new Predicate<Class<?>>() {
 
         @Override

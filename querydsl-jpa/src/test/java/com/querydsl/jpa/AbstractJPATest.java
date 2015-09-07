@@ -54,7 +54,7 @@ import antlr.TokenStreamException;
  */
 public abstract class AbstractJPATest {
 
-    private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
+    private static final Expression<?>[] NO_EXPRESSIONS = new Expression<?>[0];
 
     private static final QCompany company = QCompany.company;
 
@@ -1603,9 +1603,9 @@ public abstract class AbstractJPATest {
             }
         };
 
-        final EntityPath<?>[] sources = new EntityPath[]{cat, otherCat};
-        final Predicate[] conditions = new Predicate[]{condition};
-        final Expression<?>[] projection = new Expression[]{cat.name, otherCat.name};
+        final EntityPath<?>[] sources = {cat, otherCat};
+        final Predicate[] conditions = {condition};
+        final Expression<?>[] projection = {cat.name, otherCat.name};
 
         QueryExecution standardTest = new QueryExecution(
                 projections,
@@ -1613,13 +1613,13 @@ public abstract class AbstractJPATest {
                 new MatchingFiltersFactory(Module.JPA, getTarget())) {
 
             @Override
-            protected Fetchable createQuery() {
+            protected Fetchable<?> createQuery() {
                 // NOTE : EclipseLink needs extra conditions cond1 and code2
                 return testQuery().from(sources).where(conditions);
             }
 
             @Override
-            protected Fetchable createQuery(Predicate filter) {
+            protected Fetchable<?> createQuery(Predicate filter) {
                 // NOTE : EclipseLink needs extra conditions cond1 and code2
                 return testQuery().from(sources).where(condition, filter).select(projection);
             }

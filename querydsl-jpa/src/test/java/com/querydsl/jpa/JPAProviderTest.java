@@ -53,7 +53,7 @@ public class JPAProviderTest {
         };
         EntityManager proxy = (EntityManager) Proxy.newProxyInstance(
                 Thread.currentThread().getContextClassLoader(),
-                new Class[]{EntityManager.class},
+                new Class<?>[]{EntityManager.class},
                 handler);
         assertEquals(HQLTemplates.DEFAULT, JPAProvider.getTemplates(proxy));
     }
@@ -79,7 +79,7 @@ public class JPAProviderTest {
         };
         EntityManager proxy = (EntityManager) Proxy.newProxyInstance(
                 Thread.currentThread().getContextClassLoader(),
-                new Class[]{EntityManager.class},
+                new Class<?>[]{EntityManager.class},
                 handler);
         assertEquals(EclipseLinkTemplates.DEFAULT, JPAProvider.getTemplates(proxy));
     }

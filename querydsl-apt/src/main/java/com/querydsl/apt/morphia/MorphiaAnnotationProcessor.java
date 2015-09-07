@@ -28,6 +28,7 @@ import com.querydsl.apt.Configuration;
 import com.querydsl.apt.DefaultConfiguration;
 import com.querydsl.core.annotations.QueryEntities;
 import com.querydsl.core.annotations.QuerySupertype;
+import com.querydsl.core.types.Expression;
 
 /**
  * Annotation processor to create Querydsl query types for Morphia annotated classes
@@ -38,7 +39,6 @@ import com.querydsl.core.annotations.QuerySupertype;
 @SupportedAnnotationTypes({"com.querydsl.core.annotations.*","org.mongodb.morphia.annotations.*"})
 public class MorphiaAnnotationProcessor extends AbstractQuerydslProcessor {
 
-    @SuppressWarnings("unchecked")
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
         Class<? extends Annotation> entities = QueryEntities.class;
@@ -50,7 +50,9 @@ public class MorphiaAnnotationProcessor extends AbstractQuerydslProcessor {
                 processingEnv.getOptions(), Collections.<String>emptySet(),
                 entities, entity, superType, null, embedded, skip);
         try {
-            Class cl = Class.forName("com.querydsl.mongodb.Point");
+            @SuppressWarnings("unchecked") // Point is an Expression<Double[]>
+            Class<? extends Expression<Double[]>> cl =
+                    (Class<? extends Expression<Double[]>>) Class.forName("com.querydsl.mongodb.Point");
             conf.addCustomType(Double[].class, cl);
         } catch (ClassNotFoundException e) {
             throw new IllegalStateException(e);

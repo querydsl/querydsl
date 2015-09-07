@@ -40,10 +40,11 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
 
     private final QueryEngine queryEngine;
 
-    @SuppressWarnings("unchecked")
     public AbstractCollQuery(QueryMetadata metadata, QueryEngine queryEngine) {
         super(new CollQueryMixin<Q>(metadata));
-        this.queryMixin.setSelf((Q) this);
+        @SuppressWarnings("unchecked") // Q is this + subtype
+        Q self = (Q) this;
+        this.queryMixin.setSelf(self);
         this.queryEngine = queryEngine;
     }
 
@@ -72,11 +73,10 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      * @param col content of the source
      * @return current object
      */
-    @SuppressWarnings("unchecked")
     public <A> Q from(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity, col);
         getMetadata().addJoin(JoinType.DEFAULT, entity);
-        return (Q) this;
+        return queryMixin.getSelf();
     }
 
     /**
@@ -87,10 +87,9 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      * @param col content of the source
      * @return current object
      */
-    @SuppressWarnings("unchecked")
     public <A> Q bind(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity, col);
-        return (Q) this;
+        return queryMixin.getSelf();
     }
 
     @Override
@@ -125,10 +124,9 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      * @param alias alias for the join target
      * @return current object
      */
-    @SuppressWarnings("unchecked")
     public <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return (Q) this;
+        return queryMixin.getSelf();
     }
 
     /**
@@ -139,10 +137,9 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      * @param alias alias for the join target
      * @return current object
      */
-    @SuppressWarnings("unchecked")
     public <P> Q innerJoin(MapExpression<?,P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return (Q) this;
+        return queryMixin.getSelf();
     }
 
     /**
@@ -153,10 +150,9 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      * @param alias alias for the join target
      * @return current object
      */
-    @SuppressWarnings("unchecked")
     public <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return (Q) this;
+        return queryMixin.getSelf();
     }
 
     /**
@@ -167,29 +163,28 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
      * @param alias alias for the joint target
      * @return current object
      */
-    @SuppressWarnings("unchecked")
     public <P> Q leftJoin(MapExpression<?,P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return (Q) this;
+        return queryMixin.getSelf();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public CloseableIterator<T> iterate() {
+        @SuppressWarnings("unchecked") // This is the built type
         Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
         return new IteratorAdapter<T>(queryEngine.list(getMetadata(), iterables, projection).iterator());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<T> fetch() {
+        @SuppressWarnings("unchecked") // This is the built type
         Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
         return queryEngine.list(getMetadata(), iterables, projection);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public QueryResults<T> fetchResults() {
+        @SuppressWarnings("unchecked") // This is the built type
         Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
         long count = queryEngine.count(getMetadata(), iterables);
         if (count > 0L) {

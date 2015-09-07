@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import com.querydsl.core.types.dsl.NumberPath;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"rawtypes", "serial", "unchecked"})
 public class AbstractClassesTest {
 
     public interface Archetype<PK extends Serializable, DO extends Serializable> extends Serializable, Comparable<DO>  {

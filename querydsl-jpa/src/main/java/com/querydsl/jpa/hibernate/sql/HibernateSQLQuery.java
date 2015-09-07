@@ -65,18 +65,20 @@ public class HibernateSQLQuery<T> extends AbstractHibernateSQLQuery<T, Hibernate
         return q;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <U> HibernateSQLQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
-        return (HibernateSQLQuery<U>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        HibernateSQLQuery<U> newType = (HibernateSQLQuery<U>) this;
+        return newType;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public HibernateSQLQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
-        return (HibernateSQLQuery<Tuple>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        HibernateSQLQuery<Tuple> newType = (HibernateSQLQuery<Tuple>) this;
+        return newType;
     }
 
 }

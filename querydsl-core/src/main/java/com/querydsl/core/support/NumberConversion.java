@@ -50,7 +50,6 @@ public class NumberConversion<T> extends FactoryExpressionBase<T> {
         return exprs;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public T newInstance(Object... args) {
         if (args[0] != null) {

@@ -33,7 +33,7 @@ public class ConstructorsTest extends AbstractQueryTest {
         private static final long serialVersionUID = 2664671413344744578L;
 
         public QBookmarkDTO(Expression<java.lang.String> address) {
-            super(BookmarkDTO.class, new Class[] {String.class}, address);
+            super(BookmarkDTO.class, new Class<?>[] {String.class}, address);
         }
     }
 
@@ -43,7 +43,7 @@ public class ConstructorsTest extends AbstractQueryTest {
         ConstructorExpression<com.querydsl.jpa.domain.Cat> c =
                 Projections.constructor(
                         com.querydsl.jpa.domain.Cat.class,
-                        new Class[]{String.class},
+                        new Class<?>[]{String.class},
                         cat.name);
         assertToString("new " + com.querydsl.jpa.domain.Cat.class.getName() + "(cat.name)", c);
         assertToString("new " + getClass().getName() + "$BookmarkDTO(cat.name)",new QBookmarkDTO(cat.name));

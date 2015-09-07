@@ -11,7 +11,7 @@ public class AggregationTest extends AbstractQueryTest {
 
     private static final QCat cat = QCat.cat;
 
-    private CollQuery query;
+    private CollQuery<?> query;
 
     @Override
     @Before
@@ -29,27 +29,27 @@ public class AggregationTest extends AbstractQueryTest {
 
     @Test
     public void Avg() {
-        assertEquals(3.5, query.select(cat.weight.avg()).fetchOne());
+        assertEquals(3.5, query.select(cat.weight.avg()).fetchOne(), 0.0);
     }
 
     @Test
     public void Count() {
-        assertEquals(4L, query.select(cat.count()).fetchOne());
+        assertEquals(Long.valueOf(4L), query.select(cat.count()).fetchOne());
     }
 
     @Test
     public void CountDistinct() {
-        assertEquals(4L, query.select(cat.countDistinct()).fetchOne());
+        assertEquals(Long.valueOf(4L), query.select(cat.countDistinct()).fetchOne());
     }
 
     @Test
     public void Max() {
-        assertEquals(5, query.select(cat.weight.max()).fetchOne());
+        assertEquals(Integer.valueOf(5), query.select(cat.weight.max()).fetchOne());
     }
 
     @Test
     public void Min() {
-        assertEquals(2, query.select(cat.weight.min()).fetchOne());
+        assertEquals(Integer.valueOf(2), query.select(cat.weight.min()).fetchOne());
     }
 
     @SuppressWarnings("unchecked")
@@ -60,7 +60,7 @@ public class AggregationTest extends AbstractQueryTest {
 
     @Test
     public void Sum() {
-        assertEquals(14, query.select(cat.weight.sum()).fetchOne());
+        assertEquals(Integer.valueOf(14), query.select(cat.weight.sum()).fetchOne());
     }
 
 }

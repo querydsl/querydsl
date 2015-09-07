@@ -34,13 +34,11 @@ public class UserRepository extends AbstractRepository {
                 .fetch();
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional
     public List<User> findAll(Predicate expr) {
         return selectFrom(user).where(expr).fetch();
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional
     public List<User> all() {
         return selectFrom(user).fetch();

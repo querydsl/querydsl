@@ -34,7 +34,7 @@ public class ConstructorExpressionTest {
         Expression<Long> longVal = ConstantImpl.create(1L);
         Expression<String> stringVal = ConstantImpl.create("");
         ProjectionExample instance = new ConstructorExpression<ProjectionExample>(ProjectionExample.class,
-                new Class[]{long.class, String.class}, longVal, stringVal).newInstance(0L, "");
+                new Class<?>[]{long.class, String.class}, longVal, stringVal).newInstance(0L, "");
         assertNotNull(instance);
         assertEquals((Long) 0L, instance.id);
         assertTrue(instance.text.isEmpty());

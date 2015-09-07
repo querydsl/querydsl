@@ -63,17 +63,19 @@ public final class JDOSQLQuery<T> extends AbstractSQLQuery<T, JDOSQLQuery<T>> {
         return new SQLSerializer(configuration);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <U> JDOSQLQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
-        return (JDOSQLQuery<U>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        JDOSQLQuery<U> newType = (JDOSQLQuery<U>) this;
+        return newType;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public JDOSQLQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
-        return (JDOSQLQuery<Tuple>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        JDOSQLQuery<Tuple> newType = (JDOSQLQuery<Tuple>) this;
+        return newType;
     }
 }

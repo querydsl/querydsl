@@ -81,17 +81,19 @@ public class CollQuery<T> extends AbstractCollQuery<T, CollQuery<T>> implements 
         return new CollQuery<T>(queryMixin.getMetadata().clone(), getQueryEngine());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <E> CollQuery<E> select(Expression<E> expr) {
         queryMixin.setProjection(expr);
-        return (CollQuery<E>) this;
+        @SuppressWarnings("unchecked") // This is the new projection's type
+        CollQuery<E> newType = (CollQuery<E>) queryMixin.getSelf();
+        return newType;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public CollQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
-        return (CollQuery<Tuple>) this;
+        @SuppressWarnings("unchecked") // This is the new projection's type
+        CollQuery<Tuple> newType = (CollQuery<Tuple>) queryMixin.getSelf();
+        return newType;
     }
 }

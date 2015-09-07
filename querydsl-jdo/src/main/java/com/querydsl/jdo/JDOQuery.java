@@ -96,18 +96,20 @@ public class JDOQuery<T> extends AbstractJDOQuery<T, JDOQuery<T>> {
         return query;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <U> JDOQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
-        return (JDOQuery<U>) this;
+        @SuppressWarnings("unchecked") // This is the new projection type
+        JDOQuery<U> newType = (JDOQuery<U>) this;
+        return newType;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public JDOQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
-        return (JDOQuery<Tuple>) this;
+        @SuppressWarnings("unchecked") // This is the new projection type
+        JDOQuery<Tuple> newType = (JDOQuery<Tuple>) this;
+        return newType;
     }
 
 }

@@ -36,8 +36,7 @@ import com.querydsl.core.types.dsl.Param;
  */
 public final class HibernateUtil {
 
-    @SuppressWarnings("unchecked")
-    private static final Set<Class<?>> BUILT_IN = ImmutableSet.of(Boolean.class, Byte.class,
+    private static final Set<Class<?>> BUILT_IN = ImmutableSet.<Class<?>>of(Boolean.class, Byte.class,
             Character.class, Double.class, Float.class, Integer.class, Long.class, Short.class,
             String.class, BigDecimal.class, byte[].class, Byte[].class, java.util.Date.class,
             java.util.Calendar.class, java.sql.Date.class, java.sql.Time.class, java.sql.Timestamp.class,

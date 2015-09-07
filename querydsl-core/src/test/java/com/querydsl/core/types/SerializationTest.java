@@ -30,7 +30,7 @@ public class SerializationTest {
         args.put(Object.class, "obj");
         args.put(BeanPath.class, new EntityPathBase<Object>(Object.class, "obj"));
         args.put(Class.class, Integer.class);
-        args.put(Class[].class, new Class[]{Object.class, Object.class});
+        args.put(Class[].class, new Class<?>[]{Object.class, Object.class});
         args.put(java.util.Date.class, new java.util.Date(0));
         args.put(java.sql.Date.class, new java.sql.Date(0));
         args.put(java.sql.Time.class, new java.sql.Time(0));
