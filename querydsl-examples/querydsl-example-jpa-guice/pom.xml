@@ -2,17 +2,17 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.mysema.querydsl</groupId>
-        <artifactId>querydsl-examples</artifactId>
-        <version>3.6.7.BUILD-SNAPSHOT</version>
-        <relativePath>../</relativePath>
-    </parent>
-
+  <parent>
     <groupId>com.mysema.querydsl</groupId>
-    <artifactId>querydsl-example-jpa-guice</artifactId>
-    <packaging>jar</packaging>
-    <name>Querydsl example - JPA Guice</name>
+    <artifactId>querydsl-examples</artifactId>
+    <version>3.6.8.BUILD-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
+
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-example-jpa-guice</artifactId>
+  <packaging>jar</packaging>
+  <name>Querydsl example - JPA Guice</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
