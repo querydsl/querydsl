@@ -13,12 +13,17 @@
  */
 package com.mysema.query.jdo;
 
-import javax.annotation.Nullable;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.*;
+
+import javax.annotation.Nullable;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
@@ -28,9 +33,6 @@ import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * Abstract base class for custom implementations of the JDOCommonQuery interface.
@@ -296,7 +298,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
     }
 
     private void reset() {
-        queryMixin.getMetadata().reset();
+        getMetadata().clearProjection();
         cleanupMDC();
     }
 

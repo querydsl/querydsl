@@ -257,7 +257,7 @@ public abstract class AbstractCollQuery<Q extends AbstractCollQuery<Q>> extends 
     }
 
     private void reset() {
-        getMetadata().reset();
+        getMetadata().clearProjection();
     }
 
 }
