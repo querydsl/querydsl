@@ -59,7 +59,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
     }
 
     protected void reset() {
-        queryMixin.getMetadata().reset();
+        getMetadata().clearProjection();
     }
 
     @Override

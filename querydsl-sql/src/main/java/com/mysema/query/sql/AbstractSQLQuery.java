@@ -449,7 +449,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends Pr
     }
 
     private void reset() {
-        queryMixin.getMetadata().reset();
+        getMetadata().clearProjection();
         cleanupMDC();
     }
 

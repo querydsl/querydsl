@@ -13,15 +13,19 @@
  */
 package com.mysema.query.jdo.sql;
 
-import javax.annotation.Nullable;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nullable;
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
@@ -33,8 +37,6 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Base class for JDO based SQLQuery implementations
@@ -228,7 +230,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     }
 
     private void reset() {
-        queryMixin.getMetadata().reset();
+        getMetadata().clearProjection();
     }
 
     @Override
