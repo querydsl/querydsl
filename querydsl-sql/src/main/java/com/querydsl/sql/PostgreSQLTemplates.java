@@ -78,6 +78,8 @@ public class PostgreSQLTemplates extends SQLTemplates {
         setDefaultValues("\ndefault values");
         setSupportsUnquotedReservedWordsAsIdentifier(true);
 
+        setForShareSupported(true);
+
         setPrecedence(Precedence.COMPARISON - 3, Ops.IS_NULL, Ops.IS_NOT_NULL);
         setPrecedence(Precedence.COMPARISON - 2, Ops.CONCAT, Ops.MATCHES);
         setPrecedence(Precedence.COMPARISON - 1, Ops.IN);

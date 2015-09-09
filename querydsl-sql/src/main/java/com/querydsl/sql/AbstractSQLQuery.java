@@ -132,7 +132,50 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public Q forUpdate() {
         QueryFlag forUpdateFlag = configuration.getTemplates().getForUpdateFlag();
         return addFlag(forUpdateFlag);
+    }
 
+    /**
+     * FOR SHARE causes the rows retrieved by the SELECT statement to be locked as though for update.
+     *
+     * Supported by MySQL, PostgreSQL, SQLServer.
+     *
+     * @return the current object
+     *
+     * @throws QueryException
+     *          if the FOR SHARE is not supported.
+     */
+    public Q forShare() {
+      return forShare(false);
+    }
+
+    /**
+     * FOR SHARE causes the rows retrieved by the SELECT statement to be locked as though for update.
+     *
+     * Supported by MySQL, PostgreSQL, SQLServer.
+     *
+     * @param fallbackToForUpdate
+     *          if the FOR SHARE is not supported and this parameter is <code>true</code>, the
+     *          {@link #forUpdate()} functionality will be used.
+     *
+     * @return the current object
+     *
+     * @throws QueryException
+     *          if the FOR SHARE is not supported and <i>fallbackToForUpdate</i> is set to
+     *          <code>false</code>.
+     */
+    public Q forShare(boolean fallbackToForUpdate) {
+      SQLTemplates sqlTemplates = configuration.getTemplates();
+
+      if (sqlTemplates.isForShareSupported()) {
+        QueryFlag forShareFlag = sqlTemplates.getForShareFlag();
+        return addFlag(forShareFlag);
+      }
+
+      if (fallbackToForUpdate) {
+        return forUpdate();
+      }
+
+      throw new QueryException("Using forShare() is not supported");
     }
 
     @Override
