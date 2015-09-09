@@ -14,5 +14,7 @@ before_script:
   - ./travis/cubrid.sh
   - ./travis/firebird.sh
 script:
-  - sh -c 'mvn -B test -Pall,travis,examples'
-
+  - mvn -B test -Pall,travis,examples jacoco:report
+sudo: required
+after_success:
+  - mvn coveralls:report
