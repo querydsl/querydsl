@@ -52,6 +52,7 @@ public class ArrayType<T> extends AbstractType<T> {
         return type;
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public T getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -71,6 +72,7 @@ public class ArrayType<T> extends AbstractType<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void setValue(PreparedStatement st, int startIndex, T value) throws SQLException {
         if (convertPrimitives) {

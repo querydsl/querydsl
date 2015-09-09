@@ -69,6 +69,7 @@ public final class Configuration {
      *
      * @param templates templates for SQL serialization
      */
+    @SuppressWarnings("unchecked")
     public Configuration(SQLTemplates templates) {
         this.templates = templates;
         for (Type<?> customType : templates.getCustomTypes()) {
@@ -104,6 +105,7 @@ public final class Configuration {
      * @param o object
      * @return literal representation
      */
+    @SuppressWarnings("unchecked")
     public String asLiteral(Object o) {
         if (Null.class.isInstance(o)) {
             return "null";

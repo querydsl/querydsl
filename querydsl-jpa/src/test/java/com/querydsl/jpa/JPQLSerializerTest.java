@@ -221,6 +221,7 @@ public class JPQLSerializerTest {
                      "order by cat.name asc nulls last", serializer.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Treat() {
         QCat cat = QCat.cat;

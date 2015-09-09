@@ -80,7 +80,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         Set<Class<? extends Annotation>> entityAnnotations = conf.getEntityAnnotations();
         TypeMappings typeMappings = conf.getTypeMappings();
         QueryTypeFactory queryTypeFactory = conf.getQueryTypeFactory();
-        this.typeFactory = new ExtendedTypeFactory(processingEnv, entityAnnotations, typeMappings, queryTypeFactory);
+        this.typeFactory = new ExtendedTypeFactory(processingEnv, entityAnnotations, typeMappings, queryTypeFactory, conf.getVariableNameFunction());
         elementHandler = new TypeElementHandler(conf, typeFactory, typeMappings, queryTypeFactory);
         this.roundEnv = roundEnv;
 
@@ -423,6 +423,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Set<TypeElement> processDelegateMethods() {
         Set<Element> delegateMethods = (Set) getElements(QueryDelegate.class);
         Set<TypeElement> typeElements = new HashSet<TypeElement>();
@@ -471,6 +472,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         return typeElements;
     }
 
+    @SuppressWarnings("unchecked")
     private void validateMetaTypes() {
         for (Collection<EntityType> entityTypes : Arrays.asList(
                 context.supertypes.values(),

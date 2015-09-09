@@ -21,6 +21,8 @@ import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.*;
 
 /**
@@ -77,6 +79,19 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
         return addFlag(Position.END, builder.toString());
     }
 
+    /**
+     * adds a DISTINCT ON clause
+     *
+     * @param exprs
+     * @return
+     */
+    public PostgreSQLQuery<T> distinctOn(Expression<?>... exprs) {
+        return addFlag(Position.AFTER_SELECT,
+            Expressions.template(Object.class, "distinct on({0}) ",
+            ExpressionUtils.list(Object.class, exprs)));
+    }
+
+
     @Override
     public PostgreSQLQuery<T> clone(Connection conn) {
         PostgreSQLQuery<T> q = new PostgreSQLQuery<T>(conn, getConfiguration(), getMetadata().clone());
@@ -84,12 +99,14 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
         return q;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> PostgreSQLQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (PostgreSQLQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public PostgreSQLQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

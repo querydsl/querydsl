@@ -102,6 +102,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
         return newPath;
     }
 
+    @SuppressWarnings("unchecked")
     protected <T> Class<? extends T> validate(String property, Class<T> propertyType) {
         Class<T> validatedType = (Class) validator.validate(getType(), property, propertyType);
         if (validatedType != null) {
@@ -236,6 +237,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param type property type
      * @return property path
      */
+    @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> ComparablePath<A> getComparable(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
         return super.createComparable(property, (Class) vtype);
@@ -262,6 +264,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param type property type
      * @return property path
      */
+    @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> DatePath<A> getDate(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
         return super.createDate(property, (Class) vtype);
@@ -288,6 +291,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param type property type
      * @return property path
      */
+    @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> DateTimePath<A> getDateTime(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
         return super.createDateTime(property, (Class) vtype);
@@ -398,6 +402,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param type property type
      * @return property path
      */
+    @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<?>> NumberPath<A> getNumber(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
         return super.createNumber(property, (Class) vtype);
@@ -451,6 +456,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param type property type
      * @return property path
      */
+    @SuppressWarnings("unchecked")
     public <A> SimplePath<A> getSimple(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
         return super.createSimple(property, (Class) vtype);
@@ -499,6 +505,7 @@ public class PathBuilder<T> extends EntityPathBase<T> {
      * @param type property type
      * @return property path
      */
+    @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> TimePath<A> getTime(String property, Class<A> type) {
         Class<? extends A> vtype = validate(property, type);
         return super.createTime(property, (Class) vtype);

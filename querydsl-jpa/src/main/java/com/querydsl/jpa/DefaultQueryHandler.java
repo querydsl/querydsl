@@ -47,6 +47,7 @@ public final class DefaultQueryHandler implements QueryHandler {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> CloseableIterator<T> iterate(Query query, @Nullable final FactoryExpression<?> projection) {
         Iterator<T> iterator = query.getResultList().iterator();

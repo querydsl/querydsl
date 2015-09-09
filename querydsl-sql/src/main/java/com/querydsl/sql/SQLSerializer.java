@@ -238,7 +238,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         // with
         if (hasFlags) {
-            boolean handled = false;
+            List<Expression<?>> withFlags = Lists.newArrayList();
             boolean recursive = false;
             for (QueryFlag flag : flags) {
                 if (flag.getPosition() == Position.WITH) {
@@ -246,19 +246,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                         recursive = true;
                         continue;
                     }
-                    if (handled) {
-                        append(", ");
-                    }
-                    handle(flag.getFlag());
-                    handled = true;
+                    withFlags.add(flag.getFlag());
                 }
             }
-            if (handled) {
+            if (!withFlags.isEmpty()) {
                 if (recursive) {
-                    prepend(templates.getWithRecursive());
+                    append(templates.getWithRecursive());
                 } else {
-                    prepend(templates.getWith());
+                    append(templates.getWith());
                 }
+                handle(", ", withFlags);
                 append("\n");
             }
         }
@@ -691,27 +688,27 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         handle(union);
 
         // group by
+        if (hasFlags) {
+            serialize(Position.BEFORE_GROUP_BY, flags);
+        }
         if (!groupBy.isEmpty()) {
             stage = Stage.GROUP_BY;
-            if (hasFlags) {
-                serialize(Position.BEFORE_GROUP_BY, flags);
-            }
             append(templates.getGroupBy()).handle(COMMA, groupBy);
-            if (hasFlags) {
-                serialize(Position.AFTER_GROUP_BY, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_GROUP_BY, flags);
         }
 
         // having
+        if (hasFlags) {
+            serialize(Position.BEFORE_HAVING, flags);
+        }
         if (having != null) {
             stage = Stage.HAVING;
-            if (hasFlags) {
-                serialize(Position.BEFORE_HAVING, flags);
-            }
             append(templates.getHaving()).handle(having);
-            if (hasFlags) {
-                serialize(Position.AFTER_HAVING, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_HAVING, flags);
         }
 
         // order by
@@ -724,9 +721,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             skipParent = true;
             handleOrderBy(orderBy);
             skipParent = false;
-            if (hasFlags) {
-                serialize(Position.AFTER_ORDER, flags);
-            }
+        }
+        if (hasFlags) {
+            serialize(Position.AFTER_ORDER, flags);
         }
 
         // end
@@ -738,6 +735,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         stage = oldStage;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void visitConstant(Object constant) {
         if (useLiterals) {
@@ -864,6 +862,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         boolean pathAdded = false;

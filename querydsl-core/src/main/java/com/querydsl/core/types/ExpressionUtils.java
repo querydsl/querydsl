@@ -66,6 +66,7 @@ public final class ExpressionUtils {
      * @param args operation arguments
      * @return operation expression
      */
+    @SuppressWarnings("unchecked")
     public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
                                              ImmutableList<Expression<?>> args) {
         if (type.equals(Boolean.class)) {
@@ -221,6 +222,7 @@ public final class ExpressionUtils {
      * @param args template parameters
      * @return template expression
      */
+    @SuppressWarnings("unchecked")
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, ImmutableList<?> args) {
         if (cl.equals(Boolean.class)) {
             return (TemplateExpression<T>) new PredicateTemplate(template, args);
@@ -572,6 +574,7 @@ public final class ExpressionUtils {
      * @param exprs list elements
      * @return list expression
      */
+    @SuppressWarnings("unchecked")
     public static <T> Expression<T> list(Class<T> clazz, List<? extends Expression<?>> exprs) {
         Expression<T> rv = (Expression<T>) exprs.get(0);
         if (exprs.size() == 1) {
@@ -775,6 +778,7 @@ public final class ExpressionUtils {
      * @param expr expression to analyze
      * @return inner expression
      */
+    @SuppressWarnings("unchecked")
     public static <T> Expression<T> extract(Expression<T> expr) {
         if (expr != null) {
             final Class<?> clazz = expr.getClass();

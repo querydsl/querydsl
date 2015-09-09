@@ -20,11 +20,7 @@ Use these tutorials to get started
 
 **Examples**
 
-Querydsl example projects
-
-* [Querydsl JPA example](https://github.com/querydsl/querydsl-jpa-example)
-* [Querydsl SQL example](https://github.com/querydsl/querydsl-sql-example)
-* [Querydsl Customer DAO](https://github.com/querydsl/querydsl-customer-dao)
+[Querydsl example projects](https://github.com/querydsl/querydsl/tree/master/querydsl-examples)
 
 **Support**
 
@@ -35,7 +31,6 @@ Free support is provided in the Querydsl Google Group https://groups.google.com/
 Querydsl provides releases via public Maven repositories, but you can build the sources also yourself like this
 
 ```BASH
-$ cd querydsl-root
 $ mvn -DskipTests=true clean install
 ```
 

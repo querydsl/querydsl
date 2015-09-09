@@ -75,12 +75,14 @@ public class SQLServerQuery<T> extends AbstractSQLQuery<T, SQLServerQuery<T>> {
         return q;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> SQLServerQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (SQLServerQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public SQLServerQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

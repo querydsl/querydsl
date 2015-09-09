@@ -171,20 +171,25 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             append(SELECT).append(projection).append("\n");
 
         } else if (forCountRow) {
-            if (!metadata.isDistinct()) {
-                append(SELECT_COUNT);
-            } else {
+            if (!groupBy.isEmpty()) {
                 append(SELECT_COUNT_DISTINCT);
-            }
-            if (select != null) {
-                if (select instanceof FactoryExpression) {
-                    handle(joins.get(0).getTarget());
-                } else {
-                    // TODO : make sure this works
-                    handle(select);
-                }
+                handle(", ", groupBy);
             } else {
-                handle(joins.get(0).getTarget());
+                if (!metadata.isDistinct()) {
+                    append(SELECT_COUNT);
+                } else {
+                    append(SELECT_COUNT_DISTINCT);
+                }
+                if (select != null) {
+                    if (select instanceof FactoryExpression) {
+                        handle(joins.get(0).getTarget());
+                    } else {
+                        // TODO : make sure this works
+                        handle(select);
+                    }
+                } else {
+                    handle(joins.get(0).getTarget());
+                }
             }
             append(")\n");
 
@@ -214,7 +219,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
 
         // group by
-        if (!groupBy.isEmpty()) {
+        if (!groupBy.isEmpty() && !forCountRow) {
             append(GROUP_BY).handle(COMMA, groupBy);
         }
 
@@ -464,7 +469,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         super.visitOperation(type, operator, args);
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private SingularAttribute<?,?> getIdProperty(EntityType entity) {
         final Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
         for (final SingularAttribute singularAttribute : singularAttributes) {
@@ -493,6 +498,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 args);
     }
 
+    @SuppressWarnings("unchecked")
     private List<? extends Expression<?>> normalizeNumericArgs(List<? extends Expression<?>> args) {
         //we do not yet let it produce these types
         //we verify the types with isAssignableFrom()

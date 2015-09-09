@@ -97,6 +97,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      * @param alias alias
      * @return this as alias
      */
+    @SuppressWarnings("unchecked")
     public SimpleExpression<T> as(Path<?> alias) {
         return Expressions.as(this, (Path) alias);
     }
@@ -305,6 +306,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         return configuration;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public CloseableIterator<T> iterate() {
         Expression<T> expr = (Expression<T>) queryMixin.getMetadata().getProjection();
@@ -472,6 +474,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public QueryResults<T> fetchResults() {
         parentContext = startContext(conn, queryMixin.getMetadata());
@@ -528,7 +531,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private void reset() {
-        queryMixin.getMetadata().reset();
         cleanupMDC();
     }
 

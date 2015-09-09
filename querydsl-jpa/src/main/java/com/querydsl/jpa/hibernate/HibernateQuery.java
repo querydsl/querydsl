@@ -107,12 +107,14 @@ public class HibernateQuery<T> extends AbstractHibernateQuery<T, HibernateQuery<
         return q;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> HibernateQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (HibernateQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public HibernateQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

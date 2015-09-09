@@ -113,6 +113,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Class<T> getElementTypeOrType(Path<T> path) {
         if (path instanceof CollectionExpression) {
             return ((CollectionExpression) path).getParameter(0);
@@ -121,6 +122,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Path<T> shorten(Path<T> path, List<Path<?>> paths) {
         PathMetadata metadata = path.getMetadata();
         if (metadata.isRoot() || paths.contains(path)) {
@@ -183,6 +185,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <RT> Expression<RT> convert(Expression<RT> expr, Role role) {
         expr = (Expression<RT>) expr.accept(mapAccessVisitor, null);

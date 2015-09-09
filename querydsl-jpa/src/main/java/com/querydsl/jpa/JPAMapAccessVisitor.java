@@ -34,6 +34,7 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
         this.metadata = metadata;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Operation<?> expr, @Nullable Void context) {
         if (expr.getOperator() == Ops.CONTAINS_KEY) {
@@ -55,6 +56,7 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Path<?> expr, @Nullable Void context) {
         expr = (Path<?>) super.visit(expr, null);

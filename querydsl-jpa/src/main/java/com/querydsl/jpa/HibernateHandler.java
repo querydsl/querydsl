@@ -60,6 +60,7 @@ class HibernateHandler implements QueryHandler {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
         if (query instanceof HibernateQuery) {

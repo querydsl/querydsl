@@ -49,7 +49,7 @@ public final class FactoryExpressionUtils {
         FactoryExpressionAdapter(FactoryExpression<T> inner, List<Expression<?>> args) {
             super(inner.getType());
             this.inner = inner;
-            this.args = args;
+            this.args = expand(args);
         }
 
         @Override
@@ -81,6 +81,7 @@ public final class FactoryExpressionUtils {
 
     }
 
+    @SuppressWarnings("unchecked")
     public static FactoryExpression<?> wrap(List<? extends Expression<?>> projection) {
         boolean usesFactoryExpressions = false;
         for (Expression<?> e : projection) {

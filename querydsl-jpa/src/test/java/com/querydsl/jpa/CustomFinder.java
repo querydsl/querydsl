@@ -34,6 +34,7 @@ public final class CustomFinder {
 
     private CustomFinder() { }
 
+    @SuppressWarnings("unchecked")
     public static <T> List<T> findCustom(EntityManager em, Class<T> entityClass,Map<String,?> filters, String sort) {
         EntityPath<T> entityPath = new EntityPathBase<T>(entityClass, "entity");
         BooleanBuilder builder = new BooleanBuilder();

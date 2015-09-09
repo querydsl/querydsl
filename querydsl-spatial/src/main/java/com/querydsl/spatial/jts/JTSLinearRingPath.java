@@ -32,6 +32,7 @@ public class JTSLinearRingPath<T extends LinearRing> extends JTSLinearRingExpres
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public JTSLinearRingPath(Path<?> parent, String property) {
         this((Class<? extends T>) LinearRing.class, parent, property);
     }
@@ -40,6 +41,7 @@ public class JTSLinearRingPath<T extends LinearRing> extends JTSLinearRingExpres
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public JTSLinearRingPath(PathMetadata metadata) {
         this((Class<? extends T>) LinearRing.class, metadata);
     }
@@ -49,6 +51,7 @@ public class JTSLinearRingPath<T extends LinearRing> extends JTSLinearRingExpres
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public JTSLinearRingPath(String var) {
         this((Class<? extends T>) LinearRing.class, PathMetadataFactory.forVariable(var));
     }

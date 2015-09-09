@@ -62,6 +62,7 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
                 return group != null || iter.hasNext();
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public V next() {
                 if (!iter.hasNext()) {
@@ -108,6 +109,7 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
         };
     }
 
+    @SuppressWarnings("unchecked")
     protected V transform(Group group) {
         return (V) group;
     }

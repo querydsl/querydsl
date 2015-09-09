@@ -25,6 +25,7 @@ public final class Domain {
 
     private Domain() { }
 
+    @SuppressWarnings("unchecked")
     public static final List<Class<?>> classes = Arrays.asList(
             Account.class,
             Animal.class,

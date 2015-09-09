@@ -20,6 +20,7 @@ public final class Domain2 {
 
     private Domain2() { }
 
+    @SuppressWarnings("unchecked")
     public static final List<Class<?>> classes = Arrays.asList(
             Category.class,
             CategoryProp.class,

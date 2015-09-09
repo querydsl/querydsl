@@ -93,6 +93,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
      * @param fetchGroupName fetch group name
      * @return the current object
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Q addFetchGroup(String fetchGroupName) {
         fetchGroups.add(fetchGroupName);
@@ -193,6 +194,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     private Object execute(Query query, boolean forCount) {
         Object rv;
@@ -224,6 +226,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         return queryMixin.from(args);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> Q from(CollectionExpression<?, U> path, Path<U> alias) {
         return queryMixin.from(ExpressionUtils.as((Path) path, alias));
@@ -242,6 +245,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         return new IteratorAdapter<T>(fetch().iterator(), closeable);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<T> fetch() {
         try {
@@ -273,7 +277,6 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     }
 
     private void reset() {
-        queryMixin.getMetadata().reset();
         cleanupMDC();
     }
 
@@ -287,6 +290,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
      * @param depth fetch depth
      * @return the current object
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Q setMaxFetchDepth(int depth) {
         maxFetchDepth = depth;
@@ -305,6 +309,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public T fetchOne() {

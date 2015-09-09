@@ -30,6 +30,7 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
 
     private final SubQueryExpression<T> mixin;
 
+    @SuppressWarnings("unchecked")
     public FetchableSubQueryBase(QueryMixin<Q> queryMixin) {
         super(queryMixin);
         mixin = new SubQueryExpressionImpl<T>((Class) Object.class, queryMixin.getMetadata());
@@ -135,6 +136,7 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
         return mixin.accept(v, context);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Class<T> getType() {
         Expression<?> projection = queryMixin.getMetadata().getProjection();

@@ -239,6 +239,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
                 .select(new QCatSummary(cat.breed.count(), exists)).fetchOne());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @NoEclipseLink
     @NoBatooJPA
@@ -250,6 +251,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @NoEclipseLink
     @NoBatooJPA

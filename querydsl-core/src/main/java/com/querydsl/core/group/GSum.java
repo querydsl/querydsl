@@ -22,6 +22,7 @@ class GSum<T extends Number> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3518868612387641383L;
 
+    @SuppressWarnings("unchecked")
     public GSum(Expression<T> expr) {
         super((Class) expr.getType(), expr);
     }

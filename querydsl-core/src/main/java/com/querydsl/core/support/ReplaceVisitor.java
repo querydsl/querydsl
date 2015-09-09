@@ -82,6 +82,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(SubQueryExpression<?> expr, C context) {
         QueryMetadata md = new DefaultQueryMetadata();
@@ -131,6 +132,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(TemplateExpression<?> expr, C context) {
         ImmutableList.Builder builder = ImmutableList.builder();

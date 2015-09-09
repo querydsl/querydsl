@@ -362,7 +362,7 @@ queryFactory.selectFrom(customer)
     <programlisting language="java"><![CDATA[
 QCat cat = QCat.cat;
 QCat mate = new QCat("mate");
-QCate kitten = new QCat("kitten");
+QCat kitten = new QCat("kitten");
 queryFactory.selectFrom(cat)
     .innerJoin(cat.mate, mate)
     .leftJoin(cat.kittens, kitten)

@@ -33,6 +33,7 @@ public class LineStringPath<T extends LineString> extends LineStringExpression<T
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public LineStringPath(Path<?> parent, String property) {
         this((Class<? extends T>) LineString.class, parent, property);
     }
@@ -41,6 +42,7 @@ public class LineStringPath<T extends LineString> extends LineStringExpression<T
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public LineStringPath(PathMetadata metadata) {
         this((Class<? extends T>) LineString.class, metadata);
     }
@@ -50,6 +52,7 @@ public class LineStringPath<T extends LineString> extends LineStringExpression<T
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public LineStringPath(String var) {
         this((Class<? extends T>) LineString.class, PathMetadataFactory.forVariable(var));
     }

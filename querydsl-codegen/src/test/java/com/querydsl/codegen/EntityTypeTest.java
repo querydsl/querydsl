@@ -28,28 +28,28 @@ public class EntityTypeTest {
     public void UncapSimpleName_Escaped() {
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
         EntityType entityModel = new EntityType(typeModel);
-        assertEquals("object", entityModel.getUncapSimpleName());
+        assertEquals("object", entityModel.getModifiedSimpleName());
 
         entityModel.addProperty(new Property(entityModel, "object", typeModel));
-        assertEquals("object1", entityModel.getUncapSimpleName());
+        assertEquals("object1", entityModel.getModifiedSimpleName());
     }
 
     @Test
     public void UncapSimpleName_Escaped2() {
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
         EntityType entityModel = new EntityType(typeModel);
-        assertEquals("object", entityModel.getUncapSimpleName());
+        assertEquals("object", entityModel.getModifiedSimpleName());
 
         entityModel.addProperty(new Property(entityModel, "OBJECT", "object", typeModel,
                 Collections.<String> emptyList(), false));
-        assertEquals("object1", entityModel.getUncapSimpleName());
+        assertEquals("object1", entityModel.getModifiedSimpleName());
     }
 
     @Test
     public void UncapSimpleName_Escaped3() {
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Void.class);
         EntityType entityModel = new EntityType(typeModel);
-        assertEquals("void$", entityModel.getUncapSimpleName());
+        assertEquals("void$", entityModel.getModifiedSimpleName());
     }
 
 }

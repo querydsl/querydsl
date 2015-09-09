@@ -54,6 +54,7 @@ public class NumberConversions<T> extends FactoryExpressionBase<T> {
         return expr.getArgs();
     }
 
+    @SuppressWarnings("unchecked")
     private <E extends Enum<E>> Enum<E>[] getValues(Class<E> enumClass) {
         Enum<E>[] values = (Enum<E>[]) this.values.get(enumClass);
         if (values == null) {

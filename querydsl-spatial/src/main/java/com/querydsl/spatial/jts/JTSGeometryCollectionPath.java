@@ -32,6 +32,7 @@ public class JTSGeometryCollectionPath<T extends GeometryCollection> extends JTS
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public JTSGeometryCollectionPath(Path<?> parent, String property) {
         this((Class<? extends T>) GeometryCollection.class, parent, property);
     }
@@ -40,6 +41,7 @@ public class JTSGeometryCollectionPath<T extends GeometryCollection> extends JTS
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public JTSGeometryCollectionPath(PathMetadata metadata) {
         this((Class<? extends T>) GeometryCollection.class, metadata);
     }
@@ -49,6 +51,7 @@ public class JTSGeometryCollectionPath<T extends GeometryCollection> extends JTS
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public JTSGeometryCollectionPath(String var) {
         this((Class<? extends T>) GeometryCollection.class, PathMetadataFactory.forVariable(var));
     }

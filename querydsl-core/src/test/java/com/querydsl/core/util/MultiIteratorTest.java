@@ -33,6 +33,7 @@ public class MultiIteratorTest {
 
     private List<Integer> list3, list4;
 
+    @SuppressWarnings("unchecked")
     @Test
     public void EmptyList() {
         it = new MultiIterator(Arrays.asList(list1, list2));
@@ -42,12 +43,14 @@ public class MultiIteratorTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void OneLevel() {
         it = new MultiIterator(Arrays.asList(list1));
         assertIteratorEquals(Arrays.asList(row(1), row(2)).iterator(), it);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void TwoLevels() {
         list2 = Arrays.asList(10, 20, 30);
@@ -57,6 +60,7 @@ public class MultiIteratorTest {
         assertIteratorEquals(base, it);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void ThreeLevels() {
         list1 = Arrays.asList(1, 2);
@@ -74,6 +78,7 @@ public class MultiIteratorTest {
         assertIteratorEquals(list.iterator(), it);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void FourLevels() {
         list1 = Arrays.asList(1, 2);
@@ -95,6 +100,7 @@ public class MultiIteratorTest {
         assertIteratorEquals(list.iterator(), it);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void FourLevels2() {
         list1 = new ArrayList<Integer>(100);

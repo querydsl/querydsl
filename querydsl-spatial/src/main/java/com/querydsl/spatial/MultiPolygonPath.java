@@ -33,6 +33,7 @@ public class MultiPolygonPath<T extends MultiPolygon> extends MultiPolygonExpres
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public MultiPolygonPath(Path<?> parent, String property) {
         this((Class<? extends T>) MultiPolygon.class, parent, property);
     }
@@ -41,6 +42,7 @@ public class MultiPolygonPath<T extends MultiPolygon> extends MultiPolygonExpres
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public MultiPolygonPath(PathMetadata metadata) {
         this((Class<? extends T>) MultiPolygon.class, metadata);
     }
@@ -50,6 +52,7 @@ public class MultiPolygonPath<T extends MultiPolygon> extends MultiPolygonExpres
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public MultiPolygonPath(String var) {
         this((Class<? extends T>) MultiPolygon.class, PathMetadataFactory.forVariable(var));
     }

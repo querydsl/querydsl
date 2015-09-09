@@ -77,11 +77,13 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
             this.a = a;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public <T> T get(int index, Class<T> type) {
             return (T) a[index];
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public <T> T get(Expression<T> expr) {
             Integer idx = QTuple.this.bindings.get(expr);

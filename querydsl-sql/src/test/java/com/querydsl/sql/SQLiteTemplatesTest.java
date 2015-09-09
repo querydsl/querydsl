@@ -31,6 +31,7 @@ public class SQLiteTemplatesTest extends AbstractSQLTemplatesTest {
         return new SQLiteTemplates();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void Union() {
         NumberExpression<Integer> one = Expressions.ONE;

@@ -26,6 +26,7 @@ import com.querydsl.sql.domain.QEmployee;
 
 public class UnionBase extends AbstractBaseTest {
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({MYSQL, TERADATA})
     public void In_Union() {
@@ -138,6 +139,7 @@ public class UnionBase extends AbstractBaseTest {
         assertFalse(list2.isEmpty());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({DERBY})
     public void Union4() {
@@ -148,6 +150,7 @@ public class UnionBase extends AbstractBaseTest {
 
     // FIXME for CUBRID
     // Teradata: The ORDER BY clause must contain only integer constants.
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({DERBY, CUBRID, FIREBIRD, TERADATA})
     @Ignore // FIXME
@@ -253,6 +256,7 @@ public class UnionBase extends AbstractBaseTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({DERBY, CUBRID})
     public void Union_Clone() {

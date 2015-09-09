@@ -48,6 +48,7 @@ public class JTSGeometryPath<T extends Geometry> extends JTSGeometryExpression<T
 
     private transient volatile JTSPolygonPath<Polygon> polygon;
 
+    @SuppressWarnings("unchecked")
     public JTSGeometryPath(Path<?> parent, String property) {
         this((Class<? extends T>) Geometry.class, parent, property);
     }
@@ -56,6 +57,7 @@ public class JTSGeometryPath<T extends Geometry> extends JTSGeometryExpression<T
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public JTSGeometryPath(PathMetadata metadata) {
         this((Class<? extends T>) Geometry.class, metadata);
     }
@@ -65,6 +67,7 @@ public class JTSGeometryPath<T extends Geometry> extends JTSGeometryExpression<T
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public JTSGeometryPath(String var) {
         this((Class<? extends T>) Geometry.class, PathMetadataFactory.forVariable(var));
     }

@@ -60,6 +60,7 @@ public class QueryMetadaSerializationTest {
         assertEquals(metadata.getWhere(), metadata2.getWhere());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void FullySerializable() {
         Set<Class<?>> checked = new HashSet<Class<?>>();

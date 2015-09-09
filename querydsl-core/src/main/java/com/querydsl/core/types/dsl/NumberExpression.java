@@ -219,6 +219,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param right
      * @return this / right
      */
+    @SuppressWarnings("unchecked")
     public <N extends Number & Comparable<?>> NumberExpression<T> divide(Expression<N> right) {
         Class<?> type = getDivisionType(getType(), right.getType());
         return Expressions.numberOperation((Class<T>) type, Ops.DIV, mixin, right);
@@ -232,6 +233,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param right
      * @return this / right
      */
+    @SuppressWarnings("unchecked")
     public <N extends Number & Comparable<?>> NumberExpression<T> divide(N right) {
         Class<?> type = getDivisionType(getType(), right.getClass());
         return Expressions.numberOperation((Class<T>) type, Ops.DIV, mixin, ConstantImpl.create(right));

@@ -189,6 +189,13 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
+    public void List_Limit_And_Offset3() {
+        List<Tuple> tuples = query().from(cat).offset(3).limit(3).select(Projections.tuple(cat.id, cat.name)).fetch();
+        assertEquals(3, tuples.size());
+        assertEquals(2, tuples.get(0).size());
+    }
+
+    @Test
     public void List_Multiple() {
         print(query().from(cat).where(cat.dtype.eq("C")).select(cat.id, cat.name, cat.bodyWeight).fetch());
     }
@@ -284,6 +291,7 @@ public abstract class AbstractSQLTest {
         assertFalse(list.isEmpty());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({Target.DERBY, Target.POSTGRESQL})
     @Ignore // FIXME
@@ -299,6 +307,7 @@ public abstract class AbstractSQLTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn(Target.DERBY)
     @Ignore // FIXME
@@ -320,6 +329,7 @@ public abstract class AbstractSQLTest {
         assertEquals(6, nulls);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({Target.DERBY, Target.POSTGRESQL})
     @Ignore // FIXME
@@ -330,6 +340,7 @@ public abstract class AbstractSQLTest {
         .select(cat.name, cat.id).fetch();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({Target.DERBY, Target.ORACLE})
     public void Union5() {

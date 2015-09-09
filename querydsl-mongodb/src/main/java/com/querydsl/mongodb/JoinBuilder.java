@@ -42,6 +42,7 @@ public class JoinBuilder<Q extends AbstractMongodbQuery<K, Q>, K, T> {
         this.target = target;
     }
 
+    @SuppressWarnings("unchecked")
     public Q on(Predicate... conditions) {
         queryMixin.addJoin(JoinType.JOIN, ExpressionUtils.as((Path) ref, target));
         queryMixin.on(conditions);
