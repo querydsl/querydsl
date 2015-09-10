@@ -52,6 +52,15 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
     }
 
     /**
+     * FOR SHARE causes the rows retrieved by the SELECT statement to be locked as though for update.
+     *
+     * @return the current object
+     */
+    public PostgreSQLQuery<T> forShare() {
+        return super.forShare();
+    }
+
+    /**
      * With NOWAIT, the statement reports an error, rather than waiting, if a selected row cannot
      * be locked immediately.
      *
