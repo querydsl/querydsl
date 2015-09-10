@@ -1036,8 +1036,8 @@ public class SQLTemplates extends Templates {
         this.dummyTable = dummyTable;
     }
 
-    public void setForShareSupported(boolean forShareSupported) {
-      this.forShareSupported = forShareSupported;
+    protected void setForShareSupported(boolean forShareSupported) {
+        this.forShareSupported = forShareSupported;
     }
 
     protected void setFrom(String from) {

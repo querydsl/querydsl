@@ -146,7 +146,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      *          if the FOR SHARE is not supported.
      */
     public Q forShare() {
-      return forShare(false);
+        return forShare(false);
     }
 
     /**
@@ -165,18 +165,18 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      *          <code>false</code>.
      */
     public Q forShare(boolean fallbackToForUpdate) {
-      SQLTemplates sqlTemplates = configuration.getTemplates();
+        SQLTemplates sqlTemplates = configuration.getTemplates();
 
-      if (sqlTemplates.isForShareSupported()) {
-        QueryFlag forShareFlag = sqlTemplates.getForShareFlag();
-        return addFlag(forShareFlag);
-      }
+        if (sqlTemplates.isForShareSupported()) {
+            QueryFlag forShareFlag = sqlTemplates.getForShareFlag();
+            return addFlag(forShareFlag);
+        }
 
-      if (fallbackToForUpdate) {
-        return forUpdate();
-      }
+        if (fallbackToForUpdate) {
+            return forUpdate();
+        }
 
-      throw new QueryException("Using forShare() is not supported");
+        throw new QueryException("Using forShare() is not supported");
     }
 
     @Override

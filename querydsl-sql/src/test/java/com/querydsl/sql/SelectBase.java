@@ -1526,16 +1526,16 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void Select_For_Share() {
-      if (configuration.getTemplates().isForShareSupported()) {
-        assertEquals(1, query().from(survey).forShare().where(survey.id.isNotNull()).select(survey.id).fetch().size());
-      } else {
-        try {
-          query().from(survey).forShare().where(survey.id.isNotNull()).select(survey.id).fetch().size();
-          fail();
-        } catch (QueryException e) {
-          Assert.assertTrue(e.getMessage().equals("Using forShare() is not supported"));
+        if (configuration.getTemplates().isForShareSupported()) {
+            assertEquals(1, query().from(survey).forShare().where(survey.id.isNotNull()).select(survey.id).fetch().size());
+        } else {
+            try {
+                query().from(survey).forShare().where(survey.id.isNotNull()).select(survey.id).fetch().size();
+                fail();
+            } catch (QueryException e) {
+                assertTrue(e.getMessage().equals("Using forShare() is not supported"));
+            }
         }
-      }
     }
 
     @Test
