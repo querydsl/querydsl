@@ -1,9 +1,12 @@
 package com.querydsl.sql.suites;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
+import com.querydsl.core.testutil.SQLite;
 import com.querydsl.sql.*;
 
+@Category(SQLite.class)
 public class SQLiteLiteralsSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase { }

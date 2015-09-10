@@ -16,10 +16,10 @@ package com.querydsl.sql.codegen;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.SQLServer;
 import com.querydsl.sql.Connections;
 
-@Category(ExternalDB.class)
+@Category(SQLServer.class)
 public class ExportMSSQLTest extends ExportBaseTest {
 
     @BeforeClass

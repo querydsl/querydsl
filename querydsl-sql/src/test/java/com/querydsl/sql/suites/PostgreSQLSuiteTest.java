@@ -3,10 +3,10 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.PostgreSQL;
 import com.querydsl.sql.*;
 
-@Category(ExternalDB.class)
+@Category(PostgreSQL.class)
 public class PostgreSQLSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase { }

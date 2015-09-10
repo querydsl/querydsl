@@ -3,10 +3,10 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.DB2;
 import com.querydsl.sql.*;
 
-@Category(ExternalDB.class)
+@Category(DB2.class)
 public class DB2SuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase { }

@@ -1,10 +1,13 @@
 package com.querydsl.jpa.suites;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
 import com.querydsl.core.Target;
+import com.querydsl.core.testutil.HSQLDB;
 import com.querydsl.jpa.*;
 
+@Category(HSQLDB.class)
 public class HSQLDBEclipseLinkTest extends AbstractJPASuite {
 
     public static class JPA extends JPABase { }

@@ -22,12 +22,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.MySQL;
 import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.QGeneratedKeysEntity;
 import com.querydsl.sql.dml.SQLInsertClause;
 
-@Category(ExternalDB.class)
+@Category(MySQL.class)
 public class GeneratedKeysMySQLTest {
 
     private Connection conn;

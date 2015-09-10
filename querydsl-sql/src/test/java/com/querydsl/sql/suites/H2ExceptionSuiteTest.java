@@ -8,12 +8,15 @@ import java.sql.SQLException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.google.common.base.Throwables;
 import com.querydsl.core.JavaSpecVersion;
 import com.querydsl.core.QueryException;
+import com.querydsl.core.testutil.H2;
 import com.querydsl.sql.*;
 
+@Category(H2.class)
 public class H2ExceptionSuiteTest extends AbstractBaseTest {
 
     private static final SQLExceptionTranslator exceptionTranslator = DefaultSQLExceptionTranslator.DEFAULT;
