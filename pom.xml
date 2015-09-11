@@ -353,11 +353,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>com.mysema.maven</groupId>
-        <artifactId>maven-version-plugin</artifactId>
-        <version>0.1.0</version>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.4</version>
