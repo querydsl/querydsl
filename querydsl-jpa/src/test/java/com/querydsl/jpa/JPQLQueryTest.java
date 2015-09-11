@@ -13,11 +13,14 @@
  */
 package com.querydsl.jpa;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.hibernate.HibernateQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 public class JPQLQueryTest {
 
@@ -58,6 +61,16 @@ public class JPQLQueryTest {
     @Test(expected = IllegalArgumentException.class)
     public void LeftJoinPathOfQextendsCollectionOfPPathOfP() {
         query.leftJoin(cat.kittens, cat.mate);
+    }
+
+    @Test
+    public void ToString() {
+        assertEquals("", new HibernateQuery<Void>().toString());
+        assertEquals("", new JPAQuery<Void>().toString());
+        assertEquals("select cat", new HibernateQuery<Void>().select(cat).toString());
+        assertEquals("select cat", new JPAQuery<Void>().select(cat).toString());
+        assertEquals("select cat\nfrom Cat cat", new HibernateQuery<Void>().from(cat).toString());
+        assertEquals("select cat\nfrom Cat cat", new JPAQuery<Void>().from(cat).toString());
     }
 
 }
