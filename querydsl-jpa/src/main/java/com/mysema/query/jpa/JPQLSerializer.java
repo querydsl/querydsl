@@ -188,7 +188,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
             append(")\n");
 
-        } else {
+        } else if (!select.isEmpty() || !joins.isEmpty()) {
             if (!metadata.isDistinct()) {
                 append(SELECT);
             } else {
@@ -197,7 +197,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             if (!select.isEmpty()) {
                 handle(COMMA, select);
             } else {
-                handle(metadata.getJoins().get(0).getTarget());
+                handle(joins.get(0).getTarget());
             }
             append("\n");
 
@@ -205,8 +205,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         inProjection = inProjectionOrig;
 
         // from
-        append(FROM);
-        serializeSources(forCountRow, joins);
+        if (!joins.isEmpty()) {
+            append(FROM);
+            serializeSources(forCountRow, joins);
+        }
 
         // where
         if (where != null) {

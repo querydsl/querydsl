@@ -13,10 +13,17 @@
  */
 package com.mysema.query.jpa.hibernate;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import org.hibernate.*;
+import org.hibernate.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.*;
@@ -27,11 +34,6 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Path;
-import org.hibernate.*;
-import org.hibernate.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 /**
  * Abstract base class for Hibernate API based implementations of the JPQL interface

@@ -13,11 +13,14 @@
  */
 package com.mysema.query.jpa;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 public class JPQLQueryTest {
 
@@ -70,5 +73,12 @@ public class JPQLQueryTest {
         query.fullJoin(cat.kittens, cat.mate);
     }
 
+    @Test
+    public void ToString() {
+        assertEquals("", new HibernateQuery().toString());
+        assertEquals("", new JPAQuery().toString());
+        assertEquals("select cat\nfrom Cat cat", new HibernateQuery().from(cat).toString());
+        assertEquals("select cat\nfrom Cat cat", new JPAQuery().from(cat).toString());
+    }
 
 }

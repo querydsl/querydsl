@@ -48,10 +48,16 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
     }
     
     protected abstract JPQLSerializer createSerializer();
-    
+
     protected JPQLSerializer serialize(boolean forCountRow) {
-        if (queryMixin.getMetadata().getJoins().isEmpty()) {
-            throw new IllegalArgumentException("No joins given");
+        return serialize(forCountRow, true);
+    }
+
+    protected JPQLSerializer serialize(boolean forCountRow, boolean validate) {
+        if (validate) {
+            if (queryMixin.getMetadata().getJoins().isEmpty()) {
+                throw new IllegalArgumentException("No joins given");
+            }
         }
         JPQLSerializer serializer = createSerializer();
         serializer.serialize(queryMixin.getMetadata(), forCountRow, null);
@@ -224,7 +230,7 @@ public abstract class JPAQueryBase<Q extends JPAQueryBase<Q>> extends Projectabl
 
     @Override
     public String toString() {
-        JPQLSerializer serializer = serialize(false);
+        JPQLSerializer serializer = serialize(false, false);
         return serializer.toString().trim();
     }
 
