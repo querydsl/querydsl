@@ -5,14 +5,18 @@ services:
   - mongodb
 addons:
   postgresql: "9.3"
+env:
+  matrix:
+    - MODULE=!querydsl-scala
+    - MODULE=querydsl-scala
 install:
-  - sh -c 'mvn -B -q install -DskipTests=true'
+  - mvn -B -q install -DskipTests=true
 before_script:
   - mysql -u root -e "source travis/mysql.sql"
   - psql -U postgres -f travis/postgresql.sql  
   - psql -c 'create extension postgis;' -d querydsl -U postgres
   - ./travis/cubrid.sh
   - ./travis/firebird.sh
-script:
-  - sh -c 'mvn -B test -Pall,travis,examples'
+script: mvn -B test -Pall,travis,examples -pl ${MODULE}
+sudo: required
 
