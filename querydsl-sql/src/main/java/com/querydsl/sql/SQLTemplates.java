@@ -291,6 +291,8 @@ public class SQLTemplates extends Templates {
 
     private boolean arraysSupported = true;
 
+    private boolean forShareSupported = false;
+
     private int listMaxSize = 0;
 
     private boolean supportsUnquotedReservedWordsAsIdentifier = false;
@@ -775,6 +777,10 @@ public class SQLTemplates extends Templates {
         return unionsWrapped;
     }
 
+    public boolean isForShareSupported() {
+        return forShareSupported;
+    }
+
     public final boolean isFunctionJoinsWrapped() {
         return functionJoinsWrapped;
     }
@@ -1028,6 +1034,10 @@ public class SQLTemplates extends Templates {
 
     protected void setDummyTable(String dummyTable) {
         this.dummyTable = dummyTable;
+    }
+
+    protected void setForShareSupported(boolean forShareSupported) {
+        this.forShareSupported = forShareSupported;
     }
 
     protected void setFrom(String from) {

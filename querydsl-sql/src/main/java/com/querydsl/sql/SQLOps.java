@@ -75,7 +75,9 @@ public enum SQLOps implements Operator {
     VARPOP(Object.class),
     VARSAMP(Object.class),
     WITH_ALIAS(Object.class),
-    WITH_COLUMNS(Object.class);
+    WITH_COLUMNS(Object.class),
+    LOCK_IN_SHARE_MODE(Object.class),
+    WITH_REPEATABLE_READ(Object.class);
 
     private final Class<?> type;
 

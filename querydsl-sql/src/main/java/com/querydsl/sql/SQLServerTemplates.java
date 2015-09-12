@@ -15,10 +15,13 @@ package com.querydsl.sql;
 
 import java.sql.Types;
 
+import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
 
@@ -29,6 +32,9 @@ import com.querydsl.core.types.dsl.Expressions;
  *
  */
 public class SQLServerTemplates extends SQLTemplates {
+
+    protected static final Expression<?> WITH_REPEATABLE_READ = ExpressionUtils.operation(
+        Object.class, SQLOps.WITH_REPEATABLE_READ, ImmutableList.<Expression<?>>of());
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLServerTemplates DEFAULT = new SQLServerTemplates();
@@ -61,6 +67,9 @@ public class SQLServerTemplates extends SQLTemplates {
         setArraysSupported(false);
         setForUpdateFlag(new QueryFlag(Position.BEFORE_FILTERS, FOR_UPDATE));
 
+        setForShareSupported(true);
+        setForShareFlag(new QueryFlag(Position.BEFORE_FILTERS, WITH_REPEATABLE_READ));
+
         setPrecedence(Precedence.ARITH_LOW, Ops.NEGATE);
         setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
         setPrecedence(Precedence.OR, Ops.BETWEEN, Ops.IN, Ops.NOT_IN, Ops.LIKE, Ops.LIKE_ESCAPE);
@@ -69,6 +78,8 @@ public class SQLServerTemplates extends SQLTemplates {
         setPrecedence(Precedence.OR, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
                 Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
                 Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+
+        add(SQLOps.WITH_REPEATABLE_READ, "\nwith (repeatableread)");
 
         // String
         add(Ops.CONCAT, "{0} + {1}");
