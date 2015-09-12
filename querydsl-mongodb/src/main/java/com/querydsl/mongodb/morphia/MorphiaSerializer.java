@@ -13,16 +13,18 @@
  */
 package com.querydsl.mongodb.morphia;
 
+import java.lang.reflect.AnnotatedElement;
+
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.mapping.Mapper;
 
 import com.mongodb.DBRef;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.PathType;
 import com.querydsl.mongodb.MongodbSerializer;
 
 /**
@@ -41,13 +43,26 @@ public class MorphiaSerializer extends MongodbSerializer {
 
     @Override
     protected String getKeyForPath(Path<?> expr, PathMetadata metadata) {
-        if (expr.getAnnotatedElement().isAnnotationPresent(Id.class)) {
-            return "_id";
-        } else if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)) {
-            return expr.getAnnotatedElement().getAnnotation(Property.class).value();
-        } else {
-            return super.getKeyForPath(expr, metadata);
+        AnnotatedElement annotations = expr.getAnnotatedElement();
+        if (annotations.isAnnotationPresent(Id.class)) {
+            Path<?> parent = expr.getMetadata().getParent();
+            if (parent.getAnnotatedElement().isAnnotationPresent(Reference.class)) {
+                return null; // go to parent
+            } else {
+                return "_id";
+            }
+        } else if (annotations.isAnnotationPresent(Property.class)) {
+            Property property = annotations.getAnnotation(Property.class);
+            if (!property.value().equals(Mapper.IGNORED_FIELDNAME)) {
+                return property.value();
+            }
+        } else if (annotations.isAnnotationPresent(Reference.class)) {
+            Reference reference = annotations.getAnnotation(Reference.class);
+            if (!reference.value().equals(Mapper.IGNORED_FIELDNAME)) {
+                return reference.value();
+            }
         }
+        return super.getKeyForPath(expr, metadata);
     }
 
     @Override
@@ -56,9 +71,19 @@ public class MorphiaSerializer extends MongodbSerializer {
     }
 
     @Override
+    protected boolean isId(Path<?> arg) {
+        return arg.getAnnotatedElement().isAnnotationPresent(Id.class);
+    }
+
+    @Override
     protected DBRef asReference(Object constant) {
         Key<?> key = morphia.getMapper().getKey(constant);
         return morphia.getMapper().keyToRef(key);
     }
 
+    @Override
+    protected DBRef asReferenceKey(Class<?> entity, Object id) {
+        Key<?> key = new Key<Object>(entity, id);
+        return morphia.getMapper().keyToRef(key);
+    }
 }

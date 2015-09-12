@@ -81,6 +81,9 @@ public class MongodbQueryTest {
         u2 = addUser("Jaakki", "Jantunen", 30, new Address("Beekatu", "00200", helsinki));
         u3 = addUser("Jaana", "Aakkonen", 40, new Address("Ceekatu","00300", tampere));
         u4 = addUser("Jaana", "BeekkoNen", 50, new Address("Deekatu","00400",tampere));
+
+        // order users by lastname, firstname
+        users = Lists.newArrayList(u3, u4, u2, u1);
     }
 
     @Test
@@ -465,9 +468,33 @@ public class MongodbQueryTest {
         for (User u : users) {
             if (u.getFriend() != null) {
                 assertQuery(user.friend().eq(u.getFriend()), u);
-                where(user.friend().ne(u.getFriend())).fetch();
+                assertQuery(user.friend().id.eq(u.getFriend().getId()), u);
+                assertQuery(user.friend().ne(u.getFriend()), otherUsers(u));
+                assertQuery(user.friend().id.ne(u.getFriend().getId()), otherUsers(u));
             }
         }
+    }
+
+    @Test
+    public void References2() {
+        for (User u : users) {
+            if (u.getFriend() != null) {
+                assertQuery(user.enemy().eq(u.getEnemy()), u);
+                assertQuery(user.enemy().id.eq(u.getEnemy().getId()), u);
+                assertQuery(user.enemy().ne(u.getEnemy()), otherUsers(u));
+                assertQuery(user.enemy().id.ne(u.getEnemy().getId()), otherUsers(u));
+            }
+        }
+    }
+
+    private User[] otherUsers(User user) {
+        List<User> list = Lists.newArrayList();
+        for (User u : users) {
+            if (!u.equals(user)) {
+                list.add(u);
+            }
+        }
+        return list.toArray(new User[list.size()]);
     }
 
     @Test
@@ -623,6 +650,7 @@ public class MongodbQueryTest {
         }
         if (!users.isEmpty()) {
             user.setFriend(users.get(users.size() - 1));
+            user.setEnemy(users.get(users.size() - 1));
         }
         ds.save(user);
         users.add(user);
