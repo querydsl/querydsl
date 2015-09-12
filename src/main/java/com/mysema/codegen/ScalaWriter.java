@@ -44,6 +44,8 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     private static final String DEF = "def ";
 
+    private static final String OVERRIDE_DEF = "override " + DEF;
+
     private static final String EXTENDS = " extends ";
 
     private static final String WITH = " with ";
@@ -311,6 +313,17 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     public ScalaWriter beginPublicMethod(Type returnType, String methodName, Parameter... args)
             throws IOException {
         return beginMethod(DEF, returnType, methodName, args);
+    }
+
+    public <T> ScalaWriter beginOverridePublicMethod(Type returnType, String methodName,
+                                                     Collection<T> parameters, Function<T, Parameter> transformer)
+            throws IOException {
+        return beginMethod(OVERRIDE_DEF, returnType, methodName, transform(parameters, transformer));
+    }
+
+    public ScalaWriter beginOverridePublicMethod(Type returnType, String methodName, Parameter... args)
+            throws IOException {
+        return beginMethod(OVERRIDE_DEF, returnType, methodName, args);
     }
 
     @Override
