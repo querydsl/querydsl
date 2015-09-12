@@ -289,6 +289,22 @@ public class MetaDataExporterTest {
         assertTrue(new File("target/b/test/DateTestBean.java").exists());
     }
 
+    @Test
+    public void Minimal_Configuration_with_Bean_folder() throws SQLException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setPackageName("test");
+        exporter.setNamePrefix("");
+        exporter.setBeanSuffix("Bean");
+        exporter.setBeanSerializer(new BeanSerializer());
+        exporter.setTargetFolder(new File("target/b1"));
+        exporter.setBeansTargetFolder(new File("target/b2"));
+        exporter.export(metadata);
+
+        assertTrue(new File("target/b1/test/DateTest.java").exists());
+        assertTrue(new File("target/b2/test/DateTestBean.java").exists());
+    }
+
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
             NamingStrategy namingStrategy, String target, boolean withBeans,
             boolean withInnerClasses, boolean withOrdinalPositioning) throws SQLException {

@@ -136,6 +136,13 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
     private String targetFolder;
 
     /**
+     * target source folder to create the bean sources into
+     *
+     * @parameter
+     */
+    private String beansTargetFolder;
+
+    /**
      * namingstrategy class to override (default: DefaultNamingStrategy)
      *
      * @parameter
@@ -370,6 +377,9 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             }
             if (beanSuffix != null) {
                 exporter.setBeanSuffix(beanSuffix);
+            }
+            if (beansTargetFolder != null) {
+                exporter.setBeansTargetFolder(new File(beansTargetFolder));
             }
             exporter.setCreateScalaSources(createScalaSources);
             exporter.setPackageName(packageName);
