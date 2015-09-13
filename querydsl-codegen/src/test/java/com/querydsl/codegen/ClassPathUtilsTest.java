@@ -13,8 +13,7 @@
  */
 package com.querydsl.codegen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Set;
@@ -22,7 +21,6 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.SomeClass;
-
 
 public class ClassPathUtilsTest {
 
@@ -40,4 +38,16 @@ public class ClassPathUtilsTest {
         assertFalse(classes.isEmpty());
         assertEquals("XXX", SomeOtherClass2.property);
     }
+
+    @Test
+    public void SafeClassForName() {
+        assertNull(safeForName("com.sun.nio.file.ExtendedOpenOption"));
+        assertNotNull(safeForName("com.suntanning.ShouldBeLoaded"));
+        assertNotNull(safeForName("com.applejuice.ShouldBeLoaded"));
+    }
+
+    private Class<?> safeForName(String className) {
+        return ClassPathUtils.safeClassForName(ClassPathUtilsTest.class.getClassLoader(), className);
+    }
+
 }
