@@ -1,6 +1,6 @@
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,8 +13,7 @@
  */
 package com.mysema.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Set;
@@ -23,16 +22,15 @@ import org.junit.Test;
 
 import com.SomeClass;
 
-
 public class ClassPathUtilsTest {
-    
+
     @Test
     public void ScanPackage() throws IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Set<Class<?>> classes = ClassPathUtils.scanPackage(classLoader, SomeClass.class.getPackage());
         assertFalse(classes.isEmpty());
     }
-    
+
     @Test
     public void ScanPackage_Check_Initialized() throws IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -41,4 +39,14 @@ public class ClassPathUtilsTest {
         assertEquals("XXX", SomeOtherClass2.property);
     }
 
+    @Test
+    public void SafeClassForName() {
+        assertNull(safeForName("com.sun.nio.file.ExtendedOpenOption"));
+        assertNotNull(safeForName("com.suntanning.ShouldBeLoaded"));
+        assertNotNull(safeForName("com.applejuice.ShouldBeLoaded"));
+    }
+
+    private Class<?> safeForName(String className) {
+        return ClassPathUtils.safeClassForName(ClassPathUtilsTest.class.getClassLoader(), className);
+    }
 }
