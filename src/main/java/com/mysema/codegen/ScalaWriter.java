@@ -592,6 +592,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         return line("@SuppressWarnings(\"", type, "\")");
     }
 
+    @Override
+    public CodeWriter suppressWarnings(String... types) throws IOException {
+        return annotation(new MultiSuppressWarnings(types));
+    }
+
     private <T> Parameter[] transform(Collection<T> parameters,
             Function<T, Parameter> transformer) {
         Parameter[] rv = new Parameter[parameters.size()];
