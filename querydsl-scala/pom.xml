@@ -13,9 +13,10 @@
   <artifactId>querydsl-scala</artifactId>
   <name>Querydsl - Scala support</name>
   <packaging>jar</packaging>
-  
+
   <properties>
     <character.encoding>UTF-8</character.encoding>
+    <argLine>-Xms256m -Xmx512m -Xss2m</argLine>
     <checkstyle.skip>true</checkstyle.skip>
 
     <scala.version>2.10</scala.version>
@@ -204,7 +205,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-            <argLine>-Xms256m -Xmx512m -Xss2m</argLine>
             <printSummary>true</printSummary>
         </configuration>                
       </plugin>      
