@@ -78,6 +78,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         List<String> expected = new ArrayList<String>();
         // GenericExporter doesn't include field/method selection
         expected.add("QFileAttachment.java");
+        expected.add("QHierarchyTest_A2.java");
         expected.add("QJodaTest_BaseEntity.java");
         expected.add("QEnum3Test_Entity1.java");
         expected.add("QCustomCollection_MyCustomCollection.java");
