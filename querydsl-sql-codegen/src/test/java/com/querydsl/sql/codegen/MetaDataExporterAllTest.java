@@ -61,7 +61,7 @@ public class MetaDataExporterAllTest {
 
         List<NamingStrategy> ns = Arrays.<NamingStrategy>asList(
                 new DefaultNamingStrategy(), new OriginalNamingStrategy());
-        List<String> prefixOrSuffix = Arrays.asList("", "Q", "Query");
+        List<String> prefixOrSuffix = Arrays.asList("", "Q");
         List<String> beanPackage = Arrays.asList(null, "test2");
         List<Boolean> booleans = Arrays.asList(true, false);
 
@@ -76,6 +76,17 @@ public class MetaDataExporterAllTest {
                                         for (boolean withOrdinalPositioning : booleans) {
                                             for (boolean exportColumns : booleans) {
                                                 for (boolean schemaToPackage : booleans) {
+                                                    if (withBeans) {
+                                                        if (!beanPrefix.isEmpty() | !beanSuffix.isEmpty() |
+                                                            beanPackageName != null) {
+                                                            continue;
+                                                        }
+                                                    }
+
+                                                    if (withInnerClasses && withOrdinalPositioning) {
+                                                        continue;
+                                                    }
+
                                                     params.add(new Object[]{namePrefix, nameSuffix, beanPrefix,
                                                             beanSuffix, beanPackageName,
                                                             namingStrategy,
