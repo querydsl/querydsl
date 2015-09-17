@@ -13,12 +13,14 @@
  */
 package com.mysema.query.sql.codegen;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 public class DefaultNamingStrategyTest {
 
@@ -105,6 +107,12 @@ public class DefaultNamingStrategyTest {
     @Test
     public void Spaces() {
         assertEquals("a_b", namingStrategy.getPropertyName("a  b", entityModel));
+    }
+
+    @Test
+    public void ValidName() {
+        assertEquals("8FRecord", namingStrategy.normalizeColumnName("8FRecord"));
+        assertEquals("_8FRecord", namingStrategy.getPropertyName("8FRecord", entityModel));
     }
 
 }
