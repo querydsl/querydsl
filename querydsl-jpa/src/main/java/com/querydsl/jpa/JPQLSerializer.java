@@ -483,18 +483,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     private void visitAnyInPath(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
-        if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant<?> && Enum.class.isAssignableFrom(args.get(0).getType())) {
-            @SuppressWarnings("unchecked") //guarded by previous check
-            Constant<? extends Enum<?>> expectedConstant = (Constant<? extends Enum<?>>) args.get(0);
-
-            final Enum<?> constant = expectedConstant.getConstant();
-            final Enumerated enumerated = ((Path<?>) args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
-            if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
-                args = ImmutableList.of(ConstantImpl.create(constant.ordinal()), args.get(1));
-            } else {
-                args = ImmutableList.of(ConstantImpl.create(constant.name()), args.get(1));
-            }
-        }
         super.visitOperation(type,
                 operator == Ops.IN ? JPQLOps.MEMBER_OF : JPQLOps.NOT_MEMBER_OF,
                 args);
