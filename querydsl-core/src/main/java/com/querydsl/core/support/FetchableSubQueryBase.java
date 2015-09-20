@@ -16,6 +16,7 @@ package com.querydsl.core.support;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanOperation;
 import com.querydsl.core.types.dsl.Expressions;
 
 /**
@@ -119,6 +120,16 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
     @Override
     public BooleanExpression goe(T constant) {
         return goe(Expressions.constant(constant));
+    }
+
+    @Override
+    public BooleanOperation isNull() {
+        return Expressions.booleanOperation(Ops.IS_NULL, mixin);
+    }
+
+    @Override
+    public BooleanOperation isNotNull() {
+        return Expressions.booleanOperation(Ops.IS_NOT_NULL, mixin);
     }
 
     @Override
