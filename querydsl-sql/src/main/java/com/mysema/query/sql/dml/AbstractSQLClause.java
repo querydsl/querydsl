@@ -201,10 +201,10 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     }
 
     protected void logQuery(Logger logger, String queryString, Collection<Object> parameters) {
-        String normalizedQuery = queryString.replace('\n', ' ');
-        MDC.put(QueryBase.MDC_QUERY, normalizedQuery);
-        MDC.put(QueryBase.MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
+            String normalizedQuery = queryString.replace('\n', ' ');
+            MDC.put(QueryBase.MDC_QUERY, normalizedQuery);
+            MDC.put(QueryBase.MDC_PARAMETERS, String.valueOf(parameters));
             logger.debug(normalizedQuery);
         }
     }
