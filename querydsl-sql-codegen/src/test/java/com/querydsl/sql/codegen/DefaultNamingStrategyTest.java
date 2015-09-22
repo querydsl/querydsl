@@ -110,4 +110,10 @@ public class DefaultNamingStrategyTest {
         assertEquals("a_b", namingStrategy.getPropertyName("a  b", entityModel));
     }
 
+    @Test
+    public void ValidName() {
+        assertEquals("8FRecord", namingStrategy.normalizeColumnName("8FRecord"));
+        assertEquals("_8FRecord", namingStrategy.getPropertyName("8FRecord", entityModel));
+    }
+
 }
