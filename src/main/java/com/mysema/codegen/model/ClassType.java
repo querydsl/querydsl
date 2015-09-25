@@ -185,6 +185,11 @@ public class ClassType implements Type {
     }
 
     @Override
+    public boolean isMember() {
+        return javaClass.getEnclosingClass() != null;
+    }
+
+    @Override
     public String toString() {
         return getGenericName(true);
     }

@@ -51,4 +51,6 @@ public interface Type {
 
     boolean isPrimitive();
 
+    boolean isMember();
+
 }

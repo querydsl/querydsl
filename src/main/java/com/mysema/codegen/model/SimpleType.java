@@ -41,7 +41,7 @@ public class SimpleType implements Type {
 
     private final List<Type> parameters;
 
-    private final boolean primitiveClass, finalClass;
+    private final boolean primitiveClass, finalClass, memberClass;
 
     private Type arrayType, componentType, enclosingType;
     
@@ -77,7 +77,7 @@ public class SimpleType implements Type {
         } else {
             this.localName = fullName;
         }
-        if (fullName.substring(packageName.length() + 1).contains(".")) {
+        if (localName.contains(".")) {
             this.outerClassName = fullName.substring(0, fullName.lastIndexOf('.'));
         } else {
             this.outerClassName = fullName;
@@ -85,6 +85,7 @@ public class SimpleType implements Type {
         this.primitiveClass = primitiveClass;
         this.finalClass = finalClass;
         this.parameters = parameters;
+        this.memberClass = localName.contains(".");
     }
 
     public SimpleType(TypeCategory typeCategory, String fullName, String packageName,
@@ -149,11 +150,7 @@ public class SimpleType implements Type {
         if (enclosingType == null && localName.contains(".")) {
             String newLocalName = localName.substring(0, localName.lastIndexOf('.'));
             String newSimpleName = newLocalName.substring(newLocalName.lastIndexOf('.') + 1);
-            String newFullName = newLocalName;
-            if (packageName.length() > 0) {
-                newFullName = packageName + "." + newLocalName;
-            }
-            enclosingType = new SimpleType(newFullName, packageName, newSimpleName);
+            enclosingType = new SimpleType(outerClassName, packageName, newSimpleName);
         }
         return enclosingType;
     }
@@ -231,8 +228,9 @@ public class SimpleType implements Type {
 
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {
-        if (packages.contains(packageName) || classes.contains(fullName)
-                || classes.contains(outerClassName)) {
+        if (classes.contains(fullName)) {
+            return simpleName;
+        } else if (packages.contains(packageName) || classes.contains(outerClassName)) {
             return localName;
         } else {
             return fullName;
@@ -257,6 +255,11 @@ public class SimpleType implements Type {
     @Override
     public boolean isPrimitive() {
         return primitiveClass;
+    }
+
+    @Override
+    public boolean isMember() {
+        return memberClass;
     }
 
     @Override

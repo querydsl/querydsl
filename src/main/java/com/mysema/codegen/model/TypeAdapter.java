@@ -120,6 +120,11 @@ public class TypeAdapter implements Type {
     }
 
     @Override
+    public boolean isMember() {
+        return type.isMember();
+    }
+
+    @Override
     public String toString() {
         return type.toString();
     }
