@@ -230,7 +230,9 @@ public class SimpleType implements Type {
     public String getRawName(Set<String> packages, Set<String> classes) {
         if (classes.contains(fullName)) {
             return simpleName;
-        } else if (packages.contains(packageName) || classes.contains(outerClassName)) {
+        } else if (classes.contains(outerClassName)) {
+            return fullName.substring(outerClassName.lastIndexOf('.') + 1);
+        } else if (packages.contains(packageName)) {
             return localName;
         } else {
             return fullName;

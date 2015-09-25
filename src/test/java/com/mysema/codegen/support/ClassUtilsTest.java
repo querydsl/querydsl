@@ -19,9 +19,7 @@ public class ClassUtilsTest {
     @Test
     public void GetName() {
         assertEquals("int", ClassUtils.getName(int.class));
-        assertEquals(
-                "int",
-                ClassUtils.getName(int.class, Collections.<String> emptySet(),
+        assertEquals("int", ClassUtils.getName(int.class, Collections.<String> emptySet(),
                         Collections.<String> emptySet()));
         assertEquals("Object", ClassUtils.getName(Object.class));
         assertEquals("Object[]", ClassUtils.getName(Object[].class));

@@ -6,10 +6,15 @@ import java.util.Collections;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableSet;
+
 public class SimpleTypeTest {
 
     public static class Inner {
-
+        public class Inner2 {
+            public class Inner3 {
+            }
+        }
     }
     
     @Test
@@ -68,11 +73,23 @@ public class SimpleTypeTest {
 
     @Test
     public void GetEnclosingType() {
-        assertEquals(new SimpleType(new ClassType(SimpleTypeTest.class)),
-                new SimpleType(new ClassType(Inner.class)).getEnclosingType());
-        assertNull(new SimpleType(new ClassType(SimpleTypeTest.class)).getEnclosingType());
-    }
+        Type outer = new SimpleType(new ClassType(SimpleTypeTest.class));
+        Type inner = new SimpleType(new ClassType(SimpleTypeTest.Inner.class));
+        Type inner2 = new SimpleType(new ClassType(SimpleTypeTest.Inner.Inner2.class));
+        Type inner3 = new SimpleType(new ClassType(SimpleTypeTest.Inner.Inner2.Inner3.class));
 
+        assertEquals(inner2, inner3.getEnclosingType());
+        assertEquals(inner, inner2.getEnclosingType());
+        assertEquals(outer, inner.getEnclosingType());
+        assertNull(outer.getEnclosingType());
+
+        assertEquals("SimpleTypeTest.Inner.Inner2.Inner3",
+                inner3.getRawName(ImmutableSet.of(outer.getPackageName()), ImmutableSet.<String>of()));
+        assertEquals("Inner2.Inner3",
+                inner3.getRawName(ImmutableSet.<String>of(), ImmutableSet.of(inner2.getFullName())));
+        assertEquals("Inner3",
+                inner3.getRawName(ImmutableSet.<String>of(), ImmutableSet.of(inner3.getFullName())));
+    }
     @Test
     public void IsMember() {
         assertTrue(new SimpleType(new ClassType(SimpleTypeTest.Inner.class)).isMember());
