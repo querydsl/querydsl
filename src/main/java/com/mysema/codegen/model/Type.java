@@ -27,6 +27,8 @@ public interface Type {
 
     Type getComponentType();
 
+    Type getEnclosingType();
+
     TypeCategory getCategory();
 
     String getFullName();

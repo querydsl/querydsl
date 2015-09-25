@@ -5,9 +5,7 @@
  */
 package com.mysema.codegen.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -110,4 +108,10 @@ public class ClassTypeTest {
 //        assertEquals("long", Types.LONG.getPrimitiveName());
 //        assertEquals("short", Types.SHORT.getPrimitiveName());
 //    }
+
+    @Test
+    public void getEnclosingType() {
+        assertEquals(new ClassType(ClassTypeTest.class), new ClassType(Inner.class).getEnclosingType());
+        assertNull(new ClassType(ClassTypeTest.class).getEnclosingType());
+    }
 }

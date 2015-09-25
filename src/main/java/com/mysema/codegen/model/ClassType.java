@@ -35,7 +35,7 @@ public class ClassType implements Type {
 
     private final List<Type> parameters;
 
-    private Type arrayType, componentType;
+    private Type arrayType, componentType, enclosingType;
 
     public ClassType(Class<?> javaClass, Type... parameters) {
         this(TypeCategory.SIMPLE, javaClass, Arrays.asList(parameters));
@@ -96,6 +96,17 @@ public class ClassType implements Type {
             componentType = new ClassType(TypeCategory.SIMPLE, clazz);
         }
         return componentType;
+    }
+
+    @Override
+    public Type getEnclosingType() {
+        if (enclosingType == null) {
+            Class<?> enclosingClass = javaClass.getEnclosingClass();
+            if (enclosingClass != null) {
+                enclosingType = new ClassType(enclosingClass);
+            }
+        }
+        return enclosingType;
     }
 
     @Override

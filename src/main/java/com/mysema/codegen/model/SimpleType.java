@@ -43,7 +43,7 @@ public class SimpleType implements Type {
 
     private final boolean primitiveClass, finalClass;
 
-    private Type arrayType, componentType;
+    private Type arrayType, componentType, enclosingType;
     
     private transient Class<?> javaClass;
 
@@ -142,6 +142,20 @@ public class SimpleType implements Type {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Type getEnclosingType() {
+        if (enclosingType == null && localName.contains(".")) {
+            String newLocalName = localName.substring(0, localName.lastIndexOf('.'));
+            String newSimpleName = newLocalName.substring(newLocalName.lastIndexOf('.') + 1);
+            String newFullName = newLocalName;
+            if (packageName.length() > 0) {
+                newFullName = packageName + "." + newLocalName;
+            }
+            enclosingType = new SimpleType(newFullName, packageName, newSimpleName);
+        }
+        return enclosingType;
     }
 
     @Override

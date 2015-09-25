@@ -46,6 +46,11 @@ public class TypeAdapter implements Type {
     }
 
     @Override
+    public Type getEnclosingType() {
+        return type.getEnclosingType();
+    }
+
+    @Override
     public boolean equals(Object o) {
         return type.equals(o);
     }

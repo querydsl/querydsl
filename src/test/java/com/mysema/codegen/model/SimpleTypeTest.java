@@ -1,6 +1,7 @@
 package com.mysema.codegen.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Collections;
 
@@ -65,5 +66,12 @@ public class SimpleTypeTest {
 //        assertEquals("int", Types.INTEGER.getPrimitiveName());
 //        assertEquals("int", new SimpleType(Types.INTEGER).getPrimitiveName());
 //    }
+
+    @Test
+    public void GetEnclosingType() {
+        assertEquals(new SimpleType(new ClassType(SimpleTypeTest.class)),
+                new SimpleType(new ClassType(Inner.class)).getEnclosingType());
+        assertNull(new SimpleType(new ClassType(SimpleTypeTest.class)).getEnclosingType());
+    }
 
 }
