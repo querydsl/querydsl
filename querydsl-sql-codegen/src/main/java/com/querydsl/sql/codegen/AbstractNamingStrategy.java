@@ -15,6 +15,7 @@ package com.querydsl.sql.codegen;
 
 import com.querydsl.codegen.EntityType;
 import com.querydsl.core.util.JavaSyntaxUtils;
+import com.querydsl.sql.SchemaAndTable;
 
 /**
  * {@code AbstractNamingStrategy} is an abstract base class for {@link NamingStrategy} implementations
@@ -120,6 +121,16 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
 
     public void setReservedSuffix(String reservedSuffix) {
         this.reservedSuffix = reservedSuffix;
+    }
+
+    @Override
+    public GenerationType getGenerationType(SchemaAndTable schemaAndTable) {
+        return GenerationType.CLASS;
+    }
+
+    @Override
+    public String getPackage(String basePackage, SchemaAndTable schemaAndTable) {
+      return basePackage;
     }
 
 }

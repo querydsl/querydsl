@@ -14,6 +14,7 @@
 package com.querydsl.sql.codegen;
 
 import com.querydsl.codegen.EntityType;
+import com.querydsl.sql.SchemaAndTable;
 
 /**
  * {@code NamingStrategy} defines a conversion strategy from table to class and column
@@ -26,10 +27,13 @@ public interface NamingStrategy {
     /**
      * Normalizes and appends the given schema name to the package name
      *
+     * @deprecated Use {@link #getPackage(String, SchemaAndTable)} instead.
+     *
      * @param packageName
      * @param schema
      * @return
      */
+    @Deprecated
     String appendSchema(String packageName, String schema);
 
     /**
@@ -142,5 +146,9 @@ public interface NamingStrategy {
      * @return
      */
     String normalizeSchemaName(String schemaName);
+
+    GenerationType getGenerationType(SchemaAndTable schemaAndTable);
+
+    String getPackage(String basePackage, SchemaAndTable schemaAndTable);
 
 }
