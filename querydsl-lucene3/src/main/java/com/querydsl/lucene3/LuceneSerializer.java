@@ -219,9 +219,16 @@ public class LuceneSerializer {
         Constant<Collection<?>> collConstant = (Constant<Collection<?>>) operation.getArg(1);
         Collection<?> values = collConstant.getConstant();
         BooleanQuery bq = new BooleanQuery();
-        for (Object value : values) {
-            String[] str = convert(path, value);
-            bq.add(eq(field, str, ignoreCase), Occur.SHOULD);
+        if (Number.class.isAssignableFrom(path.getType())) {
+            for (Object value : values) {
+                TermQuery eq = new TermQuery(new Term(field, convertNumber((Number) value)));
+                bq.add(eq, Occur.SHOULD);
+            }
+        } else {
+            for (Object value : values) {
+                String[] str = convert(path, value);
+                bq.add(eq(field, str, ignoreCase), Occur.SHOULD);
+            }
         }
         return bq;
     }
