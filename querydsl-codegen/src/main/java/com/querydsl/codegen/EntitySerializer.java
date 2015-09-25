@@ -563,7 +563,7 @@ public class EntitySerializer implements Serializer {
         writer.beginPublicMethod(delegate.getReturnType(), delegate.getName(), params);
 
         // body start
-        writer.beginLine(RETURN + delegate.getDelegateType().getSimpleName() + "." + delegate.getName() + "(");
+        writer.beginLine(RETURN + writer.getRawName(delegate.getDelegateType()) + "." + delegate.getName() + "(");
         writer.append("this");
         if (!model.equals(delegate.getDeclaringType())) {
             int counter = 0;
