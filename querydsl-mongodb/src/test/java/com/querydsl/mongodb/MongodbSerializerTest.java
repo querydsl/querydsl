@@ -30,6 +30,7 @@ import com.mongodb.DBObject;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.*;
+import com.querydsl.mongodb.domain.QAddress;
 import com.querydsl.mongodb.domain.QDummyEntity;
 import com.querydsl.mongodb.domain.QPerson;
 import com.querydsl.mongodb.domain.QUser;
@@ -261,6 +262,15 @@ public class MongodbSerializerTest {
         QPerson person = QPerson.person;
         assertQuery(person.id.eq(id), dbo("_id",id));
         assertQuery(person.addressId.eq(id), dbo("addressId",id));
+    }
+
+    @Test
+    public void Path() {
+        QUser user = QUser.user;
+        assertEquals("firstName", serializer.visit(user.firstName, null));
+        assertEquals("firstName", serializer.visit(user.as(QUser.class).firstName, null));
+        assertEquals("mainAddress.street", serializer.visit(user.mainAddress().street, null));
+        assertEquals("mainAddress.street", serializer.visit(user.mainAddress().as(QAddress.class).street, null));
     }
 
 
