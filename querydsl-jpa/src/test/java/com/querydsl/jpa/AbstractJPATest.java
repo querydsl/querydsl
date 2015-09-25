@@ -1099,6 +1099,13 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Map_Contains() {
+        QShow show = QShow.show;
+        assertEquals(1L, query().from(show).where(show.acts.contains("a", "A")).fetchCount());
+        assertEquals(0L, query().from(show).where(show.acts.contains("X", "X")).fetchCount());
+    }
+
+    @Test
     @Ignore
     public void Map_Join() {
         //select m.text from Show s join s.acts a where key(a) = 'B'
