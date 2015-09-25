@@ -15,6 +15,7 @@ package com.querydsl.sql.codegen;
 
 import com.querydsl.codegen.EntityType;
 import com.querydsl.sql.SchemaAndTable;
+import com.querydsl.sql.codegen.support.ForeignKeyData;
 
 /**
  * {@code NamingStrategy} defines a conversion strategy from table to class and column
@@ -147,7 +148,9 @@ public interface NamingStrategy {
      */
     String normalizeSchemaName(String schemaName);
 
-    GenerationType getGenerationType(SchemaAndTable schemaAndTable);
+    boolean shouldGenerateClass(SchemaAndTable schemaAndTable);
+
+    boolean shouldGenerateForeignKey(SchemaAndTable schemaAndTable, ForeignKeyData foreignKeyData);
 
     String getPackage(String basePackage, SchemaAndTable schemaAndTable);
 

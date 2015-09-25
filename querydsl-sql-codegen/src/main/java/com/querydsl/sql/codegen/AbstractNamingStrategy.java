@@ -16,6 +16,7 @@ package com.querydsl.sql.codegen;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.core.util.JavaSyntaxUtils;
 import com.querydsl.sql.SchemaAndTable;
+import com.querydsl.sql.codegen.support.ForeignKeyData;
 
 /**
  * {@code AbstractNamingStrategy} is an abstract base class for {@link NamingStrategy} implementations
@@ -124,13 +125,19 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
     }
 
     @Override
-    public GenerationType getGenerationType(SchemaAndTable schemaAndTable) {
-        return GenerationType.CLASS;
+    public String getPackage(String basePackage, SchemaAndTable schemaAndTable) {
+        return basePackage;
     }
 
     @Override
-    public String getPackage(String basePackage, SchemaAndTable schemaAndTable) {
-      return basePackage;
+    public boolean shouldGenerateClass(SchemaAndTable schemaAndTable) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldGenerateForeignKey(SchemaAndTable schemaAndTable,
+        ForeignKeyData foreignKeyData) {
+        return true;
     }
 
 }

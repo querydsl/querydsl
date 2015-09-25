@@ -120,9 +120,10 @@ public class MetaDataExporter {
     protected EntityType createEntityType(@Nullable String schemaName, String tableName,
             final String className) {
         EntityType classModel;
+        SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, tableName);
 
         if (beanSerializer == null) {
-            String packageName = normalizePackage(module.getPackageName(), schemaName);
+            String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
             String simpleName = module.getPrefix() + className + module.getSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
                     packageName + "." + simpleName,  packageName, simpleName, false, false);
@@ -130,7 +131,7 @@ public class MetaDataExporter {
             typeMappings.register(classModel, classModel);
 
         } else {
-            String beanPackage = normalizePackage(beanPackageName, schemaName);
+            String beanPackage = normalizePackage(beanPackageName, schemaAndTable);
             String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
                     beanPackage + "." + simpleName, beanPackage, simpleName, false, false);
@@ -147,12 +148,14 @@ public class MetaDataExporter {
     }
 
 
-    private String normalizePackage(String packageName, @Nullable String schemaName) {
+    private String normalizePackage(String packageName, SchemaAndTable schemaAndTable) {
+        String schemaName = schemaAndTable.getSchema();
+        String rval = packageName;
         if (schemaToPackage && schemaName != null) {
-            return namingStrategy.appendSchema(packageName, schemaName);
-        } else {
-            return packageName;
+            rval = namingStrategy.appendSchema(packageName, schemaName);
         }
+        rval = namingStrategy.getPackage(rval, schemaAndTable);
+        return rval;
     }
 
     protected Property createProperty(EntityType classModel, String normalizedColumnName,
@@ -310,6 +313,13 @@ public class MetaDataExporter {
         String schema = tables.getString("TABLE_SCHEM");
         String schemaName = normalize(tables.getString("TABLE_SCHEM"));
         String tableName = normalize(tables.getString("TABLE_NAME"));
+
+        SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, tableName);
+
+        if (!namingStrategy.shouldGenerateClass(schemaAndTable)) {
+            return;
+        }
+
         String normalizedTableName = namingStrategy.normalizeTableName(tableName);
         String className = namingStrategy.getClassName(normalizedTableName);
         EntityType classModel = createEntityType(schemaName, normalizedTableName, className);
@@ -328,7 +338,11 @@ public class MetaDataExporter {
             Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
                     .getImportedKeys(md, catalog, schema, tableName);
             if (!foreignKeyData.isEmpty()) {
-                classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+                for (ForeignKeyData fkd : foreignKeyData.values()) {
+                    if (namingStrategy.shouldGenerateForeignKey(schemaAndTable, fkd)) {
+                        classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+                    }
+                }
             }
 
             // collect inverse foreign keys
@@ -367,15 +381,19 @@ public class MetaDataExporter {
         try {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
 
+            String schemaName = (String) type.getData().get("schema");
+            String tableName = (String) type.getData().get("table");
+            SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, tableName);
+
             if (beanSerializer != null) {
-                String packageName = normalizePackage(beanPackageName, (String) type.getData().get("schema"));
+                String packageName = normalizePackage(beanPackageName, schemaAndTable);
                 String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(beanSerializer, path, type);
 
                 String otherPath = entityToWrapped.get(type).getFullName().replace('.', '/') + fileSuffix;
                 write(serializer, otherPath, type);
             } else {
-                String packageName = normalizePackage(module.getPackageName(), (String) type.getData().get("schema"));
+                String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
                 String path =  packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(serializer, path, type);
             }
