@@ -147,7 +147,7 @@ public class SimpleType implements Type {
 
     @Override
     public Type getEnclosingType() {
-        if (enclosingType == null && localName.contains(".")) {
+        if (enclosingType == null && memberClass) {
             String newLocalName = localName.substring(0, localName.lastIndexOf('.'));
             String newSimpleName = newLocalName.substring(newLocalName.lastIndexOf('.') + 1);
             enclosingType = new SimpleType(outerClassName, packageName, newSimpleName);
