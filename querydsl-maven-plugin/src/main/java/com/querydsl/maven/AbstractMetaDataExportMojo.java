@@ -61,7 +61,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
      * @parameter
      */
     private String server;
-    
+
     /**
      * JDBC driver class name
      * @parameter required=true
@@ -491,20 +491,20 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             Class.forName(jdbcDriver);
             final String user;
             final String password;
-            if (server ==null) {
+            if (server == null) {
                 user = jdbcUser;
                 password = jdbcPassword;
             } else {
                 final AuthenticationInfo info = wagonManager.getAuthenticationInfo(server);
-                if ( info == null ) {
+                if (info == null) {
                     throw new MojoExecutionException("No authentication info for server " + server);
                 }
- 
+
                 user = info.getUserName();
                 if (user == null) {
                     throw new MojoExecutionException("Missing username from server " + server);
                 }
- 
+
                 password = info.getPassword();
                 if (password == null) {
                     throw new MojoExecutionException("Missing password from server " + server);
