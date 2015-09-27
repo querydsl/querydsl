@@ -135,7 +135,7 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
     }
 
     /**
-     * Create a new detached SQLQuery instance with the given projection and source
+     * Create a new SQLQuery instance with the given projection and source
      *
      * @param expr query source and projection
      * @param <T>
