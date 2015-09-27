@@ -254,6 +254,16 @@ public class LuceneQueryTest {
     }
 
     @Test
+    public void In() {
+        assertEquals(2, query.where(title.in("Jurassic Park", "Nummisuutarit")).fetchCount());
+    }
+
+    @Test
+    public void In2() {
+        assertEquals(3, query.where(year.in(1990, 1864)).fetchCount());
+    }
+
+    @Test
     public void List_Sorted_By_Year_Ascending() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.asc());

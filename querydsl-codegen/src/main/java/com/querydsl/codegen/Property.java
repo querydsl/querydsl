@@ -51,8 +51,7 @@ public final class Property implements Comparable<Property> {
 
     public Property(EntityType declaringType, String name, Type type, List<String> inits,
             boolean inherited) {
-        this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "$") : name, type,
-                inits, inherited);
+        this(declaringType, name, escapeName(name), type, inits, inherited);
     }
 
     public Property(EntityType declaringType, String name, String escapedName, Type type,
@@ -63,6 +62,15 @@ public final class Property implements Comparable<Property> {
         this.type = type;
         this.inits = inits;
         this.inherited = inherited;
+    }
+
+    private static String escapeName(String name) {
+        if (JavaSyntaxUtils.isReserved(name)) {
+            name = name + "$";
+        } else if (!Character.isJavaIdentifierStart(name.charAt(0))) {
+            name = "_" + name;
+        }
+        return name;
     }
 
     public void addAnnotation(Annotation annotation) {
