@@ -609,10 +609,10 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     protected void logQuery(String queryString, Collection<Object> parameters) {
-        String normalizedQuery = queryString.replace('\n', ' ');
-        MDC.put(MDC_QUERY, normalizedQuery);
-        MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
         if (logger.isDebugEnabled()) {
+            String normalizedQuery = queryString.replace('\n', ' ');
+            MDC.put(MDC_QUERY, normalizedQuery);
+            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
             logger.debug(normalizedQuery);
         }
     }
