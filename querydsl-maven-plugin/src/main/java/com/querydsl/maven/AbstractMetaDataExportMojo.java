@@ -538,6 +538,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
         this.project = project;
     }
 
+    public void setServer(String server) {
+        this.server = server;
+    }
+
     public void setJdbcDriver(String jdbcDriver) {
         this.jdbcDriver = jdbcDriver;
     }
