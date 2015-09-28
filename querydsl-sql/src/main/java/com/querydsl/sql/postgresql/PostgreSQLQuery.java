@@ -57,8 +57,8 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
      * @return the current object
      */
     public PostgreSQLQuery<T> forShare() {
-        QueryFlag forShareFlag = configuration.getTemplates().getForShareFlag();
-        return addFlag(forShareFlag);
+        // global forShare support was added later, delegating to super implementation
+        return super.forShare();
     }
 
     /**

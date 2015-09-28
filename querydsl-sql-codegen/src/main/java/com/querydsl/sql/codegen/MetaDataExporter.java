@@ -66,6 +66,8 @@ public class MetaDataExporter {
 
     private File targetFolder;
 
+    private File beansTargetFolder;
+
     @Nullable
     private String beanPackageName;
 
@@ -180,6 +182,9 @@ public class MetaDataExporter {
         if (beanPackageName == null) {
             beanPackageName =  module.getPackageName();
         }
+        if (beansTargetFolder == null) {
+            beansTargetFolder = targetFolder;
+        }
         module.bind(SQLCodegenModule.BEAN_PACKAGE_NAME, beanPackageName);
 
         if (spatial) {
@@ -248,7 +253,6 @@ public class MetaDataExporter {
                 tables.close();
             }
         }
-
     }
 
     Set<String> getClasses() {
@@ -392,14 +396,14 @@ public class MetaDataExporter {
             if (beanSerializer != null) {
                 String packageName = normalizePackage(beanPackageName, schemaAndTable);
                 String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
-                write(beanSerializer, path, type);
+                write(beanSerializer, new File(beansTargetFolder, path), type);
 
                 String otherPath = entityToWrapped.get(type).getFullName().replace('.', '/') + fileSuffix;
-                write(serializer, otherPath, type);
+                write(serializer, new File(targetFolder, otherPath), type);
             } else {
                 String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
                 String path =  packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
-                write(serializer, path, type);
+                write(serializer,new File(targetFolder, path), type);
             }
 
         } catch (IOException e) {
@@ -407,8 +411,7 @@ public class MetaDataExporter {
         }
     }
 
-    private void write(Serializer serializer, String path, EntityType type) throws IOException {
-        File targetFile = new File(targetFolder, path);
+    private void write(Serializer serializer, File targetFile, EntityType type) throws IOException {
         classes.add(targetFile.getPath());
         StringWriter w = new StringWriter();
         CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
@@ -480,6 +483,17 @@ public class MetaDataExporter {
      */
     public void setTargetFolder(File targetFolder) {
         this.targetFolder = targetFolder;
+    }
+
+    /**
+     * Set the target folder for beans
+     *
+     * <p>defaults to the targetFolder value</p>
+     *
+     * @param targetFolder target source folder to create the bean sources into
+     */
+    public void setBeansTargetFolder(File targetFolder) {
+        this.beansTargetFolder = targetFolder;
     }
 
     /**

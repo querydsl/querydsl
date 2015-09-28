@@ -16,7 +16,12 @@ package com.querydsl.sql;
 import java.sql.Types;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.querydsl.core.QueryFlag;
+import com.querydsl.core.QueryFlag.Position;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
 
 /**
@@ -28,6 +33,9 @@ import com.querydsl.core.types.Ops;
  *
  */
 public class MySQLTemplates extends SQLTemplates {
+
+    protected static final Expression<?> LOCK_IN_SHARE_MODE = ExpressionUtils.operation(
+        Object.class, SQLOps.LOCK_IN_SHARE_MODE, ImmutableList.<Expression<?>>of());
 
     protected static final Set<String> MYSQL_RESERVED_WORDS
             = ImmutableSet.of(
@@ -103,8 +111,13 @@ public class MySQLTemplates extends SQLTemplates {
         setNullsFirst(null);
         setNullsLast(null);
 
+        setForShareSupported(true);
+        setForShareFlag(new QueryFlag(Position.END, LOCK_IN_SHARE_MODE));
+
         setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
         setPrecedence(Precedence.CASE, Ops.BETWEEN);
+
+        add(SQLOps.LOCK_IN_SHARE_MODE, "\nlock in share mode");
 
         add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
         add(Ops.CONCAT, "concat({0}, {1})", -1);

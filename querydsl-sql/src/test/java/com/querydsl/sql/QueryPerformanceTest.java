@@ -16,8 +16,9 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.testutil.Benchmark;
 import com.querydsl.core.testutil.Performance;
 import com.querydsl.core.testutil.Runner;
+import com.querydsl.core.testutil.Derby;
 
-@Category(Performance.class)
+@Category({Derby.class, Performance.class})
 public class QueryPerformanceTest {
 
     private static final String QUERY = "select COMPANIES.NAME\n" +

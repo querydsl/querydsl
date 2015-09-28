@@ -10,9 +10,9 @@
   <url>${project.homepage}</url>
   
   <parent>
-    <groupId>com.mysema.home</groupId>
-    <artifactId>mysema-source</artifactId>
-    <version>0.3.1</version>
+    <groupId>com.querydsl</groupId>
+    <artifactId>querydsl-parent</artifactId>
+    <version>0.1.0</version>
   </parent>
   
   <packaging>pom</packaging>
@@ -27,8 +27,18 @@
     <project.checkout>scm:git:git@github.com:querydsl/querydsl.git</project.checkout>
 
     <!-- default groups to exclude from surefire plugin -->
-    <excludedGroups>com.querydsl.core.testutil.ExternalDB,com.querydsl.core.testutil.SlowTest</excludedGroups>
+    <excludedGroups>
+      com.querydsl.core.testutil.ExternalDatabase,
+      com.querydsl.core.testutil.SlowTest,
+      com.querydsl.core.testutil.Performance,
+      com.querydsl.core.testutil.ReportingOnly
+    </excludedGroups>
+
+    <!-- groups to run with surefire plugin - intended to be overridden on the command line -->
+    <groups></groups>
     
+    <argLine>-Xms256m -Xmx512m</argLine>
+
     <!-- deps -->
     <derby.version>10.11.1.1</derby.version>
     <hsqldb.version>2.3.2</hsqldb.version>
@@ -276,7 +286,25 @@
           </descriptors>
           <outputDirectory>../target/dist</outputDirectory>
         </configuration>
-      </plugin>     
+      </plugin>
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>4.0.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.5.201505241946</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -345,11 +373,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>com.mysema.maven</groupId>
-        <artifactId>maven-version-plugin</artifactId>
-        <version>0.1.0</version>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.4</version>
@@ -391,8 +414,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-Xms256m -Xmx512m</argLine>
           <excludedGroups>${excludedGroups}</excludedGroups>
+          <groups>${groups}</groups>
         </configuration>
         <dependencies>
           <dependency>
@@ -602,29 +625,6 @@
         <module>querydsl-collections</module>
       </modules>
     </profile>
-    
-    <profile>
-      <id>jenkins</id>
-      <properties>
-        <excludedGroups>com.querydsl.core.testutil.Performance</excludedGroups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>          
-              <excludes>
-                <exclude>**/*$*</exclude>
-                <exclude>**/DB2*SuiteTest.java</exclude>
-                <exclude>**/MSSQL*SuiteTest.java</exclude>
-                <exclude>**/Teradata*SuiteTest.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
 
     <profile>
       <id>examples</id>
@@ -634,9 +634,30 @@
     </profile>
 
     <profile>
+      <id>jenkins</id>
+      <properties>
+        <excludedGroups>
+          com.querydsl.core.testutil.Performance,
+
+          com.querydsl.core.testutil.DB2,
+          com.querydsl.core.testutil.SQLServer,
+          com.querydsl.core.testutil.Teradata
+        </excludedGroups>
+      </properties>
+    </profile>
+
+    <profile>
       <id>travis</id>
       <properties>
-        <excludedGroups>com.querydsl.core.testutil.Performance,com.querydsl.core.testutil.ReportingOnly</excludedGroups>
+        <excludedGroups>
+          com.querydsl.core.testutil.Performance,
+          com.querydsl.core.testutil.ReportingOnly,
+
+          com.querydsl.core.testutil.DB2,
+          com.querydsl.core.testutil.SQLServer,
+          com.querydsl.core.testutil.Teradata,
+          com.querydsl.core.testutil.Oracle
+        </excludedGroups>
       </properties>
       <build>
         <plugins>
@@ -646,17 +667,6 @@
             <configuration>
               <disableXmlReport>true</disableXmlReport>
               <printSummary>false</printSummary>
-              <excludes>
-                <exclude>**/*$*</exclude>
-                <exclude>**/DB2*SuiteTest.java</exclude>
-                <exclude>**/ExportMSSQLTest.java</exclude>
-                <exclude>**/ExportOracleTest.java</exclude>
-                <exclude>**/ExportTeradataTest.java</exclude>
-                <exclude>**/Oracle*SuiteTest.java</exclude>
-                <exclude>**/OracleWithQuotingTest.java</exclude> 
-                <exclude>**/MSSQL*SuiteTest.java</exclude>
-                <exclude>**/Teradata*SuiteTest.java</exclude>
-              </excludes>
               <properties>
                 <property>
                   <name>listener</name>
@@ -668,8 +678,6 @@
         </plugins>
       </build>
     </profile>
-
-
   </profiles>
   
   <reporting>

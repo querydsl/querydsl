@@ -70,6 +70,8 @@ trait SimpleExpression[T] extends DslExpression[T] {
 
   def in(right: CollectionExpression[T,_]) = boolean(IN, this, right)
 
+  def in(right: SubQueryExpression[T]) = boolean(IN, this, right)
+
   def countDistinct() = number[Long](classOf[Long], AggOps.COUNT_DISTINCT_AGG, this)
 
   lazy val isNotNull = boolean(IS_NOT_NULL, this)
@@ -81,6 +83,8 @@ trait SimpleExpression[T] extends DslExpression[T] {
   def notIn(right: T*) = in(right: _*).not
 
   def notIn(right: CollectionExpression[T,_]) = in(right).not
+
+  def notIn(right: SubQueryExpression[T]) = in(right).not
 
   def nullif(right: T): SimpleExpression[T] = nullif(constant(right))
 

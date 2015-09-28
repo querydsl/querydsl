@@ -106,6 +106,11 @@ public class AntMetaDataExporter extends Task {
     private String targetFolder;
 
     /**
+     * target source folder to create the bean sources into
+     */
+    private String beansTargetFolder;
+
+    /**
      * naming strategy class to override (default: DefaultNamingStrategy)
      */
     private String namingStrategyClass;
@@ -242,8 +247,6 @@ public class AntMetaDataExporter extends Task {
         }
 
         Connection dbConn = null;
-        File targetPackagePath = new File(targetFolder);
-
         try {
             Class.forName(jdbcDriver).newInstance();
 
@@ -263,9 +266,12 @@ public class AntMetaDataExporter extends Task {
             if (beanSuffix != null) {
                 exporter.setBeanSuffix(beanSuffix);
             }
+            if (beansTargetFolder != null) {
+                exporter.setBeansTargetFolder(new File(beansTargetFolder));
+            }
             exporter.setPackageName(packageName);
             exporter.setBeanPackageName(beanPackageName);
-            exporter.setTargetFolder(targetPackagePath);
+            exporter.setTargetFolder(new File(targetFolder));
             exporter.setNamingStrategy(namingStrategy);
             exporter.setInnerClassesForKeys(innerClassesForKeys);
             exporter.setSchemaPattern(schemaPattern);

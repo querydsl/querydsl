@@ -14,9 +14,12 @@
 package com.querydsl.sql.codegen;
 
 import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
+import com.querydsl.core.testutil.Derby;
 import com.querydsl.sql.Connections;
 
+@Category(Derby.class)
 public class ExportDerbyTest extends ExportBaseTest {
 
     @BeforeClass

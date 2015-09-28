@@ -5,9 +5,12 @@ import java.sql.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+import com.querydsl.core.testutil.H2;
 import com.querydsl.sql.Connections;
 
+@Category(H2.class)
 public class SpatialTest {
 
     @Before

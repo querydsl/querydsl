@@ -23,10 +23,13 @@ import java.sql.SQLException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.querydsl.core.QueryMutability;
+import com.querydsl.core.testutil.Derby;
 import com.querydsl.sql.domain.QSurvey;
 
+@Category(Derby.class)
 public class QueryMutabilityTest {
 
     private static final QSurvey survey = new QSurvey("survey");

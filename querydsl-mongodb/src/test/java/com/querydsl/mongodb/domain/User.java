@@ -46,7 +46,7 @@ public class User extends AbstractEntity {
     @Reference
     private User friend;
 
-    @Reference
+    @Reference("enemyRef")
     private User enemy;
 
     private int age;

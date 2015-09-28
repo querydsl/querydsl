@@ -171,7 +171,11 @@
           </row>
           <row>
             <entry>targetFolder</entry>
-            <entry>target folder where source folder should be generated</entry>
+            <entry>target folder where sources should be generated</entry>
+          </row>
+          <row>
+            <entry>beansTargetFolder</entry>
+            <entry>target folder where bean sources should be generated, defaults to the same value as targetFolder</entry>
           </row>
           <row>
             <entry>namingStrategyClass</entry>

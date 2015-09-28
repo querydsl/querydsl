@@ -12,11 +12,14 @@ import java.sql.Statement;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import com.querydsl.core.testutil.H2;
 import com.querydsl.sql.Connections;
 
+@Category(H2.class)
 public class ExportH2TwoSchemasTest {
 
     @BeforeClass

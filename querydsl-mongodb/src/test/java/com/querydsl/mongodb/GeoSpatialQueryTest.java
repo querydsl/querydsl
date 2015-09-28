@@ -27,12 +27,12 @@ import org.mongodb.morphia.Morphia;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
-import com.querydsl.core.testutil.ExternalDB;
+import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.mongodb.domain.GeoEntity;
 import com.querydsl.mongodb.domain.QGeoEntity;
 import com.querydsl.mongodb.morphia.MorphiaQuery;
 
-@Category(ExternalDB.class)
+@Category(MongoDB.class)
 public class GeoSpatialQueryTest {
 
     private final String dbname = "geodb";
