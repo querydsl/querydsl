@@ -5,19 +5,22 @@
  */
 package com.mysema.codegen.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.Map;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableSet;
+
 public class ClassTypeTest {
 
     public class Inner {
-
+        public class Inner2 {
+            public class Inner3 {
+            }
+        }
     }
 
     private final ClassType stringType = new ClassType(TypeCategory.STRING, String.class);
@@ -110,4 +113,24 @@ public class ClassTypeTest {
 //        assertEquals("long", Types.LONG.getPrimitiveName());
 //        assertEquals("short", Types.SHORT.getPrimitiveName());
 //    }
+
+    @Test
+    public void GetEnclosingType() {
+        Type outer = new ClassType(ClassTypeTest.class);
+        Type inner = new ClassType(ClassTypeTest.Inner.class);
+        Type inner2 = new ClassType(ClassTypeTest.Inner.Inner2.class);
+        Type inner3 = new ClassType(ClassTypeTest.Inner.Inner2.Inner3.class);
+
+        assertEquals(inner2, inner3.getEnclosingType());
+        assertEquals(inner, inner2.getEnclosingType());
+        assertEquals(outer, inner.getEnclosingType());
+        assertNull(outer.getEnclosingType());
+
+        assertEquals("ClassTypeTest.Inner.Inner2.Inner3",
+                inner3.getRawName(ImmutableSet.of(outer.getPackageName()), ImmutableSet.<String>of()));
+        assertEquals("Inner2.Inner3",
+                inner3.getRawName(ImmutableSet.<String>of(), ImmutableSet.of(inner2.getFullName())));
+        assertEquals("Inner3",
+                inner3.getRawName(ImmutableSet.<String>of(), ImmutableSet.of(inner3.getFullName())));
+    }
 }

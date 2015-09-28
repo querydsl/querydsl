@@ -46,6 +46,11 @@ public class TypeAdapter implements Type {
     }
 
     @Override
+    public Type getEnclosingType() {
+        return type.getEnclosingType();
+    }
+
+    @Override
     public boolean equals(Object o) {
         return type.equals(o);
     }
@@ -112,6 +117,11 @@ public class TypeAdapter implements Type {
     @Override
     public boolean isPrimitive() {
         return type.isPrimitive();
+    }
+
+    @Override
+    public boolean isMember() {
+        return type.isMember();
     }
 
     @Override

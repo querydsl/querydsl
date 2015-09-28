@@ -55,21 +55,19 @@ public final class ClassUtils {
     public static String getName(Class<?> cl, Set<String> packages, Set<String> classes) {
         if (cl.isArray()) {
             return getName(cl.getComponentType(), packages, classes) + "[]";
-        }        
-        if (cl.getName().indexOf('$') > 0) {
-            return getName(cl.getDeclaringClass(), packages, classes) + "." + cl.getSimpleName();
         }
-        final String canonicalName = cl.getName();
-        final int i = canonicalName.lastIndexOf('.');
-        if (i == -1) {    
-            return canonicalName;        
-        } else {
-            final String packageName = canonicalName.substring(0, i);
-            if (packages.contains(packageName) || classes.contains(canonicalName)) {
-                return cl.getSimpleName();                        
-            }  else {
-                return canonicalName;
-            }
+        final String canonicalName = cl.getName().replace('$', '.');
+        final int i = cl.getName().lastIndexOf('.');
+        if (classes.contains(canonicalName)) {
+            return cl.getSimpleName();
+        } else if (cl.getEnclosingClass() != null) {
+            return getName(cl.getEnclosingClass(), packages, classes) + "." + cl.getSimpleName();
+        } else if (i == -1) {
+            return canonicalName;
+        } else if (packages.contains(canonicalName.substring(0, i))) {
+            return canonicalName.substring(i + 1);
+        }  else {
+            return canonicalName;
         }
     }
 

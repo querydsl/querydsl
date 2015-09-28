@@ -27,6 +27,8 @@ public interface Type {
 
     Type getComponentType();
 
+    Type getEnclosingType();
+
     TypeCategory getCategory();
 
     String getFullName();
@@ -48,5 +50,7 @@ public interface Type {
     boolean isFinal();
 
     boolean isPrimitive();
+
+    boolean isMember();
 
 }
