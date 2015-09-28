@@ -41,6 +41,7 @@ class AppendingFactoryExpression<T> extends FactoryExpressionBase<T> {
         return args;
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public T newInstance(Object... args) {

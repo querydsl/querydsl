@@ -16,6 +16,7 @@ public final class OrderHelper {
 
     private static final Pattern DOT = Pattern.compile("\\.");
 
+    @SuppressWarnings("unchecked")
     public static PathBuilder<?> join(JPQLQuery<?> query, PathBuilder<?> builder, Map<String, PathBuilder<?>> joins, String path) {
         PathBuilder<?> rv = joins.get(path);
         if (rv == null) {
@@ -36,6 +37,7 @@ public final class OrderHelper {
         return rv;
     }
 
+    @SuppressWarnings("unchecked")
     public static void orderBy(JPQLQuery<?> query, EntityPath<?> entity, List<String> order) {
         PathBuilder<?> builder = new PathBuilder(entity.getType(), entity.getMetadata());
         Map<String, PathBuilder<?>> joins = Maps.newHashMap();

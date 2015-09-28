@@ -36,16 +36,23 @@ class JPASubQuery<T> extends JPAQueryBase<T, JPASubQuery<T>> {
     }
 
     @Override
+    protected void reset() {
+        // do nothing
+    }
+
+    @Override
     public JPASubQuery<T> clone() {
         return new JPASubQuery<T>(getMetadata().clone());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> JPASubQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (JPASubQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public JPASubQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

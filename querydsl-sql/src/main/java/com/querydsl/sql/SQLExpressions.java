@@ -663,6 +663,7 @@ public final class SQLExpressions {
      * @param num bucket size
      * @return ntile(num)
      */
+    @SuppressWarnings("unchecked")
     public static <T extends Number & Comparable> WindowOver<T> ntile(T num) {
         return new WindowOver<T>((Class<T>) num.getClass(), SQLOps.NTILE, ConstantImpl.create(num));
     }
@@ -687,6 +688,7 @@ public final class SQLExpressions {
      * @param args arguments
      * @return rank(args)
      */
+    @SuppressWarnings("unchecked")
     public static WithinGroup<Long> rank(Object... args) {
         return rank(convertToExpressions(args));
     }
@@ -726,6 +728,7 @@ public final class SQLExpressions {
      * @param args arguments
      * @return dense_rank(args)
      */
+    @SuppressWarnings("unchecked")
     public static WithinGroup<Long> denseRank(Object... args) {
         return denseRank(convertToExpressions(args));
     }
@@ -769,6 +772,7 @@ public final class SQLExpressions {
      * @param args arguments
      * @return percent_rank(args)
      */
+    @SuppressWarnings("unchecked")
     public static WithinGroup<Double> percentRank(Object... args) {
         return percentRank(convertToExpressions(args));
     }
@@ -975,6 +979,7 @@ public final class SQLExpressions {
      * @param args arguments
      * @return cume_dist(args)
      */
+    @SuppressWarnings("unchecked")
     public static WithinGroup<Double> cumeDist(Object... args) {
         return cumeDist(convertToExpressions(args));
     }

@@ -28,6 +28,7 @@ public class MySQLTemplatesTest extends AbstractSQLTemplatesTest {
         return new MySQLTemplates();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void test() {
         SQLTemplates templates = MySQLTemplates.builder()

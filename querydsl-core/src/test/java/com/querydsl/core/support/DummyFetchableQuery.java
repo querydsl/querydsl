@@ -19,11 +19,13 @@ public class DummyFetchableQuery<T> extends DummyFetchable<T> implements Fetchab
         super(results);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> DummyFetchableQuery<U> select(Expression<U> expr) {
         return (DummyFetchableQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public DummyFetchableQuery<Tuple> select(Expression<?>... exprs) {
         return (DummyFetchableQuery<Tuple>) this;

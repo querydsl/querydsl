@@ -11,19 +11,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.core.types;
+package com.querydsl.core.types.dsl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static com.querydsl.core.alias.Alias.$;
 import static com.querydsl.core.alias.Alias.alias;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.sql.Time;
 
 import org.junit.Test;
 
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.StringExpression;
-
 public class CaseForEqBuilderTest {
+
+    public enum EnumExample { A, B }
 
     public static class Customer {
         private long annualSpending;
@@ -69,12 +70,56 @@ public class CaseForEqBuilderTest {
     public void BooleanTyped() {
         Customer c = alias(Customer.class, "customer");
 
-        Expression<Boolean> cases = $(c.getAnnualSpending())
+        BooleanExpression cases = $(c.getAnnualSpending())
             .when(1000L).then(true)
             .otherwise(false);
 
         assertNotNull(cases);
-
     }
+
+    @Test
+    public void DateType() {
+        Customer c = alias(Customer.class, "customer");
+
+        DateExpression<java.sql.Date> cases = $(c.getAnnualSpending())
+                .when(1000L).then(new java.sql.Date(0))
+                .otherwise(new java.sql.Date(0));
+
+        assertNotNull(cases);
+    }
+
+    @Test
+    public void DateTimeType() {
+        Customer c = alias(Customer.class, "customer");
+
+        DateTimeExpression<java.util.Date> cases = $(c.getAnnualSpending())
+                .when(1000L).then(new java.util.Date(0))
+                .otherwise(new java.util.Date(0));
+
+        assertNotNull(cases);
+    }
+
+    @Test
+    public void TimeType() {
+        Customer c = alias(Customer.class, "customer");
+
+        TimeExpression<Time> cases = $(c.getAnnualSpending())
+                .when(1000L).then(new Time(0))
+                .otherwise(new Time(0));
+
+        assertNotNull(cases);
+    }
+
+    @Test
+    public void EnumType() {
+        Customer c = alias(Customer.class, "customer");
+
+        EnumExpression<EnumExample> cases = $(c.getAnnualSpending())
+                .when(1000L).then(EnumExample.A)
+                .otherwise(EnumExample.B);
+
+        assertNotNull(cases);
+    }
+
 
 }

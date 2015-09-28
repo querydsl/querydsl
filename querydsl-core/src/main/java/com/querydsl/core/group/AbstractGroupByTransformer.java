@@ -63,6 +63,7 @@ abstract class AbstractGroupByTransformer<K, T> implements ResultTransformer<T> 
 
     protected final Expression<?>[] expressions;
 
+    @SuppressWarnings("unchecked")
     AbstractGroupByTransformer(Expression<K> key, Expression<?>... expressions) {
         List<Expression<?>> projection = new ArrayList<Expression<?>>(expressions.length);
         groupExpressions.add(new GOne<K>(key));

@@ -264,6 +264,7 @@ public class SQLSerializerTest {
         assertEquals("(SURVEY.ID, SURVEY.NAME) in (select SURVEY.ID, SURVEY.NAME\nfrom SURVEY SURVEY)", str);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void WithRecursive() {
         /*with sub (id, firstname, superior_id) as (
@@ -298,6 +299,7 @@ public class SQLSerializerTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void WithRecursive2() {
         /*with sub (id, firstname, superior_id) as (

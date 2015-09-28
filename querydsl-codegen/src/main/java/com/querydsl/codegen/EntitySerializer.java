@@ -64,17 +64,25 @@ public class EntitySerializer implements Serializer {
         this.keywords = keywords;
     }
 
+    private boolean superTypeHasEntityFields(EntityType model) {
+        Supertype superType = model.getSuperType();
+        return null != superType && null != superType.getEntityType()
+                && superType.getEntityType().hasEntityFields();
+    }
+
     protected void constructors(EntityType model, SerializerConfig config,
             CodeWriter writer) throws IOException {
+
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
 
-        boolean hasEntityFields = model.hasEntityFields();
+        boolean hasEntityFields = model.hasEntityFields() || superTypeHasEntityFields(model);
         boolean stringOrBoolean = model.getOriginalCategory() == TypeCategory.STRING
                 || model.getOriginalCategory() == TypeCategory.BOOLEAN;
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
         String additionalParams = getAdditionalConstructorParameter(model);
         String classCast = localName.equals(genericName) ? EMPTY : "(Class) ";
+
 
         // String
         constructorsForVariables(writer, model);
@@ -91,6 +99,7 @@ public class EntitySerializer implements Serializer {
             Type type = new ClassType(Path.class, new TypeExtends(simpleModel));
             writer.beginConstructor(new Parameter("path", type));
         }
+
         if (!hasEntityFields) {
             if (stringOrBoolean) {
                 writer.line("super(path.getMetadata());");
@@ -161,7 +170,7 @@ public class EntitySerializer implements Serializer {
 
         boolean stringOrBoolean = model.getOriginalCategory() == TypeCategory.STRING
                 || model.getOriginalCategory() == TypeCategory.BOOLEAN;
-        boolean hasEntityFields = model.hasEntityFields();
+        boolean hasEntityFields = model.hasEntityFields() || superTypeHasEntityFields(model);
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
         String additionalParams = hasEntityFields ? "" : getAdditionalConstructorParameter(model);
 
@@ -315,7 +324,7 @@ public class EntitySerializer implements Serializer {
     }
 
     protected void introDefaultInstance(CodeWriter writer, EntityType model, String defaultName) throws IOException {
-        String simpleName = !defaultName.isEmpty() ? defaultName : model.getUncapSimpleName();
+        String simpleName = !defaultName.isEmpty() ? defaultName : model.getModifiedSimpleName();
         Type queryType = typeMappings.getPathType(model, model, true);
         String alias = simpleName;
         if (keywords.contains(simpleName.toUpperCase())) {
@@ -387,6 +396,7 @@ public class EntitySerializer implements Serializer {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected void introImports(CodeWriter writer, SerializerConfig config,
             EntityType model) throws IOException {
         writer.staticimports(PathMetadataFactory.class);
@@ -495,7 +505,7 @@ public class EntitySerializer implements Serializer {
             inits.add(0, STAR);
             String initsAsString = QUOTE + JOINER.join(inits) + QUOTE;
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
-        } else if (model.hasEntityFields()) {
+        } else if (model.hasEntityFields() || superTypeHasEntityFields(model)) {
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT2");
         }
     }

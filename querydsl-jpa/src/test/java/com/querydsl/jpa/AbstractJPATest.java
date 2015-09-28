@@ -742,6 +742,20 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoEclipseLink(HSQLDB)
+    public void FactoryExpressions() {
+        QCat cat = QCat.cat;
+        QCat cat2 = new QCat("cat2");
+        QCat kitten = new QCat("kitten");
+        JPQLQuery<Tuple> query = query().from(cat)
+                .leftJoin(cat.mate, cat2)
+                .leftJoin(cat2.kittens, kitten)
+                .select(Projections.tuple(cat.id, new QFamily(cat, cat2, kitten).skipNulls()));
+        assertEquals(6, query.fetch().size());
+        assertNotNull(query.limit(1).fetchOne());
+    }
+
+    @Test
     @NoEclipseLink @NoOpenJPA @NoBatooJPA
     public void Fetch() {
         QMammal mammal = QMammal.mammal;
@@ -852,6 +866,20 @@ public abstract class AbstractJPATest {
         NumberPath<Integer> length = Expressions.numberPath(Integer.class, "len");
         assertEquals(ImmutableList.of(4, 6, 7, 8),
                 query().select(cat.name.length().as(length)).from(cat).orderBy(length.asc()).groupBy(length).fetch());
+    }
+
+    @Test
+    public void GroupBy_Results() {
+        QueryResults<Integer> results = query().from(cat).groupBy(cat.id).select(cat.id).fetchResults();
+        assertEquals(6, results.getTotal());
+        assertEquals(6, results.getResults().size());
+    }
+
+    @Test
+    public void GroupBy_Results2() {
+        QueryResults<Integer> results = query().from(cat).groupBy(cat.birthdate).select(cat.id.max()).fetchResults();
+        assertEquals(1, results.getTotal());
+        assertEquals(1, results.getResults().size());
     }
 
     @Test

@@ -33,6 +33,7 @@ public class MultiLineStringPath<T extends MultiLineString> extends MultiLineStr
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public MultiLineStringPath(Path<?> parent, String property) {
         this((Class<? extends T>) MultiLineString.class, parent, property);
     }
@@ -41,6 +42,7 @@ public class MultiLineStringPath<T extends MultiLineString> extends MultiLineStr
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public MultiLineStringPath(PathMetadata metadata) {
         this((Class<? extends T>) MultiLineString.class, metadata);
     }
@@ -50,6 +52,7 @@ public class MultiLineStringPath<T extends MultiLineString> extends MultiLineStr
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public MultiLineStringPath(String var) {
         this((Class<? extends T>) MultiLineString.class, PathMetadataFactory.forVariable(var));
     }

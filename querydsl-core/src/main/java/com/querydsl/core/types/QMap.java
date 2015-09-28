@@ -49,6 +49,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      *
      * @param args
      */
+    @SuppressWarnings("unchecked")
     protected QMap(Expression<?>... args) {
         super((Class) Map.class);
         this.args = ImmutableList.copyOf(args);
@@ -59,6 +60,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      *
      * @param args
      */
+    @SuppressWarnings("unchecked")
     protected QMap(ImmutableList<Expression<?>> args) {
         super((Class) Map.class);
         this.args = args;
@@ -69,6 +71,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      *
      * @param args
      */
+    @SuppressWarnings("unchecked")
     protected QMap(Expression<?>[]... args) {
         super((Class) Map.class);
         ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();

@@ -6,6 +6,7 @@ public final class Serialization {
 
     private Serialization() { }
 
+    @SuppressWarnings("unchecked")
     public static <T> T serialize(T obj) {
         try {
             // serialize

@@ -60,6 +60,7 @@ public class HQLTemplates extends JPQLTemplates {
         this(DEFAULT_ESCAPE);
     }
 
+    @SuppressWarnings("unchecked")
     public HQLTemplates(char escape) {
         super(escape, QUERY_HANDLER);
 

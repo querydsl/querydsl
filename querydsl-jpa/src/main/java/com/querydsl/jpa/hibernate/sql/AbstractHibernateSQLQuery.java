@@ -150,6 +150,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
         return new NativeSQLSerializer(configuration, true);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<T> fetch() {
         try {
@@ -205,7 +206,6 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     }
 
     protected void reset() {
-        queryMixin.getMetadata().reset();
         cleanupMDC();
     }
 

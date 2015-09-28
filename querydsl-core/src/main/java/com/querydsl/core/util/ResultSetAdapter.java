@@ -323,6 +323,7 @@ public class ResultSetAdapter implements ResultSet {
         return rs.getObject(columnIndex);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
         // this getObject(int, Class) is available in JDK 7
@@ -340,6 +341,7 @@ public class ResultSetAdapter implements ResultSet {
         return rs.getObject(columnLabel);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
         // this getObject(String, Class) is available in JDK 7

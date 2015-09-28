@@ -63,6 +63,7 @@ final class SpatialSupport {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static void addImports(AbstractModule module, String packageName) {
         Set<String> imports = module.get(Set.class, CodegenModule.IMPORTS);
         if (imports.isEmpty()) {

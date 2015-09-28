@@ -55,9 +55,7 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
         return serializer;
     }
 
-    protected void reset() {
-        queryMixin.getMetadata().reset();
-    }
+    protected abstract void reset();
 
     @Override
     public Q fetchJoin() {
@@ -78,6 +76,7 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
         return queryMixin.from(args);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <P> Q from(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.from(Expressions.as((Path) target, alias));

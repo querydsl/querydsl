@@ -124,6 +124,7 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
         rows.close();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void createQuery() {
         List<Tuple> rows = query().from(cat).select(cat.id, cat.name).createQuery().list();
@@ -132,6 +133,7 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void createQuery2() {
         List<Tuple> rows = query().from(cat).select(new Expression[]{cat.id, cat.name}).createQuery().list();

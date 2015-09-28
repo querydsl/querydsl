@@ -189,6 +189,22 @@ public class HibernateDomainExporterTest {
         CompileUtils.compile("target/gen5");
     }
 
+    @Test
+    public void Execute_CompositeKey() throws IOException {
+       // See https://github.com/querydsl/querydsl/issues/1459
+
+        FileUtils.delete(new File("target/gen18"));
+
+        Configuration config = new Configuration();
+        config.addFile(new File("src/test/resources/route1.hbm.xml"));
+        config.addFile(new File("src/test/resources/route2.hbm.xml"));
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q",
+                new File("target/gen18"), serializerConfig, config);
+        exporter.execute();
+
+        CompileUtils.compile("target/gen18");
+    }
+
     private static void assertContains(File file, String... strings) throws IOException {
         assertTrue(file.getPath() + " doesn't exist", file.exists());
         String result = Files.toString(file, Charsets.UTF_8);

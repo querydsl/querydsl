@@ -152,6 +152,7 @@ public class SerializationTest {
                 "on not (SURVEY.NAME like tokFunc.prop escape '\\')", q.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Union() {
         Expression<?> q = union(select(survey.all()).from(survey),
@@ -165,6 +166,7 @@ public class SerializationTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Union_GroupBy() {
         Expression<?> q = union(select(survey.all()).from(survey),
@@ -180,6 +182,7 @@ public class SerializationTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Union2() {
         Expression<?> q = new SQLQuery<Void>().union(survey,

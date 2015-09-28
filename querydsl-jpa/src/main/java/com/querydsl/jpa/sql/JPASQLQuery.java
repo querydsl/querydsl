@@ -64,12 +64,14 @@ public class JPASQLQuery<T> extends AbstractJPASQLQuery<T, JPASQLQuery<T>> {
         return q;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> JPASQLQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (JPASQLQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public JPASQLQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

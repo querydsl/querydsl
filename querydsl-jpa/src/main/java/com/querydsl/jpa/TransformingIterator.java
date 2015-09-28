@@ -52,6 +52,7 @@ public class TransformingIterator<T> implements CloseableIterator<T> {
         return iterator.hasNext();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T next() {
         Object result = iterator.next();

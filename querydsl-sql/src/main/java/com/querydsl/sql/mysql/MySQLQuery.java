@@ -249,12 +249,14 @@ public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
         return q;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> MySQLQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         return (MySQLQuery<U>) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public MySQLQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);

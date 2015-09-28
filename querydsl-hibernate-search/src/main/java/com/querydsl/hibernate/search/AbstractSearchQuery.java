@@ -47,6 +47,7 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
 
     private final FullTextSession session;
 
+    @SuppressWarnings("unchecked")
     public AbstractSearchQuery(FullTextSession session, EntityPath<T> path) {
         this.queryMixin = new QueryMixin<Q>((Q) this);
         this.session = session;

@@ -23,6 +23,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.*;
 
+import com.google.common.base.Function;
 import com.mysema.codegen.model.*;
 import com.querydsl.codegen.*;
 import com.querydsl.core.annotations.QueryExclude;
@@ -52,6 +53,8 @@ final class ExtendedTypeFactory {
     private final QueryTypeFactory queryTypeFactory;
 
     private boolean doubleIndexEntities = true;
+
+    private Function<EntityType, String> variableNameFunction;
 
     private final TypeVisitor<Type, Boolean> visitor = new SimpleTypeVisitorAdapter<Type, Boolean>() {
 
@@ -251,7 +254,9 @@ final class ExtendedTypeFactory {
             ProcessingEnvironment env,
             Set<Class<? extends Annotation>> annotations,
             TypeMappings typeMappings,
-            QueryTypeFactory queryTypeFactory) {
+            QueryTypeFactory queryTypeFactory,
+            Function<EntityType,
+            String> variableNameFunction) {
         this.env = env;
         this.defaultType = new TypeExtends(Types.OBJECT);
         this.entityAnnotations = annotations;
@@ -264,6 +269,7 @@ final class ExtendedTypeFactory {
         this.mapType = getErasedType(Map.class);
         this.typeMappings = typeMappings;
         this.queryTypeFactory = queryTypeFactory;
+        this.variableNameFunction = variableNameFunction;
     }
 
     private TypeMirror getErasedType(Class<?> clazz) {
@@ -387,7 +393,7 @@ final class ExtendedTypeFactory {
         for (Class<? extends Annotation> entityAnn : entityAnnotations) {
             if (typeElement.getAnnotation(entityAnn) != null ||
                     (superTypeElement != null && superTypeElement.getAnnotation(entityAnn) != null)) {
-                EntityType entityType = new EntityType(type);
+                EntityType entityType = new EntityType(type, variableNameFunction);
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
                 return entityType;
             }
@@ -470,7 +476,7 @@ final class ExtendedTypeFactory {
             if (value instanceof EntityType) {
                 entityType = (EntityType) value;
             } else {
-                entityType = new EntityType(value);
+                entityType = new EntityType(value, variableNameFunction);
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
             }
             entityTypeCache.put(key, entityType);
@@ -493,7 +499,7 @@ final class ExtendedTypeFactory {
 
         for (Class<? extends Annotation> entityAnn : entityAnnotations) {
             if (typeElement.getAnnotation(entityAnn) != null) {
-                EntityType entityType = new EntityType(enumType);
+                EntityType entityType = new EntityType(enumType, variableNameFunction);
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
                 return entityType;
             }

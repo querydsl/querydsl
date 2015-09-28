@@ -33,6 +33,7 @@ public class PolyhedralSurfacePath<T extends PolyHedralSurface> extends Polyhedr
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public PolyhedralSurfacePath(Path<?> parent, String property) {
         this((Class<? extends T>) PolyHedralSurface.class, parent, property);
     }
@@ -41,6 +42,7 @@ public class PolyhedralSurfacePath<T extends PolyHedralSurface> extends Polyhedr
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public PolyhedralSurfacePath(PathMetadata metadata) {
         this((Class<? extends T>) PolyHedralSurface.class, metadata);
     }
@@ -50,6 +52,7 @@ public class PolyhedralSurfacePath<T extends PolyHedralSurface> extends Polyhedr
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public PolyhedralSurfacePath(String var) {
         this((Class<? extends T>) PolyHedralSurface.class, PathMetadataFactory.forVariable(var));
     }

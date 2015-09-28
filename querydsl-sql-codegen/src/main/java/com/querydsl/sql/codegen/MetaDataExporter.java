@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
@@ -127,7 +128,7 @@ public class MetaDataExporter {
             String simpleName = module.getPrefix() + className + module.getSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
                     packageName + "." + simpleName,  packageName, simpleName, false, false);
-            classModel = new EntityType(classTypeModel);
+            classModel = new EntityType(classTypeModel, module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
             typeMappings.register(classModel, classModel);
 
         } else {
@@ -135,7 +136,7 @@ public class MetaDataExporter {
             String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
                     beanPackage + "." + simpleName, beanPackage, simpleName, false, false);
-            classModel = new EntityType(classTypeModel);
+            classModel = new EntityType(classTypeModel, module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
 
             Type mappedType = queryTypeFactory.create(classModel);
             entityToWrapped.put(classModel, mappedType);

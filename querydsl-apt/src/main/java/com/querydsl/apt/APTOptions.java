@@ -81,6 +81,11 @@ public final class APTOptions {
      */
     public static final String QUERYDSL_UNKNOWN_AS_EMBEDDABLE = "querydsl.unknownAsEmbeddable";
 
+    /**
+     * set the variable name function class
+     */
+    public static final String QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS = "querydsl.variableNameFunctionClass";
+
     private APTOptions() { }
 
 }

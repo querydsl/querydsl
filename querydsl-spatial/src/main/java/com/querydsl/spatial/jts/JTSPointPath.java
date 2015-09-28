@@ -32,6 +32,7 @@ public class JTSPointPath<T extends Point> extends JTSPointExpression<T> impleme
 
     private final PathImpl<T> pathMixin;
 
+    @SuppressWarnings("unchecked")
     public JTSPointPath(Path<?> parent, String property) {
         this((Class<? extends T>) Point.class, parent, property);
     }
@@ -40,6 +41,7 @@ public class JTSPointPath<T extends Point> extends JTSPointExpression<T> impleme
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
+    @SuppressWarnings("unchecked")
     public JTSPointPath(PathMetadata metadata) {
         this((Class<? extends T>) Point.class, metadata);
     }
@@ -49,6 +51,7 @@ public class JTSPointPath<T extends Point> extends JTSPointExpression<T> impleme
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
+    @SuppressWarnings("unchecked")
     public JTSPointPath(String var) {
         this((Class<? extends T>) Point.class, PathMetadataFactory.forVariable(var));
     }

@@ -287,7 +287,6 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     }
 
     protected void reset() {
-        queryMixin.getMetadata().reset();
         cleanupMDC();
     }
 
