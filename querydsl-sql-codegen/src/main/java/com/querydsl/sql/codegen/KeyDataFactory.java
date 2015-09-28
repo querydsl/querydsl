@@ -157,8 +157,9 @@ public class KeyDataFactory {
         if (schemaToPackage && schemaName != null) {
             packageName = namingStrategy.appendSchema(packageName, schemaName);
         }
-        packageName = namingStrategy.getPackage(packageName, new SchemaAndTable(schemaName, table));
-        String simpleName = prefix + namingStrategy.getClassName(table) + suffix;
+        SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, table);
+        packageName = namingStrategy.getPackage(packageName, schemaAndTable);
+        String simpleName = prefix + namingStrategy.getClassName(schemaAndTable) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
     }
 

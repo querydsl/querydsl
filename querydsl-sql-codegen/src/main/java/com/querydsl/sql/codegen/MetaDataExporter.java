@@ -314,15 +314,18 @@ public class MetaDataExporter {
         String schemaName = normalize(tables.getString("TABLE_SCHEM"));
         String tableName = normalize(tables.getString("TABLE_NAME"));
 
-        SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, tableName);
+        String normalizedSchemaName = namingStrategy.normalizeSchemaName(schemaName);
+        String normalizedTableName = namingStrategy.normalizeTableName(tableName);
+
+        SchemaAndTable schemaAndTable = new SchemaAndTable(
+            normalizedSchemaName, normalizedTableName);
 
         if (!namingStrategy.shouldGenerateClass(schemaAndTable)) {
             return;
         }
 
-        String normalizedTableName = namingStrategy.normalizeTableName(tableName);
-        String className = namingStrategy.getClassName(normalizedTableName);
-        EntityType classModel = createEntityType(schemaName, normalizedTableName, className);
+        String className = namingStrategy.getClassName(schemaAndTable);
+        EntityType classModel = createEntityType(normalizedSchemaName, normalizedTableName, className);
 
         if (exportPrimaryKeys) {
             // collect primary keys

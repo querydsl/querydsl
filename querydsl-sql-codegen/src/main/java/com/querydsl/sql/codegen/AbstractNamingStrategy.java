@@ -140,4 +140,9 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
         return true;
     }
 
+    @Override
+    public String getClassName(SchemaAndTable schemaAndTable) {
+        return getClassName(schemaAndTable.getTable());
+    }
+
 }

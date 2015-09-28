@@ -39,9 +39,18 @@ public interface NamingStrategy {
 
     /**
      * Convert the given tableName to a simple class name
+     *
+     * @deprecated Use {@link #getClassName(SchemaAndTable)} instead.
+     *
      * @return
      */
+    @Deprecated
     String getClassName(String tableName);
+
+    /**
+     * Convert the given schema and table name to a simple class name.
+     */
+    String getClassName(SchemaAndTable schemaAndTable);
 
     /**
      * Get the default alias for the given EntityType
