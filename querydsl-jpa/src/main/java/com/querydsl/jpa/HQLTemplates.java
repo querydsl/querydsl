@@ -100,12 +100,6 @@ public class HQLTemplates extends JPQLTemplates {
     }
 
     @Override
-    public boolean isEnumInPathSupported() {
-        // related : http://opensource.atlassian.com/projects/hibernate/browse/HHH-5159
-        return false;
-    }
-
-    @Override
     public boolean wrapConstant(Object constant) {
         // related : https://hibernate.onjira.com/browse/HHH-6913
         Class<?> type = constant.getClass();

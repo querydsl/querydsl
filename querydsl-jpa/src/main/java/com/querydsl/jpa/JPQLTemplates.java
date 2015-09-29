@@ -160,6 +160,7 @@ public class JPQLTemplates extends Templates {
         return cl.getSimpleName().toLowerCase();
     }
 
+    @Deprecated // kept for backwards compatibility
     public boolean isEnumInPathSupported() {
         return true;
     }
