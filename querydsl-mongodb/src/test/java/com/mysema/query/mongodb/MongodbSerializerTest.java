@@ -27,6 +27,7 @@ import org.junit.Test;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mysema.query.mongodb.domain.QAddress;
 import com.mysema.query.mongodb.domain.QDummyEntity;
 import com.mysema.query.mongodb.domain.QPerson;
 import com.mysema.query.mongodb.domain.QUser;
@@ -261,6 +262,15 @@ public class MongodbSerializerTest {
         QPerson person = QPerson.person;
         assertQuery(person.id.eq(id), dbo("_id",id));
         assertQuery(person.addressId.eq(id), dbo("addressId",id));
+    }
+
+    @Test
+    public void Path() {
+        QUser user = QUser.user;
+        assertEquals("firstName", serializer.visit(user.firstName, null));
+        assertEquals("firstName", serializer.visit(user.as(QUser.class).firstName, null));
+        assertEquals("mainAddress.street", serializer.visit(user.mainAddress().street, null));
+        assertEquals("mainAddress.street", serializer.visit(user.mainAddress().as(QAddress.class).street, null));
     }
 
     private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {
