@@ -152,12 +152,10 @@ public class MetaDataExporter {
 
 
     private String normalizePackage(String packageName, SchemaAndTable schemaAndTable) {
-        String schemaName = schemaAndTable.getSchema();
         String rval = packageName;
-        if (schemaToPackage && schemaName != null) {
-            rval = namingStrategy.appendSchema(packageName, schemaName);
+        if (schemaToPackage) {
+            rval = namingStrategy.getPackage(rval, schemaAndTable);
         }
-        rval = namingStrategy.getPackage(rval, schemaAndTable);
         return rval;
     }
 
@@ -641,10 +639,17 @@ public class MetaDataExporter {
     }
 
     /**
-     * Set whether schema names should be appended to the package name
+     * Set whether schema names should be appended to the package name.
+     *
+     * <p><b>!!! Important !!!</b><i> {@link NamingStrategy#getPackage(String, SchemaAndTable)}
+     * will be invoked only if <code>schemaToPackage</code> is set to <code>true</code>.</i></p>
+     *
+     * @deprecated This flag will not be necessary in the future because the generated package name
+     * can be controlled in method {@link NamingStrategy#getPackage(String, SchemaAndTable)}.
      *
      * @param schemaToPackage
      */
+    @Deprecated
     public void setSchemaToPackage(boolean schemaToPackage) {
         this.schemaToPackage = schemaToPackage;
         module.bind(SQLCodegenModule.SCHEMA_TO_PACKAGE, schemaToPackage);

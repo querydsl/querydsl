@@ -38,6 +38,9 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
 
     @Override
     public String appendSchema(String packageName, String schemaName) {
+        if (schemaName == null) {
+          return packageName;
+        }
         String suffix = schemaName.toLowerCase();
         if (JavaSyntaxUtils.isReserved(suffix)) {
             suffix += "_";
@@ -126,7 +129,7 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
 
     @Override
     public String getPackage(String basePackage, SchemaAndTable schemaAndTable) {
-        return basePackage;
+        return appendSchema(basePackage, schemaAndTable.getSchema());
     }
 
     @Override

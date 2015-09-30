@@ -153,12 +153,11 @@ public class KeyDataFactory {
     }
 
     private Type createType(@Nullable String schemaName, String table) {
-        String packageName = this.packageName;
-        if (schemaToPackage && schemaName != null) {
-            packageName = namingStrategy.appendSchema(packageName, schemaName);
-        }
         SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, table);
-        packageName = namingStrategy.getPackage(packageName, schemaAndTable);
+        String packageName = this.packageName;
+        if (schemaToPackage) {
+            packageName = namingStrategy.getPackage(packageName, schemaAndTable);
+        }
         String simpleName = prefix + namingStrategy.getClassName(schemaAndTable) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
     }
