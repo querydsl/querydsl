@@ -19,10 +19,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Comparator;
 
+import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
 import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
@@ -47,6 +49,18 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
      * @readonly
      */
     private MavenProject project;
+
+    /**
+     * The Maven Wagon manager to use when obtaining server authentication details.
+     * @component
+     */
+    private WagonManager wagonManager;
+
+    /**
+     * The server id in settings.xml to use as an alternative to jdbcUser and jdbcPassword
+     * @parameter
+     */
+    private String server;
 
     /**
      * JDBC driver class name
@@ -475,7 +489,28 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             exporter.setConfiguration(configuration);
 
             Class.forName(jdbcDriver);
-            Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            String user;
+            String password;
+            if (server == null) {
+                user = jdbcUser;
+                password = jdbcPassword;
+            } else {
+                AuthenticationInfo info = wagonManager.getAuthenticationInfo(server);
+                if (info == null) {
+                    throw new MojoExecutionException("No authentication info for server " + server);
+                }
+
+                user = info.getUserName();
+                if (user == null) {
+                    throw new MojoExecutionException("Missing username from server " + server);
+                }
+
+                password = info.getPassword();
+                if (password == null) {
+                    throw new MojoExecutionException("Missing password from server " + server);
+                }
+            }
+            Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
             try {
                 exporter.export(conn.getMetaData());
             } finally {
@@ -501,6 +536,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
 
     public void setProject(MavenProject project) {
         this.project = project;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
     }
 
     public void setJdbcDriver(String jdbcDriver) {
