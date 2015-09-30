@@ -157,10 +157,32 @@ public interface NamingStrategy {
      */
     String normalizeSchemaName(String schemaName);
 
+    /**
+     * Returns <code>true</code> if the class generation of the table is required, otherwise
+     * <code>false</code>.
+     *
+     * @param schemaAndTable the schema and table
+     * @return
+     */
     boolean shouldGenerateClass(SchemaAndTable schemaAndTable);
 
+    /**
+     * Returns <code>true</code> if the foreign key reference should be generated in the table,
+     * otherwise <code>false</code>.
+     *
+     * @param schemaAndTable the schema and table
+     * @param foreignKeyData the foreign key in the table
+     * @return
+     */
     boolean shouldGenerateForeignKey(SchemaAndTable schemaAndTable, ForeignKeyData foreignKeyData);
 
+    /**
+     * Returns the package where the class of the table will be generated.
+     *
+     * @param basePackage the base package of the class generation
+     * @param schemaAndTable the schema and table
+     * @return
+     */
     String getPackage(String basePackage, SchemaAndTable schemaAndTable);
 
 }
