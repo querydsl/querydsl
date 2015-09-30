@@ -19,19 +19,16 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import javax.tools.JavaCompiler;
 
 import org.junit.*;
-import org.junit.experimental.categories.Category;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.codegen.Serializer;
-import com.querydsl.core.testutil.SlowTest;
 import com.querydsl.core.util.FileUtils;
 
 public class MetaDataExporterTest {
@@ -40,8 +37,6 @@ public class MetaDataExporterTest {
             new BeanSerializer());
 
     private static Connection connection;
-
-    private Statement statement;
 
     private Serializer beanSerializer;
 
@@ -60,7 +55,10 @@ public class MetaDataExporterTest {
         Class.forName("org.h2.Driver");
         String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
         connection = DriverManager.getConnection(url, "sa", "");
+        createTables(connection);
+    }
 
+    static void createTables(Connection connection) throws SQLException {
         Statement stmt = connection.createStatement();
 
         try {
@@ -122,8 +120,6 @@ public class MetaDataExporterTest {
         } finally {
             stmt.close();
         }
-
-
     }
 
     @AfterClass
@@ -133,14 +129,9 @@ public class MetaDataExporterTest {
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
-        statement = connection.createStatement();
         metadata = connection.getMetaData();
     }
 
-    @After
-    public void tearDown() throws SQLException {
-        statement.close();
-    }
 
     private static final NamingStrategy defaultNaming = new DefaultNamingStrategy();
 
@@ -159,35 +150,6 @@ public class MetaDataExporterTest {
         clean = false;
         test("Q", "", "", "", defaultNaming, "target/1", false, false, false);
         assertEquals(lastModified, file.lastModified());
-    }
-
-    @Test
-    @Category(SlowTest.class)
-    public void Multiple() throws SQLException {
-        // TODO : refactor this to use new JUnit constructs
-        List<String> emptyString = Collections.singletonList("");
-        boolean[] trueAndFalse = new boolean[]{true, false};
-        int counter = 0;
-        for (boolean withBeans : trueAndFalse) {
-        for (boolean withInnerClasses : trueAndFalse) {
-        for (boolean schemaToPackage : trueAndFalse) {
-        for (boolean exportColumns : trueAndFalse) {
-        for (boolean withOriginalPositioning : trueAndFalse) {
-        for (NamingStrategy ns : Arrays.asList(defaultNaming, originalNaming)) {
-        for (String namePrefix : Arrays.asList("", "Q", "Query")) {
-        for (String nameSuffix : Arrays.asList("", "Type")) {
-        for (String beanPrefix : withBeans ? Arrays.asList("", "Bean") : emptyString) {
-        for (String beanSuffix : withBeans ? Arrays.asList("", "Bean") : emptyString) {
-        for (String beanPackage : withBeans ? Arrays.asList("test2", null) : emptyString) {
-        for (Serializer beanSerializer : BEAN_SERIALIZERS) {
-            counter++;
-            this.beanPackageName = beanPackage;
-            this.schemaToPackage = schemaToPackage;
-            this.exportColumns = exportColumns;
-            this.beanSerializer = beanSerializer;
-            test(namePrefix, nameSuffix, beanPrefix, beanSuffix,
-                 ns, "target/multiple_" + counter, withBeans, withInnerClasses, withOriginalPositioning);
-        } } } } } } } } } } } }
     }
 
     @Test
