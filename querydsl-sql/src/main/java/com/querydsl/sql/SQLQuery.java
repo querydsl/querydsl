@@ -15,6 +15,8 @@ package com.querydsl.sql;
 
 import java.sql.Connection;
 
+import javax.inject.Provider;
+
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
@@ -34,7 +36,7 @@ public class SQLQuery<T> extends AbstractSQLQuery<T, SQLQuery<T>> {
      * clone method
      */
     public SQLQuery() {
-        super(null, Configuration.DEFAULT, new DefaultQueryMetadata());
+        super((Connection) null, Configuration.DEFAULT, new DefaultQueryMetadata());
     }
 
     /**
@@ -44,7 +46,7 @@ public class SQLQuery<T> extends AbstractSQLQuery<T, SQLQuery<T>> {
      * @param templates SQLTemplates to use
      */
     public SQLQuery(SQLTemplates templates) {
-        super(null, new Configuration(templates), new DefaultQueryMetadata());
+        super((Connection) null, new Configuration(templates), new DefaultQueryMetadata());
     }
 
     /**
@@ -74,7 +76,7 @@ public class SQLQuery<T> extends AbstractSQLQuery<T, SQLQuery<T>> {
      * @param configuration configuration
      */
     public SQLQuery(Configuration configuration) {
-        this(null, configuration);
+        this((Connection) null, configuration);
     }
 
     /**
@@ -97,6 +99,28 @@ public class SQLQuery<T> extends AbstractSQLQuery<T, SQLQuery<T>> {
     public SQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
     }
+
+    /**
+     * Create a new SQLQuery instance
+     *
+     * @param connProvider Connection to use
+     * @param configuration configuration
+     */
+    public SQLQuery(Provider<Connection> connProvider, Configuration configuration) {
+        super(connProvider, configuration, new DefaultQueryMetadata());
+    }
+
+    /**
+     * Create a new SQLQuery instance
+     *
+     * @param connProvider Connection to use
+     * @param configuration configuration
+     * @param metadata metadata
+     */
+    public SQLQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+        super(connProvider, configuration, metadata);
+    }
+
 
     @Override
     public SQLQuery<T> clone(Connection conn) {

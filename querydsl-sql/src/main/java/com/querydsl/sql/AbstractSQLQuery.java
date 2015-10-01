@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.inject.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,10 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private static final QueryFlag rowCountFlag = new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() ");
 
     @Nullable
-    private final Connection conn;
+    private Provider<Connection> connProvider;
+
+    @Nullable
+    private Connection conn;
 
     protected SQLListeners listeners;
 
@@ -77,6 +81,17 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(new QueryMixin<Q>(metadata, false), configuration);
         this.conn = conn;
+        this.listeners = new SQLListeners(configuration.getListeners());
+        this.useLiterals = configuration.getUseLiterals();
+    }
+
+    public AbstractSQLQuery(Provider<Connection> connProvider, Configuration configuration) {
+        this(connProvider, configuration, new DefaultQueryMetadata());
+    }
+
+    public AbstractSQLQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+        super(new QueryMixin<Q>(metadata, false), configuration);
+        this.connProvider = connProvider;
         this.listeners = new SQLListeners(configuration.getListeners());
         this.useLiterals = configuration.getUseLiterals();
     }
@@ -187,7 +202,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     @Nullable
-    private <T> T get(ResultSet rs, Expression<?> expr, int i, Class<T> type) throws SQLException {
+    private <U> U get(ResultSet rs, Expression<?> expr, int i, Class<U> type) throws SQLException {
         return configuration.get(rs, expr instanceof Path ? (Path<?>) expr : null, i, type);
     }
 
@@ -240,7 +255,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public ResultSet getResults(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
 
-        SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
         List<Object> constants = ImmutableList.of();
 
@@ -286,7 +301,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private PreparedStatement getPreparedStatement(String queryString) throws SQLException {
-        PreparedStatement statement = conn.prepareStatement(queryString);
+        PreparedStatement statement = connection().prepareStatement(queryString);
         if (statementOptions.getFetchSize() != null) {
             statement.setFetchSize(statementOptions.getFetchSize());
         }
@@ -315,7 +330,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     @SuppressWarnings("unchecked")
     private CloseableIterator<T> iterateSingle(QueryMetadata metadata, @Nullable final Expression<T> expr) {
-        SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
         List<Object> constants = ImmutableList.of();
 
@@ -388,7 +403,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     @Override
     public List<T> fetch() {
         Expression<T> expr = (Expression<T>) queryMixin.getMetadata().getProjection();
-        SQLListenerContextImpl context = startContext(conn, queryMixin.getMetadata());
+        SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
         List<Object> constants = ImmutableList.of();
 
@@ -477,7 +492,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     @SuppressWarnings("unchecked")
     @Override
     public QueryResults<T> fetchResults() {
-        parentContext = startContext(conn, queryMixin.getMetadata());
+        parentContext = startContext(connection(), queryMixin.getMetadata());
         Expression<T> expr = (Expression<T>) queryMixin.getMetadata().getProjection();
         QueryModifiers originalModifiers = queryMixin.getMetadata().getModifiers();
         try {
@@ -557,7 +572,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private long unsafeCount() throws SQLException {
-        SQLListenerContextImpl context = startContext(conn, getMetadata());
+        SQLListenerContextImpl context = startContext(connection(), getMetadata());
         String queryString = null;
         List<Object> constants = ImmutableList.of();
         PreparedStatement stmt = null;
@@ -620,6 +635,13 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     protected void cleanupMDC() {
         MDC.remove(MDC_QUERY);
         MDC.remove(MDC_PARAMETERS);
+    }
+
+    private Connection connection() {
+        if (conn == null && connProvider != null) {
+            conn = connProvider.get();
+        }
+        return conn;
     }
 
     /**

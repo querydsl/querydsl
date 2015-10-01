@@ -83,7 +83,7 @@ public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<?>> {
 
     @Override
     public MySQLQuery<?> query() {
-        return new MySQLQuery<Void>(connection.get(), configuration);
+        return new MySQLQuery<Void>(connection, configuration);
     }
 
     public MySQLReplaceClause replace(RelationalPath<?> entity) {

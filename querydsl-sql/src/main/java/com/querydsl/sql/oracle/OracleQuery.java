@@ -15,6 +15,8 @@ package com.querydsl.sql.oracle;
 
 import java.sql.Connection;
 
+import javax.inject.Provider;
+
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -62,6 +64,14 @@ public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
 
     protected OracleQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
         super(conn, new Configuration(templates), metadata);
+    }
+
+    public OracleQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+        super(connProvider, configuration, metadata);
+    }
+
+    public OracleQuery(Provider<Connection> connProvider, Configuration configuration) {
+        super(connProvider, configuration);
     }
 
     /**
