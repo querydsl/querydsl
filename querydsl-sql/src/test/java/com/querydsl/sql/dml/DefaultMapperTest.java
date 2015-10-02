@@ -3,7 +3,7 @@ package com.querydsl.sql.dml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Map;
+import java.util.*;
 
 import org.junit.Test;
 
@@ -29,6 +29,14 @@ public class DefaultMapperTest extends AbstractMapperTest {
     public void Extract2() {
         Map<Path<?>, Object> values = DefaultMapper.DEFAULT.createMap(emp, new EmployeeX());
         assertTrue(values.isEmpty());
+    }
+
+    @Test
+    public void PreservedColumnOrder() {
+        final Map<String, Path<?>> columns = DefaultMapper.DEFAULT.getColumns(emp);
+        final List<String> expectedKeySet = Arrays.asList("id", "firstname", "lastname",
+                "salary", "datefield", "timefield", "superiorId");
+        assertEquals(expectedKeySet, new ArrayList<String>(columns.keySet()));
     }
 
 }

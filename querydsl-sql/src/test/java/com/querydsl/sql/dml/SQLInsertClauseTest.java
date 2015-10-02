@@ -22,4 +22,17 @@ public class SQLInsertClauseTest {
         assertEquals(ImmutableList.of(1), sql.getBindings());
     }
 
+    @Test
+    public void GetSQLWithPreservedColumnOrder() {
+        com.querydsl.sql.domain.QEmployee emp1 = new com.querydsl.sql.domain.QEmployee("emp1");
+        SQLInsertClause insert = new SQLInsertClause(null, SQLTemplates.DEFAULT, emp1);
+        insert.populate(emp1);
+
+        SQLBindings sql = insert.getSQL().get(0);
+        assertEquals("The order of columns in generated sql should be predictable",
+                "insert into EMPLOYEE (SALARY, SUPERIOR_ID, DATEFIELD, FIRSTNAME, TIMEFIELD, ID, LASTNAME)\n" +
+                        "values (EMPLOYEE.SALARY, EMPLOYEE.SUPERIOR_ID, EMPLOYEE.DATEFIELD, EMPLOYEE.FIRSTNAME, " +
+                        "EMPLOYEE.TIMEFIELD, EMPLOYEE.ID, EMPLOYEE.LASTNAME)", sql.getSQL());
+    }
+
 }
