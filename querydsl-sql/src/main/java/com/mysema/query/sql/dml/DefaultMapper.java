@@ -15,7 +15,7 @@ package com.mysema.query.sql.dml;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.mysema.query.QueryException;
@@ -51,7 +51,7 @@ public class DefaultMapper extends AbstractMapper<Object> {
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> entity, Object bean) {
         try {
-            Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();
+            Map<Path<?>, Object> values = new LinkedHashMap<Path<?>, Object>();
             Class<?> beanClass = bean.getClass();
             Map<String, Path<?>> columns = getColumns(entity);
             for (Field beanField : ReflectionUtils.getFields(beanClass)) {
