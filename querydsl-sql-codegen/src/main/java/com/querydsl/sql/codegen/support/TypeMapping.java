@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.maven;
+package com.querydsl.sql.codegen.support;
 
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.types.Type;
@@ -24,11 +24,7 @@ import com.querydsl.sql.types.Type;
  */
 public class TypeMapping implements Mapping {
 
-    public String table;
-
-    public String column;
-
-    public String type;
+    private String table, column, type;
 
     @Override
     public void apply(Configuration configuration) {
@@ -46,6 +42,29 @@ public class TypeMapping implements Mapping {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
+    }
+
+    public String getColumn() {
+        return column;
+    }
+
+    public void setColumn(String column) {
+        this.column = column;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -11,28 +11,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.maven;
+package com.querydsl.sql.codegen.support;
 
 import com.querydsl.sql.Configuration;
 
 /**
- * {@code NumericMapping} customizes mappings of various numeric precisions to data types.
+ * Specifies mapping customization options.
  *
  * @author tiwe
- *
  */
-public class NumericMapping implements Mapping {
+public interface Mapping {
 
-    public int total, decimal;
+    /**
+     * Apply the customization to the passed in configuration.
+     *
+     * @param configuration the configuration to apply the customization to
+     */
+    void apply(Configuration configuration);
 
-    public String javaType;
-
-    @Override
-    public void apply(Configuration configuration) {
-        try {
-            configuration.registerNumeric(total, decimal, Class.forName(javaType));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

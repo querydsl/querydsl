@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.maven;
+package com.querydsl.sql.codegen.support;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.sql.Configuration;
@@ -23,9 +23,9 @@ import com.querydsl.sql.Configuration;
  */
 public class RenameMapping implements Mapping {
 
-    String fromSchema, fromTable, fromColumn;
+    private String fromSchema, fromTable, fromColumn;
 
-    String toSchema, toTable, toColumn;
+    private String toSchema, toTable, toColumn;
 
     @Override
     public void apply(Configuration configuration) {
@@ -60,5 +60,53 @@ public class RenameMapping implements Mapping {
         throw new IllegalArgumentException("Insufficient args " +
                 ImmutableList.of(fromSchema, fromTable, fromColumn) + " to " +
                 ImmutableList.of(toSchema, toTable, toColumn));
+    }
+
+    public String getFromSchema() {
+        return fromSchema;
+    }
+
+    public void setFromSchema(String fromSchema) {
+        this.fromSchema = fromSchema;
+    }
+
+    public String getFromTable() {
+        return fromTable;
+    }
+
+    public void setFromTable(String fromTable) {
+        this.fromTable = fromTable;
+    }
+
+    public String getFromColumn() {
+        return fromColumn;
+    }
+
+    public void setFromColumn(String fromColumn) {
+        this.fromColumn = fromColumn;
+    }
+
+    public String getToSchema() {
+        return toSchema;
+    }
+
+    public void setToSchema(String toSchema) {
+        this.toSchema = toSchema;
+    }
+
+    public String getToTable() {
+        return toTable;
+    }
+
+    public void setToTable(String toTable) {
+        this.toTable = toTable;
+    }
+
+    public String getToColumn() {
+        return toColumn;
+    }
+
+    public void setToColumn(String toColumn) {
+        this.toColumn = toColumn;
     }
 }
