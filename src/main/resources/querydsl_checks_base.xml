@@ -7,9 +7,8 @@
   <property name="charset" value="UTF-8"/>
   <property name="fileExtensions" value="java, properties, xml"/>
 
-  <module name="FileLength">
-    <property name="max" value="2500"/>
-  </module>
+  <!-- maximum file length 2000 lines -->
+  <module name="FileLength"/>
 
   <!-- check that there are no tab characters in the file -->
   <module name="FileTabCharacter">
@@ -27,6 +26,7 @@
     <property name="cacheFile" value="${checkstyle.cache.file}"/>
 
     <module name="SuppressWarningsHolder"/>
+    <module name="FileContentsHolder"/>
 
     <!-- <module name="ConstantName"/> -->
     <module name="LocalFinalVariableName"/>
@@ -91,6 +91,11 @@
   </module>
 
   <module name="SuppressWarningsFilter"/>
+  <module name="SuppressionCommentFilter">
+    <property name="offCommentFormat" value="CHECKSTYLERULE:OFF: ([\w\|]+)"/>
+    <property name="onCommentFormat" value="CHECKSTYLERULE:ON: ([\w\|]+)"/>
+    <property name="checkFormat" value="$1"/>
+  </module>
   <module name="UniqueProperties"/>
 
 </module>

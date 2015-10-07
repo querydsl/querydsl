@@ -1,3 +1,4 @@
+//CHECKSTYLERULE:OFF: FileLength
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
  *
@@ -2002,3 +2003,4 @@ public class SelectBase extends AbstractBaseTest {
     }
 
 }
+//CHECKSTYLERULE:ON: FileLength
