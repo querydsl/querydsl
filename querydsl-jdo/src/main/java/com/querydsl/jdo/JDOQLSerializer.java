@@ -311,6 +311,14 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             }
             append("(" + clazz.getSimpleName() + ")").handle(args.get(0));
 
+        } else if (operator == Ops.ALIAS) {
+            if (args.get(1) instanceof Path && !((Path<?>) args.get(1)).getMetadata().isRoot()) {
+                Path<?> path = (Path<?>) args.get(1);
+                args = ImmutableList.of(args.get(0),
+                        ExpressionUtils.path(path.getType(), path.getMetadata().getName()));
+            }
+            super.visitOperation(type, operator, args);
+
         } else {
             super.visitOperation(type, operator, args);
         }

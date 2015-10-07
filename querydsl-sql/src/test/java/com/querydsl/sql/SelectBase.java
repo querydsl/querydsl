@@ -86,6 +86,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @SkipForQuoted
+    public void Alias() {
+        expectedQuery = "select e.ID as id from EMPLOYEE e";
+        query().from().select(employee.id.as(employee.id)).from(employee).fetch();
+    }
+
+    @Test
     @ExcludeIn({MYSQL, ORACLE})
     @SkipForQuoted
     public void Alias_Quotes() {

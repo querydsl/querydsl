@@ -76,6 +76,11 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
+    public void Alias() {
+        assertEquals(2, query().from(product).select(product.name.as(product.name)).fetch().size());
+    }
+
+    @Test
     public void CountTests() {
         assertEquals("count", 2, query().from(product).fetchCount());
     }
