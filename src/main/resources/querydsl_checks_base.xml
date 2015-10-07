@@ -7,8 +7,9 @@
   <property name="charset" value="UTF-8"/>
   <property name="fileExtensions" value="java, properties, xml"/>
 
-  <!-- maximum file length 2000 lines -->
-  <module name="FileLength"/>
+  <module name="FileLength">
+    <property name="max" value="2500"/>
+  </module>
 
   <!-- check that there are no tab characters in the file -->
   <module name="FileTabCharacter">
