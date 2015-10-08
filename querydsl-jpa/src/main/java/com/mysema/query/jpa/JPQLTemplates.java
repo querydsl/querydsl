@@ -13,8 +13,11 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableSet;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
@@ -31,6 +34,13 @@ import com.mysema.query.types.Templates;
 public class JPQLTemplates extends Templates {
 
     public static final char DEFAULT_ESCAPE = '!';
+
+    protected static final Set<? extends Operator<?>> OTHER_LIKE_CASES
+            = ImmutableSet.<Operator<?>>of(Ops.MATCHES, Ops.MATCHES_IC,
+                    Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                    Ops.LIKE_IC, Ops.LIKE_ESCAPE_IC,
+                    Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                    Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
 
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
 
@@ -52,10 +62,7 @@ public class JPQLTemplates extends Templates {
                  Ops.BETWEEN, Ops.COL_IS_EMPTY);
 
         // other like cases
-        setPrecedence(Precedence.COMPARISON, Ops.MATCHES, Ops.MATCHES_IC,
-                Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
-                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
-                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+        setPrecedence(Precedence.COMPARISON, OTHER_LIKE_CASES);
 
         add(Ops.CASE, "case {0} end");
         add(Ops.CASE_WHEN,  "when {0} then {1} {2}", 0);

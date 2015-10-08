@@ -15,12 +15,12 @@ package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.dml.SQLInsertClause;
@@ -44,23 +44,31 @@ public class LikeEscapeBase extends AbstractBaseTest{
     }
     
     @Test
-    @Ignore
     public void Like() {        
-        assertEquals(1l, query().from(survey).where(survey.name.like("a!%")).count());
-        assertEquals(1l, query().from(survey).where(survey.name.like("a!_")).count());
-        assertEquals(3l, query().from(survey).where(survey.name.like("a%")).count());
-        assertEquals(2l, query().from(survey).where(survey.name.like("a_")).count());
+        assertEquals(0L, query().from(survey).where(survey.name.like("a!%")).count());
+        assertEquals(0L, query().from(survey).where(survey.name.like("a!_")).count());
+        assertEquals(3L, query().from(survey).where(survey.name.like("a%")).count());
+        assertEquals(2L, query().from(survey).where(survey.name.like("a_")).count());
         
-        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a_")).count());
-        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).count());
+        assertEquals(1L, query().from(survey).where(survey.name.startsWith("a_")).count());
+        assertEquals(1L, query().from(survey).where(survey.name.startsWith("a%")).count());
     }
     
     @Test
     public void Like_with_Escape() {        
-        assertEquals(1l, query().from(survey).where(survey.name.like("a!%", '!')).count());
-        assertEquals(1l, query().from(survey).where(survey.name.like("a!_", '!')).count());
-        assertEquals(3l, query().from(survey).where(survey.name.like("a%", '!')).count());
-        assertEquals(2l, query().from(survey).where(survey.name.like("a_", '!')).count());        
+        assertEquals(1L, query().from(survey).where(survey.name.like("a!%", '!')).count());
+        assertEquals(1L, query().from(survey).where(survey.name.like("a!_", '!')).count());
+        assertEquals(3L, query().from(survey).where(survey.name.like("a%", '!')).count());
+        assertEquals(2L, query().from(survey).where(survey.name.like("a_", '!')).count());
     }
 
+    @Test
+    public void Like_Escaping_Conclusion() {
+        assertTrue("Escaped like construct must return more results",
+                query().from(survey).where(survey.name.like("a!%")).count()
+                < query().from(survey).where(survey.name.like("a!%", '!')).count());
+        assertTrue("Escaped like construct must return more results",
+                query().from(survey).where(survey.name.like("a!_")).count()
+                < query().from(survey).where(survey.name.like("a!_", '!')).count());
+    }
 }

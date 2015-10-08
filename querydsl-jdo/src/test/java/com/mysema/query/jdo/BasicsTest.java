@@ -13,9 +13,17 @@
  */
 package com.mysema.query.jdo;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import java.io.IOException;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
-import java.io.IOException;
+
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.BooleanBuilder;
@@ -26,11 +34,6 @@ import com.mysema.query.jdo.test.domain.QBook;
 import com.mysema.query.jdo.test.domain.QProduct;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Projections;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 public class BasicsTest extends AbstractJDOTest {
 
@@ -222,6 +225,10 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     public void Matches() {
         assertEquals("matches", 1, query(product,product.name.matches("Sony.*")).size());
+        assertEquals(
+                query(product, product.name.matches("Sony.*")).size(),
+                query(product, product.name.likeIgnoreCase("sony%")).size()
+        );
     }
 
     @Test

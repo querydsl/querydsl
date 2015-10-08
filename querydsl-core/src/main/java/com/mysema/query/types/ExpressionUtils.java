@@ -758,6 +758,23 @@ public final class ExpressionUtils {
     }
 
     /**
+     * Converts the given expression to lower(expression)
+     *
+     * <p>Constants are lower()ed at creation time</p>
+     *
+     * @param stringExpression the string to lower()
+     * @return lower(stringExpression)
+     */
+    public static Expression<String> toLower(Expression<String> stringExpression) {
+        if (stringExpression instanceof Constant) {
+            Constant<String> constantExpression = (Constant<String>) stringExpression;
+            return ConstantImpl.create(constantExpression.getConstant().toLowerCase(Locale.ENGLISH));
+        } else {
+            return operation(String.class, Ops.LOWER, stringExpression);
+        }
+    }
+
+    /**
      * Create an expression out of the given order specifiers
      *
      * @param args

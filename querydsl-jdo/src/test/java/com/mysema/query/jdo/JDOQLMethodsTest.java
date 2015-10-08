@@ -63,6 +63,7 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
            str.substring(1).eq(knownString),
            str.substring(1,2).eq(knownString),
            str.lower().eq(knownString),
+           str.likeIgnoreCase(knownString),
            str.upper().eq(knownString),
            str.matches(".*"),
            // java.util.Collection
