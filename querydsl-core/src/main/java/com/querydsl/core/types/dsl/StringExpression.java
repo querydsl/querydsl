@@ -371,6 +371,26 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
+     * Create a {@code this like str} expression ignoring case
+     *
+     * @param str string
+     * @return this like str
+     */
+    public BooleanExpression likeIgnoreCase(String str) {
+        return Expressions.booleanOperation(Ops.LIKE_IC, mixin, ConstantImpl.create(str));
+    }
+
+    /**
+     * Create a {@code this like str} expression ignoring case
+     *
+     * @param str string
+     * @return this like str
+     */
+    public BooleanExpression likeIgnoreCase(Expression<String> str) {
+        return Expressions.booleanOperation(Ops.LIKE_IC, mixin, str);
+    }
+
+    /**
      * Create a {@code this like str} expression
      *
      * @param str string
@@ -388,6 +408,28 @@ public abstract class StringExpression extends LiteralExpression<String> {
      */
     public BooleanExpression like(Expression<String> str, char escape) {
         return Expressions.booleanOperation(Ops.LIKE_ESCAPE, mixin, str, ConstantImpl.create(escape));
+    }
+
+    /**
+     * Create a {@code this like str} expression ignoring case
+     *
+     * @param str string
+     * @param escape escape character
+     * @return this like string
+     */
+    public BooleanExpression likeIgnoreCase(String str, char escape) {
+        return Expressions.booleanOperation(Ops.LIKE_ESCAPE_IC, mixin, ConstantImpl.create(str), ConstantImpl.create(escape));
+    }
+
+    /**
+     * Create a {@code this like str} expression ignoring case
+     *
+     * @param str string
+     * @param escape escape character
+     * @return this like string
+     */
+    public BooleanExpression likeIgnoreCase(Expression<String> str, char escape) {
+        return Expressions.booleanOperation(Ops.LIKE_ESCAPE_IC, mixin, str, ConstantImpl.create(escape));
     }
 
     /**

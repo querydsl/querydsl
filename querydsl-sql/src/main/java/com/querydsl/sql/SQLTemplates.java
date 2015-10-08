@@ -26,6 +26,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
@@ -54,6 +55,12 @@ public class SQLTemplates extends Templates {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
+
+    protected static final Set<? extends Operator> OTHER_LIKE_CASES
+            = Sets.immutableEnumSet(Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+                    Ops.LIKE_IC, Ops.LIKE_ESCAPE_IC,
+                    Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+                    Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
 
     private static final CharMatcher NON_UNDERSCORE_ALPHA_NUMERIC =
             CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).or(inRange('0', '9'))

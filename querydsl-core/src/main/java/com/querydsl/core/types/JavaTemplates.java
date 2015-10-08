@@ -58,7 +58,7 @@ public class JavaTemplates extends Templates {
         add(Ops.TRIM, "{0}.trim()", Precedence.DOT);
         add(Ops.UPPER, "{0}.toUpperCase()", Precedence.DOT);
         add(Ops.MATCHES, "{0}.matches({1})");
-        add(Ops.MATCHES_IC, "{0}.matches({1})");
+        add(Ops.MATCHES_IC, "{0l}.matches({1l})");
         add(Ops.STRING_LENGTH, "{0}.length()", Precedence.DOT);
         add(Ops.STRING_IS_EMPTY, "{0}.isEmpty()", Precedence.DOT);
         add(Ops.STRING_CONTAINS, "{0}.contains({1})");

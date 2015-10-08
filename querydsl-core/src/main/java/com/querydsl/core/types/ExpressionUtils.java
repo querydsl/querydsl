@@ -13,10 +13,7 @@
  */
 package com.querydsl.core.types;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nullable;
 
@@ -827,6 +824,23 @@ public final class ExpressionUtils {
             return (Expression<?>) o;
         } else {
             return ConstantImpl.create(o);
+        }
+    }
+
+    /**
+     * Converts the given expression to lower(expression)
+     *
+     * <p>Constants are lower()ed at creation time</p>
+     *
+     * @param stringExpression the string to lower()
+     * @return lower(stringExpression)
+     */
+    public static Expression<String> toLower(Expression<String> stringExpression) {
+        if (stringExpression instanceof Constant) {
+            Constant<String> constantExpression = (Constant<String>) stringExpression;
+            return ConstantImpl.create(constantExpression.getConstant().toLowerCase(Locale.ENGLISH));
+        } else {
+            return operation(String.class, Ops.LOWER, stringExpression);
         }
     }
 

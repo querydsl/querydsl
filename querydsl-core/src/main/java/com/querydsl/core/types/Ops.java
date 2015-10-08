@@ -98,7 +98,9 @@ public enum Ops implements Operator {
     STRING_CONTAINS(Boolean.class),
     STRING_CONTAINS_IC(Boolean.class),
     LIKE(Boolean.class),
+    LIKE_IC(Boolean.class),
     LIKE_ESCAPE(Boolean.class),
+    LIKE_ESCAPE_IC(Boolean.class),
 
     // case
     CASE(Object.class),

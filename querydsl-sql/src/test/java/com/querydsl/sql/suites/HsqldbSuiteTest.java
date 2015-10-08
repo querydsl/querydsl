@@ -3,10 +3,10 @@ package com.querydsl.sql.suites;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
 
-import com.querydsl.core.testutil.H2;
+import com.querydsl.core.testutil.HSQLDB;
 import com.querydsl.sql.*;
 
-@Category(H2.class)
+@Category(HSQLDB.class)
 public class HsqldbSuiteTest extends AbstractSuite {
 
     public static class BeanPopulation extends BeanPopulationBase { }

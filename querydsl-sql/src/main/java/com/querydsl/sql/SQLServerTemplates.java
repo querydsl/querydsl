@@ -79,10 +79,7 @@ public class SQLServerTemplates extends SQLTemplates {
         setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
         setPrecedence(Precedence.OR, Ops.BETWEEN, Ops.IN, Ops.NOT_IN, Ops.LIKE, Ops.LIKE_ESCAPE);
 
-        // other like cases
-        setPrecedence(Precedence.OR, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
-                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
-                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+        setPrecedence(Precedence.OR, OTHER_LIKE_CASES);
 
         add(SQLOps.WITH_REPEATABLE_READ, "\nwith (repeatableread)");
 
