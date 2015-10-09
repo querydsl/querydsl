@@ -30,9 +30,8 @@ public class SQLInsertClauseTest {
 
         SQLBindings sql = insert.getSQL().get(0);
         assertEquals("The order of columns in generated sql should be predictable",
-                "insert into EMPLOYEE (ID, DATEFIELD, FIRSTNAME, TIMEFIELD, SUPERIOR_ID, SALARY, LASTNAME)\n" +
-                        "values (EMPLOYEE.ID, EMPLOYEE.DATEFIELD, EMPLOYEE.FIRSTNAME, EMPLOYEE.TIMEFIELD, " +
-                        "EMPLOYEE.SUPERIOR_ID, EMPLOYEE.SALARY, EMPLOYEE.LASTNAME)", sql.getSQL());
+                "insert into EMPLOYEE (ID, FIRSTNAME, LASTNAME, SALARY, DATEFIELD, TIMEFIELD, SUPERIOR_ID)\n" +
+                "values (EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.LASTNAME, EMPLOYEE.SALARY, EMPLOYEE.DATEFIELD, EMPLOYEE.TIMEFIELD, EMPLOYEE.SUPERIOR_ID)", sql.getSQL());
     }
 
 }
