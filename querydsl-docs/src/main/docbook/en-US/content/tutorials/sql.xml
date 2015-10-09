@@ -397,8 +397,30 @@
     <para>
       The ANT task <code>com.querydsl.sql.codegen.ant.AntMetaDataExporter</code>
       of the querydsl-sql module provides the same functionality as an ANT task.
-      The configuration parameters of the task are the same as for the Maven plugin.
+      The configuration parameters of the task are the same as for the Maven plugin, except for the composite types.
     </para>
+
+    <para>
+      The composite types are used without the wrapper element like in this example.
+    </para>
+
+<programlisting language="xml"><![CDATA[
+<project name="testproject" default="codegen" basedir=".">
+
+  <taskdef name="codegen" classname="com.querydsl.sql.codegen.ant.AntMetaDataExporter"/>
+
+  <target name="codegen">
+    <codegen
+      jdbcDriver="org.h2.Driver"
+      jdbcUser="sa"
+      jdbcUrl="jdbc:h2:/dbs/db1"
+      packageName="test"
+      targetFolder="target/generated-sources/java">
+      <renameMapping fromSchema="PUBLIC" toSchema="PUB"/>
+    </codegen>
+  </target>
+</project>
+]]></programlisting>
 
   </sect2>
 
