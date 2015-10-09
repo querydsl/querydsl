@@ -15,9 +15,9 @@ package com.querydsl.sql.dml;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.util.ReflectionUtils;
@@ -51,13 +51,14 @@ public class DefaultMapper extends AbstractMapper<Object> {
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> entity, Object bean) {
         try {
-            Map<Path<?>, Object> values = new LinkedHashMap<Path<?>, Object>();
+            Map<Path<?>, Object> values = Maps.newLinkedHashMap();
             Class<?> beanClass = bean.getClass();
             Map<String, Path<?>> columns = getColumns(entity);
-            for (Field beanField : ReflectionUtils.getFields(beanClass)) {
-                if (!Modifier.isStatic(beanField.getModifiers()) && columns.containsKey(beanField.getName())) {
-                    @SuppressWarnings("rawtypes")
-                    Path path = columns.get(beanField.getName());
+            // populate in column order
+            for (Map.Entry<String, Path<?>> entry : columns.entrySet()) {
+                Path<?> path = entry.getValue();
+                Field beanField = ReflectionUtils.getFieldOrNull(beanClass, entry.getKey());
+                if (beanField != null && !Modifier.isStatic(beanField.getModifiers())) {
                     beanField.setAccessible(true);
                     Object propertyValue = beanField.get(bean);
                     if (propertyValue != null) {
