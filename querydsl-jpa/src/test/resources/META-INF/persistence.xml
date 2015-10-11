@@ -228,6 +228,23 @@
         </properties>
     </persistence-unit>
 
+    <!--mssql -->
+
+  <persistence-unit name="mssql">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <properties>
+      <property name="hibernate.archive.autodetection" value="class" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2008Dialect" />
+      <property name="hibernate.connection.driver_class" value="net.sourceforge.jtds.jdbc.Driver" />
+      <property name="hibernate.connection.url" value="jdbc:jtds:sqlserver://localhost:1433/querydsl" />
+      <property name="hibernate.connection.username" value="querydsl" />
+      <property name="hibernate.connection.password" value="querydsl" />
+      <!-- <property name="hibernate.show_sql" value="true"/> -->
+      <property name="hibernate.flushMode" value="FLUSH_AUTO" />
+      <property name="hibernate.hbm2ddl.auto" value="update" />
+    </properties>
+  </persistence-unit>
+
     <!-- postgresql -->
 
     <persistence-unit name="postgresql">

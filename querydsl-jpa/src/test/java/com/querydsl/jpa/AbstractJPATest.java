@@ -444,6 +444,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(SQLSERVER)
     public void Cast_ToString() {
         for (Tuple tuple : query().from(cat).select(cat.breed, cat.breed.stringValue()).fetch()) {
             assertEquals(
@@ -453,6 +454,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(SQLSERVER)
     public void Cast_ToString_Append() {
         for (Tuple tuple : query().from(cat).select(cat.breed, cat.breed.stringValue().append("test")).fetch()) {
             assertEquals(
@@ -626,7 +628,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink({DERBY, HSQLDB})
-    @NoHibernate({DERBY, POSTGRESQL})
+    @NoHibernate({DERBY, POSTGRESQL, SQLSERVER})
     public void Date_YearWeek() {
         int value = query().from(cat).select(cat.birthdate.yearWeek()).fetchFirst();
         assertTrue(value == 200006 || value == 200005);
@@ -634,7 +636,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink({DERBY, HSQLDB})
-    @NoHibernate({DERBY, POSTGRESQL})
+    @NoHibernate({DERBY, POSTGRESQL, SQLSERVER})
     public void Date_Week() {
         int value = query().from(cat).select(cat.birthdate.week()).fetchFirst();
         assertTrue(value == 6 || value == 5);
@@ -737,6 +739,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @ExcludeIn(SQLSERVER)
     public void Enum_StartsWith() {
         assertEquals(1, query().from(company).where(company.ratingString.stringValue().startsWith("A")).fetchCount());
     }
@@ -1264,6 +1267,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoBatooJPA
+    @ExcludeIn(SQLSERVER)
     public void Order_NullsFirst() {
         assertNull(query().from(cat)
                 .orderBy(cat.dateField.asc().nullsFirst())
@@ -1272,6 +1276,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoBatooJPA
+    @ExcludeIn(SQLSERVER)
     public void Order_NullsLast() {
         assertNotNull(query().from(cat)
                 .orderBy(cat.dateField.asc().nullsLast())
@@ -1355,7 +1360,7 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @ExcludeIn({MYSQL, TERADATA})
+    @ExcludeIn({MYSQL, SQLSERVER, TERADATA})
     @NoOpenJPA
     public void StringOperations() {
         // NOTE : locate in MYSQL is case-insensitive
