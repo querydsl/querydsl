@@ -86,8 +86,8 @@ public class SQLServer2005Templates extends SQLServerTemplates {
                 for (OrderSpecifier<?> os : metadata.getOrderBy()) {
                     rn.orderBy(os);
                 }
-                Expression<?> pr = Projections.appending(metadata.getProjection(), rn.as("rn"));
-                metadata.setProjection(pr);
+                FactoryExpression<?> pr = Projections.appending(metadata.getProjection(), rn.as("rn"));
+                metadata.setProjection(FactoryExpressionUtils.wrap(pr));
                 metadata.clearOrderBy();
                 context.serializeForQuery(metadata, forCountRow);
                 context.append(outerQueryEnd);
