@@ -622,6 +622,14 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         MDC.remove(MDC_PARAMETERS);
     }
 
+    /**
+     * Set whether literals are used in SQL strings instead of parameter bindings (default: false)
+     *
+     * <p>Warning: When literals are used, prepared statement won't have any parameter bindings
+     * and also batch statements will only be simulated, but not executed as actual batch statements.</p>
+     *
+     * @param useLiterals true for literals and false for bindings
+     */
     public void setUseLiterals(boolean useLiterals) {
         this.useLiterals = useLiterals;
     }
@@ -640,6 +648,11 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     public abstract Q clone(Connection connection);
 
+    /**
+     * Set the options to be applied to the JDBC statements of this query
+     *
+     * @param statementOptions options to be applied to statements
+     */
     public void setStatementOptions(StatementOptions statementOptions) {
         this.statementOptions = statementOptions;
     }
