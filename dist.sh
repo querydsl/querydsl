@@ -2,8 +2,6 @@
 rm -rf target/dist
 mkdir -p target/dist
 
-mvn versions:set -DgenerateBackupPoms=false
-
 echo "Creating javadocs"
 mvn javadoc:aggregate
 

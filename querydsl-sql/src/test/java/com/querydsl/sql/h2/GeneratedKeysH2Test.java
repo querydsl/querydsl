@@ -35,7 +35,7 @@ public class GeneratedKeysH2Test {
     @Before
     public void setUp() throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
-        String url = "jdbc:h2:~/dbs/h2-gen";
+        String url = "jdbc:h2:./target/h2-gen";
         conn = DriverManager.getConnection(url, "sa", "");
         stmt = conn.createStatement();
     }

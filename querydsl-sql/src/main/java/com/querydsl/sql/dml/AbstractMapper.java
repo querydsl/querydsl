@@ -29,7 +29,7 @@ import com.querydsl.sql.RelationalPath;
 public abstract class AbstractMapper<T> implements Mapper<T> {
 
     protected Map<String, Path<?>> getColumns(RelationalPath<?> path) {
-        Map<String, Path<?>> columns = Maps.newHashMap();
+        Map<String, Path<?>> columns = Maps.newLinkedHashMap();
         for (Path<?> column : path.getColumns()) {
             columns.put(column.getMetadata().getName(), column);
         }

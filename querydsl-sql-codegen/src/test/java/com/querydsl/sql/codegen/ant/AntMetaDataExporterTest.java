@@ -27,7 +27,7 @@ import org.junit.Test;
 public class AntMetaDataExporterTest {
 
 //    private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
-    private final String url = "jdbc:h2:~/dbs/h2" + System.currentTimeMillis();
+    private final String url = "jdbc:h2:./target/h2" + System.currentTimeMillis();
 
     @Before
     public void setUp() throws SQLException {

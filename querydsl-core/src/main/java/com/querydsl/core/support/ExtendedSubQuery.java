@@ -16,6 +16,7 @@ package com.querydsl.core.support;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanOperation;
 
 /**
  * {@code ExtendedSubQuery} extends the {@link SubQueryExpression} interface to provide fluent
@@ -150,5 +151,19 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
      * @return this &gt;= right
      */
     BooleanExpression goe(T constant);
+
+    /**
+     * Create a {@code this is null} expression
+     *
+     * @return this is null
+     */
+     BooleanOperation isNull();
+
+    /**
+     * Create a {@code this is not null} expression
+     *
+     * @return this is not null
+     */
+     BooleanOperation isNotNull();
 
 }
