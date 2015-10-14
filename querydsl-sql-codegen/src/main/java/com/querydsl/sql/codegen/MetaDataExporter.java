@@ -120,10 +120,9 @@ public class MetaDataExporter {
 
     public MetaDataExporter() { }
 
-    protected EntityType createEntityType(@Nullable String schemaName, String tableName,
+    protected EntityType createEntityType(SchemaAndTable schemaAndTable,
             final String className) {
         EntityType classModel;
-        SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, tableName);
 
         if (beanSerializer == null) {
             String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
@@ -145,8 +144,8 @@ public class MetaDataExporter {
             typeMappings.register(classModel, mappedType);
         }
 
-        classModel.getData().put("schema", schemaName);
-        classModel.getData().put("table", tableName);
+        classModel.getData().put("schema", schemaAndTable.getSchema());
+        classModel.getData().put("table", schemaAndTable.getTable());
         return classModel;
     }
 
@@ -328,7 +327,7 @@ public class MetaDataExporter {
         }
 
         String className = namingStrategy.getClassName(schemaAndTable);
-        EntityType classModel = createEntityType(normalizedSchemaName, normalizedTableName, className);
+        EntityType classModel = createEntityType(schemaAndTable, className);
 
         if (exportPrimaryKeys) {
             // collect primary keys
@@ -370,7 +369,7 @@ public class MetaDataExporter {
         }
 
         // serialize model
-        serialize(classModel);
+        serialize(classModel, schemaAndTable);
 
         logger.info("Exported " + tableName + " successfully");
     }
@@ -383,13 +382,9 @@ public class MetaDataExporter {
         }
     }
 
-    private void serialize(EntityType type) {
+    private void serialize(EntityType type, SchemaAndTable schemaAndTable) {
         try {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
-
-            String schemaName = (String) type.getData().get("schema");
-            String tableName = (String) type.getData().get("table");
-            SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, tableName);
 
             if (beanSerializer != null) {
                 String packageName = normalizePackage(beanPackageName, schemaAndTable);
