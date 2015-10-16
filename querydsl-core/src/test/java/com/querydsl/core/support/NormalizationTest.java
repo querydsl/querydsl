@@ -58,6 +58,7 @@ public class NormalizationTest {
         assertEquals("where 11 = 11", Normalization.normalize("where 5.5*2 = 11"));
         assertEquals("where 10.8 = 10.8", Normalization.normalize("where 5.4 * 2 = 10.8"));
         assertEquals("where 9 = 9 and 13 = 13", Normalization.normalize("where 2 * 3 + 3 = 9 and 5 + 4 * 2 = 13"));
+        assertEquals("where column * 2.86 ASC", Normalization.normalize("where column * 1.3 * 2.2 ASC"));
     }
 
     @Test

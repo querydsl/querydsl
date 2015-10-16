@@ -26,7 +26,7 @@ final class Normalization {
 
     // TODO simplify
     private static final Pattern FULL_OPERATION = Pattern.compile(
-            "(?<![\\d*/\"?' ])" + "(\\b|\\(|\\s+)"  +
+            "(?<![\\d/\"?' ])" + "(\\b|\\(|\\s+)"  +
             "(" + NUMBER + WS + "[+\\-/*]" + WS + ")+" + NUMBER + WS +
             "(?![\\d*/\"' ])");
 
