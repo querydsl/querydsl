@@ -50,6 +50,15 @@ public class JPACollectionAnyVisitorTest {
     }
 
     @Test
+    public void Simple_BooleanOperation_LongPath() {
+        Predicate predicate = cat.kittens.any().kittens.any().name.eq("Ruth123");
+        assertEquals("exists (select 1\n" +
+                "from cat.kittens as cat_kittens_0\n" +
+                "  inner join cat_kittens_0.kittens as cat_kittens_0_kittens_1\n" +
+                "where cat_kittens_0_kittens_1.name = ?1)", serialize(predicate));
+    }
+
+    @Test
     public void Simple_BooleanOperation_ElementCollection() {
         QEmployee employee = QEmployee.employee;
         Predicate predicate = employee.jobFunctions.any().stringValue().eq("CODER");

@@ -42,7 +42,7 @@ class JPACollectionAnyVisitor extends CollectionAnyVisitor {
             Path<?> child = c.paths.get(i).getMetadata().getParent();
             EntityPath<Object> replacement = (EntityPath<Object>) c.replacements.get(i);
             if (c.paths.get(i).getType().isAnnotationPresent(Entity.class)) {
-                query.from(Expressions.as(
+                query.addJoin(i == 0 ? JoinType.DEFAULT : JoinType.INNERJOIN, Expressions.as(
                         Expressions.listPath((Class) c.paths.get(i).getType(), SimplePath.class,
                                 child.getMetadata()), replacement));
             } else {

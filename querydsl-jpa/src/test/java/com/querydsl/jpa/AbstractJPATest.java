@@ -284,6 +284,11 @@ public abstract class AbstractJPATest {
         assertEquals(1, query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).fetchCount());
     }
 
+    @Test
+    public void Any_Any() {
+        assertEquals(1, query().from(cat).where(cat.kittens.any().kittens.any().name.eq("Ruth123")).fetchCount());
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     public void ArrayProjection() {
