@@ -48,8 +48,6 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private final Templates templates;
 
-    private boolean normalize = true;
-
     private boolean strict = true;
 
     public SerializerBase(Templates templates) {
@@ -170,8 +168,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         this.anonParamPrefix = prefix;
     }
 
+    /**
+     * Not used anymore
+     */
+    @Deprecated
     public void setNormalize(boolean normalize) {
-        this.normalize = normalize;
+        // not used anymore
     }
 
     public void setStrict(boolean strict) {
@@ -180,11 +182,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     @Override
     public String toString() {
-        if (normalize) {
-            return Normalization.normalize(builder.toString());
-        } else {
-            return builder.toString();
-        }
+        return builder.toString();
     }
 
     @Override
