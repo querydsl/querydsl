@@ -1,3 +1,4 @@
+//CHECKSTYLERULE:OFF: FileLength
 /*
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
  *
@@ -83,6 +84,13 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(min, query().from(employee).select(employee.salary.min()).fetchOne().intValue());
         assertEquals(avg, query().from(employee).select(employee.salary.avg()).fetchOne().intValue());
         assertEquals(max, query().from(employee).select(employee.salary.max()).fetchOne().intValue());
+    }
+
+    @Test
+    @SkipForQuoted
+    public void Alias() {
+        expectedQuery = "select e.ID as id from EMPLOYEE e";
+        query().from().select(employee.id.as(employee.id)).from(employee).fetch();
     }
 
     @Test
@@ -1995,3 +2003,4 @@ public class SelectBase extends AbstractBaseTest {
     }
 
 }
+//CHECKSTYLERULE:ON: FileLength

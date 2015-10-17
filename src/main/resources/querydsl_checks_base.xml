@@ -26,6 +26,7 @@
     <property name="cacheFile" value="${checkstyle.cache.file}"/>
 
     <module name="SuppressWarningsHolder"/>
+    <module name="FileContentsHolder"/>
 
     <!-- <module name="ConstantName"/> -->
     <module name="LocalFinalVariableName"/>
@@ -90,6 +91,11 @@
   </module>
 
   <module name="SuppressWarningsFilter"/>
+  <module name="SuppressionCommentFilter">
+    <property name="offCommentFormat" value="CHECKSTYLERULE:OFF: ([\w\|]+)"/>
+    <property name="onCommentFormat" value="CHECKSTYLERULE:ON: ([\w\|]+)"/>
+    <property name="checkFormat" value="$1"/>
+  </module>
   <module name="UniqueProperties"/>
 
 </module>

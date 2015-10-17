@@ -213,6 +213,11 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Alias() {
+        assertEquals(6, query().from(cat).select(cat.id.as(cat.id)).fetch().size());
+    }
+
+    @Test
     public void Any_And_Gt() {
         assertEquals(0, query().from(cat).where(
                 cat.kittens.any().name.eq("Ruth123"),
