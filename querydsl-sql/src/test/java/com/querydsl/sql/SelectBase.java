@@ -138,7 +138,6 @@ public class SelectBase extends AbstractBaseTest {
 
         assertEquals(12, firstResult(one.add(two).multiply(four)).intValue());
         assertEquals(2, firstResult(four.multiply(one).divide(two)).intValue());
-        assertEquals(2, firstResult(four.multiply(one.divide(two))).intValue());
         assertEquals(6, firstResult(four.divide(two).multiply(three)).intValue());
         assertEquals(1, firstResult(four.divide(two.multiply(two))).intValue());
     }
@@ -150,6 +149,8 @@ public class SelectBase extends AbstractBaseTest {
         NumberExpression<Integer> three = Expressions.numberTemplate(Integer.class, "(3.0)");
         NumberExpression<Integer> four = Expressions.numberTemplate(Integer.class, "(4.0)");
         arithmeticTests(one, two, three, four);
+        // the following one doesn't work with integer arguments
+        assertEquals(2, firstResult(four.multiply(one.divide(two))).intValue());
     }
 
     @Test

@@ -20,6 +20,8 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.MathUtils;
 
 /**
  * {@code Template} provides serialization templates for {@link Operation},
@@ -192,6 +194,56 @@ public final class Template implements Serializable {
 
     }
 
+    /**
+     * Math operation
+     * TODO support for constant operands
+     */
+    public static final class Operation extends Element {
+
+        private static final long serialVersionUID = 1400801176778801584L;
+
+        private final int i1, i2;
+
+        private final Operator operator;
+
+        private final boolean asString;
+
+        public Operation(int i1, int i2, Operator operator, boolean asString) {
+            this.i1 = i1;
+            this.i2 = i2;
+            this.operator = operator;
+            this.asString = asString;
+        }
+
+        @Override
+        public Object convert(List<?> args) {
+            Object o1 = args.get(i1);
+            Object o2 = args.get(i2);
+            if (isNumber(o1) && isNumber(o2)) {
+                return MathUtils.result(asNumber(o1), asNumber(o2), operator);
+            } else {
+                Expression<?> e1 = asExpression(o1);
+                Expression<?> e2 = asExpression(o2);
+                return ExpressionUtils.operation(e1.getType(), operator, e1, e2);
+            }
+        }
+
+        private boolean isNumber(Object o) {
+            return o instanceof Number || o instanceof Constant
+                    && ((Constant<?>) o).getConstant() instanceof Number;
+        }
+
+        @Override
+        public boolean isString() {
+            return asString;
+        }
+
+        @Override
+        public String toString() {
+            return i1 + " " + operator + " " + i2;
+        }
+    }
+
     private final ImmutableList<Element> elements;
 
     private final String template;
@@ -224,6 +276,24 @@ public final class Template implements Serializable {
     @Override
     public int hashCode() {
         return template.hashCode();
+    }
+
+    private static Number asNumber(Object arg) {
+        if (arg instanceof Number) {
+            return (Number) arg;
+        } else if (arg instanceof Constant) {
+            return (Number) ((Constant) arg).getConstant();
+        } else {
+            throw new IllegalArgumentException(arg.toString());
+        }
+    }
+
+    private static Expression<?> asExpression(Object arg) {
+        if (arg instanceof Expression) {
+            return ExpressionUtils.extract((Expression<?>) arg);
+        } else {
+            return Expressions.constant(arg);
+        }
     }
 
 }

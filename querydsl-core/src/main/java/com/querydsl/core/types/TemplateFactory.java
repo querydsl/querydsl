@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Template.Element;
 
 /**
@@ -31,6 +32,9 @@ import com.querydsl.core.types.Template.Element;
  */
 public class TemplateFactory {
 
+    private static final Map<String, Operator> OPERATORS = ImmutableMap.<String, Operator>of(
+            "+", Ops.ADD, "-", Ops.SUB, "*", Ops.MULT, "/", Ops.DIV);
+
     public static final TemplateFactory DEFAULT = new TemplateFactory('\\');
 
     private static final Constant<String> PERCENT = ConstantImpl.create("%");
@@ -38,6 +42,7 @@ public class TemplateFactory {
     private static final Pattern elementPattern = Pattern.compile("\\{"
             + "(%?%?)"
             + "(\\d+)"
+            + "(?:([+-/*])(\\d+))?"
             + "([slu%]?%?)"
             + "\\}");
 
@@ -183,7 +188,7 @@ public class TemplateFactory {
                 }
                 String premodifiers = m.group(1).toLowerCase(Locale.ENGLISH);
                 int index = Integer.parseInt(m.group(2));
-                String postmodifiers = m.group(3).toLowerCase(Locale.ENGLISH);
+                String postmodifiers = m.group(5).toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
                 Function<Object, Object> transformer = null;
                 switch (premodifiers.length()) {
@@ -223,7 +228,11 @@ public class TemplateFactory {
                         }
                         break;
                 }
-                if (asString) {
+                if (m.group(3) != null) {
+                    Operator operator = OPERATORS.get(m.group(3));
+                    int index2 = Integer.parseInt(m.group(4));
+                    elements.add(new  Template.Operation(index, index2, operator, asString));
+                } else if (asString) {
                     elements.add(new Template.AsString(index));
                 } else if (transformer != null) {
                     elements.add(new Template.Transformed(index, transformer));

@@ -16,6 +16,9 @@ package com.querydsl.core.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Ops;
+
 /**
  * MathUtils provides Math related functionality
  *
@@ -25,6 +28,23 @@ import java.math.BigInteger;
 public final class MathUtils {
 
     private MathUtils() { }
+
+    @SuppressWarnings("unchecked")
+    public static <D extends Number> D result(D num1, Number num2, Operator operator) {
+        BigDecimal d1 = new BigDecimal(num1.toString());
+        BigDecimal d2 = new BigDecimal(num2.toString());
+        if (operator == Ops.ADD) {
+            return MathUtils.cast(d1.add(d2), (Class<D>) num1.getClass());
+        } else if (operator == Ops.SUB) {
+            return MathUtils.cast(d1.subtract(d2), (Class<D>) num1.getClass());
+        } else if (operator == Ops.MULT) {
+            return MathUtils.cast(d1.multiply(d2), (Class<D>) num1.getClass());
+        } else if (operator == Ops.DIV) {
+            return MathUtils.cast(d1.divide(d2), (Class<D>) num1.getClass());
+        } else {
+            throw new IllegalArgumentException(operator.toString());
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public static <D extends Number> D sum(D num1, Number num2) {
