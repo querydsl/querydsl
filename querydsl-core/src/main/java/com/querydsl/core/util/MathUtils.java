@@ -31,8 +31,8 @@ public final class MathUtils {
 
     @SuppressWarnings("unchecked")
     public static <D extends Number> D result(D num1, Number num2, Operator operator) {
-        BigDecimal d1 = new BigDecimal(num1.toString());
-        BigDecimal d2 = new BigDecimal(num2.toString());
+        BigDecimal d1 = toBigDecimal(num1);
+        BigDecimal d2 = toBigDecimal(num2);
         if (operator == Ops.ADD) {
             return MathUtils.cast(d1.add(d2), (Class<D>) num1.getClass());
         } else if (operator == Ops.SUB) {
@@ -48,13 +48,13 @@ public final class MathUtils {
 
     @SuppressWarnings("unchecked")
     public static <D extends Number> D sum(D num1, Number num2) {
-        BigDecimal res = new BigDecimal(num1.toString()).add(new BigDecimal(num2.toString()));
+        BigDecimal res = toBigDecimal(num1).add(toBigDecimal(num2));
         return MathUtils.cast(res, (Class<D>) num1.getClass());
     }
 
     @SuppressWarnings("unchecked")
     public static <D extends Number> D difference(D num1, Number num2) {
-        BigDecimal res = new BigDecimal(num1.toString()).subtract(new BigDecimal(num2.toString()));
+        BigDecimal res = toBigDecimal(num1).subtract(toBigDecimal(num2));
         return MathUtils.cast(res, (Class<D>) num1.getClass());
     }
 
@@ -86,5 +86,13 @@ public final class MathUtils {
             throw new IllegalArgumentException(String.format("Unsupported target type : %s", type.getSimpleName()));
         }
         return rv;
+    }
+
+    private static BigDecimal toBigDecimal(Number num) {
+        if (num instanceof BigDecimal) {
+            return (BigDecimal) num;
+        } else {
+            return new BigDecimal(num.toString());
+        }
     }
 }

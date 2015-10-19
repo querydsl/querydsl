@@ -38,6 +38,15 @@ public class TemplateTest {
     }
 
     @Test
+    public void operationConst() {
+        TemplateFactory factory = new TemplateFactory('\\');
+        match("[0 ADD 1]",               factory.create("{0+'1'}"));
+        match("[0 DIV 1.0]",             factory.create("{0/'1.0'}"));
+        match("[0 MULT 3.141592653589793, ' / 180.0)']",
+            factory.create("{0*'3.141592653589793'} / 180.0)"));
+    }
+
+    @Test
     public void like() {
         TemplateFactory factory = new TemplateFactory('\\');
         match("[0]",                     factory.create("{0%}"));

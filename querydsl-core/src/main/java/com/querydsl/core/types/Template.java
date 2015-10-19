@@ -14,6 +14,7 @@
 package com.querydsl.core.types;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.concurrent.Immutable;
@@ -196,41 +197,35 @@ public final class Template implements Serializable {
 
     /**
      * Math operation
-     * TODO support for constant operands
      */
     public static final class Operation extends Element {
 
         private static final long serialVersionUID = 1400801176778801584L;
 
-        private final int i1, i2;
+        private final int index1, index2;
 
         private final Operator operator;
 
         private final boolean asString;
 
-        public Operation(int i1, int i2, Operator operator, boolean asString) {
-            this.i1 = i1;
-            this.i2 = i2;
+        public Operation(int index1, int index2, Operator operator, boolean asString) {
+            this.index1 = index1;
+            this.index2 = index2;
             this.operator = operator;
             this.asString = asString;
         }
 
         @Override
         public Object convert(List<?> args) {
-            Object o1 = args.get(i1);
-            Object o2 = args.get(i2);
-            if (isNumber(o1) && isNumber(o2)) {
-                return MathUtils.result(asNumber(o1), asNumber(o2), operator);
+            Object arg1 = args.get(index1);
+            Object arg2 = args.get(index2);
+            if (isNumber(arg1) && isNumber(arg2)) {
+                return MathUtils.result(asNumber(arg1), asNumber(arg2), operator);
             } else {
-                Expression<?> e1 = asExpression(o1);
-                Expression<?> e2 = asExpression(o2);
-                return ExpressionUtils.operation(e1.getType(), operator, e1, e2);
+                Expression<?> expr1 = asExpression(arg1);
+                Expression<?> expr2 = asExpression(arg2);
+                return ExpressionUtils.operation(expr1.getType(), operator, expr1, expr2);
             }
-        }
-
-        private boolean isNumber(Object o) {
-            return o instanceof Number || o instanceof Constant
-                    && ((Constant<?>) o).getConstant() instanceof Number;
         }
 
         @Override
@@ -240,7 +235,54 @@ public final class Template implements Serializable {
 
         @Override
         public String toString() {
-            return i1 + " " + operator + " " + i2;
+            return index1 + " " + operator + " " + index2;
+        }
+    }
+
+    /**
+     * Math operation with constant
+     */
+    public static final class OperationConst extends Element {
+
+        private static final long serialVersionUID = 1400801176778801584L;
+
+        private final int index1;
+
+        private final BigDecimal arg2;
+
+        private final Expression<BigDecimal> expr2;
+
+        private final Operator operator;
+
+        private final boolean asString;
+
+        public OperationConst(int index1, BigDecimal arg2, Operator operator, boolean asString) {
+            this.index1 = index1;
+            this.arg2 = arg2;
+            this.expr2 = Expressions.constant(arg2);
+            this.operator = operator;
+            this.asString = asString;
+        }
+
+        @Override
+        public Object convert(List<?> args) {
+            Object arg1 = args.get(index1);
+            if (isNumber(arg1)) {
+                return MathUtils.result(asNumber(arg1), arg2, operator);
+            } else {
+                Expression<?> expr1 = asExpression(arg1);
+                return ExpressionUtils.operation(expr1.getType(), operator, expr1, expr2);
+            }
+        }
+
+        @Override
+        public boolean isString() {
+            return asString;
+        }
+
+        @Override
+        public String toString() {
+            return index1 + " " + operator + " " + arg2;
         }
     }
 
@@ -286,6 +328,11 @@ public final class Template implements Serializable {
         } else {
             throw new IllegalArgumentException(arg.toString());
         }
+    }
+
+    private static boolean isNumber(Object o) {
+        return o instanceof Number || o instanceof Constant
+                && ((Constant<?>) o).getConstant() instanceof Number;
     }
 
     private static Expression<?> asExpression(Object arg) {

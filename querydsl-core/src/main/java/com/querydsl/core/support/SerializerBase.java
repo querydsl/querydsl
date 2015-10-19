@@ -170,11 +170,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     /**
      * Not used anymore
+     *
+     * @deprecated normalization happens now at template level
      */
     @Deprecated
-    public void setNormalize(boolean normalize) {
-        // not used anymore
-    }
+    public void setNormalize(boolean normalize) { }
 
     public void setStrict(boolean strict) {
         this.strict = strict;

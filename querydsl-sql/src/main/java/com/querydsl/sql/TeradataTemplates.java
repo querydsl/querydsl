@@ -73,7 +73,7 @@ public class TeradataTemplates extends SQLTemplates {
         // String
         add(Ops.STRING_LENGTH, "character_length({0})");
         add(Ops.INDEX_OF, "(instr({0},{1})-1)");
-        add(Ops.INDEX_OF_2ARGS, "(instr({0},{1},{2}+1)-1)");
+        add(Ops.INDEX_OF_2ARGS, "(instr({0},{1},{2+'1'})-1)");
         add(Ops.STRING_CAST, "cast({0} as varchar(255))");
         add(Ops.StringOps.LOCATE, "instr({1},{0})");
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
@@ -87,7 +87,7 @@ public class TeradataTemplates extends SQLTemplates {
         add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
         add(Ops.MathOps.RANDOM, "cast(random(0, 1000000000) as numeric(20,10))/1000000000");
         add(Ops.MathOps.COT, "(cos({0}) / sin({0}))");
-        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.COTH, "(exp({0*'2'}) + 1) / (exp({0*'2'}) - 1)");
 
         // Date / time
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");

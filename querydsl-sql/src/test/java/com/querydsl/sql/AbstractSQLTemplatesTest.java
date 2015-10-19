@@ -141,7 +141,7 @@ public abstract class AbstractSQLTemplatesTest {
         assertSerialized(one.multiply(two.add(1)), "one * (two + ?)");
     }
 
-    private void assertSerialized(Expression<?> expr, String serialized) {
+    protected void assertSerialized(Expression<?> expr, String serialized) {
         SQLSerializer serializer = new SQLSerializer(new Configuration(templates));
         serializer.handle(expr);
         assertEquals(serialized, serializer.toString());

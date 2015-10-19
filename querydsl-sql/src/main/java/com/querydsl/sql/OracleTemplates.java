@@ -86,7 +86,7 @@ public class OracleTemplates extends SQLTemplates {
 
         // String
         add(Ops.INDEX_OF, "instrb({0},{1})-1", Precedence.ARITH_LOW);
-        add(Ops.INDEX_OF_2ARGS, "instrb({0},{1},{2}+1)-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "instrb({0},{1},{2+'1'})-1", Precedence.ARITH_LOW);
         add(Ops.MATCHES, "regexp_like({0},{1})", -1);
         add(Ops.StringOps.LOCATE, "instr({1},{0})");
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
@@ -99,9 +99,9 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.MathOps.LN, "ln({0})");
         add(Ops.MathOps.LOG, "log({1},{0})");
         add(Ops.MathOps.COT, "(cos({0}) / sin({0}))");
-        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
-        add(Ops.MathOps.DEG, "({0} * 180 / " + Math.PI + ")");
-        add(Ops.MathOps.RAD, "({0} * " + Math.PI + " / 180)");
+        add(Ops.MathOps.COTH, "(exp({0*'2'}) + 1) / (exp({0*'2'}) - 1)");
+        add(Ops.MathOps.DEG, "({0*'180.0'} / " + Math.PI + ")");
+        add(Ops.MathOps.RAD, "({0*'" + Math.PI + "'} / 180.0)");
 
         // Date / time
         add(Ops.DateTimeOps.DATE, "trunc({0})");
