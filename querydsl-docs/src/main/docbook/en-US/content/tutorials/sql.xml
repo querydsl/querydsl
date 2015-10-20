@@ -323,14 +323,9 @@
             <entry>Byte</entry>
           </row>
           <row>
-            <entry>&gt; 16</entry>
+            <entry>&gt; 0</entry>
             <entry>&gt; 0</entry>
             <entry>BigDecimal</entry>
-          </row>
-          <row>
-            <entry>&gt; 0</entry>
-            <entry>&gt; 0</entry>
-            <entry>Double</entry>
           </row>
         </tbody>
       </tgroup>
