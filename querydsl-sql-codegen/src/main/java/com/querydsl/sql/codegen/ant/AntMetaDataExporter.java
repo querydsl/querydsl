@@ -700,21 +700,24 @@ public class AntMetaDataExporter extends Task {
         this.beansTargetFolder = beansTargetFolder;
     }
 
-    public TypeMapping createTypeMapping() {
-        TypeMapping mapping = new TypeMapping();
+    /**
+     * Adds TypeMapping instance, called by Ant
+     */
+    public void addTypeMapping(TypeMapping mapping) {
         typeMappings.add(mapping);
-        return mapping;
     }
 
-    public NumericMapping createNumericMapping() {
-        NumericMapping mapping = new NumericMapping();
+    /**
+     * Adds NumericMapping instance, called by Ant
+     */
+    public void addNumericMapping(NumericMapping mapping) {
         numericMappings.add(mapping);
-        return mapping;
     }
 
-    public RenameMapping createRenameMapping() {
-        RenameMapping mapping = new RenameMapping();
+    /**
+     * Adds RenameMapping instance, called by Ant
+     */
+    public void addRenameMapping(RenameMapping mapping) {
         renameMappings.add(mapping);
-        return mapping;
     }
 }
