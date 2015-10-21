@@ -481,7 +481,10 @@ public final class Configuration {
     }
 
     /**
-     * Set whether literals are used
+     * Set whether literals are used in SQL strings instead of parameter bindings (default: false)
+     *
+     * <p>Warning: When literals are used, prepared statement won't have any parameter bindings
+     * and also batch statements will only be simulated, but not executed as actual batch statements.</p>
      *
      * @param useLiterals true for literals and false for bindings
      */
