@@ -13,13 +13,13 @@
  */
 package com.mysema.query.sql.dml;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.Path;
 import com.mysema.util.BeanMap;
+import com.google.common.collect.Maps;
 
 /**
  * Creates the mapping by inspecting object via bean inspection.
@@ -48,15 +48,16 @@ public class BeanMapper extends AbstractMapper<Object> {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> entity, Object bean) {
-        Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();
+        Map<Path<?>, Object> values = Maps.newLinkedHashMap();
         Map<String, Object> map = new BeanMap(bean);
         Map<String, Path<?>> columns = getColumns(entity);
-        for (Map.Entry entry : map.entrySet()) {
-            String property = entry.getKey().toString();
-            if (!property.equals("class") && columns.containsKey(property)) {
-                Path path = columns.get(property);
-                if (entry.getValue() != null) {
-                    values.put(path, entry.getValue());
+        // populate in column order
+        for (Map.Entry<String, Path<?>> entry : columns.entrySet()) {
+            Path<?> path = entry.getValue();
+            if (map.containsKey(entry.getKey())) {
+                Object value = map.get(entry.getKey());
+                if (value != null) {
+                    values.put(path, value);
                 } else if (withNullBindings && !isPrimaryKeyColumn(entity, path)) {
                     values.put(path, Null.DEFAULT);
                 }

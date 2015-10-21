@@ -15,7 +15,6 @@ package com.mysema.query.sql.dml;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.QueryException;
@@ -23,6 +22,7 @@ import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.Path;
 import com.mysema.util.ReflectionUtils;
+import com.google.common.collect.Maps;
 
 /**
  * Creates the mapping by inspecting the RelationalPath and Object via reflection.
@@ -51,13 +51,14 @@ public class DefaultMapper extends AbstractMapper<Object> {
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> entity, Object bean) {
         try {
-            Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();
+            Map<Path<?>, Object> values = Maps.newLinkedHashMap();
             Class<?> beanClass = bean.getClass();
             Map<String, Path<?>> columns = getColumns(entity);
-            for (Field beanField : ReflectionUtils.getFields(beanClass)) {
-                if (!Modifier.isStatic(beanField.getModifiers()) && columns.containsKey(beanField.getName())) {
-                    @SuppressWarnings("rawtypes")
-                    Path path = columns.get(beanField.getName());
+            // populate in column order
+            for (Map.Entry<String, Path<?>> entry : columns.entrySet()) {
+                Path<?> path = entry.getValue();
+                Field beanField = ReflectionUtils.getFieldOrNull(beanClass, entry.getKey());
+                if (beanField != null && !Modifier.isStatic(beanField.getModifiers())) {
                     beanField.setAccessible(true);
                     Object propertyValue = beanField.get(bean);
                     if (propertyValue != null) {
