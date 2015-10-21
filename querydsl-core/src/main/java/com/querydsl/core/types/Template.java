@@ -16,11 +16,13 @@ package com.querydsl.core.types;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.util.MathUtils;
 
@@ -35,6 +37,8 @@ import com.querydsl.core.util.MathUtils;
 public final class Template implements Serializable {
 
     private static final long serialVersionUID = -1697705745769542204L;
+
+    private static final Set<? extends Operator> CONVERTIBLES = Sets.immutableEnumSet(Ops.ADD, Ops.SUB);
 
     /**
      * General template element
@@ -224,6 +228,26 @@ public final class Template implements Serializable {
             } else {
                 Expression<?> expr1 = asExpression(arg1);
                 Expression<?> expr2 = asExpression(arg2);
+
+                if (arg2 instanceof Number) {
+                    if (CONVERTIBLES.contains(operator) && expr1 instanceof com.querydsl.core.types.Operation) {
+                        com.querydsl.core.types.Operation operation = (com.querydsl.core.types.Operation) expr1;
+                        if (CONVERTIBLES.contains(operation.getOperator()) && operation.getArg(1) instanceof Constant) {
+                            Number num1 = ((Constant<Number>) operation.getArg(1)).getConstant();
+                            Number num2;
+                            if (operator == operation.getOperator()) {
+                                num2 = MathUtils.result(num1, (Number) arg2, Ops.ADD);
+                            } else if (operator == Ops.ADD) {
+                                num2 = MathUtils.result((Number) arg2, num1, Ops.SUB);
+                            } else {
+                                num2 = MathUtils.result(num1, (Number) arg2, Ops.SUB);
+                            }
+                            return ExpressionUtils.operation(expr1.getType(), operator,
+                                    operation.getArg(0), Expressions.constant(num2));
+                        }
+                    }
+                }
+
                 return ExpressionUtils.operation(expr1.getType(), operator, expr1, expr2);
             }
         }
@@ -271,6 +295,24 @@ public final class Template implements Serializable {
                 return MathUtils.result(asNumber(arg1), arg2, operator);
             } else {
                 Expression<?> expr1 = asExpression(arg1);
+
+                if (CONVERTIBLES.contains(operator) && expr1 instanceof com.querydsl.core.types.Operation) {
+                    com.querydsl.core.types.Operation operation = (com.querydsl.core.types.Operation) expr1;
+                    if (CONVERTIBLES.contains(operation.getOperator()) && operation.getArg(1) instanceof Constant) {
+                        Number num1 = ((Constant<Number>) operation.getArg(1)).getConstant();
+                        Number num2;
+                        if (operator == operation.getOperator()) {
+                            num2 = MathUtils.result(num1, arg2, Ops.ADD);
+                        } else if (operator == Ops.ADD) {
+                            num2 = MathUtils.result(arg2, num1, Ops.SUB);
+                        } else {
+                            num2 = MathUtils.result(num1, arg2, Ops.SUB);
+                        }
+                        return ExpressionUtils.operation(expr1.getType(), operator,
+                                operation.getArg(0), Expressions.constant(num2));
+                    }
+                }
+
                 return ExpressionUtils.operation(expr1.getType(), operator, expr1, expr2);
             }
         }
