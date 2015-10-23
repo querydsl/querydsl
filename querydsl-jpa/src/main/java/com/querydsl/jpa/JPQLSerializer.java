@@ -220,8 +220,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
 
         // where
-        if (where != null) {
-            append(WHERE).handle(where);
+        if (where != null || forCountRow && having != null) {
+            Predicate predicate = where;
+            if (forCountRow && having != null) {
+                predicate = ExpressionUtils.and(predicate, having);
+            }
+            append(WHERE).handle(predicate);
         }
 
         // group by
@@ -230,7 +234,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
 
         // having
-        if (having != null) {
+        if (having != null && !forCountRow) {
             append(HAVING).handle(having);
         }
 

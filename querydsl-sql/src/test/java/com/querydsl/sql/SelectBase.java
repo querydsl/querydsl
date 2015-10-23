@@ -831,6 +831,22 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({FIREBIRD})
+    public void GroupBy_Having_Count() {
+        List<Integer> ids = query().from(employee).groupBy(employee.id)
+                .having(employee.id.isNotNull()).select(employee.id).fetch();
+        long count = query().from(employee).groupBy(employee.id).having(employee.id.isNotNull()).fetchCount();
+        QueryResults<Integer> results = query().from(employee).groupBy(employee.id)
+                .having(employee.id.isNotNull())
+                .limit(1).select(employee.id).fetchResults();
+
+        assertEquals(10, ids.size());
+        assertEquals(10, count);
+        assertEquals(1, results.getResults().size());
+        assertEquals(10, results.getTotal());
+    }
+
+    @Test
     @ExcludeIn({FIREBIRD, SQLSERVER, TERADATA})
     public void groupBy_Distinct_count() {
         List<Integer> ids = query().from(employee).groupBy(employee.id).distinct().select(Expressions.ONE).fetch();
