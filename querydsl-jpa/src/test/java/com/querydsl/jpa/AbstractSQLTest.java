@@ -168,7 +168,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void Limit_Offset() {
-        assertEquals(2, query().from(cat).limit(2).offset(2).select(cat.id, cat.name).fetch().size());
+        assertEquals(2, query().from(cat).orderBy(cat.id.asc()).limit(2).offset(2).select(cat.id, cat.name).fetch().size());
     }
 
     @Test
@@ -178,19 +178,19 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void List_Limit_And_Offset() {
-        assertEquals(3, query().from(cat).offset(3).limit(3).select(cat.id).fetch().size());
+        assertEquals(3, query().from(cat).orderBy(cat.id.asc()).offset(3).limit(3).select(cat.id).fetch().size());
     }
 
     @Test
     public void List_Limit_And_Offset2() {
-        List<Tuple> tuples = query().from(cat).offset(3).limit(3).select(cat.id, cat.name).fetch();
+        List<Tuple> tuples = query().from(cat).orderBy(cat.id.asc()).offset(3).limit(3).select(cat.id, cat.name).fetch();
         assertEquals(3, tuples.size());
         assertEquals(2, tuples.get(0).size());
     }
 
     @Test
     public void List_Limit_And_Offset3() {
-        List<Tuple> tuples = query().from(cat).offset(3).limit(3).select(Projections.tuple(cat.id, cat.name)).fetch();
+        List<Tuple> tuples = query().from(cat).orderBy(cat.id.asc()).offset(3).limit(3).select(Projections.tuple(cat.id, cat.name)).fetch();
         assertEquals(3, tuples.size());
         assertEquals(2, tuples.get(0).size());
     }
@@ -236,7 +236,7 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn({Target.H2, Target.MYSQL})
     public void List_With_Offset() {
-        assertEquals(3, query().from(cat).offset(3).select(cat.id).fetch().size());
+        assertEquals(3, query().from(cat).orderBy(cat.id.asc()).offset(3).select(cat.id).fetch().size());
     }
 
     @Test
