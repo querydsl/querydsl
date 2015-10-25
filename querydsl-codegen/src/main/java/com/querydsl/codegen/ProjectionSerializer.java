@@ -115,7 +115,7 @@ public final class ProjectionSerializer implements Serializer {
             // body
             writer.beginLine("super(" + writer.getClassConstant(localName));
             // TODO: Fix for Scala (Array[Class])
-            writer.append(", new Class[]{");
+            writer.append(", new Class<?>[]{");
             boolean first = true;
 
             for (Parameter p : c.getParameters()) {

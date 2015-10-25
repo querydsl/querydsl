@@ -81,15 +81,14 @@ public final class FactoryExpressionUtils {
 
     }
 
-    @SuppressWarnings("unchecked")
     public static FactoryExpression<?> wrap(List<? extends Expression<?>> projection) {
         boolean usesFactoryExpressions = false;
         for (Expression<?> e : projection) {
             usesFactoryExpressions |= e instanceof FactoryExpression;
         }
         if (usesFactoryExpressions) {
-            return wrap(new ArrayConstructorExpression(
-                    projection.toArray(new Expression[projection.size()])));
+            return wrap(new ArrayConstructorExpression<Object>(
+                    projection.toArray(new Expression<?>[projection.size()])));
         } else {
             return null;
         }

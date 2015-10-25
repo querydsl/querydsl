@@ -54,21 +54,18 @@ public class NumberConversions<T> extends FactoryExpressionBase<T> {
         return expr.getArgs();
     }
 
-    @SuppressWarnings("unchecked")
     private <E extends Enum<E>> Enum<E>[] getValues(Class<E> enumClass) {
+        @SuppressWarnings("unchecked") // Class<E> -> E[]
         Enum<E>[] values = (Enum<E>[]) this.values.get(enumClass);
         if (values == null) {
-            try {
-                values = (Enum<E>[]) enumClass.getMethod("values").invoke(null);
-                this.values.put(enumClass, values);
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
+            values = enumClass.getEnumConstants();
+            this.values.put(enumClass, values);
         }
         return values;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T newInstance(Object... args) {
         for (int i = 0; i < args.length; i++) {
             Class<?> type = expr.getArgs().get(i).getType();

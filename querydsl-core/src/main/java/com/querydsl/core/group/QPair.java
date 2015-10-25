@@ -34,7 +34,7 @@ import com.querydsl.core.types.Expression;
 
     @SuppressWarnings({"unchecked" })
     public QPair(Expression<K> key, Expression<V> value) {
-        super((Class) Pair.class, new Class[]{Object.class, Object.class}, key, value);
+        super((Class) Pair.class, new Class<?>[]{Object.class, Object.class}, key, value);
     }
 
     public boolean equals(Expression<?> keyExpr, Expression<?> valueExpr) {

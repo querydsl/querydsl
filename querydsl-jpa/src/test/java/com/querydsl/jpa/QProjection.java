@@ -12,7 +12,7 @@ public class QProjection extends ConstructorExpression<Projection> {
 
     public QProjection(StringExpression str, QCat cat) {
         super(Projection.class,
-                new Class[]{String.class, Cat.class}, new Expression[]{str, cat});
+                new Class<?>[]{String.class, Cat.class}, new Expression[]{str, cat});
     }
 
 }

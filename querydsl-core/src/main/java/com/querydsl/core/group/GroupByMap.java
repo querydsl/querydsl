@@ -38,7 +38,6 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
         super(key, expressions);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Map<K, V> transform(FetchableQuery<?,?> query) {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
@@ -55,8 +54,9 @@ public class GroupByMap<K,V> extends AbstractGroupByTransformer<K, Map<K,V>> {
         CloseableIterator<Tuple> iter = query.select(expr).iterate();
         try {
             while (iter.hasNext()) {
-                Object[] row = iter.next().toArray();
-                K groupId = (K) row[0];
+                @SuppressWarnings("unchecked") //This type is mandated by the key type
+                K[] row = (K[]) iter.next().toArray();
+                K groupId = row[0];
                 GroupImpl group = (GroupImpl) groups.get(groupId);
                 if (group == null) {
                     group = new GroupImpl(groupExpressions, maps);

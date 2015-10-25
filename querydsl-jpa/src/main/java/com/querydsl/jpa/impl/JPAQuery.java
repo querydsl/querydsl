@@ -91,17 +91,19 @@ public class JPAQuery<T> extends AbstractJPAQuery<T, JPAQuery<T>> {
         return clone(entityManager, JPAProvider.getTemplates(entityManager));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <U> JPAQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
-        return (JPAQuery<U>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        JPAQuery<U> newType = (JPAQuery<U>) this;
+        return newType;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public JPAQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
-        return (JPAQuery<Tuple>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        JPAQuery<Tuple> newType = (JPAQuery<Tuple>) this;
+        return newType;
     }
 }

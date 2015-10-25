@@ -39,7 +39,6 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
         super(key, expressions);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<V> transform(FetchableQuery<?,?> query) {
         // create groups
@@ -57,14 +56,15 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
         GroupImpl group = null;
         K groupId = null;
         while (iter.hasNext()) {
-            Object[] row = iter.next().toArray();
+            @SuppressWarnings("unchecked") //This type is mandated by the key type
+            K[] row = (K[]) iter.next().toArray();
             if (group == null) {
                 group = new GroupImpl(groupExpressions, maps);
-                groupId = (K) row[0];
+                groupId = row[0];
             } else if (!Objects.equal(groupId, row[0])) {
                 list.add(transform(group));
                 group = new GroupImpl(groupExpressions, maps);
-                groupId = (K) row[0];
+                groupId = row[0];
             }
             group.add(row);
         }

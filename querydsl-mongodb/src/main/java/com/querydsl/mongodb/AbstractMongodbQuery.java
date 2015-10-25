@@ -63,7 +63,9 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
      */
     @SuppressWarnings("unchecked")
     public AbstractMongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
-        this.queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata(), false);
+        @SuppressWarnings("unchecked") // Q is this plus subclass
+        Q query = (Q) this;
+        this.queryMixin = new QueryMixin<Q>(query, new DefaultQueryMetadata(), false);
         this.transformer = transformer;
         this.collection = collection;
         this.serializer = serializer;
@@ -122,18 +124,18 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         List<JoinExpression> joins = metadata.getJoins();
         for (int i = joins.size() - 1; i >= 0; i--) {
             JoinExpression join = joins.get(i);
-            Path source = (Path) ((Operation<?>) join.getTarget()).getArg(0);
-            Path target = (Path) ((Operation<?>) join.getTarget()).getArg(1);
+            Path<?> source = (Path) ((Operation<?>) join.getTarget()).getArg(0);
+            Path<?> target = (Path) ((Operation<?>) join.getTarget()).getArg(1);
             Collection<Predicate> extraFilters = predicates.get(target.getRoot());
             Predicate filter = ExpressionUtils.allOf(join.getCondition(), allOf(extraFilters));
-            List<Object> ids = getIds(target.getType(), filter);
+            List<? extends Object> ids = getIds(target.getType(), filter);
             if (ids.isEmpty()) {
                 throw new NoResults();
             }
-            Path path = ExpressionUtils.path(String.class, source, "$id");
-            predicates.put(source.getRoot(), ExpressionUtils.in(path, ids));
+            Path<?> path = ExpressionUtils.path(String.class, source, "$id");
+            predicates.put(source.getRoot(), ExpressionUtils.in((Path<Object>) path, ids));
         }
-        Path source = (Path) ((Operation) joins.get(0).getTarget()).getArg(0);
+        Path<?> source = (Path) ((Operation) joins.get(0).getTarget()).getArg(0);
         return allOf(predicates.get(source.getRoot()));
     }
 

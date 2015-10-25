@@ -30,6 +30,7 @@ import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
 
+import com.google.common.collect.Iterables;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
@@ -423,9 +424,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private Set<TypeElement> processDelegateMethods() {
-        Set<Element> delegateMethods = (Set) getElements(QueryDelegate.class);
+        Set<? extends Element> delegateMethods = getElements(QueryDelegate.class);
         Set<TypeElement> typeElements = new HashSet<TypeElement>();
 
         for (Element delegateMethod : delegateMethods) {
@@ -472,19 +472,18 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         return typeElements;
     }
 
-    @SuppressWarnings("unchecked")
     private void validateMetaTypes() {
-        for (Collection<EntityType> entityTypes : Arrays.asList(
+        @SuppressWarnings("unchecked") // Only concatenated
+        Iterable<? extends EntityType> entityTypes = Iterables.concat(
                 context.supertypes.values(),
                 context.entityTypes.values(),
                 context.extensionTypes.values(),
                 context.embeddableTypes.values(),
-                context.projectionTypes.values())) {
-            for (EntityType entityType : entityTypes) {
-                for (Property property : entityType.getProperties()) {
-                    if (property.getInits() != null && property.getInits().size() > 0) {
-                        validateInits(entityType, property);
-                    }
+                context.projectionTypes.values());
+        for (EntityType entityType : entityTypes) {
+            for (Property property : entityType.getProperties()) {
+                if (property.getInits() != null && property.getInits().size() > 0) {
+                    validateInits(entityType, property);
                 }
             }
         }

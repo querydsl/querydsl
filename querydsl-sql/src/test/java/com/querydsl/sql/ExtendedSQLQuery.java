@@ -74,18 +74,20 @@ public class ExtendedSQLQuery<T> extends AbstractSQLQuery<T, ExtendedSQLQuery<T>
         return query;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <U> ExtendedSQLQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
-        return (ExtendedSQLQuery<U>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        ExtendedSQLQuery<U> newType = (ExtendedSQLQuery<U>) this;
+        return newType;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public ExtendedSQLQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
-        return (ExtendedSQLQuery<Tuple>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        ExtendedSQLQuery<Tuple> newType = (ExtendedSQLQuery<Tuple>) this;
+        return newType;
     }
 
 }

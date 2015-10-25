@@ -20,6 +20,7 @@ import java.util.*;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Sets;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
@@ -47,11 +48,12 @@ public final class CollQueryFunctions {
     };
 
     private static final BinaryFunction MAX = new BinaryFunction() {
-        @SuppressWarnings("unchecked")
         @Override
         public Number apply(Number num1, Number num2) {
             if (num1.getClass().equals(num2.getClass()) && num1 instanceof Comparable) {
-                return ((Comparable) num1).compareTo(num2) < 0 ? num2 : num1;
+                @SuppressWarnings("unchecked") // The types are interchangeable, guarded by previous check
+                Comparable<Number> left = (Comparable<Number>) num1;
+                return left.compareTo(num2) < 0 ? num2 : num1;
             } else {
                 BigDecimal n1 = new BigDecimal(num1.toString());
                 BigDecimal n2 = new BigDecimal(num2.toString());
@@ -61,11 +63,12 @@ public final class CollQueryFunctions {
     };
 
     private static final BinaryFunction MIN = new BinaryFunction() {
-        @SuppressWarnings("unchecked")
         @Override
         public Number apply(Number num1, Number num2) {
             if (num1.getClass().equals(num2.getClass()) && num1 instanceof Comparable) {
-                return ((Comparable) num1).compareTo(num2) < 0 ? num1 : num2;
+                @SuppressWarnings("unchecked") // The types are interchangeable, guarded by previous check
+                Comparable<Number> left = (Comparable<Number>) num1;
+                return left.compareTo(num2) < 0 ? num1 : num2;
             } else {
                 BigDecimal n1 = new BigDecimal(num1.toString());
                 BigDecimal n2 = new BigDecimal(num2.toString());
@@ -190,10 +193,11 @@ public final class CollQueryFunctions {
         return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.WEEK_OF_YEAR);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> Collection<T> leftJoin(Collection<T> coll) {
         if (coll.isEmpty()) {
-            return (List) nullList;
+            @SuppressWarnings("unchecked") // List only contains null
+            Collection<T> rv = (Collection<T>) nullList;
+            return rv;
         } else {
             return coll;
         }
@@ -208,8 +212,9 @@ public final class CollQueryFunctions {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     public static Number aggregate(Collection<Number> source, Expression<?> expr, Operator aggregator) {
+        @SuppressWarnings("unchecked") // This is a number expression
+        Class<Number> numberType = (Class<Number>) expr.getType();
         if (aggregator == Ops.AggOps.AVG_AGG) {
             Number sum = reduce(source, SUM);
             return sum.doubleValue() / source.size();
@@ -217,15 +222,15 @@ public final class CollQueryFunctions {
             return (long) source.size();
         } else if (aggregator == Ops.AggOps.COUNT_DISTINCT_AGG) {
             if (!Set.class.isInstance(source)) {
-                source = new HashSet(source);
+                source = Sets.newHashSet(source);
             }
             return (long) source.size();
         } else if (aggregator == Ops.AggOps.MAX_AGG) {
-            return MathUtils.cast(reduce(source, MAX), (Class<Number>) expr.getType());
+            return MathUtils.cast(reduce(source, MAX), numberType);
         } else if (aggregator == Ops.AggOps.MIN_AGG) {
-            return MathUtils.cast(reduce(source, MIN), (Class<Number>) expr.getType());
+            return MathUtils.cast(reduce(source, MIN), numberType);
         } else if (aggregator == Ops.AggOps.SUM_AGG) {
-            return MathUtils.cast(reduce(source, SUM), (Class<Number>) expr.getType());
+            return MathUtils.cast(reduce(source, SUM), numberType);
         } else {
             throw new IllegalArgumentException("Unknown operator " + aggregator);
         }
@@ -257,13 +262,14 @@ public final class CollQueryFunctions {
         return like(str, like);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T get(Object parent, String f) {
         try {
             Field field = ReflectionUtils.getFieldOrNull(parent.getClass(), f);
             if (field != null) {
                 field.setAccessible(true);
-                return (T) field.get(parent);
+                @SuppressWarnings("unchecked")
+                T rv = (T) field.get(parent);
+                return rv;
             } else {
                 throw new IllegalArgumentException("No field " + f + " for " + parent.getClass());
             }

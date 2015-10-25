@@ -62,7 +62,6 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
                 return group != null || iter.hasNext();
             }
 
-            @SuppressWarnings("unchecked")
             @Override
             public V next() {
                 if (!iter.hasNext()) {
@@ -76,17 +75,18 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
                 }
 
                 while (iter.hasNext()) {
-                    Object[] row = iter.next().toArray();
+                    @SuppressWarnings("unchecked") //This type is mandated by the key type
+                    K[] row = (K[]) iter.next().toArray();
                     if (group == null) {
                         group = new GroupImpl(groupExpressions, maps);
-                        groupId = (K) row[0];
+                        groupId = row[0];
                         group.add(row);
                     } else if (Objects.equal(groupId, row[0])) {
                         group.add(row);
                     } else {
                         Group current = group;
                         group = new GroupImpl(groupExpressions, maps);
-                        groupId = (K) row[0];
+                        groupId = row[0];
                         group.add(row);
                         return transform(current);
                     }

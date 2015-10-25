@@ -67,18 +67,20 @@ public class TeradataQuery<T> extends AbstractSQLQuery<T, TeradataQuery<T>> {
         return q;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <U> TeradataQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
-        return (TeradataQuery<U>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        TeradataQuery<U> newType = (TeradataQuery<U>) this;
+        return newType;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public TeradataQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
-        return (TeradataQuery<Tuple>) this;
+        @SuppressWarnings("unchecked") // This is the new type
+        TeradataQuery<Tuple> newType = (TeradataQuery<Tuple>) this;
+        return newType;
     }
 
 }

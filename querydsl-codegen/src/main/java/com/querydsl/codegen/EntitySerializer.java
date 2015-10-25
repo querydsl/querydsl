@@ -89,7 +89,7 @@ public class EntitySerializer implements Serializer {
 
         // Path
         if (!localName.equals(genericName)) {
-            writer.suppressWarnings("all");
+            suppressAllWarnings(writer);
         }
         Type simpleModel = new SimpleType(model);
         if (model.isFinal()) {
@@ -119,7 +119,7 @@ public class EntitySerializer implements Serializer {
             writer.end();
         } else {
             if (!localName.equals(genericName)) {
-                writer.suppressWarnings("all");
+                suppressAllWarnings(writer);
             }
             writer.beginConstructor(PATH_METADATA);
             if (stringOrBoolean) {
@@ -134,7 +134,7 @@ public class EntitySerializer implements Serializer {
         // PathMetadata, PathInits
         if (hasEntityFields) {
             if (!localName.equals(genericName)) {
-                writer.suppressWarnings("all");
+                suppressAllWarnings(writer);
             }
             writer.beginConstructor(PATH_METADATA, PATH_INITS);
             writer.line(thisOrSuper, "(", classCast, writer.getClassConstant(localName) + COMMA + "metadata, inits" + additionalParams + ");");
@@ -175,7 +175,7 @@ public class EntitySerializer implements Serializer {
         String additionalParams = hasEntityFields ? "" : getAdditionalConstructorParameter(model);
 
         if (!localName.equals(genericName)) {
-            writer.suppressWarnings("all");
+            suppressAllWarnings(writer);
         }
         writer.beginConstructor(new Parameter("variable", Types.STRING));
         if (stringOrBoolean) {
@@ -370,7 +370,7 @@ public class EntitySerializer implements Serializer {
 //                writer.append("(Class)");
 //            }
             writer.append(writer.getClassConstant(localName));
-            writer.append(", new Class[]{");
+            writer.append(", new Class<?>[]{");
             boolean first = true;
             for (Parameter p : c.getParameters()) {
                 if (!first) {
@@ -396,7 +396,6 @@ public class EntitySerializer implements Serializer {
         }
     }
 
-    @SuppressWarnings("unchecked")
     protected void introImports(CodeWriter writer, SerializerConfig config,
             EntityType model) throws IOException {
         writer.staticimports(PathMetadataFactory.class);
@@ -421,7 +420,7 @@ public class EntitySerializer implements Serializer {
         writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = Lists.newArrayList(PathMetadata.class, Generated.class);
+        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
         }
@@ -445,7 +444,7 @@ public class EntitySerializer implements Serializer {
         if (inits) {
             classes.add(PathInits.class);
         }
-        writer.imports(classes.toArray(new Class[classes.size()]));
+        writer.imports(classes.toArray(new Class<?>[classes.size()]));
     }
 
     private Set<String> getUsedClassNames(EntityType model) {
@@ -824,6 +823,10 @@ public class EntitySerializer implements Serializer {
         } else {
             return new SimpleType(type, type.getParameters());
         }
+    }
+
+    private static CodeWriter suppressAllWarnings(CodeWriter writer) throws IOException {
+        return writer.suppressWarnings("all", "rawtypes", "unchecked");
     }
 
 }

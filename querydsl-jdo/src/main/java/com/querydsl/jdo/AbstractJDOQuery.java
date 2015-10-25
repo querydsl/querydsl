@@ -93,11 +93,10 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
      * @param fetchGroupName fetch group name
      * @return the current object
      */
-    @SuppressWarnings("unchecked")
     @Override
     public Q addFetchGroup(String fetchGroupName) {
         fetchGroups.add(fetchGroupName);
-        return (Q) this;
+        return queryMixin.getSelf();
     }
 
     /**
@@ -194,7 +193,6 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Nullable
     private Object execute(Query query, boolean forCount) {
         Object rv;
@@ -226,7 +224,6 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         return queryMixin.from(args);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <U> Q from(CollectionExpression<?, U> path, Path<U> alias) {
         return queryMixin.from(ExpressionUtils.as((Path) path, alias));
@@ -245,19 +242,19 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         return new IteratorAdapter<T>(fetch().iterator(), closeable);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<T> fetch() {
         try {
             Object rv = execute(createQuery(false), false);
-            return rv instanceof List ? (List<T>) rv : Collections.singletonList((T) rv);
+            @SuppressWarnings("unchecked") // Compile time checking of user code mandates it to be T
+            List<T> result = rv instanceof List ? (List<T>) rv : Collections.singletonList((T) rv);
+            return result;
         } finally {
             reset();
         }
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public QueryResults<T> fetchResults() {
         try {
             Query countQuery = createQuery(true);
@@ -290,11 +287,10 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
      * @param depth fetch depth
      * @return the current object
      */
-    @SuppressWarnings("unchecked")
     @Override
     public Q setMaxFetchDepth(int depth) {
         maxFetchDepth = depth;
-        return (Q) this;
+        return queryMixin.getSelf();
     }
 
     @Override
@@ -309,7 +305,6 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public T fetchOne() {
@@ -320,17 +315,21 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
             Query query = createQuery(false);
             Object rv = execute(query, false);
             if (rv instanceof List) {
-                List<?> list = (List) rv;
+                @SuppressWarnings("unchecked") // Compile time checking of user code mandates this
+                List<T> list = (List<T>) rv;
                 if (!list.isEmpty()) {
                     if (list.size() > 1) {
                         throw new NonUniqueResultException();
                     }
-                    return (T) list.get(0);
+                    return list.get(0);
                 } else {
                     return null;
                 }
             } else {
-                return (T) rv;
+                // it is not a List typed expression
+                @SuppressWarnings("unchecked") // Compile time checking of user code mandates this
+                T result = (T) rv;
+                return result;
             }
         } finally {
             reset();

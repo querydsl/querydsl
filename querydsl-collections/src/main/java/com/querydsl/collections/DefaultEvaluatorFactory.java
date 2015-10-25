@@ -128,7 +128,6 @@ public class DefaultEvaluatorFactory {
      * @param filter filter of the query
      * @return evaluator
      */
-    @SuppressWarnings("unchecked")
     public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata,
             Expression<? extends T> source, Predicate filter) {
         String typeName = ClassUtils.getName(source.getType());
@@ -154,7 +153,7 @@ public class DefaultEvaluatorFactory {
                 sourceListType,
                 new String[]{source + "_"},
                 new Type[]{sourceListType},
-                new Class[]{Iterable.class},
+                new Class<?>[]{Iterable.class},
                 constants);
     }
 
@@ -166,7 +165,6 @@ public class DefaultEvaluatorFactory {
      * @param filter where condition
      * @return evaluator
      */
-    @SuppressWarnings("unchecked")
     public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata,
             List<JoinExpression> joins, @Nullable Predicate filter) {
         List<String> sourceNames = new ArrayList<String>();
@@ -266,7 +264,7 @@ public class DefaultEvaluatorFactory {
                 projectionType,
                 sourceNames.toArray(new String[sourceNames.size()]),
                 sourceTypes.toArray(new Type[sourceTypes.size()]),
-                sourceClasses.toArray(new Class[sourceClasses.size()]),
+                sourceClasses.toArray(new Class<?>[sourceClasses.size()]),
                 constants);
     }
 

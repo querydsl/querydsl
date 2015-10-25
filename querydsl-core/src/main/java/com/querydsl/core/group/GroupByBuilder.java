@@ -128,10 +128,11 @@ public class GroupByBuilder<K> {
         };
     }
 
-    @SuppressWarnings("unchecked")
     private <V> Expression<V> getLookup(Expression<V> expression) {
         if (expression instanceof GroupExpression) {
-            return ((GroupExpression) expression).getExpression();
+            @SuppressWarnings("unchecked") // This is the underlying type
+            GroupExpression<V, ?> groupExpression = (GroupExpression<V, ?>) expression;
+            return groupExpression.getExpression();
         } else {
             return expression;
         }
@@ -177,10 +178,9 @@ public class GroupByBuilder<K> {
      * @return new result transformer
      */
     public <V> ResultTransformer<CloseableIterator<V>> iterate(FactoryExpression<V> expression) {
-        final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);
+        final FactoryExpression<V> transformation = FactoryExpressionUtils.wrap(expression);
         List<Expression<?>> args = transformation.getArgs();
         return new GroupByIterate<K, V>(key, args.toArray(new Expression<?>[args.size()])) {
-            @SuppressWarnings("unchecked")
             @Override
             protected V transform(Group group) {
                 // XXX Isn't group.toArray() suitable here?
@@ -188,7 +188,7 @@ public class GroupByBuilder<K> {
                 for (int i = 1; i < groupExpressions.size(); i++) {
                     args.add(group.getGroup(groupExpressions.get(i)));
                 }
-                return (V) transformation.newInstance(args.toArray());
+                return transformation.newInstance(args.toArray());
             }
         };
     }
@@ -200,10 +200,9 @@ public class GroupByBuilder<K> {
      * @return new result transformer
      */
     public <V> ResultTransformer<List<V>> list(FactoryExpression<V> expression) {
-        final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);
+        final FactoryExpression<V> transformation = FactoryExpressionUtils.wrap(expression);
         List<Expression<?>> args = transformation.getArgs();
         return new GroupByList<K, V>(key, args.toArray(new Expression<?>[args.size()])) {
-            @SuppressWarnings("unchecked")
             @Override
             protected V transform(Group group) {
                 // XXX Isn't group.toArray() suitable here?
@@ -211,7 +210,7 @@ public class GroupByBuilder<K> {
                 for (int i = 1; i < groupExpressions.size(); i++) {
                     args.add(group.getGroup(groupExpressions.get(i)));
                 }
-                return (V) transformation.newInstance(args.toArray());
+                return transformation.newInstance(args.toArray());
             }
         };
     }

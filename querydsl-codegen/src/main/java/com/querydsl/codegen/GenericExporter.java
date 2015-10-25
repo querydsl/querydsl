@@ -322,7 +322,6 @@ public class GenericExporter {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
     private EntityType createEntityType(Class<?> cl, Map<Class<?>, EntityType> types) {
         if (types.get(cl) != null) {
             return types.get(cl);
@@ -339,10 +338,14 @@ public class GenericExporter {
 
             typeMappings.register(type, queryTypeFactory.create(type));
 
-            if (strictMode && cl.getSuperclass() != null && !containsAny(cl.getSuperclass(),
-                    entityAnnotation, supertypeAnnotation, embeddableAnnotation)) {
-                // skip supertype handling
-                return type;
+            if (strictMode && cl.getSuperclass() != null) {
+                @SuppressWarnings("unchecked")
+                Class<? extends Annotation>[] annotations =
+                        (Class<? extends Annotation>[]) new Class<?>[] {entityAnnotation, supertypeAnnotation, embeddableAnnotation};
+                if (!containsAny(cl.getSuperclass(), annotations)) {
+                    // skip supertype handling
+                    return type;
+                }
             }
 
             if (cl.getSuperclass() != null && !stopClasses.contains(cl.getSuperclass())

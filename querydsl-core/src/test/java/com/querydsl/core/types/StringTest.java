@@ -78,7 +78,7 @@ public class StringTest {
         assertEquals("lower(alias.name)", $(alias.getName()).lower().toString());
 
         // ConstructorExpression
-        ConstructorExpression<SomeType> someType = new ConstructorExpression<SomeType>(SomeType.class, new Class[]{SomeType.class}, $(alias));
+        ConstructorExpression<SomeType> someType = new ConstructorExpression<SomeType>(SomeType.class, new Class<?>[]{SomeType.class}, $(alias));
         assertEquals("new SomeType(alias)", someType.toString());
 
         // ArrayConstructorExpression

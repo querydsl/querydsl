@@ -128,10 +128,10 @@ class AliasFactory {
         Enhancer enhancer = new Enhancer();
         enhancer.setClassLoader(AliasFactory.class.getClassLoader());
         if (cl.isInterface()) {
-            enhancer.setInterfaces(new Class[] {cl, ManagedObject.class});
+            enhancer.setInterfaces(new Class<?>[] {cl, ManagedObject.class});
         } else {
             enhancer.setSuperclass(cl);
-            enhancer.setInterfaces(new Class[] {ManagedObject.class});
+            enhancer.setInterfaces(new Class<?>[] {ManagedObject.class});
         }
         // creates one handler per proxy
         MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this, pathFactory, typeSystem);
