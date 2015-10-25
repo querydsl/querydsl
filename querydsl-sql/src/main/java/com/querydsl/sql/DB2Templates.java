@@ -20,10 +20,7 @@ import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.*;
 
 /**
  * {@code DB2Templates} is an SQL dialect for DB2 10.1.2
@@ -230,8 +227,8 @@ public class DB2Templates extends SQLTemplates {
                 for (OrderSpecifier<?> os : metadata.getOrderBy()) {
                     rn.orderBy(os);
                 }
-                Expression<?> pr = Projections.appending(metadata.getProjection(), rn.as("rn"));
-                metadata.setProjection(pr);
+                FactoryExpression<?> pr = Projections.appending(metadata.getProjection(), rn.as("rn"));
+                metadata.setProjection(FactoryExpressionUtils.wrap(pr));
                 metadata.clearOrderBy();
                 context.serializeForQuery(metadata, forCountRow);
                 context.append(outerQueryEnd);
