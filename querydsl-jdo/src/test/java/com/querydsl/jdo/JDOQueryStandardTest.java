@@ -30,7 +30,9 @@ import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Param;
+import com.querydsl.jdo.test.domain.Book;
 import com.querydsl.jdo.test.domain.Product;
+import com.querydsl.jdo.test.domain.QBook;
 import com.querydsl.jdo.test.domain.QProduct;
 import com.querydsl.jdo.test.domain.QStore;
 import com.querydsl.jdo.test.domain.Store;
@@ -185,4 +187,10 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
                 .select(product.name).fetchFirst());
     }
 
+    @Test
+    public void DetatchCollection() {
+        new JDOQuery<Book>(pm, true)
+                .select(QBook.book).from(QBook.book)
+                .fetch();
+    }
 }
