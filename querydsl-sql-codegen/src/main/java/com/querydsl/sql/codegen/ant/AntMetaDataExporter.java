@@ -18,15 +18,23 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
+import com.google.common.collect.Lists;
 import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.codegen.DefaultNamingStrategy;
 import com.querydsl.sql.codegen.MetaDataExporter;
 import com.querydsl.sql.codegen.NamingStrategy;
+import com.querydsl.sql.codegen.support.NumericMapping;
+import com.querydsl.sql.codegen.support.RenameMapping;
+import com.querydsl.sql.codegen.support.TypeMapping;
+import com.querydsl.sql.types.Type;
 
 /**
  * {@code AntMetaDataExporter} exports JDBC metadata to Querydsl query types
@@ -238,6 +246,21 @@ public class AntMetaDataExporter extends Task {
     // Ant only
     private String sourceEncoding;
 
+    /**
+     * custom type mappings to use
+     */
+    private List<TypeMapping> typeMappings = Lists.newArrayList();
+
+    /**
+     * custom numeric mappings
+     */
+    private List<NumericMapping> numericMappings = Lists.newArrayList();
+
+    /**
+     * custom rename mappings
+     */
+    private List<RenameMapping> renameMappings = Lists.newArrayList();
+
 
     @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -251,6 +274,7 @@ public class AntMetaDataExporter extends Task {
             Class.forName(jdbcDriver).newInstance();
 
             dbConn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            Configuration configuration = new Configuration(SQLTemplates.DEFAULT);
 
             NamingStrategy namingStrategy = new DefaultNamingStrategy();
             MetaDataExporter exporter = new MetaDataExporter();
@@ -314,9 +338,32 @@ public class AntMetaDataExporter extends Task {
             if (sourceEncoding != null) {
                 exporter.setSourceEncoding(sourceEncoding);
             }
+            if (customTypes != null) {
+                for (String cl : customTypes) {
+                    configuration.register((Type<?>) Class.forName(cl).newInstance());
+                }
+            }
+            if (typeMappings != null) {
+                for (TypeMapping mapping : typeMappings) {
+                    mapping.apply(configuration);
+                }
+            }
+            if (numericMappings != null) {
+                for (NumericMapping mapping : numericMappings) {
+                    mapping.apply(configuration);
+                }
+            }
+            if (renameMappings != null) {
+                for (RenameMapping mapping : renameMappings) {
+                    mapping.apply(configuration);
+                }
+            }
+
             if (columnComparatorClass != null) {
                 exporter.setColumnComparatorClass((Class) Class.forName(this.columnComparatorClass).asSubclass(Comparator.class));
             }
+
+            exporter.setConfiguration(configuration);
 
             exporter.export(dbConn.getMetaData());
 
@@ -643,5 +690,34 @@ public class AntMetaDataExporter extends Task {
 
     public void setSourceEncoding(String sourceEncoding) {
         this.sourceEncoding = sourceEncoding;
+    }
+
+    public String getBeansTargetFolder() {
+        return beansTargetFolder;
+    }
+
+    public void setBeansTargetFolder(String beansTargetFolder) {
+        this.beansTargetFolder = beansTargetFolder;
+    }
+
+    /**
+     * Adds TypeMapping instance, called by Ant
+     */
+    public void addTypeMapping(TypeMapping mapping) {
+        typeMappings.add(mapping);
+    }
+
+    /**
+     * Adds NumericMapping instance, called by Ant
+     */
+    public void addNumericMapping(NumericMapping mapping) {
+        numericMappings.add(mapping);
+    }
+
+    /**
+     * Adds RenameMapping instance, called by Ant
+     */
+    public void addRenameMapping(RenameMapping mapping) {
+        renameMappings.add(mapping);
     }
 }

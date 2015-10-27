@@ -27,6 +27,9 @@ import org.junit.Test;
 
 import com.querydsl.sql.codegen.ExtendedBeanSerializer;
 import com.querydsl.sql.codegen.OriginalNamingStrategy;
+import com.querydsl.sql.codegen.support.NumericMapping;
+import com.querydsl.sql.codegen.support.RenameMapping;
+import com.querydsl.sql.codegen.support.TypeMapping;
 import com.querydsl.sql.types.BytesType;
 import com.querydsl.sql.types.DateTimeType;
 import com.querydsl.sql.types.LocalDateType;
@@ -84,9 +87,9 @@ public class MetadataExportMojoTest {
     public void Execute_With_TypeMappings() throws Exception {
         mojo.setTargetFolder("target/export4");
         TypeMapping mapping = new TypeMapping();
-        mapping.table = "CATALOGS";
-        mapping.column = "CATALOG_NAME";
-        mapping.type = Object.class.getName();
+        mapping.setTable("CATALOGS");
+        mapping.setColumn("CATALOG_NAME");
+        mapping.setType(Object.class.getName());
         mojo.setTypeMappings(new TypeMapping[]{mapping});
 
         mojo.execute();
@@ -99,9 +102,9 @@ public class MetadataExportMojoTest {
     public void ExecuteWithNumericMappings() throws Exception {
         mojo.setTargetFolder("target/export5");
         NumericMapping mapping = new NumericMapping();
-        mapping.total = 1;
-        mapping.decimal = 1;
-        mapping.javaType = Number.class.getName();
+        mapping.setTotal(1);
+        mapping.setDecimal(1);
+        mapping.setJavaType(Number.class.getName());
         mojo.setNumericMappings(new NumericMapping[]{mapping});
 
         mojo.execute();
@@ -180,8 +183,8 @@ public class MetadataExportMojoTest {
     @Test
     public void ExecuteWithRenames() throws Exception {
         RenameMapping mapping = new RenameMapping();
-        mapping.fromSchema = "ABC";
-        mapping.toSchema = "DEF";
+        mapping.setFromSchema("ABC");
+        mapping.setToSchema("DEF");
 
         mojo.setTargetFolder("target/export13");
         mojo.setRenameMappings(new RenameMapping[]{mapping});

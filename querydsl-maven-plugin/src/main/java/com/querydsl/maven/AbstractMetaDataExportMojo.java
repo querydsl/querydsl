@@ -33,6 +33,9 @@ import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.codegen.DefaultNamingStrategy;
 import com.querydsl.sql.codegen.MetaDataExporter;
 import com.querydsl.sql.codegen.NamingStrategy;
+import com.querydsl.sql.codegen.support.NumericMapping;
+import com.querydsl.sql.codegen.support.RenameMapping;
+import com.querydsl.sql.codegen.support.TypeMapping;
 import com.querydsl.sql.types.Type;
 
 /**

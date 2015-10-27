@@ -1,4 +1,4 @@
-package com.querydsl.maven;
+package com.querydsl.sql.codegen.support;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,8 +17,8 @@ public class RenameMappingTest {
 
     @Test
     public void SchemaToSchema() {
-        mapping.fromSchema = "ABC";
-        mapping.toSchema = "DEF";
+        mapping.setFromSchema("ABC");
+        mapping.setToSchema("DEF");
         mapping.apply(configuration);
 
         assertEquals(
@@ -34,8 +34,8 @@ public class RenameMappingTest {
 
     @Test
     public void TableToTable() {
-        mapping.fromTable = "TABLE1";
-        mapping.toTable = "TABLE2";
+        mapping.setFromTable("TABLE1");
+        mapping.setToTable("TABLE2");
         mapping.apply(configuration);
 
         assertEquals(
@@ -48,9 +48,9 @@ public class RenameMappingTest {
 
     @Test
     public void SchemaTableToTable() {
-        mapping.fromSchema = "ABC";
-        mapping.fromTable = "TABLE1";
-        mapping.toTable = "TABLE2";
+        mapping.setFromSchema("ABC");
+        mapping.setFromTable("TABLE1");
+        mapping.setToTable("TABLE2");
         mapping.apply(configuration);
 
         assertEquals(
@@ -63,10 +63,10 @@ public class RenameMappingTest {
 
     @Test
     public void SchemaTableToSchemaTable() {
-        mapping.fromSchema = "ABC";
-        mapping.fromTable = "TABLE1";
-        mapping.toSchema = "ABC";
-        mapping.toTable = "TABLE2";
+        mapping.setFromSchema("ABC");
+        mapping.setFromTable("TABLE1");
+        mapping.setToSchema("ABC");
+        mapping.setToTable("TABLE2");
         mapping.apply(configuration);
 
         assertEquals(
@@ -81,10 +81,10 @@ public class RenameMappingTest {
 
     @Test
     public void SchemaTableColumnToColumn() {
-        mapping.fromSchema = "ABC";
-        mapping.fromTable = "TABLE1";
-        mapping.fromColumn = "COLUMN1";
-        mapping.toColumn = "COLUMN2";
+        mapping.setFromSchema("ABC");
+        mapping.setFromTable("TABLE1");
+        mapping.setFromColumn("COLUMN1");
+        mapping.setToColumn("COLUMN2");
         mapping.apply(configuration);
 
         assertEquals(
@@ -97,9 +97,9 @@ public class RenameMappingTest {
 
     @Test
     public void TableColumnToColumn() {
-        mapping.fromTable = "TABLE1";
-        mapping.fromColumn = "COLUMN1";
-        mapping.toColumn = "COLUMN2";
+        mapping.setFromTable("TABLE1");
+        mapping.setFromColumn("COLUMN1");
+        mapping.setToColumn("COLUMN2");
         mapping.apply(configuration);
 
         assertEquals(

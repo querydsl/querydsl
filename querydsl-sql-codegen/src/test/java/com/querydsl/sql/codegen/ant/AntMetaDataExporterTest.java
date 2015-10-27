@@ -21,20 +21,22 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.junit.Before;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.ProjectHelper;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AntMetaDataExporterTest {
 
-//    private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
-    private final String url = "jdbc:h2:./target/h2" + System.currentTimeMillis();
+    private static final String url = "jdbc:h2:./target/dbs/h2_AntMetaDataExporterTest";
 
-    @Before
-    public void setUp() throws SQLException {
+    @BeforeClass
+    public static void setUp() throws SQLException {
         Connection conn = DriverManager.getConnection(url, "sa", "");
         try {
           Statement stmt = conn.createStatement();
           try {
+              stmt.execute("drop table test if exists");
               stmt.execute("create table test (id int)");
           } finally {
               stmt.close();
@@ -98,5 +100,20 @@ public class AntMetaDataExporterTest {
         assertTrue(new File("target/AntMetaDataExporterTest3").exists());
         assertTrue(new File("target/AntMetaDataExporterTest3/test/QTest.java").exists());
         assertTrue(new File("target/AntMetaDataExporterTest3/test/TestBean.java").exists());
+    }
+
+    @Test
+    public void Execute_inside_Ant() {
+        File buildFile = new File(getClass().getResource("/build.xml").getFile());
+        Project p = new Project();
+        p.setUserProperty("ant.file", buildFile.getAbsolutePath());
+        p.init();
+        ProjectHelper helper = ProjectHelper.getProjectHelper();
+        p.addReference("ant.projectHelper", helper);
+        helper.parse(p, buildFile);
+        p.executeTarget(p.getDefaultTarget());
+
+        assertTrue(new File("target/AntMetaDataExporterTest4").exists());
+        assertTrue(new File("target/AntMetaDataExporterTest4/test/QTest.java").exists());
     }
 }
