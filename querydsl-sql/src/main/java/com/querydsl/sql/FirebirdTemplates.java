@@ -62,11 +62,11 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.CONCAT, "{0} || {1}", Precedence.NEGATE - 1);
 
         // string
-        add(Ops.CHAR_AT, "cast(substring({0} from {1s}+1 for 1) as char)");
-        add(Ops.SUBSTR_1ARG, "substring({0} from {1s}+1)");
-        add(Ops.SUBSTR_2ARGS, "substring({0} from {1s}+1 for {2s}-{1s})");
+        add(Ops.CHAR_AT, "cast(substring({0} from {1+'1's} for 1) as char)");
+        add(Ops.SUBSTR_1ARG, "substring({0} from {1+'1's})");
+        add(Ops.SUBSTR_2ARGS, "substring({0} from {1+'1's} for {2-1s})");
         add(Ops.INDEX_OF, "position({1},{0})-1", Precedence.ARITH_LOW);
-        add(Ops.INDEX_OF_2ARGS, "position({1},{0},{2s}+1)-1", Precedence.ARITH_LOW);
+        add(Ops.INDEX_OF_2ARGS, "position({1},{0},{2+'1's})-1", Precedence.ARITH_LOW);
         add(Ops.StringOps.LOCATE, "position({0},{1})");
         add(Ops.StringOps.LOCATE2, "position({0},{1},{2})");
         add(Ops.STRING_LENGTH, "char_length({0})");
@@ -77,12 +77,12 @@ public class FirebirdTemplates extends SQLTemplates {
 
         // math
         add(Ops.MathOps.LOG, "log({1},{0})");
-        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
-        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0*'-1'})) / 2");
+        add(Ops.MathOps.COTH, "(exp({0*'2'}) + 1) / (exp({0*'2'}) - 1)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
-        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
-        add(Ops.MathOps.DEG, "{0} / pi() * 180.0", Precedence.ARITH_HIGH);
-        add(Ops.MathOps.RAD, "({0} / 180.0) * pi()", Precedence.ARITH_HIGH);
+        add(Ops.MathOps.TANH, "(exp({0*'2'}) - 1) / (exp({0*'2'}) + 1)");
+        add(Ops.MathOps.DEG, "{0*'180.0'} / pi()", Precedence.ARITH_HIGH);
+        add(Ops.MathOps.RAD, "{0}*pi() / 180.0 ", Precedence.ARITH_HIGH);
 
         //
         add(Ops.DateTimeOps.DATE, "cast({0} as date)");

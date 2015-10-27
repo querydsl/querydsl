@@ -100,7 +100,7 @@ public class PostgreSQLTemplates extends SQLTemplates {
         add(Ops.INDEX_OF, "strpos({0},{1})-1", Precedence.ARITH_LOW);
         add(Ops.INDEX_OF_2ARGS, "strpos({0},{1})-1", Precedence.ARITH_LOW); //FIXME
         add(Ops.StringOps.LOCATE,  "strpos({1},{0})");
-        add(Ops.StringOps.LOCATE2, "strpos(repeat('^',{2s}-1) || substr({1},{2s}),{0})");
+        add(Ops.StringOps.LOCATE2, "strpos(repeat('^',{2-'1's}) || substr({1},{2s}),{0})");
 
         // like without escape
         if (escape == '\\') {
@@ -116,11 +116,11 @@ public class PostgreSQLTemplates extends SQLTemplates {
         // Number
         add(Ops.MathOps.RANDOM, "random()");
         add(Ops.MathOps.LN, "ln({0})");
-        add(Ops.MathOps.LOG, "log({1},{0})");
-        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
-        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.LOG, "log({1s},{0s})");
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0*'-1'})) / 2");
+        add(Ops.MathOps.COTH, "(exp({0*'2'}) + 1) / (exp({0*'2'}) - 1)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
-        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
+        add(Ops.MathOps.TANH, "(exp({0*'2'}) - 1) / (exp({0*'2'}) + 1)");
 
         // Date / time
         add(Ops.DateTimeOps.DAY_OF_WEEK, "extract(dow from {0}) + 1");

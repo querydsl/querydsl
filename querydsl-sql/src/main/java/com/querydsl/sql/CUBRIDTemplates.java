@@ -97,10 +97,10 @@ public class CUBRIDTemplates extends SQLTemplates {
 
         add(Ops.MathOps.LN, "ln({0})");
         add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
-        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
-        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
-        add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
-        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0*'-1'})) / 2");
+        add(Ops.MathOps.COTH, "(exp({0*'2'}) + 1) / (exp({0*'2'}) - 1)");
+        add(Ops.MathOps.SINH, "(exp({0}) - exp({0*'-1'})) / 2");
+        add(Ops.MathOps.TANH, "(exp({0*'2'}) - 1) / (exp({0*'2'}) + 1)");
 
         addTypeNameToCode("numeric(1,0)", Types.BOOLEAN, true);
         addTypeNameToCode("numeric(3,0)", Types.TINYINT, true);

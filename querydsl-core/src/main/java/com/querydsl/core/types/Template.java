@@ -14,12 +14,17 @@
 package com.querydsl.core.types;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.MathUtils;
 
 /**
  * {@code Template} provides serialization templates for {@link Operation},
@@ -32,6 +37,8 @@ import com.google.common.collect.ImmutableList;
 public final class Template implements Serializable {
 
     private static final long serialVersionUID = -1697705745769542204L;
+
+    private static final Set<? extends Operator> CONVERTIBLES = Sets.immutableEnumSet(Ops.ADD, Ops.SUB);
 
     /**
      * General template element
@@ -192,6 +199,135 @@ public final class Template implements Serializable {
 
     }
 
+    /**
+     * Math operation
+     */
+    public static final class Operation extends Element {
+
+        private static final long serialVersionUID = 1400801176778801584L;
+
+        private final int index1, index2;
+
+        private final Operator operator;
+
+        private final boolean asString;
+
+        public Operation(int index1, int index2, Operator operator, boolean asString) {
+            this.index1 = index1;
+            this.index2 = index2;
+            this.operator = operator;
+            this.asString = asString;
+        }
+
+        @Override
+        public Object convert(List<?> args) {
+            Object arg1 = args.get(index1);
+            Object arg2 = args.get(index2);
+            if (isNumber(arg1) && isNumber(arg2)) {
+                return MathUtils.result(asNumber(arg1), asNumber(arg2), operator);
+            } else {
+                Expression<?> expr1 = asExpression(arg1);
+                Expression<?> expr2 = asExpression(arg2);
+
+                if (arg2 instanceof Number) {
+                    if (CONVERTIBLES.contains(operator) && expr1 instanceof com.querydsl.core.types.Operation) {
+                        com.querydsl.core.types.Operation operation = (com.querydsl.core.types.Operation) expr1;
+                        if (CONVERTIBLES.contains(operation.getOperator()) && operation.getArg(1) instanceof Constant) {
+                            Number num1 = ((Constant<Number>) operation.getArg(1)).getConstant();
+                            Number num2;
+                            if (operator == operation.getOperator()) {
+                                num2 = MathUtils.result(num1, (Number) arg2, Ops.ADD);
+                            } else if (operator == Ops.ADD) {
+                                num2 = MathUtils.result((Number) arg2, num1, Ops.SUB);
+                            } else {
+                                num2 = MathUtils.result(num1, (Number) arg2, Ops.SUB);
+                            }
+                            return ExpressionUtils.operation(expr1.getType(), operator,
+                                    operation.getArg(0), Expressions.constant(num2));
+                        }
+                    }
+                }
+
+                return ExpressionUtils.operation(expr1.getType(), operator, expr1, expr2);
+            }
+        }
+
+        @Override
+        public boolean isString() {
+            return asString;
+        }
+
+        @Override
+        public String toString() {
+            return index1 + " " + operator + " " + index2;
+        }
+    }
+
+    /**
+     * Math operation with constant
+     */
+    public static final class OperationConst extends Element {
+
+        private static final long serialVersionUID = 1400801176778801584L;
+
+        private final int index1;
+
+        private final BigDecimal arg2;
+
+        private final Expression<BigDecimal> expr2;
+
+        private final Operator operator;
+
+        private final boolean asString;
+
+        public OperationConst(int index1, BigDecimal arg2, Operator operator, boolean asString) {
+            this.index1 = index1;
+            this.arg2 = arg2;
+            this.expr2 = Expressions.constant(arg2);
+            this.operator = operator;
+            this.asString = asString;
+        }
+
+        @Override
+        public Object convert(List<?> args) {
+            Object arg1 = args.get(index1);
+            if (isNumber(arg1)) {
+                return MathUtils.result(asNumber(arg1), arg2, operator);
+            } else {
+                Expression<?> expr1 = asExpression(arg1);
+
+                if (CONVERTIBLES.contains(operator) && expr1 instanceof com.querydsl.core.types.Operation) {
+                    com.querydsl.core.types.Operation operation = (com.querydsl.core.types.Operation) expr1;
+                    if (CONVERTIBLES.contains(operation.getOperator()) && operation.getArg(1) instanceof Constant) {
+                        Number num1 = ((Constant<Number>) operation.getArg(1)).getConstant();
+                        Number num2;
+                        if (operator == operation.getOperator()) {
+                            num2 = MathUtils.result(num1, arg2, Ops.ADD);
+                        } else if (operator == Ops.ADD) {
+                            num2 = MathUtils.result(arg2, num1, Ops.SUB);
+                        } else {
+                            num2 = MathUtils.result(num1, arg2, Ops.SUB);
+                        }
+                        return ExpressionUtils.operation(expr1.getType(), operator,
+                                operation.getArg(0), Expressions.constant(num2));
+                    }
+                }
+
+                return ExpressionUtils.operation(expr1.getType(), operator, expr1, expr2);
+            }
+        }
+
+        @Override
+        public boolean isString() {
+            return asString;
+        }
+
+        @Override
+        public String toString() {
+            return index1 + " " + operator + " " + arg2;
+        }
+    }
+
     private final ImmutableList<Element> elements;
 
     private final String template;
@@ -224,6 +360,29 @@ public final class Template implements Serializable {
     @Override
     public int hashCode() {
         return template.hashCode();
+    }
+
+    private static Number asNumber(Object arg) {
+        if (arg instanceof Number) {
+            return (Number) arg;
+        } else if (arg instanceof Constant) {
+            return (Number) ((Constant) arg).getConstant();
+        } else {
+            throw new IllegalArgumentException(arg.toString());
+        }
+    }
+
+    private static boolean isNumber(Object o) {
+        return o instanceof Number || o instanceof Constant
+                && ((Constant<?>) o).getConstant() instanceof Number;
+    }
+
+    private static Expression<?> asExpression(Object arg) {
+        if (arg instanceof Expression) {
+            return ExpressionUtils.extract((Expression<?>) arg);
+        } else {
+            return Expressions.constant(arg);
+        }
     }
 
 }

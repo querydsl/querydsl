@@ -76,7 +76,7 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.MathOps.POWER, "exp({1} * log({0}))");
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
-        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.COTH, "(exp({0*'2'}) + 1) / (exp({0*'2'}) - 1)");
 
         // overrides of the SQL standard functions
         add(Ops.DateTimeOps.SECOND, "second({0})");

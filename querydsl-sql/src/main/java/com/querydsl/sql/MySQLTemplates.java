@@ -137,10 +137,10 @@ public class MySQLTemplates extends SQLTemplates {
         }
 
         add(Ops.MathOps.LOG, "log({1},{0})");
-        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
-        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
-        add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
-        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0*'-1'})) / 2");
+        add(Ops.MathOps.COTH, "(exp({0*'2'}) + 1) / (exp({0*'2'}) - 1)");
+        add(Ops.MathOps.SINH, "(exp({0}) - exp({0*'-1'})) / 2");
+        add(Ops.MathOps.TANH, "(exp({0*'2'}) - 1) / (exp({0*'2'}) + 1)");
 
         add(Ops.AggOps.BOOLEAN_ANY, "bit_or({0})", 0);
         add(Ops.AggOps.BOOLEAN_ALL, "bit_and({0})", 0);

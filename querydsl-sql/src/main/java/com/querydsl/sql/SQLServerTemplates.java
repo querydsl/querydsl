@@ -83,15 +83,15 @@ public class SQLServerTemplates extends SQLTemplates {
 
         // String
         add(Ops.CONCAT, "{0} + {1}");
-        add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
+        add(Ops.CHAR_AT, "cast(substring({0},{1+'1'},1) as char)");
         add(Ops.INDEX_OF, "charindex({1},{0})-1", Precedence.ARITH_LOW);
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2})-1", Precedence.ARITH_LOW);
         // NOTE : needs to be replaced with real regular expression
         add(Ops.MATCHES, "{0} like {1}", Precedence.OR);
         add(Ops.STRING_IS_EMPTY, "len({0}) = 0", Precedence.COMPARISON);
         add(Ops.STRING_LENGTH, "len({0})");
-        add(Ops.SUBSTR_1ARG, "substring({0},{1}+1,255)");
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2s}-{1s})");
+        add(Ops.SUBSTR_1ARG, "substring({0},{1+'1'},255)");
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1+'1'},{2-1s})");
         add(Ops.TRIM, "ltrim(rtrim({0}))");
 
         add(SQLOps.FOR_UPDATE, "\nwith (updlock)");
@@ -106,14 +106,14 @@ public class SQLServerTemplates extends SQLTemplates {
         add(SQLOps.NEXTVAL, "{0s}.nextval");
 
         add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
-        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
-        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0*'-1'})) / 2");
+        add(Ops.MathOps.COTH, "(exp({0*'2'}) + 1) / (exp({0*'2'}) - 1)");
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "log({0}, {1})");
         add(Ops.MathOps.POWER, "power({0}, {1})");
         add(Ops.MathOps.ROUND, "round({0}, 0)");
-        add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
-        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
+        add(Ops.MathOps.SINH, "(exp({0}) - exp({0*'-1'})) / 2");
+        add(Ops.MathOps.TANH, "(exp({0*'2'}) - 1) / (exp({0*'2'}) + 1)");
 
         // Date / time
         add(Ops.DateTimeOps.YEAR, "datepart(year, {0})");

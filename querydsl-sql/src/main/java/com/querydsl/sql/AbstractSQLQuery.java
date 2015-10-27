@@ -379,6 +379,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             onException(context, e);
             endContext(context);
             throw configuration.translate(queryString, constants, e);
+        } catch (RuntimeException e) {
+            logger.error("Caught " + e.getClass().getName() + " for " + queryString);
+            throw e;
         } finally {
             reset();
         }
