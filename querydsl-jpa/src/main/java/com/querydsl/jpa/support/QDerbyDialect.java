@@ -18,16 +18,17 @@ import java.util.List;
 
 import org.hibernate.dialect.DerbyDialect;
 import org.hibernate.dialect.function.CastFunction;
-import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
+import com.querydsl.core.types.Ops;
+import com.querydsl.sql.DerbyTemplates;
+import com.querydsl.sql.SQLTemplates;
+
 /**
- * @author tiwe
- *
+ * {@code QDerbyDialect} extends {@code DerbyDialect} with additional functions
  */
-public class ExtendedDerbyDialect extends DerbyDialect {
+public class QDerbyDialect extends DerbyDialect {
 
     private static final CastFunction castFunction = new CastFunction() {
         @Override
@@ -40,8 +41,10 @@ public class ExtendedDerbyDialect extends DerbyDialect {
         }
     };
 
-    public ExtendedDerbyDialect() {
-        registerFunction("concat", new VarArgsSQLFunction(StandardBasicTypes.STRING, "cast ((","||",") as varchar(128))"));
+    public QDerbyDialect() {
+        SQLTemplates templates = DerbyTemplates.DEFAULT;
+        getFunctions().putAll(DialectSupport.createFunctions(templates));
+        registerFunction("concat", DialectSupport.createFunction(templates, Ops.CONCAT));
         registerFunction("cast", castFunction);
     }
 

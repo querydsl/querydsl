@@ -14,16 +14,19 @@
 package com.querydsl.jpa.support;
 
 import org.hibernate.dialect.HSQLDialect;
-import org.hibernate.dialect.function.SQLFunctionTemplate;
-import org.hibernate.type.StandardBasicTypes;
+
+import com.querydsl.core.types.Ops;
+import com.querydsl.sql.HSQLDBTemplates;
+import com.querydsl.sql.SQLTemplates;
 
 /**
- * @author tiwe
- *
+ * {@code QHSQLDialect} extends {@code HSQLDialect} with additional functions
  */
-public class ExtendedHSQLDialect extends HSQLDialect {
+public class QHSQLDialect extends HSQLDialect {
 
-    public ExtendedHSQLDialect() {
-        registerFunction("trim", new SQLFunctionTemplate(StandardBasicTypes.STRING, "trim(both from ?1)"));
+    public QHSQLDialect() {
+        SQLTemplates templates = HSQLDBTemplates.DEFAULT;
+        getFunctions().putAll(DialectSupport.createFunctions(templates));
+        registerFunction("trim", DialectSupport.createFunction(templates, Ops.TRIM));
     }
 }

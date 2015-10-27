@@ -76,6 +76,10 @@ public final class Template implements Serializable {
             return arg instanceof Constant<?> ? arg.toString() : arg;
         }
 
+        public int getIndex() {
+            return index;
+        }
+
         @Override
         public boolean isString() {
             return true;
@@ -102,6 +106,10 @@ public final class Template implements Serializable {
         public StaticText(String text) {
             this.text = text;
             this.toString = "'" + text + "'";
+        }
+
+        public String getText() {
+            return text;
         }
 
         @Override
@@ -138,6 +146,10 @@ public final class Template implements Serializable {
             this.index = index;
             this.transformer = transformer;
             this.toString = String.valueOf(index);
+        }
+
+        public int getIndex() {
+            return index;
         }
 
         @Override

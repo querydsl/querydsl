@@ -16,6 +16,7 @@ package com.querydsl.jpa.hibernate;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,7 +44,7 @@ public final class HibernateUtil {
             java.util.Locale.class, java.util.TimeZone.class, java.util.Currency.class, Class.class,
             java.io.Serializable.class, java.sql.Blob.class, java.sql.Clob.class);
 
-    private static final Map<Class<?>, Type> NUMERIC_TYPES;
+    private static final Map<Class<?>, Type> TYPES;
 
     static {
         ImmutableMap.Builder<Class<?>, Type> builder = ImmutableMap.builder();
@@ -55,7 +56,11 @@ public final class HibernateUtil {
         builder.put(Double.class, new DoubleType());
         builder.put(Float.class, new FloatType());
         builder.put(BigDecimal.class, new BigDecimalType());
-        NUMERIC_TYPES = builder.build();
+        builder.put(String.class, new StringType());
+        builder.put(Character.class, new CharacterType());
+        builder.put(Date.class, new DateType());
+        builder.put(Boolean.class, new BooleanType());
+        TYPES = builder.build();
     }
 
     private HibernateUtil() { }
@@ -80,10 +85,14 @@ public final class HibernateUtil {
             query.setParameterList(key, (Collection<?>) val);
         } else if (val instanceof Object[] && !BUILT_IN.contains(val.getClass())) {
             query.setParameterList(key, (Object[]) val);
-        } else if (NUMERIC_TYPES.containsKey(val.getClass())) {
-            query.setParameter(key, val, NUMERIC_TYPES.get(val.getClass()));
+        } else if (val instanceof Number && TYPES.containsKey(val.getClass())) {
+            query.setParameter(key, val, getType(val.getClass()));
         } else {
             query.setParameter(key, val);
         }
+    }
+
+    public static Type getType(Class<?> clazz) {
+        return TYPES.get(clazz);
     }
 }
