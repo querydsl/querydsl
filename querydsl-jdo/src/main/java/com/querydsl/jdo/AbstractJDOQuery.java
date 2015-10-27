@@ -177,7 +177,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     @SuppressWarnings("unchecked")
     private <T> T detach(T results) {
         if (results instanceof Collection) {
-            return (T) persistenceManager.detachCopyAll(results);
+            return (T) persistenceManager.detachCopyAll((Collection<?>) results);
         } else {
             return persistenceManager.detachCopy(results);
         }
