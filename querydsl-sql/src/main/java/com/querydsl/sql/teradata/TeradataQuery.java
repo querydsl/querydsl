@@ -15,6 +15,8 @@ package com.querydsl.sql.teradata;
 
 import java.sql.Connection;
 
+import javax.inject.Provider;
+
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryMetadata;
@@ -47,6 +49,14 @@ public class TeradataQuery<T> extends AbstractSQLQuery<T, TeradataQuery<T>> {
 
     public TeradataQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
+    }
+
+    public TeradataQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+        super(connProvider, configuration, metadata);
+    }
+
+    public TeradataQuery(Provider<Connection> connProvider, Configuration configuration) {
+        super(connProvider, configuration);
     }
 
     /**

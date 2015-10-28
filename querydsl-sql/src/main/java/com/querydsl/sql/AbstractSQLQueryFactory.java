@@ -39,9 +39,9 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
 
     protected final Provider<Connection> connection;
 
-    public AbstractSQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
+    public AbstractSQLQueryFactory(Configuration configuration, Provider<Connection> connProvider) {
         this.configuration = configuration;
-        this.connection = connection;
+        this.connection = connProvider;
     }
 
     @Override

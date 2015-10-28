@@ -44,7 +44,7 @@ public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery<
 
     @Override
     public TeradataQuery<?> query() {
-        return new TeradataQuery<Void>(connection.get(), configuration);
+        return new TeradataQuery<Void>(connection, configuration);
     }
 
 

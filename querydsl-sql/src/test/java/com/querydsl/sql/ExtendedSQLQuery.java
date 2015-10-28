@@ -32,7 +32,7 @@ import com.querydsl.core.types.Projections;
 public class ExtendedSQLQuery<T> extends AbstractSQLQuery<T, ExtendedSQLQuery<T>> {
 
     public ExtendedSQLQuery(SQLTemplates templates) {
-        super(null, new Configuration(templates), new DefaultQueryMetadata());
+        super((Connection) null, new Configuration(templates), new DefaultQueryMetadata());
     }
 
     public ExtendedSQLQuery(Connection conn, SQLTemplates templates) {

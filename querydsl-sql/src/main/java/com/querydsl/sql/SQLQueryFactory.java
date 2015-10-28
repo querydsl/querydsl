@@ -54,8 +54,8 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
         this(new Configuration(templates), connection);
     }
 
-    public SQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
-        super(configuration, connection);
+    public SQLQueryFactory(Configuration configuration, Provider<Connection> connProvider) {
+        super(configuration, connProvider);
     }
 
     public SQLQueryFactory(Configuration configuration, DataSource dataSource) {
@@ -71,7 +71,7 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
 
     @Override
     public SQLQuery<?> query() {
-        return new SQLQuery<Void>(connection.get(), configuration);
+        return new SQLQuery<Void>(connection, configuration);
     }
 
     /**

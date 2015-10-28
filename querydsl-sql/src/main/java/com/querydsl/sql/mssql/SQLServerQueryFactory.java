@@ -44,7 +44,7 @@ public class SQLServerQueryFactory extends AbstractSQLQueryFactory<SQLServerQuer
 
     @Override
     public SQLServerQuery<?> query() {
-        return new SQLServerQuery<Void>(connection.get(), configuration);
+        return new SQLServerQuery<Void>(connection, configuration);
     }
 
 }

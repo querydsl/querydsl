@@ -16,6 +16,8 @@ package com.querydsl.sql.mysql;
 import java.io.File;
 import java.sql.Connection;
 
+import javax.inject.Provider;
+
 import com.google.common.base.Joiner;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinFlag;
@@ -70,6 +72,14 @@ public class MySQLQuery<T> extends AbstractSQLQuery<T, MySQLQuery<T>> {
 
     public MySQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
+    }
+
+    public MySQLQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+        super(connProvider, configuration, metadata);
+    }
+
+    public MySQLQuery(Provider<Connection> connProvider, Configuration configuration) {
+        super(connProvider, configuration);
     }
 
     /**

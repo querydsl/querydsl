@@ -15,6 +15,8 @@ package com.querydsl.sql.postgresql;
 
 import java.sql.Connection;
 
+import javax.inject.Provider;
+
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
@@ -49,6 +51,14 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
 
     public PostgreSQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
+    }
+
+    public PostgreSQLQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+        super(connProvider, configuration, metadata);
+    }
+
+    public PostgreSQLQuery(Provider<Connection> connProvider, Configuration configuration) {
+        super(connProvider, configuration);
     }
 
     /**
