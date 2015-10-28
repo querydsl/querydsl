@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
+import com.querydsl.sql.SchemaAndTable;
 import com.querydsl.sql.codegen.support.ForeignKeyData;
 import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
@@ -152,11 +153,12 @@ public class KeyDataFactory {
     }
 
     private Type createType(@Nullable String schemaName, String table) {
+        SchemaAndTable schemaAndTable = new SchemaAndTable(schemaName, table);
         String packageName = this.packageName;
-        if (schemaToPackage && schemaName != null) {
-            packageName = namingStrategy.appendSchema(packageName, schemaName);
+        if (schemaToPackage) {
+            packageName = namingStrategy.getPackage(packageName, schemaAndTable);
         }
-        String simpleName = prefix + namingStrategy.getClassName(table) + suffix;
+        String simpleName = prefix + namingStrategy.getClassName(schemaAndTable) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
     }
 

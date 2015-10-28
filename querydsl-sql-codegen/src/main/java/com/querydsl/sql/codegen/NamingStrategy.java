@@ -14,6 +14,8 @@
 package com.querydsl.sql.codegen;
 
 import com.querydsl.codegen.EntityType;
+import com.querydsl.sql.SchemaAndTable;
+import com.querydsl.sql.codegen.support.ForeignKeyData;
 
 /**
  * {@code NamingStrategy} defines a conversion strategy from table to class and column
@@ -26,17 +28,29 @@ public interface NamingStrategy {
     /**
      * Normalizes and appends the given schema name to the package name
      *
+     * @deprecated Use {@link #getPackage(String, SchemaAndTable)} instead.
+     *
      * @param packageName
      * @param schema
      * @return
      */
+    @Deprecated
     String appendSchema(String packageName, String schema);
 
     /**
      * Convert the given tableName to a simple class name
+     *
+     * @deprecated Use {@link #getClassName(SchemaAndTable)} instead.
+     *
      * @return
      */
+    @Deprecated
     String getClassName(String tableName);
+
+    /**
+     * Convert the given schema and table name to a simple class name.
+     */
+    String getClassName(SchemaAndTable schemaAndTable);
 
     /**
      * Get the default alias for the given EntityType
@@ -142,5 +156,33 @@ public interface NamingStrategy {
      * @return
      */
     String normalizeSchemaName(String schemaName);
+
+    /**
+     * Returns <code>true</code> if the class generation of the table is required, otherwise
+     * <code>false</code>.
+     *
+     * @param schemaAndTable the schema and table
+     * @return
+     */
+    boolean shouldGenerateClass(SchemaAndTable schemaAndTable);
+
+    /**
+     * Returns <code>true</code> if the foreign key reference should be generated in the table,
+     * otherwise <code>false</code>.
+     *
+     * @param schemaAndTable the schema and table
+     * @param foreignKeyData the foreign key in the table
+     * @return
+     */
+    boolean shouldGenerateForeignKey(SchemaAndTable schemaAndTable, ForeignKeyData foreignKeyData);
+
+    /**
+     * Returns the package where the class of the table will be generated.
+     *
+     * @param basePackage the base package of the class generation
+     * @param schemaAndTable the schema and table
+     * @return
+     */
+    String getPackage(String basePackage, SchemaAndTable schemaAndTable);
 
 }

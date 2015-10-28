@@ -15,6 +15,8 @@ package com.querydsl.sql.codegen;
 
 import com.querydsl.codegen.EntityType;
 import com.querydsl.core.util.JavaSyntaxUtils;
+import com.querydsl.sql.SchemaAndTable;
+import com.querydsl.sql.codegen.support.ForeignKeyData;
 
 /**
  * {@code AbstractNamingStrategy} is an abstract base class for {@link NamingStrategy} implementations
@@ -36,6 +38,9 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
 
     @Override
     public String appendSchema(String packageName, String schemaName) {
+        if (schemaName == null) {
+          return packageName;
+        }
         String suffix = schemaName.toLowerCase();
         if (JavaSyntaxUtils.isReserved(suffix)) {
             suffix += "_";
@@ -120,6 +125,27 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
 
     public void setReservedSuffix(String reservedSuffix) {
         this.reservedSuffix = reservedSuffix;
+    }
+
+    @Override
+    public String getPackage(String basePackage, SchemaAndTable schemaAndTable) {
+        return appendSchema(basePackage, schemaAndTable.getSchema());
+    }
+
+    @Override
+    public boolean shouldGenerateClass(SchemaAndTable schemaAndTable) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldGenerateForeignKey(SchemaAndTable schemaAndTable,
+        ForeignKeyData foreignKeyData) {
+        return true;
+    }
+
+    @Override
+    public String getClassName(SchemaAndTable schemaAndTable) {
+        return getClassName(schemaAndTable.getTable());
     }
 
 }

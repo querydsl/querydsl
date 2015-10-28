@@ -120,12 +120,12 @@ public class MetaDataExporter {
 
     public MetaDataExporter() { }
 
-    protected EntityType createEntityType(@Nullable String schemaName, String tableName,
+    protected EntityType createEntityType(SchemaAndTable schemaAndTable,
             final String className) {
         EntityType classModel;
 
         if (beanSerializer == null) {
-            String packageName = normalizePackage(module.getPackageName(), schemaName);
+            String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
             String simpleName = module.getPrefix() + className + module.getSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
                     packageName + "." + simpleName,  packageName, simpleName, false, false);
@@ -133,7 +133,7 @@ public class MetaDataExporter {
             typeMappings.register(classModel, classModel);
 
         } else {
-            String beanPackage = normalizePackage(beanPackageName, schemaName);
+            String beanPackage = normalizePackage(beanPackageName, schemaAndTable);
             String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
                     beanPackage + "." + simpleName, beanPackage, simpleName, false, false);
@@ -144,18 +144,18 @@ public class MetaDataExporter {
             typeMappings.register(classModel, mappedType);
         }
 
-        classModel.getData().put("schema", schemaName);
-        classModel.getData().put("table", tableName);
+        classModel.getData().put("schema", schemaAndTable.getSchema());
+        classModel.getData().put("table", schemaAndTable.getTable());
         return classModel;
     }
 
 
-    private String normalizePackage(String packageName, @Nullable String schemaName) {
-        if (schemaToPackage && schemaName != null) {
-            return namingStrategy.appendSchema(packageName, schemaName);
-        } else {
-            return packageName;
+    private String normalizePackage(String packageName, SchemaAndTable schemaAndTable) {
+        String rval = packageName;
+        if (schemaToPackage) {
+            rval = namingStrategy.getPackage(rval, schemaAndTable);
         }
+        return rval;
     }
 
     protected Property createProperty(EntityType classModel, String normalizedColumnName,
@@ -315,9 +315,19 @@ public class MetaDataExporter {
         String schema = tables.getString("TABLE_SCHEM");
         String schemaName = normalize(tables.getString("TABLE_SCHEM"));
         String tableName = normalize(tables.getString("TABLE_NAME"));
+
+        String normalizedSchemaName = namingStrategy.normalizeSchemaName(schemaName);
         String normalizedTableName = namingStrategy.normalizeTableName(tableName);
-        String className = namingStrategy.getClassName(normalizedTableName);
-        EntityType classModel = createEntityType(schemaName, normalizedTableName, className);
+
+        SchemaAndTable schemaAndTable = new SchemaAndTable(
+            normalizedSchemaName, normalizedTableName);
+
+        if (!namingStrategy.shouldGenerateClass(schemaAndTable)) {
+            return;
+        }
+
+        String className = namingStrategy.getClassName(schemaAndTable);
+        EntityType classModel = createEntityType(schemaAndTable, className);
 
         if (exportPrimaryKeys) {
             // collect primary keys
@@ -333,7 +343,11 @@ public class MetaDataExporter {
             Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
                     .getImportedKeys(md, catalog, schema, tableName);
             if (!foreignKeyData.isEmpty()) {
-                classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+                for (ForeignKeyData fkd : foreignKeyData.values()) {
+                    if (namingStrategy.shouldGenerateForeignKey(schemaAndTable, fkd)) {
+                        classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+                    }
+                }
             }
 
             // collect inverse foreign keys
@@ -355,7 +369,7 @@ public class MetaDataExporter {
         }
 
         // serialize model
-        serialize(classModel);
+        serialize(classModel, schemaAndTable);
 
         logger.info("Exported " + tableName + " successfully");
     }
@@ -368,19 +382,19 @@ public class MetaDataExporter {
         }
     }
 
-    private void serialize(EntityType type) {
+    private void serialize(EntityType type, SchemaAndTable schemaAndTable) {
         try {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
 
             if (beanSerializer != null) {
-                String packageName = normalizePackage(beanPackageName, (String) type.getData().get("schema"));
+                String packageName = normalizePackage(beanPackageName, schemaAndTable);
                 String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(beanSerializer, new File(beansTargetFolder, path), type);
 
                 String otherPath = entityToWrapped.get(type).getFullName().replace('.', '/') + fileSuffix;
                 write(serializer, new File(targetFolder, otherPath), type);
             } else {
-                String packageName = normalizePackage(module.getPackageName(), (String) type.getData().get("schema"));
+                String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
                 String path =  packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(serializer,new File(targetFolder, path), type);
             }
@@ -620,10 +634,17 @@ public class MetaDataExporter {
     }
 
     /**
-     * Set whether schema names should be appended to the package name
+     * Set whether schema names should be appended to the package name.
+     *
+     * <p><b>!!! Important !!!</b><i> {@link NamingStrategy#getPackage(String, SchemaAndTable)}
+     * will be invoked only if <code>schemaToPackage</code> is set to <code>true</code>.</i></p>
+     *
+     * @deprecated This flag will not be necessary in the future because the generated package name
+     * can be controlled in method {@link NamingStrategy#getPackage(String, SchemaAndTable)}.
      *
      * @param schemaToPackage
      */
+    @Deprecated
     public void setSchemaToPackage(boolean schemaToPackage) {
         this.schemaToPackage = schemaToPackage;
         module.bind(SQLCodegenModule.SCHEMA_TO_PACKAGE, schemaToPackage);
