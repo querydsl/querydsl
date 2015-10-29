@@ -1076,6 +1076,26 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void Map_Order_Get() {
+        /*
+         * select show
+         * from Show show
+         * left join show.parent.acts as show_parent_acts_0 with key(show_parent_acts_0) = ?1
+         * order by show_parent_acts_0 asc
+         */
+        QShow show = QShow.show;
+        assertEquals(Arrays.asList(), query().from(show).orderBy(show.parent.acts.get("A").asc()).fetch());
+    }
+
+    @Test
+    public void Map_Order_Get2() {
+        QShow show = QShow.show;
+        QShow parent = new QShow("parent");
+        assertEquals(Arrays.asList(), query().from(show).innerJoin(show.parent, parent)
+                .orderBy(parent.acts.get("A").asc()).fetch());
+    }
+
+    @Test
     public void Map_ContainsKey() {
         QShow show = QShow.show;
         assertEquals(1L, query().from(show).where(show.acts.containsKey("a")).fetchCount());
