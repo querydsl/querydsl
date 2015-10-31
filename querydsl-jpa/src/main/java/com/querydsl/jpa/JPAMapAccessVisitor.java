@@ -28,10 +28,13 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
 
     private final QueryMetadata metadata;
 
+    private final Map<Expression<?>, Path<?>> aliases;
+
     private final Map<Path<?>, Path<?>> replacements = Maps.newHashMap();
 
-    public JPAMapAccessVisitor(QueryMetadata metadata) {
+    public JPAMapAccessVisitor(QueryMetadata metadata, Map<Expression<?>, Path<?>> aliases) {
         this.metadata = metadata;
+        this.aliases = aliases;
     }
 
     @SuppressWarnings("unchecked")
@@ -66,8 +69,8 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
             Path<?> replacement = replacements.get(expr);
             if (replacement == null) {
                 // join parent as path123 on key(path123) = ...
-                Path parent = pathMetadata.getParent();
-                ParameterizedExpression parExpr = (ParameterizedExpression) parent;
+                Path parent = shorten(pathMetadata.getParent(), true);
+                ParameterizedExpression parExpr = (ParameterizedExpression) pathMetadata.getParent();
                 replacement = ExpressionUtils.path(parExpr.getParameter(1),
                         ExpressionUtils.createRootVariable(parent, replacements.size()));
                 metadata.addJoin(JoinType.LEFTJOIN, ExpressionUtils.as(parent, replacement));
@@ -79,6 +82,32 @@ class JPAMapAccessVisitor extends ReplaceVisitor<Void> {
             return replacement;
         } else {
             return super.visit(expr, context);
+        }
+    }
+
+    /**
+     * Shorten the parent path to a length of max 2 elements
+     */
+    private Path<?> shorten(Path<?> path, boolean outer) {
+        if (aliases.containsKey(path)) {
+            return aliases.get(path);
+        } else if (path.getMetadata().isRoot()) {
+            return path;
+        } else if (path.getMetadata().getParent().getMetadata().isRoot() && outer) {
+            return path;
+        } else {
+            Class<?> type = JPAQueryMixin.getElementTypeOrType(path);
+            Path<?> parent = shorten(path.getMetadata().getParent(), false);
+            Path oldPath = ExpressionUtils.path(path.getType(),
+                    new PathMetadata(parent, path.getMetadata().getElement(), path.getMetadata().getPathType()));
+            if (oldPath.getMetadata().getParent().getMetadata().isRoot() && outer) {
+                return oldPath;
+            } else {
+                Path newPath = ExpressionUtils.path(type, ExpressionUtils.createRootVariable(oldPath));
+                aliases.put(path, newPath);
+                metadata.addJoin(JoinType.LEFTJOIN, ExpressionUtils.as(oldPath, newPath));
+                return newPath;
+            }
         }
     }
 

@@ -31,6 +31,9 @@ public class Show {
     @MapKeyColumn(name = "acts_key")
     public Map<String, String> acts;
 
+    @ManyToOne
+    public Show parent;
+
     public Show() { }
 
     public Show(int id) {
