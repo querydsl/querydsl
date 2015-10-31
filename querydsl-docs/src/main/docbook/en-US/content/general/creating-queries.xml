@@ -230,8 +230,8 @@ QBankAccount bankAccount = account.as(QBankAccount.class);
     <para>Literals can be selected by referring to them via Constant expressions. Here is a simple example </para>
 
     <programlisting language="java"><![CDATA[
-query.list(Expressions.constant(1),
-           Expressions.constant("abc"));
+query.select(Expressions.constant(1),
+             Expressions.constant("abc"));
 ]]></programlisting>
 
     <para>Constant expressions are often used in subqueries.</para>
