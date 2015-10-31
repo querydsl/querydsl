@@ -12,7 +12,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="com.querydsl.jpa.support.ExtendedDerbyDialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.QDerbyDialect" />
             <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver" />
             <property name="hibernate.connection.url" value="jdbc:derby:target/derbydb-hibernate;create=true" />
             <!-- <property name="hibernate.show_sql" value="true"/> -->
@@ -49,7 +49,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="com.querydsl.jpa.support.ExtendedHSQLDialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.QHSQLDialect" />
             <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
             <property name="hibernate.connection.url" value="jdbc:hsqldb:file:target/testdb-hibernate;shutdown=true" />
             <property name="hibernate.connection.user" value="sa" />
@@ -78,7 +78,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.QH2Dialect" />
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
             <property name="hibernate.connection.url" value="jdbc:h2:./target/h2-hibernate" />
             <property name="hibernate.connection.user" value="sa" />
@@ -92,7 +92,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.QH2Dialect" />
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
             <property name="hibernate.connection.url" value="jdbc:h2:./target/h2-hibernate-perf" />
             <property name="hibernate.connection.user" value="sa" />
@@ -203,7 +203,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.QMySQL5InnoDBDialect" />
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/querydsl" />
             <property name="hibernate.connection.username" value="querydsl" />
@@ -234,7 +234,7 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <properties>
       <property name="hibernate.archive.autodetection" value="class" />
-      <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServer2008Dialect" />
+      <property name="hibernate.dialect" value="com.querydsl.jpa.support.QSQLServer2008Dialect" />
       <property name="hibernate.connection.driver_class" value="net.sourceforge.jtds.jdbc.Driver" />
       <property name="hibernate.connection.url" value="jdbc:jtds:sqlserver://localhost:1433/querydsl" />
       <property name="hibernate.connection.username" value="querydsl" />
@@ -251,7 +251,7 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <property name="hibernate.dialect" value="com.querydsl.jpa.support.QPostgreSQL9Dialect" />
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
             <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/querydsl" />
             <property name="hibernate.connection.username" value="querydsl" />
