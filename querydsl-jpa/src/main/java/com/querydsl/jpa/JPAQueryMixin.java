@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.Context;
@@ -69,22 +70,17 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     public static final JoinFlag FETCH_ALL_PROPERTIES = new JoinFlag(" fetch all properties");
 
     public JPAQueryMixin() {
-        mapAccessVisitor = new JPAMapAccessVisitor(getMetadata());
-        listAccessVisitor = new JPAListAccessVisitor(getMetadata());
-        collectionAnyVisitor = new JPACollectionAnyVisitor();
+        this(null, new DefaultQueryMetadata());
     }
 
     public JPAQueryMixin(QueryMetadata metadata) {
-        super(metadata);
-        mapAccessVisitor = new JPAMapAccessVisitor(metadata);
-        listAccessVisitor = new JPAListAccessVisitor(metadata);
-        collectionAnyVisitor = new JPACollectionAnyVisitor();
+        this(null, metadata);
     }
 
     public JPAQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
-        mapAccessVisitor = new JPAMapAccessVisitor(metadata);
-        listAccessVisitor = new JPAListAccessVisitor(metadata);
+        mapAccessVisitor = new JPAMapAccessVisitor(metadata, aliases);
+        listAccessVisitor = new JPAListAccessVisitor(metadata, aliases);
         collectionAnyVisitor = new JPACollectionAnyVisitor();
     }
 
@@ -104,7 +100,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         return super.createAlias(expr, alias);
     }
 
-    private boolean isEntityPath(Path<?> path) {
+    static boolean isEntityPath(Path<?> path) {
         if (path instanceof CollectionPathBase) {
             return isEntityPath((Path<?>) ((CollectionPathBase) path).any());
         } else {
@@ -114,7 +110,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Class<T> getElementTypeOrType(Path<T> path) {
+    static <T> Class<T> getElementTypeOrType(Path<T> path) {
         if (path instanceof CollectionExpression) {
             return ((CollectionExpression) path).getParameter(0);
         } else {

@@ -1063,6 +1063,20 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoEclipseLink(HSQLDB)
+    public void List_Order_Get() {
+        QCat cat = QCat.cat;
+        assertEquals(6, query().from(cat).orderBy(cat.kittens.get(0).name.asc()).fetch().size());
+    }
+
+    @Test
+    @NoEclipseLink(HSQLDB)
+    public void List_Order_Get2() {
+        QCat cat = QCat.cat;
+        assertEquals(6, query().from(cat).orderBy(cat.mate.kittens.get(0).name.asc()).fetch().size());
+    }
+
+    @Test
     public void Map_Get() {
         QShow show = QShow.show;
         assertEquals(Arrays.asList("A"), query().from(show).select(show.acts.get("a")).fetch());
@@ -1076,23 +1090,19 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoEclipseLink
     public void Map_Order_Get() {
-        /*
-         * select show
-         * from Show show
-         * left join show.parent.acts as show_parent_acts_0 with key(show_parent_acts_0) = ?1
-         * order by show_parent_acts_0 asc
-         */
         QShow show = QShow.show;
-        assertEquals(Arrays.asList(), query().from(show).orderBy(show.parent.acts.get("A").asc()).fetch());
+        assertEquals(1, query().from(show).orderBy(show.parent.acts.get("A").asc()).fetch().size());
     }
 
     @Test
+    @NoEclipseLink
     public void Map_Order_Get2() {
         QShow show = QShow.show;
         QShow parent = new QShow("parent");
-        assertEquals(Arrays.asList(), query().from(show).innerJoin(show.parent, parent)
-                .orderBy(parent.acts.get("A").asc()).fetch());
+        assertEquals(1, query().from(show).leftJoin(show.parent, parent)
+                .orderBy(parent.acts.get("A").asc()).fetch().size());
     }
 
     @Test

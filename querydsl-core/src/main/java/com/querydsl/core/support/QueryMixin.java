@@ -49,28 +49,23 @@ public class QueryMixin<T> {
     private T self;
 
     public QueryMixin() {
-        this.metadata = new DefaultQueryMetadata();
-        this.expandAnyPaths = true;
+        this(null, new DefaultQueryMetadata(), true);
     }
 
     public QueryMixin(QueryMetadata metadata) {
-        this.metadata = metadata;
-        this.expandAnyPaths = true;
+        this(null, metadata, true);
     }
 
     public QueryMixin(QueryMetadata metadata, boolean expandAnyPaths) {
-        this.metadata = metadata;
-        this.expandAnyPaths = expandAnyPaths;
+        this(null, metadata, expandAnyPaths);
     }
 
     public QueryMixin(T self) {
-        this(self, new DefaultQueryMetadata());
+        this(self, new DefaultQueryMetadata(), true);
     }
 
     public QueryMixin(T self, QueryMetadata metadata) {
-        this.self = self;
-        this.metadata = metadata;
-        this.expandAnyPaths = true;
+        this(self, metadata, true);
     }
 
     public QueryMixin(T self, QueryMetadata metadata, boolean expandAnyPaths) {
