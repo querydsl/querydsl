@@ -160,12 +160,12 @@
           </row>
           <row>
             <entry>schemaPattern</entry>
-            <entry>a schema name pattern; must match the schema name as it is stored in the database;
+            <entry>a schema name pattern in LIKE pattern form; must match the schema name as it is stored in the database;
               (default: null)</entry>
           </row>
           <row>
             <entry>tableNamePattern</entry>
-            <entry>a table name pattern; must match the table name as it is stored in the database,
+            <entry>a table name pattern in LIKE pattern form; must match the table name as it is stored in the database,
               multiple can be separated by comma
               (default: null)</entry>
           </row>
