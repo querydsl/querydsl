@@ -18,11 +18,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**
@@ -60,7 +56,7 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
     
     @SuppressWarnings("unchecked")
     public CollectionPath(Class<? super E> type, Class<Q> queryType, PathMetadata<?> metadata, PathInits inits) {
-        super(new PathImpl<Collection<E>>((Class)Collection.class, metadata), inits);
+        super(new ParametrizedPathImpl<Collection<E>>((Class) Collection.class, metadata, type), inits);
         this.elementType = (Class<E>)type;
         this.queryType = queryType;
         this.pathMixin = (PathImpl<Collection<E>>)mixin;

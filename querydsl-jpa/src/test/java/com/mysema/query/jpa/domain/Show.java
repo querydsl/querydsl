@@ -15,11 +15,7 @@ package com.mysema.query.jpa.domain;
 
 import java.util.Map;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * The Class Show.
@@ -34,6 +30,9 @@ public class Show {
     @ElementCollection
     @MapKeyColumn(name="acts_key")
     public Map<String, String> acts;
+
+    @ManyToOne
+    public Show parent;
 
     public Show() {}
 

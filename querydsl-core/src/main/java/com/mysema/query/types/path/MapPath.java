@@ -20,13 +20,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.MapExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
 
@@ -63,7 +57,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     
     @SuppressWarnings("unchecked")
     public MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata<?> metadata) {
-        super(new PathImpl<Map<K,V>>((Class)Map.class, metadata));
+        super(new ParametrizedPathImpl<Map<K,V>>((Class) Map.class, metadata, keyType, valueType));
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;
