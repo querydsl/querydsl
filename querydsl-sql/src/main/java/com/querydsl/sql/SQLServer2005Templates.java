@@ -14,6 +14,7 @@
 package com.querydsl.sql;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
@@ -55,15 +56,19 @@ public class SQLServer2005Templates extends SQLServerTemplates {
     private String outerQuerySuffix = " order by rn";
 
     public SQLServer2005Templates() {
-        this('\\',false);
+        this(Keywords.SQLSERVER2005, '\\',false);
     }
 
     public SQLServer2005Templates(boolean quote) {
-        this('\\',quote);
+        this(Keywords.SQLSERVER2005, '\\',quote);
     }
 
     public SQLServer2005Templates(char escape, boolean quote) {
-        super(escape, quote);
+        this(Keywords.SQLSERVER2005, escape, quote);
+    }
+
+    protected SQLServer2005Templates(Set<String> keywords, char escape, boolean quote) {
+        super(keywords, escape, quote);
         //The older MSSQL Server suite doesn't support logarithms with a base other
         //than 10 and the natural logarithm, so we do it manually
         add(Ops.MathOps.LOG, "(LOG({0}) / LOG({1}))");

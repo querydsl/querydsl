@@ -57,7 +57,7 @@ public class SQLiteTemplates extends SQLTemplates {
     }
 
     public SQLiteTemplates(char escape, boolean quote) {
-        super("\"", escape, quote);
+        super(Keywords.SQLITE, "\"", escape, quote);
         setDummyTable(null);
         addCustomType(BigDecimalAsDoubleType.DEFAULT);
         addCustomType(BigIntegerAsLongType.DEFAULT);

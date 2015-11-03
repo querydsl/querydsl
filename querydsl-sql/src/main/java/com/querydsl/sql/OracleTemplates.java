@@ -65,7 +65,7 @@ public class OracleTemplates extends SQLTemplates {
     }
 
     public OracleTemplates(char escape, boolean quote) {
-        super("\"", escape, quote);
+        super(Keywords.ORACLE, "\"", escape, quote);
         setParameterMetadataAvailable(false);
         setBatchCountViaGetUpdateCount(true);
         setWithRecursive("with ");
@@ -224,7 +224,7 @@ public class OracleTemplates extends SQLTemplates {
 
     @Override
     public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
-            Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
+                                Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
         context.serializeForUpdate(metadata, entity, updates);
 
         // limit

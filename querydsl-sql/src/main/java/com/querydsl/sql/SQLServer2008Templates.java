@@ -14,6 +14,8 @@
 package com.querydsl.sql;
 
 
+import java.util.Set;
+
 /**
  * {@code SQLServer2008Templates} is an SQL dialect for Microsoft SQL Server 2008
  *
@@ -35,15 +37,19 @@ public class SQLServer2008Templates extends SQLServer2005Templates {
     }
 
     public SQLServer2008Templates() {
-        this('\\',false);
+        this(Keywords.SQLSERVER2008, '\\',false);
     }
 
     public SQLServer2008Templates(boolean quote) {
-        this('\\',quote);
+        this(Keywords.SQLSERVER2008, '\\',quote);
     }
 
     public SQLServer2008Templates(char escape, boolean quote) {
-        super(escape, quote);
+        this(Keywords.SQLSERVER2008, escape, quote);
+    }
+
+    protected SQLServer2008Templates(Set<String> keywords, char escape, boolean quote) {
+        super(keywords, escape, quote);
     }
 
 }

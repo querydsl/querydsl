@@ -24,7 +24,6 @@ import java.util.Set;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.querydsl.core.*;
@@ -50,74 +49,6 @@ public class SQLTemplates extends Templates {
     protected static final int TIME_WITH_TIMEZONE = 2013;
 
     protected static final int TIMESTAMP_WITH_TIMEZONE = 2014;
-
-    protected static final Set<String> SQL_RESERVED_WORDS
-            = ImmutableSet.of(
-                    "ABS", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE",
-                    "ARRAY", "ARRAY_AGG", "AS", "ASENSITIVE", "ASYMMETRIC",
-                    "AT", "ATOMIC", "AUTHORIZATION", "AVG", "BEGIN", "BETWEEN",
-                    "BIGINT", "BINARY", "BLOB", "BOOLEAN", "BOTH", "BY", "CALL",
-                    "CALLED", "CARDINALITY", "CASCADED", "CASE", "CAST", "CEIL",
-                    "CEILING", "CHAR", "CHARACTER", "CHARACTER_LENGTH",
-                    "CHAR_LENGTH", "CHECK", "CLOB", "CLOSE", "COALESCE",
-                    "COLLATE", "COLLECT", "COLUMN", "COMMIT", "CONDITION",
-                    "CONNECT", "CONSTRAINT", "CONVERT", "CORR", "CORRESPONDING",
-                    "COUNT", "COVAR_POP", "COVAR_SAMP", "CREATE", "CROSS",
-                    "CUBE", "CUME_DIST", "CURRENT", "CURRENT_CATALOG",
-                    "CURRENT_DATE", "CURRENT_DEFAULT_TRANSFORM_GROUP",
-                    "CURRENT_PATH", "CURRENT_ROLE", "CURRENT_SCHEMA",
-                    "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_TRANSFORM_GROUP_FOR_TYPE",
-                    "CURRENT_USER", "CURSOR", "CYCLE", "DATE", "DAY",
-                    "DEALLOCATE", "DEC", "DECIMAL", "DECLARE", "DEFAULT",
-                    "DELETE", "DENSE_RANK", "DEREF", "DESCRIBE",
-                    "DETERMINISTIC", "DISCONNECT", "DISTINCT", "DOUBLE",
-                    "DROP", "DYNAMIC", "EACH", "ELEMENT", "ELSE", "END",
-                    "END-EXEC", "ESCAPE", "EVERY", "EXCEPT", "EXEC", "EXECUTE",
-                    "EXISTS", "EXP", "EXTERNAL", "EXTRACT", "FALSE", "FETCH",
-                    "FILTER", "FIRST_VALUE", "FLOAT", "FLOOR", "FOR", "FOREIGN",
-                    "FREE", "FROM", "FULL", "FUNCTION", "FUSION", "GET",
-                    "GLOBAL", "GRANT", "GROUP", "GROUPING", "HAVING", "HOLD",
-                    "HOUR", "IDENTITY", "IN", "INDICATOR", "INNER", "INOUT",
-                    "INSENSITIVE", "INSERT", "INT", "INTEGER", "INTERSECT",
-                    "INTERSECTION", "INTERVAL", "INTO", "IS", "JOIN", "LAG",
-                    "LANGUAGE", "LARGE", "LAST_VALUE", "LATERAL", "LEAD",
-                    "LEADING", "LEFT", "LIKE", "LIKE_REGEX", "LN", "LOCAL",
-                    "LOCALTIME", "LOCALTIMESTAMP", "LOWER", "MATCH", "MAX",
-                    "MAX_CARDINALITY", "MEMBER", "MERGE", "METHOD", "MIN",
-                    "MINUTE", "MOD", "MODIFIES", "MODULE", "MONTH", "MULTISET",
-                    "NATIONAL", "NATURAL", "NCHAR", "NCLOB", "NEW", "NO",
-                    "NONE", "NORMALIZE", "NOT", "NTH_VALUE", "NTILE", "NULL",
-                    "NULLIF", "NUMERIC", "OCCURRENCES_REGEX", "OCTET_LENGTH",
-                    "OF", "OFFSET", "OLD", "ON", "ONLY", "OPEN", "OR", "ORDER",
-                    "OUT", "OUTER", "OVER", "OVERLAPS", "OVERLAY", "PARAMETER",
-                    "PARTITION", "PERCENTILE_CONT", "PERCENTILE_DISC",
-                    "PERCENT_RANK", "POSITION", "POSITION_REGEX", "POWER",
-                    "PRECISION", "PREPARE", "PRIMARY", "PROCEDURE", "RANGE",
-                    "RANK", "READS", "REAL", "RECURSIVE", "REF", "REFERENCES",
-                    "REFERENCING", "REGR_AVGX", "REGR_AVGY", "REGR_COUNT",
-                    "REGR_INTERCEPT", "REGR_R2", "REGR_SLOPE", "REGR_SXX",
-                    "REGR_SXY", "REGR_SYY", "RELEASE", "RESULT", "RETURN",
-                    "RETURNS", "REVOKE", "RIGHT", "ROLLBACK", "ROLLUP",
-                    "ROW", "ROWS", "ROW_NUMBER", "SAVEPOINT", "SCOPE", "SCROLL",
-                    "SEARCH", "SECOND", "SELECT", "SENSITIVE", "SESSION_USER",
-                    "SET", "SIMILAR", "SMALLINT", "SOME", "SPECIFIC",
-                    "SPECIFICTYPE", "SQL", "SQLEXCEPTION", "SQLSTATE",
-                    "SQLWARNING", "SQRT", "START", "STATIC", "STDDEV_POP",
-                    "STDDEV_SAMP", "SUBMULTISET", "SUBSTRING", "SUBSTRING_REGEX",
-                    "SUM", "SYMMETRIC", "SYSTEM", "SYSTEM_USER", "TABLE",
-                    "TABLESAMPLE", "THEN", "TIME", "TIMESTAMP", "TIMEZONE_HOUR",
-                    "TIMEZONE_MINUTE", "TO", "TRAILING", "TRANSLATE",
-                    "TRANSLATE_REGEX", "TRANSLATION", "TREAT", "TRIGGER", "TRIM",
-                    "TRIM_ARRAY", "TRUE", "TRUNCATE", "UESCAPE", "UNION",
-                    "UNIQUE", "UNKNOWN", "UNNEST", "UPDATE", "UPPER", "USER",
-                    "USING", "VALUE", "VALUES", "VARBINARY", "VARCHAR",
-                    "VARYING", "VAR_POP", "VAR_SAMP", "WHEN", "WHENEVER",
-                    "WHERE", "WIDTH_BUCKET", "WINDOW", "WITH", "WITHIN",
-                    "WITHOUT", "XML", "XMLAGG", "XMLATTRIBUTES", "XMLBINARY",
-                    "XMLCAST", "XMLCOMMENT", "XMLCONCAT", "XMLDOCUMENT",
-                    "XMLELEMENT", "XMLEXISTS", "XMLFOREST", "XMLITERATE",
-                    "XMLNAMESPACES", "XMLPARSE", "XMLPI", "XMLQUERY",
-                    "XMLSERIALIZE", "XMLTABLE", "XMLTEXT", "XMLVALIDATE", "YEAR");
 
     public static final Expression<?> RECURSIVE = ExpressionUtils.template(Object.class, "");
 
@@ -307,7 +238,7 @@ public class SQLTemplates extends Templates {
 
     @Deprecated
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
-        this(SQL_RESERVED_WORDS, quoteStr, escape, useQuotes);
+        this(Keywords.DEFAULT, quoteStr, escape, useQuotes);
     }
 
     protected SQLTemplates(Set<String> reservedKeywords, String quoteStr, char escape, boolean useQuotes) {

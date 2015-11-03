@@ -51,7 +51,7 @@ public class FirebirdTemplates extends SQLTemplates {
     }
 
     public FirebirdTemplates(char escape, boolean quote) {
-        super("\"", escape, quote);
+        super(Keywords.FIREBIRD, "\"", escape, quote);
         setDummyTable("RDB$DATABASE");
         setUnionsWrapped(false);
         setWrapSelectParameters(true);

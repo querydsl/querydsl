@@ -14,6 +14,7 @@
 package com.querydsl.sql;
 
 import java.sql.Types;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
@@ -59,7 +60,11 @@ public class SQLServerTemplates extends SQLTemplates {
     }
 
     public SQLServerTemplates(char escape, boolean quote) {
-        super("\"", escape, quote);
+        this(Keywords.DEFAULT, escape, quote);
+    }
+
+    protected SQLServerTemplates(Set<String> keywords, char escape, boolean quote) {
+        super(keywords, "\"", escape, quote);
         setDummyTable("");
         setNullsFirst(null);
         setNullsLast(null);
