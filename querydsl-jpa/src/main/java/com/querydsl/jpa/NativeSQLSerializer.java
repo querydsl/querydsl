@@ -118,7 +118,12 @@ public final class NativeSQLSerializer extends SQLSerializer {
                 projection = ExpressionUtils.as(projection, alias);
                 modified = true;
             } else if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
-                aliases.put(path, path.getAnnotatedElement().getAnnotation(Column.class).name());
+                Column column = path.getAnnotatedElement().getAnnotation(Column.class);
+                if (!column.name().isEmpty()) {
+                    aliases.put(path, column.name());
+                } else {
+                    aliases.put(path, ColumnMetadata.getName(path));
+                }
             } else {
                 aliases.put(path, ColumnMetadata.getName(path));
             }
@@ -130,7 +135,12 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     Path<?> path = (Path<?>) fargs.get(j);
                     String columnName;
                     if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
-                        columnName = path.getAnnotatedElement().getAnnotation(Column.class).name();
+                        Column column = path.getAnnotatedElement().getAnnotation(Column.class);
+                        if (!column.name().isEmpty()) {
+                            columnName = column.name();
+                        } else {
+                            columnName = ColumnMetadata.getName(path);
+                        }
                     } else {
                         columnName = ColumnMetadata.getName(path);
                     }
