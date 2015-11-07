@@ -13,6 +13,8 @@
  */
 package com.querydsl.sql;
 
+import java.util.Set;
+
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -46,15 +48,19 @@ public class SQLServer2012Templates extends SQLServerTemplates {
     }
 
     public SQLServer2012Templates() {
-        this('\\',false);
+        this(Keywords.SQLSERVER2012, '\\',false);
     }
 
     public SQLServer2012Templates(boolean quote) {
-        this('\\',quote);
+        this(Keywords.SQLSERVER2012, '\\',quote);
     }
 
     public SQLServer2012Templates(char escape, boolean quote) {
-        super(escape, quote);
+        this(Keywords.SQLSERVER2012, escape, quote);
+    }
+
+    protected SQLServer2012Templates(Set<String> keywords, char escape, boolean quote) {
+        super(keywords, escape, quote);
     }
 
     @Override
