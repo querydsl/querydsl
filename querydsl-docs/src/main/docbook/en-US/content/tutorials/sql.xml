@@ -85,8 +85,7 @@
 
     <para>
       Use the goal <emphasis>test-export</emphasis>
-      to add the targetFolder as a test compile source root
-      instead of a compile source root.
+      to treat the target folder as a test source folder for use with test code.
     </para>
 
     <table>
