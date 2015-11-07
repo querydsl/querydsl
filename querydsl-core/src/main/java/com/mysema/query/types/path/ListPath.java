@@ -20,12 +20,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.ListExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 
@@ -66,7 +61,7 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     
     @SuppressWarnings("unchecked")
     public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata, PathInits inits) {
-        super(new PathImpl<List<E>>((Class)List.class, metadata), inits);
+        super(new ParametrizedPathImpl<List<E>>((Class) List.class, metadata, elementType), inits);
         this.elementType = (Class<E>)elementType;
         this.queryType = queryType;
         this.pathMixin = (PathImpl<List<E>>)mixin;

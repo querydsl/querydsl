@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.Context;
@@ -56,20 +57,17 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     public static final JoinFlag FETCH_ALL_PROPERTIES = new JoinFlag(" fetch all properties");
 
     public JPAQueryMixin() {
-        mapAccessVisitor = new JPAMapAccessVisitor(getMetadata());
-        listAccessVisitor = new JPAListAccessVisitor(getMetadata());
+        this(null, new DefaultQueryMetadata());
     }
 
     public JPAQueryMixin(QueryMetadata metadata) {
-        super(metadata);
-        mapAccessVisitor = new JPAMapAccessVisitor(metadata);
-        listAccessVisitor = new JPAListAccessVisitor(metadata);
+        this(null, metadata);
     }
 
     public JPAQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
-        mapAccessVisitor = new JPAMapAccessVisitor(metadata);
-        listAccessVisitor = new JPAListAccessVisitor(metadata);
+        mapAccessVisitor = new JPAMapAccessVisitor(metadata, aliases);
+        listAccessVisitor = new JPAListAccessVisitor(metadata, aliases);
     }
 
     public T fetch() {
@@ -88,7 +86,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         return super.createAlias(expr, alias);
     }
 
-    private boolean isEntityPath(Path<?> path) {
+    static boolean isEntityPath(Path<?> path) {
         if (path instanceof CollectionPathBase) {
             return isEntityPath((Path<?>) ((CollectionPathBase)path).any());
         } else {
@@ -97,7 +95,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         }
     }
 
-    private <T> Class<T> getElementTypeOrType(Path<T> path) {
+    static <T> Class<T> getElementTypeOrType(Path<T> path) {
         if (path instanceof CollectionExpression) {
             return ((CollectionExpression)path).getParameter(0);
         } else {

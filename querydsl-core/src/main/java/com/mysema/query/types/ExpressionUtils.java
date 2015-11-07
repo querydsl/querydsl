@@ -13,9 +13,9 @@
  */
 package com.mysema.query.types;
 
-import javax.annotation.Nullable;
-
 import java.util.*;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.mysema.query.BooleanBuilder;
@@ -42,6 +42,193 @@ public final class ExpressionUtils {
     }
 
     private static final Templates TEMPLATES = new UnderscoreTemplates();
+
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param type type of expression
+     * @param operator operator
+     * @param args operation arguments
+     * @return operation expression
+     */
+    public static <T> Operation<T> operation(Class<? extends T> type, Operator<T> operator,
+                                             Expression<?>... args) {
+        return operation(type, operator, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param type type of expression
+     * @param operator operator
+     * @param args operation arguments
+     * @return operation expression
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Operation<T> operation(Class<? extends T> type, Operator<T> operator,
+                                             ImmutableList<Expression<?>> args) {
+        if (type.equals(Boolean.class)) {
+            return (Operation<T>) new PredicateOperation((Operator<Boolean>) operator, args);
+        } else {
+            return new OperationImpl<T>(type, operator, args);
+        }
+    }
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param operator operator
+     * @param args operation arguments
+     * @return operation expression
+     */
+    public static PredicateOperation predicate(Operator<Boolean> operator, Expression<?>... args) {
+        return predicate(operator, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param operator operator
+     * @param args operation arguments
+     * @return operation expression
+     */
+    public static PredicateOperation predicate(Operator<Boolean> operator, ImmutableList<Expression<?>> args) {
+        return new PredicateOperation(operator, args);
+    }
+
+    /**
+     * Create a new Path expression
+     *
+     * @param type type of expression
+     * @param variable variable name
+     * @return path expression
+     */
+    public static <T> Path<T> path(Class<? extends T> type, String variable) {
+        return new PathImpl<T>(type, variable);
+    }
+
+    /**
+     * Create a new Path expression
+     *
+     * @param type type of expression
+     * @param parent parent path
+     * @param property property name
+     * @return path expression
+     */
+    public static <T> Path<T> path(Class<? extends T> type, Path<?> parent, String property) {
+        return new PathImpl<T>(type, parent, property);
+    }
+
+    /**
+     * Create a new Path expression
+     *
+     * @param type type of expression
+     * @param metadata path metadata
+     * @param <T> type of expression
+     * @return path expression
+     */
+    public static <T> Path<T> path(Class<? extends T> type, PathMetadata metadata) {
+        return new PathImpl<T>(type, metadata);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static PredicateTemplate predicateTemplate(String template, Object... args) {
+        return predicateTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static PredicateTemplate predicateTemplate(String template, ImmutableList<?> args) {
+        return predicateTemplate(TemplateFactory.DEFAULT.create(template), args);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static PredicateTemplate predicateTemplate(Template template, Object... args) {
+        return predicateTemplate(template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static PredicateTemplate predicateTemplate(Template template, ImmutableList<?> args) {
+        return new PredicateTemplate(template, args);
+    }
+
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, Object... args) {
+        return template(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, ImmutableList<?> args) {
+        return template(cl, TemplateFactory.DEFAULT.create(template), args);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, Object... args) {
+        return template(cl, template, ImmutableList.copyOf(args));
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, ImmutableList<?> args) {
+        if (cl.equals(Boolean.class)) {
+            return (TemplateExpression<T>) new PredicateTemplate(template, args);
+        } else {
+            return new TemplateExpressionImpl<T>(cl, template, args);
+        }
+    }
 
     /**
      * @param col
@@ -541,6 +728,18 @@ public final class ExpressionUtils {
     public static String createRootVariable(Path<?> path) {
         String variable = path.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
         String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 5);
+        return variable + "_" + suffix;
+    }
+
+    /**
+     * Create a new root variable based on the given path and suffix
+     *
+     * @param path base path
+     * @param suffix suffix for variable name
+     * @return path expression
+     */
+    public static String createRootVariable(Path<?> path, int suffix) {
+        String variable = path.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
         return variable + "_" + suffix;
     }
 
