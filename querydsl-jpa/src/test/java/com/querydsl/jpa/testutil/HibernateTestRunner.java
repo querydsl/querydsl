@@ -23,9 +23,9 @@ import java.util.Properties;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.junit.rules.MethodRule;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
@@ -107,7 +107,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
             throw new IllegalArgumentException("No configuration available at classpath:" + mode);
         }
         props.load(is);
-        ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
+        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
             .applySettings(props)
             .build();
         cfg.setProperties(props);
@@ -119,9 +119,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     private void shutdown() {
         if (session != null) {
             try {
-                if (session.getTransaction().isActive()) {
-                    session.getTransaction().rollback();
-                }
+                session.getTransaction().rollback();
             } finally {
                 session.close();
                 session = null;

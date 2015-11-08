@@ -33,8 +33,6 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
-import org.hibernate.exception.spi.TemplatedViolatedConstraintNameExtracter;
-import org.hibernate.exception.spi.ViolatedConstraintNameExtracter;
 import org.hibernate.type.StandardBasicTypes;
 
 /**
@@ -158,27 +156,22 @@ public class TeradataDialect extends Dialect {
         return "Add";
     }
 
-    @Override
     public boolean supportsTemporaryTables() {
         return true;
     }
 
-    @Override
     public String getCreateTemporaryTableString() {
         return "create global temporary table";
     }
 
-    @Override
     public String getCreateTemporaryTablePostfix() {
         return " on commit preserve rows";
     }
 
-    @Override
     public Boolean performTemporaryTableDDLInIsolation() {
         return Boolean.TRUE;
     }
 
-    @Override
     public boolean dropTemporaryTableAfterUse() {
         return false;
     }
@@ -303,42 +296,6 @@ public class TeradataDialect extends Dialect {
     public boolean supportsBindAsCallableArgument() {
         return false;
     }
-
-    @Override
-    public ViolatedConstraintNameExtracter getViolatedConstraintNameExtracter() {
-        return EXTRACTER;
-    }
-
-    private static final ViolatedConstraintNameExtracter EXTRACTER = new TemplatedViolatedConstraintNameExtracter() {
-
-        /**
-         * Extract the name of the violated constraint from the given
-         * SQLException.
-         *
-         * @param sqle
-         *            The exception that was the result of the constraint
-         *            violation.
-         * @return The extracted constraint name.
-         */
-        @Override
-        public String extractConstraintName(SQLException sqle) {
-            String constraintName = null;
-
-            int errorCode = sqle.getErrorCode();
-            if (errorCode == 27003) {
-                constraintName = extractUsingTemplate("Unique constraint (", ") violated.",
-                        sqle.getMessage());
-            }
-
-            if (constraintName != null) {
-                int i = constraintName.indexOf('.');
-                if (i != -1) {
-                    constraintName = constraintName.substring(i + 1);
-                }
-            }
-            return constraintName;
-        }
-    };
 
     @Override
     public boolean supportsNotNullUnique() {

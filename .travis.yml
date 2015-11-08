@@ -7,17 +7,18 @@ addons:
   postgresql: "9.3"
 env:
   matrix:
-    - MODULE=!querydsl-scala
-    - MODULE=querydsl-scala
+    - MODULE=!querydsl-scala PROFILES=all,travis,examples
+    - MODULE=!querydsl-jpa-codegen PROFILES=jpa,hibernate5,travis,examples
+    - MODULE=querydsl-scala PROFILES=all,travis
 install:
-  - mvn -B -q --projects ${MODULE} install -DskipTests=true
+  - mvn -B -q --projects ${MODULE} -P${PROFILES} install -DskipTests=true
 before_script:
   - mysql -u root -e "source travis/mysql.sql"
   - psql -U postgres -f travis/postgresql.sql  
   - psql -c 'create extension postgis;' -d querydsl -U postgres
   - ./travis/cubrid.sh
   - ./travis/firebird.sh
-script: mvn -B test -Pall,travis,examples --projects ${MODULE} jacoco:report
+script: mvn -B test -P${PROFILES} --projects ${MODULE} jacoco:report
 sudo: required
 after_success:
   - mvn coveralls:report
