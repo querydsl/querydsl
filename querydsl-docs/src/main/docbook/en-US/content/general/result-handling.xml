@@ -21,7 +21,8 @@
     Tuple provides provides a typesafe Map like interface to access column data from a Tuple row object.</para>
 
     <programlisting language="java"><![CDATA[
-List<Tuple> result = query.from(employee).list(employee.firstName, employee.lastName);
+List<Tuple> result = query.select(employee.firstName, employee.lastName)
+                          .from(employee).fetch();
 for (Tuple row : result) {
      System.out.println("firstName " + row.get(employee.firstName));
      System.out.println("lastName " + row.get(employee.lastName));
@@ -31,7 +32,8 @@ for (Tuple row : result) {
     <para>This example could also have been written via the QTuple expression class like this</para>
 
     <programlisting language="java"><![CDATA[
-List<Tuple> result = query.from(employee).list(new QTuple(employee.firstName, employee.lastName));
+List<Tuple> result = query.select(new QTuple(employee.firstName, employee.lastName))
+                          .from(employee).fetch();
 for (Tuple row : result) {
      System.out.println("firstName " + row.get(employee.firstName));
      System.out.println("lastName " + row.get(employee.lastName));
@@ -48,16 +50,16 @@ for (Tuple row : result) {
     can be used like this</para>
 
     <programlisting language="java"><![CDATA[
-List<UserDTO> dtos = query.list(
-    Projections.bean(UserDTO.class, user.firstName, user.lastName));
+List<UserDTO> dtos = query.select(
+    Projections.bean(UserDTO.class, user.firstName, user.lastName)).fetch();
 ]]></programlisting>
 
    <para>When fields should be directly used instead of setters the following variant can be
    used instead</para>
 
 <programlisting language="java"><![CDATA[
-List<UserDTO> dtos = query.list(
-    Projections.fields(UserDTO.class, user.firstName, user.lastName));
+List<UserDTO> dtos = query.select(
+    Projections.fields(UserDTO.class, user.firstName, user.lastName)).fetch();
 ]]></programlisting>
 
   </sect2>
@@ -68,8 +70,8 @@ List<UserDTO> dtos = query.list(
     <para>Constructor based row transformation can be used like this</para>
 
     <programlisting language="java"><![CDATA[
-List<UserDTO> dtos = query.list(
-    Projections.bean(UserDTO.class, user.firstName, user.lastName));
+List<UserDTO> dtos = query.select(
+    Projections.bean(UserDTO.class, user.firstName, user.lastName)).fetch();
 ]]></programlisting>
 
     <para>As an alternative to the generic Constructor expression usage constructors
@@ -92,7 +94,8 @@ class CustomerDTO {
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 JPQLQuery query = new HibernateQuery(session);
-List<CustomerDTO> dtos = query.from(customer).list(new QCustomerDTO(customer.id, customer.name));
+List<CustomerDTO> dtos = query.select(new QCustomerDTO(customer.id, customer.name))
+                              .from(customer).fetch();
 ]]></programlisting>
 
     <para>While the example is Hibernate specific, this feature is
@@ -120,7 +123,8 @@ class Customer {
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 JPQLQuery query = new HibernateQuery(session);
-List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, customer.name));
+List<Customer> dtos = query.select(QCustomer.create(customer.id, customer.name))
+                           .from(customer).fetch();
 ]]></programlisting>
 
     <para>Alternatively, if code generation is not an option, you can
@@ -128,8 +132,9 @@ List<Customer> dtos = query.from(customer).list(QCustomer.create(customer.id, cu
     </para>
 
     <programlisting language="java"><![CDATA[
-List<Customer> dtos = query.from(customer)
-    .list(Projections.constructor(Customer.class, customer.id, customer.name));
+List<Customer> dtos = query
+    .select(Projections.constructor(Customer.class, customer.id, customer.name))
+    .from(customer).fetch();
 ]]></programlisting>
 
   </sect2>
