@@ -22,7 +22,7 @@
     <programlisting language="xml"><![CDATA[
 <dependency>
   <groupId>com.querydsl</groupId>
-  <artifactId>querydsl-spatial</artifactId>
+  <artifactId>querydsl-sql-spatial</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
 ]]></programlisting>

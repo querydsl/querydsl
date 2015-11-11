@@ -1202,5 +1202,77 @@ configuration.registerNumeric(5,2,Float.class);
 
   </sect2>
 
+  <sect2>
+
+    <title>Spring integration</title>
+
+    <para>Querydsl SQL integrates with Spring through the querydsl-sql-spring module:</para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.querydsl</groupId>
+  <artifactId>querydsl-sql-spring</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+]]></programlisting>
+
+    <para>It provides Spring exception translation and a Spring connection provider for usage of Querydsl SQL
+    with Spring transaction managers. Below is a configuration example:</para>
+
+    <programlisting language="java"><![CDATA[
+package com.querydsl.example.config;
+
+import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.SQLQueryFactory;
+import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.spring.SpringConnectionProvider;
+import com.querydsl.sql.spring.SpringExceptionTranslator;
+import com.querydsl.sql.types.DateTimeType;
+import com.querydsl.sql.types.LocalDateType;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.sql.DataSource;
+import java.sql.Connection;
+
+@Configuration
+public class JdbcConfiguration {
+
+    @Bean
+    public DataSource dataSource() {
+        // implementation omitted
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        return new DataSourceTransactionManager(dataSource());
+    }
+
+    @Bean
+    public com.querydsl.sql.Configuration querydslConfiguration() {
+        SQLTemplates templates = H2Templates.builder().build(); //change to your Templates
+        com.querydsl.sql.Configuration configuration = new com.querydsl.sql.Configuration(templates);
+        configuration.setExceptionTranslator(new SpringExceptionTranslator());
+        return configuration;
+    }
+
+    @Bean
+    public SQLQueryFactory queryFactory() {
+        Provider<Connection> provider = new SpringConnectionProvider(dataSource());
+        return new SQLQueryFactory(querydslConfiguration(), provider);
+    }
+
+}
+]]></programlisting>
+
+
+  </sect2>
+
 
 </sect1>
