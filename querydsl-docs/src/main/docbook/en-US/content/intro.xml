@@ -45,11 +45,6 @@
     </para>
 
     <para>
-      All query instances can be reused multiple times. After the projection the paging data
-      (limit and offset) and the definition of the projection are removed.
-    </para>
-
-    <para>
       To get an impression of the expressivity of the Querydsl query and expression types go to
       the javadocs and explore <code>com.mysema.query.Query</code>, <code>com.mysema.query.Projectable</code>
       and <code>com.mysema.query.types.Expression</code>.
