@@ -57,6 +57,16 @@ public final class APTOptions {
     public static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
 
     /**
+     * Set whether fields are used as metadata source (default: true)
+     */
+    public static final String QUERYDSL_USE_FIELDS = "querydsl.useFields";
+
+    /**
+     * Set whether accessors are used as metadata source (default: true)
+     */
+    public static final String QUERYDSL_USE_GETTERS = "querydsl.useGetters";
+
+    /**
      * comma separated list of packages to be excluded from code generation (default: none)
      */
     public static final String QUERYDSL_EXCLUDED_PACKAGES = "querydsl.excludedPackages";
