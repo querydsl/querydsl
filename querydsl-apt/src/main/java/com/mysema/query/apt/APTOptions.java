@@ -35,6 +35,10 @@ public final class APTOptions {
 
     public static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
 
+    public static final String QUERYDSL_USE_FIELDS = "querydsl.useFields";
+
+    public static final String QUERYDSL_USE_GETTERS = "querydsl.useGetters";
+
     public static final String QUERYDSL_EXCLUDED_PACKAGES = "querydsl.excludedPackages";
 
     public static final String QUERYDSL_EXCLUDED_CLASSES = "querydsl.excludedClasses";
