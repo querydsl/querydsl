@@ -196,7 +196,14 @@ import com.querydsl.core.annotations.Config;
             <entry>querydsl.excludedClasses</entry>
             <entry>comma separated list of class names to be excluded from code generation (default: none)</entry>
           </row>
-
+          <row>
+            <entry>querydsl.useFields</entry>
+            <entry>set whether fields are used as metadata source (default: true)</entry>
+          </row>
+          <row>
+            <entry>querydsl.useGetters</entry>
+            <entry>set whether accessors are used as metadata source (default: true)</entry>
+          </row>
         </tbody>
       </tgroup>
     </table>
@@ -223,6 +230,7 @@ import com.querydsl.core.annotations.Config;
             <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             <options>
               <querydsl.entityAccessors>true</querydsl.entityAccessors>
+              <querydsl.useFields>false</querydsl.useFields>
             </options>
           </configuration>
         </execution>

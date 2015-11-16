@@ -180,6 +180,14 @@ public class DefaultConfiguration implements Configuration {
             }
         }
 
+        if (options.containsKey(QUERYDSL_USE_FIELDS)) {
+            useFields = Boolean.valueOf(options.get(QUERYDSL_USE_FIELDS));
+        }
+
+        if (options.containsKey(QUERYDSL_USE_GETTERS)) {
+            useGetters = Boolean.valueOf(options.get(QUERYDSL_USE_GETTERS));
+        }
+
         if (options.containsKey(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)) {
             try {
                 @SuppressWarnings("unchecked")
