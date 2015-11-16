@@ -177,6 +177,14 @@ public class DefaultConfiguration implements Configuration {
             }
         }
 
+        if (options.containsKey(QUERYDSL_USE_FIELDS)) {
+            useFields = Boolean.valueOf(options.get(QUERYDSL_USE_FIELDS));
+        }
+
+        if (options.containsKey(QUERYDSL_USE_GETTERS)) {
+            useGetters = Boolean.valueOf(options.get(QUERYDSL_USE_GETTERS));
+        }
+
         try {
             // register additional mappings, if querydsl-spatial is on the classpath
             Class.forName("com.mysema.query.spatial.GeometryExpression");
