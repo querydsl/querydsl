@@ -948,6 +948,11 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void Like_Ignore_Case() {
+        assertEquals(3, query().from(employee).where(employee.firstname.likeIgnoreCase("%m%")).fetchCount());
+    }
+
+    @Test
     @ExcludeIn(FIREBIRD)
     public void Like_Escape() {
         List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen", "a\nb");

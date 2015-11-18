@@ -16,6 +16,7 @@ package com.querydsl.collections;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
@@ -260,6 +261,33 @@ public final class CollQueryFunctions {
 
     public static boolean like(String str, String like, char escape) {
         return like(str, like);
+    }
+
+    public static boolean likeIgnoreCase(String str, String like) {
+        final StringBuilder pattern = new StringBuilder(like.length() + 4);
+        for (int i = 0; i < like.length(); i++) {
+            final char ch = like.charAt(i);
+            if (ch == '%') {
+                pattern.append(".*");
+                continue;
+            } else if (ch == '_') {
+                pattern.append('.');
+                continue;
+            } else if (ch == '.' || ch == '$' || ch == '^') {
+                pattern.append('\\');
+            }
+            pattern.append(ch);
+        }
+        if (pattern.toString().equals(like)) {
+            return str.equalsIgnoreCase(like);
+        } else {
+            return Pattern.compile(pattern.toString(), Pattern.CASE_INSENSITIVE)
+                    .matcher(str).matches();
+        }
+    }
+
+    public static boolean likeIgnoreCase(String str, String like, char escape) {
+        return likeIgnoreCase(str, like);
     }
 
     public static <T> T get(Object parent, String f) {

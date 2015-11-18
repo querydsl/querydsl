@@ -34,7 +34,9 @@ public final class JDOQLTemplates extends JavaTemplates {
         add(Ops.EQ_IGNORE_CASE, "{0l}.equals({1l})");
         add(Ops.STRING_IS_EMPTY, "{0} == \"\"", Precedence.EQUALITY);
         add(Ops.LIKE, "{0}.like({1})");
+        add(Ops.LIKE_IC, "{0l}.like({1l})");
         add(Ops.LIKE_ESCAPE, "{0}.like({1})");
+        add(Ops.LIKE_ESCAPE_IC, "{0l}.like({1l})");
 
         add(Ops.STRING_CAST, "(String){0}");
 

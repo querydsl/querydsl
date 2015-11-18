@@ -65,10 +65,7 @@ public class PostgreSQLTemplates extends SQLTemplates {
         setPrecedence(Precedence.COMPARISON + 2, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
         setPrecedence(Precedence.COMPARISON + 3, Ops.EQ, Ops.EQ_IGNORE_CASE);
 
-        // other like cases
-        setPrecedence(Precedence.COMPARISON + 1, Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
-                Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
-                Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+        setPrecedence(Precedence.COMPARISON + 1, OTHER_LIKE_CASES);
 
         add(Ops.MOD, "{0} % {1}", Precedence.ARITH_HIGH);
 
@@ -79,15 +76,23 @@ public class PostgreSQLTemplates extends SQLTemplates {
         add(Ops.StringOps.LOCATE,  "strpos({1},{0})");
         add(Ops.StringOps.LOCATE2, "strpos(repeat('^',{2-'1's}) || substr({1},{2s}),{0})");
 
+        add(Ops.LIKE_ESCAPE_IC, "{0} ilike {1} escape '{2s}'");
         // like without escape
         if (escape == '\\') {
             add(Ops.LIKE, "{0} like {1}");
+            add(Ops.LIKE_IC, "{0} ilike {1}");
             add(Ops.ENDS_WITH, "{0} like {%1}");
-            add(Ops.ENDS_WITH_IC, "{0l} like {%%1}");
+            add(Ops.ENDS_WITH_IC, "{0} ilike {%1}");
             add(Ops.STARTS_WITH, "{0} like {1%}");
-            add(Ops.STARTS_WITH_IC, "{0l} like {1%%}");
+            add(Ops.STARTS_WITH_IC, "{0} ilike {1%}");
             add(Ops.STRING_CONTAINS, "{0} like {%1%}");
-            add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%}");
+            add(Ops.STRING_CONTAINS_IC, "{0} ilike {%1%}");
+        } else {
+            // remap case insensitive operations under 'ilike'
+            add(Ops.LIKE_IC, "{0} ilike {1} escape '" + escape + "'");
+            add(Ops.ENDS_WITH_IC, "{0} ilike {%1} escape '" + escape + "'");
+            add(Ops.STARTS_WITH_IC, "{0} ilike {1%} escape '" + escape + "'");
+            add(Ops.STRING_CONTAINS_IC, "{0} ilike {%1%} escape '" + escape + "'");
         }
 
         // Number

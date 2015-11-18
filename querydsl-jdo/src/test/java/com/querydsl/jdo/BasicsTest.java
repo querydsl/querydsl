@@ -13,9 +13,7 @@
  */
 package com.querydsl.jdo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -234,6 +232,10 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     public void Matches() {
         assertEquals("matches", 1, query(product,product.name.matches("Sony.*")).size());
+        assertSame(
+                query(product, product.name.matches("Sony.*")).size(),
+                query(product, product.name.likeIgnoreCase("sony%")).size()
+        );
     }
 
     @Test
