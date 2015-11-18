@@ -154,7 +154,11 @@ public final class Ops {
 
     public static final Operator<Boolean> LIKE = new OperatorImpl<Boolean>(NS, "LIKE");
 
+    public static final Operator<Boolean> LIKE_IC = new OperatorImpl<Boolean>(NS, "LIKE_IC");
+
     public static final Operator<Boolean> LIKE_ESCAPE = new OperatorImpl<Boolean>(NS, "LIKE_ESCAPE");
+
+    public static final Operator<Boolean> LIKE_ESCAPE_IC = new OperatorImpl<Boolean>(NS, "LIKE_ESCAPE_IC");
 
     // case
     public static final Operator<Object>  CASE = new OperatorImpl<Object>(NS, "CASE");

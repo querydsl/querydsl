@@ -61,7 +61,7 @@ public class JavaTemplates extends Templates {
         add(Ops.TRIM, "{0}.trim()");
         add(Ops.UPPER, "{0}.toUpperCase()");
         add(Ops.MATCHES, "{0}.matches({1})");
-        add(Ops.MATCHES_IC, "{0}.matches({1})");
+        add(Ops.MATCHES_IC, "{0l}.matches({1l})");
         add(Ops.STRING_LENGTH, "{0}.length()");
         add(Ops.STRING_IS_EMPTY, "{0}.isEmpty()");
         add(Ops.STRING_CONTAINS, "{0}.contains({1})");
