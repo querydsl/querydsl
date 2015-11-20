@@ -242,6 +242,116 @@ import com.querydsl.core.annotations.Config;
 </project>
 ]]></programlisting>
 
+    <para>Alternatively <code>maven-compiler-plugin</code> can be used as well:
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+      <project>
+        <build>
+        <plugins>
+          ...
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <generatedSourcesDirectory>target/generated-sources/java</generatedSourcesDirectory>
+              <compilerArgs>
+                <arg>-Aquerydsl.entityAccessors=true</arg>
+                <arg>-Aquerydsl.useFields=false</arg>
+              </compilerArgs>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>${querydsl.version}</version>
+                <classifier>jpa</classifier>
+              </dependency>
+              <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>1.0.0.Final</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          ...
+        </plugins>
+        </build>
+      </project>
+]]></programlisting>
+
+    <para>
+      Notice that you need to use a proper classifier when defining dependency
+      to <code>com.querydsl:querydsl-apt</code>. Those additional artifacts
+      define the annotation processor to be used in
+      <code>META-INF/services/javax.annotation.processing.Processor</code>.
+    </para>
+
+    <para>Available classifiers include:</para>
+
+    <itemizedlist>
+      <listitem>
+        <code>general</code>
+      </listitem>
+      <listitem>
+        <code>hibernate</code>
+      </listitem>
+      <listitem>
+        <code>jdo</code>
+      </listitem>
+      <listitem>
+        <code>jpa</code>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+      The great advantage of this approach is that it can also handle
+      annotated Groovy classes using <code>groovy-eclipse</code> compiler:
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+      <project>
+        <build>
+        <plugins>
+          ...
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <compilerId>groovy-eclipse-compiler</compilerId>
+              <generatedSourcesDirectory>target/generated-sources/java</generatedSourcesDirectory>
+              <compilerArgs>
+                <arg>-Aquerydsl.entityAccessors=true</arg>
+                <arg>-Aquerydsl.useFields=false</arg>
+              </compilerArgs>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>2.9.1-01</version>
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-batch</artifactId>
+                <version>2.3.7-01</version>
+              </dependency>
+              <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>${querydsl.version}</version>
+                <classifier>jpa</classifier>
+              </dependency>
+              <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>1.0.0.Final</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          ...
+        </plugins>
+        </build>
+      </project>
+]]></programlisting>
 
   </sect2>
 
