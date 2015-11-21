@@ -17,11 +17,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.metamodel.Metamodel;
 
+import com.google.common.collect.ImmutableSet;
 import com.querydsl.jpa.codegen.JPADomainExporter;
 
 /**
@@ -90,6 +92,8 @@ public class AntJPADomainExporter {
      */
     private String persistenceUnitName;
 
+    private Set<File> generatedFiles = ImmutableSet.of();
+
     public Configuration getConfiguration() {
         return configuration;
     }
@@ -130,6 +134,10 @@ public class AntJPADomainExporter {
         this.persistenceUnitName = persistenceUnitName;
     }
 
+    public Set<File> getGeneratedFiles() {
+        return generatedFiles;
+    }
+
     /**
      * Exports the named persistence unit's metamodel to Querydsl query types.  Expects to be
      * called by Ant via name convention using a method with signature public void execute().
@@ -146,6 +154,7 @@ public class AntJPADomainExporter {
         JPADomainExporter exporter = new JPADomainExporter(namePrefix, nameSuffix, new File(targetFolder), configuration);
         try {
             exporter.execute();
+            generatedFiles = exporter.getGeneratedFiles();
         } catch (IOException e) {
             throw new RuntimeException("Error in JPADomainExporter", e);
         }

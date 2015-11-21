@@ -37,6 +37,7 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.querydsl.codegen.*;
 import com.querydsl.core.QueryException;
+import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryInit;
 import com.querydsl.core.annotations.QueryType;
@@ -62,6 +63,8 @@ public abstract class AbstractDomainExporter {
     private final Map<Class<?>, EntityType> embeddableTypes = Maps.newHashMap();
 
     private final Map<Class<?>, EntityType> superTypes = Maps.newHashMap();
+
+    private final Map<Class<?>, SerializerConfig> typeToConfig = Maps.newHashMap();
 
     private final Set<EntityType> serialized = new HashSet<EntityType>();
 
@@ -182,6 +185,7 @@ public abstract class AbstractDomainExporter {
             return allTypes.get(cl);
         } else {
             EntityType type = typeFactory.getEntityType(cl);
+            registerConfig(type);
             typeMappings.register(type, queryTypeFactory.create(type));
             if (!cl.getSuperclass().equals(Object.class)) {
                 type.addSupertype(new Supertype(typeFactory.get(cl.getSuperclass(), cl.getGenericSuperclass())));
@@ -202,6 +206,7 @@ public abstract class AbstractDomainExporter {
             return allTypes.get(key);
         } else {
             EntityType entityType = new EntityType(type, variableNameFunction);
+            registerConfig(entityType);
             typeMappings.register(entityType, queryTypeFactory.create(entityType));
             Class<?> superClass = key.getSuperclass();
             if (entityType.getSuperType() == null && superClass != null && !superClass.equals(Object.class)) {
@@ -210,6 +215,17 @@ public abstract class AbstractDomainExporter {
             types.put(key, entityType);
             allTypes.put(key, entityType);
             return entityType;
+        }
+    }
+
+    private void registerConfig(EntityType entityType) {
+        Class<?> key = entityType.getJavaClass();
+        Config config = key.getAnnotation(Config.class);
+        if (config == null && key.getPackage() != null) {
+            config = key.getPackage().getAnnotation(Config.class);
+        }
+        if (config != null) {
+            typeToConfig.put(key, SimpleSerializerConfig.getConfig(config));
         }
     }
 
@@ -298,7 +314,11 @@ public abstract class AbstractDomainExporter {
         Writer w = writerFor(targetFile);
         try {
             CodeWriter writer = new JavaWriter(w);
-            serializer.serialize(type, serializerConfig, writer);
+            if (typeToConfig.containsKey(type.getJavaClass())) {
+                serializer.serialize(type, typeToConfig.get(type.getJavaClass()), writer);
+            } else {
+                serializer.serialize(type, serializerConfig, writer);
+            }
         } finally {
             w.close();
         }
