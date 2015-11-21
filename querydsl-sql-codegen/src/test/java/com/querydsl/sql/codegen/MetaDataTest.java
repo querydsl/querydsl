@@ -41,12 +41,12 @@ public class MetaDataTest {
     }
 
     @Test
-    public void GetSimpleName() {
+    public void getSimpleName() {
         assertEquals("VwServiceName", classModel.getSimpleName());
     }
 
     @Test
-    public void GetFullName() {
+    public void getFullName() {
         assertEquals("com.myproject.domain.VwServiceName", classModel.getFullName());
     }
 

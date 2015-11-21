@@ -34,7 +34,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void NumberTyped() {
+    public void numberTyped() {
         Customer c = alias(Customer.class, "customer");
 
         NumberExpression<Integer> cases = $(c.getAnnualSpending())
@@ -53,7 +53,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void StringTyped() {
+    public void stringTyped() {
         Customer c = alias(Customer.class, "customer");
 
         StringExpression cases = $(c.getAnnualSpending())
@@ -67,7 +67,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void BooleanTyped() {
+    public void booleanTyped() {
         Customer c = alias(Customer.class, "customer");
 
         BooleanExpression cases = $(c.getAnnualSpending())
@@ -78,7 +78,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void DateType() {
+    public void dateType() {
         Customer c = alias(Customer.class, "customer");
 
         DateExpression<java.sql.Date> cases = $(c.getAnnualSpending())
@@ -89,7 +89,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void DateTimeType() {
+    public void dateTimeType() {
         Customer c = alias(Customer.class, "customer");
 
         DateTimeExpression<java.util.Date> cases = $(c.getAnnualSpending())
@@ -100,7 +100,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void TimeType() {
+    public void timeType() {
         Customer c = alias(Customer.class, "customer");
 
         TimeExpression<Time> cases = $(c.getAnnualSpending())
@@ -111,7 +111,7 @@ public class CaseForEqBuilderTest {
     }
 
     @Test
-    public void EnumType() {
+    public void enumType() {
         Customer c = alias(Customer.class, "customer");
 
         EnumExpression<EnumExample> cases = $(c.getAnnualSpending())

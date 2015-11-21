@@ -164,33 +164,33 @@ public abstract class AbstractGroupByTest {
         return tuples;
     }
 
-    public abstract void Group_Order();
+    public abstract void group_order();
 
-    public abstract void First_Set_And_List();
+    public abstract void first_set_and_list();
 
-    public abstract void Group_By_Null();
+    public abstract void group_by_null();
 
-    public abstract void NoSuchElementException();
+    public abstract void noSuchElementException();
 
-    public abstract void ClassCastException();
+    public abstract void classCastException();
 
-    public abstract void Map();
+    public abstract void map1();
 
-    public abstract void Map2();
+    public abstract void map2();
 
-    public abstract void Map3();
+    public abstract void map3();
 
-    public abstract void Map4();
+    public abstract void map4();
 
-    public abstract void Array_Access();
+    public abstract void array_access();
 
-    public abstract void Transform_Results();
+    public abstract void transform_results();
 
-    public abstract void Transform_As_Bean();
+    public abstract void transform_as_bean();
 
-    public abstract void OneToOneToMany_Projection();
+    public abstract void oneToOneToMany_projection();
 
-    public abstract void OneToOneToMany_Projection_As_Bean();
+    public abstract void oneToOneToMany_projection_as_bean();
 
-    public abstract void OneToOneToMany_Projection_As_Bean_And_Constructor();
+    public abstract void oneToOneToMany_projection_as_bean_and_constructor();
 }

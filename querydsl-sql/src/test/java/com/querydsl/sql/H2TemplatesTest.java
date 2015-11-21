@@ -28,7 +28,7 @@ public class H2TemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Builder() {
+    public void builder() {
         SQLTemplates templates = H2Templates.builder().quote()
             .newLineToSingleSpace()
             .build();
@@ -37,7 +37,7 @@ public class H2TemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // unary
         // *, /, %
         // +, -

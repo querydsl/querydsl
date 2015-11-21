@@ -71,7 +71,7 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
     }
 
     @Test
-    public void EntityQueries_CreateQuery() {
+    public void entityQueries_createQuery() {
         SAnimal cat = new SAnimal("cat");
         QCat catEntity = QCat.cat;
 
@@ -81,7 +81,7 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
 
     @Test
     @ExcludeIn(Target.MYSQL)
-    public void EntityQueries_CreateQuery2() {
+    public void entityQueries_createQuery2() {
         SAnimal cat = new SAnimal("CAT");
         QCat catEntity = QCat.cat;
 

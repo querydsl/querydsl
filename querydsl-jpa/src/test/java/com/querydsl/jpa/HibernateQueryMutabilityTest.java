@@ -53,7 +53,7 @@ public class HibernateQueryMutabilityTest implements HibernateTest {
     }
 
     @Test
-    public void Clone() {
+    public void clone_() {
         QCat cat = QCat.cat;
         HibernateQuery<?> query = query().from(cat).where(cat.name.isNotNull());
         HibernateQuery<?> query2 = query.clone(session);

@@ -10,7 +10,7 @@ import org.junit.Test;
 public class CollectionAnyTest extends AbstractQueryTest {
 
     @Test
-    public void Any_In_Projection() {
+    public void any_in_projection() {
         Cat a = new Cat("a");
         Cat aa = new Cat("aa");
         Cat ab = new Cat("ab");
@@ -28,7 +28,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Any_In_Projection2() {
+    public void any_in_projection2() {
         Cat a = new Cat("a");
         Cat aa = new Cat("aa");
         Cat ab = new Cat("ab");
@@ -47,7 +47,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Any_In_Where_And_Projection() {
+    public void any_in_where_and_projection() {
         Cat a = new Cat("a");
         Cat aa = new Cat("aa");
         Cat ab = new Cat("ab");
@@ -68,7 +68,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Any_In_Where_And_Projection2() {
+    public void any_in_where_and_projection2() {
         Cat a = new Cat("a");
         Cat aa = new Cat("aa");
         Cat ab = new Cat("ab");

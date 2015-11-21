@@ -34,12 +34,12 @@ public class QueryEmbedded6Test {
     }
 
     @Test
-    public void EntityPathBase_is_SuperClass() {
+    public void entityPathBase_is_superClass() {
         assertEquals(EntityPathBase.class, QQueryEmbedded6Test_User.class.getSuperclass());
     }
 
     @Test
-    public void User_list_any() {
+    public void user_list_any() {
         assertEquals(QQueryEmbedded6Test_User.class, QQueryEmbedded6Test_User.user.list.any().getClass());
     }
 

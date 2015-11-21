@@ -13,24 +13,24 @@ public class SupplierDaoTest extends AbstractDaoTest {
     @Resource SupplierDao supplierDao;
 
     @Test
-    public void FindAll() {
+    public void findAll() {
         List<Supplier> suppliers = supplierDao.findAll();
         assertFalse(suppliers.isEmpty());
     }
 
     @Test
-    public void FindById() {
+    public void findById() {
         assertNotNull(supplierDao.findById(1));
     }
 
     @Test
-    public void Update() {
+    public void update() {
         Supplier supplier = supplierDao.findById(1);
         supplierDao.save(supplier);
     }
 
     @Test
-    public void Delete() {
+    public void delete() {
         Supplier supplier = new Supplier();
         supplierDao.save(supplier);
         assertNotNull(supplier.getId());

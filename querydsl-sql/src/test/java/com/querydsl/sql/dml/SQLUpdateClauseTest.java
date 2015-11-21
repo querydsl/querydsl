@@ -13,7 +13,7 @@ import com.querydsl.sql.SQLTemplates;
 public class SQLUpdateClauseTest {
 
     @Test
-    public void GetSQL() {
+    public void getSQL() {
         QEmployee emp1 = new QEmployee("emp1");
         SQLUpdateClause update = new SQLUpdateClause(null, SQLTemplates.DEFAULT, emp1);
         update.set(emp1.id, 1);
@@ -24,7 +24,7 @@ public class SQLUpdateClauseTest {
     }
 
     @Test
-    public void Intertable() {
+    public void intertable() {
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");
         SQLUpdateClause update = new SQLUpdateClause(null, SQLTemplates.DEFAULT, emp1);
@@ -41,7 +41,7 @@ public class SQLUpdateClauseTest {
     }
 
     @Test
-    public void Intertable2() {
+    public void intertable2() {
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");
         SQLUpdateClause update = new SQLUpdateClause(null, SQLTemplates.DEFAULT, emp1);
@@ -56,7 +56,7 @@ public class SQLUpdateClauseTest {
     }
 
     @Test
-    public void Intertable3() {
+    public void intertable3() {
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");
         SQLUpdateClause update = new SQLUpdateClause(null, SQLTemplates.DEFAULT, emp1);

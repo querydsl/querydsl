@@ -35,42 +35,42 @@ public class OracleQueryTest {
     }
 
     @Test
-    public void ConnectByPrior() {
+    public void connectByPrior() {
         query.connectByPrior(survey.name.isNull());
         assertEquals("from SURVEY survey connect by prior survey.NAME is null order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void ConnectBy() {
+    public void connectBy() {
         query.connectByPrior(survey.name.isNull());
         assertEquals("from SURVEY survey connect by prior survey.NAME is null order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void ConnectByNocyclePrior() {
+    public void connectByNocyclePrior() {
         query.connectByNocyclePrior(survey.name.isNull());
         assertEquals("from SURVEY survey connect by nocycle prior survey.NAME is null order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void StartWith() {
+    public void startWith() {
         query.startWith(survey.name.isNull());
         assertEquals("from SURVEY survey start with survey.NAME is null order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void OrderSiblingsBy() {
+    public void orderSiblingsBy() {
         query.orderSiblingsBy(survey.name);
         assertEquals("from SURVEY survey order siblings by survey.NAME order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void RowNum() {
+    public void rowNum() {
         query.where(OracleGrammar.rownum.lt(5));
         assertEquals("from SURVEY survey where rownum < ? order by survey.NAME asc", toString(query));
     }

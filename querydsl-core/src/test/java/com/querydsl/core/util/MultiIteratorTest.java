@@ -34,7 +34,7 @@ public class MultiIteratorTest {
     private List<Integer> list3, list4;
 
     @Test
-    public void EmptyList() {
+    public void emptyList() {
         it = new MultiIterator(Arrays.asList(list1, list2));
         while (it.hasNext()) {
             it.next();
@@ -43,13 +43,13 @@ public class MultiIteratorTest {
     }
 
     @Test
-    public void OneLevel() {
+    public void oneLevel() {
         it = new MultiIterator(Arrays.asList(list1));
         assertIteratorEquals(Arrays.asList(row(1), row(2)).iterator(), it);
     }
 
     @Test
-    public void TwoLevels() {
+    public void twoLevels() {
         list2 = Arrays.asList(10, 20, 30);
         it = new MultiIterator(Arrays.asList(list1, list2));
         Iterator<Object[]> base = Arrays.asList(row(1, 10), row(1, 20),
@@ -58,7 +58,7 @@ public class MultiIteratorTest {
     }
 
     @Test
-    public void ThreeLevels() {
+    public void threeLevels() {
         list1 = Arrays.asList(1, 2);
         list2 = Arrays.asList(10, 20, 30);
         list3 = Arrays.asList(100, 200, 300, 400);
@@ -75,7 +75,7 @@ public class MultiIteratorTest {
     }
 
     @Test
-    public void FourLevels() {
+    public void fourLevels() {
         list1 = Arrays.asList(1, 2);
         list2 = Arrays.asList(10, 20, 30);
         list3 = Arrays.asList(100, 200, 300, 400);
@@ -96,7 +96,7 @@ public class MultiIteratorTest {
     }
 
     @Test
-    public void FourLevels2() {
+    public void fourLevels2() {
         list1 = new ArrayList<Integer>(100);
         for (int i = 0; i < 100; i++) {
             list1.add(i + 1);

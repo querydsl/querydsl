@@ -9,7 +9,7 @@ import com.vividsolutions.jts.geom.*;
 public class JTSGeometryPathTest {
 
     @Test
-    public void Convert() {
+    public void convert() {
         JTSGeometryPath<Geometry> geometry = new JTSGeometryPath<Geometry>("geometry");
         assertEquals(new JTSGeometryCollectionPath<GeometryCollection>("geometry"), geometry.asCollection());
         assertEquals(new JTSLinearRingPath<LinearRing>("geometry"), geometry.asLinearRing());

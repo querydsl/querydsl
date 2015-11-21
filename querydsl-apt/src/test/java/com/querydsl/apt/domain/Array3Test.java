@@ -30,18 +30,18 @@ public class Array3Test {
     }
 
     @Test
-    public void Domain() {
+    public void domain() {
         Assert.assertEquals(byte[].class, QArray3Test_Domain.domain.bytes.getType());
         assertEquals(Byte[].class, QArray3Test_Domain.domain.bytes2.getType());
     }
 
     @Test
-    public void Domain2() {
+    public void domain2() {
         Assert.assertEquals(byte[].class, QArray3Test_Domain2.domain2.bytes.getType());
     }
 
     @Test
-    public void Domain3() {
+    public void domain3() {
         Assert.assertEquals(Byte[].class, QArray3Test_Domain3.domain3.bytes.getType());
     }
 

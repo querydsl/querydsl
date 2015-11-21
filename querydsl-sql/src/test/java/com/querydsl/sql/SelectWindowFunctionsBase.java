@@ -22,7 +22,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(SQLSERVER) // FIXME
-    public void WindowFunctions() {
+    public void windowFunctions() {
         NumberPath<Integer> path = survey.id;
         NumberPath<?> path2 = survey.id;
 
@@ -59,7 +59,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    public void WindowFunctions_Manual_Paging() {
+    public void windowFunctions_manual_paging() {
         Expression<Long> rowNumber = SQLExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as("rn");
         Expression<Object[]> all = Wildcard.all;
 
@@ -98,7 +98,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(ORACLE)
-    public void WindowFunctions_Keep() {
+    public void windowFunctions_keep() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
 
@@ -116,7 +116,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({DB2, SQLSERVER})
-    public void WindowFunctions_Regr() {
+    public void windowFunctions_regr() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
         NumberPath<?> path2 = survey.id;
@@ -137,7 +137,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(ORACLE)
-    public void WindowFunctions_Oracle() {
+    public void windowFunctions_oracle() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
         add(exprs, SQLExpressions.countDistinct(path));
@@ -150,7 +150,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    public void WindowFunctions_Over() {
+    public void windowFunctions_over() {
         //SELECT Shipment_id,Ship_date, SUM(Qty) OVER () AS Total_Qty
         //FROM TestDB.Shipment
 
@@ -160,7 +160,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     }
 
     @Test
-    public void WindowFunctions_PartitionBy() {
+    public void windowFunctions_partitionBy() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ) AS Total_Qty
         //FROM TestDB.Shipment
@@ -174,7 +174,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(SQLSERVER)
-    public void WindowFunctions_OrderBy() {
+    public void windowFunctions_orderBy() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS Total_Qty
         //FROM TestDB.Shipment
@@ -188,7 +188,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(SQLSERVER)
-    public void WindowFunctions_UnboundedRows() {
+    public void windowFunctions_unboundedRows() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //SUM(Qty) OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt
         //ROWS BETWEEN UNBOUNDED PRECEDING
@@ -205,7 +205,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn({TERADATA})
-    public void WindowFunctions_Qualify() {
+    public void windowFunctions_qualify() {
         //SELECT Shipment_id,Ship_date,Ship_Type,
         //Rank() OVER (PARTITION BY Ship_Type ORDER BY Ship_Dt ) AS rnk
         //FROM TestDB.Shipment

@@ -42,7 +42,7 @@ public class PhraseElementTest {
     }
 
     @Test
-    public void Equals() {
+    public void equals() {
         PhraseElement el1 = new PhraseElement("x"), el2 = new PhraseElement("x"), el3 = new PhraseElement(
                 "y");
         assertEquals(el1, el2);
@@ -50,7 +50,7 @@ public class PhraseElementTest {
     }
 
     @Test
-    public void HashCode() {
+    public void hashCode_() {
         PhraseElement el1 = new PhraseElement("x"), el2 = new PhraseElement("x");
         assertEquals(el1.hashCode(), el2.hashCode());
     }

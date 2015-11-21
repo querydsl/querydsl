@@ -12,19 +12,19 @@ public class DerbyEclipseLinkTest extends AbstractJPASuite {
 
     public static class JPA extends JPABase {
         @Override
-        public void Order_StringValue() {
+        public void order_stringValue() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_StringValue_To_Integer() {
+        public void order_stringValue_to_integer() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_StringValue_ToLong() {
+        public void order_stringValue_toLong() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_StringValue_ToBigInteger() {
+        public void order_stringValue_toBigInteger() {
             // not supported in MySQL/EclipseLink
         }
     }

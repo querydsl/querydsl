@@ -26,14 +26,14 @@ import com.mysema.codegen.model.Types;
 public class DelegateTest {
 
     @Test
-    public void Equals_Object() {
+    public void equals_object() {
         Delegate delegate = new Delegate(Types.STRING, Types.STRING, "delegate", Collections.<Parameter>emptyList(), Types.STRING);
         Delegate delegate2 = new Delegate(Types.STRING, Types.STRING, "delegate", Collections.<Parameter>emptyList(), Types.STRING);
         assertEquals(delegate, delegate2);
     }
 
     @Test
-    public void Not_Equals_Object() {
+    public void not_equals_object() {
         Delegate delegate = new Delegate(Types.STRING, Types.STRING, "delegate", Collections.<Parameter>emptyList(), Types.STRING);
         Delegate delegate2 = new Delegate(Types.STRING, Types.STRING, "delegate2", Collections.<Parameter>emptyList(), Types.STRING);
         assertFalse(delegate.equals(delegate2));

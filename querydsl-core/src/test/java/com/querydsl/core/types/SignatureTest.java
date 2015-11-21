@@ -46,7 +46,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void ReturnType_extends_SimpleExpression() {
+    public void returnType_extends_simpleExpression() {
         assertFalse(classes.isEmpty());
         Set<String> skippedMethods = new HashSet<String>(Arrays.asList("getArg","getRoot","not"));
         List<String> errors = new ArrayList<String>();

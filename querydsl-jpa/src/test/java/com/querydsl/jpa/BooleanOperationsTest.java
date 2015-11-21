@@ -24,50 +24,50 @@ import com.querydsl.core.BooleanBuilder;
 public class BooleanOperationsTest extends AbstractQueryTest {
 
     @Test
-    public void BooleanOperations_Or() {
+    public void booleanOperations_or() {
         assertToString("cust is null or cat is null", cust.isNull().or(cat.isNull()));
     }
 
     @Test
-    public void BooleanOperations_And() {
+    public void booleanOperations_and() {
         assertToString("cust is null and cat is null", cust.isNull().and(cat.isNull()));
     }
 
 
     @Test
-    public void BooleanOperations_Not() {
+    public void booleanOperations_not() {
         assertToString("not cust is null", cust.isNull().not());
     }
 
 
     @Test
-    public void BooleanOperations2_And() {
+    public void booleanOperations2_and() {
         cat.name.eq(cust.name.firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));
     }
 
     @Test
-    public void BooleanOperations2_Or() {
+    public void booleanOperations2_or() {
         cat.name.eq(cust.name.firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
     }
 
     @Test
-    public void LogicalOperations_Or() {
+    public void logicalOperations_or() {
         assertToString("cat = kitten or kitten = cat", cat.eq(kitten).or(kitten.eq(cat)));
     }
 
     @Test
-    public void LogicalOperations_And() {
+    public void logicalOperations_and() {
         assertToString("cat = kitten and kitten = cat", cat.eq(kitten).and(kitten.eq(cat)));
     }
 
     @Test
-    public void LogicalOperations_And2() {
+    public void logicalOperations_and2() {
         assertToString("cat is null and (kitten is null or kitten.bodyWeight > ?1)",
                 cat.isNull().and(kitten.isNull().or(kitten.bodyWeight.gt(10))));
     }
 
     @Test
-    public void BooleanBuilder1() {
+    public void booleanBuilder1() {
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(cat.eq(cat));
 
@@ -79,7 +79,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BooleanBuilder2() {
+    public void booleanBuilder2() {
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(cat.eq(cat));
 
@@ -91,12 +91,12 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BooleanBuilder_With_Null_In_Where() {
+    public void booleanBuilder_with_null_in_where() {
         assertEquals("select cat\nfrom Cat cat", selectFrom(cat).where(new BooleanBuilder()).toString());
     }
 
     @Test
-    public void BooleanBuilder_With_Null_In_Having() {
+    public void booleanBuilder_with_null_in_having() {
         assertEquals("select cat\nfrom Cat cat\ngroup by cat.name",
                 selectFrom(cat).groupBy(cat.name).having(new BooleanBuilder()).toString());
     }

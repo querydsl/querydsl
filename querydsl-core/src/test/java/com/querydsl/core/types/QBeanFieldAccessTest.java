@@ -56,7 +56,7 @@ public class QBeanFieldAccessTest {
     }
 
     @Test
-    public void with_Class_and_Exprs_using_fields() {
+    public void with_class_and_exprs_using_fields() {
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, true, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.name);
@@ -65,7 +65,7 @@ public class QBeanFieldAccessTest {
     }
 
     @Test
-    public void with_Path_and_Exprs_using_fields() {
+    public void with_path_and_exprs_using_fields() {
         QBean<Entity> beanProjection = Projections.fields(entity, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.name);
@@ -74,7 +74,7 @@ public class QBeanFieldAccessTest {
     }
 
     @Test
-    public void with_Class_and_Map_using_fields() {
+    public void with_class_and_map_using_fields() {
         Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
         bindings.put("name", name);
         bindings.put("age", age);
@@ -87,7 +87,7 @@ public class QBeanFieldAccessTest {
     }
 
     @Test
-    public void with_Class_and_Alias_using_fields() {
+    public void with_class_and_alias_using_fields() {
         StringPath name2 = Expressions.stringPath("name2");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, true, name.as(name2), age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
@@ -98,7 +98,7 @@ public class QBeanFieldAccessTest {
     }
 
     @Test
-    public void with_Nested_FactoryExpression() {
+    public void with_nested_factoryExpression() {
         Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
         bindings.put("age", age);
         bindings.put("name", new Concatenation(name, name2));

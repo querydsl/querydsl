@@ -29,7 +29,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
     private static final List<String> CLASSES = getFiles(PACKAGE_PATH);
 
     @Test
-    public void Execute() throws IOException {
+    public void execute() throws IOException {
         // via APT
         process(QuerydslAnnotationProcessor.class, CLASSES, "QuerydslAnnotationProcessor");
 
@@ -58,7 +58,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
     }
 
     @Test
-    public void Execute2() throws IOException {
+    public void execute2() throws IOException {
         // via APT
         process(HibernateAnnotationProcessor.class, CLASSES, "HibernateAnnotationProcessor");
 
@@ -109,7 +109,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
     }
 
     @Test
-    public void Execute3() {
+    public void execute3() {
         GenericExporter exporter = new GenericExporter();
         exporter.setKeywords(Keywords.JPA);
         exporter.setEntityAnnotation(Entity.class);
@@ -125,7 +125,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
     }
 
     @Test
-    public void Execute4() throws IOException {
+    public void execute4() throws IOException {
         GenericExporter exporter = new GenericExporter();
         exporter.setKeywords(Keywords.JPA);
         exporter.setEntityAnnotation(Entity.class);

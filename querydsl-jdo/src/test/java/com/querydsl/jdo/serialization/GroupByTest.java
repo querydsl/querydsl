@@ -10,7 +10,7 @@ import com.querydsl.jdo.models.company.QEmployee;
 public class GroupByTest extends AbstractTest {
 
     @Test
-    public void GroupBy() {
+    public void groupBy() {
         QEmployee employee = QEmployee.employee;
         assertEquals(
                 "SELECT FROM com.querydsl.jdo.models.company.Employee " +

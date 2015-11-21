@@ -21,7 +21,7 @@ import com.querydsl.sql.dml.SQLUpdateBatch;
 public class SQLListenersTest {
 
     @Test
-    public void NotifyQuery() {
+    public void notifyQuery() {
         SQLListener listener = createMock(SQLListener.class);
         SQLListeners listeners = new SQLListeners();
         listeners.add(listener);
@@ -35,7 +35,7 @@ public class SQLListenersTest {
     }
 
     @Test
-    public void NotifyQuery_Parent() {
+    public void notifyQuery_parent() {
         SQLListener listener = createMock(SQLListener.class);
         SQLListeners listeners = new SQLListeners(listener);
 
@@ -49,7 +49,7 @@ public class SQLListenersTest {
 
 
     @Test
-    public void NotifyQuery_DetailedListener_start() {
+    public void notifyQuery_detailedListener_start() {
         SQLListenerContext sqlListenerContext = createMock(SQLListenerContext.class);
         SQLDetailedListener listenerParent = createMock(SQLDetailedListener.class);
         SQLDetailedListener listener1 = createMock(SQLDetailedListener.class);
@@ -77,7 +77,7 @@ public class SQLListenersTest {
 
 
     @Test
-    public void NotifyQuery_DetailedListener_contexSetting() {
+    public void notifyQuery_detailedListener_contexSetting() {
         SQLListenerContext sqlListenerContext = new SQLListenerContextImpl(new DefaultQueryMetadata());
         SQLDetailedListener listenerParent = new AssertingDetailedListener("keyParent", "valueParent");
         SQLDetailedListener listener1 = new AssertingDetailedListener("key1", "value1");

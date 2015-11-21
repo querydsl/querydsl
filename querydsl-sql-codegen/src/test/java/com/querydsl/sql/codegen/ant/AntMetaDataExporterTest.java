@@ -47,7 +47,7 @@ public class AntMetaDataExporterTest {
     }
 
     @Test
-    public void Execute() {
+    public void execute() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
         exporter.setJdbcDriver("org.h2.Driver");
         exporter.setJdbcUser("sa");
@@ -61,7 +61,7 @@ public class AntMetaDataExporterTest {
     }
 
     @Test
-    public void Execute_With_Beans() {
+    public void execute_with_beans() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
         exporter.setJdbcDriver("org.h2.Driver");
         exporter.setJdbcUser("sa");
@@ -82,7 +82,7 @@ public class AntMetaDataExporterTest {
 
 
     @Test
-    public void Execute_With_Import() {
+    public void execute_with_import() {
         AntMetaDataExporter exporter = new AntMetaDataExporter();
         exporter.setJdbcDriver("org.h2.Driver");
         exporter.setJdbcUser("sa");
@@ -103,7 +103,7 @@ public class AntMetaDataExporterTest {
     }
 
     @Test
-    public void Execute_inside_Ant() {
+    public void execute_inside_ant() {
         File buildFile = new File(getClass().getResource("/build.xml").getFile());
         Project p = new Project();
         p.setUserProperty("ant.file", buildFile.getAbsolutePath());

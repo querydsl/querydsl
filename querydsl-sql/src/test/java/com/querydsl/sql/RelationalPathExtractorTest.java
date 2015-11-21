@@ -17,7 +17,7 @@ public class RelationalPathExtractorTest {
     }
 
     @Test
-    public void SimpleQuery() {
+    public void simpleQuery() {
         QEmployee employee2 = new QEmployee("employee2");
         SQLQuery<?> query = query().from(employee, employee2);
 
@@ -25,7 +25,7 @@ public class RelationalPathExtractorTest {
     }
 
     @Test
-    public void Joins() {
+    public void joins() {
         QEmployee employee2 = new QEmployee("employee2");
         SQLQuery<?> query = query().from(employee)
                 .innerJoin(employee2).on(employee.superiorId.eq(employee2.id));
@@ -34,14 +34,14 @@ public class RelationalPathExtractorTest {
     }
 
     @Test
-    public void SubQuery() {
+    public void subQuery() {
         SQLQuery<?> query = query().from(employee)
                 .where(employee.id.eq(query().from(employee).select(employee.id.max())));
         assertEquals(ImmutableSet.of(employee), extract(query.getMetadata()));
     }
 
     @Test
-    public void SubQuery2() {
+    public void subQuery2() {
         QEmployee employee2 = new QEmployee("employee2");
         SQLQuery<?> query = query().from(employee)
             .where(Expressions.list(employee.id, employee.lastname)

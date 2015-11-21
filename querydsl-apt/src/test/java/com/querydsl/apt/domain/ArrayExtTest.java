@@ -40,13 +40,13 @@ public class ArrayExtTest {
     }
 
     @Test
-    public void BinaryFile_contentPart() {
+    public void binaryFile_contentPart() {
         assertEquals(ArrayPath.class, binaryFile.contentPart.getClass());
         assertEquals(byte[].class, binaryFile.contentPart.getType());
     }
 
     @Test
-    public void BinaryFile_list() {
+    public void binaryFile_list() {
         assertEquals(ListPath.class, binaryFile.list.getClass());
         assertEquals(List.class, binaryFile.list.getType());
         assertEquals(byte[].class, binaryFile.list.getParameter(0));
@@ -56,7 +56,7 @@ public class ArrayExtTest {
     }
 
     @Test
-    public void BinaryFile_map1() {
+    public void binaryFile_map1() {
         assertEquals(MapPath.class, binaryFile.map1.getClass());
         assertEquals(Map.class, binaryFile.map1.getType());
         assertEquals(String.class, binaryFile.map1.getParameter(0));
@@ -67,7 +67,7 @@ public class ArrayExtTest {
     }
 
     @Test
-    public void BinaryFile_map2() {
+    public void binaryFile_map2() {
         assertEquals(MapPath.class, binaryFile.map2.getClass());
         assertEquals(Map.class, binaryFile.map2.getType());
         assertEquals(byte[].class, binaryFile.map2.getParameter(0));

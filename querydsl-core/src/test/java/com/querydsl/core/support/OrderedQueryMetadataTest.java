@@ -43,7 +43,7 @@ public class OrderedQueryMetadataTest {
     }
 
     @Test
-    public void AddJoin() {
+    public void addJoin() {
         List<JoinExpression> joins = new ArrayList<JoinExpression>();
         joins.add(new JoinExpression(JoinType.DEFAULT, x));
         joins.add(new JoinExpression(JoinType.DEFAULT, y));

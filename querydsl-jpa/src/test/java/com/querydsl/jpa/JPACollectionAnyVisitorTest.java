@@ -32,17 +32,17 @@ public class JPACollectionAnyVisitorTest {
     private QCat cat = QCat.cat;
 
     @Test
-    public void Path() {
+    public void path() {
         assertEquals("cat_kittens_0", serialize(cat.kittens.any()));
     }
 
     @Test
-    public void Longer_Path() {
+    public void longer_path() {
         assertEquals("cat_kittens_0.name", serialize(cat.kittens.any().name));
     }
 
     @Test
-    public void Simple_BooleanOperation() {
+    public void simple_booleanOperation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123");
         assertEquals("exists (select 1\n" +
                 "from cat.kittens as cat_kittens_0\n" +
@@ -50,7 +50,7 @@ public class JPACollectionAnyVisitorTest {
     }
 
     @Test
-    public void Simple_BooleanOperation_LongPath() {
+    public void simple_booleanOperation_longPath() {
         Predicate predicate = cat.kittens.any().kittens.any().name.eq("Ruth123");
         assertEquals("exists (select 1\n" +
                 "from cat.kittens as cat_kittens_0\n" +
@@ -59,7 +59,7 @@ public class JPACollectionAnyVisitorTest {
     }
 
     @Test
-    public void Simple_BooleanOperation_ElementCollection() {
+    public void simple_booleanOperation_elementCollection() {
         QEmployee employee = QEmployee.employee;
         Predicate predicate = employee.jobFunctions.any().stringValue().eq("CODER");
         assertEquals("exists (select 1\n" +
@@ -69,7 +69,7 @@ public class JPACollectionAnyVisitorTest {
     }
 
     @Test
-    public void Simple_StringOperation() {
+    public void simple_stringOperation() {
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");
         assertEquals("exists (select 1\n" +
                 "from cat.kittens as cat_kittens_0\n" +
@@ -77,7 +77,7 @@ public class JPACollectionAnyVisitorTest {
     }
 
     @Test
-    public void And_Operation() {
+    public void and_operation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
         assertEquals("exists (select 1\n" +
                 "from cat.kittens as cat_kittens_0\n" +
@@ -87,7 +87,7 @@ public class JPACollectionAnyVisitorTest {
     }
 
     @Test
-    public void Template() {
+    public void template() {
         Expression<Boolean> templateExpr = ExpressionUtils.template(Boolean.class, "{0} = {1}",
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
         assertEquals("exists (select 1\n" +
@@ -96,7 +96,7 @@ public class JPACollectionAnyVisitorTest {
     }
 
     @Test
-    public void Cast() {
+    public void cast() {
 //        JPAQuery query = new JPAQuery(em).from(QPerson.person);
 //        QDog anyDog = QPerson.person.animals.any().as(QDog.class);
 //        query.where(anyDog.gender.eq("M"));

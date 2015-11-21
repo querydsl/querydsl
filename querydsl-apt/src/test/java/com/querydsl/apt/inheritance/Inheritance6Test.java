@@ -69,23 +69,23 @@ public class Inheritance6Test {
     }
 
     @Test
-    public void Gloss_subtype_should_contain_fields_from_superclass() {
+    public void gloss_subtype_should_contain_fields_from_superclass() {
         assertEquals(String.class, QInheritance6Test_Gloss.gloss.value.getType());
     }
 
     @Test
-    public void Intermediate_superclass_should_contain_fields_from_top_superclass() {
+    public void intermediate_superclass_should_contain_fields_from_top_superclass() {
          QInheritance6Test_Translation translation = QInheritance6Test_Gloss.gloss._super;
          assertEquals(DateTimePath.class, translation.createdOn.getClass());
     }
 
     @Test
-    public void Gloss_subtype_should_contain_fields_from_top_superclass() {
+    public void gloss_subtype_should_contain_fields_from_top_superclass() {
         assertEquals(DateTimePath.class, QInheritance6Test_Gloss.gloss.createdOn.getClass());
     }
 
     @Test
-    public void Gloss_subtype_should_contain_id_from_top_superclass() {
+    public void gloss_subtype_should_contain_id_from_top_superclass() {
         assertEquals(NumberPath.class, QInheritance6Test_Gloss.gloss.id.getClass());
     }
 

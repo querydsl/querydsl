@@ -39,7 +39,7 @@ public class ConstructorsTest extends AbstractQueryTest {
 
     @Test
     @Ignore
-    public void Constructors() {
+    public void constructors() {
         ConstructorExpression<com.querydsl.jpa.domain.Cat> c =
                 Projections.constructor(
                         com.querydsl.jpa.domain.Cat.class,

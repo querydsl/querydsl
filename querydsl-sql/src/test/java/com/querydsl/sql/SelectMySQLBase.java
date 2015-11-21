@@ -17,7 +17,7 @@ public class SelectMySQLBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(MYSQL)
-    public void MySQL_Extensions() {
+    public void mysql_extensions() {
         mysqlQuery().from(survey).bigResult().select(survey.id).fetch();
         mysqlQuery().from(survey).bufferResult().select(survey.id).fetch();
         mysqlQuery().from(survey).cache().select(survey.id).fetch();

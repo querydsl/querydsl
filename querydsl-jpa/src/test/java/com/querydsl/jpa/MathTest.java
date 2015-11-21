@@ -29,70 +29,70 @@ public class MathTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Add() {
+    public void add() {
         assertToString("cat.bodyWeight + ?1", cat.bodyWeight.add(10));
     }
 
     @Test
-    public void Subtract() {
+    public void subtract() {
         assertToString("cat.bodyWeight - ?1", cat.bodyWeight.subtract(10));
     }
 
     @Test
-    public void Multiply() {
+    public void multiply() {
         assertToString("cat.bodyWeight * ?1", cat.bodyWeight.multiply(10));
     }
 
     @Test
-    public void Divide() {
+    public void divide() {
         assertToString("cat.bodyWeight / ?1", cat.bodyWeight.divide(10));
     }
 
     @Test
-    public void Add_And_Compare() {
+    public void add_and_compare() {
         assertToString("cat.bodyWeight + ?1 < ?1", cat.bodyWeight.add(10.0).lt(10.0));
     }
 
     @Test
-    public void Subtract_And_Compare() {
+    public void subtract_and_compare() {
         assertToString("cat.bodyWeight - ?1 < ?1", cat.bodyWeight.subtract(10.0).lt(10.0));
     }
 
     @Test
-    public void Multiply_And_Compare() {
+    public void multiply_and_compare() {
         assertToString("cat.bodyWeight * ?1 < ?1", cat.bodyWeight.multiply(10.0).lt(10.0));
     }
 
     @Test
-    public void Divide_And_Compare() {
+    public void divide_and_compare() {
         assertToString("cat.bodyWeight / ?1 < ?2", cat.bodyWeight.divide(10.0).lt(20.0));
     }
 
     @Test
-    public void Add_And_Multiply() {
+    public void add_and_multiply() {
         assertToString("(cat.bodyWeight + ?1) * ?2", cat.bodyWeight.add(10).multiply(20));
     }
 
     @Test
-    public void Subtract_And_Multiply() {
+    public void subtract_and_multiply() {
         assertToString("(cat.bodyWeight - ?1) * ?2", cat.bodyWeight.subtract(10).multiply(20));
     }
 
 
     @Test
-    public void Multiply_And_Add() {
+    public void multiply_and_add() {
         assertToString("cat.bodyWeight * ?1 + ?2", cat.bodyWeight.multiply(10).add(20));
     }
 
 
     @Test
-    public void Multiply_And_Subtract() {
+    public void multiply_and_subtract() {
         assertToString("cat.bodyWeight * ?1 - ?2", cat.bodyWeight.multiply(10).subtract(20));
     }
 
 
     @Test
-    public void Arithmetic_And_Arithmetic2() {
+    public void arithmetic_and_arithmetic2() {
         QCat c1 = new QCat("c1");
         QCat c2 = new QCat("c2");
         QCat c3 = new QCat("c3");
@@ -102,7 +102,7 @@ public class MathTest extends AbstractQueryTest {
     }
 
     @Test
-    public void MathematicalOperations() {
+    public void mathematicalOperations() {
         // mathematical operators +, -, *, /
         cat.bodyWeight.add(kitten.bodyWeight);
         cat.bodyWeight.subtract(kitten.bodyWeight);

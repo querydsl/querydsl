@@ -19,93 +19,93 @@ public class BeanMapTest {
     }
 
     @Test
-    public void Size() {
+    public void size() {
         assertEquals(4, beanMap.size());
     }
 
     @Test
-    public void Clear() {
+    public void clear() {
         beanMap.clear();
         assertEquals(4, beanMap.size());
     }
 
     @Test
-    public void Primitives() {
+    public void primitives() {
         beanMap.put("id", 5);
         assertEquals(5, ((Entity) beanMap.getBean()).getId());
     }
 
     @Test
-    public void BeanMap() {
+    public void beanMap() {
         assertEquals(0, new BeanMap().size());
     }
 
     @Test
-    public void BeanMapObject() {
+    public void beanMapObject() {
         assertEquals(4, new BeanMap(new Entity()).size());
     }
 
     @Test
-    public void ToString() {
+    public void toString_() {
         assertEquals("BeanMap<null>", new BeanMap().toString());
     }
 
     @Test
-    public void Clone() throws CloneNotSupportedException {
+    public void clone_() throws CloneNotSupportedException {
         assertEquals(beanMap, beanMap.clone());
     }
 
     @Test
-    public void PutAllWriteable() {
+    public void putAllWriteable() {
 
     }
 
     @Test
-    public void ContainsKeyString() {
+    public void containsKeyString() {
         assertTrue(beanMap.containsKey("id"));
     }
 
     @Test
-    public void ContainsValueObject() {
+    public void containsValueObject() {
 
     }
 
     @Test
-    public void GetString() {
+    public void getString() {
         beanMap.put("firstName", "John");
         assertEquals("John", beanMap.get("firstName"));
     }
 
     @Test
-    public void KeySet() {
+    public void keySet() {
         assertEquals(Sets.newHashSet("id", "class", "firstName", "lastName"), beanMap.keySet());
     }
 
     @Test
-    public void EntrySet() {
+    public void entrySet() {
         beanMap.put("firstName", "John");
         assertFalse(beanMap.entrySet().isEmpty());
     }
 
     @Test
     @Ignore
-    public void Values() {
+    public void values() {
         beanMap.put("firstName", "John");
         assertEquals(Lists.newArrayList(0, null, Entity.class, "John"), beanMap.values());
     }
 
     @Test
-    public void GetType() {
+    public void getType() {
 
     }
 
     @Test
-    public void GetBean() {
+    public void getBean() {
         assertEquals(Entity.class, beanMap.getBean().getClass());
     }
 
     @Test
-    public void SetBean() {
+    public void setBean() {
         Entity entity = new Entity();
         beanMap.setBean(entity);
         assertTrue(entity == beanMap.getBean());

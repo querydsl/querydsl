@@ -49,7 +49,7 @@ public class Superclass2Test {
     }
 
     @Test
-    public void DefaultInstance() {
+    public void defaultInstance() {
         assertNotNull(QSuperclass2Test_CommonPersistence.commonPersistence);
     }
 

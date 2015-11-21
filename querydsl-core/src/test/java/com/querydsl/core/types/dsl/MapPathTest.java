@@ -26,23 +26,23 @@ public class MapPathTest {
             String.class, String.class, StringPath.class, "p");
 
     @Test
-    public void Get() {
+    public void get() {
         assertNotNull(mapPath.get("X"));
         assertNotNull(mapPath.get(ConstantImpl.create("X")));
     }
 
     @Test
-    public void GetKeyType() {
+    public void getKeyType() {
         assertEquals(String.class, mapPath.getKeyType());
     }
 
     @Test
-    public void GetValueType() {
+    public void getValueType() {
         assertEquals(String.class, mapPath.getValueType());
     }
 
     @Test
-    public void GetParameter() {
+    public void getParameter() {
         assertEquals(String.class, mapPath.getParameter(0));
         assertEquals(String.class, mapPath.getParameter(1));
     }

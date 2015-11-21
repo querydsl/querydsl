@@ -25,7 +25,7 @@ import org.junit.Test;
 public class MethodTypeTest {
 
     @Test
-    public void Get() throws SecurityException, NoSuchMethodException {
+    public void get() throws SecurityException, NoSuchMethodException {
         Method getVal = MethodTypeTest.class.getMethod("getVal");
         Method hashCode = Object.class.getMethod("hashCode");
         Method size = Collection.class.getMethod("size");

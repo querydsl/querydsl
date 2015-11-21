@@ -74,7 +74,7 @@ public class KeywordQuotingBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Keywords() {
+    public void keywords() {
         Quoting from = new Quoting("from");
         assertEquals("from", query().from(quoting.as(from))
                 .where(from.from.eq("from")

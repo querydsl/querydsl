@@ -29,7 +29,7 @@ import com.querydsl.core.types.*;
 public class TemplateExpressionTest {
 
     @Test
-    public void Constructors() {
+    public void constructors() {
         Templates templates = new JavaTemplates();
         Template template = TemplateFactory.DEFAULT.create("{0}");
         ImmutableList<Expression<?>> args = ImmutableList.<Expression<?>>of(new StringPath("a"));
@@ -61,7 +61,7 @@ public class TemplateExpressionTest {
     }
 
     @Test
-    public void FactoryMethods() {
+    public void factoryMethods() {
         String template = "";
         Expression<Boolean> arg = ConstantImpl.create(true);
 
@@ -77,7 +77,7 @@ public class TemplateExpressionTest {
     }
 
     @Test
-    public void FactoryMethods2() {
+    public void factoryMethods2() {
         Template template = TemplateFactory.DEFAULT.create("");
         Expression<Boolean> arg = ConstantImpl.create(true);
 

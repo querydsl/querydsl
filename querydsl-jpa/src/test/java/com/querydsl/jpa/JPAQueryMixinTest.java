@@ -24,12 +24,12 @@ public class JPAQueryMixinTest {
     private JPAQueryMixin<?> mixin = new JPAQueryMixin<Object>();
 
     @Test
-    public void Where_Null() {
+    public void where_null() {
         mixin.where((Predicate) null);
     }
 
     @Test
-    public void OrderBy() {
+    public void orderBy() {
         QCat cat = QCat.cat;
         QCat catMate = new QCat("cat_mate");
         mixin.from(cat);
@@ -45,7 +45,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_NonRoot_Twice() {
+    public void orderBy_nonRoot_twice() {
         QDepartment department = QDepartment.department;
         QCompany departmentCompany = new QCompany("department_company");
         QEmployee departmentCompanyCeo = new QEmployee("department_company_ceo");
@@ -63,7 +63,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Where() {
+    public void orderBy_where() {
         QCat cat = QCat.cat;
         mixin.from(cat);
         mixin.where(cat.mate.name.isNotNull());
@@ -75,7 +75,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_GroupBy() {
+    public void orderBy_groupBy() {
         QCat cat = QCat.cat;
         mixin.from(cat);
         mixin.groupBy(cat.mate.name);
@@ -87,7 +87,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Operation() {
+    public void orderBy_operation() {
         QCat cat = QCat.cat;
         QCat catMate = new QCat("cat_mate");
         mixin.from(cat);
@@ -103,7 +103,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Long() {
+    public void orderBy_long() {
         QCat cat = QCat.cat;
         QCat catMate = new QCat("cat_mate");
         QCat catMateMate = new QCat("cat_mate_mate");
@@ -121,7 +121,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Reuse() {
+    public void orderBy_reuse() {
         QCat cat = QCat.cat;
         QCat mate = new QCat("mate");
         mixin.from(cat);
@@ -138,7 +138,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Long_Reuse() {
+    public void orderBy_long_reuse() {
         QCat cat = QCat.cat;
         QCat mate = new QCat("mate");
         QCat mateMate = new QCat("mate_mate");
@@ -157,7 +157,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Any() {
+    public void orderBy_any() {
         QCat cat = QCat.cat;
         QCat catKittens = new QCat("cat_kittens");
         mixin.from(cat);
@@ -173,7 +173,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_Embeddable() {
+    public void orderBy_embeddable() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         mixin.from(bookVersion);
         mixin.orderBy(bookVersion.definition.name.asc());
@@ -187,7 +187,7 @@ public class JPAQueryMixinTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void OrderBy_Embeddable2() {
+    public void orderBy_embeddable2() {
         QArticle article = QArticle.article;
         QArticle articleContentArticle = new QArticle("article_content_article");
         mixin.from(article);
@@ -204,7 +204,7 @@ public class JPAQueryMixinTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void OrderBy_Embeddable_Collection() {
+    public void orderBy_embeddable_collection() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         QBookMark bookMark = new QBookMark("bookVersion_definition_bookMarks");
         mixin.from(bookVersion);
@@ -218,7 +218,7 @@ public class JPAQueryMixinTest {
     }
 
     @Test
-    public void OrderBy_NullsLast() {
+    public void orderBy_nullsLast() {
         QCat cat = QCat.cat;
         mixin.from(cat);
         mixin.orderBy(cat.mate.name.asc().nullsLast());

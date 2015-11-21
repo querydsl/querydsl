@@ -38,7 +38,7 @@ public class StringHandlingTest extends AbstractQueryTest {
     private final StringPath b = Expressions.stringPath("b");
 
     @Test
-    public void EqualsIgnoreCase() {
+    public void equalsIgnoreCase() {
         Iterator<String> res = Arrays.asList("petER - PETer",
                 "THomas - thOMAS", "joHAN - JOhan").iterator();
         for (Tuple arr : query()
@@ -50,13 +50,13 @@ public class StringHandlingTest extends AbstractQueryTest {
     }
 
     @Test
-    public void StartsWithIgnoreCase() {
+    public void startsWithIgnoreCase() {
         assertEquals(2, CollQueryFactory.from(a, data).where(a.startsWithIgnoreCase("AB")).fetchCount());
         assertEquals(2, CollQueryFactory.from(a, data).where(a.startsWithIgnoreCase("ab")).fetchCount());
     }
 
     @Test
-    public void EndsWithIgnoreCase() {
+    public void endsWithIgnoreCase() {
         assertEquals(2, CollQueryFactory.from(a, data).where(a.endsWithIgnoreCase("BC")).fetchCount());
         assertEquals(2, CollQueryFactory.from(a, data).where(a.endsWithIgnoreCase("bc")).fetchCount());
     }

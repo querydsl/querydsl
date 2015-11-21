@@ -12,12 +12,12 @@ import com.querydsl.core.types.dsl.StringPath;
 public class CollQueryTemplatesTest {
 
     @Test
-    public void Generic_Precedence() {
+    public void generic_precedence() {
         TemplatesTestUtils.testPrecedence(CollQueryTemplates.DEFAULT);
     }
 
     @Test
-    public void Concat() {
+    public void concat() {
         StringPath a = Expressions.stringPath("a");
         StringPath b = Expressions.stringPath("b");
         Expression<?> expr = a.append(b).toLowerCase();

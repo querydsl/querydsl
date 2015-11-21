@@ -26,35 +26,35 @@ import com.querydsl.jpa.domain.QInheritedProperties;
 public class FeaturesTest extends AbstractQueryTest {
 
     @Test
-    public void DomainConstruction() {
+    public void domainConstruction() {
         QInheritedProperties i = new QInheritedProperties("i");
         assertNotNull(i.superclassProperty);
         assertNotNull(i.classProperty);
     }
 
     @Test
-    public void DomainConstruction2() {
+    public void domainConstruction2() {
         QAccount a = new QAccount("a");
         assertNotNull(a.embeddedData.someData);
     }
 
     @Test
-    public void BasicStructure() {
+    public void basicStructure() {
         assertNull(cat.getMetadata().getParent());
     }
 
     @Test
-    public void BasicStructure2() {
+    public void basicStructure2() {
         assertEquals(cat, cat.alive.getMetadata().getParent());
     }
 
     @Test
-    public void BasicStructure3() {
+    public void basicStructure3() {
         assertEquals("cat", cat.getMetadata().getName());
     }
 
     @Test
-    public void ArgumentHandling() {
+    public void argumentHandling() {
         // Kitty is reused, so it should be used via one named parameter
         assertToString(
                 "cat.name = ?1 or cust.name.firstName = ?2 or kitten.name = ?1",
@@ -62,34 +62,34 @@ public class FeaturesTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BasicOperations() {
+    public void basicOperations() {
         assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
     }
 
     @Test
-    public void BasicOperations2() {
+    public void basicOperations2() {
         assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
     }
 
     @Test
-    public void BasicOperations3() {
+    public void basicOperations3() {
         assertToString(
                 "cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight",
                 cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));
     }
 
     @Test
-    public void EqualsAndNotEqualsForAllExpressions() {
+    public void equalsAndNotEqualsForAllExpressions() {
         assertToString("cat.name = cust.name.firstName", cat.name.eq(cust.name.firstName));
     }
 
     @Test
-    public void EqualsAndNotEqualsForAllExpressions2() {
+    public void equalsAndNotEqualsForAllExpressions2() {
         assertToString("cat.name <> cust.name.firstName", cat.name.ne(cust.name.firstName));
     }
 
     @Test
-    public void GroupingOperationsAndNullChecks() {
+    public void groupingOperationsAndNullChecks() {
         // in, not in, between, is null, is not null, is empty, is not empty,
         // member of and not member of
         // in,
@@ -111,7 +111,7 @@ public class FeaturesTest extends AbstractQueryTest {
     }
 
     @Test
-    public void ToString() {
+    public void toString_() {
         assertToString("cat", cat);
         assertToString("cat.alive", cat.alive);
         assertToString("cat.bodyWeight", cat.bodyWeight);
@@ -140,7 +140,7 @@ public class FeaturesTest extends AbstractQueryTest {
 //     */
 //    @SuppressWarnings("unchecked")
 //    @Test
-//    public void Bug326650() {
+//    public void bug326650() {
 //        assertEquals(Long.class, sum(var(Byte.class)).getType());
 //        assertEquals(Long.class, sum(var(Short.class)).getType());
 //        assertEquals(Long.class, sum(var(Integer.class)).getType());

@@ -43,7 +43,7 @@ public class SpatialTest {
     }
 
     @Test
-    public void Metadata() throws SQLException {
+    public void metadata() throws SQLException {
         Connection conn = Connections.getConnection();
         DatabaseMetaData md = conn.getMetaData();
         ResultSet rs = md.getColumns(null, null, "SHAPES", "GEOMETRY");

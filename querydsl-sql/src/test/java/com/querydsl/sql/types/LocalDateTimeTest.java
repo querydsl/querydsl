@@ -25,7 +25,7 @@ public class LocalDateTimeTest {
     }
 
     @Test
-    public void Set() throws SQLException {
+    public void set() throws SQLException {
         LocalDateTime value = new LocalDateTime();
         DateTime dt = value.toDateTime(DateTimeZone.UTC);
         Timestamp ts = new Timestamp(dt.getMillis());

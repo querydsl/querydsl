@@ -47,29 +47,29 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Count() {
+    public void count() {
         assertEquals(30L, sql().from(product).fetchCount());
     }
 
     @Test(expected = NonUniqueResultException.class)
-    public void UniqueResult() {
+    public void uniqueResult() {
         sql().from(product).orderBy(product.name.asc()).select(product.name).fetchOne();
     }
 
     @Test
-    public void SingleResult() {
+    public void singleResult() {
         assertEquals("A0", sql().from(product).orderBy(product.name.asc())
                 .select(product.name).fetchFirst());
     }
 
     @Test
-    public void SingleResult_With_Array() {
+    public void singleResult_with_array() {
         assertEquals("A0", sql().from(product).orderBy(product.name.asc())
                 .select(new Expression<?>[]{product.name}).fetchFirst().get(product.name));
     }
 
     @Test
-    public void StartsWith_Count() {
+    public void startsWith_count() {
         assertEquals(10L, sql().from(product).where(product.name.startsWith("A")).fetchCount());
         assertEquals(10L, sql().from(product).where(product.name.startsWith("B")).fetchCount());
         assertEquals(10L, sql().from(product).where(product.name.startsWith("C")).fetchCount());
@@ -77,7 +77,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Eq_Count() {
+    public void eq_count() {
         for (int i = 0; i < 10; i++) {
             assertEquals(1L, sql().from(product).where(product.name.eq("A" + i)).fetchCount());
             assertEquals(1L, sql().from(product).where(product.name.eq("B" + i)).fetchCount());
@@ -86,7 +86,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
     }
 
     @Test
-    public void ScalarQueries() {
+    public void scalarQueries() {
         BooleanExpression filter = product.name.startsWith("A");
 
         // fetchCount
@@ -124,7 +124,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
     @Ignore
     @Test
     @SuppressWarnings("unchecked")
-    public void Union() throws SQLException {
+    public void union() throws SQLException {
         SubQueryExpression<Integer> sq1 = sql().from(product).select(product.amount.max());
         SubQueryExpression<Integer> sq2 = sql().from(product).select(product.amount.min());
         List<Integer> list = sql().union(sq1, sq2).list();
@@ -134,7 +134,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
     @Ignore
     @Test
     @SuppressWarnings("unchecked")
-    public void Union_All() {
+    public void union_all() {
         SubQueryExpression<Integer> sq1 = sql().from(product).select(product.amount.max());
         SubQueryExpression<Integer> sq2 = sql().from(product).select(product.amount.min());
         List<Integer> list = sql().unionAll(sq1, sq2).list();
@@ -142,7 +142,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
     }
 
     @Test
-    public void EntityProjections() {
+    public void entityProjections() {
         List<Product> products = sql()
             .from(product)
             .select(Projections.constructor(Product.class,

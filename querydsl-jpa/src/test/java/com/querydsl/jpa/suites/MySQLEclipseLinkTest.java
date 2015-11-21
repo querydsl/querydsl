@@ -12,35 +12,35 @@ public class MySQLEclipseLinkTest extends AbstractJPASuite {
 
     public static class JPA extends JPABase {
         @Override
-        public void Cast() {
+        public void cast() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Enum_StartsWith() {
+        public void enum_startsWith() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_StringValue() {
+        public void order_stringValue() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_StringValue_To_Integer() {
+        public void order_stringValue_to_integer() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_StringValue_ToLong() {
+        public void order_stringValue_toLong() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_StringValue_ToBigInteger() {
+        public void order_stringValue_toBigInteger() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_NullsFirst() {
+        public void order_nullsFirst() {
             // not supported in MySQL/EclipseLink
         }
         @Override
-        public void Order_NullsLast() {
+        public void order_nullsLast() {
             // not supported in MySQL/EclipseLink
         }
     }

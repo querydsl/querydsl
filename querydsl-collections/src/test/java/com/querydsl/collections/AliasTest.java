@@ -41,7 +41,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void AliasVariations1() {
+    public void aliasVariations1() {
         // 1st
         QCat cat = new QCat("cat");
         assertEquals(Arrays.asList("Kitty", "Bob", "Alex", "Francis"),
@@ -54,7 +54,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void AliasVariations2() {
+    public void aliasVariations2() {
         // 1st
         QCat cat = new QCat("cat");
         assertEquals(Arrays.asList(),
@@ -67,7 +67,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Alias3() {
+    public void alias3() {
         QCat cat = new QCat("cat");
         Cat other = new Cat();
         Cat c = alias(Cat.class, "cat");
@@ -128,20 +128,20 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Various1() {
+    public void various1() {
         StringPath str = Expressions.stringPath("str");
         assertEquals(Arrays.asList("a", "ab"),
                 from(str, "a", "ab", "cd", "de").where(str.startsWith("a")).select(str).fetch());
     }
 
     @Test
-    public void Various2() {
+    public void various2() {
         assertEquals(Arrays.asList(1, 2, 5, 3),
                 from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).select(var()).fetch());
     }
 
     @Test
-    public void Various3() {
+    public void various3() {
         NumberPath<Integer> num = Expressions.numberPath(Integer.class, "num");
         assertEquals(Arrays.asList(1, 2, 3),
                 from(num, 1, 2, 3, 4).where(num.lt(4)).select(num).fetch());

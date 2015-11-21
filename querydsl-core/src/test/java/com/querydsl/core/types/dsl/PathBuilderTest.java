@@ -82,7 +82,7 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void Get() {
+    public void get() {
         PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity");
         NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "int");
         StringPath strPath = new StringPath("str");
@@ -96,7 +96,7 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void Various() {
+    public void various() {
         PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity");
         entity.getBoolean("boolean");
         entity.getCollection("col", User.class);

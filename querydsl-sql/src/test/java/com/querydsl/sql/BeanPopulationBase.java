@@ -36,7 +36,7 @@ public class BeanPopulationBase extends AbstractBaseTest {
     }
 
     @Test
-    public void CustomProjection() {
+    public void custom_projection() {
         // Insert
         Employee employee = new Employee();
         employee.setFirstname("John");
@@ -73,7 +73,7 @@ public class BeanPopulationBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_Update_Query_and_Delete() {
+    public void insert_update_query_and_delete() {
         // Insert
         Employee employee = new Employee();
         employee.setFirstname("John");
@@ -94,7 +94,7 @@ public class BeanPopulationBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Populate_With_BeanMapper() {
+    public void populate_with_beanMapper() {
         Employee employee = new Employee();
         employee.setFirstname("John");
         insert(e).populate(employee, new BeanMapper()).execute();

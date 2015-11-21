@@ -28,24 +28,24 @@ public class JavaTypeMappingTest {
     private JavaTypeMapping typeMapping = new JavaTypeMapping();
 
     @Test
-    public void GetType_With_Subtypes() {
+    public void getType_with_subtypes() {
         typeMapping.register(new InputStreamType());
         assertNotNull(typeMapping.getType(InputStream.class));
         assertNotNull(typeMapping.getType(FileInputStream.class));
     }
 
     @Test
-    public void GetType_With_Interfaces() {
+    public void getType_with_interfaces() {
         assertEquals(BlobType.class, typeMapping.getType(DummyBlob.class).getClass());
     }
 
     @Test
-    public void GetType_for_Object() {
+    public void getType_for_object() {
         assertEquals(ObjectType.class, typeMapping.getType(Object.class).getClass());
     }
 
     @Test
-    public void GetType_For_Primitive() {
+    public void getType_for_primitive() {
         assertEquals(ByteType.class, typeMapping.getType(byte.class).getClass());
         assertEquals(ShortType.class, typeMapping.getType(short.class).getClass());
         assertEquals(IntegerType.class, typeMapping.getType(int.class).getClass());

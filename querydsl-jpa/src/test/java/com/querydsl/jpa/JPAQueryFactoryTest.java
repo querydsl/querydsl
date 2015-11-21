@@ -62,17 +62,17 @@ public class JPAQueryFactoryTest {
     }
 
     @Test
-    public void Query() {
+    public void query() {
         assertNotNull(queryFactory.query());
     }
 
     @Test
-    public void Query2() {
+    public void query2() {
         queryFactory2.query().from(QAnimal.animal);
     }
 
     @Test
-    public void Query3() {
+    public void query3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
         EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
@@ -84,23 +84,23 @@ public class JPAQueryFactoryTest {
     }
 
     @Test
-    public void From() {
+    public void from() {
         assertNotNull(queryFactory.from(QAnimal.animal));
     }
 
     @Test
-    public void Delete() {
+    public void delete() {
         assertNotNull(queryFactory.delete(QAnimal.animal));
     }
 
     @Test
-    public void Delete2() {
+    public void delete2() {
         queryFactory2.delete(QAnimal.animal)
             .where(QAnimal.animal.bodyWeight.gt(0));
     }
 
     @Test
-    public void Delete3() {
+    public void delete3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
         EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
@@ -112,19 +112,19 @@ public class JPAQueryFactoryTest {
     }
 
     @Test
-    public void Update() {
+    public void update() {
         assertNotNull(queryFactory.update(QAnimal.animal));
     }
 
     @Test
-    public void Update2() {
+    public void update2() {
         queryFactory2.update(QAnimal.animal)
             .set(QAnimal.animal.birthdate, new Date())
             .where(QAnimal.animal.birthdate.isNull());
     }
 
     @Test
-    public void Update3() {
+    public void update3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
         EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();

@@ -50,7 +50,7 @@ public class SQLTemplatesTest {
     }
 
     @Test
-    public void AsLiteral() {
+    public void asLiteral() {
         SQLTemplates templates = SQLTemplates.DEFAULT;
         Configuration conf = new Configuration(templates);
         assertMatches(DATE, conf.asLiteral(new Date(0)));
@@ -59,7 +59,7 @@ public class SQLTemplatesTest {
     }
 
     @Test
-    public void AsLiteral_JodaTime() {
+    public void asLiteral_jodaTime() {
         SQLTemplates templates = SQLTemplates.DEFAULT;
         Configuration conf = new Configuration(templates);
         assertMatches(DATE, conf.asLiteral(new LocalDate(0)));
@@ -68,7 +68,7 @@ public class SQLTemplatesTest {
     }
 
     @Test
-    public void Quote() {
+    public void quote() {
         SQLTemplates templates = SQLTemplates.DEFAULT;
         // non quoted
         assertEquals("employee", templates.quoteIdentifier("employee"));
@@ -81,7 +81,7 @@ public class SQLTemplatesTest {
     }
 
     @Test
-    public void Quoting_Performance() {
+    public void quoting_performance() {
         // 385 -> 63
         SQLTemplates templates = new H2Templates();
         long start = System.currentTimeMillis();
@@ -93,7 +93,7 @@ public class SQLTemplatesTest {
     }
 
     @Test
-    public void NextVal() {
+    public void nextVal() {
         Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("nextval('myseq')", new SQLSerializer(new Configuration(SQLTemplates.DEFAULT)).handle(nextval).toString());
         // Derby OK
@@ -107,7 +107,7 @@ public class SQLTemplatesTest {
     }
 
     @Test
-    public void Numeric_Operations() {
+    public void numeric_operations() {
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         NumberPath<Integer> intPath2 = Expressions.numberPath(Integer.class, "intPath2");
         SQLSerializer serializer = new SQLSerializer(new Configuration(SQLTemplates.DEFAULT));

@@ -23,7 +23,7 @@ public class ArrayConstructorExpressionTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void NewInstanceObjectArray() {
+    public void newInstanceObjectArray() {
         ArrayConstructorExpression<String> constructor = new ArrayConstructorExpression<String>(
                 String[].class,  new StringPath("test"), new StringPath("test2"));
 

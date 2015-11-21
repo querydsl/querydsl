@@ -16,7 +16,7 @@ import com.querydsl.sql.domain.QSurvey;
 public class ListSubQueryTest {
 
     @Test
-    public void HashCode() {
+    public void hashCode1() {
         QSurvey survey = QSurvey.survey;
         QSurvey survey2 = new QSurvey("survey2");
         SubQueryExpression<Tuple> query1 = select(survey.all()).from(survey);
@@ -29,7 +29,7 @@ public class ListSubQueryTest {
     }
 
     @Test
-    public void HashCode2() {
+    public void hashCode2() {
         QSurvey survey = new QSurvey("entity");
         QEmployee employee = new QEmployee("entity");
         SubQueryExpression<Integer> query1 = select(survey.id).from(survey);

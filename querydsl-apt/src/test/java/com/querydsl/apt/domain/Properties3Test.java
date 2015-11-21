@@ -25,7 +25,7 @@ public class Properties3Test extends AbstractTest {
     }
 
     @Test
-    public void PropertyType() throws IllegalAccessException, NoSuchFieldException {
+    public void propertyType() throws IllegalAccessException, NoSuchFieldException {
         start(QProperties3Test_Order.class, QProperties3Test_Order.order);
         match(DateTimePath.class, "orderDate");
         matchType(java.util.Date.class, "orderDate");

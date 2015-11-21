@@ -18,7 +18,7 @@ public class NumberConversionsTest {
     public enum Color { GREEN, BLUE, RED, YELLOW, BLACK, WHITE }
 
     @Test
-    public void Name() {
+    public void name() {
         EnumPath<Color> color = Expressions.enumPath(Color.class, "path");
         QTuple qTuple = Projections.tuple(color);
         NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
@@ -26,7 +26,7 @@ public class NumberConversionsTest {
     }
 
     @Test
-    public void Ordinal() {
+    public void ordinal() {
         EnumPath<Color> color = Expressions.enumPath(Color.class, "path");
         QTuple qTuple = Projections.tuple(color);
         NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
@@ -34,7 +34,7 @@ public class NumberConversionsTest {
     }
 
     @Test
-    public void Safe_Number_Conversion() {
+    public void safe_number_conversion() {
         StringPath strPath = Expressions.stringPath("strPath");
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         QTuple qTuple = Projections.tuple(strPath, intPath);
@@ -43,7 +43,7 @@ public class NumberConversionsTest {
     }
 
     @Test
-    public void Number_Conversion() {
+    public void number_conversion() {
         StringPath strPath = Expressions.stringPath("strPath");
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         QTuple qTuple = Projections.tuple(strPath, intPath);

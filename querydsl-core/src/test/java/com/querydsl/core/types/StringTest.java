@@ -34,7 +34,7 @@ public class StringTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void PatternAvailability() throws IllegalArgumentException, IllegalAccessException {
+    public void patternAvailability() throws IllegalArgumentException, IllegalAccessException {
         Templates ops = new DummyTemplates();
         Set<Field> missing = new HashSet<Field>();
         for (Field field : Ops.class.getFields()) {
@@ -66,7 +66,7 @@ public class StringTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void ToString() {
+    public void toString_() {
         SomeType alias = alias(SomeType.class, "alias");
 
         // Path toString

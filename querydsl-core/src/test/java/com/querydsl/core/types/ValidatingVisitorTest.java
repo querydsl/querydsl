@@ -36,37 +36,37 @@ public class ValidatingVisitorTest {
     }
 
     @Test
-    public void VisitConstantOfQVoid() {
+    public void visitConstantOfQVoid() {
         validator.visit(ConstantImpl.create("XXX"), known);
     }
 
     @Test
-    public void VisitFactoryExpressionOfQVoid() {
+    public void visitFactoryExpressionOfQVoid() {
         validator.visit(new QBean(Object.class, ExpressionUtils.path(String.class, "path")), known);
     }
 
     @Test
-    public void VisitOperationOfQVoid() {
+    public void visitOperationOfQVoid() {
         validator.visit((Operation) Expressions.path(Object.class, "path").isNull(), known);
     }
 
     @Test
-    public void VisitParamExpressionOfQVoid() {
+    public void visitParamExpressionOfQVoid() {
         validator.visit(new Param(Object.class, "prop"), known);
     }
 
     @Test
-    public void VisitPathOfQVoid() {
+    public void visitPathOfQVoid() {
         validator.visit(ExpressionUtils.path(Object.class, "path"), known);
     }
 
     @Test
-    public void VisitSubQueryExpressionOfQVoid() {
+    public void visitSubQueryExpressionOfQVoid() {
         validator.visit(new SubQueryExpressionImpl(Object.class, new DefaultQueryMetadata()), known);
     }
 
     @Test
-    public void VisitTemplateExpressionOfQVoid() {
+    public void visitTemplateExpressionOfQVoid() {
         validator.visit((TemplateExpression) Expressions.template(Object.class, "XXX"), known);
     }
 

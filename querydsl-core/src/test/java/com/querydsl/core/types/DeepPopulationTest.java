@@ -62,7 +62,7 @@ public class DeepPopulationTest {
     }
 
     @Test
-    public void Deep_Population_Via_QBean() {
+    public void deep_population_via_qBean() {
         StringPath name = Expressions.stringPath("name");
         StringPath id = Expressions.stringPath("id");
         QBean<Entity2> entity2Bean = new QBean<Entity2>(Entity2.class, name, id);
@@ -75,7 +75,7 @@ public class DeepPopulationTest {
     }
 
     @Test
-    public void Deep_Population_Via_QTuple() {
+    public void deep_population_via_qTuple() {
         StringPath name = Expressions.stringPath("name");
         StringPath id = Expressions.stringPath("id");
         QBean<Entity2> entity2Bean = new QBean<Entity2>(Entity2.class, name, id);

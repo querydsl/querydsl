@@ -23,17 +23,17 @@ import org.junit.Test;
 public class MathUtilsTest {
 
     @Test
-    public void Sum() {
+    public void sum() {
         assertEquals(Integer.valueOf(5), MathUtils.sum(2, 3.0));
     }
 
     @Test
-    public void Difference() {
+    public void difference() {
         assertEquals(Integer.valueOf(2), MathUtils.difference(5, 3.0));
     }
 
     @Test
-    public void Cast() {
+    public void cast() {
         Integer value = 1;
         assertEquals(BigDecimal.class, MathUtils.cast(value, BigDecimal.class).getClass());
         assertEquals(BigInteger.class, MathUtils.cast(value, BigInteger.class).getClass());

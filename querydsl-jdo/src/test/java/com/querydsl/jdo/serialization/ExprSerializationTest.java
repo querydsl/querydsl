@@ -31,20 +31,20 @@ public class ExprSerializationTest {
     private QStore store = QStore.store;
 
     @Test
-    public void InstanceOf() {
+    public void instanceOf() {
         assertEquals(
                 "product instanceof com.querydsl.jdo.test.domain.Book",
                 serialize(product.instanceOf(Book.class)));
     }
 
     @Test
-    public void Eq() {
+    public void eq() {
         assertEquals("this.name == product.name", serialize(book.name.eq(product.name)));
         assertEquals("this == product", serialize(book.eq(product)));
     }
 
     @Test
-    public void Aggregation() {
+    public void aggregation() {
         assertEquals("sum(product.price)", serialize(product.price.sum()));
         assertEquals("min(product.price)", serialize(product.price.min()));
         assertEquals("max(product.price)", serialize(product.price.max()));
@@ -53,7 +53,7 @@ public class ExprSerializationTest {
     }
 
     @Test
-    public void BooleanTests() {
+    public void booleanTests() {
         // boolean
         assertEquals("product.name == a1 && product.price <= a2",
                 serialize(product.name.eq("Sony Discman").and(product.price.loe(300.00))));
@@ -64,7 +64,7 @@ public class ExprSerializationTest {
     }
 
     @Test
-    public void CollectionTests() {
+    public void collectionTests() {
         Product product = new Product();
         // collection
         assertEquals("store.products.contains(a1)",
@@ -80,7 +80,7 @@ public class ExprSerializationTest {
     }
 
     @Test
-    public void MapTests() {
+    public void mapTests() {
         assertEquals("store.productsByName.containsKey(a1)",
                 serialize(store.productsByName.containsKey("")));
         assertEquals("store.productsByName.containsValue(a1)",
@@ -93,7 +93,7 @@ public class ExprSerializationTest {
     }
 
     @Test
-    public void NumericTests() {
+    public void numericTests() {
         // numeric
         assertEquals("product.price == a1", serialize(product.price.eq(200.00)));
         assertEquals("product.price != a1", serialize(product.price.ne(100.00)));
@@ -111,7 +111,7 @@ public class ExprSerializationTest {
     }
 
     @Test
-    public void StringTests() {
+    public void stringTests() {
         // string
         assertEquals("product.name.startsWith(a1)", serialize(product.name.startsWith("Sony Discman")));
         assertEquals("product.name.endsWith(a1)", serialize(product.name.endsWith("Discman")));

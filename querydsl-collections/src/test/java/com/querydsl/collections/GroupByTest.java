@@ -52,7 +52,7 @@ public class GroupByTest {
     private static final ConstructorExpression<Comment> qComment = QComment.create(comment.id, comment.text);
 
     @Test
-    public void Group_Min() {
+    public void group_min() {
         Map<Integer, String> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(min(comment.text)));
@@ -62,7 +62,7 @@ public class GroupByTest {
         assertEquals("Comment 4", results.get(3));
     }
 
-    public void Comments_By_Post() {
+    public void comments_by_post() {
         Map<Integer, List<Comment>> results = CollQueryFactory.from(post, posts).from(comment, comments)
                 .where(comment.post.id.eq(post.id))
                 .transform(groupBy(post.id).as(list(comment)));
@@ -73,7 +73,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void Group_Max() {
+    public void group_max() {
         Map<Integer, String> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(max(comment.text)));
@@ -84,7 +84,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void Group_Sum() {
+    public void group_sum() {
         Map<Integer, Integer> results = CollQueryFactory.from(post, posts).from(comment, comments)
                 .where(comment.post.id.eq(post.id))
                 .transform(groupBy(post.id).as(sum(comment.id)));
@@ -95,7 +95,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void Group_Avg() {
+    public void group_avg() {
         Map<Integer, Integer> results = CollQueryFactory.from(post, posts).from(comment, comments)
                 .where(comment.post.id.eq(post.id))
                 .transform(groupBy(post.id).as(avg(comment.id)));
@@ -106,7 +106,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void Group_Order() {
+    public void group_order() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id)));
@@ -115,7 +115,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void First_Set_And_List() {
+    public void first_set_and_list() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
@@ -129,7 +129,7 @@ public class GroupByTest {
 
     @Test
     @Ignore
-    public void Group_By_Null() {
+    public void group_by_null() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
@@ -143,7 +143,7 @@ public class GroupByTest {
     }
 
 //    @Test(expected=NoSuchElementException.class)
-//    public void NoSuchElementException() {
+//    public void noSuchElementException() {
 //        Map<Integer, Group> results = BASIC_RESULTS.transform(
 //            groupBy(postId, postName, set(commentId), list(commentText)));
 //
@@ -152,7 +152,7 @@ public class GroupByTest {
 //    }
 
     @Test(expected = ClassCastException.class)
-    public void ClassCastException() {
+    public void classCastException() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
@@ -163,7 +163,7 @@ public class GroupByTest {
 
     @Test
     @Ignore
-    public void Map() {
+    public void map_() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, map(comment.id, comment.text)));
@@ -175,7 +175,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void Array_Access() {
+    public void array_access() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
@@ -189,7 +189,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void Transform_Results() {
+    public void transform_results() {
         Map<Integer, Post> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(QPost.create(post.id, post.name, set(qComment))));
@@ -202,7 +202,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void Transform_As_Bean() {
+    public void transform_as_bean() {
         Map<Integer, Post> results = CollQueryFactory.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments"))));
@@ -216,7 +216,7 @@ public class GroupByTest {
 
 
     @Test
-    public void OneToOneToMany_Projection() {
+    public void oneToOneToMany_projection() {
         Map<String, User> results = CollQueryFactory.from(user, users).from(post, posts).from(comment, comments)
             .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
             .transform(groupBy(user.name).as(Projections.constructor(User.class, user.name,
@@ -233,7 +233,7 @@ public class GroupByTest {
 
 
     @Test
-    public void OneToOneToMany_Projection_As_Bean() {
+    public void oneToOneToMany_projection_as_bean() {
         Map<String, User> results = CollQueryFactory.from(user, users).from(post, posts).from(comment, comments)
             .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
             .transform(groupBy(user.name).as(Projections.bean(User.class, user.name,
@@ -249,7 +249,7 @@ public class GroupByTest {
     }
 
     @Test
-    public void OneToOneToMany_Projection_As_Bean_And_Constructor() {
+    public void oneToOneToMany_projection_as_bean_and_constructor() {
         Map<String, User> results = CollQueryFactory.from(user, users).from(post, posts).from(comment, comments)
             .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
             .transform(groupBy(user.name).as(Projections.bean(User.class, user.name,

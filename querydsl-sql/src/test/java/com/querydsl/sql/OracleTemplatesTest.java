@@ -38,7 +38,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
     @Override
     @SuppressWarnings("unchecked")
     @Test
-    public void Union() {
+    public void union() {
         SimpleExpression<Integer> one = Expressions.template(Integer.class, "1");
         SimpleExpression<Integer> two = Expressions.template(Integer.class,"2");
         SimpleExpression<Integer> three = Expressions.template(Integer.class,"3");
@@ -56,7 +56,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Modifiers() {
+    public void modifiers() {
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().setProjection(survey1.id);
         assertEquals("select * from (  " +
@@ -67,7 +67,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Modifiers2() {
+    public void modifiers2() {
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().setProjection(survey1.id);
         query.getMetadata().addFlag(new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() "));
@@ -80,13 +80,13 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void NextVal() {
+    public void nextVal() {
         Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new OracleTemplates())).handle(nextval).toString());
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // +, - (as unary operators), PRIOR, CONNECT_BY_ROOT  identity, negation, location in hierarchy
         int p1 = getPrecedence(Ops.NEGATE);
         // *, / multiplication, division

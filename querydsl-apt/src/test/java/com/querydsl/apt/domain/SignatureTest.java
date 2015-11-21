@@ -35,12 +35,12 @@ public class SignatureTest {
     }
 
     @Test
-    public void APropertyChangeSupported() {
+    public void aPropertyChangeSupported() {
         assertEquals(ComparablePath.class, QSignatureTest_APropertyChangeSupported.class.getSuperclass());
     }
 
     @Test
-    public void AValueObject() {
+    public void aValueObject() {
         assertEquals(ComparablePath.class, QSignatureTest_AValueObject.class.getSuperclass());
     }
 

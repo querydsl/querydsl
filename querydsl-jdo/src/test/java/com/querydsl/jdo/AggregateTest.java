@@ -29,7 +29,7 @@ public class AggregateTest extends AbstractJDOTest {
     private final QProduct product = QProduct.product;
 
     @Test
-    public void Unique() {
+    public void unique() {
         double min = 200.00, avg = 400.00, max = 600.00;
         assertEquals(Double.valueOf(min), query().from(product).select(product.price.min()).fetchOne());
         assertEquals(Double.valueOf(avg), query().from(product).select(product.price.avg()).fetchOne());
@@ -37,7 +37,7 @@ public class AggregateTest extends AbstractJDOTest {
     }
 
     @Test
-    public void List() {
+    public void list() {
         double min = 200.00, avg = 400.00, max = 600.00;
         assertEquals(Double.valueOf(min), query().from(product).select(product.price.min()).fetch().get(0));
         assertEquals(Double.valueOf(avg), query().from(product).select(product.price.avg()).fetch().get(0));

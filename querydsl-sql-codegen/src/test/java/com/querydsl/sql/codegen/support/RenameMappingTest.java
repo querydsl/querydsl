@@ -16,7 +16,7 @@ public class RenameMappingTest {
     // to schema
 
     @Test
-    public void SchemaToSchema() {
+    public void schemaToSchema() {
         mapping.setFromSchema("ABC");
         mapping.setToSchema("DEF");
         mapping.apply(configuration);
@@ -33,7 +33,7 @@ public class RenameMappingTest {
     // to table
 
     @Test
-    public void TableToTable() {
+    public void tableToTable() {
         mapping.setFromTable("TABLE1");
         mapping.setToTable("TABLE2");
         mapping.apply(configuration);
@@ -47,7 +47,7 @@ public class RenameMappingTest {
     }
 
     @Test
-    public void SchemaTableToTable() {
+    public void schemaTableToTable() {
         mapping.setFromSchema("ABC");
         mapping.setFromTable("TABLE1");
         mapping.setToTable("TABLE2");
@@ -62,7 +62,7 @@ public class RenameMappingTest {
     }
 
     @Test
-    public void SchemaTableToSchemaTable() {
+    public void schemaTableToSchemaTable() {
         mapping.setFromSchema("ABC");
         mapping.setFromTable("TABLE1");
         mapping.setToSchema("ABC");
@@ -80,7 +80,7 @@ public class RenameMappingTest {
     // to column
 
     @Test
-    public void SchemaTableColumnToColumn() {
+    public void schemaTableColumnToColumn() {
         mapping.setFromSchema("ABC");
         mapping.setFromTable("TABLE1");
         mapping.setFromColumn("COLUMN1");
@@ -96,7 +96,7 @@ public class RenameMappingTest {
     }
 
     @Test
-    public void TableColumnToColumn() {
+    public void tableColumnToColumn() {
         mapping.setFromTable("TABLE1");
         mapping.setFromColumn("COLUMN1");
         mapping.setToColumn("COLUMN2");

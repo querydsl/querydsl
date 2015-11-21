@@ -49,7 +49,7 @@ public class DeleteBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Batch() throws SQLException {
+    public void batch() throws SQLException {
         insert(survey).values(2, "A","B").execute();
         insert(survey).values(3, "B","C").execute();
 
@@ -61,7 +61,7 @@ public class DeleteBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, SQLITE})
-    public void Batch_Templates() throws SQLException {
+    public void batch_templates() throws SQLException {
         insert(survey).values(2, "A","B").execute();
         insert(survey).values(3, "B","C").execute();
 
@@ -73,7 +73,7 @@ public class DeleteBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(MYSQL)
-    public void Delete() throws SQLException {
+    public void delete() throws SQLException {
         long count = query().from(survey).fetchCount();
         assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
         assertEquals(count, delete(survey).execute());
@@ -81,7 +81,7 @@ public class DeleteBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn({CUBRID, H2, MYSQL, ORACLE, SQLSERVER})
-    public void Delete_Limit() {
+    public void delete_limit() {
         insert(survey).values(2, "A","B").execute();
         insert(survey).values(3, "B","C").execute();
         insert(survey).values(4, "D","E").execute();
@@ -90,7 +90,7 @@ public class DeleteBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Delete_with_SubQuery_exists() {
+    public void delete_with_subQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLDeleteClause delete = delete(survey1);
@@ -100,7 +100,7 @@ public class DeleteBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Delete_with_SubQuery_exists_Params() {
+    public void delete_with_subQuery_exists_Params() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
 
@@ -114,7 +114,7 @@ public class DeleteBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Delete_with_SubQuery_exists2() {
+    public void delete_with_subQuery_exists2() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLDeleteClause delete = delete(survey1);
@@ -126,7 +126,7 @@ public class DeleteBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, SQLITE})
-    public void Delete_With_TempateExpression_In_Batch() {
+    public void delete_with_tempateExpression_in_batch() {
         assertEquals(1, delete(survey)
             .where(survey.name.eq(Expressions.stringTemplate("'Hello World'")))
             .addBatch()

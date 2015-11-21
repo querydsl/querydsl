@@ -22,7 +22,7 @@ import org.junit.Test;
 public class SQLTypeMappingTest {
 
     @Test
-    public void Get() throws IllegalArgumentException, IllegalAccessException {
+    public void get() throws IllegalArgumentException, IllegalAccessException {
         JDBCTypeMapping mapping = new JDBCTypeMapping();
         for (Field field : java.sql.Types.class.getFields()) {
             if (field.getType().equals(int.class)) {

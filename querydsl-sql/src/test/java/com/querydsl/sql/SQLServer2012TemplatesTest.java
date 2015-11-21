@@ -30,7 +30,7 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     @Test
-    public void NoFrom() {
+    public void noFrom() {
         query.getMetadata().setProjection(Expressions.ONE);
         assertEquals("select 1", query.toString());
     }
@@ -43,7 +43,7 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
     @SuppressWarnings("unchecked")
     @Test
     @Override
-    public void Union() {
+    public void union() {
         NumberExpression<Integer> one = Expressions.ONE;
         NumberExpression<Integer> two = Expressions.TWO;
         NumberExpression<Integer> three = Expressions.THREE;
@@ -61,21 +61,21 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Limit() {
+    public void limit() {
         query.from(survey1).limit(5);
         query.getMetadata().setProjection(survey1.id);
         assertEquals("select top 5 survey1.ID from SURVEY survey1", query.toString());
     }
 
     @Test
-    public void Modifiers() {
+    public void modifiers() {
         query.from(survey1).limit(5).offset(3).orderBy(survey1.id.asc());
         query.getMetadata().setProjection(survey1.id);
         assertEquals("select survey1.ID from SURVEY survey1 order by survey1.ID asc offset ? rows fetch next ? rows only", query.toString());
     }
 
     @Test
-    public void NextVal() {
+    public void nextVal() {
         Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new SQLServerTemplates())).handle(nextval).toString());
     }

@@ -27,14 +27,14 @@ public class QBeanTest {
     private final QEmployee e = new QEmployee("e");
 
     @Test
-    public void Direct_to_Managed_type() {
+    public void direct_to_managed_type() {
         FactoryExpression<Employee> expr = Projections.bean(Employee.class, e.superiorId);
         Employee e = expr.newInstance(3);
         assertEquals(Integer.valueOf(3), e.getSuperiorId());
     }
 
     @Test
-    public void Direct_to_Custom_type() {
+    public void direct_to_custom_type() {
         FactoryExpression<Employee> expr = Projections.bean(Employee.class, e.firstname, e.lastname);
         Employee e = expr.newInstance("John","Smith");
         assertEquals("John", e.getFirstname());
@@ -42,14 +42,14 @@ public class QBeanTest {
     }
 
     @Test
-    public void Alias_to_Managed_type() {
+    public void alias_to_managed_type() {
         FactoryExpression<Employee> expr = Projections.bean(Employee.class, e.superiorId.as("id"));
         Employee e = expr.newInstance(3);
         assertEquals(3, e.getId().intValue());
     }
 
     @Test
-    public void Alias_to_Custom_type() {
+    public void alias_to_custom_type() {
         FactoryExpression<Employee> expr = Projections.bean(Employee.class, e.firstname.as("lastname"), e.lastname.as("firstname"));
         Employee e = expr.newInstance("John","Smith");
         assertEquals("Smith", e.getFirstname());

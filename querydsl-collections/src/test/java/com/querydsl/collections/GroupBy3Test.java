@@ -36,7 +36,7 @@ public class GroupBy3Test {
     }
 
     @Test
-    public void Nested_Expressions() {
+    public void nested_expressions() {
         QGroupBy3Test_RiskAnalysis riskAnalysis = QGroupBy3Test_RiskAnalysis.riskAnalysis;
         QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.assetThreat;
         QGroupBy3Test_Threat threat = QGroupBy3Test_Threat.threat;
@@ -68,7 +68,7 @@ public class GroupBy3Test {
     }
 
     @Test
-    public void Alias_Usage() {
+    public void alias_usage() {
         QGroupBy3Test_RiskAnalysis riskAnalysis = QGroupBy3Test_RiskAnalysis.riskAnalysis;
         QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.assetThreat;
         QGroupBy3Test_Threat threat = QGroupBy3Test_Threat.threat;

@@ -15,7 +15,7 @@ public class WithinGroupTest {
     }
 
     @Test
-    public void All() {
+    public void all() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
 

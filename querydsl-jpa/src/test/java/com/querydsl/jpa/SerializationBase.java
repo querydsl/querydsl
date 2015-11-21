@@ -60,7 +60,7 @@ public class SerializationBase implements JPATest {
     }
 
     @Test
-    public void Any_Serialized() throws Exception {
+    public void any_serialized() throws Exception {
         Predicate where = cat.kittens.any().name.eq("Ruth234");
         Predicate where2 = Serialization.serialize(where);
 
@@ -69,7 +69,7 @@ public class SerializationBase implements JPATest {
     }
 
     @Test
-    public void Any_Serialized2() throws Exception {
+    public void any_serialized2() throws Exception {
         Predicate where = cat.kittens.any().name.eq("Ruth234");
 
         File file = new File("target", "predicate.ser");

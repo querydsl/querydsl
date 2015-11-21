@@ -13,7 +13,7 @@ import com.querydsl.core.types.dsl.PathBuilder;
 public class OrderHelperTest {
 
     @Test
-    public void Order() {
+    public void order() {
         PathBuilder<Object> entity = new PathBuilder<Object>(Object.class, "project");
         List<String> order = Lists.newArrayList();
         order.add("customer.name");

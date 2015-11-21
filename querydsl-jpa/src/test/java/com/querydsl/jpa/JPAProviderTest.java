@@ -34,7 +34,7 @@ public class JPAProviderTest {
     }
 
     @Test
-    public void Hibernate() {
+    public void hibernate() {
         factory = Persistence.createEntityManagerFactory("h2");
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
@@ -42,7 +42,7 @@ public class JPAProviderTest {
     }
 
     @Test
-    public void Hibernate_For_Proxy() {
+    public void hibernate_for_proxy() {
         factory = Persistence.createEntityManagerFactory("h2");
         em = factory.createEntityManager();
         InvocationHandler handler = new InvocationHandler() {
@@ -59,7 +59,7 @@ public class JPAProviderTest {
     }
 
     @Test
-    public void EclipseLink() {
+    public void eclipseLink() {
         factory = Persistence.createEntityManagerFactory("h2-eclipselink");
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
@@ -68,7 +68,7 @@ public class JPAProviderTest {
     }
 
     @Test
-    public void EclipseLink_For_Proxy() {
+    public void eclipseLink_for_proxy() {
         factory = Persistence.createEntityManagerFactory("h2-eclipselink");
         em = factory.createEntityManager();
         InvocationHandler handler = new InvocationHandler() {
@@ -86,7 +86,7 @@ public class JPAProviderTest {
 
     @Test
     @Ignore // doesn't work on JDK 7
-    public void OpenJPA() {
+    public void openJPA() {
         factory = Persistence.createEntityManagerFactory("derby-openjpa");
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
@@ -96,7 +96,7 @@ public class JPAProviderTest {
 
     @Test
     @Ignore // temporarily ignored, since Batoo hangs on EntityManager creation
-    public void Batoo() {
+    public void batoo() {
         factory = Persistence.createEntityManagerFactory("h2-batoo");
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());

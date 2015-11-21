@@ -12,7 +12,7 @@ import com.querydsl.sql.SQLTemplates;
 public class SQLInsertClauseTest {
 
     @Test
-    public void GetSQL() {
+    public void getSQL() {
         QEmployee emp1 = new QEmployee("emp1");
         SQLInsertClause insert = new SQLInsertClause(null, SQLTemplates.DEFAULT, emp1);
         insert.set(emp1.id, 1);
@@ -23,7 +23,7 @@ public class SQLInsertClauseTest {
     }
 
     @Test
-    public void GetSQLWithPreservedColumnOrder() {
+    public void getSQLWithPreservedColumnOrder() {
         com.querydsl.sql.domain.QEmployee emp1 = new com.querydsl.sql.domain.QEmployee("emp1");
         SQLInsertClause insert = new SQLInsertClause(null, SQLTemplates.DEFAULT, emp1);
         insert.populate(emp1);

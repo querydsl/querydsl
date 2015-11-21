@@ -19,7 +19,7 @@ public class H2QueryTest {
     }
 
     @Test
-    public void Syntax() {
+    public void syntax() {
 //        SELECT TOP? [DISTINCT | All]? selectExpression
 //        FROM tableExpression+
         query.from(survey);

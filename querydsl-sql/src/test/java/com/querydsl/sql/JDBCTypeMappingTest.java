@@ -30,13 +30,13 @@ public class JDBCTypeMappingTest {
     private JDBCTypeMapping typeMapping = new JDBCTypeMapping();
 
     @Test
-    public void Get() {
+    public void get() {
         assertEquals(Float.class, typeMapping.get(Types.FLOAT,0,0));
         assertEquals(Float.class, typeMapping.get(Types.REAL,0,0));
     }
 
     @Test
-    public void StringTypes() {
+    public void stringTypes() {
         assertEquals(String.class, typeMapping.get(Types.CHAR,0,0));
         assertEquals(String.class, typeMapping.get(Types.NCHAR,0,0));
         assertEquals(String.class, typeMapping.get(Types.CLOB,0,0));
@@ -49,19 +49,19 @@ public class JDBCTypeMappingTest {
     }
 
     @Test
-    public void BlobTypes() {
+    public void blobTypes() {
         assertEquals(Blob.class, typeMapping.get(Types.BLOB,0,0));
     }
 
     @Test
-    public void BytesTypes() {
+    public void bytesTypes() {
         assertEquals(byte[].class, typeMapping.get(Types.BINARY,0,0));
         assertEquals(byte[].class, typeMapping.get(Types.VARBINARY,0,0));
         assertEquals(byte[].class, typeMapping.get(Types.LONGVARBINARY,0,0));
     }
 
     @Test
-    public void NumericTypes() {
+    public void numericTypes() {
 //        19,0       -> BigInteger
 //        10-18,0    -> Long
 //        5-9,0      -> Integer
@@ -86,7 +86,7 @@ public class JDBCTypeMappingTest {
 
     @Test
     @Category(ReportingOnly.class)
-    public void Max() {
+    public void max() {
         System.err.println("Byte: " + String.valueOf(Byte.MAX_VALUE).length());
         System.err.println("Short: " + String.valueOf(Short.MAX_VALUE).length());
         System.err.println("Integer: " + String.valueOf(Integer.MAX_VALUE).length());
@@ -94,20 +94,20 @@ public class JDBCTypeMappingTest {
     }
 
     @Test
-    public void NumericOverriden() {
+    public void numericOverriden() {
         typeMapping.registerNumeric(19, 0, BigInteger.class);
         assertEquals(typeMapping.get(Types.NUMERIC, 19, 0), BigInteger.class);
     }
 
     @Test
-    public void NumericOverriden2() {
+    public void numericOverriden2() {
         typeMapping.registerNumeric(19, 0, BigInteger.class);
         assertEquals(typeMapping.get(Types.INTEGER, 19, 0), BigInteger.class);
         assertEquals(typeMapping.get(Types.INTEGER, 18, 0), Integer.class);
     }
 
     @Test
-    public void NumericOverriden3() {
+    public void numericOverriden3() {
         typeMapping.registerNumeric(5, 2, BigDecimal.class);
         assertEquals(typeMapping.get(Types.DOUBLE, 5, 2), BigDecimal.class);
         assertEquals(typeMapping.get(Types.DOUBLE, 5, 1), Double.class);

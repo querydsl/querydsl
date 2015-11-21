@@ -7,12 +7,12 @@ import org.junit.Test;
 public class RooEntitiesTest {
 
     @Test
-    public void RooJpaEntity() {
+    public void rooJpaEntity() {
         assertNotNull(QRooEntities_MyEntity.myEntity);
     }
 
     @Test
-    public void RooJpaActiveRecord() {
+    public void rooJpaActiveRecord() {
         assertNotNull(QRooEntities_MyEntity2.myEntity2);
     }
 

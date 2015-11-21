@@ -34,17 +34,17 @@ public class EJBQLTest extends AbstractQueryTest {
     // mod()
 
     @Test
-    public void Trim() {
+    public void trim() {
         assertToString("trim(cat.name)", cat.name.trim());
     }
 
     @Test
-    public void Lower() {
+    public void lower() {
         assertToString("lower(cat.name)", cat.name.lower());
     }
 
     @Test
-    public void Upper() {
+    public void upper() {
         assertToString("upper(cat.name)", cat.name.upper());
     }
 

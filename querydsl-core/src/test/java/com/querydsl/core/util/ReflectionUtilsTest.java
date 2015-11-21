@@ -35,14 +35,14 @@ public class ReflectionUtilsTest {
     String property;
 
     @Test
-    public void GetAnnotatedElement() {
+    public void getAnnotatedElement() {
         AnnotatedElement annotatedElement = ReflectionUtils.getAnnotatedElement(ReflectionUtilsTest.class, "property", String.class);
         assertNotNull(annotatedElement.getAnnotation(Nullable.class));
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void GetImplementedInterfaces() {
+    public void getImplementedInterfaces() {
         Set<Class<?>> ifaces = ReflectionUtils.getImplementedInterfaces(SimpleExpression.class);
         assertEquals(new HashSet<Class<?>>(Arrays.asList(Serializable.class, Expression.class)), ifaces);
     }

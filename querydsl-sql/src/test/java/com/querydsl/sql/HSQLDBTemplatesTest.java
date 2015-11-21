@@ -27,7 +27,7 @@ public class HSQLDBTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // Evaluation from left to right. Parentheses group operations.
         // Multiplication and division take precedence over addition and subtraction.
         // AND takes precedence over OR.

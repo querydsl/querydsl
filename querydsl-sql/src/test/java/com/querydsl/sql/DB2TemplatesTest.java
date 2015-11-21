@@ -27,7 +27,7 @@ public class DB2TemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // Expressions within parentheses are evaluated first. When the order of evaluation is not
         // specified by parentheses, prefix operators are applied before multiplication and division,
         // and multiplication, division, and concatenation are applied before addition and subtraction.

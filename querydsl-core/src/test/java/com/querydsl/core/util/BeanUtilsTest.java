@@ -20,7 +20,7 @@ import org.junit.Test;
 public class BeanUtilsTest {
 
     @Test
-    public void Capitalize() {
+    public void capitalize() {
         assertEquals("X", BeanUtils.capitalize("x"));
         assertEquals("Prop", BeanUtils.capitalize("prop"));
         assertEquals("URL",  BeanUtils.capitalize("URL"));
@@ -29,7 +29,7 @@ public class BeanUtilsTest {
     }
 
     @Test
-    public void Uncapitalize() {
+    public void uncapitalize() {
         assertEquals("x",    BeanUtils.uncapitalize("X"));
         assertEquals("prop", BeanUtils.uncapitalize("Prop"));
         assertEquals("URL",  BeanUtils.uncapitalize("URL"));

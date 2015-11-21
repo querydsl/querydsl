@@ -64,14 +64,14 @@ public class ProjectionsTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Array() {
+    public void array() {
         FactoryExpression<String[]> expr = Projections.array(String[].class,
                 ExpressionUtils.path(String.class, "p1"), ExpressionUtils.path(String.class, "p2"));
         assertEquals(String[].class, expr.newInstance("1", "2").getClass());
     }
 
     @Test
-    public void BeanClassOfTExpressionOfQArray() {
+    public void beanClassOfTExpressionOfQArray() {
         PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class, "entity");
         QBean<Entity> beanProjection = Projections.bean(Entity.class,
                 entity.getNumber("cId", Integer.class),
@@ -81,7 +81,7 @@ public class ProjectionsTest {
     }
 
     @Test
-    public void Constructor() {
+    public void constructor() {
         Expression<Long> longVal = ConstantImpl.create(1L);
         Expression<String> stringVal = ConstantImpl.create("");
         assertEquals(ProjectionExample.class, Projections.constructor(ProjectionExample.class, longVal, stringVal)
@@ -89,14 +89,14 @@ public class ProjectionsTest {
     }
 
     @Test
-    public void Constructor_VarArgs() {
+    public void constructor_varArgs() {
         Expression<String> stringVal = ConstantImpl.create("");
         VarArgs instance = Projections.constructor(VarArgs.class, stringVal, stringVal).newInstance("X", "Y");
         assertArrayEquals(new String[]{"X", "Y"}, instance.args);
     }
 
     @Test
-    public void Constructor_VarArgs2() {
+    public void constructor_varArgs2() {
         Expression<String> stringVal = ConstantImpl.create("");
         VarArgs2 instance = Projections.constructor(VarArgs2.class, stringVal, stringVal, stringVal).newInstance("X", "Y", "Z");
         assertEquals("X", instance.arg);
@@ -104,7 +104,7 @@ public class ProjectionsTest {
     }
 
     @Test
-    public void Constructor_VarArgs3() {
+    public void constructor_varArgs3() {
         Constant<Long> longVal = ConstantImpl.create(1L);
         Constant<Character> charVal = ConstantImpl.create('\0');
         ProjectionExample instance = Projections
@@ -129,7 +129,7 @@ public class ProjectionsTest {
     }
 
     @Test
-    public void FieldsClassOfTExpressionOfQArray() {
+    public void fieldsClassOfTExpressionOfQArray() {
         PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class, "entity");
         QBean<Entity> beanProjection = Projections.fields(Entity.class,
                 entity.getNumber("cId", Integer.class),
@@ -139,7 +139,7 @@ public class ProjectionsTest {
     }
 
     @Test
-    public void Nested() {
+    public void nested() {
         StringPath str1 = Expressions.stringPath("str1");
         StringPath str2 = Expressions.stringPath("str2");
         StringPath str3 = Expressions.stringPath("str3");
@@ -161,7 +161,7 @@ public class ProjectionsTest {
     }
 
     @Test
-    public void NestedSkipNulls() {
+    public void nestedSkipNulls() {
         StringPath str1 = Expressions.stringPath("str1");
         StringPath str2 = Expressions.stringPath("str2");
         StringPath str3 = Expressions.stringPath("str3");
@@ -183,7 +183,7 @@ public class ProjectionsTest {
     }
 
     @Test
-    public void NestedSkipNulls2() {
+    public void nestedSkipNulls2() {
         StringPath str1 = Expressions.stringPath("str1");
         StringPath str2 = Expressions.stringPath("str2");
         StringPath str3 = Expressions.stringPath("str3");

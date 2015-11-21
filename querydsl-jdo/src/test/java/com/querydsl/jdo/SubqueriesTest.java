@@ -32,22 +32,22 @@ public class SubqueriesTest extends AbstractJDOTest {
     private QProduct other = new QProduct("other");
 
     @Test
-    public void List_Exists() {
+    public void list_exists() {
         query().from(product).where(query().from(other).select(other).exists()).select(product).fetch();
     }
 
     @Test
-    public void List_NotExists() {
+    public void list_notExists() {
         query().from(product).where(query().from(other).select(other).notExists()).select(product).fetch();
     }
 
     @Test
-    public void List_Contains() {
+    public void list_contains() {
         query().from(product).where(product.name.in(query().from(other).select(other.name))).select(product).fetch();
     }
 
     @Test
-    public void Gt_Subquery() {
+    public void gt_subquery() {
         double avg = query().from(product).select(product.price.avg()).fetchFirst();
         for (double price : query().from(product)
                 .where(product.price.gt(query().from(other).select(other.price.avg())))
@@ -57,7 +57,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Gt_Subquery_with_Condition() {
+    public void gt_subquery_with_condition() {
         for (double price : query().from(product)
                 .where(product.price.gt(query().from(other).where(other.name.eq("XXX")).select(other.price.avg())))
                 .select(product.price).fetch()) {
@@ -66,7 +66,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Eq_Subquery() {
+    public void eq_subquery() {
         double avg = query().from(product).select(product.price.avg()).fetchFirst();
         for (double price : query().from(product)
                 .where(product.price.eq(query().from(other).select(other.price.avg())))
@@ -77,7 +77,7 @@ public class SubqueriesTest extends AbstractJDOTest {
 
 
     @Test
-    public void In_Subquery() {
+    public void in_subquery() {
         for (double price : query().from(product)
                 .where(product.price.in(
                         query().from(other).where(other.name.eq("Some name")).select(other.price)))
@@ -87,7 +87,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Count() {
+    public void count() {
         for (double price : query().from(product)
                 .where(query().from(other).where(other.price.gt(product.price)).select(other.count()).gt(0L))
                 .select(product.price).fetch()) {
@@ -96,7 +96,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Exists() {
+    public void exists() {
         for (double price : query().from(product)
                 .where(query().from(other).where(other.price.gt(product.price)).exists())
                 .select(product.price).fetch()) {
@@ -105,7 +105,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Not_Exists() {
+    public void not_exists() {
         for (double price : query().from(product)
                 .where(query().from(other).where(other.price.gt(product.price)).notExists())
                 .select(product.price).fetch()) {

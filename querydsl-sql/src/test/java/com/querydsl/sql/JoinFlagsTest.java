@@ -47,7 +47,7 @@ public class JoinFlagsTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void JoinFlags_BeforeCondition() {
+    public void joinFlags_beforeCondition() {
         query.innerJoin(s2).on(s1.eq(s2));
         query.addJoinFlag(" a ", JoinFlag.Position.BEFORE_CONDITION);
 
@@ -58,7 +58,7 @@ public class JoinFlagsTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void JoinFlags_BeforeTarget() {
+    public void joinFlags_beforeTarget() {
         query.innerJoin(s3).on(s1.eq(s3));
         query.addJoinFlag(" b ", JoinFlag.Position.BEFORE_TARGET);
 
@@ -69,7 +69,7 @@ public class JoinFlagsTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void JoinFlags_End() {
+    public void joinFlags_end() {
         query.innerJoin(s4).on(s1.eq(s4));
         query.addJoinFlag(" c ", JoinFlag.Position.END);
 
@@ -80,7 +80,7 @@ public class JoinFlagsTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void JoinFlags_Override() {
+    public void joinFlags_override() {
         query.innerJoin(s5).on(s1.eq(s5));
         query.addJoinFlag(" d ", JoinFlag.Position.OVERRIDE);
 
@@ -90,7 +90,7 @@ public class JoinFlagsTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void JoinFlags_Start() {
+    public void joinFlags_start() {
         query.innerJoin(s6).on(s1.eq(s6));
         query.addJoinFlag(" e ", JoinFlag.Position.START);
 

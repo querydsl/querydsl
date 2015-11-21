@@ -15,7 +15,7 @@ import com.querydsl.sql.domain.QSurvey;
 public class RelationalPathTest {
 
     @Test
-    public void Path() throws ClassNotFoundException, IOException {
+    public void path() throws ClassNotFoundException, IOException {
         QSurvey survey = QSurvey.survey;
         QSurvey survey2 = serialize(survey);
         assertEquals(Arrays.asList(survey.all()), Arrays.asList(survey2.all()));
@@ -24,7 +24,7 @@ public class RelationalPathTest {
     }
 
     @Test
-    public void In_Tuple() throws ClassNotFoundException, IOException {
+    public void in_tuple() throws ClassNotFoundException, IOException {
         //(survey.id, survey.name)
         QSurvey survey = QSurvey.survey;
         QTuple tuple = Projections.tuple(survey.id, survey.name);

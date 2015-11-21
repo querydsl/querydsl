@@ -34,7 +34,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void General() {
+    public void general() {
         SimpleExpression<Object> expr = new CaseBuilder()
             .when(Expressions.TRUE).then(new Object())
             .otherwise(null);
@@ -42,7 +42,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void BooleanTyped() {
+    public void booleanTyped() {
         Customer c = alias(Customer.class, "customer");
         BooleanExpression cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then(true)
@@ -56,7 +56,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void BooleanTyped_Predicate() {
+    public void booleanTyped_predicate() {
         Customer c = alias(Customer.class, "customer");
         BooleanExpression cases = new CaseBuilder()
                 .when($(c.getAnnualSpending()).gt(20000)).then(false)
@@ -72,7 +72,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void EnumTyped() {
+    public void enumTyped() {
         Customer c = alias(Customer.class, "customer");
         EnumExpression<Gender> cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then(Gender.MALE)
@@ -86,7 +86,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void NumberTyped() {
+    public void numberTyped() {
         Customer c = alias(Customer.class, "customer");
         NumberExpression<Integer> cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then(1)
@@ -104,7 +104,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void StringTyped() {
+    public void stringTyped() {
 //        CASE
 //          WHEN c.annualSpending > 10000 THEN 'Premier'
 //          WHEN c.annualSpending >  5000 THEN 'Gold'

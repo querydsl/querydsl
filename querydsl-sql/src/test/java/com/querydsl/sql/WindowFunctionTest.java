@@ -15,7 +15,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Complex() {
+    public void complex() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
         Expression<?> wf = SQLExpressions.sum(path).over().partitionBy(path2).orderBy(path);
@@ -23,7 +23,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Complex_NullsFirst() {
+    public void complex_nullsFirst() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
         Expression<?> wf = SQLExpressions.sum(path).over().partitionBy(path2).orderBy(path.desc().nullsFirst());
@@ -31,7 +31,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void All() {
+    public void all() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
         assertEquals("avg(path)", toString(SQLExpressions.avg(path)));
@@ -68,7 +68,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Regr() {
+    public void regr() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
         assertEquals("regr_slope(path, path2)", toString(SQLExpressions.regrSlope(path, path2)));
@@ -83,7 +83,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Rows_Between() {
+    public void rows_between() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
@@ -97,7 +97,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Rows_UnboundedPreceding() {
+    public void rows_unboundedPreceding() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
 
@@ -106,7 +106,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Rows_CurrentRow() {
+    public void rows_currentRow() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
 
@@ -115,7 +115,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Rows_PrecedingRow() {
+    public void rows_precedingRow() {
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
@@ -127,7 +127,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Keep_First() {
+    public void keep_first() {
         //MIN(salary) KEEP (DENSE_RANK FIRST ORDER BY commission_pct) OVER (PARTITION BY department_id)
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");
@@ -141,7 +141,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void Keep_Last() {
+    public void keep_last() {
         //MIN(salary) KEEP (DENSE_RANK FIRST ORDER BY commission_pct) OVER (PARTITION BY department_id)
         NumberPath<Long> path = Expressions.numberPath(Long.class, "path");
         NumberPath<Long> path2 = Expressions.numberPath(Long.class, "path2");

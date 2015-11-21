@@ -40,7 +40,7 @@ public class EmbeddableSerializerTest {
     private final StringWriter writer = new StringWriter();
 
     @Test
-    public void Properties() throws IOException {
+    public void properties() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "b", new ClassType(TypeCategory.BOOLEAN, Boolean.class)));
@@ -59,7 +59,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void OriginalCategory() throws IOException {
+    public void originalCategory() throws IOException {
         Map<TypeCategory, String> categoryToSuperClass
                 = new EnumMap<TypeCategory, String>(TypeCategory.class);
         categoryToSuperClass.put(TypeCategory.COMPARABLE, "ComparablePath<Entity>");
@@ -84,7 +84,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Empty() throws IOException {
+    public void empty() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
@@ -94,7 +94,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void No_Package() throws IOException {
+    public void no_package() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
@@ -104,7 +104,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Correct_Superclass() throws IOException {
+    public void correct_superclass() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "java.util.Locale", "java.util", "Locale",false,false);
         EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
@@ -114,7 +114,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Primitive_Array() throws IOException {
+    public void primitive_array() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "bytes", new ClassType(byte[].class)));
@@ -126,7 +126,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Include() throws IOException {
+    public void include() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         entityType.addProperty(new Property(entityType, "b", new ClassType(TypeCategory.BOOLEAN, Boolean.class)));
@@ -150,7 +150,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void SuperType() throws IOException {
+    public void superType() throws IOException {
         EntityType superType = new EntityType(new SimpleType(TypeCategory.ENTITY, "Entity2", "", "Entity2",false,false));
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type, Collections.singleton(new Supertype(superType, superType)));
@@ -163,7 +163,7 @@ public class EmbeddableSerializerTest {
     }
 
     @Test
-    public void Delegates() throws IOException {
+    public void delegates() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         Delegate delegate = new Delegate(type, type, "test", Collections.<Parameter>emptyList(), Types.STRING);

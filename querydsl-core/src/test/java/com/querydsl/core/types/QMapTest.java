@@ -35,56 +35,56 @@ public class QMapTest {
     Concatenation concat = new Concatenation(str1, str2);
 
     @Test
-    public void TwoExpressions_getArgs() {
+    public void twoExpressions_getArgs() {
         assertEquals(Arrays.asList(str1, str2), new QMap(str1, str2).getArgs());
     }
 
     @Test
-    public void OneArray_getArgs() {
+    public void oneArray_getArgs() {
         assertEquals(Arrays.asList(str1, str2), new QMap(exprs1).getArgs());
     }
 
     @Test
-    public void TwoExpressionArrays_getArgs() {
+    public void twoExpressionArrays_getArgs() {
         assertEquals(Arrays.asList(str1, str2, str3, str4), new QMap(exprs1, exprs2).getArgs());
     }
 
     @Test
-    public void NestedProjection_getArgs() {
+    public void nestedProjection_getArgs() {
         assertEquals(Arrays.asList(str1, str2), FactoryExpressionUtils.wrap(new QMap(concat)).getArgs());
     }
 
     @Test
-    public void NestedProjection_getArgs2() {
+    public void nestedProjection_getArgs2() {
         assertEquals(Arrays.asList(str1, str2, str3), FactoryExpressionUtils.wrap(new QMap(concat, str3)).getArgs());
     }
 
     @Test
-    public void NestedProjection_newInstance() {
+    public void nestedProjection_newInstance() {
         QMap expr = new QMap(concat);
         assertEquals("1234", FactoryExpressionUtils.wrap(expr).newInstance("12", "34").get(concat));
     }
 
     @Test
-    public void NestedProjection_newInstance2() {
+    public void nestedProjection_newInstance2() {
         QMap expr = new QMap(str1, str2, concat);
         assertEquals("1234", FactoryExpressionUtils.wrap(expr).newInstance("1", "2", "12", "34").get(concat));
     }
 
     @Test
-    public void Tuple_Equals() {
+    public void tuple_equals() {
         QMap expr = new QMap(str1, str2);
         assertEquals(expr.newInstance("str1", "str2"), expr.newInstance("str1", "str2"));
     }
 
     @Test
-    public void Tuple_hashCode() {
+    public void tuple_hashCode() {
         QMap expr = new QMap(str1, str2);
         assertEquals(expr.newInstance("str1", "str2").hashCode(), expr.newInstance("str1", "str2").hashCode());
     }
 
     @Test
-    public void Null_Value() {
+    public void null_value() {
         QMap expr = new QMap(str1, str2);
         assertNotNull(expr.newInstance("str1", null));
     }

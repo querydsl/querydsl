@@ -75,7 +75,7 @@ public class AnyUsageTest {
     }
 
     @Test
-    public void WithQDealer() {
+    public void withQDealer() {
         List<Company> companies = new LinkedList<Company>();
         companies.add(new Company());
         QAnyUsageTest_Dealer qDealer = QAnyUsageTest_Dealer.dealer;
@@ -84,7 +84,7 @@ public class AnyUsageTest {
     }
 
     @Test
-    public void WithQDealerGroup() {
+    public void withQDealerGroup() {
         List<Company> companies = new LinkedList<Company>();
         companies.add(new Company());
         QAnyUsageTest_Dealer qDealer = QAnyUsageTest_DealerGroup.dealerGroup.dealers.any();

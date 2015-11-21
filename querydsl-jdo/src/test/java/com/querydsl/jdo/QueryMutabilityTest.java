@@ -26,7 +26,7 @@ import com.querydsl.jdo.test.domain.QProduct;
 public class QueryMutabilityTest extends AbstractJDOTest {
 
     @Test
-    public void QueryMutability() throws IOException, SecurityException,
+    public void queryMutability() throws IOException, SecurityException,
             IllegalArgumentException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException {
         QProduct product = QProduct.product;
@@ -35,7 +35,7 @@ public class QueryMutabilityTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Clone() {
+    public void clone_() {
         QProduct product = QProduct.product;
         JDOQuery<?> query = new JDOQuery<Void>().from(product).where(product.name.isNotNull());
         JDOQuery<?> query2 = query.clone(pm);

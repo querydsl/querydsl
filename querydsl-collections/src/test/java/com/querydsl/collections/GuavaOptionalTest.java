@@ -32,7 +32,7 @@ public class GuavaOptionalTest {
     }
 
     @Test
-    public void Test() {
+    public void test() {
         Collection<Cat> cats = Lists.newArrayList();
         cats.add(new Cat(Optional.<String>absent()));
         cats.add(new Cat(Optional.of("persian")));

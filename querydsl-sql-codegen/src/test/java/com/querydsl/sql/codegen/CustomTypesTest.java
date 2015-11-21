@@ -62,7 +62,7 @@ public class CustomTypesTest extends AbstractJDBCTest {
     }
 
     @Test
-    public void Export() throws SQLException, IOException {
+    public void export() throws SQLException, IOException {
         // create exporter
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
@@ -81,7 +81,7 @@ public class CustomTypesTest extends AbstractJDBCTest {
     }
 
     @Test
-    public void Insert_Query_Update() {
+    public void insert_query_update() {
         QPerson person = QPerson.person;
 
         // insert

@@ -51,14 +51,14 @@ public class EmbeddableInterfaceTest {
     }
 
     @Test
-    public void Type() {
+    public void type() {
         assertEquals(
                 QEmbeddableInterfaceTest_EmbeddableInterface.class,
                 QEmbeddableInterfaceTest_EntityClass.entityClass.children.any().getClass());
     }
 
     @Test
-    public void Properties() {
+    public void properties() {
         assertNotNull(QEmbeddableInterfaceTest_EmbeddableInterface.embeddableInterface.name);
         assertNotNull(QEmbeddableInterfaceTest_EmbeddableClass.embeddableClass.name);
     }

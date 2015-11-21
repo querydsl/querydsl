@@ -35,7 +35,7 @@ public class ExtendedNamingStrategyTest {
     }
 
     @Test
-    public void GetClassName() {
+    public void getClassName() {
         assertEquals("UserData", namingStrategy.getClassName("user_data"));
         assertEquals("U", namingStrategy.getClassName("u"));
         assertEquals("Us",namingStrategy.getClassName("us"));
@@ -44,7 +44,7 @@ public class ExtendedNamingStrategyTest {
     }
 
     @Test
-    public void GetPropertyName() {
+    public void getPropertyName() {
         assertEquals("whileCol", namingStrategy.getPropertyName("while", entityModel));
         assertEquals("name", namingStrategy.getPropertyName("name", entityModel));
         assertEquals("userId", namingStrategy.getPropertyName("user_id", entityModel));
@@ -55,12 +55,12 @@ public class ExtendedNamingStrategyTest {
     }
 
     @Test
-    public void GetPropertyName_For_Column_With_Spaces() {
+    public void getPropertyName_for_column_with_spaces() {
         assertEquals("userId", namingStrategy.getPropertyName("user id", entityModel));
     }
 
     @Test
-    public void GetPropertyNameForInverseForeignKey() {
+    public void getPropertyNameForInverseForeignKey() {
         assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
         // fk_order_rows
         assertEquals("rows", namingStrategy.getPropertyNameForInverseForeignKey("fk_order_rows", entityModel));
@@ -69,7 +69,7 @@ public class ExtendedNamingStrategyTest {
     }
 
     @Test
-    public void GetPropertyNameForForeignKey() {
+    public void getPropertyNameForForeignKey() {
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));
         // fk_order_rows
@@ -79,13 +79,13 @@ public class ExtendedNamingStrategyTest {
     }
 
     @Test
-    public void GetPropertyNameForPrimaryKey() {
+    public void getPropertyNameForPrimaryKey() {
         assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("pk_superior", entityModel));
         assertEquals("superiorPk", namingStrategy.getPropertyNameForPrimaryKey("PK_SUPERIOR", entityModel));
     }
 
     @Test
-    public void GetDefaultVariableName() {
+    public void getDefaultVariableName() {
         assertEquals("object", namingStrategy.getDefaultVariableName(entityModel));
     }
 

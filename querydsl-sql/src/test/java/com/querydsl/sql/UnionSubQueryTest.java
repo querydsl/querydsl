@@ -38,7 +38,7 @@ public class UnionSubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void In_Union() {
+    public void in_union() {
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         Expression<?> expr = intPath.in(union(
                 select(one),
@@ -53,7 +53,7 @@ public class UnionSubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_SubQuery() {
+    public void union_subQuery() {
         SimplePath<Integer> col1 = Expressions.path(Integer.class, "col1");
         Expression<?> union = union(
                 select(one.as(col1)),
@@ -71,7 +71,7 @@ public class UnionSubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void UnionAll_SubQuery() {
+    public void unionAll_subQuery() {
         SimplePath<Integer> col1 = Expressions.path(Integer.class,"col1");
         Expression<?> union = unionAll(
                 select(one.as(col1)),

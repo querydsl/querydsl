@@ -31,7 +31,7 @@ import com.querydsl.sql.types.*;
 public class ConfigurationTest {
 
     @Test
-    public void Various() {
+    public void various() {
         Configuration configuration = new Configuration(new H2Templates());
 //        configuration.setJavaType(Types.DATE, java.util.Date.class);
         configuration.register(new UtilDateType());
@@ -42,7 +42,7 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void Custom_Type() {
+    public void custom_type() {
         Configuration configuration = new Configuration(new H2Templates());
 //        configuration.setJavaType(Types.BLOB, InputStream.class);
         configuration.register(new InputStreamType());
@@ -50,7 +50,7 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void Set_Null() throws SQLException {
+    public void set_null() throws SQLException {
         Configuration configuration = new Configuration(new H2Templates());
 //        configuration.register(new UntypedNullType());
         configuration.register("SURVEY", "NAME",  new EncryptedString());
@@ -59,7 +59,7 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void Get_Schema() {
+    public void get_schema() {
         Configuration configuration = new Configuration(new H2Templates());
         configuration.registerSchemaOverride("public", "pub");
         configuration.registerTableOverride("employee", "emp");
@@ -74,14 +74,14 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void NumericOverriden() {
+    public void numericOverriden() {
         Configuration configuration = new Configuration(new H2Templates());
         configuration.registerNumeric(19, 0, BigInteger.class);
         assertEquals(configuration.getJavaType(Types.NUMERIC, "", 19, 0, "", ""), BigInteger.class);
     }
 
     @Test
-    public void NumericOverriden2() {
+    public void numericOverriden2() {
         Configuration configuration = new Configuration(new H2Templates());
         configuration.registerNumeric(18, 19, 0, 0, BigInteger.class);
         assertEquals(configuration.getJavaType(Types.NUMERIC, "", 18, 0, "", ""), BigInteger.class);

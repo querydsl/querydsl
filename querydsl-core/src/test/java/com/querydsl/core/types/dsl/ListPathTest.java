@@ -27,7 +27,7 @@ public class ListPathTest {
             PathMetadataFactory.forVariable("stringPath"));
 
     @Test
-    public void ToString() {
+    public void toString_() {
         assertEquals("stringPath", stringPath.toString());
         assertEquals("any(stringPath)", stringPath.any().toString());
         assertEquals("eqIc(stringPath.get(0),X)", stringPath.get(0).equalsIgnoreCase("X").toString());
@@ -36,12 +36,12 @@ public class ListPathTest {
     }
 
     @Test
-    public void GetElementType() {
+    public void getElementType() {
         assertEquals(String.class, stringPath.getElementType());
     }
 
     @Test
-    public void GetParameter() {
+    public void getParameter() {
         assertEquals(String.class, stringPath.getParameter(0));
     }
 

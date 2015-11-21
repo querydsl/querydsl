@@ -46,7 +46,7 @@ public class JacocoTest {
     }
 
     @Test
-    public void WithSimpleClass() {
+    public void withSimpleClass() {
         List<CloneableKlasse> vos = new ArrayList<CloneableKlasse>();
         for (int i = 0; i < 5; i++) {
             CloneableKlasse vo = new CloneableKlasse();

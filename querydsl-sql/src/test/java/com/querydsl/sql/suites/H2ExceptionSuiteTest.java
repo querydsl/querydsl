@@ -36,7 +36,7 @@ public class H2ExceptionSuiteTest extends AbstractBaseTest {
     }
 
     @Test
-    public void SQLExceptionCreationTranslated() {
+    public void sQLExceptionCreationTranslated() {
         SQLException e1 = new SQLException("Exception #1", "42001", 181);
         SQLException e2 = new SQLException("Exception #2", "HY000", 1030);
         e1.setNextException(e2);
@@ -47,7 +47,7 @@ public class H2ExceptionSuiteTest extends AbstractBaseTest {
     }
 
     @Test
-    public void UpdateBatchFailed() {
+    public void updateBatchFailed() {
         execute(insert(survey).columns(survey.name, survey.name2)
                 .values("New Survey", "New Survey"));
         Exception result = null;

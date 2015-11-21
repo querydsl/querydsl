@@ -57,7 +57,7 @@ public class QuerydslConfig2Test {
     }
 
     @Test(expected = NoSuchFieldException.class)
-    public void Create_Default_Variable() throws SecurityException, NoSuchFieldException {
+    public void create_default_variable() throws SecurityException, NoSuchFieldException {
         QQuerydslConfig2Test_Entity2.class.getField("entity2");
     }
 }

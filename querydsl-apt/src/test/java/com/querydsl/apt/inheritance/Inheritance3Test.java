@@ -59,27 +59,27 @@ public class Inheritance3Test extends AbstractTest {
     }
 
     @Test
-    public void GenericSupertype() throws IllegalAccessException, NoSuchFieldException {
+    public void genericSupertype() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance3Test_GenericSupertype.class, QInheritance3Test_GenericSupertype.genericSupertype);
         match(SimplePath.class, "field");
         matchType(Object.class, "field");
     }
 
     @Test
-    public void GenericSupertypeC() throws IllegalAccessException, NoSuchFieldException {
+    public void genericSupertypeC() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance3Test_GenericSupertypeC.class, QInheritance3Test_GenericSupertypeC.genericSupertypeC);
         match(SimplePath.class, "field");
         matchType(Comparable.class, "field");
     }
 
     @Test
-    public void GenericSupertypeS() throws IllegalAccessException, NoSuchFieldException {
+    public void genericSupertypeS() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance3Test_GenericSupertypeS.class, QInheritance3Test_GenericSupertypeS.genericSupertypeS);
         match(StringPath.class, "field");
     }
 
     @Test
-    public void GenericSupertypeS2() throws IllegalAccessException, NoSuchFieldException {
+    public void genericSupertypeS2() throws IllegalAccessException, NoSuchFieldException {
         start(QInheritance3Test_GenericSupertypeS2.class, QInheritance3Test_GenericSupertypeS2.genericSupertypeS2);
         match(StringPath.class, "field");
     }

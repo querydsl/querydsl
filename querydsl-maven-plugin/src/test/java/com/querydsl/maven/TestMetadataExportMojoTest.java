@@ -28,7 +28,7 @@ public class TestMetadataExportMojoTest {
     private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
 
     @Test
-    public void Execute() throws Exception {
+    public void execute() throws Exception {
         MavenProject project = new MavenProject();
         TestMetadataExportMojo mojo = new TestMetadataExportMojo();
         mojo.setProject(project);

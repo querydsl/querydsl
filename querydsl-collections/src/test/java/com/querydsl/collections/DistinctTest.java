@@ -31,7 +31,7 @@ public class DistinctTest extends AbstractQueryTest {
     private List<Integer> list2 = Arrays.asList(2, 2, 3, 3, 3, 4, 4, 4, 4, 4);
 
     @Test
-    public void SingleSource() {
+    public void singleSource() {
         assertEquals(list1, CollQueryFactory.from(intVar1, list1).fetch());
         assertEquals(Arrays.asList(1, 2, 3, 4), CollQueryFactory.from(intVar1, list1).distinct().fetch());
         assertEquals(Arrays.asList(2, 3, 4), CollQueryFactory.from(intVar2, list2).distinct().fetch());
@@ -40,7 +40,7 @@ public class DistinctTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BothSources() {
+    public void bothSources() {
         assertEquals(100, CollQueryFactory.from(intVar1, list1).from(intVar2, list2).select(intVar1, intVar2).fetch().size());
         assertEquals(12, CollQueryFactory.from(intVar1, list1).from(intVar2, list2).distinct().select(intVar1, intVar2).fetch().size());
 
@@ -48,7 +48,7 @@ public class DistinctTest extends AbstractQueryTest {
     }
 
     @Test
-    public void CountDistinct() {
+    public void countDistinct() {
         assertEquals(10, CollQueryFactory.from(intVar1, list1).fetchCount());
         assertEquals(4, CollQueryFactory.from(intVar1, list1).distinct().fetchCount());
         assertEquals(3, CollQueryFactory.from(intVar2, list2).distinct().fetchCount());
@@ -57,7 +57,7 @@ public class DistinctTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Null() {
+    public void null_() {
         assertEquals(Arrays.asList(null, 1),
             CollQueryFactory.from(intVar1, Arrays.asList(null, 1)).distinct().fetch());
     }

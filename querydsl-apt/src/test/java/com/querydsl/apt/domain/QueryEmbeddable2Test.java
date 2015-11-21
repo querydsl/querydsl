@@ -45,7 +45,7 @@ public class QueryEmbeddable2Test {
     }
 
     @Test
-    public void User_Complex_a() {
+    public void user_complex_a() {
         assertNotNull(QQueryEmbeddable2Test_User.user.complex.a);
     }
 

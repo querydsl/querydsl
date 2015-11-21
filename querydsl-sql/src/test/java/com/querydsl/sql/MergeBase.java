@@ -52,7 +52,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({H2, CUBRID, SQLSERVER})
-    public void Merge_With_Keys() throws SQLException {
+    public void merge_with_keys() throws SQLException {
         ResultSet rs = merge(survey).keys(survey.id)
                 .set(survey.id, 7)
                 .set(survey.name, "Hello World").executeWithKeys();
@@ -63,7 +63,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(H2)
-    public void Merge_with_Keys_and_SubQuery() {
+    public void merge_with_keys_and_subQuery() {
         assertEquals(1, insert(survey).set(survey.id, 6).set(survey.name, "H").execute());
 
         // keys + subquery
@@ -74,14 +74,14 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(H2)
-    public void Merge_with_Keys_and_Values() {
+    public void merge_with_keys_and_values() {
         // NOTE : doesn't work with composite merge implementation
         // keys + values
         assertEquals(1, merge(survey).keys(survey.id).values(5, "Hello World", "Hello").execute());
     }
 
     @Test
-    public void Merge_with_Keys_Columns_and_Values() {
+    public void merge_with_keys_columns_and_values() {
         // keys + columns + values
         assertEquals(1, merge(survey).keys(survey.id)
             .set(survey.id, 5)
@@ -89,7 +89,7 @@ public class MergeBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Merge_with_Keys_Columns_and_Values_using_null() {
+    public void merge_with_keys_columns_and_values_using_null() {
         // keys + columns + values
         assertEquals(1, merge(survey).keys(survey.id)
             .set(survey.id, 5)
@@ -98,7 +98,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, DB2, DERBY, POSTGRESQL, SQLSERVER, TERADATA})
-    public void Merge_With_Keys_Null_Id() throws SQLException {
+    public void merge_with_keys_Null_Id() throws SQLException {
         ResultSet rs = merge(survey).keys(survey.id)
                 .setNull(survey.id)
                 .set(survey.name, "Hello World").executeWithKeys();
@@ -109,7 +109,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({H2, CUBRID, SQLSERVER})
-    public void Merge_With_Keys_Projected() throws SQLException {
+    public void merge_with_keys_Projected() throws SQLException {
         assertNotNull(merge(survey).keys(survey.id)
                 .set(survey.id, 8)
                 .set(survey.name, "Hello you").executeWithKey(survey.id));
@@ -117,7 +117,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({H2, CUBRID, SQLSERVER})
-    public void Merge_With_Keys_Projected2() throws SQLException {
+    public void merge_with_keys_Projected2() throws SQLException {
         Path<Object> idPath = ExpressionUtils.path(Object.class, "id");
         Object id = merge(survey).keys(survey.id)
                 .set(survey.id, 9)
@@ -127,7 +127,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(H2)
-    public void MergeBatch() {
+    public void mergeBatch() {
         SQLMergeClause merge = merge(survey)
             .keys(survey.id)
             .set(survey.id, 5)
@@ -148,7 +148,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(H2)
-    public void MergeBatch_Templates() {
+    public void mergeBatch_templates() {
         SQLMergeClause merge = merge(survey)
             .keys(survey.id)
             .set(survey.id, 5)
@@ -170,7 +170,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(H2)
-    public void MergeBatch_with_subquery() {
+    public void mergeBatch_with_subquery() {
         SQLMergeClause merge = merge(survey)
             .keys(survey.id)
             .columns(survey.id, survey.name)
@@ -188,7 +188,7 @@ public class MergeBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(H2)
-    public void Merge_With_TemplateExpression_In_Batch() {
+    public void merge_with_templateExpression_in_batch() {
         SQLMergeClause merge = merge(survey)
                 .keys(survey.id)
                 .set(survey.id, 5)

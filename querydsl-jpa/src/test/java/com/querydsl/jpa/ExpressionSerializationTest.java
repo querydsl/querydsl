@@ -14,7 +14,7 @@ import com.querydsl.jpa.domain.QCat;
 public class ExpressionSerializationTest {
 
     @Test
-    public void Serialize() throws Exception {
+    public void serialize1() throws Exception {
         Expression<?> expr = QCat.cat.name.eq("test");
         Expression<?> expr2 = serialize(expr);
 
@@ -23,7 +23,7 @@ public class ExpressionSerializationTest {
     }
 
     @Test
-    public void Query() throws ClassNotFoundException, IOException {
+    public void query() throws ClassNotFoundException, IOException {
         selectFrom(QCat.cat).where(serialize(QCat.cat.name.eq("test")));
     }
 

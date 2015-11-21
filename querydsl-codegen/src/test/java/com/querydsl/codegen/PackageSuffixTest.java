@@ -36,7 +36,7 @@ public class PackageSuffixTest {
     private final StringWriter writer = new StringWriter();
 
     @Test
-    public void Correct_Imports() throws IOException {
+    public void correct_imports() throws IOException {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "test.Entity", "test", "Entity",false,false);
         EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));

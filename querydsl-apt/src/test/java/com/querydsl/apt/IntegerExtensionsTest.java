@@ -17,7 +17,7 @@ public class IntegerExtensionsTest extends AbstractProcessorTest {
     private static final String packagePath = "src/test/apt/com/querydsl/";
 
     @Test
-    public void Process() throws IOException {
+    public void process() throws IOException {
         List<String> sources = Arrays.asList(
                 new File(packagePath, "IntegerExtensions.java").getPath(),
                 new File(packagePath, "ExampleEntity2.java").getPath());

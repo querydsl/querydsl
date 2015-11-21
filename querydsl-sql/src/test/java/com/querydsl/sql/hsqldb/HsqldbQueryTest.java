@@ -19,7 +19,7 @@ public class HsqldbQueryTest {
     }
 
     @Test
-    public void Syntax() {
+    public void syntax() {
 //        SELECT [{LIMIT <offset> <limit> | TOP <limit>}[2]][ALL | DISTINCT]
 //        { selectExpression | table.* | * } [, ...]
 //        [INTO [CACHED | TEMP  | TEXT][2] newTable]

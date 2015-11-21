@@ -27,7 +27,7 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override
     @Test
-    public void NoFrom() {
+    public void noFrom() {
         query.getMetadata().setProjection(Expressions.ONE);
         assertEquals("select 1", query.toString());
     }
@@ -40,7 +40,7 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest {
     @SuppressWarnings("unchecked")
     @Test
     @Override
-    public void Union() {
+    public void union() {
         NumberExpression<Integer> one = Expressions.ONE;
         NumberExpression<Integer> two = Expressions.TWO;
         NumberExpression<Integer> three = Expressions.THREE;
@@ -58,14 +58,14 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Limit() {
+    public void limit() {
         query.from(survey1).limit(5);
         query.getMetadata().setProjection(survey1.id);
         assertEquals("select top (?) survey1.ID from SURVEY survey1", query.toString());
     }
 
     @Test
-    public void Modifiers() {
+    public void modifiers() {
         query.from(survey1).limit(5).offset(3);
         query.getMetadata().setProjection(survey1.id);
         assertEquals("select * from (" +
@@ -74,13 +74,13 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void NextVal() {
+    public void nextVal() {
         Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new SQLServerTemplates())).handle(nextval).toString());
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // 1  ~ (Bitwise NOT)
         // 2  (Multiply), / (Division), % (Modulo)
         int p2 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);

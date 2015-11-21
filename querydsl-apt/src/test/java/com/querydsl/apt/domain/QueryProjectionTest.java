@@ -63,7 +63,7 @@ public class QueryProjectionTest {
     }
 
     @Test
-    public void Entity_Case() {
+    public void entity_case() {
         NumberExpression<Long> longExpr = Expressions.numberPath(Long.class, "x");
         StringExpression stringExpr = Expressions.stringPath("x");
 
@@ -116,7 +116,7 @@ public class QueryProjectionTest {
     }
 
     @Test
-    public void Dto_Case() throws SecurityException, NoSuchMethodException {
+    public void dto_case() throws SecurityException, NoSuchMethodException {
         NumberExpression<Long> longExpr = Expressions.numberPath(Long.class, "x");
         StringExpression stringExpr = Expressions.stringPath("x");
 

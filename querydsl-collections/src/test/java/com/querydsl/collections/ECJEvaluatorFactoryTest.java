@@ -7,7 +7,7 @@ import com.mysema.codegen.ECJEvaluatorFactory;
 public class ECJEvaluatorFactoryTest extends AbstractQueryTest {
 
     @Test
-    public void Evaluator_Factory() {
+    public void evaluator_factory() {
         DefaultEvaluatorFactory evaluatorFactory = new DefaultEvaluatorFactory(
                 CollQueryTemplates.DEFAULT,
                 new ECJEvaluatorFactory(getClass().getClassLoader()));

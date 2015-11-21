@@ -34,37 +34,37 @@ public class JPQLQueryTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void InnerJoinPEntityOfPPEntityOfP() {
+    public void innerJoinPEntityOfPPEntityOfP() {
         query.innerJoin(cat.mate, cat.mate);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void InnerJoinPathOfQextendsCollectionOfPPathOfP() {
+    public void innerJoinPathOfQextendsCollectionOfPPathOfP() {
         query.innerJoin(cat.kittens, cat.mate);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void JoinPEntityOfPPEntityOfP() {
+    public void joinPEntityOfPPEntityOfP() {
         query.join(cat.mate, cat.mate);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void JoinPathOfQextendsCollectionOfPPathOfP() {
+    public void joinPathOfQextendsCollectionOfPPathOfP() {
         query.join(cat.kittens, cat.mate);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void LeftJoinPEntityOfPPEntityOfP() {
+    public void leftJoinPEntityOfPPEntityOfP() {
         query.leftJoin(cat.mate, cat.mate);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void LeftJoinPathOfQextendsCollectionOfPPathOfP() {
+    public void leftJoinPathOfQextendsCollectionOfPPathOfP() {
         query.leftJoin(cat.kittens, cat.mate);
     }
 
     @Test
-    public void ToString() {
+    public void toString_() {
         assertEquals("", new HibernateQuery<Void>().toString());
         assertEquals("", new JPAQuery<Void>().toString());
         assertEquals("select cat", new HibernateQuery<Void>().select(cat).toString());

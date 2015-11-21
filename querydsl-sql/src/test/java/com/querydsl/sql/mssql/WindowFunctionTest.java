@@ -38,14 +38,14 @@ public class WindowFunctionTest {
 //    ROW_NUMBER() OVER (PARTITION BY PostalCode ORDER BY SalesYTD DESC)
 
     @Test
-    public void Mutable() {
+    public void mutable() {
         WindowFunction<Long> rn = rowNumber().over().orderBy(employee.firstname);
         assertEquals("row_number() over (order by e.FIRSTNAME asc)", toString(rn));
         assertEquals("row_number() over (order by e.FIRSTNAME asc, e.LASTNAME asc)", toString(rn.orderBy(employee.lastname)));
     }
 
     @Test
-    public void OrderBy() {
+    public void orderBy() {
         assertEquals("row_number() over (order by e.FIRSTNAME asc)",
             toString(rowNumber().over().orderBy(employee.firstname.asc())));
 
@@ -60,7 +60,7 @@ public class WindowFunctionTest {
     }
 
     @Test
-    public void PartitionBy() {
+    public void partitionBy() {
         assertEquals("row_number() over (partition by e.LASTNAME order by e.FIRSTNAME asc)",
             toString(rowNumber().over().partitionBy(employee.lastname).orderBy(employee.firstname.asc())));
 

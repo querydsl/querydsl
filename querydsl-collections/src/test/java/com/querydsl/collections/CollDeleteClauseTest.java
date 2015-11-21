@@ -24,7 +24,7 @@ import org.junit.Test;
 public class CollDeleteClauseTest {
 
     @Test
-    public void Execute() {
+    public void execute() {
         QCat cat = QCat.cat;
         List<Cat> cats = new ArrayList<Cat>(Arrays.asList(new Cat("Ann"), new Cat("Bob"), new Cat("John"), new Cat("Carl")));
 

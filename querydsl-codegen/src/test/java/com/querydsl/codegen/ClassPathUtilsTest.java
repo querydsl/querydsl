@@ -25,14 +25,14 @@ import com.SomeClass;
 public class ClassPathUtilsTest {
 
     @Test
-    public void ScanPackage() throws IOException {
+    public void scanPackage() throws IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Set<Class<?>> classes = ClassPathUtils.scanPackage(classLoader, SomeClass.class.getPackage());
         assertFalse(classes.isEmpty());
     }
 
     @Test
-    public void ScanPackage_Check_Initialized() throws IOException {
+    public void scanPackage_check_initialized() throws IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Set<Class<?>> classes = ClassPathUtils.scanPackage(classLoader, getClass().getPackage());
         assertFalse(classes.isEmpty());
@@ -40,7 +40,7 @@ public class ClassPathUtilsTest {
     }
 
     @Test
-    public void SafeClassForName() {
+    public void safeClassForName() {
         assertNull(safeForName("com.sun.nio.file.ExtendedOpenOption"));
         assertNotNull(safeForName("com.suntanning.ShouldBeLoaded"));
         assertNotNull(safeForName("com.applejuice.ShouldBeLoaded"));

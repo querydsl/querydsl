@@ -13,7 +13,7 @@ public class QueryMixinPerformanceTest {
     public static final int iterations = 2000000;
 
     @Test
-    public void Normal() { // 1791
+    public void normal() { // 1791
         EntityPath<DummyEntity> entity = new EntityPathBase<DummyEntity>(DummyEntity.class, "entity");
         EntityPathBase<DummyEntity> other = new EntityPathBase<DummyEntity>(DummyEntity.class,
                 PathMetadataFactory.forProperty(entity, "other"));
@@ -29,7 +29,7 @@ public class QueryMixinPerformanceTest {
     }
 
     @Test
-    public void Array_Arguments() { // 2260
+    public void array_arguments() { // 2260
         EntityPath<DummyEntity> entity = new EntityPathBase<DummyEntity>(DummyEntity.class, "entity");
         EntityPath[] entities = new EntityPath[]{entity};
         EntityPathBase<DummyEntity> other = new EntityPathBase<DummyEntity>(DummyEntity.class,

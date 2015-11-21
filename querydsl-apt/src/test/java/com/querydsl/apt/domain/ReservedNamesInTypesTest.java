@@ -20,7 +20,7 @@ import org.junit.Test;
 public class ReservedNamesInTypesTest {
 
     @Test
-    public void Correctly_Escaped() {
+    public void correctly_escaped() {
         assertNotNull(QPublic.public$);
         assertNotNull(QPrivate.private$);
     }

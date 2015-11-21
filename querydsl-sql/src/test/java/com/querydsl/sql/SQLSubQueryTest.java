@@ -33,7 +33,7 @@ public class SQLSubQueryTest {
     private static final QEmployee employee = QEmployee.employee;
 
     @Test(expected = IllegalArgumentException.class)
-    public void UnknownOperator() {
+    public void unknownOperator() {
         Operator op = new Operator() {
             public String name() {
                 return "unknownfn";
@@ -52,7 +52,7 @@ public class SQLSubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void List() {
+    public void list() {
         SubQueryExpression<?> subQuery = select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
         List<? extends Expression<?>> exprs = ((FactoryExpression) subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
@@ -61,7 +61,7 @@ public class SQLSubQueryTest {
     }
 
     @Test
-    public void List_Entity() {
+    public void list_entity() {
         QEmployee employee2 = new QEmployee("employee2");
         Expression<?> expr = select(employee, employee2.id).from(employee)
              .innerJoin(employee.superiorIdKey, employee2);
@@ -76,14 +76,14 @@ public class SQLSubQueryTest {
     }
 
     @Test
-    public void In() {
+    public void in() {
         SubQueryExpression<Integer> ints = select(employee.id).from(employee);
         QEmployee.employee.id.in(ints);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void In_Union() {
+    public void in_union() {
         SubQueryExpression<Integer> ints1 = select(employee.id).from(employee);
         SubQueryExpression<Integer> ints2 = select(employee.id).from(employee);
         QEmployee.employee.id.in(union(ints1, ints2));
@@ -91,7 +91,7 @@ public class SQLSubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void In_Union2() {
+    public void in_union2() {
         SubQueryExpression<Integer> ints1 = select(employee.id).from(employee);
         SubQueryExpression<Integer> ints2 = select(employee.id).from(employee);
         QEmployee.employee.id.in(union(ints1, ints2));
@@ -99,7 +99,7 @@ public class SQLSubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Unique() {
+    public void unique() {
         SubQueryExpression<?> subQuery = select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
         List<? extends Expression<?>> exprs = ((FactoryExpression) subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
@@ -108,7 +108,7 @@ public class SQLSubQueryTest {
     }
 
     @Test
-    public void Complex() {
+    public void complex() {
         // related to #584795
         QSurvey survey = new QSurvey("survey");
         QEmployee emp1 = new QEmployee("emp1");
@@ -123,7 +123,7 @@ public class SQLSubQueryTest {
     }
 
     @Test
-    public void Validate() {
+    public void validate() {
         NumberPath<Long> operatorTotalPermits = Expressions.numberPath(Long.class, "operator_total_permits");
         QSurvey survey = new QSurvey("survey");
 
@@ -146,7 +146,7 @@ public class SQLSubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union() {
+    public void union1() {
         QSurvey survey = QSurvey.survey;
         SubQueryExpression<Integer> q1 = select(survey.id).from(survey);
         SubQueryExpression<Integer> q2 = select(survey.id).from(survey);
@@ -156,7 +156,7 @@ public class SQLSubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_With() {
+    public void union1_with() {
         QSurvey survey1 = new QSurvey("survey1");
         QSurvey survey2 = new QSurvey("survey2");
         QSurvey survey3 = new QSurvey("survey3");

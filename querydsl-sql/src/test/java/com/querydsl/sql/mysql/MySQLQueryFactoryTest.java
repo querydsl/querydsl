@@ -44,55 +44,55 @@ public class MySQLQueryFactoryTest {
     }
 
     @Test
-    public void Query() {
+    public void query() {
         assertNotNull(queryFactory.query());
     }
 
     @Test
-    public void From() {
+    public void from() {
         assertNotNull(queryFactory.from(QSurvey.survey));
     }
 
     @Test
-    public void Delete() {
+    public void delete() {
         assertNotNull(queryFactory.delete(QSurvey.survey));
     }
 
     @Test
-    public void Insert() {
+    public void insert() {
         assertNotNull(queryFactory.insert(QSurvey.survey));
     }
 
     @Test
-    public void InsertIgnore() {
+    public void insertIgnore() {
         SQLInsertClause clause = queryFactory.insertIgnore(QSurvey.survey);
         assertEquals("insert ignore into SURVEY\nvalues ()", clause.toString());
     }
 
     @Test
-    public void InsertOnDuplicateKeyUpdate() {
+    public void insertOnDuplicateKeyUpdate() {
         SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey, "c = c+1");
         assertEquals("insert into SURVEY\nvalues () on duplicate key update c = c+1", clause.toString());
     }
 
     @Test
-    public void InsertOnDuplicateKeyUpdate2() {
+    public void insertOnDuplicateKeyUpdate2() {
         SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey, QSurvey.survey.id.eq(2));
         assertEquals("insert into SURVEY\nvalues () on duplicate key update SURVEY.ID = ?", clause.toString());
     }
 
     @Test
-    public void Replace() {
+    public void replace() {
         assertNotNull(queryFactory.replace(QSurvey.survey));
     }
 
     @Test
-    public void Update() {
+    public void update() {
         assertNotNull(queryFactory.update(QSurvey.survey));
     }
 
     @Test
-    public void Merge() {
+    public void merge() {
         assertNotNull(queryFactory.merge(QSurvey.survey));
     }
 

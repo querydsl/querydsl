@@ -32,7 +32,7 @@ public class QTupleTest {
     private QTuple tupleExpression = Projections.tuple(first, second, third);
 
     @Test
-    public void NewInstanceObjectArray() {
+    public void newInstanceObjectArray() {
         Tuple tuple = tupleExpression.newInstance("1", 42, true);
         assertEquals(3, tuple.size());
         assertEquals("1", tuple.get(0, String.class));

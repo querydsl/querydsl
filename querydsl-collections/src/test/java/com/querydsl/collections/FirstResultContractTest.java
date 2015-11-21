@@ -20,7 +20,7 @@ import org.junit.Test;
 public class FirstResultContractTest extends AbstractQueryTest {
 
     @Test
-    public void SingleResult() {
+    public void singleResult() {
         assertNotNull(CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).fetchFirst());
     }
 

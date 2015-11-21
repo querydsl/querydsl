@@ -23,7 +23,7 @@ import org.junit.Test;
 public class CollUpdateClauseTest {
 
     @Test
-    public void Execute() {
+    public void execute() {
         QCat cat = QCat.cat;
         List<Cat> cats = Arrays.asList(new Cat("Ann"), new Cat("Bob"), new Cat("John"), new Cat("Carl"));
 

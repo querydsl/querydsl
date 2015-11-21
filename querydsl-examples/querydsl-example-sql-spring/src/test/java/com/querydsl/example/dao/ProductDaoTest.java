@@ -17,24 +17,24 @@ public class ProductDaoTest extends AbstractDaoTest {
     @Resource ProductDao productDao;
 
     @Test
-    public void FindAll() {
+    public void findAll() {
         List<Product> products = productDao.findAll();
         assertFalse(products.isEmpty());
     }
 
     @Test
-    public void FindById() {
+    public void findById() {
         assertNotNull(productDao.findById(1));
     }
 
     @Test
-    public void Update() {
+    public void update() {
         Product product = productDao.findById(1);
         productDao.save(product);
     }
 
     @Test
-    public void Delete() {
+    public void delete() {
         Product product = new Product();
         product.setSupplier(supplierDao.findById(1));
         product.setName("ProductX");
