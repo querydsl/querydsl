@@ -324,7 +324,7 @@ public class EntitySerializer implements Serializer {
     }
 
     protected void introDefaultInstance(CodeWriter writer, EntityType model, String defaultName) throws IOException {
-        String simpleName = !defaultName.isEmpty() ? defaultName : model.getUncapSimpleName();
+        String simpleName = !defaultName.isEmpty() ? defaultName : model.getModifiedSimpleName();
         Type queryType = typeMappings.getPathType(model, model, true);
         String alias = simpleName;
         if (keywords.contains(simpleName.toUpperCase())) {
