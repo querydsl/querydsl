@@ -756,7 +756,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void GetResultSet() throws IOException, SQLException {
-        ResultSet results = query().from(survey).getResults(survey.id, survey.name);
+        ResultSet results = query().select(survey.id, survey.name).from(survey).getResults();
         while (results.next()) {
             assertNotNull(results.getObject(1));
             assertNotNull(results.getObject(2));

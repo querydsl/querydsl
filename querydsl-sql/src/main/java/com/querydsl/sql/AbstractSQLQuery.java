@@ -247,14 +247,27 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     /**
-     * Get the results as an JDBC result set
+     * Get the results as a JDBC ResultSet
      *
      * @param exprs the expression arguments to retrieve
      * @return results as ResultSet
+     * @deprecated Use @{code select(..)} to define the projection and {@code getResults()} to obtain
+     *             the result set
      */
+    @Deprecated
     public ResultSet getResults(Expression<?>... exprs) {
-        queryMixin.setProjection(exprs);
+        if (exprs.length > 0) {
+            queryMixin.setProjection(exprs);
+        }
+        return getResults();
+    }
 
+    /**
+     * Get the results as a JDBC ResultSet
+     *
+     * @return results as ResultSet
+     */
+    public ResultSet getResults() {
         SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
         List<Object> constants = ImmutableList.of();
