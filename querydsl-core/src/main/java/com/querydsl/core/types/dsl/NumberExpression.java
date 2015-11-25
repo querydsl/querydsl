@@ -35,7 +35,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     private static final long serialVersionUID = -5485902768703364888L;
 
     @Nullable
-    private static final NumberExpression<Double> random = Expressions.numberOperation(Double.class, MathOps.RANDOM);
+    private static NumberExpression<Double> random;
 
     /**
      * Create a {@code max(left, right)} expression
@@ -67,6 +67,9 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return random()
      */
     public static NumberExpression<Double> random() {
+        if (random == null) {
+            random = Expressions.numberOperation(Double.class, MathOps.RANDOM);
+        }
         return random;
     }
 
