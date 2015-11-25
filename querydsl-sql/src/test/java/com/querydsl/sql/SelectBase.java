@@ -24,6 +24,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.joda.time.*;
 import org.junit.Assert;
@@ -2020,6 +2021,23 @@ public class SelectBase extends AbstractBaseTest {
             }
         });
         query.select(employee.id).fetch();
+    }
+
+    @Test
+    public void getResults() throws SQLException, InterruptedException {
+        final AtomicLong endCalled = new AtomicLong(0);
+        SQLQuery<Integer> query = query().select(employee.id).from(employee);
+        query.addListener(new SQLBaseListener() {
+            @Override
+            public void end(SQLListenerContext context) {
+                endCalled.set(System.currentTimeMillis());
+            }
+        });
+        ResultSet results = query.getResults(employee.id);
+        long getResultsCalled = System.currentTimeMillis();
+        Thread.sleep(100);
+        results.close();
+        assertTrue(endCalled.get() - getResultsCalled >= 100);
     }
 
 }

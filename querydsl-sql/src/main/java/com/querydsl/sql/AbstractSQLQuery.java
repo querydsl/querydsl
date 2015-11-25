@@ -268,7 +268,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
      * @return results as ResultSet
      */
     public ResultSet getResults() {
-        SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
+        final SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
         List<Object> constants = ImmutableList.of();
 
@@ -301,15 +301,16 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                         super.close();
                     } finally {
                         stmt.close();
+                        reset();
+                        endContext(context);
                     }
                 }
             };
         } catch (SQLException e) {
             onException(context, e);
-            throw configuration.translate(queryString, constants, e);
-        } finally {
             reset();
             endContext(context);
+            throw configuration.translate(queryString, constants, e);
         }
     }
 
