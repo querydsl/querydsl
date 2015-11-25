@@ -28,50 +28,53 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
 
     private static final int CACHE_SIZE = 256;
 
-    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
-    private static final Constant<Character>[] CHARACTERS = new Constant[CACHE_SIZE];
+    private static class Constants {
 
-    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
-    private static final Constant<Byte>[] BYTES = new Constant[CACHE_SIZE];
+        @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
+        private static final Constant<Character>[] CHARACTERS = new Constant[CACHE_SIZE];
 
-    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
-    private static final Constant<Integer>[] INTEGERS = new Constant[CACHE_SIZE];
+        @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
+        private static final Constant<Byte>[] BYTES = new Constant[CACHE_SIZE];
 
-    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
-    private static final Constant<Long>[] LONGS = new Constant[CACHE_SIZE];
+        @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
+        private static final Constant<Integer>[] INTEGERS = new Constant[CACHE_SIZE];
 
-    @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
-    private static final Constant<Short>[] SHORTS = new Constant[CACHE_SIZE];
+        @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
+        private static final Constant<Long>[] LONGS = new Constant[CACHE_SIZE];
 
-    private static final Constant<Boolean> FALSE = new ConstantImpl<Boolean>(Boolean.FALSE);
+        @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
+        private static final Constant<Short>[] SHORTS = new Constant[CACHE_SIZE];
 
-    private static final Constant<Boolean> TRUE = new ConstantImpl<Boolean>(Boolean.TRUE);
+        private static final Constant<Boolean> FALSE = new ConstantImpl<Boolean>(Boolean.FALSE);
 
-    static {
-        for (int i = 0; i < CACHE_SIZE; i++) {
-            INTEGERS[i] = new ConstantImpl<Integer>(Integer.class, i);
-            SHORTS[i] = new ConstantImpl<Short>(Short.class, (short) i);
-            BYTES[i] = new ConstantImpl<Byte>(Byte.class, (byte) i);
-            CHARACTERS[i] = new ConstantImpl<Character>(Character.class, (char) i);
-            LONGS[i] = new ConstantImpl<Long>(Long.class, (long) i);
+        private static final Constant<Boolean> TRUE = new ConstantImpl<Boolean>(Boolean.TRUE);
+
+        static {
+            for (int i = 0; i < CACHE_SIZE; i++) {
+                INTEGERS[i] = new ConstantImpl<Integer>(Integer.class, i);
+                SHORTS[i] = new ConstantImpl<Short>(Short.class, (short) i);
+                BYTES[i] = new ConstantImpl<Byte>(Byte.class, (byte) i);
+                CHARACTERS[i] = new ConstantImpl<Character>(Character.class, (char) i);
+                LONGS[i] = new ConstantImpl<Long>(Long.class, (long) i);
+            }
         }
     }
 
     public static Constant<Boolean> create(boolean b) {
-        return b ? TRUE : FALSE;
+        return b ? Constants.TRUE : Constants.FALSE;
     }
 
     public static Constant<Byte> create(byte i) {
-        if (i >= 0 && i < CACHE_SIZE) {
-            return BYTES[i];
+        if (i >= 0) {
+            return Constants.BYTES[i];
         } else {
             return new ConstantImpl<Byte>(Byte.class, i);
         }
     }
 
     public static Constant<Character> create(char i) {
-        if (i >= 0 && i < CACHE_SIZE) {
-            return CHARACTERS[i];
+        if (i < CACHE_SIZE) {
+            return Constants.CHARACTERS[i];
         } else {
             return new ConstantImpl<Character>(Character.class, i);
         }
@@ -79,7 +82,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
 
     public static Constant<Integer> create(int i) {
         if (i >= 0 && i < CACHE_SIZE) {
-            return INTEGERS[i];
+            return Constants.INTEGERS[i];
         } else {
             return new ConstantImpl<Integer>(Integer.class, i);
         }
@@ -87,7 +90,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
 
     public static Constant<Long> create(long i) {
         if (i >= 0 && i < CACHE_SIZE) {
-            return LONGS[(int) i];
+            return Constants.LONGS[(int) i];
         } else {
             return new ConstantImpl<Long>(Long.class, i);
         }
@@ -95,7 +98,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
 
     public static Constant<Short> create(short i) {
         if (i >= 0 && i < CACHE_SIZE) {
-            return SHORTS[i];
+            return Constants.SHORTS[i];
         } else {
             return new ConstantImpl<Short>(Short.class, i);
         }

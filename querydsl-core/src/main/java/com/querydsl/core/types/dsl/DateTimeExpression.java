@@ -33,9 +33,10 @@ import com.querydsl.core.types.Path;
  */
 public abstract class DateTimeExpression<T extends Comparable> extends TemporalExpression<T> {
 
-    private static final DateTimeExpression<Date> CURRENT_DATE = currentDate(Date.class);
-
-    private static final DateTimeExpression<Date> CURRENT_TIMESTAMP = currentTimestamp(Date.class);
+    private static class Constants {
+        private static final DateTimeExpression<Date> CURRENT_DATE = currentDate(Date.class);
+        private static final DateTimeExpression<Date> CURRENT_TIMESTAMP = currentTimestamp(Date.class);
+    }
 
     private static final long serialVersionUID = -6879277113694148047L;
 
@@ -45,7 +46,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      * @return current date
      */
     public static DateTimeExpression<Date> currentDate() {
-        return CURRENT_DATE;
+        return Constants.CURRENT_DATE;
     }
 
     /**
@@ -63,7 +64,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      * @return current timestamp
      */
     public static DateTimeExpression<Date> currentTimestamp() {
-        return CURRENT_TIMESTAMP;
+        return Constants.CURRENT_TIMESTAMP;
     }
 
     /**
