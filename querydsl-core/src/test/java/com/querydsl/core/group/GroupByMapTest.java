@@ -16,16 +16,20 @@ package com.querydsl.core.group;
 import static com.querydsl.core.group.GroupBy.*;
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import org.junit.Test;
 
 import com.google.common.collect.Ordering;
 import com.mysema.commons.lang.Pair;
+import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.core.types.dsl.StringPath;
 
 public class GroupByMapTest extends AbstractGroupByTest {
 
@@ -315,6 +319,20 @@ public class GroupByMapTest extends AbstractGroupByTest {
         assertEquals(toInt(2), post.getId());
         assertEquals("post 2", post.getName());
         assertEquals(toSet(comment(4), comment(5)), post.getComments());
+    }
+
+    @Test
+    public void signature() {
+        StringPath str = Expressions.stringPath("str");
+        NumberPath<BigDecimal> bigd = Expressions.numberPath(BigDecimal.class, "bigd");
+
+        ResultTransformer<Map<String, SortedMap<BigDecimal, SortedMap<BigDecimal, Map<String, String>>>>> resultTransformer = GroupBy.groupBy(str).as(
+                GroupBy.sortedMap(bigd,
+                        GroupBy.sortedMap(bigd,
+                                GroupBy.map(str, str),
+                                Ordering.natural().nullsLast()),
+                           Ordering.natural().nullsFirst()));
+        assertNotNull(resultTransformer);
     }
 
 }
