@@ -276,4 +276,26 @@ public class ExpressionsTest {
         // TODO
     }
 
+    @Test
+    public void assert_that_asBoolean_returns_a_corresponding_BooleanExpression() {
+        assertEquals("true = true", Expressions.asBoolean(Expressions.constant(true)).isTrue().toString());
+    }
+
+    @Test
+    public void assert_that_asDate_returns_a_corresponding_DateExpression() {
+        assertEquals("year(Thu Jan 01 01:00:00 GMT 1970)",
+                Expressions.asDate(Expressions.constant(new Date(1L))).year().toString());
+    }
+
+    @Test
+    public void assert_that_asNumber_returns_a_corresponding_NumberExpression() {
+        assertEquals("1 + 1", Expressions.asNumber(Expressions.constant(1L)).add(Expressions.constant(1L)).toString());
+    }
+
+    @Test
+    public void assert_that_asString_returns_a_corresponding_StringExpression() {
+        assertEquals("left + right",
+                Expressions.asString(Expressions.constant("left")).append(Expressions.constant("right")).toString());
+    }
+
 }

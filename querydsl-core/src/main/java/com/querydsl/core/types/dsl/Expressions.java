@@ -1463,4 +1463,84 @@ public final class Expressions {
         return TemplateFactory.DEFAULT.create(template);
     }
 
+    /**
+     * Create a new BooleanExpression
+     *
+     * @param expr Expression of type Boolean
+     * @return new BooleanExpression
+     */
+    public static BooleanExpression asBoolean(Expression<Boolean> expr) {
+
+        return new BooleanExpression(expr) {
+
+            private static final long serialVersionUID = -8712299418891960222L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new DateExpression
+     *
+     * @param expr Expression of type Comparable
+     * @return new DateExpression
+     */
+    public static <T extends Comparable<?>> DateExpression<T> asDate(Expression<T> expr) {
+
+        return new DateExpression<T>(expr) {
+
+            private static final long serialVersionUID = 389920618099394430L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new NumberExpression
+     *
+     * @param expr Expression of type Number
+     * @return new NumberExpression
+     */
+    public static <T extends Number & Comparable<?>> NumberExpression<T> asNumber(Expression<T> expr) {
+
+        return new NumberExpression<T>(expr) {
+
+            private static final long serialVersionUID = -8712299418891960222L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new StringExpression
+     *
+     * @param expr Expression of type String
+     * @return new StringExpression
+     */
+    public static StringExpression asString(Expression<String> expr) {
+
+        return new StringExpression(expr) {
+
+            private static final long serialVersionUID = -8712299418891960222L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
 }
