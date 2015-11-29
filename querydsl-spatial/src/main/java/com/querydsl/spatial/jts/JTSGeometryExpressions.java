@@ -15,7 +15,9 @@ package com.querydsl.spatial.jts;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Visitor;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -27,6 +29,8 @@ import com.vividsolutions.jts.geom.*;
  * GeometryExpressions contains static functions for GEO operations
  */
 public final class JTSGeometryExpressions {
+
+    private JTSGeometryExpressions() { }
 
     /**
      * Return a specified ST_Geometry value from Extended Well-Known Text representation (EWKT).
@@ -255,5 +259,35 @@ public final class JTSGeometryExpressions {
         return new JTSPolygonOperation<Polygon>(Polygon.class, op, args);
     }
 
-    private JTSGeometryExpressions() { }
+    /**
+     * Create a new JTSGeometryExpression
+     *
+     * @param expr Expression of type Geometry
+     * @return new JTSGeometryExpression
+     */
+    public static <T extends Geometry> JTSGeometryExpression<T> asJTSGeometry(
+            Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        return new JTSGeometryExpression<T>(underlyingMixin) {
+
+            private static final long serialVersionUID = -6714044005570420009L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new JTSGeometryExpression
+     *
+     * @param value Geometry
+     * @return new JTSGeometryExpression
+     */
+    public static <T extends Geometry> JTSGeometryExpression<T> asJTSGeometry(T value) {
+        return asJTSGeometry(Expressions.constant(value));
+    }
+
 }

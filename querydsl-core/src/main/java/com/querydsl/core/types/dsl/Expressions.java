@@ -57,7 +57,7 @@ public final class Expressions {
         if (source == null) {
             return as(Expressions.<D>nullExpression(), alias);
         } else {
-            return Expressions.operation(alias.getType(), Ops.ALIAS, source, alias);
+            return operation(alias.getType(), Ops.ALIAS, source, alias);
         }
     }
 
@@ -1461,6 +1461,246 @@ public final class Expressions {
 
     private static Template createTemplate(String template) {
         return TemplateFactory.DEFAULT.create(template);
+    }
+
+    /**
+     * Create a new BooleanExpression
+     *
+     * @param expr Expression of type Boolean
+     * @return new BooleanExpression
+     */
+    public static BooleanExpression asBoolean(Expression<Boolean> expr) {
+        Expression<Boolean> underlyingMixin = ExpressionUtils.extract(expr);
+        return new BooleanExpression(underlyingMixin) {
+
+            private static final long serialVersionUID = -8712299418891960222L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new BooleanExpression
+     *
+     * @param value boolean
+     * @return new BooleanExpression
+     */
+    public static BooleanExpression asBoolean(boolean value) {
+        return asBoolean(constant(value));
+    }
+
+    /**
+     * Create a new ComparableExpression
+     *
+     * @param expr Expression of type Comparable
+     * @return new ComparableExpression
+     */
+    public static <T extends Comparable<?>> ComparableExpression<T> asComparable(Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        return new ComparableExpression<T>(underlyingMixin) {
+
+            private static final long serialVersionUID = 389920618099394430L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new ComparableExpression
+     *
+     * @param value Comparable
+     * @return new ComparableExpression
+     */
+    public static <T extends Comparable<?>> ComparableExpression<T> asComparable(T value) {
+        return asComparable(constant(value));
+    }
+
+    /**
+     * Create a new DateExpression
+     *
+     * @param expr the date Expression
+     * @return new DateExpression
+     */
+    public static <T extends Comparable<?>> DateExpression<T> asDate(Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        return new DateExpression<T>(underlyingMixin) {
+
+            private static final long serialVersionUID = 389920618099394430L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new DateExpression
+     *
+     * @param value the date
+     * @return new DateExpression
+     */
+    public static <T extends Comparable<?>> DateExpression<T> asDate(T value) {
+        return asDate(constant(value));
+    }
+
+    /**
+     * Create a new DateTimeExpression
+     *
+     * @param expr the date time Expression
+     * @return new DateTimeExpression
+     */
+    public static <T extends Comparable<?>> DateTimeExpression<T> asDateTime(Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        return new DateTimeExpression<T>(underlyingMixin) {
+
+            private static final long serialVersionUID = 8007203530480765244L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new DateTimeExpression
+     *
+     * @param value the date time
+     * @return new DateTimeExpression
+     */
+    public static <T extends Comparable<?>> DateTimeExpression<T> asDateTime(T value) {
+        return asDateTime(constant(value));
+    }
+
+    /**
+     * Create a new TimeExpression
+     *
+     * @param expr the time Expression
+     * @return new TimeExpression
+     */
+    public static <T extends Comparable<?>> TimeExpression<T> asTime(Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        return new TimeExpression<T>(underlyingMixin) {
+
+            private static final long serialVersionUID = -2402288239000668173L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new TimeExpression
+     *
+     * @param value the time
+     * @return new TimeExpression
+     */
+    public static <T extends Comparable<?>> TimeExpression<T> asTime(T value) {
+        return asTime(constant(value));
+    }
+
+    /**
+     * Create a new EnumExpression
+     *
+     * @param expr Expression of type Enum
+     * @return new EnumExpression
+     */
+    public static <T extends Enum<T>> EnumExpression<T> asEnum(Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        return new EnumExpression<T>(underlyingMixin) {
+
+            private static final long serialVersionUID = 949681836002045152L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new EnumExpression
+     *
+     * @param value enum
+     * @return new EnumExpression
+     */
+    public static <T extends Enum<T>> EnumExpression<T> asEnum(T value) {
+        return asEnum(constant(value));
+    }
+
+    /**
+     * Create a new NumberExpression
+     *
+     * @param expr Expression of type Number
+     * @return new NumberExpression
+     */
+    public static <T extends Number & Comparable<?>> NumberExpression<T> asNumber(Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        return new NumberExpression<T>(underlyingMixin) {
+
+            private static final long serialVersionUID = -8712299418891960222L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new NumberExpression
+     *
+     * @param value Number
+     * @return new NumberExpression
+     */
+    public static <T extends Number & Comparable<?>> NumberExpression<T> asNumber(T value) {
+        return asNumber(constant(value));
+    }
+
+    /**
+     * Create a new StringExpression
+     *
+     * @param expr Expression of type String
+     * @return new StringExpression
+     */
+    public static StringExpression asString(Expression<String> expr) {
+        Expression<String> underlyingMixin = ExpressionUtils.extract(expr);
+        return new StringExpression(underlyingMixin) {
+
+            private static final long serialVersionUID = 8007203530480765244L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new StringExpression
+     *
+     * @param value String
+     * @return new StringExpression
+     */
+    public static StringExpression asString(String value) {
+        return asString(constant(value));
     }
 
 }

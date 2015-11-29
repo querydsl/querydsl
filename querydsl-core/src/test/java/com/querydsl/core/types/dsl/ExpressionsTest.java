@@ -32,6 +32,10 @@ public class ExpressionsTest {
 
     private static final BooleanExpression a = new BooleanPath("a"), b = new BooleanPath("b");
 
+    private enum testEnum {
+        TEST;
+    }
+
     @Test
     public void  Signature() throws NoSuchMethodException {
         List<String> types = ImmutableList.of("boolean", "comparable", "date", "dsl", "dateTime",
@@ -274,6 +278,91 @@ public class ExpressionsTest {
     @Test
     public void cases() {
         // TODO
+    }
+
+    @Test
+    public void asBoolean_returns_a_corresponding_BooleanExpression_for_a_given_Expression() {
+        assertEquals("true = true", Expressions.asBoolean(Expressions.constant(true)).isTrue().toString());
+    }
+
+    @Test
+    public void asBoolean_returns_a_corresponding_BooleanExpression_for_a_given_Constant() {
+        assertEquals("true = true", Expressions.asBoolean(true).isTrue().toString());
+    }
+
+    @Test
+    public void asComparable_returns_a_corresponding_ComparableExpression_for_a_given_Expression() {
+        assertEquals("1 = 1",
+                Expressions.asComparable(Expressions.constant(1L)).eq(Expressions.constant(1L)).toString());
+    }
+
+    @Test
+    public void asComparable_returns_a_corresponding_ComparableExpression_for_a_given_Constant() {
+        assertEquals("1 = 1", Expressions.asComparable(1L).eq(1L).toString());
+    }
+
+    @Test
+    public void asDate_returns_a_corresponding_DateExpression_for_a_given_Expression() {
+        assertEquals("year(Thu Jan 01 00:00:00 UTC 1970)",
+                Expressions.asDate(Expressions.constant(new Date(1L))).year().toString());
+    }
+
+    @Test
+    public void asDate_returns_a_corresponding_DateExpression_for_a_given_Constant() {
+        assertEquals("year(Thu Jan 01 00:00:00 UTC 1970)", Expressions.asDate(new Date(1L)).year().toString());
+    }
+
+    @Test
+    public void asDateTime_returns_a_corresponding_DateTimeExpression_for_a_given_Expression() {
+        assertEquals("min(Thu Jan 01 00:00:00 UTC 1970)",
+                Expressions.asDateTime(Expressions.constant(new Date(1L))).min().toString());
+    }
+
+    @Test
+    public void asDateTime_returns_a_corresponding_DateTimeExpression_for_a_given_Constant() {
+        assertEquals("min(Thu Jan 01 00:00:00 UTC 1970)", Expressions.asDateTime(new Date(1L)).min().toString());
+    }
+
+    @Test
+    public void asTime_returns_a_corresponding_TimeExpression_for_a_given_Expression() {
+        assertEquals("hour(Thu Jan 01 00:00:00 UTC 1970)",
+                Expressions.asTime(Expressions.constant(new Date(1L))).hour().toString());
+    }
+
+    @Test
+    public void asTime_returns_a_corresponding_TimeExpression_for_a_given_Constant() {
+        assertEquals("hour(Thu Jan 01 00:00:00 UTC 1970)", Expressions.asTime(new Date(1L)).hour().toString());
+    }
+
+    @Test
+    public void asEnum_returns_a_corresponding_EnumExpression_for_a_given_Expression() {
+        assertEquals("ordinal(TEST)", Expressions.asEnum(Expressions.constant(testEnum.TEST)).ordinal().toString());
+    }
+
+    @Test
+    public void asEnum_returns_a_corresponding_EnumExpression_for_a_given_Constant() {
+        assertEquals("ordinal(TEST)", Expressions.asEnum(testEnum.TEST).ordinal().toString());
+    }
+
+    @Test
+    public void asNumber_returns_a_corresponding_NumberExpression_for_a_given_Expression() {
+        assertEquals("1 + 1", Expressions.asNumber(Expressions.constant(1L)).add(Expressions.constant(1L)).toString());
+    }
+
+    @Test
+    public void asNumber_returns_a_corresponding_NumberExpression_for_a_given_Constant() {
+        assertEquals("1 + 1", Expressions.asNumber(1L).add(Expressions.constant(1L)).toString());
+    }
+
+    @Test
+    public void asString_returns_a_corresponding_StringExpression_for_a_given_Expression() {
+        assertEquals("left + right",
+                Expressions.asString(Expressions.constant("left")).append(Expressions.constant("right")).toString());
+    }
+
+    @Test
+    public void asString_returns_a_corresponding_StringExpression_for_a_given_Constant() {
+        assertEquals("left + right", Expressions.asString("left").append(Expressions.constant("right")).toString());
     }
 
 }

@@ -17,7 +17,9 @@ import org.geolatte.geom.*;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Visitor;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -27,6 +29,8 @@ import com.querydsl.core.types.dsl.StringExpression;
  * GeometryExpressions contains static functions for GEO operations
  */
 public final class GeometryExpressions {
+
+    private GeometryExpressions() { }
 
     /**
      * Return a specified ST_Geometry value from Extended Well-Known Text representation (EWKT).
@@ -254,5 +258,34 @@ public final class GeometryExpressions {
         return new PolygonOperation<Polygon>(Polygon.class, op, args);
     }
 
-    private GeometryExpressions() { }
+    /**
+     * Create a new GeometryExpression
+     *
+     * @param expr Expression of type Geometry
+     * @return new GeometryExpression
+     */
+    public static <T extends Geometry> GeometryExpression<T> asGeometry(Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        return new GeometryExpression<T>(underlyingMixin) {
+
+            private static final long serialVersionUID = -6714044005570420009L;
+
+            @Override
+            public <R, C> R accept(Visitor<R, C> v, C context) {
+                return this.mixin.accept(v, context);
+            }
+
+        };
+    }
+
+    /**
+     * Create a new GeometryExpression
+     *
+     * @param value Geometry
+     * @return new GeometryExpression
+     */
+    public static <T extends Geometry> GeometryExpression<T> asGeometry(T value) {
+        return asGeometry(Expressions.constant(value));
+    }
+
 }
