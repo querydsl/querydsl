@@ -20,9 +20,10 @@ import java.util.List;
 
 import org.hibernate.LockMode;
 import org.hibernate.Session;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 import com.mysema.commons.lang.CloseableIterator;
@@ -45,10 +46,12 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     private static final QCat cat = QCat.cat;
 
     @Rule
-    public static MethodRule jpaProviderRule = new JPAProviderRule();
+    @ClassRule
+    public static TestRule jpaProviderRule = new JPAProviderRule();
 
     @Rule
-    public static MethodRule targetRule = new TargetRule();
+    @ClassRule
+    public static TestRule targetRule = new TargetRule();
 
     private Session session;
 
