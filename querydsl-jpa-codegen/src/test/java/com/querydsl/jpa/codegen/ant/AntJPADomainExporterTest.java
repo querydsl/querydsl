@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Set;
 
 import org.junit.Rule;
@@ -29,7 +30,8 @@ public class AntJPADomainExporterTest {
         AntJPADomainExporter exporter = new AntJPADomainExporter();
         exporter.setNamePrefix("Q");
         exporter.setNameSuffix("");
-        exporter.setTargetFolder(folder.getRoot().getAbsolutePath());
+        Path outputFolder = folder.getRoot().toPath();
+        exporter.setTargetFolder(outputFolder.toFile().getAbsolutePath());
         exporter.setPersistenceUnitName("h2");
         exporter.execute();
 
@@ -37,9 +39,9 @@ public class AntJPADomainExporterTest {
         Set<File> files = exporter.getGeneratedFiles();
         assertFalse(files.isEmpty());
         for (File file : files) {
-            String path = file.getAbsolutePath().replace(
-                    folder.getRoot().getAbsolutePath(), origRoot.getAbsolutePath());
-            String reference = Files.toString(new File(path), Charsets.UTF_8);
+            Path relativeFile = outputFolder.relativize(file.toPath());
+            Path origFile = origRoot.toPath().resolve(relativeFile);
+            String reference = Files.toString(origFile.toFile(), Charsets.UTF_8);
             String content = Files.toString(file, Charsets.UTF_8);
             errors.checkThat("Mismatch for " + file.getPath(), content, is(equalTo(reference)));
         }

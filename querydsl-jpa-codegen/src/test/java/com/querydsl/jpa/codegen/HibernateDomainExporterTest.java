@@ -19,6 +19,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Set;
 
 import org.hibernate.cfg.Configuration;
@@ -45,16 +46,17 @@ public class HibernateDomainExporterTest {
         for (Class<?> cl : Domain.classes) {
             cfg.addAnnotatedClass(cl);
         }
-        HibernateDomainExporter exporter = new HibernateDomainExporter(folder.getRoot(), cfg);
+        Path outputFolder = folder.getRoot().toPath();
+        HibernateDomainExporter exporter = new HibernateDomainExporter(outputFolder.toFile(), cfg);
         exporter.execute();
 
         File origRoot = new File("../querydsl-jpa/target/generated-test-sources/java");
         Set<File> files = exporter.getGeneratedFiles();
         assertFalse(files.isEmpty());
         for (File file : files) {
-            String path = file.getAbsolutePath().replace(
-                    folder.getRoot().getAbsolutePath(), origRoot.getAbsolutePath());
-            String reference = Files.toString(new File(path), Charsets.UTF_8);
+            Path relativeFile = outputFolder.relativize(file.toPath());
+            Path origFile = origRoot.toPath().resolve(relativeFile);
+            String reference = Files.toString(origFile.toFile(), Charsets.UTF_8);
             String content = Files.toString(file, Charsets.UTF_8);
             errors.checkThat("Mismatch for " + file.getPath(), content, is(equalTo(reference)));
         }

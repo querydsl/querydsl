@@ -19,6 +19,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Properties;
 import java.util.Set;
 
@@ -44,16 +45,17 @@ public class JPADomainExporterTest {
     @Test
     public void test() throws IOException {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("h2", new Properties());
-        JPADomainExporter exporter = new JPADomainExporter(folder.getRoot(), emf.getMetamodel());
+        Path outputFolder = folder.getRoot().toPath();
+        JPADomainExporter exporter = new JPADomainExporter(outputFolder.toFile(), emf.getMetamodel());
         exporter.execute();
 
         File origRoot = new File("../querydsl-jpa/target/generated-test-sources/java");
         Set<File> files = exporter.getGeneratedFiles();
         assertFalse(files.isEmpty());
         for (File file : files) {
-            String path = file.getAbsolutePath().replace(
-                    folder.getRoot().getAbsolutePath(), origRoot.getAbsolutePath());
-            String reference = Files.toString(new File(path), Charsets.UTF_8);
+            Path relativeFile = outputFolder.relativize(file.toPath());
+            Path origFile = origRoot.toPath().resolve(relativeFile);
+            String reference = Files.toString(origFile.toFile(), Charsets.UTF_8);
             String content = Files.toString(file, Charsets.UTF_8);
             errors.checkThat("Mismatch for " + file.getPath(), content, is(equalTo(reference)));
         }
