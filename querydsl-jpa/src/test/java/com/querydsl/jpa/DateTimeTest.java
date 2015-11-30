@@ -27,37 +27,37 @@ import com.querydsl.core.types.dsl.TimeExpression;
 public class DateTimeTest extends AbstractQueryTest {
 
     @Test
-    public void CurrentDate() {
+    public void currentDate() {
         assertToString("current_date", DateExpression.currentDate());
     }
 
     @Test
-    public void CurrentDate2() {
+    public void currentDate2() {
         assertToString("current_date", DateTimeExpression.currentDate());
     }
 
     @Test
-    public void CurrentTime() {
+    public void currentTime() {
         assertToString("current_time", TimeExpression.currentTime());
     }
 
     @Test
-    public void CurrentTimestamp() {
+    public void currentTimestamp() {
         assertToString("current_timestamp", DateTimeExpression.currentTimestamp());
     }
 
     @Test
-    public void DayOfMonth() {
+    public void dayOfMonth() {
         assertToString("day(date)", Expressions.datePath(Date.class, "date").dayOfMonth());
     }
 
     @Test
-    public void DayOfMonth2() {
+    public void dayOfMonth2() {
         assertToString("day(date)", Expressions.dateTimePath(Date.class, "date").dayOfMonth());
     }
 
     @Test
-    public void DateOperations2() {
+    public void dateOperations2() {
 //        catalog.effectiveDate.second();
 //        catalog.effectiveDate.minute();
 //        catalog.effectiveDate.hour();

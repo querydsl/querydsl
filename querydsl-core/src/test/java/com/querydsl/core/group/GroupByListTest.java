@@ -29,7 +29,7 @@ import com.querydsl.core.types.Projections;
 public class GroupByListTest extends AbstractGroupByTest {
 
     @Test
-    public void Group_Order() {
+    public void group_order() {
         List<Group> results = BASIC_RESULTS
             .transform(groupBy(postId).list(postName, set(commentId)));
 
@@ -37,7 +37,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void First_Set_And_List() {
+    public void first_set_and_list() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
 
@@ -51,7 +51,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void Group_By_Null() {
+    public void group_by_null() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
 
@@ -66,7 +66,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void NoSuchElementException() {
+    public void noSuchElementException() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
 
@@ -77,7 +77,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test(expected = ClassCastException.class)
-    public void ClassCastException() {
+    public void classCastException() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
 
@@ -88,7 +88,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void Map() {
+    public void map1() {
         List<Group> results = MAP_RESULTS.transform(
             groupBy(postId).list(postName, map(commentId, commentText)));
 
@@ -101,7 +101,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void Map2() {
+    public void map2() {
         List<Map<Integer, String>> results = MAP2_RESULTS.transform(
             groupBy(postId).list(map(commentId, commentText)));
 
@@ -113,7 +113,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void Map3() {
+    public void map3() {
         List<Map<Integer, Map<Integer, String>>> actual = MAP3_RESULTS.transform(
             groupBy(postId).list(map(postId, map(commentId, commentText))));
 
@@ -144,7 +144,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void Map4() {
+    public void map4() {
         CloseableIterator<Map<Map<Integer, String>, String>> results = MAP4_RESULTS.transform(
             groupBy(postId).iterate(map(map(postId, commentText), postName)));
         List<Map<Map<Integer, String>, String>> actual = IteratorAdapter.asList(results);
@@ -171,7 +171,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void Array_Access() {
+    public void array_access() {
         List<Group> results = BASIC_RESULTS.transform(
             groupBy(postId).list(postName, set(commentId), list(commentText)));
 
@@ -186,7 +186,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void Transform_Results() {
+    public void transform_results() {
         List<Post> results = POST_W_COMMENTS.transform(
                 groupBy(postId).list(Projections.constructor(Post.class, postId, postName, set(qComment))));
 
@@ -200,7 +200,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void Transform_As_Bean() {
+    public void transform_as_bean() {
         List<Post> results = POST_W_COMMENTS.transform(
                 groupBy(postId).list(Projections.bean(Post.class, postId, postName, set(qComment).as("comments"))));
 
@@ -215,7 +215,7 @@ public class GroupByListTest extends AbstractGroupByTest {
 
 
     @Test
-    public void OneToOneToMany_Projection() {
+    public void oneToOneToMany_projection() {
         List<User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
             groupBy(userName).list(Projections.constructor(User.class, userName,
                 Projections.constructor(Post.class, postId, postName, set(qComment)))));
@@ -230,7 +230,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void OneToOneToMany_Projection_As_Bean() {
+    public void oneToOneToMany_projection_as_bean() {
         List<User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
             groupBy(userName).list(Projections.bean(User.class, userName,
                 Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
@@ -245,7 +245,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     }
 
     @Test
-    public void OneToOneToMany_Projection_As_Bean_And_Constructor() {
+    public void oneToOneToMany_projection_as_bean_and_constructor() {
         List<User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
             groupBy(userName).list(Projections.bean(User.class, userName,
                 Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));

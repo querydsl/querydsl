@@ -13,24 +13,24 @@ public class CustomerDaoTest extends AbstractDaoTest {
     @Resource CustomerDao customerDao;
 
     @Test
-    public void FindAll() {
+    public void findAll() {
         List<Customer> customers = customerDao.findAll();
         assertFalse(customers.isEmpty());
     }
 
     @Test
-    public void FindById() {
+    public void findById() {
         assertNotNull(customerDao.findById(1));
     }
 
     @Test
-    public void Update() {
+    public void update() {
         Customer customer = customerDao.findById(1);
         customerDao.save(customer);
     }
 
     @Test
-    public void Delete() {
+    public void delete() {
         Customer customer = customerDao.findById(1);
         customerDao.delete(customer);
         assertNull(customerDao.findById(1));

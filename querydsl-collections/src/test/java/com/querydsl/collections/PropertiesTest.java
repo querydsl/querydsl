@@ -10,7 +10,7 @@ import org.junit.Test;
 public class PropertiesTest {
 
     @Test
-    public void Hidden() {
+    public void hidden() {
         QStateHistory history = QStateHistory.stateHistory;
         List<StateHistory> histories = Collections.singletonList(new StateHistory());
         assertEquals(1, CollQueryFactory.from(history, histories)
@@ -18,7 +18,7 @@ public class PropertiesTest {
     }
 
     @Test
-    public void Hidden2() {
+    public void hidden2() {
         QStateHistoryOwner historyOwner = QStateHistoryOwner.stateHistoryOwner;
         List<StateHistoryOwner> historyOwners = Collections.singletonList(new StateHistoryOwner());
         assertEquals(1, CollQueryFactory.from(historyOwner, historyOwners)

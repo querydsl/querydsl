@@ -47,7 +47,7 @@ public abstract class AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void NoFrom() {
+    public void noFrom() {
         query.getMetadata().setProjection(Expressions.ONE);
         if (templates.getDummyTable() == null) {
             assertEquals("select 1", query.toString());
@@ -58,7 +58,7 @@ public abstract class AbstractSQLTemplatesTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union() {
+    public void union() {
         NumberExpression<Integer> one = Expressions.ONE;
         NumberExpression<Integer> two = Expressions.TWO;
         NumberExpression<Integer> three = Expressions.THREE;
@@ -87,7 +87,7 @@ public abstract class AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void InnerJoin() {
+    public void innerJoin() {
         query.from(survey1).innerJoin(survey2);
         assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
     }
@@ -101,12 +101,12 @@ public abstract class AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Generic_Precedence() {
+    public void generic_precedence() {
         TemplatesTestUtils.testPrecedence(templates);
     }
 
     @Test
-    public void Arithmetic() {
+    public void arithmetic() {
         NumberExpression<Integer> one = Expressions.numberPath(Integer.class, "one");
         NumberExpression<Integer> two = Expressions.numberPath(Integer.class, "two");
 

@@ -38,7 +38,7 @@ public class ExportH2TwoSchemasTest {
     }
 
     @Test
-    public void Export() throws SQLException, MalformedURLException, IOException {
+    public void export() throws SQLException, MalformedURLException, IOException {
         File folder = new File("target", getClass().getSimpleName());
         folder.mkdirs();
         NamingStrategy namingStrategy = new DefaultNamingStrategy();

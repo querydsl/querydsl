@@ -23,7 +23,7 @@ public class PostgreSQLQueryTest {
     }
 
     @Test
-    public void Syntax() {
+    public void syntax() {
 //        [ WITH [ RECURSIVE ] with_query [, ...] ]
 //        SELECT [ ALL | DISTINCT [ ON ( expression [, ...] ) ] ]
         query.distinctOn(survey.name);
@@ -72,25 +72,25 @@ public class PostgreSQLQueryTest {
     }
 
     @Test
-    public void ForShare() {
+    public void forShare() {
         query.from(survey).forShare();
         assertEquals("from SURVEY survey for share", toString(query));
     }
 
     @Test
-    public void ForUpDate_NoWait() {
+    public void forUpDate_noWait() {
         query.from(survey).forUpdate().noWait();
         assertEquals("from SURVEY survey for update nowait", toString(query));
     }
 
     @Test
-    public void ForUpdate_Of() {
+    public void forUpdate_of() {
         query.from(survey).forUpdate().of(survey);
         assertEquals("from SURVEY survey for update of SURVEY", toString(query));
     }
 
     @Test
-    public void Distinct_On() {
+    public void distinct_on() {
         query.from(employee)
             .distinctOn(employee.datefield, employee.timefield)
             .orderBy(employee.datefield.asc(), employee.timefield.asc(), employee.salary.asc())

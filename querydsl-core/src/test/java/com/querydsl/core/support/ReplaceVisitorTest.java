@@ -25,7 +25,7 @@ public class ReplaceVisitorTest {
     };
 
     @Test
-    public void Operation() {
+    public void operation() {
         Expression<String> str = Expressions.stringPath(ExpressionUtils.path(Object.class, "customer"), "name");
         Expression<String> str2 = Expressions.stringPath("str");
         Expression<String> concat = Expressions.stringOperation(Ops.CONCAT, str, str2);
@@ -34,7 +34,7 @@ public class ReplaceVisitorTest {
     }
 
     @Test
-    public void TemplateExpression() {
+    public void templateExpression() {
         Expression<String> str = Expressions.stringPath(ExpressionUtils.path(Object.class, "customer"), "name");
         Expression<String> str2 = Expressions.stringPath("str");
         Expression<String> concat = Expressions.stringTemplate("{0} + {1}", str, str2);

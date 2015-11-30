@@ -20,7 +20,7 @@ import org.junit.Test;
 public class ConstantImplTest {
 
     @Test
-    public void Create() {
+    public void create() {
         assertNotNull(ConstantImpl.create(true));
         assertNotNull(ConstantImpl.create((byte) 1));
         assertNotNull(ConstantImpl.create(ConstantImplTest.class));

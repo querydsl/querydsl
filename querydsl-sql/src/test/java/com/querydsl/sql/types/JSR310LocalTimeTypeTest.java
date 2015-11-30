@@ -20,7 +20,7 @@ public class JSR310LocalTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     }
 
     @Test
-    public void Set() throws SQLException {
+    public void set() throws SQLException {
         LocalTime value = LocalTime.now();
         Time time = new Time(value.get(ChronoField.MILLI_OF_DAY));
 
@@ -33,7 +33,7 @@ public class JSR310LocalTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     }
 
     @Test
-    public void JodaSet() throws SQLException {
+    public void jodaSet() throws SQLException {
         LocalTime value = LocalTime.now();
         Time time = new Time(value.get(ChronoField.MILLI_OF_DAY));
 
@@ -46,7 +46,7 @@ public class JSR310LocalTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     }
 
     @Test
-    public void Get() throws SQLException {
+    public void get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
         EasyMock.expect(resultSet.getTime(1, UTC)).andReturn(new Time(UTC.getTimeInMillis()));
         EasyMock.replay(resultSet);

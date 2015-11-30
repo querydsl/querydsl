@@ -25,37 +25,37 @@ public class CastTest extends AbstractQueryTest {
     private static NumberExpression<Integer> expr = Expressions.numberPath(Integer.class, "int");
 
     @Test
-    public void Byte() {
+    public void bytes() {
         assertEquals(Byte.class, expr.byteValue().getType());
     }
 
     @Test
-    public void Double() {
+    public void doubles() {
         assertEquals(Double.class, expr.doubleValue().getType());
     }
 
     @Test
-    public void Float() {
+    public void floats() {
         assertEquals(Float.class, expr.floatValue().getType());
     }
 
     @Test
-    public void Integer() {
+    public void integers() {
         assertEquals(Integer.class, expr.intValue().getType());
     }
 
     @Test
-    public void Long() {
+    public void longs() {
         assertEquals(Long.class, expr.longValue().getType());
     }
 
     @Test
-    public void Short() {
+    public void shorts() {
         assertEquals(Short.class, expr.shortValue().getType());
     }
 
     @Test
-    public void StringCast() {
+    public void stringCast() {
         assertEquals(String.class, expr.stringValue().getType());
     }
 }

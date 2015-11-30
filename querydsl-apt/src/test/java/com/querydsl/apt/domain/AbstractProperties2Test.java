@@ -54,27 +54,27 @@ public class AbstractProperties2Test {
     }
 
     @Test
-    public void GenericEntity_id_Is_Available() {
+    public void genericEntity_id_is_available() {
         assertNotNull(QAbstractProperties2Test_GenericEntity.genericEntity.id);
     }
 
     @Test
-    public void AbstractEntity_Is_Available() {
+    public void abstractEntity_is_available() {
         assertNotNull(QAbstractProperties2Test_AbstractEntity.abstractEntity.id);
     }
 
     @Test
-    public void AbstractEntity_Super_Is_Available() {
+    public void abstractEntity_super_is_available() {
         assertEquals(QAbstractProperties2Test_GenericEntity.class, QAbstractProperties2Test_AbstractEntity.abstractEntity._super.getClass());
     }
 
     @Test
-    public void User_Is_Available() {
+    public void user_is_available() {
         assertNotNull(QAbstractProperties2Test_User.user.id);
     }
 
     @Test
-    public void User_Super_Is_Available() {
+    public void user_super_is_available() {
         assertEquals(QAbstractProperties2Test_AbstractEntity.class, QAbstractProperties2Test_User.user._super.getClass());
     }
 

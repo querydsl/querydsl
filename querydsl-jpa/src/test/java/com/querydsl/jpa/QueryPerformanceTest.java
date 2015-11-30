@@ -52,7 +52,7 @@ public class QueryPerformanceTest implements JPATest {
     }
 
     @Test
-    public void ById_Raw() {
+    public void byId_raw() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             Cat cat = (Cat) entityManager.createQuery("select cat from Cat cat where id = ?")
@@ -63,7 +63,7 @@ public class QueryPerformanceTest implements JPATest {
     }
 
     @Test
-    public void ById_Qdsl() {
+    public void byId_qdsl() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
@@ -74,7 +74,7 @@ public class QueryPerformanceTest implements JPATest {
     }
 
     @Test
-    public void ById_TwoCols_Raw() {
+    public void byId_twoCols_raw() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             Object[] row = (Object[]) entityManager.createQuery(
@@ -86,7 +86,7 @@ public class QueryPerformanceTest implements JPATest {
     }
 
     @Test
-    public void ById_TwoCols_Qdsl() {
+    public void byId_twoCols_qdsl() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;

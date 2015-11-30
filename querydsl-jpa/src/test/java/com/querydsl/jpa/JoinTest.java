@@ -39,42 +39,42 @@ public class JoinTest {
     private final HibernateQuery<?> query = new HibernateQuery<Void>(new DummySessionHolder(), HQLTemplates.DEFAULT);
 
     @Test
-    public void SubQuery_InnerJoin() {
+    public void subQuery_innerJoin() {
         subQuery.from($(alias));
         subQuery.innerJoin($(alias.getNames()), path);
         // TODO : assertions
     }
 
     @Test
-    public void SubQuery_Join() {
+    public void subQuery_join() {
         subQuery.from($(alias));
         subQuery.join($(alias.getNames()), path);
         // TODO : assertions
     }
 
     @Test
-    public void SubQuery_LeftJoin() {
+    public void subQuery_leftJoin() {
         subQuery.from($(alias));
         subQuery.leftJoin($(alias.getNames()), path);
         // TODO : assertions
     }
 
     @Test
-    public void Query_InnerJoin() {
+    public void query_innerJoin() {
         query.from($(alias));
         query.innerJoin($(alias.getNames()), path);
         // TODO : assertions
     }
 
     @Test
-    public void Query_Join() {
+    public void query_join() {
         query.from($(alias));
         query.join($(alias.getNames()), path);
         // TODO : assertions
     }
 
     @Test
-    public void Query_LeftJoin() {
+    public void query_leftJoin() {
         query.from($(alias));
         query.leftJoin($(alias.getNames()), path);
         // TODO : assertions

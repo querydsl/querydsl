@@ -21,7 +21,7 @@ public class JSR310OffsetTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Off
     }
 
     @Test
-    public void Set() throws SQLException {
+    public void set() throws SQLException {
         OffsetTime value = OffsetTime.now();
         OffsetTime normalized = value.withOffsetSameInstant(ZoneOffset.UTC);
         Time time = new Time(normalized.get(ChronoField.MILLI_OF_DAY));
@@ -35,7 +35,7 @@ public class JSR310OffsetTimeTypeTest extends AbstractJSR310DateTimeTypeTest<Off
     }
 
     @Test
-    public void Get() throws SQLException {
+    public void get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
         EasyMock.expect(resultSet.getTime(1, UTC)).andReturn(new Time(UTC.getTimeInMillis()));
         EasyMock.replay(resultSet);

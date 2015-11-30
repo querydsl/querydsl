@@ -56,7 +56,7 @@ public class TypeFactoryTest {
     private TypeFactory factory = new TypeFactory();
 
     @Test
-    public void InnerClass_Field() throws SecurityException, NoSuchFieldException {
+    public void innerClass_field() throws SecurityException, NoSuchFieldException {
         Field field = Entity.class.getDeclaredField("field");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -64,14 +64,14 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Parameters() {
+    public void parameters() {
         EntityType type = factory.getEntityType(Examples.Complex.class);
         assertEquals(1, type.getParameters().size());
         assertEquals(TypeExtends.class, type.getParameters().get(0).getClass());
     }
 
     @Test
-    public void Map_Field_Parameters() throws SecurityException, NoSuchFieldException {
+    public void map_field_parameters() throws SecurityException, NoSuchFieldException {
         Field field = Examples.ComplexCollections.class.getDeclaredField("map2");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(2, type.getParameters().size());
@@ -81,20 +81,20 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void OrderBys() throws SecurityException, NoSuchFieldException {
+    public void orderBys() throws SecurityException, NoSuchFieldException {
         Field field = Examples.OrderBys.class.getDeclaredField("orderBy");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
     }
 
     @Test
-    public void SubEntity() {
+    public void subEntity() {
         Type type = factory.get(Examples.SubEntity.class);
         assertEquals(0, type.getParameters().size());
     }
 
     @Test
-    public void AbstractEntity_Code() throws SecurityException, NoSuchFieldException {
+    public void abstractEntity_code() throws SecurityException, NoSuchFieldException {
         Field field = EmbeddedTest.AbstractEntity.class.getDeclaredField("code");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertTrue(type instanceof TypeExtends);
@@ -102,7 +102,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void SimpleTypes_classList5() throws SecurityException, NoSuchFieldException {
+    public void simpleTypes_classList5() throws SecurityException, NoSuchFieldException {
         Field field = Examples.SimpleTypes.class.getDeclaredField("classList5");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(TypeCategory.LIST, type.getCategory());
@@ -112,7 +112,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Collection_Of_Collection() throws SecurityException, NoSuchFieldException {
+    public void collection_of_collection() throws SecurityException, NoSuchFieldException {
         Field field = Examples.GenericRelations.class.getDeclaredField("col3");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -121,7 +121,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Generics_WildCard() throws SecurityException, NoSuchFieldException {
+    public void generics_wildCard() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -130,7 +130,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Generics_Object() throws SecurityException, NoSuchFieldException {
+    public void generics_object() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field2");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -138,7 +138,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Generics_TypeVariable() {
+    public void generics_typeVariable() {
         Type type = factory.getEntityType(Generic2Test.AbstractCollectionAttribute.class);
         assertEquals(TypeExtends.class, type.getParameters().get(0).getClass());
         TypeExtends t = (TypeExtends) type.getParameters().get(0);
@@ -146,7 +146,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Generics_Wildcard() throws SecurityException, NoSuchFieldException {
+    public void generics_wildcard() throws SecurityException, NoSuchFieldException {
         Field field = DefaultQueryMetadata.class.getDeclaredField("exprInJoins");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(TypeCategory.SET, type.getCategory());
@@ -158,7 +158,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void ComparableEntity() {
+    public void comparableEntity() {
         Type type = factory.getEntityType(ComparableEntity.class);
         //ComparableEntity<T extends Comparable<? super T>> implements Serializable
         assertEquals(1, type.getParameters().size());
@@ -168,7 +168,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void RawField() throws SecurityException, NoSuchFieldException {
+    public void rawField() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field3");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -176,7 +176,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Extends() throws SecurityException, NoSuchFieldException {
+    public void extends_() throws SecurityException, NoSuchFieldException {
         Field field = getClass().getDeclaredField("field4");
         Type type = factory.get(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
@@ -184,13 +184,13 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void ClassName() {
+    public void className() {
         Type type = factory.get(EnumExample.class);
         assertEquals("com.querydsl.codegen.TypeFactoryTest.EnumExample", type.getFullName());
     }
 
     @Test
-    public void Blob() {
+    public void blob() {
         Type blob = factory.get(Blob.class);
         assertEquals("Blob", blob.getSimpleName());
         assertEquals("java.sql.Blob", blob.getFullName());
@@ -198,7 +198,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void Boolean() {
+    public void boolean_() {
         Type bo = factory.get(boolean.class);
         assertEquals(TypeCategory.BOOLEAN, bo.getCategory());
         assertEquals("Boolean", bo.getSimpleName());
@@ -207,26 +207,26 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void SimpleType() {
+    public void simpleType() {
         for (Class<?> cl : Arrays.<Class<?>>asList(Blob.class, Clob.class, Locale.class, Class.class, Serializable.class)) {
             assertEquals("wrong type for " + cl.getName(), TypeCategory.SIMPLE, factory.get(cl).getCategory());
         }
     }
 
     @Test
-    public void NumberType() {
+    public void numberType() {
         for (Class<?> cl : Arrays.<Class<?>>asList(Byte.class, Integer.class)) {
             assertEquals("wrong type for " + cl.getName(), TypeCategory.NUMERIC, factory.get(cl).getCategory());
         }
     }
 
     @Test
-    public void EnumType() {
+    public void enumType() {
         assertEquals(TypeCategory.ENUM, factory.get(EnumExample.class).getCategory());
     }
 
     @Test
-    public void UnknownAsEntity() {
+    public void unknownAsEntity() {
         assertEquals(TypeCategory.SIMPLE, factory.get(TypeFactoryTest.class).getCategory());
 
         factory = new TypeFactory();
@@ -235,7 +235,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void ArrayType() {
+    public void arrayType() {
         assertEquals(Types.BYTE.asArrayType(), factory.get(Byte[].class));
         assertEquals(Types.BYTE_P.asArrayType(), factory.get(byte[].class));
     }

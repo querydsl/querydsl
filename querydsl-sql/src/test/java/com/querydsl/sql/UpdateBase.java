@@ -53,7 +53,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update() throws SQLException {
+    public void update() throws SQLException {
         // original state
         long count = query().from(survey).fetchCount();
         assertEquals(0, query().from(survey).where(survey.name.eq("S")).fetchCount());
@@ -69,7 +69,7 @@ public class UpdateBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn({CUBRID, H2, MYSQL, ORACLE, SQLSERVER})
-    public void Update_Limit() {
+    public void update_limit() {
         assertEquals(1, insert(survey).values(2, "A","B").execute());
         assertEquals(1, insert(survey).values(3, "B","C").execute());
 
@@ -77,7 +77,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update2() throws SQLException {
+    public void update2() throws SQLException {
         List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
         List<?> values = Collections.singletonList("S");
 
@@ -96,24 +96,24 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update3() {
+    public void update3() {
         assertEquals(1, update(survey).set(survey.name, survey.name.append("X")).execute());
     }
 
     @Test
-    public void Update4() {
+    public void update4() {
         assertEquals(1, insert(survey).values(2, "A","B").execute());
         assertEquals(1, update(survey).set(survey.name, "AA").where(survey.name.eq("A")).execute());
     }
 
     @Test
-    public void Update5() {
+    public void update5() {
         assertEquals(1, insert(survey).values(3, "B","C").execute());
         assertEquals(1, update(survey).set(survey.name, "BB").where(survey.name.eq("B")).execute());
     }
 
     @Test
-    public void SetNull() {
+    public void setNull() {
         List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
         List<?> values = Collections.singletonList(null);
         long count = query().from(survey).fetchCount();
@@ -121,13 +121,13 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void SetNull2() {
+    public void setNull2() {
         long count = query().from(survey).fetchCount();
         assertEquals(count, update(survey).set(survey.name, (String) null).execute());
     }
 
     @Test
-    public void Batch() throws SQLException {
+    public void batch() throws SQLException {
         assertEquals(1, insert(survey).values(2, "A","B").execute());
         assertEquals(1, insert(survey).values(3, "B","C").execute());
 
@@ -138,7 +138,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Batch_Templates() throws SQLException {
+    public void batch_templates() throws SQLException {
         assertEquals(1, insert(survey).values(2, "A","B").execute());
         assertEquals(1, insert(survey).values(3, "B","C").execute());
 
@@ -149,7 +149,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update_with_SubQuery_exists() {
+    public void update_with_subQuery_exists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
@@ -159,7 +159,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update_with_SubQuery_exists_Params() {
+    public void update_with_subQuery_exists_Params() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
 
@@ -174,7 +174,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update_with_SubQuery_exists2() {
+    public void update_with_subQuery_exists2() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
@@ -184,7 +184,7 @@ public class UpdateBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Update_with_SubQuery_notExists() {
+    public void update_with_subQuery_notExists() {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         SQLUpdateClause update = update(survey1);
@@ -195,7 +195,7 @@ public class UpdateBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(TERADATA)
-    public void Update_With_TemplateExpression_In_Batch() {
+    public void update_with_templateExpression_in_batch() {
         assertEquals(1, update(survey)
             .set(survey.id, 3)
             .set(survey.name, Expressions.stringTemplate("'Hello'"))

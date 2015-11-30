@@ -25,7 +25,7 @@ import com.mysema.codegen.model.TypeCategory;
 public class EntityTypeTest {
 
     @Test
-    public void UncapSimpleName_Escaped() {
+    public void uncapSimpleName_escaped() {
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
         EntityType entityModel = new EntityType(typeModel);
         assertEquals("object", entityModel.getModifiedSimpleName());
@@ -35,7 +35,7 @@ public class EntityTypeTest {
     }
 
     @Test
-    public void UncapSimpleName_Escaped2() {
+    public void uncapSimpleName_escaped2() {
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
         EntityType entityModel = new EntityType(typeModel);
         assertEquals("object", entityModel.getModifiedSimpleName());
@@ -46,7 +46,7 @@ public class EntityTypeTest {
     }
 
     @Test
-    public void UncapSimpleName_Escaped3() {
+    public void uncapSimpleName_escaped3() {
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Void.class);
         EntityType entityModel = new EntityType(typeModel);
         assertEquals("void$", entityModel.getModifiedSimpleName());

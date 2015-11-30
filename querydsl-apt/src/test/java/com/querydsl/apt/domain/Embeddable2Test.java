@@ -49,14 +49,14 @@ public class Embeddable2Test {
 
     @Test
     @Ignore
-    public void MappedSuperClassConstructors() throws SecurityException, NoSuchMethodException {
+    public void mapped_superClass_constructors() throws SecurityException, NoSuchMethodException {
         assertNotNull(QEmbeddable2Test_SomeMappedSuperClassHavingMyEmbeddable.class.getConstructor(
                 Class.class, PathMetadata.class, PathInits.class));
     }
 
     @Test
     @Ignore
-    public void EntityConstructors() throws SecurityException, NoSuchMethodException {
+    public void entity_constructors() throws SecurityException, NoSuchMethodException {
         assertNotNull(QEmbeddable2Test_SomeEntityClassHavingMyEmbeddable.class.getConstructor(
                 Class.class, PathMetadata.class, PathInits.class));
     }

@@ -40,17 +40,17 @@ public class JDOQueryFactoryTest {
     }
 
     @Test
-    public void Query() {
+    public void query() {
         assertNotNull(queryFactory.query());
     }
 
     @Test
-    public void From() {
+    public void from() {
         assertNotNull(queryFactory.from(QProduct.product));
     }
 
     @Test
-    public void Delete() {
+    public void delete() {
         assertNotNull(queryFactory.delete(QProduct.product));
     }
 

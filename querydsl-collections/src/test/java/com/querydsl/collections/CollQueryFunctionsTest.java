@@ -21,7 +21,7 @@ import org.junit.Test;
 public class CollQueryFunctionsTest {
 
     @Test
-    public void Coalesce() {
+    public void coalesce() {
         assertEquals("1", CollQueryFunctions.coalesce("1",null));
         assertEquals("1", CollQueryFunctions.coalesce(null,"1","2"));
         assertNull(CollQueryFunctions.coalesce(null,null));
@@ -29,7 +29,7 @@ public class CollQueryFunctionsTest {
 
     @Test
     @Ignore
-    public void LikeSpeed() {
+    public void likeSpeed() {
         // 3015
         final int iterations = 1000000;
         long start = System.currentTimeMillis();
@@ -43,14 +43,14 @@ public class CollQueryFunctionsTest {
     }
 
     @Test
-    public void Like() {
+    public void like() {
         assertTrue(CollQueryFunctions.like("abcDOG", "%DOG"));
         assertTrue(CollQueryFunctions.like("DOGabc", "DOG%"));
         assertTrue(CollQueryFunctions.like("abcDOGabc", "%DOG%"));
     }
 
     @Test
-    public void Like_With_Special_Chars() {
+    public void like_with_special_chars() {
         assertTrue(CollQueryFunctions.like("$DOG", "$DOG"));
         assertTrue(CollQueryFunctions.like("$DOGabc", "$DOG%"));
     }

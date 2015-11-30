@@ -10,7 +10,7 @@ import org.junit.Test;
 public class PGgeometryConverterTest extends AbstractConverterTest {
 
     @Test
-    public void RoundTrip() {
+    public void roundTrip() {
         List<Geometry> geometries = getGeometries();
         for (Geometry geometry : geometries) {
             org.postgis.Geometry converted = PGgeometryConverter.convert(geometry);

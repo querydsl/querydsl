@@ -24,7 +24,7 @@ public class UserTest {
     private static final Morphia morphia = new Morphia().map(User.class);
 
     @Test
-    public void Map() {
+    public void map() {
         City tampere = new City("Tampere", 61.30, 23.50);
 
         User user = new User();
@@ -36,7 +36,7 @@ public class UserTest {
     }
 
     @Test
-    public void Friend() {
+    public void friend() {
         User friend = new User();
         friend.setId(new ObjectId(1,2,3));
 
@@ -47,7 +47,7 @@ public class UserTest {
     }
 
     @Test
-    public void Friends() {
+    public void friends() {
         User friend = new User();
         friend.setId(new ObjectId(1,2,3));
 

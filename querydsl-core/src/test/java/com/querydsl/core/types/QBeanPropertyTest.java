@@ -43,12 +43,10 @@ public class QBeanPropertyTest {
             this.eId = eId;
         }
 
-
-
     }
 
     @Test
-    public void Field_Access() {
+    public void field_access() {
         PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class, "entity");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, true,
                 entity.getNumber("cId",Integer.class),
@@ -60,7 +58,7 @@ public class QBeanPropertyTest {
     }
 
     @Test
-    public void Property_Access() {
+    public void property_access() {
         PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class, "entity");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class,
                 entity.getNumber("cId",Integer.class),

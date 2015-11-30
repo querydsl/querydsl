@@ -93,32 +93,32 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @NoEclipseLink
     @NoOpenJPA
     @NoHibernate
-    public void Connection_Access() {
+    public void connection_access() {
         assertNotNull(query().from(cat).select(cat).createQuery().unwrap(Connection.class));
     }
 
     @Test
     @Ignore
-    public void Delete() {
+    public void delete() {
         delete(cat).execute();
     }
 
     @Test
     @NoBatooJPA
-    public void Delete_Where() {
+    public void delete_where() {
         delete(cat).where(cat.name.eq("XXX")).execute();
     }
 
     @Test
     @ExcludeIn(Target.MYSQL)
-    public void Delete_Where_Any() {
+    public void delete_where_any() {
         delete(cat).where(cat.kittens.any().name.eq("XXX")).execute();
     }
 
     @Test
     @NoBatooJPA
     @ExcludeIn(Target.MYSQL)
-    public void Delete_Where_SubQuery_Exists() {
+    public void delete_where_subQuery_exists() {
         QCat parent = cat;
         QCat child = new QCat("kitten");
 
@@ -131,7 +131,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     @NoBatooJPA
-    public void Delete_Where_SubQuery2() {
+    public void delete_where_subQuery2() {
         QChild child = QChild.child;
         QParent parent = QParent.parent;
 
@@ -146,7 +146,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     }
 
     @Test
-    public void Finder() {
+    public void finder() {
         Map<String,Object> conditions = new HashMap<String,Object>();
         conditions.put("name", "Bob123");
 
@@ -156,13 +156,13 @@ public class JPABase extends AbstractJPATest implements JPATest {
     }
 
     @Test
-    public void FlushMode() {
+    public void flushMode() {
         assertFalse(query().from(cat).setFlushMode(FlushModeType.AUTO).select(cat).fetch().isEmpty());
     }
 
     @Test
     @NoEclipseLink @NoOpenJPA
-    public void Hint() {
+    public void hint() {
         javax.persistence.Query query = query().from(cat)
                 .setHint("org.hibernate.cacheable", true)
                 .select(cat).createQuery();
@@ -173,14 +173,14 @@ public class JPABase extends AbstractJPATest implements JPATest {
     }
 
     @Test
-    public void Hint2() {
+    public void hint2() {
         assertFalse(query().from(cat).setHint("org.hibernate.cacheable", true)
                 .select(cat).fetch().isEmpty());
     }
 
     @Test @Ignore
     @NoHibernate @NoOpenJPA @NoBatooJPA
-    public void Hint3() {
+    public void hint3() {
         javax.persistence.Query query = query().from(cat)
                 .setHint("eclipselink.batch.type", "IN")
                 .setHint("eclipselink.batch", "person.workAddress")
@@ -193,7 +193,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     @ExcludeIn(Target.DERBY)
-    public void Iterate() {
+    public void iterate() {
         CloseableIterator<Cat> cats = query().from(cat).select(cat).iterate();
         while (cats.hasNext()) {
             Cat cat = cats.next();
@@ -203,12 +203,12 @@ public class JPABase extends AbstractJPATest implements JPATest {
     }
 
     @Test
-    public void Limit1_UniqueResult() {
+    public void limit1_uniqueResult() {
         assertNotNull(query().from(cat).limit(1).select(cat).fetchOne());
     }
 
     @Test
-    public void LockMode() {
+    public void lockMode() {
         javax.persistence.Query query = query().from(cat)
                 .setLockMode(LockModeType.PESSIMISTIC_READ)
                 .select(cat).createQuery();
@@ -217,13 +217,13 @@ public class JPABase extends AbstractJPATest implements JPATest {
     }
 
     @Test
-    public void LockMode2() {
+    public void lockMode2() {
         assertFalse(query().from(cat).setLockMode(LockModeType.PESSIMISTIC_READ)
                 .select(cat).fetch().isEmpty());
     }
 
     @Test
-    public void QueryExposure() {
+    public void queryExposure() {
         //save(new Cat(20));
         List<Cat> results = query().from(cat)
                 .select(cat).createQuery().getResultList();
@@ -233,7 +233,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     @Ignore // isn't a valid JPQL query
-    public void Subquery_UniqueResult() {
+    public void subquery_uniqueResult() {
         QCat cat2 = new QCat("cat2");
 
         BooleanExpression exists = selectOne().from(cat2).where(cat2.eyecolor.isNotNull()).exists();

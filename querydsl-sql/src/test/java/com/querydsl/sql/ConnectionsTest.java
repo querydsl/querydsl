@@ -8,7 +8,7 @@ import org.junit.Test;
 public class ConnectionsTest {
 
     @Test
-    public void Valid_Wkt() {
+    public void valid_wkt() {
         for (String wkt : Connections.getSpatialData().values()) {
             assertNotNull(Wkt.newDecoder(Wkt.Dialect.POSTGIS_EWKT_1).decode(wkt));
         }

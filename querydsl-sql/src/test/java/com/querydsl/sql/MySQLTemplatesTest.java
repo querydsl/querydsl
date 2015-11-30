@@ -39,19 +39,19 @@ public class MySQLTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Order_NullsFirst() {
+    public void order_nullsFirst() {
         query.from(survey1).orderBy(survey1.name.asc().nullsFirst());
         assertEquals("from SURVEY survey1 order by (case when survey1.NAME is null then 0 else 1 end), survey1.NAME asc", query.toString());
     }
 
     @Test
-    public void Order_NullsLast() {
+    public void order_nullsLast() {
         query.from(survey1).orderBy(survey1.name.asc().nullsLast());
         assertEquals("from SURVEY survey1 order by (case when survey1.NAME is null then 1 else 0 end), survey1.NAME asc", query.toString());
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // INTERVAL
         // BINARY, COLLATE
         // !

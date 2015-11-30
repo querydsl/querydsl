@@ -24,7 +24,7 @@ public class TypeCastTest {
 
     @Test(expected = IllegalStateException.class)
     @Ignore
-    public void Cast() {
+    public void cast() {
         QAnimal animal = QAnimal.animal;
         QCat cat = new QCat(animal.getMetadata(), new PathInits("*"));
         CollQueryFactory.from(animal, Collections.<Animal> emptyList()).from(cat, Collections.<Cat> emptyList());

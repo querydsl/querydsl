@@ -75,7 +75,7 @@ public class PathTest {
     }
 
     @Test
-    public void GetAnnotatedElement() {
+    public void getAnnotatedElement() {
         Entity entity = Alias.alias(Entity.class);
         AnnotatedElement element = $(entity).getAnnotatedElement();
 
@@ -84,7 +84,7 @@ public class PathTest {
     }
 
     @Test
-    public void GetAnnotatedElement_for_property() {
+    public void getAnnotatedElement_for_property() {
         Entity entity = Alias.alias(Entity.class);
         AnnotatedElement property1 = $(entity.getProperty1()).getAnnotatedElement();
         AnnotatedElement property2 = $(entity.getProperty2()).getAnnotatedElement();
@@ -123,7 +123,7 @@ public class PathTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Equals() {
+    public void equals() {
         assertEquals(new StringPath("s"),  new StringPath("s"));
         assertEquals(new BooleanPath("b"), new BooleanPath("b"));
         assertEquals(new NumberPath<Integer>(Integer.class,"n"), new NumberPath<Integer>(Integer.class,"n"));
@@ -141,7 +141,7 @@ public class PathTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Various_Properties() {
+    public void various_properties() {
         Path<?> parent = ExpressionUtils.path(Object.class, "parent");
         List<Path<?>> paths = new ArrayList<Path<?>>();
         paths.add(new ArrayPath(String[].class, parent, "p"));
@@ -173,7 +173,7 @@ public class PathTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Various() {
+    public void various() {
         List<Path<?>> paths = new ArrayList<Path<?>>();
         paths.add(new ArrayPath(String[].class, "p"));
         paths.add(new BeanPath(Object.class, "p"));
@@ -203,7 +203,7 @@ public class PathTest {
     }
 
     @Test
-    public void Parent_Path() {
+    public void parent_path() {
         Path<Object> person = ExpressionUtils.path(Object.class, "person");
         Path<String> name = ExpressionUtils.path(String.class, person, "name");
         assertEquals("person.name", name.toString());

@@ -22,17 +22,17 @@ import com.querydsl.core.types.dsl.SimplePath;
 public class CatTest {
 
     @Test(expected = NoSuchFieldException.class)
-    public void SkippedField() throws SecurityException, NoSuchFieldException {
+    public void skippedField() throws SecurityException, NoSuchFieldException {
         QCat.class.getField("skippedField");
     }
 
     @Test
-    public void StringAsSimple() throws SecurityException, NoSuchFieldException {
+    public void stringAsSimple() throws SecurityException, NoSuchFieldException {
         assertTrue(QCat.cat.stringAsSimple.getClass().equals(SimplePath.class));
     }
 
     @Test
-    public void DateAsSimple() {
+    public void dateAsSimple() {
         assertTrue(QCat.cat.dateAsSimple.getClass().equals(SimplePath.class));
     }
 }

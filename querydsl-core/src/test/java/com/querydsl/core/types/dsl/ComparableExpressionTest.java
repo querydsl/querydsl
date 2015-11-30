@@ -22,12 +22,12 @@ public class ComparableExpressionTest {
     private StringPath strPath = new StringPath("str");
 
     @Test
-    public void Between_Start_Given() {
+    public void between_start_given() {
         assertEquals(strPath.goe("A"), strPath.between("A", null));
     }
 
     @Test
-    public void Between_End_Given() {
+    public void between_end_given() {
         assertEquals(strPath.loe("Z"), strPath.between(null, "Z"));
     }
 

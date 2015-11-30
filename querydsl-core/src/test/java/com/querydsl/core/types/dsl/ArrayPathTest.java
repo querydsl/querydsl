@@ -23,7 +23,7 @@ import com.querydsl.core.types.ConstantImpl;
 public class ArrayPathTest {
 
     @Test
-    public void Get() {
+    public void get() {
         ArrayPath<String[], String> arrayPath = new ArrayPath<String[], String>(String[].class, "p");
         assertNotNull(arrayPath.get(ConstantImpl.create(0)));
 

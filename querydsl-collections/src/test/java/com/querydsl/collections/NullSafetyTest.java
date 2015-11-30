@@ -9,14 +9,14 @@ import org.junit.Test;
 public class NullSafetyTest extends AbstractQueryTest {
 
     @Test
-    public void Filters() {
+    public void filters() {
         QCat cat = QCat.cat;
         CollQuery<Cat> query = CollQueryFactory.from(cat, Arrays.asList(new Cat(), new Cat("Bob")));
         assertEquals(1L, query.where(cat.name.eq("Bob")).fetchCount());
     }
 
     @Test
-    public void Joins() {
+    public void joins() {
         Cat kitten1 = new Cat();
         Cat kitten2 = new Cat("Bob");
         Cat cat1 = new Cat();

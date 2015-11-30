@@ -26,7 +26,7 @@ import com.querydsl.core.types.Templates;
 public class JavaTemplatesTest {
 
     @Test
-    public void Mappings() {
+    public void mappings() {
         Templates templates = new JavaTemplates();
         int matched = 0;
         for (Operator operator : Ops.values()) {

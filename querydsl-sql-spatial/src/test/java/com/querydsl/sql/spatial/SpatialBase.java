@@ -57,7 +57,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(POSTGRESQL)
-    public void SpatialRefSys() {
+    public void spatialRefSys() {
         QSpatialRefSys spatialRefSys = QSpatialRefSys.spatialRefSys;
         query().from(spatialRefSys).select(spatialRefSys).fetch();
     }
@@ -70,7 +70,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test // FIXME, maybe use enum as the type ?!?
     @ExcludeIn(H2)
-    public void GeometryType() {
+    public void geometryType() {
         List<Tuple> results = query().from(shapes).select(shapes.geometry, shapes.geometry.geometryType()).fetch();
         assertFalse(results.isEmpty());
         for (Tuple row : results) {
@@ -81,7 +81,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void AsText() {
+    public void asText() {
         List<Tuple> results = query().from(shapes).select(shapes.geometry, shapes.geometry.asText()).fetch();
         assertFalse(results.isEmpty());
         for (Tuple row : results) {
@@ -95,7 +95,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(H2)
-    public void Point_X_Y() {
+    public void point_x_y() {
         PointPath<Point> point = shapes.geometry.asPoint();
         List<Tuple> results = withPoints().select(point, point.x(), point.y()).fetch();
         assertFalse(results.isEmpty());
@@ -107,7 +107,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(MYSQL)
-    public void Point_Distance() {
+    public void point_distance() {
         QShapes shapes1 = QShapes.shapes;
         QShapes shapes2 = new QShapes("shapes2");
         for (Tuple tuple : query().from(shapes1, shapes2)
@@ -123,7 +123,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Point_Instances() {
+    public void point_instances() {
         List<Shapes> results = withPoints().select(shapes).fetch();
         assertEquals(5, results.size());
         for (Shapes row : results) {
@@ -134,7 +134,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void LineString_Instances() {
+    public void lineString_instances() {
         List<Geometry> results = withLineStrings().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
@@ -144,7 +144,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Polygon_Instances() {
+    public void polygon_instances() {
         List<Geometry> results = withPolygons().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
@@ -154,7 +154,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void MultiPoint_Instances() {
+    public void multiPoint_instances() {
         List<Geometry> results = withMultipoints().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
@@ -164,7 +164,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void MultiLineString_Instances() {
+    public void multiLineString_instances() {
         List<Geometry> results = withMultiLineStrings().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
@@ -174,7 +174,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void MultiPolygon_Instances() {
+    public void multiPolygon_instances() {
         List<Geometry> results = withMultiPolygons().select(shapes.geometry).fetch();
         assertFalse(results.isEmpty());
         for (Geometry row : results) {
@@ -184,7 +184,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Point_Methods() {
+    public void point_methods() {
         PointPath<Point> point = shapes.geometry.asPoint();
 
         List<Expression<?>> expressions = Lists.newArrayList();
@@ -238,7 +238,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Point_Methods2() {
+    public void point_methods2() {
         QShapes shapes1 = QShapes.shapes;
         QShapes shapes2 = new QShapes("shapes2");
 
@@ -259,7 +259,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void LineString_Methods() {
+    public void lineString_methods() {
         LineStringPath<LineString> lineString = shapes.geometry.asLineString();
 
         List<Expression<?>> expressions = Lists.newArrayList();
@@ -294,7 +294,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Polygon_Methods() {
+    public void polygon_methods() {
         PolygonPath<Polygon> polygon = shapes.geometry.asPolygon();
 
         List<Expression<?>> expressions = Lists.newArrayList();
@@ -328,7 +328,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void MultiPoint_Methods() {
+    public void multiPoint_methods() {
         MultiPointPath<MultiPoint> multipoint = shapes.geometry.asMultiPoint();
 
         List<Expression<?>> expressions = Lists.newArrayList();
@@ -357,7 +357,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void MultiLineString_Methods() {
+    public void multiLineString_methods() {
         MultiLineStringPath<MultiLineString> multilinestring = shapes.geometry.asMultiLineString();
 
         List<Expression<?>> expressions = Lists.newArrayList();
@@ -389,7 +389,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     @Test
-    public void MultiPolygon_Methods() {
+    public void multiPolygon_methods() {
         MultiPolygonPath<MultiPolygon> multipolygon = shapes.geometry.asMultiPolygon();
 
         List<Expression<?>> expressions = Lists.newArrayList();
@@ -419,7 +419,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(Target.POSTGRESQL)
-    public void Extensions() {
+    public void extensions() {
         List<Expression<?>> expressions = Lists.newArrayList();
         GeometryExpression<?> expr1 = shapes.geometry;
 

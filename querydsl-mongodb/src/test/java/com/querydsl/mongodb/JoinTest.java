@@ -65,7 +65,7 @@ public class JoinTest {
     }
 
     @Test
-    public void Count() {
+    public void count() {
         assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount());
         assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount());
         assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount());
@@ -73,7 +73,7 @@ public class JoinTest {
     }
 
     @Test
-    public void Count_Collection() {
+    public void count_collection() {
         assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchCount());
         assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Ann")).fetchCount());
         assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Ann").or(friend.firstName.eq("Mary"))).fetchCount());
@@ -82,7 +82,7 @@ public class JoinTest {
     }
 
     @Test
-    public void Exists() {
+    public void exists() {
         assertTrue(where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount() > 0);
         assertTrue(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount() > 0);
         assertFalse(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchCount() > 0);
@@ -90,25 +90,25 @@ public class JoinTest {
     }
 
     @Test
-    public void Exists_Collection() {
+    public void exists_collection() {
         assertTrue(where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchCount() > 0);
         assertTrue(where(user.firstName.eq("Bart")).join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchCount() > 0);
     }
 
     @Test
-    public void List() {
+    public void list() {
         assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetch().size());
         assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetch().size());
         assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetch().size());
         assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).fetch().size());
     }
 
-    public void List_Collection() {
+    public void list_collection() {
         assertEquals(1, where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetch().size());
     }
 
     @Test
-    public void Single() {
+    public void single() {
         assertEquals("Jane", where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().getFirstName());
         assertEquals("Jane", where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().getFirstName());
         assertNull(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst());
@@ -116,12 +116,12 @@ public class JoinTest {
     }
 
     @Test
-    public void Single_Collection() {
+    public void single_collection() {
         assertEquals("Bart", where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchFirst().getFirstName());
     }
 
     @Test
-    public void Double() {
+    public void double1() {
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.isNotNull())
                 .join(user.enemy(), enemy).on(enemy.firstName.isNotNull())
@@ -129,7 +129,7 @@ public class JoinTest {
     }
 
     @Test
-    public void Double2() {
+    public void double2() {
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.eq("Mary"))
                 .join(user.enemy(), enemy).on(enemy.firstName.eq("Ann"))
@@ -137,7 +137,7 @@ public class JoinTest {
     }
 
     @Test
-    public void Deep() {
+    public void deep() {
         // Mike -> Mary -> Jane
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.isNotNull())

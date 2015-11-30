@@ -43,14 +43,14 @@ public class ConstructorTest {
     }
 
     @Test
-    public void Classes_are_available() {
+    public void classes_are_available() {
         assertNotNull(QConstructorTest_CategorySuperclass.class);
         assertNotNull(QConstructorTest_Category.class);
         assertNotNull(QConstructorTest_ClassWithConstructor.class);
     }
 
     @Test
-    public void Category_Super_Reference_is_Correct() {
+    public void category_super_reference_is_correct() {
         assertEquals(QConstructorTest_CategorySuperclass.class, QConstructorTest_Category.category._super.getClass());
         assertEquals(Category.class, QConstructorTest_Category.category._super.getType());
     }

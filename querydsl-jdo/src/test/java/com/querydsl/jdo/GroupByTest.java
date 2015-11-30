@@ -29,19 +29,19 @@ public class GroupByTest extends AbstractJDOTest {
     private QProduct product = QProduct.product;
 
     @Test
-    public void Distinct() {
+    public void distinct() {
         assertEquals(3, query().from(product).distinct().select(product.description).fetch().size());
         assertEquals(3, query().from(product).distinct().select(product.price).fetch().size());
     }
 
     @Test
-    public void GroupBy() {
+    public void groupBy() {
         assertEquals(3, query().from(product).groupBy(product.description).select(product.description).fetch().size());
         assertEquals(3, query().from(product).groupBy(product.price).select(product.price).fetch().size());
     }
 
     @Test
-    public void Having() {
+    public void having() {
         assertEquals(3, query().from(product)
                 .groupBy(product.description).having(product.description.ne("XXX"))
                 .select(product.description).fetch().size());

@@ -16,14 +16,14 @@ public class SelectTeradataBase extends AbstractBaseTest {
 
     @Test
     @IncludeIn(TERADATA)
-    public void SetQueryBand_ForSession() {
+    public void setQueryBand_forSession() {
         setQueryBand().set("a", "bb").forSession().execute();
         query().from(survey).select(survey.id).fetch();
     }
 
     @Test
     @IncludeIn(TERADATA)
-    public void SetQueryBand_ForTransaction() {
+    public void setQueryBand_forTransaction() {
         setQueryBand().set("a", "bb").forTransaction().execute();
         query().from(survey).select(survey.id).fetch();
     }

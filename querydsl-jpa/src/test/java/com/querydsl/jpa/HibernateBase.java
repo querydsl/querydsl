@@ -81,7 +81,7 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     }
 
     @Test
-    public void QueryExposure() {
+    public void query_exposure() {
 //        save(new Cat());
         List<Cat> results = query().from(cat).select(cat).createQuery().list();
         assertNotNull(results);
@@ -89,22 +89,22 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     }
 
     @Test
-    public void WithComment() {
+    public void with_comment() {
         query().from(cat).setComment("my comment").select(cat).fetch();
     }
 
     @Test
-    public void LockMode() {
+    public void lockMode() {
         query().from(cat).setLockMode(cat, LockMode.PESSIMISTIC_WRITE).select(cat).fetch();
     }
 
     @Test
-    public void FlushMode() {
+    public void flushMode() {
         query().from(cat).setFlushMode(org.hibernate.FlushMode.AUTO).select(cat).fetch();
     }
 
     @Test
-    public void Scroll() throws IOException {
+    public void scroll() throws IOException {
         CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(cat)
                 .select(cat).createQuery().scroll());
         assertTrue(cats.hasNext());
@@ -115,7 +115,7 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     }
 
     @Test
-    public void ScrollTuple() throws IOException {
+    public void scrollTuple() throws IOException {
         CloseableIterator<Tuple> rows = new ScrollableResultsIterator<Tuple>(query()
                 .from(cat)
                 .select(cat.name, cat.birthdate).createQuery().scroll());

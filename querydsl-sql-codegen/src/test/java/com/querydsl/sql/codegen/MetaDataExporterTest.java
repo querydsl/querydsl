@@ -140,7 +140,7 @@ public class MetaDataExporterTest {
     private String beanPackageName = null;
 
     @Test
-    public void NormalSettings_Repetition() throws SQLException {
+    public void normalSettings_repetition() throws SQLException {
         test("Q", "", "", "", defaultNaming, "target/1", false, false, false);
 
         File file = new File("target/1/test/QEmployee.java");
@@ -153,7 +153,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Explicit_Configuration() throws SQLException {
+    public void explicit_configuration() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
@@ -169,7 +169,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration() throws SQLException {
+    public void minimal_configuration() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -180,7 +180,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_tables() throws SQLException {
+    public void minimal_configuration_with_tables() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setTableNamePattern("RESERVED,UNDERSCORE,BEANGEN1");
@@ -195,7 +195,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_Suffix() throws SQLException {
+    public void minimal_configuration_with_suffix() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -208,7 +208,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_without_keys() throws SQLException {
+    public void minimal_configuration_without_keys() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -222,7 +222,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_Bean_prefix() throws SQLException {
+    public void minimal_configuration_with_bean_prefix() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -237,7 +237,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_Bean_suffix() throws SQLException {
+    public void minimal_configuration_with_bean_suffix() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
@@ -252,7 +252,7 @@ public class MetaDataExporterTest {
     }
 
     @Test
-    public void Minimal_Configuration_with_Bean_folder() throws SQLException {
+    public void minimal_configuration_with_bean_folder() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");

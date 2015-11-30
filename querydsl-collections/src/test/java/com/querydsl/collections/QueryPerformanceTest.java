@@ -29,7 +29,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void ById() throws Exception {
+    public void byId() throws Exception {
         // 15857
         Runner.run("by id", new Benchmark() {
             @Override

@@ -48,7 +48,7 @@ public class OrderTest extends AbstractQueryTest {
     }
 
     @Test
-    public void With_count() {
+    public void with_count() {
         CollQuery<?> q = new CollQuery<Void>();
         q.from(cat, cats);
         long size = q.distinct().fetchCount();
@@ -59,7 +59,7 @@ public class OrderTest extends AbstractQueryTest {
     }
 
     @Test
-    public void With_null() {
+    public void with_null() {
         List<Cat> cats = Arrays.asList(new Cat(), new Cat("Bob"));
         assertEquals(cats, query().from(cat, cats).orderBy(cat.name.asc()).select(cat).fetch());
         assertEquals(Arrays.asList(cats.get(1), cats.get(0)), query().from(cat, cats).orderBy(cat.name.desc()).select(cat).fetch());

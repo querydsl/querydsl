@@ -15,7 +15,7 @@ import com.querydsl.core.types.dsl.StringPath;
 public class JDOQLTemplatesTest {
 
     @Test
-    public void Precedence() {
+    public void precedence() {
 //        Cast
 //        Unary ("~") ("!")
         int p1 =  getPrecedence(Ops.NOT);
@@ -54,12 +54,12 @@ public class JDOQLTemplatesTest {
     }
 
     @Test
-    public void Generic_Precedence() {
+    public void generic_precedence() {
         TemplatesTestUtils.testPrecedence(JDOQLTemplates.DEFAULT);
     }
 
     @Test
-    public void Concat() {
+    public void concat() {
         StringPath a = Expressions.stringPath("a");
         StringPath b = Expressions.stringPath("b");
         StringPath c = Expressions.stringPath("c");

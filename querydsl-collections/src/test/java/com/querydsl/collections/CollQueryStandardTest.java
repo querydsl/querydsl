@@ -80,7 +80,7 @@ public class CollQueryStandardTest {
     }
 
     @Test
-    public void TupleProjection() {
+    public void tupleProjection() {
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
             .select(cat.name, cat.birthdate).fetch();
         for (Tuple tuple : tuples) {
@@ -90,7 +90,7 @@ public class CollQueryStandardTest {
     }
 
     @Test
-    public void Nested_TupleProjection() {
+    public void nested_tupleProjection() {
         Concatenation concat = new Concatenation(cat.name, cat.name);
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
             .select(concat, cat.name, cat.birthdate).fetch();
@@ -103,7 +103,7 @@ public class CollQueryStandardTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void ArrayProjection() {
+    public void arrayProjection() {
         List<String[]> results =  CollQueryFactory.from(cat, data)
             .select(new ArrayConstructorExpression<String>(String[].class, cat.name)).fetch();
         assertFalse(results.isEmpty());
@@ -113,7 +113,7 @@ public class CollQueryStandardTest {
     }
 
     @Test
-    public void ConstructorProjection() {
+    public void constructorProjection() {
         List<Projection> projections =  CollQueryFactory.from(cat, data)
             .select(Projections.constructor(Projection.class, cat.name, cat)).fetch();
         assertFalse(projections.isEmpty());
@@ -123,25 +123,25 @@ public class CollQueryStandardTest {
     }
 
     @Test
-    public void Params() {
+    public void params() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne());
     }
 
     @Test
-    public void Params_anon() {
+    public void params_anon() {
         Param<String> name = new Param<String>(String.class);
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne());
     }
 
     @Test(expected = ParamNotSetException.class)
-    public void Params_not_set() {
+    public void params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).select(cat.name).fetchOne());
     }
 
     @Test
-    public void Limit() {
+    public void limit() {
         assertEquals(data, CollQueryFactory.from(cat, data).limit(Long.MAX_VALUE).fetch());
     }
 

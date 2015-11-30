@@ -12,7 +12,7 @@ public class MySQLSuiteTest extends AbstractSuite {
 
     public static class JPA extends JPABase {
         @Override
-        public void Order_StringValue_ToLong() {
+        public void order_stringValue_toLong() {
             // not supported
         }
     }
@@ -21,7 +21,7 @@ public class MySQLSuiteTest extends AbstractSuite {
     public static class Serialization extends SerializationBase { }
     public static class Hibernate extends HibernateBase {
         @Override
-        public void Order_StringValue_ToLong() {
+        public void order_stringValue_toLong() {
             // not supported
         }
     }

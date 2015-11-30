@@ -40,7 +40,7 @@ public class TemplatesTestBase {
     private final String modulePrefix = getClass().getPackage().getName();
 
     @Test
-    public void Default_Instance() {
+    public void default_instance() {
         Set<Class<? extends Templates>> templates = querydsl.getSubTypesOf(Templates.class);
         Set<Class<? extends Templates>> moduleSpecific = getAll(templates, MODULE_SPECIFIC);
 

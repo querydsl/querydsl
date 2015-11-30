@@ -28,13 +28,13 @@ import com.querydsl.core.types.dsl.StringExpression;
 public class TemplateTest {
 
     @Test
-    public void ToDate() {
+    public void toDate() {
         StringExpression str = Expressions.stringPath("str");
         assertEquals("to_date(str,'DD-MON-YYYY')", to_date(str, "DD-MON-YYYY").toString());
     }
 
     @Test
-    public void ToChar() {
+    public void toChar() {
         DateExpression<Date> date = Expressions.datePath(Date.class,"date");
         assertEquals("to_char(date,'DD-MON-YYYY')", to_char(date, "DD-MON-YYYY").toString());
     }

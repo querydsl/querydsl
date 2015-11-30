@@ -10,7 +10,7 @@ import org.junit.Test;
 public class GenericExporterMojoTest {
 
     @Test
-    public void Execute() throws Exception {
+    public void execute() throws Exception {
         MavenProject mavenProject = new MavenProject();
         mavenProject.getBuild().setOutputDirectory("target/classes");
 

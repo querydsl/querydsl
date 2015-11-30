@@ -37,7 +37,7 @@ public class MySQLQueryTest {
     }
 
     @Test
-    public void Syntax() {
+    public void syntax() {
 //        SELECT
 //        [ALL | DISTINCT | DISTINCTROW ]
 //          [HIGH_PRIORITY]
@@ -80,7 +80,7 @@ public class MySQLQueryTest {
     }
 
     @Test
-    public void ForceIndex() {
+    public void forceIndex() {
         query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.forceIndex("col1_index");
@@ -92,7 +92,7 @@ public class MySQLQueryTest {
     }
 
     @Test
-    public void IgnoreIndex() {
+    public void ignoreIndex() {
         query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.ignoreIndex("col1_index");
@@ -104,7 +104,7 @@ public class MySQLQueryTest {
     }
 
     @Test
-    public void UseIndex() {
+    public void useIndex() {
         query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.useIndex("col1_index");
@@ -116,7 +116,7 @@ public class MySQLQueryTest {
     }
 
     @Test
-    public void UseIndex2() {
+    public void useIndex2() {
         query = new MySQLQuery<Void>(null, MySQLTemplates.builder().newLineToSingleSpace().build());
         query.from(survey);
         query.useIndex("col1_index","col2_index");
@@ -128,63 +128,63 @@ public class MySQLQueryTest {
     }
 
     @Test
-    public void HighPriority() {
+    public void highPriority() {
         query.highPriority();
         assertEquals("select high_priority survey.NAME from SURVEY survey order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void StraightJoin() {
+    public void straightJoin() {
         query.straightJoin();
         assertEquals("select straight_join survey.NAME from SURVEY survey order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void SmallResult() {
+    public void smallResult() {
         query.smallResult();
         assertEquals("select sql_small_result survey.NAME from SURVEY survey order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void BigResult() {
+    public void bigResult() {
         query.bigResult();
         assertEquals("select sql_big_result survey.NAME from SURVEY survey order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void BufferResult() {
+    public void bufferResult() {
         query.bufferResult();
         assertEquals("select sql_buffer_result survey.NAME from SURVEY survey order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void Cache() {
+    public void cache() {
         query.cache();
         assertEquals("select sql_cache survey.NAME from SURVEY survey order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void NoCache() {
+    public void noCache() {
         query.noCache();
         assertEquals("select sql_no_cache survey.NAME from SURVEY survey order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void CalcFoundRows() {
+    public void calcFoundRows() {
         query.calcFoundRows();
         assertEquals("select sql_calc_found_rows survey.NAME from SURVEY survey order by survey.NAME asc",
                 toString(query));
     }
 
     @Test
-    public void WithRollup() {
+    public void withRollup() {
         query.groupBy(survey.name);
         query.withRollup();
         assertEquals("select survey.NAME from SURVEY survey group by survey.NAME with rollup  order by survey.NAME asc",
@@ -192,14 +192,14 @@ public class MySQLQueryTest {
     }
 
     @Test
-    public void ForUpdate() {
+    public void forUpdate() {
         query.forUpdate();
         assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc for update",
                 toString(query));
     }
 
     @Test
-    public void ForUpdate_With_Limit() {
+    public void forUpdate_with_limit() {
         query.forUpdate();
         query.limit(2);
         assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc limit ? for update",
@@ -207,28 +207,28 @@ public class MySQLQueryTest {
     }
 
     @Test
-    public void IntoOutfile() {
+    public void intoOutfile() {
         query.intoOutfile(new File("target/out"));
         assertEquals("select survey.NAME from SURVEY survey " +
                      "order by survey.NAME asc into outfile 'target" + File.separator + "out'", toString(query));
     }
 
     @Test
-    public void IntoDumpfile() {
+    public void intoDumpfile() {
         query.intoDumpfile(new File("target/out"));
         assertEquals("select survey.NAME from SURVEY survey " +
                      "order by survey.NAME asc into dumpfile 'target" + File.separator + "out'", toString(query));
     }
 
     @Test
-    public void IntoString() {
+    public void intoString() {
         query.into("var1");
         assertEquals("select survey.NAME from SURVEY survey " +
                      "order by survey.NAME asc into var1", toString(query));
     }
 
     @Test
-    public void LockInShareMode() {
+    public void lockInShareMode() {
         query.lockInShareMode();
         assertEquals("select survey.NAME from SURVEY survey " +
                      "order by survey.NAME asc lock in share mode", toString(query));

@@ -20,7 +20,7 @@ public class JSR310LocalDateTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     }
 
     @Test
-    public void Set() throws SQLException {
+    public void set() throws SQLException {
         LocalDate value = LocalDate.now();
         Date date = new Date(value.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
 
@@ -33,7 +33,7 @@ public class JSR310LocalDateTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     }
 
     @Test
-    public void JodaSet() throws SQLException {
+    public void jodaSet() throws SQLException {
         LocalDate value = LocalDate.now();
         Date date = new Date(value.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
 
@@ -46,7 +46,7 @@ public class JSR310LocalDateTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     }
 
     @Test
-    public void Get() throws SQLException {
+    public void get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
         EasyMock.expect(resultSet.getDate(1, UTC)).andReturn(new Date(UTC.getTimeInMillis()));
         EasyMock.replay(resultSet);

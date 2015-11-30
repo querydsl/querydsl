@@ -39,7 +39,7 @@ public class PathBuilderValidatorTest {
     }
 
     @Test
-    public void Default() {
+    public void defaults() {
         assertEquals(String.class, PathBuilderValidator.DEFAULT.validate(Customer.class, "name", String.class));
         assertEquals(String.class, PathBuilderValidator.DEFAULT.validate(ExtendedCustomer.class, "name", String.class));
         assertEquals(String.class, PathBuilderValidator.DEFAULT.validate(Project.class, "name", String.class));
@@ -47,7 +47,7 @@ public class PathBuilderValidatorTest {
     }
 
     @Test
-    public void Fields() {
+    public void fields() {
         assertEquals(String.class, PathBuilderValidator.FIELDS.validate(Customer.class, "name", String.class));
         assertEquals(String.class, PathBuilderValidator.FIELDS.validate(ExtendedCustomer.class, "name", String.class));
         assertEquals(Integer.class, PathBuilderValidator.FIELDS.validate(Customer.class, "collection", Collection.class));
@@ -57,7 +57,7 @@ public class PathBuilderValidatorTest {
     }
 
     @Test
-    public void Properties() {
+    public void properties() {
         assertNull(PathBuilderValidator.PROPERTIES.validate(Customer.class, "name", String.class));
         assertNull(PathBuilderValidator.PROPERTIES.validate(ExtendedCustomer.class, "name", String.class));
         assertEquals(String.class, PathBuilderValidator.PROPERTIES.validate(Project.class, "name", String.class));

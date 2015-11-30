@@ -22,13 +22,13 @@ public class SetQueryBandClauseTest {
     }
 
     @Test
-    public void ToString() {
+    public void toString_() {
         clause.set("a", "b");
         assertEquals("set query_band='a=b;' for session", clause.toString());
     }
 
     @Test
-    public void ToString2() {
+    public void toString2() {
         conf.setUseLiterals(false);
         clause.set("a", "b");
         clause.forTransaction();
@@ -36,7 +36,7 @@ public class SetQueryBandClauseTest {
     }
 
     @Test
-    public void ForTransaction() {
+    public void forTransaction() {
         clause.forTransaction();
         clause.set("a", "b");
         clause.set("b", "c");
@@ -44,7 +44,7 @@ public class SetQueryBandClauseTest {
     }
 
     @Test
-    public void GetSQL() {
+    public void getSQL() {
         clause.forTransaction();
         clause.set("a", "b");
         clause.set("b", "c");

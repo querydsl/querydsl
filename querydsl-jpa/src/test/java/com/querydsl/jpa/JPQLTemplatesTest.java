@@ -17,7 +17,7 @@ import com.querydsl.core.types.TemplatesTestUtils;
 public class JPQLTemplatesTest {
 
     @Test
-    public void Escape() {
+    public void escape() {
         List<Templates> templates = Arrays.<Templates>asList(
             new JPQLTemplates(), new HQLTemplates(),
             new EclipseLinkTemplates(), new OpenJPATemplates()
@@ -29,7 +29,7 @@ public class JPQLTemplatesTest {
     }
 
     @Test
-    public void Custom_Escape() {
+    public void custom_escape() {
         List<Templates> templates = Arrays.<Templates>asList(
             new JPQLTemplates('X'), new HQLTemplates('X'),
             new EclipseLinkTemplates('X'), new OpenJPATemplates('X')
@@ -41,7 +41,7 @@ public class JPQLTemplatesTest {
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // Navigation operator (.)
         // +, - unary *,
         int p1 = getPrecedence(Ops.NEGATE);
@@ -76,7 +76,7 @@ public class JPQLTemplatesTest {
     }
 
     @Test
-    public void Generic_Precedence() {
+    public void generic_precedence() {
         for (JPQLTemplates templates : ImmutableList.of(
                 JPQLTemplates.DEFAULT, HQLTemplates.DEFAULT, EclipseLinkTemplates.DEFAULT)) {
             TemplatesTestUtils.testPrecedence(templates);

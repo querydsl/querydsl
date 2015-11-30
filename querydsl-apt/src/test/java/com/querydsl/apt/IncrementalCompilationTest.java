@@ -31,7 +31,7 @@ public class IncrementalCompilationTest extends AbstractProcessorTest {
     private static final String packagePath = "src/test/java/com/querydsl/apt/domain/";
 
     @Test
-    public void Does_Not_Overwrite_Unchanged_Files() throws IOException, InterruptedException {
+    public void does_not_overwrite_unchanged_files() throws IOException, InterruptedException {
         File source = new File(packagePath, "ExampleEntity.java");
         String path = source.getPath();
         File qType = new File("target/overwrite/com/querydsl/apt/domain/QExampleEntity.java");

@@ -10,7 +10,7 @@ import org.junit.Test;
 public class SQLServerGeometryWriterTest extends AbstractConverterTest {
 
     @Test
-    public void RoundTrip() throws IOException {
+    public void roundTrip() throws IOException {
         for (Geometry geometry : getGeometries()) {
             byte[] bytes = new SQLServerGeometryWriter().write(geometry);
             Geometry geometry2 = new SQLServerGeometryReader().read(bytes);

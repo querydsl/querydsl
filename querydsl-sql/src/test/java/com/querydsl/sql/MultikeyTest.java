@@ -24,7 +24,7 @@ public class MultikeyTest {
     Multikey multiKey2 = new Multikey();
 
     @Test
-    public void HashCode() {
+    public void hashCode_() {
         int hashCode = multiKey1.hashCode();
         multiKey1.setId(1);
         assertEquals(hashCode, multiKey1.hashCode());
@@ -40,7 +40,7 @@ public class MultikeyTest {
     }
 
     @Test
-    public void Equals() {
+    public void equals() {
         multiKey1.setId(1);
         multiKey1.setId2("2");
         multiKey1.setId3(3);
@@ -56,7 +56,7 @@ public class MultikeyTest {
     }
 
     @Test
-    public void ToString() {
+    public void toString_() {
         assertEquals("Multikey#null;null;null", multiKey1.toString());
 
         multiKey1.setId(1);

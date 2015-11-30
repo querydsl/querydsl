@@ -32,7 +32,7 @@ public class OperationTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Various() {
+    public void various() {
         Expression[] args = new Expression[]{new StringPath("x"), new StringPath("y")};
         List<Operation<?>> operations = new ArrayList<Operation<?>>();
 //        paths.add(new ArrayOperation(String[].class, "p"));

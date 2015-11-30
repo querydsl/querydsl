@@ -8,7 +8,7 @@ import org.junit.Test;
 public class GeometryPathTest {
 
     @Test
-    public void Convert() {
+    public void convert() {
         GeometryPath<Geometry> geometry = new GeometryPath<Geometry>("geometry");
         assertEquals(new GeometryCollectionPath<GeometryCollection>("geometry"), geometry.asCollection());
         assertEquals(new LinearRingPath<LinearRing>("geometry"), geometry.asLinearRing());

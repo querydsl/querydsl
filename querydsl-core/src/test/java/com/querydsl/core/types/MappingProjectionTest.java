@@ -29,7 +29,7 @@ public class MappingProjectionTest {
 
     @SuppressWarnings("serial")
     @Test
-    public void Two_Args() {
+    public void two_args() {
         MappingProjection<Pair<String,String>> mapping = new MappingProjection<Pair<String,String>>(Pair.class, str1, str2) {
             @Override
             protected Pair<String, String> map(Tuple row) {
@@ -44,7 +44,7 @@ public class MappingProjectionTest {
 
     @SuppressWarnings("serial")
     @Test
-    public void Single_Arg() {
+    public void single_arg() {
         MappingProjection<String> mapping = new MappingProjection<String>(String.class, str1) {
             @Override
             protected String map(Tuple row) {
@@ -56,7 +56,7 @@ public class MappingProjectionTest {
     }
 
     @Test
-    public void Distinct_Expressions() {
+    public void distinct_expressions() {
         MappingProjection<Pair<String,String>> mapping = new MappingProjection<Pair<String,String>>(Pair.class, str1, str1) {
             @Override
             protected Pair<String, String> map(Tuple row) {

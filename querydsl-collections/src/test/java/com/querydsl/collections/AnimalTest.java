@@ -23,14 +23,14 @@ import com.querydsl.core.types.dsl.SimplePath;
 public class AnimalTest {
 
     @Test
-    public void Cast() {
+    public void cast() {
         QCat cat = QAnimal.animal.as(QCat.class);
         assertEquals(QAnimal.animal, cat.getMetadata().getElement());
         assertEquals("animal", cat.toString());
     }
 
     @Test
-    public void Date_As_Simple() {
+    public void date_as_simple() {
         assertTrue(QAnimal.animal.dateAsSimple.getClass().equals(SimplePath.class));
     }
 

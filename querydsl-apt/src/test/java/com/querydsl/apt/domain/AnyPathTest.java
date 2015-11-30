@@ -53,7 +53,7 @@ public class AnyPathTest {
     }
 
     @Test
-    public void AnyPath() {
+    public void anyPath() {
         assertNotNull(authorFilter(new Student()));
     }
 

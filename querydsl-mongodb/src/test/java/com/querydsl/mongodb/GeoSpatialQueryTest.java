@@ -54,7 +54,7 @@ public class GeoSpatialQueryTest {
     }
 
     @Test
-    public void Near() {
+    public void near() {
         ds.save(new GeoEntity(10.0, 50.0));
         ds.save(new GeoEntity(20.0, 50.0));
         ds.save(new GeoEntity(30.0, 50.0));
@@ -66,7 +66,7 @@ public class GeoSpatialQueryTest {
     }
 
     @Test
-    public void Near_Sphere() {
+    public void near_sphere() {
         ds.save(new GeoEntity(10.0, 50.0));
         ds.save(new GeoEntity(20.0, 50.0));
         ds.save(new GeoEntity(30.0, 50.0));

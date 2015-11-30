@@ -69,210 +69,210 @@ public class ExpressionsTest {
     }
 
     @Test
-    public void As() {
+    public void as() {
         assertEquals("null as str", Expressions.as(null, str).toString());
         assertEquals("s as str", Expressions.as(new StringPath("s"), str).toString());
     }
 
     @Test
-    public void AllOf() {
+    public void allOf() {
         assertEquals("a && b", Expressions.allOf(a, b).toString());
     }
 
     @Test
-    public void AllOf_With_Nulls() {
+    public void allOf_with_nulls() {
         assertEquals("a && b", Expressions.allOf(a, b, null).toString());
         assertEquals("a", Expressions.allOf(a, null).toString());
         assertEquals("a", Expressions.allOf(null, a).toString());
     }
 
     @Test
-    public void AnyOf() {
+    public void anyOf() {
         assertEquals("a || b", Expressions.anyOf(a, b).toString());
     }
 
     @Test
-    public void AnyOf_With_Nulls() {
+    public void anyOf_with_nulls() {
         assertEquals("a || b", Expressions.anyOf(a, b, null).toString());
         assertEquals("a", Expressions.anyOf(a, null).toString());
         assertEquals("a", Expressions.anyOf(null, a).toString());
     }
 
     @Test
-    public void Constant() {
+    public void constant() {
         assertEquals("X", Expressions.constant("X").toString());
     }
 
     @Test
-    public void Constant_As() {
+    public void constant_as() {
         assertEquals("str as str", Expressions.constantAs("str", str).toString());
     }
 
     @Test
-    public void Template() {
+    public void template() {
         assertEquals("a && b", Expressions.template(Object.class, "{0} && {1}", a, b).toString());
     }
 
     @Test
-    public void ComparableTemplate() {
+    public void comparableTemplate() {
         assertEquals("a && b",
                 Expressions.comparableTemplate(Boolean.class, "{0} && {1}", a, b).toString());
     }
 
     @Test
-    public void NumberTemplate() {
+    public void numberTemplate() {
         assertEquals("1", Expressions.numberTemplate(Integer.class, "1").toString());
     }
 
     @Test
-    public void StringTemplate() {
+    public void stringTemplate() {
         assertEquals("X", Expressions.stringTemplate("X").toString());
     }
 
     @Test
-    public void BooleanTemplate() {
+    public void booleanTemplate() {
         assertEquals("a && b", Expressions.booleanTemplate("{0} && {1}", a, b).toString());
     }
 
     @Test
-    public void SubQuery() {
+    public void subQuery() {
         // TODO
     }
 
     @Test
-    public void Operation() {
+    public void operation() {
         assertEquals("a && b", Expressions.operation(Boolean.class, Ops.AND, a, b).toString());
     }
 
     @Test
-    public void Predicate() {
+    public void predicate() {
         assertEquals("a && b", Expressions.predicate(Ops.AND, a, b).toString());
     }
 
     @Test
-    public void PathClassOfTString() {
+    public void pathClassOfTString() {
         assertEquals("variable", Expressions.path(String.class, "variable").toString());
     }
 
     @Test
-    public void PathClassOfTPathOfQString() {
+    public void pathClassOfTPathOfQString() {
         assertEquals("variable.property", Expressions.path(String.class,
                 Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
-    public void ComparablePathClassOfTString() {
+    public void comparablePathClassOfTString() {
         assertEquals("variable", Expressions.comparablePath(String.class, "variable").toString());
     }
 
     @Test
-    public void ComparablePathClassOfTPathOfQString() {
+    public void comparablePathClassOfTPathOfQString() {
         assertEquals("variable.property", Expressions.comparablePath(String.class,
                 Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
-    public void DatePathClassOfTString() {
+    public void datePathClassOfTString() {
         assertEquals("variable", Expressions.datePath(Date.class, "variable").toString());
     }
 
     @Test
-    public void DatePathClassOfTPathOfQString() {
+    public void datePathClassOfTPathOfQString() {
         assertEquals("variable.property", Expressions.datePath(Date.class,
                 Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
-    public void DateTimePathClassOfTString() {
+    public void dateTimePathClassOfTString() {
         assertEquals("variable", Expressions.dateTimePath(Date.class, "variable").toString());
     }
 
     @Test
-    public void DateTimePathClassOfTPathOfQString() {
+    public void dateTimePathClassOfTPathOfQString() {
         assertEquals("variable.property", Expressions.dateTimePath(Date.class,
                 Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
-    public void TimePathClassOfTString() {
+    public void timePathClassOfTString() {
         assertEquals("variable", Expressions.timePath(Date.class, "variable").toString());
     }
 
     @Test
-    public void TimePathClassOfTPathOfQString() {
+    public void timePathClassOfTPathOfQString() {
         assertEquals("variable.property", Expressions.timePath(Date.class,
                 Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
-    public void NumberPathClassOfTString() {
+    public void numberPathClassOfTString() {
         assertEquals("variable", Expressions.numberPath(Integer.class, "variable").toString());
     }
 
     @Test
-    public void NumberPathClassOfTPathOfQString() {
+    public void numberPathClassOfTPathOfQString() {
         assertEquals("variable.property", Expressions.numberPath(Integer.class,
                 Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
-    public void StringPathString() {
+    public void stringPathString() {
         assertEquals("variable", Expressions.stringPath("variable").toString());
     }
 
     @Test
-    public void StringPathPathOfQString() {
+    public void stringPathPathOfQString() {
         assertEquals("variable.property",
                 Expressions.stringPath(Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
-    public void StringOperation() {
+    public void stringOperation() {
         assertEquals("substring(str,2)",
                 Expressions.stringOperation(Ops.SUBSTR_1ARG, str, ConstantImpl.create(2)).toString());
     }
 
     @Test
-    public void BooleanPathString() {
+    public void booleanPathString() {
         assertEquals("variable", Expressions.booleanPath("variable").toString());
     }
 
     @Test
-    public void BooleanPathPathOfQString() {
+    public void booleanPathPathOfQString() {
         assertEquals("variable.property",
                 Expressions.booleanPath(Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
-    public void BooleanOperation() {
+    public void booleanOperation() {
         assertEquals("a && b", Expressions.booleanOperation(Ops.AND, a, b).toString());
     }
 
     @Test
-    public void ComparableOperation() {
+    public void comparableOperation() {
         assertEquals("a && b", Expressions.comparableOperation(Boolean.class, Ops.AND, a, b).toString());
     }
 
     @Test
-    public void DateOperation() {
+    public void dateOperation() {
         assertEquals("current_date()",
                 Expressions.dateOperation(Date.class, Ops.DateTimeOps.CURRENT_DATE).toString());
     }
 
     @Test
-    public void DateTimeOperation() {
+    public void dateTimeOperation() {
         assertEquals("current_timestamp()",
                 Expressions.dateTimeOperation(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP).toString());
     }
 
     @Test
-    public void TimeOperation() {
+    public void timeOperation() {
         assertEquals("current_time()",
                 Expressions.timeOperation(Time.class, Ops.DateTimeOps.CURRENT_TIME).toString());
     }
 
     @Test
-    public void Cases() {
+    public void cases() {
         // TODO
     }
 

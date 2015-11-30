@@ -23,7 +23,7 @@ import com.querydsl.core.types.EntityPath;
 public class CollectionTest {
 
     @Test
-    public void CollectionUsage() {
+    public void collectionUsage() {
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals("any(domainType.collection) = domainType", $(domainType.getCollection()).any().eq(domainType).toString());
         assertEquals("any(domainType.set) = domainType", $(domainType.getSet()).any().eq(domainType).toString());
@@ -37,7 +37,7 @@ public class CollectionTest {
     }
 
     @Test
-    public void CollectionUsage_Types() {
+    public void collectionUsage_types() {
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals(DomainType.class, $(domainType.getCollection()).any().getType());
         assertEquals(DomainType.class, $(domainType.getSet()).any().getType());

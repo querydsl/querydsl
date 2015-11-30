@@ -31,7 +31,7 @@ import com.querydsl.core.types.ProjectionExample;
 public class ConstructorUtilsTest {
 
     @Test
-    public void GetDefaultConstructor() {
+    public void getDefaultConstructor() {
         Class<?>[] args = {};
         Constructor<?> emptyDefaultConstructor = getConstructor(ProjectionExample.class, args);
         Constructor<?> nullDefaultConstructor = getConstructor(ProjectionExample.class, null);
@@ -42,7 +42,7 @@ public class ConstructorUtilsTest {
     }
 
     @Test
-    public void GetSimpleConstructor() {
+    public void getSimpleConstructor() {
         Class<?>[] args = {Long.class};
         Constructor<?> constructor = getConstructor(ProjectionExample.class, args);
         assertNotNull(constructor);
@@ -50,7 +50,7 @@ public class ConstructorUtilsTest {
     }
 
     @Test
-    public void GetDefaultConstructorParameters() {
+    public void getDefaultConstructorParameters() {
         Class<?>[] args = {Long.class, String.class};
         Class<?>[] expected = {Long.TYPE, String.class};
         Class<?>[] constructorParameters = getConstructorParameters(ProjectionExample.class, args);

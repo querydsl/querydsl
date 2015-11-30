@@ -51,7 +51,7 @@ public class EmbeddedTest {
     }
 
     @Test
-    public void EntityClass() {
+    public void entityClass() {
         assertNotNull(QEmbeddedTest_EntityClass.entityClass.code.property);
         assertEquals(SubEntityCode.class, QEmbeddedTest_EntityClass.entityClass.code.getType());
     }

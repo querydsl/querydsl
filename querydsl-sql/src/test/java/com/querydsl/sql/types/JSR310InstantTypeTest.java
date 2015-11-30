@@ -19,7 +19,7 @@ public class JSR310InstantTypeTest extends AbstractJSR310DateTimeTypeTest<Instan
     }
 
     @Test
-    public void Set() throws SQLException {
+    public void set() throws SQLException {
         Instant value = Instant.now();
         Timestamp ts = new Timestamp(value.toEpochMilli());
 
@@ -32,7 +32,7 @@ public class JSR310InstantTypeTest extends AbstractJSR310DateTimeTypeTest<Instan
     }
 
     @Test
-    public void JodaSet() throws SQLException {
+    public void jodaSet() throws SQLException {
         Instant value = Instant.now();
         Timestamp ts = new Timestamp(value.toEpochMilli());
 
@@ -45,7 +45,7 @@ public class JSR310InstantTypeTest extends AbstractJSR310DateTimeTypeTest<Instan
     }
 
     @Test
-    public void Get() throws SQLException {
+    public void get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
         EasyMock.expect(resultSet.getTimestamp(1, UTC)).andReturn(new Timestamp(UTC.getTimeInMillis()));
         EasyMock.replay(resultSet);

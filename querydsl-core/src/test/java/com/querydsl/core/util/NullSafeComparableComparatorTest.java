@@ -23,27 +23,27 @@ public class NullSafeComparableComparatorTest {
     private final NullSafeComparableComparator<String> comparator = new NullSafeComparableComparator<String>();
 
     @Test
-    public void Null_Before_Object() {
+    public void null_before_object() {
         assertTrue(comparator.compare(null, "X") < 0);
     }
 
     @Test
-    public void Object_After_Null() {
+    public void object_after_null() {
         assertTrue(comparator.compare("X", null) > 0);
     }
 
     @Test
-    public void Object_Eq_Object() {
+    public void object_eq_object() {
         assertEquals(0, comparator.compare("X", "X"));
     }
 
     @Test
-    public void Object_Lt_Object() {
+    public void object_lt_object() {
         assertTrue(comparator.compare("X", "Y") < 0);
     }
 
     @Test
-    public void Object_Gt_Object() {
+    public void object_gt_object() {
         assertTrue(comparator.compare("Z", "Y") > 0);
     }
 

@@ -15,28 +15,28 @@ public class TeradataTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Limit() {
+    public void limit() {
         query.from(survey1).limit(5);
         assertEquals("from SURVEY survey1 " +
             "qualify row_number() over (order by 1) <= ?", query.toString());
     }
 
     @Test
-    public void Offset() {
+    public void offset() {
         query.from(survey1).offset(5);
         assertEquals("from SURVEY survey1 " +
             "qualify row_number() over (order by 1) > ?", query.toString());
     }
 
     @Test
-    public void Limit_Offset() {
+    public void limit_offset() {
         query.from(survey1).limit(5).offset(10);
         assertEquals("from SURVEY survey1 " +
             "qualify row_number() over (order by 1) between ? and ?", query.toString());
     }
 
     @Test
-    public void OrderBy_Limit() {
+    public void orderBy_limit() {
         query.from(survey1).orderBy(survey1.name.asc()).limit(5);
         assertEquals("from SURVEY survey1 " +
             "order by survey1.NAME asc " +
@@ -44,7 +44,7 @@ public class TeradataTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // +, - (unary)
         int p1 = getPrecedence(Ops.NEGATE);
         // ** (exponentation)

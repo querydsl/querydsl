@@ -26,7 +26,7 @@ public class TypeMappingsTest {
     static class Entity { }
 
     @Test
-    public void GetPathType_Of_InnerClass() {
+    public void getPathType_of_innerClass() {
         TypeMappings typeMappings = new JavaTypeMappings();
         EntityType model = new EntityType(new ClassType(TypeMappingsTest.class));
         EntityType type = new EntityType(new ClassType(Entity.class));
@@ -37,7 +37,7 @@ public class TypeMappingsTest {
     }
 
     @Test
-    public void IsRegistered() {
+    public void isRegistered() {
         TypeMappings typeMappings = new JavaTypeMappings();
         typeMappings.register(new ClassType(Double[].class), new ClassType(Point.class));
         assertTrue(typeMappings.isRegistered(new ClassType(Double[].class)));

@@ -54,7 +54,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void Execute() throws Exception {
+    public void execute() throws Exception {
         mojo.setTargetFolder("target/export");
         mojo.execute();
 
@@ -63,7 +63,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void Execute_With_CustomTypes() throws Exception {
+    public void execute_with_customTypes() throws Exception {
         mojo.setTargetFolder("target/export2");
         mojo.setCustomTypes(new String[]{BytesType.class.getName()});
         mojo.execute();
@@ -73,7 +73,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void Execute_With_JodaTypes() throws Exception {
+    public void execute_with_jodaTypes() throws Exception {
         mojo.setTargetFolder("target/export3");
         mojo.setCustomTypes(new String[]{LocalDateType.class.getName(), LocalTimeType.class.getName(), DateTimeType.class.getName()});
 
@@ -84,7 +84,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void Execute_With_TypeMappings() throws Exception {
+    public void execute_with_typeMappings() throws Exception {
         mojo.setTargetFolder("target/export4");
         TypeMapping mapping = new TypeMapping();
         mapping.setTable("CATALOGS");
@@ -99,7 +99,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void ExecuteWithNumericMappings() throws Exception {
+    public void executeWithNumericMappings() throws Exception {
         mojo.setTargetFolder("target/export5");
         NumericMapping mapping = new NumericMapping();
         mapping.setTotal(1);
@@ -114,7 +114,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void ExecuteWithBeans() throws Exception {
+    public void executeWithBeans() throws Exception {
         mojo.setTargetFolder("target/export6");
         mojo.setExportBeans(true);
         mojo.execute();
@@ -124,7 +124,7 @@ public class MetadataExportMojoTest {
 
     @Test
     @Ignore
-    public void ExecuteWithScalaSources() throws Exception {
+    public void executeWithScalaSources() throws Exception {
         mojo.setTargetFolder("target/export7");
         mojo.setCreateScalaSources(true);
         mojo.execute();
@@ -133,7 +133,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void ExecuteWithNamingStrategy() throws Exception {
+    public void executeWithNamingStrategy() throws Exception {
         mojo.setTargetFolder("target/export8");
         mojo.setNamingStrategyClass(OriginalNamingStrategy.class.getName());
         mojo.execute();
@@ -142,7 +142,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void ExecuteWithBeans2() throws Exception {
+    public void executeWithBeans2() throws Exception {
         mojo.setTargetFolder("target/export9");
         mojo.setExportBeans(true);
         mojo.setBeanSerializerClass(ExtendedBeanSerializer.class.getName());
@@ -152,7 +152,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void ExecuteWithBeans3() throws Exception {
+    public void executeWithBeans3() throws Exception {
         mojo.setTargetFolder("target/export10");
         mojo.setExportBeans(true);
         mojo.setBeanInterfaces(new String[]{Serializable.class.getName()});
@@ -162,7 +162,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void ExecuteWithImport1() throws Exception {
+    public void executeWithImport1() throws Exception {
         mojo.setTargetFolder("target/export11");
         mojo.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
         mojo.execute();
@@ -171,7 +171,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void ExecuteWithImportAndBeans1() throws Exception {
+    public void executeWithImportAndBeans1() throws Exception {
         mojo.setTargetFolder("target/export12");
         mojo.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
         mojo.setExportBeans(true);
@@ -181,7 +181,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void ExecuteWithRenames() throws Exception {
+    public void executeWithRenames() throws Exception {
         RenameMapping mapping = new RenameMapping();
         mapping.setFromSchema("ABC");
         mapping.setToSchema("DEF");

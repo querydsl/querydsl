@@ -22,7 +22,7 @@ import com.querydsl.jpa.domain.*;
 public class TypeCastTest {
 
     @Test
-    public void MappedSuperclass() {
+    public void mappedSuperclass() {
         QInheritedProperties subClass = QInheritedProperties.inheritedProperties;
         QSuperclass superClass = subClass._super;
 
@@ -42,7 +42,7 @@ public class TypeCastTest {
 //    }
 
     @Test
-    public void SubClassToSuper() {
+    public void subClassToSuper() {
         QCat cat = QCat.cat;
         QAnimal animal = new QAnimal(cat);
 
@@ -52,7 +52,7 @@ public class TypeCastTest {
     }
 
     @Test
-    public void SubClassToSuper2() {
+    public void subClassToSuper2() {
         QCat cat = QCat.cat;
         QAnimal animal = new QAnimal(cat.getMetadata());
 
@@ -62,7 +62,7 @@ public class TypeCastTest {
     }
 
     @Test
-    public void SuperClassToSub() {
+    public void superClassToSub() {
         QAnimal animal = QAnimal.animal;
         QCat cat = new QCat(animal.getMetadata());
 

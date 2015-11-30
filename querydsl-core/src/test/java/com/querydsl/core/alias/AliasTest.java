@@ -23,20 +23,20 @@ import com.querydsl.core.types.Path;
 public class AliasTest {
 
     @Test
-    public void Alias() {
+    public void alias() {
         DomainType domainType = Alias.alias(DomainType.class);
         Alias.alias(DomainType.class, $(domainType.getCollection()).any());
     }
 
     @Test
-    public void ComparableEntity() {
+    public void comparableEntity() {
        ComparableEntity entity = Alias.alias(ComparableEntity.class);
        Path<ComparableEntity> path = $(entity);
        assertEquals(ComparableEntity.class, path.getType());
     }
 
     @Test
-    public void ComparableEntity_Property() {
+    public void comparableEntity_property() {
        ComparableEntity entity = Alias.alias(ComparableEntity.class);
        Path<String> propertyPath = $(entity.getProperty());
        assertEquals(String.class, propertyPath.getType());
@@ -44,7 +44,7 @@ public class AliasTest {
     }
 
     @Test
-    public void BasicUsage() {
+    public void basicUsage() {
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals("lower(domainType.firstName)", $(domainType.getFirstName()).lower().toString());
         assertEquals("domainType.age", $(domainType.getAge()).toString());
@@ -67,20 +67,20 @@ public class AliasTest {
     }
 
     @Test
-    public void GetAny() {
+    public void getAny() {
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals(DomainType.class, Alias.getAny(domainType).getType());
         assertEquals(String.class, Alias.getAny(domainType.getFirstName()).getType());
     }
 
     @Test
-    public void OtherMethods() {
+    public void otherMethods() {
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals("domainType", domainType.toString());
     }
 
     @Test
-    public void Var() {
+    public void var() {
         assertEquals("it", Alias.var().toString());
         assertEquals("varInteger1", Alias.var(1).toString());
         assertEquals("X", Alias.var("X").toString());

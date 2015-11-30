@@ -75,32 +75,32 @@ public abstract class AbstractJSR310DateTimeTypeTest<T extends Temporal> {
         TimeZone.setDefault(tz);
     }
 
-    public abstract void Set() throws SQLException;
+    public abstract void set() throws SQLException;
 
-    public abstract void Get() throws SQLException;
+    public abstract void get() throws SQLException;
 
     @Test
-    public void Set_CST() throws SQLException {
+    public void set_cST() throws SQLException {
         TimeZone.setDefault(TimeZone.getTimeZone("CST")); // -6:00
-        Set();
+        set();
     }
 
     @Test
-    public void Set_IOT() throws SQLException {
+    public void set_iOT() throws SQLException {
         TimeZone.setDefault(TimeZone.getTimeZone("IOT")); // +6:00
-        Set();
+        set();
     }
 
     @Test
-    public void Get_CST() throws SQLException {
+    public void get_cST() throws SQLException {
         TimeZone.setDefault(TimeZone.getTimeZone("CST")); // -6:00
-        Get();
+        get();
     }
 
     @Test
-    public void Get_IOT() throws SQLException {
+    public void get_iOT() throws SQLException {
         TimeZone.setDefault(TimeZone.getTimeZone("IOT")); // +6:00
-        Get();
+        get();
     }
 
 }

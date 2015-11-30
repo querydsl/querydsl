@@ -21,7 +21,7 @@ public class PredicateOperationTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Not() {
+    public void not() {
         Path<?> o1 = ExpressionUtils.path(Object.class, "o1");
         Path<?> o2 = ExpressionUtils.path(Object.class, "o2");
         PredicateOperation template = ExpressionUtils.predicate(Ops.EQ, o1, o2);

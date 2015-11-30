@@ -35,7 +35,7 @@ public class ExpressionUtilsTest {
     private static final StringPath str2 = Expressions.stringPath("str2");
 
     @Test
-    public void LikeToRegex() {
+    public void likeToRegex() {
         assertEquals(".*", regex(ConstantImpl.create("%")));
         assertEquals("^abc.*", regex(ConstantImpl.create("abc%")));
         assertEquals(".*abc$", regex(ConstantImpl.create("%abc")));
@@ -50,7 +50,7 @@ public class ExpressionUtilsTest {
 
     @Test
     @Ignore
-    public void LikeToRegexSpeed() {
+    public void likeToRegexSpeed() {
         // 4570
         StringPath path = Expressions.stringPath("path");
         final int iterations = 1000000;
@@ -70,12 +70,12 @@ public class ExpressionUtilsTest {
     }
 
     @Test
-    public void LikeToRegex_Escape() {
+    public void likeToRegex_escape() {
         assertEquals("^\\.$",  regex(ConstantImpl.create(".")));
     }
 
     @Test
-    public void RegexToLike() {
+    public void regexToLike() {
         assertEquals("%", like(ConstantImpl.create(".*")));
         assertEquals("_",  like(ConstantImpl.create(".")));
         assertEquals(".", like(ConstantImpl.create("\\.")));
@@ -88,23 +88,23 @@ public class ExpressionUtilsTest {
     }
 
     @Test(expected = QueryException.class)
-    public void RegexToLike_Fail() {
+    public void regexToLike_fail() {
         like(ConstantImpl.create("a*"));
     }
 
     @Test(expected = QueryException.class)
-    public void RegexToLike_Fail2() {
+    public void regexToLike_fail2() {
         like(ConstantImpl.create("\\d"));
     }
 
     @Test(expected = QueryException.class)
-    public void RegexToLike_Fail3() {
+    public void regexToLike_fail3() {
         like(ConstantImpl.create("[ab]"));
     }
 
     @Test
     @Ignore
-    public void RegexToLikeSpeed() {
+    public void regexToLikeSpeed() {
         // 3255
         StringPath path = Expressions.stringPath("path");
         final int iterations = 1000000;
@@ -130,67 +130,67 @@ public class ExpressionUtilsTest {
     }
 
     @Test
-    public void Count() {
+    public void count() {
         assertEquals("count(str)", ExpressionUtils.count(str).toString());
     }
 
     @Test
-    public void EqConst() {
+    public void eqConst() {
         assertEquals("str = X", ExpressionUtils.eqConst(str, "X").toString());
     }
 
     @Test
-    public void Eq() {
+    public void eq() {
         assertEquals("str = str2", ExpressionUtils.eq(str, str2).toString());
     }
 
     @Test
-    public void In() {
+    public void in() {
         assertEquals("str in [a, b, c]", ExpressionUtils.in(str, Arrays.asList("a","b","c")).toString());
     }
 
     @Test
-    public void In_SubQuery() {
+    public void in_subQuery() {
         String s = ExpressionUtils.in(str, new SubQueryExpressionImpl<String>(String.class, new DefaultQueryMetadata())).toString();
         assertTrue(s.startsWith("str in com.querydsl.core.DefaultQueryMetadata@c"));
     }
 
     @Test
-    public void InAny() {
+    public void inAny() {
         ImmutableSet<List<String>> of = ImmutableSet.of(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
         assertEquals("str in [a, b, c] || str in [d, e, f]",
                 ExpressionUtils.inAny(str, of).toString());
     }
 
     @Test
-    public void IsNull() {
+    public void isNull() {
         assertEquals("str is null", ExpressionUtils.isNull(str).toString());
     }
 
     @Test
-    public void IsNotNull() {
+    public void isNotNull() {
         assertEquals("str is not null", ExpressionUtils.isNotNull(str).toString());
     }
 
     @Test
-    public void NeConst() {
+    public void neConst() {
         assertEquals("str != X", ExpressionUtils.neConst(str, "X").toString());
     }
 
     @Test
-    public void Ne() {
+    public void ne() {
         assertEquals("str != str2", ExpressionUtils.ne(str, str2).toString());
     }
 
     @Test
-    public void NotInAny() {
+    public void notInAny() {
         ImmutableSet<List<String>> of = ImmutableSet.of(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
         assertEquals("str not in [a, b, c] && str not in [d, e, f]",
                 ExpressionUtils.notInAny(str, of).toString());
     }
 
     @Test
-    public void NotIn_SubQuery() {
+    public void notIn_subQuery() {
         String s = ExpressionUtils.notIn(str, new SubQueryExpressionImpl<String>(String.class, new DefaultQueryMetadata())).toString();
         assertTrue(s.startsWith("str not in com.querydsl.core.DefaultQueryMetadata@c"));
     }

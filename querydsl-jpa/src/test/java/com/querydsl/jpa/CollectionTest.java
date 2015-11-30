@@ -22,22 +22,22 @@ import com.querydsl.jpa.domain.Cat;
 public class CollectionTest extends AbstractQueryTest {
 
     @Test
-    public void Constant_InElements_Set() {
+    public void constant_inElements_set() {
         assertToString("?1 member of cat.kittensSet", cat.kittensSet.contains(new Cat()));
     }
 
     @Test
-    public void Constant_InElements_List() {
+    public void constant_inElements_list() {
         assertToString("?1 member of cat.kittens", cat.kittens.contains(new Cat()));
     }
 
     @Test
-    public void Path_InElements_List() {
+    public void path_inElements_list() {
         assertToString("cat member of cat1.kittens", cat.in(cat1.kittens));
     }
 
     @Test
-    public void Path_InElements_Set() {
+    public void path_inElements_set() {
         assertToString("cat member of cat1.kittensSet", cat.in(cat1.kittensSet));
     }
 

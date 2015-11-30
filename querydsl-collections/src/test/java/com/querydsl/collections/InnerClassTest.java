@@ -32,7 +32,7 @@ public class InnerClassTest {
     }
 
     @Test
-    public void Query() {
+    public void query() {
         Example example = alias(Example.class);
         assertFalse(CollQueryFactory.from($(example), Arrays.asList(new Example()))
                 .where($(example.getId()).isNull())

@@ -44,7 +44,7 @@ public class LikeEscapeBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Like() {
+    public void like() {
         assertEquals(0, query().from(survey).where(survey.name.like("a!%")).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.like("a!_")).fetchCount());
         assertEquals(3, query().from(survey).where(survey.name.like("a%")).fetchCount());
@@ -55,7 +55,7 @@ public class LikeEscapeBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Like_with_Escape() {
+    public void like_with_escape() {
         assertEquals(1, query().from(survey).where(survey.name.like("a!%", '!')).fetchCount());
         assertEquals(1, query().from(survey).where(survey.name.like("a!_", '!')).fetchCount());
         assertEquals(3, query().from(survey).where(survey.name.like("a%", '!')).fetchCount());
@@ -63,7 +63,7 @@ public class LikeEscapeBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Like_Escaping_Conclusion() {
+    public void like_escaping_conclusion() {
         assertTrue("Escaped like construct must return more results",
                 query().from(survey).where(survey.name.like("a!%")).fetchCount()
                 < query().from(survey).where(survey.name.like("a!%", '!')).fetchCount());

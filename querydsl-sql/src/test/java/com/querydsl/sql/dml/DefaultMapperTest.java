@@ -15,7 +15,7 @@ public class DefaultMapperTest extends AbstractMapperTest {
     private static final QEmployee emp = QEmployee.employee;
 
     @Test
-    public void Extract() {
+    public void extract() {
         Map<Path<?>, Object> values = DefaultMapper.DEFAULT.createMap(emp, employee);
         assertEquals(employee.getDatefield(), values.get(emp.datefield));
         assertEquals(employee.getFirstname(), values.get(emp.firstname));
@@ -26,13 +26,13 @@ public class DefaultMapperTest extends AbstractMapperTest {
     }
 
     @Test
-    public void Extract2() {
+    public void extract2() {
         Map<Path<?>, Object> values = DefaultMapper.DEFAULT.createMap(emp, new EmployeeX());
         assertTrue(values.isEmpty());
     }
 
     @Test
-    public void PreservedColumnOrder() {
+    public void preservedColumnOrder() {
         final Map<String, Path<?>> columns = DefaultMapper.DEFAULT.getColumns(emp);
         final List<String> expectedKeySet = Arrays.asList("id", "firstname", "lastname",
                 "salary", "datefield", "timefield", "superiorId");

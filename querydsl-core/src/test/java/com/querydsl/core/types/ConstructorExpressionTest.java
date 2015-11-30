@@ -30,7 +30,7 @@ public class ConstructorExpressionTest {
     Concatenation concat = new Concatenation(str1, str2);
 
     @Test
-    public void Constructor() {
+    public void constructor() {
         Expression<Long> longVal = ConstantImpl.create(1L);
         Expression<String> stringVal = ConstantImpl.create("");
         ProjectionExample instance = new ConstructorExpression<ProjectionExample>(ProjectionExample.class,
@@ -41,31 +41,31 @@ public class ConstructorExpressionTest {
     }
 
     @Test
-    public void Create() {
+    public void create() {
         Expression<Long> longVal = ConstantImpl.create(1L);
         Expression<String> stringVal = ConstantImpl.create("");
         assertNotNull(Projections.constructor(ProjectionExample.class, longVal, stringVal).newInstance(0L, ""));
     }
 
     @Test
-    public void Create2() {
+    public void create2() {
         Expression<Long> longVal = ConstantImpl.create(1L);
         assertNotNull(Projections.constructor(ProjectionExample.class, longVal).newInstance(0L));
     }
 
     @Test
-    public void Create3() {
+    public void create3() {
         assertNotNull(Projections.constructor(ProjectionExample.class).newInstance());
     }
 
     @Test
-    public void Create4() {
+    public void create4() {
         Expression<String> stringVal = ConstantImpl.create("");
         assertNotNull(Projections.constructor(ProjectionExample.class, stringVal).newInstance(""));
     }
 
     @Test
-    public void CreateNullPrimitive() {
+    public void createNullPrimitive() {
         Expression<Boolean> booleanVal = ConstantImpl.create(false);
         Expression<Byte> byteVal = ConstantImpl.create((byte) 0);
         Expression<Character> charVal = ConstantImpl.create('\0');
@@ -87,14 +87,14 @@ public class ConstructorExpressionTest {
     }
 
     @Test
-    public void FactoryExpression_has_right_args() {
+    public void factoryExpression_has_right_args() {
         FactoryExpression<ProjectionExample> constructor = Projections.constructor(ProjectionExample.class, concat);
         constructor = FactoryExpressionUtils.wrap(constructor);
         assertEquals(Arrays.asList(str1, str2), constructor.getArgs());
     }
 
     @Test
-    public void FactoryExpression_newInstance() {
+    public void factoryExpression_newInstance() {
         FactoryExpression<ProjectionExample> constructor = Projections.constructor(ProjectionExample.class, concat);
         constructor = FactoryExpressionUtils.wrap(constructor);
         ProjectionExample projection = constructor.newInstance("12", "34");

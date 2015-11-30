@@ -55,7 +55,7 @@ public class QPersonTest {
     }
 
     @Test
-    public void Populate() {
+    public void populate() {
         QPerson person = QPerson.person;
         QBean<Person> personProjection = Projections.bean(Person.class, person.id, person.firstname, person.securedid);
         Person p = personProjection.newInstance(3, "X", "Y");

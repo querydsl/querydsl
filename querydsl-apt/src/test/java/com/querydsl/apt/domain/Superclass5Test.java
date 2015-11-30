@@ -36,13 +36,13 @@ public class Superclass5Test {
     }
 
     @Test
-    public void SuperClass_Properties() {
+    public void superClass_properties() {
         QSuperclass5Test_SuperClass qtype = new QSuperclass5Test_SuperClass(PathMetadataFactory.forVariable("var"));
         assertNotNull(qtype.superClassProperty);
     }
 
     @Test
-    public void Entity_Properties() {
+    public void entity_properties() {
         QSuperclass5Test_Embeddable qtype = new QSuperclass5Test_Embeddable(PathMetadataFactory.forVariable("var"));
         assertNotNull(qtype.superClassProperty);
         assertNotNull(qtype.embeddableProperty);

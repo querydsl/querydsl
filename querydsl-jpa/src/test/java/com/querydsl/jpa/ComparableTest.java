@@ -20,32 +20,32 @@ import org.junit.Test;
 public class ComparableTest extends AbstractQueryTest {
 
     @Test
-    public void Eq() {
+    public void eq() {
         assertToString("cat.bodyWeight = kitten.bodyWeight",  cat.bodyWeight.eq(kitten.bodyWeight));
     }
 
     @Test
-    public void Goe() {
+    public void goe() {
         assertToString("cat.bodyWeight >= kitten.bodyWeight", cat.bodyWeight.goe(kitten.bodyWeight));
     }
 
     @Test
-    public void Gt() {
+    public void gt() {
         assertToString("cat.bodyWeight > kitten.bodyWeight",  cat.bodyWeight.gt(kitten.bodyWeight));
     }
 
     @Test
-    public void Loe() {
+    public void loe() {
         assertToString("cat.bodyWeight <= kitten.bodyWeight", cat.bodyWeight.loe(kitten.bodyWeight));
     }
 
     @Test
-    public void Lt() {
+    public void lt() {
         assertToString("cat.bodyWeight < kitten.bodyWeight",  cat.bodyWeight.lt(kitten.bodyWeight));
     }
 
     @Test
-    public void Ne() {
+    public void ne() {
         assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
     }
 

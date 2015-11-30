@@ -11,7 +11,7 @@ import com.querydsl.sql.HSQLDBTemplates;
 public class DialectSupportTest {
 
     @Test
-    public void Convert() {
+    public void convert() {
         Template trim = HSQLDBTemplates.DEFAULT.getTemplate(Ops.TRIM);
         assertEquals("trim(both from ?1)", DialectSupport.convert(trim));
         Template concat = HSQLDBTemplates.DEFAULT.getTemplate(Ops.CONCAT);

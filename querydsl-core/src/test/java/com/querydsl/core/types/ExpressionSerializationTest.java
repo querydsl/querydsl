@@ -10,7 +10,7 @@ import com.querydsl.core.types.dsl.Expressions;
 public class ExpressionSerializationTest {
 
     @Test
-    public void Serialize() throws ClassNotFoundException, IOException {
+    public void serialize() throws ClassNotFoundException, IOException {
         QTuple e = new QTuple(Expressions.stringPath("x"), Expressions.numberPath(Integer.class, "y"));
         serialize(e);
         serialize(e.newInstance("a",1));

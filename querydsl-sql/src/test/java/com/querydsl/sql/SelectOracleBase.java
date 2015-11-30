@@ -38,7 +38,7 @@ public class SelectOracleBase extends AbstractBaseTest {
 
     @Test
     @Ignore
-    public void ConnectBy() throws SQLException {
+    public void connectBy() throws SQLException {
         // TODO : come up with a legal case
         oracleQuery().from(employee)
             .where(level.eq(-1))
@@ -49,7 +49,7 @@ public class SelectOracleBase extends AbstractBaseTest {
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void ConnectByPrior() throws SQLException {
+    public void connectByPrior() throws SQLException {
         expectedQuery =  "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
                         "from EMPLOYEE e " +
                         "connect by prior e.ID = e.SUPERIOR_ID";
@@ -61,7 +61,7 @@ public class SelectOracleBase extends AbstractBaseTest {
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void ConnectByPrior2() throws SQLException {
+    public void connectByPrior2() throws SQLException {
         if (configuration.getUseLiterals()) {
             return;
         }
@@ -80,7 +80,7 @@ public class SelectOracleBase extends AbstractBaseTest {
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void ConnectByPrior3() throws SQLException {
+    public void connectByPrior3() throws SQLException {
         if (configuration.getUseLiterals()) {
             return;
         }
@@ -101,7 +101,7 @@ public class SelectOracleBase extends AbstractBaseTest {
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void ConnectByPrior4() throws SQLException {
+    public void connectByPrior4() throws SQLException {
         if (configuration.getUseLiterals()) {
             return;
         }
@@ -118,7 +118,7 @@ public class SelectOracleBase extends AbstractBaseTest {
     @Test
     @IncludeIn(ORACLE)
     @SkipForQuoted
-    public void SumOver() throws SQLException {
+    public void sumOver() throws SQLException {
 //        SQL> select deptno,
 //        2  ename,
 //        3  sal,

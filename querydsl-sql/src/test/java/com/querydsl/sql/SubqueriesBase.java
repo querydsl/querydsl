@@ -23,7 +23,7 @@ public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER})
-    public void Keys() {
+    public void keys() {
         QEmployee employee2 = new QEmployee("employee2");
         ForeignKey<Employee> nameKey1 = new ForeignKey<Employee>(employee,
                 ImmutableList.of(employee.firstname, employee.lastname),
@@ -39,7 +39,7 @@ public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER})
-    public void List_In_Query() {
+    public void list_in_query() {
         QEmployee employee2 = new QEmployee("employee2");
         query().from(employee)
             .where(Expressions.list(employee.id, employee.lastname)
@@ -50,7 +50,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     @Test
     @SkipForQuoted
     @ExcludeIn(DB2) // ID is reserved IN DB2
-    public void SubQueries() throws SQLException {
+    public void subQueries() throws SQLException {
         // subquery in where block
         expectedQuery = "select e.ID from EMPLOYEE e "
             + "where e.ID = (select max(e.ID) "
@@ -62,26 +62,26 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    public void SubQuery_Alias() {
+    public void subQuery_alias() {
         query().from(query().from(employee).select(employee.all()).as(employee2)).select(employee2.all()).fetch();
     }
 
     @Test
     @ExcludeIn(SQLITE)
-    public void SubQuery_All() {
+    public void subQuery_all() {
         query().from(employee).where(employee.id.gtAll(
                 query().from(employee2).select(employee2.id))).fetchCount();
     }
 
     @Test
     @ExcludeIn(SQLITE)
-    public void SubQuery_Any() {
+    public void subQuery_any() {
         query().from(employee).where(employee.id.gtAny(
                 query().from(employee2).select(employee2.id))).fetchCount();
     }
 
     @Test
-    public void SubQuery_InnerJoin() {
+    public void subQuery_innerJoin() {
         SubQueryExpression<Integer> sq = query().from(employee2).select(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");
         query().from(employee).innerJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).select(employee.id).fetch();
@@ -89,7 +89,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    public void SubQuery_LeftJoin() {
+    public void subQuery_leftJoin() {
         SubQueryExpression<Integer> sq = query().from(employee2).select(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");
         query().from(employee).leftJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).select(employee.id).fetch();
@@ -98,7 +98,7 @@ public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({MYSQL, POSTGRESQL, DERBY, SQLSERVER, TERADATA})
-    public void SubQuery_Params() {
+    public void subQuery_params() {
         Param<String> aParam = new Param<String>(String.class, "param");
         SQLQuery<?> subQuery = select(Wildcard.all).from(employee).where(employee.firstname.eq(aParam));
         subQuery.set(aParam, "Mike");
@@ -108,21 +108,21 @@ public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(SQLITE)
-    public void SubQuery_RightJoin() {
+    public void subQuery_rightJoin() {
         SubQueryExpression<Integer> sq = query().from(employee2).select(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");
         query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).select(employee.id).fetch();
     }
 
     @Test
-    public void SubQuery_with_Alias() {
+    public void subQuery_with_alias() {
         List<Integer> ids1 = query().from(employee).select(employee.id).fetch();
         List<Integer> ids2 = query().from(query().from(employee).select(employee.id), employee).select(employee.id).fetch();
         assertEquals(ids1, ids2);
     }
 
     @Test
-    public void SubQuery_with_Alias2() {
+    public void subQuery_with_alias2() {
         List<Integer> ids1 = query().from(employee).select(employee.id).fetch();
         List<Integer> ids2 = query().from(query().from(employee).select(employee.id).as(employee)).select(employee.id).fetch();
         assertEquals(ids1, ids2);
@@ -130,7 +130,7 @@ public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     @SkipForQuoted
-    public void SubQuerySerialization() {
+    public void subQuerySerialization() {
         SQLQuery<?> query = query();
         query.from(survey);
         assertEquals("from SURVEY s", query.toString());
@@ -140,7 +140,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     }
 
     @Test
-    public void SubQuerySerialization2() {
+    public void subQuerySerialization2() {
         NumberPath<BigDecimal> sal = Expressions.numberPath(BigDecimal.class, "sal");
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);

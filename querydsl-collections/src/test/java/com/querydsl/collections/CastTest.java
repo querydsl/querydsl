@@ -9,13 +9,13 @@ import org.junit.Test;
 public class CastTest extends AbstractQueryTest {
 
     @Test
-    public void Parents() {
+    public void parents() {
         QCat cat = QAnimal.animal.as(QCat.class);
         assertEquals(QAnimal.animal, cat.getMetadata().getParent());
     }
 
     @Test
-    public void Cast() {
+    public void cast() {
         assertEquals(Arrays.asList(c1, c2, c3, c4),
             query().from(QAnimal.animal, cats)
                 .where(QAnimal.animal.as(QCat.class).breed.eq(0))
@@ -23,7 +23,7 @@ public class CastTest extends AbstractQueryTest {
     }
 
     @Test
-    public void PropertyDereference() {
+    public void property_dereference() {
          Cat cat = new Cat();
          cat.setEyecolor(Color.TABBY);
          assertEquals(Color.TABBY,

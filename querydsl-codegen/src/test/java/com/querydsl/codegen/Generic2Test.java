@@ -38,7 +38,7 @@ public class Generic2Test {
     }
 
     @Test
-    public void Resolve() {
+    public void resolve() {
         TypeFactory factory = new TypeFactory(Collections.<Class<? extends Annotation>>emptyList());
         Type type = factory.get(AbstractCollectionAttribute.class);
         assertEquals("com.querydsl.codegen.Generic2Test.AbstractCollectionAttribute", type.getGenericName(false));
@@ -46,7 +46,7 @@ public class Generic2Test {
     }
 
     @Test
-    public void Resolve2() {
+    public void resolve2() {
         TypeFactory factory = new TypeFactory(Collections.<Class<? extends Annotation>>emptyList());
         Type type = factory.getEntityType(AbstractCollectionAttribute.class);
         assertEquals("com.querydsl.codegen.Generic2Test.AbstractCollectionAttribute<? extends java.util.Collection<?>>", type.getGenericName(false));
@@ -55,7 +55,7 @@ public class Generic2Test {
 
 
     @Test
-    public void Export() {
+    public void export() {
         GenericExporter exporter = new GenericExporter();
         exporter.setTargetFolder(new File("target/Generic2Test"));
         exporter.export(Generic2Test.class.getClasses());

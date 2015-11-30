@@ -22,7 +22,7 @@ import com.querydsl.sql.ddl.DropTableClause;
 public class TypesBase extends AbstractBaseTest {
 
     @Test
-    public void CreateTables() {
+    public void create_tables() {
         Map<Class<?>, Object> instances = Maps.newLinkedHashMap();
         instances.put(BigInteger.class, BigInteger.valueOf(1));
         instances.put(Long.class, 1L);
@@ -55,7 +55,7 @@ public class TypesBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, POSTGRESQL, TERADATA})
-    public void DumpTypes() throws SQLException {
+    public void dump_types() throws SQLException {
         Connection conn = Connections.getConnection();
         DatabaseMetaData md = conn.getMetaData();
 

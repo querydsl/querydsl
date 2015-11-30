@@ -33,7 +33,7 @@ public class OrderingTest extends AbstractJDOTest {
     private QProduct product = QProduct.product;
 
     @Test
-    public void Order_Asc() {
+    public void order_asc() {
         List<String> namesAsc = query().from(product).orderBy(
                 product.name.asc(), product.description.desc()).select(
                 product.name).fetch();
@@ -48,7 +48,7 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Order_Desc() {
+    public void order_desc() {
         List<String> namesDesc = query().from(product).orderBy(
                 product.name.desc()).select(product.name).fetch();
         assertEquals(30, namesDesc.size());
@@ -62,7 +62,7 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void TabularResults() {
+    public void tabularResults() {
         List<Tuple> rows = query().from(product).orderBy(product.name.asc())
                 .select(product.name, product.description).fetch();
         assertEquals(30, rows.size());
@@ -73,24 +73,24 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Limit_Order_Asc() {
+    public void limit_order_asc() {
         assertEquals(Arrays.asList("A0", "A1"),
             query().from(product).orderBy(product.name.asc()).limit(2).select(product.name).fetch());
     }
 
     @Test
-    public void Limit_Order_Desc() {
+    public void limit_order_desc() {
         assertEquals(Arrays.asList("C9", "C8"),
             query().from(product).orderBy(product.name.desc()).limit(2).select(product.name).fetch());
     }
 
-    public void Limit_and_Offset() {
+    public void limit_and_offset() {
         assertEquals(Arrays.asList("A2", "A3", "A4"),
             query().from(product).orderBy(product.name.asc()).offset(2).limit(3).select(product.name).fetch());
     }
 
     @Test
-    public void QueryResults() {
+    public void queryResults() {
         QueryResults<String> results = query().from(product).orderBy(
                 product.name.asc()).limit(2).select(product.name).fetchResults();
         assertEquals(Arrays.asList("A0", "A1"), results.getResults());

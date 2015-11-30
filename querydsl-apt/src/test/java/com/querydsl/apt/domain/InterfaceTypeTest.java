@@ -65,31 +65,31 @@ public class InterfaceTypeTest extends AbstractTest {
     }
 
     @Test
-    public void QInterfaceType_relation() throws SecurityException, NoSuchFieldException {
+    public void qInterfaceType_relation() throws SecurityException, NoSuchFieldException {
         start(QInterfaceTypeTest_InterfaceType.class, QInterfaceTypeTest_InterfaceType.interfaceType);
         match(QInterfaceTypeTest_InterfaceType.class, "relation");
     }
 
     @Test
-    public void QInterfaceType_relation2() throws SecurityException, NoSuchFieldException {
+    public void qInterfaceType_relation2() throws SecurityException, NoSuchFieldException {
         start(QInterfaceTypeTest_InterfaceType.class, QInterfaceTypeTest_InterfaceType.interfaceType);
         match(ListPath.class, "relation2");
     }
 
     @Test
-    public void QInterfaceType_relation3() throws SecurityException, NoSuchFieldException {
+    public void qInterfaceType_relation3() throws SecurityException, NoSuchFieldException {
         start(QInterfaceTypeTest_InterfaceType.class, QInterfaceTypeTest_InterfaceType.interfaceType);
         match(ListPath.class, "relation3");
     }
 
     @Test
-    public void QInterfaceType_relation4() throws SecurityException, NoSuchFieldException {
+    public void qInterfaceType_relation4() throws SecurityException, NoSuchFieldException {
         start(QInterfaceTypeTest_InterfaceType.class, QInterfaceTypeTest_InterfaceType.interfaceType);
         match(NumberPath.class, "relation4");
     }
 
     @Test
-    public void QInterfaceType3() throws SecurityException, NoSuchFieldException {
+    public void qInterfaceType3() throws SecurityException, NoSuchFieldException {
         Class<?> cl = QInterfaceTypeTest_InterfaceType3.class;
         cl.getField("prop");
         cl.getField("prop2");
@@ -97,7 +97,7 @@ public class InterfaceTypeTest extends AbstractTest {
     }
 
     @Test
-    public void QInterfaceType5() throws SecurityException, NoSuchFieldException {
+    public void qInterfaceType5() throws SecurityException, NoSuchFieldException {
         Class<?> cl = QInterfaceTypeTest_InterfaceType5.class;
         cl.getField("prop");
         cl.getField("prop2");

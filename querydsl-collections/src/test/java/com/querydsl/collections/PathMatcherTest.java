@@ -14,7 +14,7 @@ public class PathMatcherTest {
     private static final QCar $ = QCar.car;
 
     @Test
-    public void Match() {
+    public void match() {
         Car car = new Car();
         car.setHorsePower(123);
 
@@ -23,7 +23,7 @@ public class PathMatcherTest {
     }
 
     @Test
-    public void Mismatch() {
+    public void mismatch() {
         Car car = new Car();
         car.setHorsePower(123);
 
@@ -33,7 +33,7 @@ public class PathMatcherTest {
     }
 
     @Test
-    public void Describe() {
+    public void describe() {
         Description description = new StringDescription();
         hasValue($.horsePower, equalTo(321)).describeTo(description);
         assertEquals("valueOf(\"car.horsePower\", <321>)", description.toString());

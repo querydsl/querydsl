@@ -43,12 +43,12 @@ public class QueryTypeOverTransientTest {
     }
 
     @Test
-    public void Entity_Reference_Is_Available() {
+    public void entity_reference_is_available() {
         assertNotNull(QQueryTypeOverTransientTest_Entity.entity.reference);
     }
 
     @Test
-    public void Entity2_Reference_Is_Available() {
+    public void entity2_reference_is_available() {
         assertNotNull(QQueryTypeOverTransientTest_Entity2.entity2.reference);
     }
 

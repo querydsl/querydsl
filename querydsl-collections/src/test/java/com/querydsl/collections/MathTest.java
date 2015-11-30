@@ -16,7 +16,7 @@ public class MathTest {
     private NumberPath<Double> num = Expressions.numberPath(Double.class, "num");
 
     @Test
-    public void Math() {
+    public void math() {
         Expression<Double> expr = num;
 
         assertEquals(Math.acos(0.5), unique(MathExpressions.acos(expr)), 0.001);

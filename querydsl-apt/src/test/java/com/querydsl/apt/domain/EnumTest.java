@@ -40,12 +40,12 @@ public class EnumTest {
     }
 
     @Test
-    public void Enum_as_Comparable() {
+    public void enum_as_comparable() {
         assertNotNull(QEnumTest_Gender.gender.asc());
     }
 
     @Test
-    public void EnumOrdinal_as_Comparable() {
+    public void enumOrdinal_as_comparable() {
         assertNotNull(QEnumTest_Gender.gender.ordinal().asc());
     }
 

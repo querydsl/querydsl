@@ -31,26 +31,26 @@ public class BooleanBuilderTest {
     private final BooleanExpression second = BooleanConstant.FALSE;
 
     @Test
-    public void Null_In_Constructor() {
+    public void null_in_constructor() {
         assertNull(new BooleanBuilder(null).getValue());
     }
 
     @Test
-    public void And_Empty() {
+    public void and_empty() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(new BooleanBuilder());
         assertNull(ExpressionUtils.extract(builder));
     }
 
     @Test
-    public void AndAnyOf() {
+    public void and_any_of() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(first, null);
         assertEquals(first, builder.getValue());
     }
 
     @Test
-    public void AndAnyOf2() {
+    public void and_any_of2() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(null, first);
         assertEquals(first, builder.getValue());
@@ -58,14 +58,14 @@ public class BooleanBuilderTest {
 
 
     @Test
-    public void OrAllOf() {
+    public void or_all_of() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.orAllOf(first, null);
         assertEquals(first, builder.getValue());
     }
 
     @Test
-    public void OrAllOf2() {
+    public void or_all_of2() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.orAllOf(null, first);
         assertEquals(first, builder.getValue());
@@ -73,19 +73,19 @@ public class BooleanBuilderTest {
 
     @Test(expected = QueryException.class)
     @Ignore
-    public void WrappedBooleanBuilder() {
+    public void wrapped_booleanBuilder() {
         new BooleanBuilder(new BooleanBuilder());
     }
 
     @Test
-    public void Basic() {
+    public void basic() {
 //        new BooleanBuilder().and(first).or(second);
         assertEquals(first.or(second).toString(),
             new BooleanBuilder().and(first).or(second).toString());
     }
 
     @Test
-    public void Advanced() {
+    public void advanced() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(first, second, first);
         builder.orAllOf(first, second, first);
@@ -93,7 +93,7 @@ public class BooleanBuilderTest {
     }
 
     @Test
-    public void If_Then_Else() {
+    public void if_then_else() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(null);
         builder.or(null);
@@ -102,59 +102,59 @@ public class BooleanBuilderTest {
     }
 
     @Test
-    public void And_null_Supported() {
+    public void and_null_supported() {
         assertEquals(first, first.and(null));
     }
 
     @Test
-    public void Or_null_Supported() {
+    public void or_null_supported() {
         assertEquals(first, first.or(null));
     }
 
     @Test
-    public void And_Not() {
+    public void and_not() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).andNot(second);
         assertEquals(first.and(second.not()), builder.getValue());
     }
 
     @Test
-    public void Or_Not() {
+    public void or_not() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).orNot(second);
         assertEquals(first.or(second.not()), builder.getValue());
     }
 
     @Test
-    public void Not() {
+    public void not() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).not();
         assertEquals(first.not(), builder.getValue());
     }
 
     @Test
-    public void BooleanBuilder_Equals_BooleanBuilder() {
+    public void booleanBuilder_equals_booleanBuilder() {
         assertEquals(new BooleanBuilder(first), new BooleanBuilder(first));
     }
 
     @Test
-    public void Constant_Equals_BooleanBuilder() {
+    public void constant_equals_booleanBuilder() {
         assertFalse(first.equals(new BooleanBuilder(first)));
     }
 
     @Test
-    public void BooleanBuilder_Equals_Constant() {
+    public void booleanBuilder_equals_constant() {
         assertFalse(new BooleanBuilder(first).equals(first));
     }
 
     @Test
-    public void HashCode() {
+    public void hashCode_() {
         assertEquals(new BooleanBuilder(first).hashCode(), new BooleanBuilder(first).hashCode());
         assertEquals(new BooleanBuilder().hashCode(), new BooleanBuilder().hashCode());
     }
 
     @Test
-    public void ToString() {
+    public void toString_() {
         BooleanBuilder builder = new BooleanBuilder().and(first);
         assertEquals("true", builder.toString());
         builder.or(Expressions.booleanPath("condition"));
@@ -162,19 +162,19 @@ public class BooleanBuilderTest {
     }
 
 //    @Test
-//    public void GetArg() {
+//    public void getArg() {
 //        BooleanBuilder builder = new BooleanBuilder().and(first);
 //        assertEquals(first, builder.getArg(0));
 //    }
 //
 //    @Test
-//    public void GetArgs() {
+//    public void getArgs() {
 //        BooleanBuilder builder = new BooleanBuilder().and(first);
 //        assertEquals(Arrays.asList(first), builder.getArgs());
 //    }
 
     @Test
-    public void Accept() {
+    public void accept() {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first);
         builder.or(Expressions.booleanPath("condition"));

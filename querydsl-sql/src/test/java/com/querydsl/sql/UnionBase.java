@@ -29,7 +29,7 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({MYSQL, TERADATA})
-    public void In_Union() {
+    public void in_union() {
         assertTrue(query().from(employee)
             .where(employee.id.in(
                 query().union(query().select(Expressions.ONE),
@@ -40,7 +40,7 @@ public class UnionBase extends AbstractBaseTest {
     @Test
     @SuppressWarnings("unchecked")
     @ExcludeIn(FIREBIRD) // order is not properly supported
-    public void Union() throws SQLException {
+    public void union() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max().as("ID"));
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min().as("ID"));
         assertEquals(
@@ -51,7 +51,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Union_List() throws SQLException {
+    public void union_list() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
         assertEquals(
@@ -61,7 +61,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Union_All() {
+    public void union_all() {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
         List<Integer> list = query().unionAll(sq1, sq2).fetch();
@@ -70,7 +70,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_Multiple_Columns() throws SQLException {
+    public void union_multiple_columns() throws SQLException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.firstname, employee.lastname);
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.lastname, employee.firstname);
         List<Tuple> list = query().union(sq1, sq2).fetch();
@@ -84,7 +84,7 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn(DERBY)
-    public void Union_Multiple_Columns2() throws SQLException {
+    public void union_multiple_columns2() throws SQLException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.firstname, employee.lastname);
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.firstname, employee.lastname);
         SQLQuery<?> query = query();
@@ -99,7 +99,7 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn(DERBY)
-    public void Union_Multiple_Columns3() throws SQLException {
+    public void union_multiple_columns3() throws SQLException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.firstname, employee.lastname);
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.firstname, employee.lastname);
         SQLQuery<?> query = query();
@@ -113,7 +113,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Union_Empty_Result() throws SQLException {
+    public void union_empty_result() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).where(employee.firstname.eq("XXX")).select(employee.id);
         SubQueryExpression<Integer> sq2 = query().from(employee).where(employee.firstname.eq("YYY")).select(employee.id);
         List<Integer> list = query().union(sq1, sq2).fetch();
@@ -122,7 +122,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Union2() throws SQLException {
+    public void union2() throws SQLException {
         List<Integer> list = query().union(
                 query().from(employee).select(employee.id.max()),
                 query().from(employee).select(employee.id.min())).fetch();
@@ -132,7 +132,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Union3() throws SQLException {
+    public void union3() throws SQLException {
         SubQueryExpression<Tuple> sq3 = query().from(employee).select(new Expression[]{employee.id.max()});
         SubQueryExpression<Tuple> sq4 = query().from(employee).select(new Expression[]{employee.id.min()});
         List<Tuple> list2 = query().union(sq3, sq4).fetch();
@@ -142,7 +142,7 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({DERBY})
-    public void Union4() {
+    public void union4() {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.id, employee.firstname);
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.id, employee.firstname);
         assertEquals(1, query().union(employee, sq1, sq2).select(employee.id.count()).fetch().size());
@@ -154,7 +154,7 @@ public class UnionBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DERBY, CUBRID, FIREBIRD, TERADATA})
     @Ignore // FIXME
-    public void Union5() {
+    public void union5() {
         /* (select e.ID, e.FIRSTNAME, superior.ID as sup_id, superior.FIRSTNAME as sup_name
          * from EMPLOYEE e join EMPLOYEE superior on e.SUPERIOR_ID = superior.ID)
          * union
@@ -176,7 +176,7 @@ public class UnionBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({FIREBIRD, TERADATA}) // The ORDER BY clause must contain only integer constants.
     @SuppressWarnings("unchecked")
-    public void Union_With_Order() throws SQLException {
+    public void union_with_order() throws SQLException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id);
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id);
         List<Integer> list = query().union(sq1, sq2).orderBy(employee.id.asc()).fetch();
@@ -186,7 +186,7 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn(FIREBIRD)
-    public void Union_Multi_Column_Projection_List() throws IOException {
+    public void union_multi_column_projection_list() throws IOException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.id.min(), employee.id.min().subtract(1));
 
@@ -199,7 +199,7 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn(FIREBIRD)
-    public void Union_Multi_Column_Projection_Iterate() throws IOException {
+    public void union_multi_column_projection_iterate() throws IOException {
         SubQueryExpression<Tuple> sq1 = query().from(employee).select(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Tuple> sq2 = query().from(employee).select(employee.id.min(), employee.id.min().subtract(1));
 
@@ -216,7 +216,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_Single_Column_Projections_List() throws IOException {
+    public void union_single_column_projections_list() throws IOException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
 
@@ -228,7 +228,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_Single_Column_Projections_Iterate() throws IOException {
+    public void union_single_column_projections_iterate() throws IOException {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max());
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
 
@@ -245,7 +245,7 @@ public class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_FactoryExpression() {
+    public void union_factoryExpression() {
         SubQueryExpression<Employee> sq1 = query().from(employee)
                 .select(Projections.constructor(Employee.class, employee.id));
         SubQueryExpression<Employee> sq2 = query().from(employee)
@@ -259,7 +259,7 @@ public class UnionBase extends AbstractBaseTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({DERBY, CUBRID})
-    public void Union_Clone() {
+    public void union_clone() {
         NumberPath<Integer> idAlias = Expressions.numberPath(Integer.class, "id");
         SubQueryExpression<Employee> sq1 = query().from(employee)
                 .select(Projections.constructor(Employee.class, employee.id.as(idAlias)));

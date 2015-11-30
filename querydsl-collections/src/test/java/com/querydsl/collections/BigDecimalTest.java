@@ -13,7 +13,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 public class BigDecimalTest {
 
     @Test
-    public void Arithmetic() {
+    public void arithmetic() {
         NumberPath<BigDecimal> num = Expressions.numberPath(BigDecimal.class, "num");
         CollQuery<?> query = CollQueryFactory.from(num, Arrays.asList(BigDecimal.ONE, BigDecimal.valueOf(2)));
         assertEquals(Arrays.asList(BigDecimal.valueOf(11), BigDecimal.valueOf(12)),

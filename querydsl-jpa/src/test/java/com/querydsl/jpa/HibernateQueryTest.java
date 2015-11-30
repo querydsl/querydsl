@@ -27,7 +27,7 @@ import com.querydsl.jpa.hibernate.HibernateQuery;
 public class HibernateQueryTest {
 
     @Test
-    public void Clone() {
+    public void clone_() {
         QCat cat = QCat.cat;
         BooleanBuilder emptyBooleanBuilder = new BooleanBuilder();
         HibernateQuery<?> hq = new HibernateQuery<Void>().from(cat).where(cat.name.isNull().and(emptyBooleanBuilder));
@@ -36,7 +36,7 @@ public class HibernateQueryTest {
     }
 
     @Test
-    public void InnerJoin() {
+    public void innerJoin() {
         HibernateQuery<?> hqlQuery = new HibernateQuery<Void>();
         QEmployee employee = QEmployee.employee;
         hqlQuery.from(employee);

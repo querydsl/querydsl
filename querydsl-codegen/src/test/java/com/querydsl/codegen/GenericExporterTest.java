@@ -36,7 +36,7 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export() {
+    public void export() {
         exporter.setTargetFolder(new File("target/gen1"));
         exporter.export(getClass().getPackage());
         assertTrue(new File("target/gen1/com/querydsl/codegen/QExampleEmbeddable.java").exists());
@@ -48,7 +48,7 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export_With_Keywords() throws IOException {
+    public void export_with_keywords() throws IOException {
         exporter.setKeywords(Keywords.JPA);
         exporter.setTargetFolder(new File("target/gen1_jpa"));
         exporter.export(getClass().getPackage());
@@ -57,7 +57,7 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export_With_Stopclass() {
+    public void export_with_stopClass() {
         exporter.setTargetFolder(new File("target/gen1_stop"));
         exporter.addStopClass(Examples.Supertype.class);
         exporter.export(getClass().getPackage());
@@ -65,7 +65,7 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void OverrideSerializer() {
+    public void override_serializer() {
         exporter.setTargetFolder(new File("target/gen2"));
         exporter.setSerializerClass(EntitySerializer.class);
         exporter.export(getClass().getPackage());
@@ -78,7 +78,7 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export_Package_as_String() {
+    public void export_package_as_string() {
         exporter.setTargetFolder(new File("target/gen3"));
         exporter.export(getClass().getPackage().getName());
         assertTrue(new File("target/gen3/com/querydsl/codegen/QExampleEmbeddable.java").exists());
@@ -90,7 +90,7 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export_With_Package_Suffix() {
+    public void export_with_package_suffix() {
         exporter.setTargetFolder(new File("target/gen4"));
         exporter.setPackageSuffix("types");
         exporter.export(getClass().getPackage());
@@ -103,7 +103,7 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export_Handle_No_Methods_Nor_Fields() {
+    public void export_handle_no_methods_nor_fields() {
         exporter.setTargetFolder(new File("target/gen5"));
         exporter.setHandleFields(false);
         exporter.setHandleMethods(false);
@@ -112,13 +112,13 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export_Domain_Package() {
+    public void export_domain_package() {
         exporter.setTargetFolder(new File("target/gen6"));
         exporter.export(Cat.class.getPackage());
     }
 
     @Test
-    public void Export_SerializerConfig() {
+    public void export_serializerConfig() {
         exporter.setTargetFolder(new File("target/gen7"));
         exporter.setSerializerConfig(new SimpleSerializerConfig(true, true, true, true, ""));
         exporter.export(getClass().getPackage());
@@ -131,7 +131,7 @@ public class GenericExporterTest {
     }
 
     @Test
-    public void Export_UseFieldTypes() {
+    public void export_useFieldTypes() {
         exporter.setTargetFolder(new File("target/gen8"));
         exporter.export(getClass().getPackage());
         exporter.setUseFieldTypes(true);

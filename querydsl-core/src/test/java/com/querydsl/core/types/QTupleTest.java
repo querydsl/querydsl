@@ -37,7 +37,7 @@ public class QTupleTest {
     Concatenation concat = new Concatenation(str1, str2);
 
     @Test
-    public void Alias() {
+    public void alias() {
         Expression<?> expr = str1.as("s");
         QTuple qTuple = new QTuple(expr);
         Tuple tuple = qTuple.newInstance("arg");
@@ -46,57 +46,57 @@ public class QTupleTest {
     }
 
     @Test
-    public void TwoExpressions_getArgs() {
+    public void twoExpressions_getArgs() {
         assertEquals(Arrays.asList(str1, str2), new QTuple(str1, str2).getArgs());
     }
 
     @Test
-    public void OneArray_getArgs() {
+    public void oneArray_getArgs() {
         assertEquals(Arrays.asList(str1, str2), new QTuple(exprs1).getArgs());
     }
 
     @Test
-    public void TwoExpressionArrays_getArgs() {
+    public void twoExpressionArrays_getArgs() {
         assertEquals(Arrays.asList(str1, str2, str3, str4), new QTuple(exprs1, exprs2).getArgs());
     }
 
     @Test
-    public void NestedProjection_getArgs() {
+    public void nestedProjection_getArgs() {
         assertEquals(Arrays.asList(str1, str2), FactoryExpressionUtils.wrap(new QTuple(concat)).getArgs());
     }
 
     @Test
-    public void NestedProjection_getArgs2() {
+    public void nestedProjection_getArgs2() {
         assertEquals(Arrays.asList(str1, str2, str3), FactoryExpressionUtils.wrap(new QTuple(concat, str3)).getArgs());
     }
 
     @Test
-    public void NestedProjection_newInstance() {
+    public void nestedProjection_newInstance() {
         QTuple expr = new QTuple(concat);
         assertEquals("1234", FactoryExpressionUtils.wrap(expr).newInstance("12", "34").get(concat));
     }
 
     @Test
-    public void NestedProjection_newInstance2() {
+    public void nestedProjection_newInstance2() {
         QTuple expr = new QTuple(str1, str2, concat);
         assertEquals("1234", FactoryExpressionUtils.wrap(expr).newInstance("1", "2", "12", "34").get(concat));
     }
 
     @Test
-    public void Tuple_Equals() {
+    public void tuple_equals() {
         QTuple expr = new QTuple(str1, str2);
         assertEquals(expr.newInstance("str1", "str2"), expr.newInstance("str1", "str2"));
     }
 
     @Test
-    public void Tuple_hashCode() {
+    public void tuple_hashCode() {
         QTuple expr = new QTuple(str1, str2);
         assertEquals(expr.newInstance("str1", "str2").hashCode(), expr.newInstance("str1", "str2").hashCode());
     }
 
     @Test
     @Ignore
-    public void Duplicates() {
+    public void duplicates() {
         QTuple expr = new QTuple(str1, str1);
         assertEquals(1, expr.getArgs().size());
         assertEquals(str1, expr.getArgs().get(0));
@@ -104,14 +104,14 @@ public class QTupleTest {
 
     @Test
     @Ignore
-    public void Duplicates2() {
+    public void duplicates2() {
         QTuple expr = new QTuple(ImmutableList.<Expression<?>>of(str1, str1));
         assertEquals(1, expr.getArgs().size());
         assertEquals(str1, expr.getArgs().get(0));
     }
 
     @Test
-    public void NewInstance() {
+    public void newInstance() {
         assertNotNull(new QTuple(str1, str1).newInstance(null, null));
         assertNull(new QTuple(str1, str1).skipNulls().newInstance(null, null));
     }

@@ -29,47 +29,47 @@ public class CollectionAnyVisitorTest {
     private QCat cat = QCat.cat;
 
     @Test
-    public void Path() {
+    public void path() {
         assertEquals("cat_kittens_0", serialize(cat.kittens.any()));
     }
 
     @Test
-    public void Longer_Path() {
+    public void longer_path() {
         assertEquals("cat_kittens_0.name", serialize(cat.kittens.any().name));
     }
 
     @Test
-    public void Longer_Path2() {
+    public void longer_path2() {
         CollectionAnyVisitor visitor = new CollectionAnyVisitor();
         assertEquals("cat_kittens_0.name", serialize(cat.kittens.any().name, visitor));
         assertEquals("cat_kittens_1.name", serialize(cat.kittens.any().name, visitor));
     }
 
     @Test
-    public void Very_Long_Path() {
+    public void very_long_path() {
         assertEquals("cat_kittens_0_kittens_1.name", serialize(cat.kittens.any().kittens.any().name));
     }
 
     @Test
-    public void Simple_BooleanOperation() {
+    public void simple_booleanOperation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123");
         assertEquals("cat_kittens_0.name = Ruth123", serialize(predicate));
     }
 
     @Test
-    public void Simple_StringOperation() {
+    public void simple_stringOperation() {
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");
         assertEquals("substring(cat_kittens_0.name,1) = uth123", serialize(predicate));
     }
 
     @Test
-    public void And_Operation() {
+    public void and_operation() {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
         assertEquals("cat_kittens_0.name = Ruth123 && cat_kittens_1.bodyWeight > 10.0", serialize(predicate));
     }
 
     @Test
-    public void Template() {
+    public void template() {
         Expression<Boolean> templateExpr = ExpressionUtils.template(Boolean.class, "{0} = {1}",
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
         assertEquals("cat_kittens_0.name = Ruth123", serialize(templateExpr));

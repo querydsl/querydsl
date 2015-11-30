@@ -69,7 +69,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
     }
 
     @Test
-    public void Normal_serialization() throws SQLException {
+    public void normal_serialization() throws SQLException {
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         // customization of serialization

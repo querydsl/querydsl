@@ -10,7 +10,7 @@ public class JavaTemplatesTest {
     private Templates templates = JavaTemplates.DEFAULT;
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // postfix    expr++ expr--
         // unary    ++expr --expr +expr -expr ~ !
         // multiplicative    * / %
@@ -43,7 +43,7 @@ public class JavaTemplatesTest {
     }
 
     @Test
-    public void Generic_Precedence() {
+    public void generic_precedence() {
         TemplatesTestUtils.testPrecedence(JavaTemplates.DEFAULT);
     }
 

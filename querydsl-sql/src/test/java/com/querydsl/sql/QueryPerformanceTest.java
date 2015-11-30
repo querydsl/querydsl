@@ -62,7 +62,7 @@ public class QueryPerformanceTest {
 
 
     @Test
-    public void JDBC() throws Exception {
+    public void jDBC() throws Exception {
         Runner.run("jdbc by id", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -88,7 +88,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void JDBC2() throws Exception {
+    public void jDBC2() throws Exception {
         Runner.run("jdbc by name", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -114,7 +114,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Querydsl1() throws Exception {
+    public void querydsl1() throws Exception {
         Runner.run("qdsl by id", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -129,7 +129,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Querydsl12() throws Exception {
+    public void querydsl12() throws Exception {
         Runner.run("qdsl by id (iterated)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -151,7 +151,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Querydsl13() throws Exception {
+    public void querydsl13() throws Exception {
         Runner.run("qdsl by id (result set access)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -173,7 +173,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Querydsl14() throws Exception {
+    public void querydsl14() throws Exception {
         Runner.run("qdsl by id (no validation)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -188,7 +188,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Querydsl15() throws Exception {
+    public void querydsl15() throws Exception {
         Runner.run("qdsl by id (two cols)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -203,7 +203,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Querydsl2() throws Exception {
+    public void querydsl2() throws Exception {
         Runner.run("qdsl by name", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -218,7 +218,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Querydsl22() throws Exception {
+    public void querydsl22() throws Exception {
         Runner.run("qdsl by name (iterated)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -241,7 +241,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Querydsl23() throws Exception {
+    public void querydsl23() throws Exception {
         Runner.run("qdsl by name (no validation)", new Benchmark() {
             @Override
             public void run(int times) throws Exception {
@@ -257,7 +257,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Serialization() throws Exception {
+    public void serialization() throws Exception {
         QCompanies companies = QCompanies.companies;
         final QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, companies);
@@ -279,7 +279,7 @@ public class QueryPerformanceTest {
     }
 
     @Test
-    public void Serialization2() throws Exception {
+    public void serialization2() throws Exception {
         QCompanies companies = QCompanies.companies;
         final QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, companies);

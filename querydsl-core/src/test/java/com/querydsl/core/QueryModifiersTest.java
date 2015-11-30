@@ -23,7 +23,7 @@ import org.junit.Test;
 public class QueryModifiersTest {
 
     @Test
-    public void Limit() {
+    public void limit() {
         QueryModifiers modifiers = QueryModifiers.limit(12L);
         assertEquals(Long.valueOf(12), modifiers.getLimit());
         assertNull(modifiers.getOffset());
@@ -31,7 +31,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void Offset() {
+    public void offset() {
         QueryModifiers modifiers = QueryModifiers.offset(12L);
         assertEquals(Long.valueOf(12), modifiers.getOffset());
         assertNull(modifiers.getLimit());
@@ -39,7 +39,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void Both() {
+    public void both() {
         QueryModifiers modifiers = new QueryModifiers(1L,2L);
         assertEquals(Long.valueOf(1), modifiers.getLimit());
         assertEquals(Long.valueOf(2), modifiers.getOffset());
@@ -47,7 +47,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void Empty() {
+    public void empty() {
         QueryModifiers modifiers = new QueryModifiers(null, null);
         assertNull(modifiers.getLimit());
         assertNull(modifiers.getOffset());
@@ -55,7 +55,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void HashCode() {
+    public void hashCode_() {
         QueryModifiers modifiers1 = new QueryModifiers(null, null);
         QueryModifiers modifiers2 = new QueryModifiers(1L, null);
         QueryModifiers modifiers3 = new QueryModifiers(null, 1L);
@@ -76,7 +76,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void SubList() {
+    public void subList() {
         List<Integer> ints = Arrays.asList(1,2,3,4,5);
         assertEquals(Arrays.asList(3,4,5), QueryModifiers.offset(2).subList(ints));
         assertEquals(Arrays.asList(1,2,3), QueryModifiers.limit(3).subList(ints));

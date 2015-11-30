@@ -13,24 +13,24 @@ public class PersonDaoTest extends AbstractDaoTest {
     @Resource PersonDao personDao;
 
     @Test
-    public void FindAll() {
+    public void findAll() {
         List<Person> persons = personDao.findAll();
         assertFalse(persons.isEmpty());
     }
 
     @Test
-    public void FindById() {
+    public void findById() {
         assertNotNull(personDao.findById(1));
     }
 
     @Test
-    public void Update() {
+    public void update() {
         Person person = personDao.findById(1);
         personDao.save(person);
     }
 
     @Test
-    public void Delete() {
+    public void delete() {
         Person person = new Person();
         person.setEmail("john@acme.com");
         personDao.save(person);

@@ -41,7 +41,7 @@ public class RelationalFunctionCallTest {
     }
 
     @Test
-    public void FunctionCall() {
+    public void functionCall() {
         //select tab.col from Table tab join TableValuedFunction('parameter') func on tab.col not like func.col
 
         QSurvey table = new QSurvey("SURVEY");

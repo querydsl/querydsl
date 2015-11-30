@@ -38,7 +38,7 @@ public class NativeSQLSerializerTest {
     }
 
     @Test
-    public void In() {
+    public void in() {
         Configuration conf = new Configuration(new MySQLTemplates());
         NativeSQLSerializer serializer = new NativeSQLSerializer(conf, true);
         DefaultQueryMetadata md = new DefaultQueryMetadata();
@@ -53,7 +53,7 @@ public class NativeSQLSerializerTest {
     }
 
     @Test
-    public void Path_Column() {
+    public void path_column() {
         PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class,"entity");
         Configuration conf = new Configuration(new MySQLTemplates());
         NativeSQLSerializer serializer = new NativeSQLSerializer(conf, true);
@@ -62,7 +62,7 @@ public class NativeSQLSerializerTest {
     }
 
     @Test
-    public void Path_Column2() {
+    public void path_column2() {
         PathBuilder<Entity> entity = new PathBuilder<Entity>(Entity.class,"entity");
         Configuration conf = new Configuration(new MySQLTemplates());
         NativeSQLSerializer serializer = new NativeSQLSerializer(conf, true);

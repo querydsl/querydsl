@@ -35,7 +35,7 @@ public class QueryExcludeTest {
     }
 
     @Test
-    public void SubEntity() {
+    public void subEntity() {
         assertEquals(EntityPathBase.class, QQueryExcludeTest_SubEntity.class.getSuperclass());
     }
 

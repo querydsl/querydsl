@@ -23,17 +23,17 @@ public class CodegenModuleTest {
     private final CodegenModule module = new CodegenModule();
 
     @Test
-    public void DefaultPrefix() {
+    public void defaultPrefix() {
         assertEquals("Q", module.get(String.class, CodegenModule.PREFIX));
     }
 
     @Test
-    public void TypeMappings() {
+    public void typeMappings() {
         assertNotNull(module.get(TypeMappings.class));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void Get_With_Unknown_Key() {
+    public void get_with_unknown_key() {
         module.get(String.class, "XXX");
     }
 

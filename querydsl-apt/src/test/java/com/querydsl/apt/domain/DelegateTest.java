@@ -74,7 +74,7 @@ public class DelegateTest {
     }
 
     @Test
-    public void User() {
+    public void user() {
         QDelegateTest_User user = QDelegateTest_User.user;
         assertNotNull(user.isManagedBy(new User()));
         assertNotNull(user.isManagedBy(user));
@@ -83,7 +83,7 @@ public class DelegateTest {
     }
 
     @Test
-    public void SimpleUser() {
+    public void simpleUser() {
         QDelegateTest_SimpleUser user = QDelegateTest_SimpleUser.simpleUser;
         assertNotNull(user.isManagedBy(new User()));
         assertNotNull(user.isManagedBy(user._super));
@@ -91,7 +91,7 @@ public class DelegateTest {
     }
 
     @Test
-    public void SimpleUser2() {
+    public void simpleUser2() {
         QDelegateTest_SimpleUser2 user = QDelegateTest_SimpleUser2.simpleUser2;
         assertNotNull(user.isManagedBy(new User()));
         assertNotNull(user.isManagedBy(user._super._super));

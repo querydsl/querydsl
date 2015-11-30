@@ -29,19 +29,19 @@ public class CollectionTest extends AbstractJDOTest {
     private final QStore store = QStore.store;
 
     @Test
-    public void Contains_Key() {
+    public void contains_key() {
         query(store, store.productsByName.containsKey("XXX"));
     }
 
     @Test
-    public void Contains_Value() {
+    public void contains_value() {
         Product product = query().from(QProduct.product).select(QProduct.product).fetch().get(0);
         query(store, store.productsByName.containsValue(product));
     }
 
     @Test
     @Ignore
-    public void Get() {
+    public void get() {
         query(store, store.products.get(0).name.isNotNull());
     }
 
@@ -56,28 +56,28 @@ public class CollectionTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Size() {
+    public void size() {
         query(store, store.products.size().gt(0));
     }
 
     @Test
-    public void Collection_Any() {
+    public void collection_any() {
         query(store, store.products.any().name.eq("Sony Discman"));
     }
 
     @Test
-    public void Collection_Any_And() {
+    public void collection_any_and() {
         query(store, store.products.any().name.eq("Sony Discman").and(store.products.any().price.gt(10.0)));
     }
 
     @Test
-    public void Collection_Any_Count() {
+    public void collection_any_count() {
         query().from(store).where(store.products.any().name.eq("Sony Discman")).fetchCount();
     }
 
     @Test
     @Ignore // Not supported
-    public void Collection_Any_In_Projection() {
+    public void collection_any_in_projection() {
         query().from(store).select(store.products.any()).fetch();
     }
 

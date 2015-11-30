@@ -33,7 +33,7 @@ public class SQLiteTemplatesTest extends AbstractSQLTemplatesTest {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void Union() {
+    public void union() {
         NumberExpression<Integer> one = Expressions.ONE;
         NumberExpression<Integer> two = Expressions.TWO;
         NumberExpression<Integer> three = Expressions.THREE;
@@ -52,7 +52,7 @@ public class SQLiteTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // ||
         // *    /    %
         int p1 = getPrecedence(Ops.MULT, Ops.DIV, Ops.MOD);

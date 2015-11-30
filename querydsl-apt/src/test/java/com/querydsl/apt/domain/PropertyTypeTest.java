@@ -32,7 +32,7 @@ public class PropertyTypeTest {
     }
 
     @Test
-    public void NumberAsString_Like() {
+    public void numberAsString_like() {
         QPropertyTypeTest_Entity.entity.numberAsString.like("a");
     }
 }

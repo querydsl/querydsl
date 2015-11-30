@@ -68,7 +68,7 @@ public class LuceneSerializerNotTokenizedTest {
     }
 
     @Before
-    public void Before() throws Exception {
+    public void before() throws Exception {
         serializer = new LuceneSerializer(false, false);
         idx = new RAMDirectory();
         IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_31,
@@ -93,115 +93,115 @@ public class LuceneSerializerNotTokenizedTest {
     }
 
     @Test
-    public void Equals_By_Id_Matches() throws Exception {
+    public void equals_by_id_matches() throws Exception {
         testQuery(person.id.eq("actor_1"), "id:actor_1", 1);
     }
 
     @Test
-    public void Equals_By_Id_Does_Not_Match() throws Exception {
+    public void equals_by_id_does_not_match() throws Exception {
         testQuery(person.id.eq("actor_8"), "id:actor_8", 0);
     }
 
     @Test
-    public void Equals_By_Name_Matches() throws Exception {
+    public void equals_by_name_matches() throws Exception {
         testQuery(person.name.eq("George Clooney"), "name:George Clooney", 1);
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void Equals_By_Name_Ignoring_Case_Does_Not_Match() throws Exception {
+    public void equals_by_name_ignoring_case_does_not_match() throws Exception {
         testQuery(person.name.equalsIgnoreCase("george clooney"), "name:george clooney", 0);
     }
 
     @Test
-    public void Equals_By_Name_Does_Not_Match() throws Exception {
+    public void equals_by_name_does_not_match() throws Exception {
         testQuery(person.name.eq("George Looney"), "name:George Looney", 0);
     }
 
     @Test
-    public void Starts_With_Name_Should_Match() throws Exception {
+    public void starts_with_name_should_match() throws Exception {
         testQuery(person.name.startsWith("George C"), "name:George C*", 1);
     }
 
     @Test
-    public void Starts_With_Name_Should_Not_Match() throws Exception {
+    public void starts_with_name_should_not_match() throws Exception {
         testQuery(person.name.startsWith("George L"), "name:George L*", 0);
     }
 
     @Test
-    public void Ends_With_Name_Should_Match() throws Exception {
+    public void ends_with_name_should_match() throws Exception {
         testQuery(person.name.endsWith("e Clooney"), "name:*e Clooney", 1);
     }
 
     @Test
-    public void Ends_With_Name_Should_Not_Match() throws Exception {
+    public void ends_with_name_should_not_match() throws Exception {
         testQuery(person.name.endsWith("e Looney"), "name:*e Looney", 0);
     }
 
     @Test
-    public void Contains_Name_Should_Match() throws Exception {
+    public void contains_name_should_match() throws Exception {
         testQuery(person.name.contains("oney"), "name:*oney*", 1);
     }
 
     @Test
-    public void Contains_Name_Should_Not_Match() throws Exception {
+    public void contains_name_should_not_match() throws Exception {
         testQuery(person.name.contains("bloney"), "name:*bloney*", 0);
     }
 
     @Test
-    public void In_Names_Should_Match_2() throws Exception {
+    public void in_names_should_match_2() throws Exception {
         testQuery(person.name.in("Brad Pitt", "George Clooney"), "name:Brad Pitt name:George Clooney", 2);
     }
 
     @Test
-    public void Or_By_Name_Should_Match_2() throws Exception {
+    public void or_by_name_should_match_2() throws Exception {
         testQuery(person.name.eq("Brad Pitt")
               .or(person.name.eq("George Clooney")), "name:Brad Pitt name:George Clooney", 2);
     }
 
     @Test
-    public void Equals_By_Birth_Date() throws Exception {
+    public void equals_by_birth_date() throws Exception {
         testQuery(person.birthDate.eq(clooney.getBirthDate()), "birthDate:1961-04-06", 1);
     }
 
     @Test
-    public void Between_Phrase() throws Exception {
+    public void between_phrase() throws Exception {
         testQuery(person.name.between("Brad Pitt","George Clooney"), "name:[Brad Pitt TO George Clooney]", 2);
     }
 
     @Test
-    public void Not_Equals_Finds_The_Actors_And_Movies() throws Exception {
+    public void not_equals_finds_the_actors_and_movies() throws Exception {
         testQuery(person.name.ne("Michael Douglas"), "-name:Michael Douglas +*:*", 3);
     }
 
     @Test
-    public void Not_Equals_Finds_Only_Clooney_And_Movies() throws Exception {
+    public void not_equals_finds_only_clooney_and_movies() throws Exception {
         testQuery(person.name.ne("Brad Pitt"), "-name:Brad Pitt +*:*", 2);
     }
 
     @Test
-    public void And_With_Two_Not_Equals_Doesnt_Find_The_Actors() throws Exception {
+    public void and_with_two_not_equals_doesnt_find_the_actors() throws Exception {
         testQuery(person.name.ne("Brad Pitt")
              .and(person.name.ne("George Clooney")), "+(-name:Brad Pitt +*:*) +(-name:George Clooney +*:*)", 1);
     }
 
     @Test
-    public void Or_With_Two_Not_Equals_Finds_Movies_And_Actors() throws Exception {
+    public void or_with_two_not_equals_finds_movies_and_actors() throws Exception {
         testQuery(person.name.ne("Brad Pitt")
               .or(person.name.ne("George Clooney")), "(-name:Brad Pitt +*:*) (-name:George Clooney +*:*)", 3);
     }
 
     @Test
-    public void Negation_Of_Equals_Finds_Movies_And_Actors() throws Exception {
+    public void negation_of_equals_finds_movies_and_actors() throws Exception {
         testQuery(person.name.eq("Michael Douglas").not(), "-name:Michael Douglas +*:*", 3);
     }
 
     @Test
-    public void Negation_Of_Equals_Finds_Pitt_And_Movies() throws Exception {
+    public void negation_of_equals_finds_pitt_and_movies() throws Exception {
         testQuery(person.name.eq("Brad Pitt").not(), "-name:Brad Pitt +*:*", 2);
     }
 
     @Test
-    public void Multiple_Field_Search_From_Movies() throws Exception {
+    public void multiple_field_search_from_movies() throws Exception {
         StringPath movie = Expressions.stringPath("movie");
         testQuery(movie.in("Interview with the Vampire"), "movie:Interview with the Vampire", 1);
         testQuery(movie.eq("Up in the Air"), "movie:Up in the Air", 1);

@@ -26,7 +26,7 @@ import com.querydsl.core.QueryMetadata;
 public class QueryMetadataTest extends AbstractQueryTest {
 
     @Test
-    public void Reusage() {
+    public void reusage() {
         QueryMetadata metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, cat);
         metadata.addWhere(cat.name.startsWith("A"));

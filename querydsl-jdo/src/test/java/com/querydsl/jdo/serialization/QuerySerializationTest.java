@@ -28,7 +28,7 @@ public class QuerySerializationTest extends AbstractTest {
     private QProduct other = new QProduct("other");
 
     @Test
-    public void SelectFromWhereOrder() {
+    public void selectFromWhereOrder() {
         assertEquals(
             "SELECT this.name " +
             "FROM com.querydsl.jdo.test.domain.Product " +
@@ -42,7 +42,7 @@ public class QuerySerializationTest extends AbstractTest {
     }
 
     @Test
-    public void SelectFromWhereGroupBy() {
+    public void selectFromWhereGroupBy() {
         assertEquals(
             "SELECT this.name " +
             "FROM com.querydsl.jdo.test.domain.Product " +
@@ -56,7 +56,7 @@ public class QuerySerializationTest extends AbstractTest {
     }
 
     @Test
-    public void SelectFrom2Sources() {
+    public void selectFrom2Sources() {
         assertEquals(
             "SELECT this.name " +
             "FROM com.querydsl.jdo.test.domain.Product " +
@@ -68,7 +68,7 @@ public class QuerySerializationTest extends AbstractTest {
     }
 
     @Test
-    public void WithSubQuery() {
+    public void withSubQuery() {
         assertEquals(
             "SELECT this.price " +
             "FROM com.querydsl.jdo.test.domain.Product " +
@@ -80,7 +80,7 @@ public class QuerySerializationTest extends AbstractTest {
     }
 
     @Test
-    public void WithSubQuery2() {
+    public void withSubQuery2() {
         // FIXME : how to model this ?!?
         assertEquals(
             "SELECT this.name " +
@@ -94,7 +94,7 @@ public class QuerySerializationTest extends AbstractTest {
     }
 
     @Test
-    public void InstanceofQuery() {
+    public void instanceofQuery() {
         assertEquals(
             "SELECT " +
             "FROM com.querydsl.jdo.test.domain.Product " +

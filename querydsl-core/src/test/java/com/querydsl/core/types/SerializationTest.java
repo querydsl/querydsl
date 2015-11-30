@@ -25,7 +25,7 @@ public class SerializationTest {
     public enum Gender { MALE, FEMALE }
 
     @Test
-    public void Expressions() throws Exception {
+    public void expressions() throws Exception {
         Map<Class<?>, Object> args = Maps.newHashMap();
         args.put(Object.class, "obj");
         args.put(BeanPath.class, new EntityPathBase<Object>(Object.class, "obj"));
@@ -69,13 +69,13 @@ public class SerializationTest {
     }
 
     @Test
-    public void Order() {
+    public void order() {
         OrderSpecifier<?> order = new OrderSpecifier<String>(Order.ASC, Expressions.stringPath("str"));
         assertEquals(order, Serialization.serialize(order));
     }
 
     @Test
-    public void Roundtrip() throws Exception {
+    public void roundtrip() throws Exception {
         Path<?> path = ExpressionUtils.path(Object.class, "entity");
         SimplePath<?> path2 = Expressions.path(Object.class, "entity");
         assertEquals(path, serialize(path));

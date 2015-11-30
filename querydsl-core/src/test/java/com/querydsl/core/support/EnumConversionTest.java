@@ -14,21 +14,21 @@ public class EnumConversionTest {
     public enum Color { GREEN, BLUE, RED, YELLOW, BLACK, WHITE }
 
     @Test
-    public void Name() {
+    public void name() {
         EnumPath<Color> color = Expressions.enumPath(Color.class, "path");
         EnumConversion<Color> conv = new EnumConversion<Color>(color);
         assertEquals(Color.BLUE, conv.newInstance("BLUE"));
     }
 
     @Test
-    public void Ordinal() {
+    public void ordinal() {
         EnumPath<Color> color = Expressions.enumPath(Color.class, "path");
         EnumConversion<Color> conv = new EnumConversion<Color>(color);
         assertEquals(Color.RED, conv.newInstance(2));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void Illegal() {
+    public void illegal() {
         StringPath string = Expressions.stringPath("path");
         EnumConversion<String> conv = new EnumConversion<String>(string);
         fail("EnumConversion successfully created for a non-enum type");

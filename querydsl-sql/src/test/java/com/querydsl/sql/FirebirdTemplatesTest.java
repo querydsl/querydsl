@@ -32,14 +32,14 @@ public class FirebirdTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Override
-    public void Arithmetic() {
+    public void arithmetic() {
         // uses additional casts
     }
 
     @SuppressWarnings("unchecked")
     @Test
     @Override
-    public void Union() {
+    public void union() {
         NumberExpression<Integer> one = Expressions.ONE;
         NumberExpression<Integer> two = Expressions.TWO;
         NumberExpression<Integer> three = Expressions.THREE;
@@ -58,7 +58,7 @@ public class FirebirdTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // concat
         // *, /, +, -
         // comparison

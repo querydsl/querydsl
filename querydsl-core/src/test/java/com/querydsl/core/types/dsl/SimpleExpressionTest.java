@@ -33,21 +33,21 @@ public class SimpleExpressionTest {
     enum ExampleEnum { A, B }
 
     @Test
-    public void As_usage() {
+    public void as_usage() {
         SimpleExpression<String> str = new StringPath("str");
         assertEquals("str as alias", str.as("alias").toString());
         assertEquals("str as alias", str.as(new StringPath("alias")).toString());
     }
 
     @Test
-    public void Case() {
+    public void case_() {
         SimpleExpression<String> str = new StringPath("str");
         // nullif(str, 'xxx')
         str.when("xxx").thenNull().otherwise(str);
     }
 
     @Test
-    public void Subclasses_Override_As() throws SecurityException, NoSuchMethodException {
+    public void subclasses_override_as() throws SecurityException, NoSuchMethodException {
         List<Class<?>> classes = Arrays.<Class<?>>asList(
                 BooleanExpression.class,
                 ComparableExpression.class,
@@ -70,7 +70,7 @@ public class SimpleExpressionTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Various() {
+    public void various() {
         List<DslExpression<?>> paths = new ArrayList<DslExpression<?>>();
         paths.add(new ArrayPath(String[].class, "p"));
         paths.add(new BeanPath(Object.class, "p"));
@@ -97,7 +97,7 @@ public class SimpleExpressionTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void Eq_Null() {
+    public void eq_null() {
         new SimplePath<Object>(Object.class, "path").eq((Object) null);
     }
 }

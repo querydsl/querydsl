@@ -12,7 +12,7 @@ import com.querydsl.core.types.dsl.Expressions;
 public class QListTest {
 
     @Test
-    public void NewInstance() {
+    public void newInstance() {
         QList qList = new QList(Expressions.stringPath("a"), Expressions.stringPath("b"));
         List<?> list = qList.newInstance("a", null);
         assertEquals(2, list.size());

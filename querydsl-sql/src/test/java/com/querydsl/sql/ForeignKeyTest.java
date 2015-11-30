@@ -24,7 +24,7 @@ import com.querydsl.sql.domain.QEmployee;
 public class ForeignKeyTest {
 
     @Test
-    public void On() {
+    public void on() {
         QEmployee employee = new QEmployee("employee");
         QEmployee employee2 = new QEmployee("employee2");
 

@@ -17,7 +17,7 @@ public class JodaTimeTemplatesTest {
     private CollQuery<?> query = new CollQuery<Void>(JodaTimeTemplates.DEFAULT);
 
     @Test
-    public void DateTime() {
+    public void dateTime() {
         DateTimePath<DateTime> entity = Expressions.dateTimePath(DateTime.class, "entity");
         query.from(entity, Arrays.asList(new DateTime(), new DateTime(0L)))
              .select(entity.year(), entity.yearMonth(), entity.month(), entity.week(),
@@ -27,7 +27,7 @@ public class JodaTimeTemplatesTest {
     }
 
     @Test
-    public void LocalDate() {
+    public void localDate() {
         DatePath<LocalDate> entity = Expressions.datePath(LocalDate.class, "entity");
         query.from(entity, Arrays.asList(new LocalDate(), new LocalDate(0L)))
              .select(entity.year(), entity.yearMonth(), entity.month(), entity.week(),
@@ -36,7 +36,7 @@ public class JodaTimeTemplatesTest {
     }
 
     @Test
-    public void LocalTime() {
+    public void localTime() {
         TimePath<LocalTime> entity = Expressions.timePath(LocalTime.class, "entity");
         query.from(entity, Arrays.asList(new LocalTime(), new LocalTime(0L)))
              .select(entity.hour(), entity.minute(), entity.second(), entity.milliSecond())

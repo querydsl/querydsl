@@ -103,7 +103,7 @@ public class DeepInitializationTest {
     }
 
     @Test
-    public void Init_Via_Parent() {
+    public void init_via_parent() {
         QDeepInitializationTest_Parent parent = QDeepInitializationTest_Parent.parent;
         parent.children.any().subChild.myEmbeddable.number.eq("Test");
     }

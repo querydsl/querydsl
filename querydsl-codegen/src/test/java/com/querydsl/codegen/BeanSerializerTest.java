@@ -45,7 +45,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Annotations() throws IOException {
+    public void annotations() throws IOException {
         type.addAnnotation(new QueryEntityImpl());
 
         BeanSerializer serializer = new BeanSerializer();
@@ -57,7 +57,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Annotated_Property() throws IOException {
+    public void annotated_property() throws IOException {
         Property property = new Property(type, "entityField", type);
         property.addAnnotation(new QueryEntityImpl());
         type.addProperty(property);
@@ -71,7 +71,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Annotated_Property_Not_Serialized() throws IOException {
+    public void annotated_property_not_serialized() throws IOException {
         Property property = new Property(type, "entityField", type);
         property.addAnnotation(new QueryEntityImpl());
         type.addProperty(property);
@@ -85,7 +85,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Capitalization() throws IOException {
+    public void capitalization() throws IOException {
         // property
         type.addProperty(new Property(type, "cId", type));
 
@@ -95,7 +95,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Interfaces() throws IOException {
+    public void interfaces() throws IOException {
         BeanSerializer serializer = new BeanSerializer();
         serializer.addInterface(new ClassType(Serializable.class));
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
@@ -103,7 +103,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Interfaces2() throws IOException {
+    public void interfaces2() throws IOException {
         BeanSerializer serializer = new BeanSerializer();
         serializer.addInterface(Serializable.class);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
@@ -111,7 +111,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void ToString() throws IOException {
+    public void toString_() throws IOException {
         // property
         type.addProperty(new Property(type, "entityField", type));
         type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));
@@ -129,7 +129,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void FullConstructor() throws IOException {
+    public void fullConstructor() throws IOException {
         // property
         type.addProperty(new Property(type, "entityField", type));
         type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));
@@ -145,7 +145,7 @@ public class BeanSerializerTest {
     }
 
     @Test
-    public void Properties() throws IOException {
+    public void properties() throws IOException {
         // property
         type.addProperty(new Property(type, "entityField", type));
         type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));

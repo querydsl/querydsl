@@ -28,7 +28,7 @@ public class ExcludedClassesTest extends AbstractProcessorTest {
     private static final String packagePath = "src/test/java/com/querydsl/";
 
     @Test
-    public void Process() throws IOException {
+    public void process() throws IOException {
         List<String> classes = getFiles(packagePath);
         process(QuerydslAnnotationProcessor.class, classes, "excludedClasses");
 

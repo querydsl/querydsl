@@ -34,7 +34,7 @@ public class EntityExtensionsTest extends AbstractProcessorTest {
     private static final String packagePath = "src/test/java/com/querydsl/apt/";
 
     @Test
-    public void Handles_Entity_Extensions_Correctly() throws IOException, InterruptedException {
+    public void handles_entity_extensions_correctly() throws IOException, InterruptedException {
         File source = new File(packagePath,  "EntityWithExtensions.java");
         File source2 = new File(packagePath, "EntityExtensions.java");
         List<String> sources = Arrays.asList(source.getPath(), source2.getPath());

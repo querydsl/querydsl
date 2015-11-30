@@ -107,7 +107,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     private final QStore otherStore = new QStore("otherStore");
 
     @Test
-    public void StandardTest() {
+    public void standardTest() {
         Product p = query().from(product).where(product.name.eq(productName)).limit(1).select(product).fetchOne();
         Product p2 = query().from(product).where(product.name.startsWith(otherName)).limit(1).select(product).fetchOne();
         standardTest.noProjections();
@@ -129,7 +129,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     }
 
     @Test
-    public void TupleProjection() {
+    public void tupleProjection() {
         List<Tuple> tuples = query().from(product).select(product.name, product.price).fetch();
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples) {
@@ -144,7 +144,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     @SuppressWarnings("unchecked")
     @Test
     @Ignore
-    public void ArrayProjection() {
+    public void arrayProjection() {
         // typed array not supported
         List<String[]> results = query().from(store)
                 .select(new ArrayConstructorExpression<String>(String[].class, store.name)).fetch();
@@ -157,7 +157,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     @Test
     @Ignore
-    public void ConstructorProjection() {
+    public void constructorProjection() {
         List<Projection> results = query().from(store)
                 .select(Projections.constructor(Projection.class, store.name)).fetch();
         assertFalse(results.isEmpty());
@@ -167,28 +167,28 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Params() {
+    public void params() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0")
                 .select(product.name).fetchFirst());
     }
 
     @Test
-    public void Params_anon() {
+    public void params_anon() {
         Param<String> name = new Param<String>(String.class);
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0")
                 .select(product.name).fetchFirst());
     }
 
     @Test(expected = ParamNotSetException.class)
-    public void Params_not_set() {
+    public void params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name))
                 .select(product.name).fetchFirst());
     }
 
     @Test
-    public void DetatchCollection() {
+    public void detatchCollection() {
         new JDOQuery<Book>(pm, true)
                 .select(QBook.book).from(QBook.book)
                 .fetch();

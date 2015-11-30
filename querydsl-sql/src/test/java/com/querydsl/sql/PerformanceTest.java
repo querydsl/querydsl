@@ -38,7 +38,7 @@ public class PerformanceTest {
     }
 
     @Test
-    public void NonNormalized() {
+    public void nonNormalized() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             SQLSerializer serializer = new SQLSerializer(configuration);
@@ -52,7 +52,7 @@ public class PerformanceTest {
     }
 
     @Test
-    public void Default() {
+    public void default_() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             SQLSerializer serializer = new SQLSerializer(configuration);

@@ -85,7 +85,7 @@ public class JPAQueryMutability2Test implements JPATest {
     }
 
     @Test
-    public void Clone() {
+    public void clone_() {
         QCat cat = QCat.cat;
         JPAQuery<?> query = query().from(cat).where(cat.name.isNotNull());
         JPAQuery<?> query2 = query.clone(entityManager);
@@ -95,7 +95,7 @@ public class JPAQueryMutability2Test implements JPATest {
     }
 
     @Test
-    public void Clone_Custom_Templates() {
+    public void clone_custom_templates() {
         QCat cat = QCat.cat;
         JPAQuery<?> query = query().from(cat);
         //attach using the custom templates
@@ -104,7 +104,7 @@ public class JPAQueryMutability2Test implements JPATest {
     }
 
     @Test
-    public void Clone_Keep_Templates() {
+    public void clone_keep_templates() {
         QCat cat = QCat.cat;
         JPAQuery<?> query = query(customTemplates).from(cat);
         //keep the original templates
@@ -113,7 +113,7 @@ public class JPAQueryMutability2Test implements JPATest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void Clone_Lose_Templates() {
+    public void clone_lose_templates() {
         QCat cat = QCat.cat;
         JPAQuery<?> query = query(customTemplates).from(cat);
         //clone using the entitymanager's default templates

@@ -34,7 +34,7 @@ public class QueryMetadaSerializationTest {
     private QueryMetadata metadata = new DefaultQueryMetadata();
 
     @Test
-    public void Serialization() throws IOException, ClassNotFoundException {
+    public void serialization() throws IOException, ClassNotFoundException {
         StringPath expr = Expressions.stringPath("str");
         metadata.addJoin(JoinType.DEFAULT, expr);
         metadata.addFlag(new QueryFlag(Position.AFTER_FILTERS, ""));
@@ -62,7 +62,7 @@ public class QueryMetadaSerializationTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void FullySerializable() {
+    public void fullySerializable() {
         Set<Class<?>> checked = new HashSet<Class<?>>();
         checked.addAll(Arrays.asList(Collection.class, List.class, Set.class, Map.class,
                 Object.class, String.class, Class.class));

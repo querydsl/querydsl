@@ -34,7 +34,7 @@ public class CustomExpressionsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void CustomExpressions() {
+    public void customExpressions() {
         assertToString("myCustom(cust,cat)", new MyCustomExpr(cust, cat));
     }
 

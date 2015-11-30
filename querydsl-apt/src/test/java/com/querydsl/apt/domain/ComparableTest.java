@@ -51,7 +51,7 @@ public class ComparableTest {
     }
 
     @Test
-    public void CustomComparable_is_Properly_Handled() {
+    public void customComparable_is_properly_handled() {
         assertNotNull(QComparableTest_CustomComparable.customComparable.asc());
     }
 

@@ -37,91 +37,91 @@ public class PathFactoryTest {
     private PathMetadata metadata = PathMetadataFactory.forVariable("var");
 
     @Test
-    public void CreateArrayPath() {
+    public void createArrayPath() {
         Path<String[]> path = pathFactory.createArrayPath(String[].class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateEntityPath() {
+    public void createEntityPath() {
         Path<Object> path = pathFactory.createEntityPath(Object.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateSimplePath() {
+    public void createSimplePath() {
         Path<Object> path = pathFactory.createSimplePath(Object.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateComparablePath() {
+    public void createComparablePath() {
         Path<String> path = pathFactory.createComparablePath(String.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateEnumPath() {
+    public void createEnumPath() {
         Path<PropertyType> path = pathFactory.createEnumPath(PropertyType.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateDatePath() {
+    public void createDatePath() {
         Path<Date> path = pathFactory.createDatePath(Date.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateTimePath() {
+    public void createTimePath() {
         Path<Time> path = pathFactory.createTimePath(Time.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateDateTimePath() {
+    public void createDateTimePath() {
         Path<Timestamp> path = pathFactory.createDateTimePath(Timestamp.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateNumberPath() {
+    public void createNumberPath() {
         Path<Integer> path = pathFactory.createNumberPath(Integer.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateBooleanPath() {
+    public void createBooleanPath() {
         Path<Boolean> path = pathFactory.createBooleanPath(metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateStringPath() {
+    public void createStringPath() {
         Path<String> path = pathFactory.createStringPath(metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateListPath() {
+    public void createListPath() {
         Path<List<Timestamp>> path = pathFactory.createListPath(Timestamp.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateSetPath() {
+    public void createSetPath() {
         Path<Set<Timestamp>> path = pathFactory.createSetPath(Timestamp.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateCollectionPath() {
+    public void createCollectionPath() {
         Path<Collection<Timestamp>> path = pathFactory.createCollectionPath(Timestamp.class, metadata);
         assertNotNull(path);
     }
 
     @Test
-    public void CreateMapPath() {
+    public void createMapPath() {
         Path<Map<String,Timestamp>> path = pathFactory.createMapPath(String.class, Timestamp.class, metadata);
         assertNotNull(path);
     }

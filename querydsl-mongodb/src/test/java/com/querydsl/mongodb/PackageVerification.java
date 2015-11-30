@@ -33,7 +33,7 @@ import com.querydsl.core.types.Expression;
 public class PackageVerification {
 
     @Test
-    public void Verify_Package() throws Exception {
+    public void verify_package() throws Exception {
         String version = System.getProperty("version");
         verify(new File("target/querydsl-mongodb-" + version + "-apt-one-jar.jar"));
     }

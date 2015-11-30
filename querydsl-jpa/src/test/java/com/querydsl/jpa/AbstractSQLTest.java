@@ -43,23 +43,23 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void Count() {
+    public void count() {
         assertEquals(6L, query().from(cat).where(cat.dtype.eq("C")).fetchCount());
     }
 
     @Test
-    public void Count_Via_Unique() {
+    public void count_via_unique() {
         assertEquals(Long.valueOf(6), query().from(cat).where(cat.dtype.eq("C"))
                 .select(cat.id.count()).fetchFirst());
     }
 
     @Test
-    public void CountDistinct() {
+    public void countDistinct() {
         assertEquals(6L, query().from(cat).where(cat.dtype.eq("C")).distinct().fetchCount());
     }
 
     @Test
-    public void Enum_Binding() {
+    public void enum_binding() {
         List<Cat> cats = query().from(cat)
                 .select(Projections.bean(Cat.class, QCat.cat.color)).fetch();
         assertFalse(cats.isEmpty());
@@ -71,7 +71,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     @Ignore
-    public void EntityProjections() {
+    public void entityProjections() {
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
                 .select(Projections.constructor(Cat.class, cat.name, cat.id)).fetch();
         assertEquals(6, cats.size());
@@ -82,7 +82,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void EntityQueries() {
+    public void entityQueries() {
         QCat catEntity = QCat.cat;
 
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).select(catEntity).fetch();
@@ -93,7 +93,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void EntityQueries2() {
+    public void entityQueries2() {
         SAnimal mate = new SAnimal("mate");
         QCat catEntity = QCat.cat;
 
@@ -105,7 +105,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void EntityQueries3() {
+    public void entityQueries3() {
         QCat catEntity = new QCat("animal_");
         assertEquals(0, query().from(catEntity).select(catEntity.toes.max()).fetchFirst().intValue());
     }
@@ -113,7 +113,7 @@ public abstract class AbstractSQLTest {
     @Test
     @NoBatooJPA
     @NoEclipseLink
-    public void EntityQueries4() {
+    public void entityQueries4() {
         QCat catEntity = QCat.cat;
         List<Tuple> cats = query().from(cat).select(catEntity, cat.name, cat.id).fetch();
         assertEquals(6, cats.size());
@@ -128,7 +128,7 @@ public abstract class AbstractSQLTest {
     @Test
     @NoBatooJPA
     @NoEclipseLink
-    public void EntityQueries5() {
+    public void entityQueries5() {
         QCat catEntity = QCat.cat;
         SAnimal otherCat = new SAnimal("otherCat");
         QCat otherCatEntity = new QCat("otherCat");
@@ -144,7 +144,7 @@ public abstract class AbstractSQLTest {
     @Test
     @NoBatooJPA
     @NoEclipseLink
-    public void EntityQueries6() {
+    public void entityQueries6() {
         QCat catEntity = QCat.cat;
         List<CatDTO> results = query().from(cat).select(Projections.constructor(CatDTO.class, catEntity)).fetch();
         assertEquals(6, results.size());
@@ -155,53 +155,53 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void EntityQueries7() {
+    public void entityQueries7() {
         QCompany company = QCompany.company;
         assertEquals(Arrays.asList(),
                 query().from(company).select(company.officialName).fetch());
     }
 
     @Test
-    public void In() {
+    public void in() {
         assertEquals(6L, query().from(cat).where(cat.dtype.in("C", "CX")).fetchCount());
     }
 
     @Test
-    public void Limit_Offset() {
+    public void limit_offset() {
         assertEquals(2, query().from(cat).orderBy(cat.id.asc()).limit(2).offset(2).select(cat.id, cat.name).fetch().size());
     }
 
     @Test
-    public void List() {
+    public void list() {
         assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).select(cat.id).fetch().size());
     }
 
     @Test
-    public void List_Limit_And_Offset() {
+    public void list_limit_and_offset() {
         assertEquals(3, query().from(cat).orderBy(cat.id.asc()).offset(3).limit(3).select(cat.id).fetch().size());
     }
 
     @Test
-    public void List_Limit_And_Offset2() {
+    public void list_limit_and_offset2() {
         List<Tuple> tuples = query().from(cat).orderBy(cat.id.asc()).offset(3).limit(3).select(cat.id, cat.name).fetch();
         assertEquals(3, tuples.size());
         assertEquals(2, tuples.get(0).size());
     }
 
     @Test
-    public void List_Limit_And_Offset3() {
+    public void list_limit_and_offset3() {
         List<Tuple> tuples = query().from(cat).orderBy(cat.id.asc()).offset(3).limit(3).select(Projections.tuple(cat.id, cat.name)).fetch();
         assertEquals(3, tuples.size());
         assertEquals(2, tuples.get(0).size());
     }
 
     @Test
-    public void List_Multiple() {
+    public void list_multiple() {
         print(query().from(cat).where(cat.dtype.eq("C")).select(cat.id, cat.name, cat.bodyWeight).fetch());
     }
 
     @Test
-    public void List_Non_Path() {
+    public void list_non_path() {
         assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).select(
                 cat.birthdate.year(),
                 cat.birthdate.month(),
@@ -209,7 +209,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void List_Results() {
+    public void list_results() {
         QueryResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc())
                 .select(cat.name).fetchResults();
         assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
@@ -218,35 +218,35 @@ public abstract class AbstractSQLTest {
 
     @Test
     @ExcludeIn(Target.H2)
-    public void List_Wildcard() {
+    public void list_wildcard() {
         assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).select(Wildcard.all).fetch().size());
     }
 
     @Test
-    public void List_With_Count() {
+    public void list_with_count() {
         print(query().from(cat).where(cat.dtype.eq("C")).groupBy(cat.name)
                 .select(cat.name, cat.id.count()).fetch());
     }
 
     @Test
-    public void List_With_Limit() {
+    public void list_with_limit() {
         assertEquals(3, query().from(cat).limit(3).select(cat.id).fetch().size());
     }
 
     @Test
     @ExcludeIn({Target.H2, Target.MYSQL})
-    public void List_With_Offset() {
+    public void list_with_offset() {
         assertEquals(3, query().from(cat).orderBy(cat.id.asc()).offset(3).select(cat.id).fetch().size());
     }
 
     @Test
     @ExcludeIn(Target.HSQLDB)
-    public void No_From() {
+    public void no_from() {
         assertNotNull(query().select(DateExpression.currentDate()).fetchFirst());
     }
 
     @Test
-    public void Null_As_UniqueResult() {
+    public void null_as_uniqueResult() {
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
                 .select(cat.name).fetchOne());
     }
@@ -258,24 +258,24 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void Projections_DuplicateColumns() {
+    public void projections_duplicateColumns() {
         SAnimal cat = new SAnimal("cat");
         assertEquals(1, query().from(cat).select(Projections.list(cat.count(), cat.count())).fetch().size());
     }
 
     @Test
-    public void Single_Result() {
+    public void single_result() {
         query().from(cat).select(cat.id).fetchFirst();
     }
 
     @Test
-    public void Single_Result_Multiple() {
+    public void single_result_multiple() {
         assertEquals(1, query().from(cat).orderBy(cat.id.asc()).select(new Expression<?>[]{cat.id}).fetchFirst().get(cat.id).intValue());
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Union() throws SQLException {
+    public void union() throws SQLException {
         SubQueryExpression<Integer> sq1 = select(cat.id.max()).from(cat);
         SubQueryExpression<Integer> sq2 = select(cat.id.min()).from(cat);
         List<Integer> list = query().union(sq1, sq2).list();
@@ -284,7 +284,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void Union_All() {
+    public void union_all() {
         SubQueryExpression<Integer> sq1 = select(cat.id.max()).from(cat);
         SubQueryExpression<Integer> sq2 = select(cat.id.min()).from(cat);
         List<Integer> list = query().unionAll(sq1, sq2).list();
@@ -295,7 +295,7 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn({Target.DERBY, Target.POSTGRESQL})
     @Ignore // FIXME
-    public void Union2() {
+    public void union2() {
         List<Tuple> rows = query().union(
                 select(cat.name, cat.id).from(cat).where(cat.name.eq("Beck")).distinct(),
                 select(cat.name, null).from(cat).where(cat.name.eq("Kate")).distinct())
@@ -311,7 +311,7 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn(Target.DERBY)
     @Ignore // FIXME
-    public void Union3() {
+    public void union3() {
         SAnimal cat2 = new SAnimal("cat2");
         List<Tuple> rows = query().union(
                 select(cat.id, cat2.id).from(cat).innerJoin(cat2).on(cat2.id.eq(cat.id)),
@@ -333,7 +333,7 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn({Target.DERBY, Target.POSTGRESQL})
     @Ignore // FIXME
-    public void Union4() {
+    public void union4() {
         query().union(cat,
                 select(cat.name, cat.id).from(cat).where(cat.name.eq("Beck")).distinct(),
                 select(cat.name, null).from(cat).where(cat.name.eq("Kate")).distinct())
@@ -343,7 +343,7 @@ public abstract class AbstractSQLTest {
     @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({Target.DERBY, Target.ORACLE})
-    public void Union5() {
+    public void union5() {
         SAnimal cat2 = new SAnimal("cat2");
         List<Tuple> rows = query().union(
                 select(cat.id, cat2.id).from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))),
@@ -359,20 +359,20 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void Unique_Result() {
+    public void unique_result() {
         assertEquals(1,
                 query().from(cat).orderBy(cat.id.asc()).limit(1).select(cat.id).fetchOne().intValue());
     }
 
     @Test
-    public void Unique_Result_Multiple() {
+    public void unique_result_multiple() {
         assertEquals(1,
                 query().from(cat).orderBy(cat.id.asc()).limit(1).select(new Expression<?>[]{cat.id}).fetchOne().get(cat.id).intValue());
     }
 
     @Test
     @ExcludeIn(Target.H2)
-    public void Wildcard() {
+    public void wildcard() {
         List<Tuple> rows = query().from(cat).select(cat.all()).fetch();
         assertEquals(6, rows.size());
         print(rows);

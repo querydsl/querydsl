@@ -64,7 +64,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(SQLITE) // https://bitbucket.org/xerial/sqlite-jdbc/issue/133/prepstmtsetdate-int-date-calendar-seems
-    public void Insert_Dates() {
+    public void insert_dates() {
         QDateTest dateTest = QDateTest.qDateTest;
         LocalDate localDate = new LocalDate(1978, 1, 2);
 
@@ -92,7 +92,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Complex1() {
+    public void complex1() {
         // related to #584795
         QSurvey survey = new QSurvey("survey");
         QEmployee emp1 = new QEmployee("emp1");
@@ -109,7 +109,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_Alternative_Syntax() {
+    public void insert_alternative_syntax() {
         // with columns
         assertEquals(1, insert(survey)
             .set(survey.id, 3)
@@ -118,7 +118,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_Batch() {
+    public void insert_batch() {
         SQLInsertClause insert = insert(survey)
             .set(survey.id, 5)
             .set(survey.name, "55")
@@ -135,7 +135,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_Batch_Templates() {
+    public void insert_batch_Templates() {
         SQLInsertClause insert = insert(survey)
                 .set(survey.id, 5)
                 .set(survey.name, Expressions.stringTemplate("'55'"))
@@ -152,7 +152,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_Batch2() {
+    public void insert_batch2() {
         SQLInsertClause insert = insert(survey)
                 .set(survey.id, 5)
                 .set(survey.name, "55")
@@ -166,7 +166,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_Null_With_Columns() {
+    public void insert_null_with_columns() {
         assertEquals(1, insert(survey)
                 .columns(survey.id, survey.name)
                 .values(3, null).execute());
@@ -174,20 +174,20 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({DB2, DERBY})
-    public void Insert_Null_Without_Columns() {
+    public void insert_null_without_columns() {
         assertEquals(1, insert(survey)
                 .values(4, null, null).execute());
     }
 
     @Test
     @ExcludeIn({FIREBIRD, HSQLDB, DB2, DERBY, ORACLE})
-    public void Insert_Without_Values() {
+    public void insert_without_values() {
         assertEquals(1, insert(survey).execute());
     }
 
     @Test
     @ExcludeIn(ORACLE)
-    public void Insert_Nulls_In_Batch() {
+    public void insert_nulls_in_batch() {
 //        QFoo f= QFoo.foo;
 //        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
 //        sic.columns(f.c1,f.c2).values(null,null).addBatch();
@@ -202,7 +202,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @Ignore
     @ExcludeIn({DERBY})
-    public void Insert_Nulls_In_Batch2() {
+    public void insert_nulls_in_batch2() {
         Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS;
 //        QFoo f= QFoo.foo;
 //        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
@@ -224,7 +224,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_With_Columns() {
+    public void insert_with_columns() {
         assertEquals(1, insert(survey)
                 .columns(survey.id, survey.name)
                 .values(3, "Hello").execute());
@@ -232,7 +232,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys() throws SQLException {
+    public void insert_with_keys() throws SQLException {
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
         assertTrue(rs.getObject(1) != null);
@@ -241,13 +241,13 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys_Projected() throws SQLException {
+    public void insert_with_keys_Projected() throws SQLException {
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
 
     @Test
     @ExcludeIn({CUBRID, SQLSERVER})
-    public void Insert_With_Keys_Projected2() throws SQLException {
+    public void insert_with_keys_Projected2() throws SQLException {
         Path<Object> idPath = ExpressionUtils.path(Object.class, "id");
         Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
         assertNotNull(id);
@@ -256,7 +256,7 @@ public class InsertBase extends AbstractBaseTest {
  // http://sourceforge.net/tracker/index.php?func=detail&aid=3513432&group_id=280608&atid=2377440
 
     @Test
-    public void Insert_With_Set() {
+    public void insert_with_set() {
         assertEquals(1, insert(survey)
                 .set(survey.id, 5)
                 .set(survey.name, (String) null)
@@ -266,7 +266,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @IncludeIn(MYSQL)
     @SkipForQuoted
-    public void Insert_with_Special_Options() {
+    public void insert_with_special_options() {
         SQLInsertClause clause = insert(survey)
             .columns(survey.id, survey.name)
             .values(3, "Hello");
@@ -279,7 +279,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
-    public void Insert_With_SubQuery() {
+    public void insert_with_subQuery() {
         int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
@@ -289,7 +289,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({HSQLDB, CUBRID, DERBY, FIREBIRD})
-    public void Insert_With_SubQuery2() {
+    public void insert_with_subQuery2() {
 //        insert into modules(name)
 //        select 'MyModule'
 //        where not exists
@@ -306,7 +306,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({HSQLDB, CUBRID, DERBY})
-    public void Insert_With_SubQuery3() {
+    public void insert_with_subQuery3() {
 //        insert into modules(name)
 //        select 'MyModule'
 //        where not exists
@@ -323,7 +323,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
-    public void Insert_With_SubQuery_Params() {
+    public void insert_with_subQuery_Params() {
         Param<Integer> param = new Param<Integer>(Integer.class, "param");
         SQLQuery<?> sq = query().from(survey2);
         sq.set(param, 20);
@@ -337,7 +337,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
-    public void Insert_With_SubQuery_Via_Constructor() {
+    public void insert_with_subQuery_Via_Constructor() {
         int count = (int) query().from(survey).fetchCount();
         SQLInsertClause insert = insert(survey, query().from(survey2));
         insert.set(survey.id, survey2.id.add(20));
@@ -347,7 +347,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
-    public void Insert_With_SubQuery_Without_Columns() {
+    public void insert_with_subQuery_Without_Columns() {
         int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
             .select(query().from(survey2).select(survey2.id.add(10), survey2.name, survey2.name2))
@@ -357,14 +357,14 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
-    public void Insert_Without_Columns() {
+    public void insert_without_columns() {
         assertEquals(1, insert(survey).values(4, "Hello", "World").execute());
 
     }
 
     @Test
     @ExcludeIn(FIREBIRD) // too slow
-    public void InsertBatch_with_Subquery() {
+    public void insertBatch_with_subquery() {
         SQLInsertClause insert = insert(survey)
             .columns(survey.id, survey.name)
             .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
@@ -379,13 +379,13 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Like() {
+    public void like() {
         insert(survey).values(11, "Hello World", "a\\b").execute();
         assertEquals(1L, query().from(survey).where(survey.name2.contains("a\\b")).fetchCount());
     }
 
     @Test
-    public void Like_with_Escape() {
+    public void like_with_escape() {
         SQLInsertClause insert = insert(survey);
         insert.set(survey.id, 5).set(survey.name, "aaa").addBatch();
         insert.set(survey.id, 6).set(survey.name, "a_").addBatch();
@@ -404,7 +404,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @IncludeIn(MYSQL)
     @SkipForQuoted
-    public void Replace() {
+    public void replace() {
         SQLInsertClause clause = mysqlReplace(survey);
         clause.columns(survey.id, survey.name)
             .values(3, "Hello");
@@ -414,7 +414,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    public void Insert_With_TempateExpression_In_Batch() {
+    public void insert_with_tempateExpression_in_batch() {
         assertEquals(1, insert(survey)
                 .set(survey.id, 3)
                 .set(survey.name, Expressions.stringTemplate("'Hello'"))
@@ -425,7 +425,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @IncludeIn({H2, POSTGRESQL})
     @SkipForQuoted
-    public void Uuids() {
+    public void uuids() {
         delete(QUuids.uuids).execute();
         QUuids uuids = QUuids.uuids;
         UUID uuid = UUID.randomUUID();
@@ -435,7 +435,7 @@ public class InsertBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({ORACLE})
-    public void XML() {
+    public void xml() {
         delete(QXmlTest.xmlTest).execute();
         QXmlTest xmlTest = QXmlTest.xmlTest;
         String contents = "<html><head>a</head><body>b</body></html>";

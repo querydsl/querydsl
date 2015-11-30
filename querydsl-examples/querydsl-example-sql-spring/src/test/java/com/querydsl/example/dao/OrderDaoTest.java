@@ -16,24 +16,24 @@ public class OrderDaoTest extends AbstractDaoTest {
     @Resource OrderDao orderDao;
 
     @Test
-    public void FindAll() {
+    public void findAll() {
         List<Order> orders = orderDao.findAll();
         assertFalse(orders.isEmpty());
     }
 
     @Test
-    public void FindById() {
+    public void findById() {
         assertNotNull(orderDao.findById(1));
     }
 
     @Test
-    public void Update() {
+    public void update() {
         Order order = orderDao.findById(1);
         orderDao.save(order);
     }
 
     @Test
-    public void Delete() {
+    public void delete() {
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setProductId(1L);
         orderProduct.setQuantity(1);

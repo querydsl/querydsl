@@ -92,7 +92,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Class_and_Exprs() {
+    public void with_class_and_exprs() {
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.getName());
@@ -101,7 +101,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Path_and_Exprs() {
+    public void with_path_and_exprs() {
         QBean<Entity> beanProjection = Projections.bean(entity, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.getName());
@@ -118,7 +118,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Class_and_Map() {
+    public void with_class_and_map() {
         Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
         bindings.put("name", name);
         bindings.put("age", age);
@@ -131,7 +131,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Class_and_Alias() {
+    public void with_class_and_alias() {
         StringPath name2 = Expressions.stringPath("name2");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name.as(name2), age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
@@ -142,7 +142,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Nested_FactoryExpression() {
+    public void with_nested_factoryExpression() {
         Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
         bindings.put("age", age);
         bindings.put("name", new Concatenation(name, name2));
@@ -154,7 +154,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void with_Nested_FactoryExpression2() {
+    public void with_nested_factoryExpression2() {
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class,
                 age, ExpressionUtils.as(new Concatenation(name, name2), "name"));
         FactoryExpression<Entity> wrappedProjection = FactoryExpressionUtils.wrap(beanProjection);
@@ -163,7 +163,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void Supertype_Population() {
+    public void supertype_population() {
         QBean<SubEntity> beanProjection = new QBean<SubEntity>(SubEntity.class, true, name, age, married);
         SubEntity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.getName());
@@ -181,7 +181,7 @@ public class QBeanTest {
     }
 
     @Test
-    public void Alias() {
+    public void alias() {
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name.as("name2"));
         assertEquals(name.as("name2"), beanProjection.getArgs().get(0));
     }

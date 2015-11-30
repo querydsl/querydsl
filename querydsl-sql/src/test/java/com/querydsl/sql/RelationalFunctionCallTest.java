@@ -48,7 +48,7 @@ public class RelationalFunctionCallTest {
     }
 
     @Test
-    public void Validation() {
+    public void validation() {
         QSurvey survey = QSurvey.survey;
         TokenizeFunction func = new TokenizeFunction("func", "a", "b");
         SQLQuery<?> sub = selectOne().from(func.as(func.alias)).where(survey.name.like(func.token));
@@ -57,13 +57,13 @@ public class RelationalFunctionCallTest {
     }
 
     @Test
-    public void NoArgs() {
+    public void noArgs() {
         RelationalFunctionCall<String> functionCall = SQLExpressions.relationalFunctionCall(String.class, "getElements");
         assertEquals("getElements()", functionCall.getTemplate().toString());
     }
 
     @Test
-    public void TwoArgs() {
+    public void twoArgs() {
         StringPath str = Expressions.stringPath("str");
         RelationalFunctionCall<String> functionCall = SQLExpressions.relationalFunctionCall(String.class, "getElements", "a", str);
         assertEquals("getElements({0}, {1})", functionCall.getTemplate().toString());

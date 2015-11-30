@@ -20,7 +20,7 @@ import org.junit.Test;
 public class OracleGrammarTest {
 
     @Test
-    public void Constants() {
+    public void constants() {
         assertNotNull(OracleGrammar.level);
         assertNotNull(OracleGrammar.rownum);
         assertNotNull(OracleGrammar.sysdate);

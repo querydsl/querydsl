@@ -31,13 +31,13 @@ public class DerbyTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void NextVal() {
+    public void nextVal() {
         Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("next value for myseq", new SQLSerializer(new Configuration(new DerbyTemplates())).handle(nextval).toString());
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         // unary + and -
         int p1 = getPrecedence(Ops.NEGATE);
         // *, /, || (concatenation)

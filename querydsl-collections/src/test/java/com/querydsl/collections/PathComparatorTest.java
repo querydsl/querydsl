@@ -18,13 +18,13 @@ public class PathComparatorTest {
     }
 
     @Test
-    public void EqualReference() {
+    public void equalReference() {
         Car car = new Car();
         assertEquals(0, comparator.compare(car, car));
     }
 
     @Test
-    public void SemanticallyEqual() {
+    public void semanticallyEqual() {
         Car car = new Car();
         car.setModel("car");
         car.setHorsePower(50);
@@ -37,17 +37,17 @@ public class PathComparatorTest {
     }
 
     @Test
-    public void LeftIsNull() {
+    public void leftIsNull() {
         assertEquals(-1, comparator.compare(null, new Car()));
     }
 
     @Test
-    public void RightIsNull() {
+    public void rightIsNull() {
         assertEquals(1, comparator.compare(new Car(), null));
     }
 
     @Test
-    public void CompareOnValue() {
+    public void compareOnValue() {
         Car car = new Car();
         car.setHorsePower(50);
 

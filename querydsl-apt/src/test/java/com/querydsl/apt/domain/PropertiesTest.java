@@ -99,13 +99,13 @@ public class PropertiesTest {
     }
 
     @Test
-    public void Customer() {
+    public void customer() {
         assertNotNull(QPropertiesTest_Customer.customer.name);
         assertNotNull(QPropertiesTest_Customer.customer.pizzas);
     }
 
     @Test
-    public void Pizza() {
+    public void pizza() {
         assertNotNull(QPropertiesTest_Pizza.pizza.orderTime);
         assertNotNull(QPropertiesTest_Pizza.pizza.customer);
         assertNotNull(QPropertiesTest_Pizza.pizza.toppings);

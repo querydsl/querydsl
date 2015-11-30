@@ -21,7 +21,7 @@ import org.junit.Test;
 public class ScalaAccessorsTest {
 
     @Test
-    public void ScalaAccessors() {
+    public void scalaAccessors() {
         ScalaAccessors scalaAccessors = Alias.alias(ScalaAccessors.class);
         assertEquals("scalaAccessors.firstName", $(scalaAccessors.firstName()).toString());
         assertEquals("scalaAccessors.lastName",  $(scalaAccessors.lastName()).toString());

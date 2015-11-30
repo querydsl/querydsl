@@ -33,14 +33,14 @@ public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void NoFrom() {
+    public void noFrom() {
         query.getMetadata().setProjection(Expressions.ONE);
         assertEquals("select 1", query.toString());
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union() {
+    public void union() {
         NumberExpression<Integer> one = Expressions.ONE;
         NumberExpression<Integer> two = Expressions.TWO;
         NumberExpression<Integer> three = Expressions.THREE;
@@ -58,7 +58,7 @@ public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest {
     }
 
     @Test
-    public void Precedence() {
+    public void precedence() {
         //.    left    table/column name separator
         //        ::    left    PostgreSQL-style typecast
         //[ ]    left    array element selection

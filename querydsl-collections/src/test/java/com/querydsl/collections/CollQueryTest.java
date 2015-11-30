@@ -36,7 +36,7 @@ import com.querydsl.core.types.dsl.StringPath;
 public class CollQueryTest extends AbstractQueryTest {
 
     @Test
-    public void CustomTemplates() {
+    public void customTemplates() {
         CollQueryTemplates templates = new CollQueryTemplates() {
             {
                 add(Ops.DateTimeOps.MONTH, "{0}.getMonthOfYear()");
@@ -47,7 +47,7 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void InstanceOf() {
+    public void instanceOf() {
         assertEquals(
                 Arrays.asList(c1, c2),
                 query().from(cat, Arrays.asList(c1, c2)).where(cat.instanceOf(Cat.class))
@@ -55,7 +55,7 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void After_And_Before() {
+    public void after_and_before() {
         query().from(cat, Arrays.asList(c1, c2))
             .where(
                 cat.birthdate.lt(new Date()),
@@ -66,7 +66,7 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void ArrayProjection() {
+    public void arrayProjection() {
         // select pairs of cats with different names
         query().from(cat, cats).from(otherCat, cats).where(cat.name.ne(otherCat.name))
                .select(cat.name, otherCat.name).fetch();
@@ -74,7 +74,7 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Cast() {
+    public void cast() {
         NumberExpression<?> num = cat.id;
         Expression<?>[] expr = new Expression[] {num.byteValue(), num.doubleValue(),
                 num.floatValue(), num.intValue(), num.longValue(),
@@ -87,13 +87,13 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Clone() {
+    public void clone_() {
         CollQuery<?> query = new CollQuery<Void>().from(cat, Collections.<Cat>emptyList()).where(cat.isNotNull()).clone();
         assertEquals("cat is not null", query.getMetadata().getWhere().toString());
     }
 
     @Test
-    public void Primitives() {
+    public void primitives() {
         // select cats with kittens
         query().from(cat, cats).where(cat.kittens.size().ne(0)).select(cat.name).fetch();
         assertTrue(last.res.size() == 4);
@@ -104,7 +104,7 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void SimpleCases() {
+    public void simpleCases() {
         // select all cat names
         query().from(cat, cats).select(cat.name).fetch();
         assertTrue(last.res.size() == 4);
@@ -129,7 +129,7 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void Various() {
+    public void various() {
         StringPath a = Expressions.stringPath("a");
         StringPath b = Expressions.stringPath("b");
         for (Tuple strs : from(a, "aa", "bb", "cc")
@@ -151,7 +151,7 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BigDecimals() {
+    public void bigDecimals() {
         NumberPath<BigDecimal> a = Expressions.numberPath(BigDecimal.class, "cost");
         List<BigDecimal> nums = from(a, new BigDecimal("2.1"), new BigDecimal("20.21"),
                 new BigDecimal("44.4")).where(a.lt(new BigDecimal("35.1"))).select(a).fetch();
@@ -159,12 +159,12 @@ public class CollQueryTest extends AbstractQueryTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void GroupBy() {
+    public void groupBy() {
         query().from(cat, cats).groupBy(cat.name);
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void Having() {
+    public void having() {
         query().from(cat, cats).having(cat.name.isNull());
     }
 

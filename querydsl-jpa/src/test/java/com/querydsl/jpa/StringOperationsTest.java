@@ -27,24 +27,24 @@ import com.querydsl.core.types.dsl.StringPath;
 public class StringOperationsTest extends AbstractQueryTest {
 
     @Test
-    public void StringConcatenations() {
+    public void stringConcatenations() {
         assertToString("concat(cat.name,kitten.name)", cat.name.concat(kitten.name));
     }
 
     @Test
-    public void StringConversionOperations() {
+    public void stringConversionOperations() {
         assertToString("str(cat.bodyWeight)", cat.bodyWeight.stringValue());
     }
 
     @Test
-    public void StringOperationsInFunctionalWay() {
+    public void stringOperationsInFunctionalWay() {
         assertToString("concat(cat.name,cust.name.firstName)", cat.name.concat(cust.name.firstName));
         assertToString("lower(cat.name)", cat.name.lower());
     }
 
     @Test
     @SuppressWarnings("rawtypes")
-    public void IndexOf() {
+    public void indexOf() {
         Path path = QCat.cat.name;
         Expression startIndex = Expressions.constant(0);
         Expression endIndex = Expressions.numberOperation(Integer.class, Ops.INDEX_OF, path, Expressions.constant("x"));
@@ -53,13 +53,13 @@ public class StringOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void IndexOf2() {
+    public void indexOf2() {
         StringPath str = QCat.cat.name;
         assertToString("substring(cat.name,1,(locate(?1,cat.name)-1 - ?2))", str.substring(0, str.indexOf("x")));
     }
 
     @Test
-    public void IndexOf3() {
+    public void indexOf3() {
         assertToString("substring(cat.name,2,1)", QCat.cat.name.substring(1,2));
     }
 }

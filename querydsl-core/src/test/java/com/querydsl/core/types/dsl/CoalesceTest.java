@@ -24,64 +24,64 @@ public class CoalesceTest {
     private final StringPath lastname = new StringPath("lastname");
 
     @Test
-    public void Mutable() {
+    public void mutable() {
         Coalesce<String> c = new Coalesce<String>(firstname, lastname).add("xxx");
         assertEquals("coalesce(firstname, lastname, xxx)", c.toString());
         assertEquals("coalesce(firstname, lastname, xxx, yyy)", c.add("yyy").toString());
     }
 
     @Test
-    public void WithList() {
+    public void withList() {
         Coalesce<String> c = new Coalesce<String>(firstname, lastname).add("xxx");
         assertEquals("coalesce(firstname, lastname, xxx)", c.toString());
     }
 
     @Test
-    public void WithSingleArg() {
+    public void withSingleArg() {
         Coalesce<String> c = new Coalesce<String>().add("xxx");
         assertEquals("coalesce(xxx)", c.toString());
     }
 
     @Test
-    public void AsComparable() {
+    public void asComparable() {
         Coalesce<String> c = new Coalesce<String>(firstname, lastname);
         c.getValue().asc();
     }
 
     @Test
-    public void AsString() {
+    public void asString() {
         Coalesce<String> c = new Coalesce<String>(firstname, lastname);
         c.asString().lower();
     }
 
     @Test
-    public void WithoutWarnings() {
+    public void withoutWarnings() {
         Coalesce<String> c = new Coalesce<String>(String.class).add(firstname).add(lastname);
         assertEquals("coalesce(firstname, lastname)", c.toString());
     }
 
     @Test
-    public void Dsl() {
+    public void dsl() {
         assertEquals("coalesce(firstname, lastname)", firstname.coalesce(lastname).toString());
     }
 
     @Test
-    public void Dsl2() {
+    public void dsl2() {
         assertEquals("coalesce(firstname, lastname, xxx)", firstname.coalesce(lastname).add("xxx").toString());
     }
 
     @Test
-    public void Dsl3() {
+    public void dsl3() {
         assertEquals("coalesce(firstname, xxx)", firstname.coalesce("xxx").toString());
     }
 
     @Test
-    public void Asc() {
+    public void asc() {
         assertEquals("coalesce(firstname, xxx) ASC", firstname.coalesce("xxx").asc().toString());
     }
 
     @Test
-    public void Desc() {
+    public void desc() {
         assertEquals("coalesce(firstname, xxx) DESC", firstname.coalesce("xxx").desc().toString());
     }
 
