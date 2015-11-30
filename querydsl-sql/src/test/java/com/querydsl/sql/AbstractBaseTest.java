@@ -20,8 +20,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +95,8 @@ public abstract class AbstractBaseTest {
     public MethodRule skipForQuotedRule = new SkipForQuotedRule(configuration);
 
     @Rule
-    public MethodRule targetRule = new TargetRule();
+    @ClassRule
+    public static TestRule targetRule = new TargetRule();
 
     protected <T> void add(List<T> list, T arg, Target... exclusions) {
         if (exclusions.length > 0) {

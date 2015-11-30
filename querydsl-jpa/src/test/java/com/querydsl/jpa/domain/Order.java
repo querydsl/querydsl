@@ -14,6 +14,7 @@
 package com.querydsl.jpa.domain;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.*;
 
@@ -41,6 +42,11 @@ public class Order {
     @JoinTable(name = "LineItems")
     @OrderColumn(name = "_index")
     List<Item> lineItems;
+
+    @OneToMany
+    @JoinTable(name = "LineItems2")
+    @MapKey(name = "id")
+    Map<Integer, Item> lineItemsMap;
 
     boolean paid;
 }

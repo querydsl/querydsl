@@ -16,8 +16,9 @@ package com.querydsl.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 import com.querydsl.jpa.impl.JPAProvider;
@@ -31,10 +32,12 @@ import antlr.TokenStreamException;
 public class JPAIntegrationBase extends ParsingTest implements JPATest {
 
     @Rule
-    public static MethodRule targetRule = new TargetRule();
+    @ClassRule
+    public static TestRule targetRule = new TargetRule();
 
     @Rule
-    public static MethodRule hibernateOnly = new JPAProviderRule();
+    @ClassRule
+    public static TestRule hibernateOnly = new JPAProviderRule();
 
     private EntityManager em;
 

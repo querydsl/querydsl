@@ -1,9 +1,7 @@
 package com.querydsl.jpa;
 
-import java.lang.annotation.Annotation;
-
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.google.common.collect.ImmutableSet;
@@ -14,14 +12,14 @@ import com.querydsl.core.testutil.EmptyStatement;
  * @author tiwe
  *
  */
-public class JPAProviderRule implements MethodRule {
+public class JPAProviderRule implements TestRule {
 
     @Override
-    public Statement apply(Statement base, FrameworkMethod method, Object target) {
-        NoEclipseLink noEclipseLink = getAnnotation(method, NoEclipseLink.class);
-        NoOpenJPA noOpenJPA = getAnnotation(method, NoOpenJPA.class);
-        NoBatooJPA noBatooJPA = getAnnotation(method, NoBatooJPA.class);
-        NoHibernate noHibernate = getAnnotation(method, NoHibernate.class);
+    public Statement apply(Statement base, Description description) {
+        NoEclipseLink noEclipseLink = description.getAnnotation(NoEclipseLink.class);
+        NoOpenJPA noOpenJPA = description.getAnnotation(NoOpenJPA.class);
+        NoBatooJPA noBatooJPA = description.getAnnotation(NoBatooJPA.class);
+        NoHibernate noHibernate = description.getAnnotation(NoHibernate.class);
         String mode = Mode.mode.get();
         if (mode == null) {
             return base;
@@ -41,10 +39,4 @@ public class JPAProviderRule implements MethodRule {
     private boolean applies(Target[] targets) {
         return targets.length == 0 || ImmutableSet.copyOf(targets).contains(Mode.target.get());
     }
-
-    private <T extends Annotation> T getAnnotation(FrameworkMethod method, Class<T> clazz) {
-        T rv = method.getMethod().getAnnotation(clazz);
-        return rv != null ? rv : method.getMethod().getDeclaringClass().getAnnotation(clazz);
-    }
-
 }

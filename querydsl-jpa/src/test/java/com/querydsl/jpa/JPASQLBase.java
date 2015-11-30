@@ -19,9 +19,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 import com.querydsl.core.Target;
@@ -38,10 +39,12 @@ import com.querydsl.sql.SQLTemplates;
 public class JPASQLBase extends AbstractSQLTest implements JPATest {
 
     @Rule
-    public static MethodRule targetRule = new TargetRule();
+    @ClassRule
+    public static TestRule targetRule = new TargetRule();
 
     @Rule
-    public static MethodRule hibernateOnly = new JPAProviderRule();
+    @ClassRule
+    public static TestRule hibernateOnly = new JPAProviderRule();
 
     private final SQLTemplates templates = Mode.getSQLTemplates();
 

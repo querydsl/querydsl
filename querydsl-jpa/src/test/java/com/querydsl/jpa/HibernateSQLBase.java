@@ -18,9 +18,10 @@ import static org.junit.Assert.assertEquals;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.MethodRule;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 import com.querydsl.core.Target;
@@ -37,7 +38,8 @@ import com.querydsl.sql.SQLTemplates;
 public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
 
     @Rule
-    public static MethodRule targetRule = new TargetRule();
+    @ClassRule
+    public static TestRule targetRule = new TargetRule();
 
     private final SQLTemplates templates = Mode.getSQLTemplates();
 
