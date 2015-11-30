@@ -101,8 +101,6 @@ public class JavaTemplates extends Templates {
         for (Operator op : Ops.MathOps.values()) {
             add(op, "Math." + getTemplate(op));
         }
-        add(Ops.MOD, "{0} % {0}");
-
     }
 
 }
