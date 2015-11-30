@@ -33,7 +33,9 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
 
     private static final long serialVersionUID = 7360552308332457990L;
 
-    private static final TimeExpression<Time> CURRENT_TIME = currentTime(Time.class);
+    private static class Constants {
+        private static final TimeExpression<Time> CURRENT_TIME = currentTime(Time.class);
+    }
 
     @Nullable
     private transient volatile NumberExpression<Integer> hours, minutes, seconds, milliseconds;
@@ -107,7 +109,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      * @return current time
      */
     public static TimeExpression<Time> currentTime() {
-        return CURRENT_TIME;
+        return Constants.CURRENT_TIME;
     }
 
     /**
