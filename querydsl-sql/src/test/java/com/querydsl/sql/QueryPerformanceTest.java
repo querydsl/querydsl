@@ -158,8 +158,8 @@ public class QueryPerformanceTest {
                 for (int i = 0; i < times; i++) {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
-                    ResultSet rs = query.from(companies)
-                            .where(companies.id.eq((long) i)).getResults(companies.name);
+                    ResultSet rs = query.select(companies.name).from(companies)
+                            .where(companies.id.eq((long) i)).getResults();
                     try {
                         while (rs.next()) {
                             rs.getString(1);
