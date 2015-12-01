@@ -242,7 +242,9 @@ import com.querydsl.core.annotations.Config;
 </project>
 ]]></programlisting>
 
-    <para>Alternatively <code>maven-compiler-plugin</code> can be used as well:
+    <para>
+      Alternatively <code>maven-compiler-plugin</code> can be configured
+      to hook APT directly into compilation:
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -302,6 +304,13 @@ import com.querydsl.core.annotations.Config;
         <code>jpa</code>
       </listitem>
     </itemizedlist>
+
+    <para>
+      With this configuration query objects can have their sources genrated
+      and compiled during compilation of the domain objects. This will also
+      automatically add the generated sources directory to Maven project
+      source roots.
+    </para>
 
     <para>
       The great advantage of this approach is that it can also handle
