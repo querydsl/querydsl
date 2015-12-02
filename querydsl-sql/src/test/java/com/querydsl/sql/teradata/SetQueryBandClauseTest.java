@@ -2,6 +2,8 @@ package com.querydsl.sql.teradata;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Connection;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +20,7 @@ public class SetQueryBandClauseTest {
     public void setUp() {
         conf = new Configuration(SQLTemplates.DEFAULT);
         conf.setUseLiterals(true);
-        clause = new SetQueryBandClause(null, conf);
+        clause = new SetQueryBandClause((Connection) null, conf);
     }
 
     @Test

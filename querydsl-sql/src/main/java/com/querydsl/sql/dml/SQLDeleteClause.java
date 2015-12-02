@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnegative;
+import javax.inject.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +51,6 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             "A delete operation can only reference a single table. " +
             "Consider this alternative: DELETE ... WHERE EXISTS (subquery)");
 
-    private final Connection connection;
-
     private final RelationalPath<?> entity;
 
     private final List<QueryMetadata> batches = new ArrayList<QueryMetadata>();
@@ -67,8 +66,14 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     }
 
     public SQLDeleteClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
-        super(configuration);
-        this.connection = connection;
+        super(configuration, connection);
+        this.entity = entity;
+        metadata.addJoin(JoinType.DEFAULT, entity);
+        metadata.setValidatingVisitor(validatingVisitor);
+    }
+
+    public SQLDeleteClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+        super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
         metadata.setValidatingVisitor(validatingVisitor);
@@ -122,7 +127,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         listeners.rendered(context);
 
         listeners.prePrepare(context);
-        PreparedStatement stmt = connection.prepareStatement(queryString);
+        PreparedStatement stmt = connection().prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
 
         context.addPreparedStatement(stmt);
@@ -146,7 +151,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
 
         // add first batch
         listeners.prePrepare(context);
-        PreparedStatement stmt = connection.prepareStatement(queryString);
+        PreparedStatement stmt = connection().prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         if (addBatches) {
             stmt.addBatch();
@@ -167,7 +172,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
             stmt = stmts.get(serializer.toString());
             if (stmt == null) {
                 listeners.prePrepare(context);
-                stmt = connection.prepareStatement(serializer.toString());
+                stmt = connection().prepareStatement(serializer.toString());
                 stmts.put(serializer.toString(), stmt);
                 context.addPreparedStatement(stmt);
                 listeners.prepared(context);
@@ -183,7 +188,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
 
     @Override
     public long execute() {
-        context = startContext(connection, metadata, entity);
+        context = startContext(connection(), metadata, entity);
         PreparedStatement stmt = null;
         Collection<PreparedStatement> stmts = null;
         try {

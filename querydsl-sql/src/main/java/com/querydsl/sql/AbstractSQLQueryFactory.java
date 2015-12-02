@@ -46,7 +46,7 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
 
     @Override
     public final SQLDeleteClause delete(RelationalPath<?> path) {
-        return new SQLDeleteClause(connection.get(), configuration, path);
+        return new SQLDeleteClause(connection, configuration, path);
     }
 
     @SuppressWarnings("unchecked")
@@ -69,17 +69,17 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
 
     @Override
     public final SQLInsertClause insert(RelationalPath<?> path) {
-        return new SQLInsertClause(connection.get(), configuration, path);
+        return new SQLInsertClause(connection, configuration, path);
     }
 
     @Override
     public final SQLMergeClause merge(RelationalPath<?> path) {
-        return new SQLMergeClause(connection.get(), configuration, path);
+        return new SQLMergeClause(connection, configuration, path);
     }
 
     @Override
     public final SQLUpdateClause update(RelationalPath<?> path) {
-        return new SQLUpdateClause(connection.get(), configuration, path);
+        return new SQLUpdateClause(connection, configuration, path);
     }
 
     public final Configuration getConfiguration() {

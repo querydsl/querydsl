@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import javax.annotation.Nonnegative;
+import javax.inject.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +46,6 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
-    private final Connection connection;
-
     private final RelationalPath<?> entity;
 
     private final List<SQLUpdateBatch> batches = new ArrayList<SQLUpdateBatch>();
@@ -64,8 +63,13 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     }
 
     public SQLUpdateClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
-        super(configuration);
-        this.connection = connection;
+        super(configuration, connection);
+        this.entity = entity;
+        metadata.addJoin(JoinType.DEFAULT, entity);
+    }
+
+    public SQLUpdateClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+        super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
@@ -118,7 +122,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         listeners.prepared(context);
 
         listeners.prePrepare(context);
-        PreparedStatement stmt = connection.prepareStatement(queryString);
+        PreparedStatement stmt = connection().prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         context.addPreparedStatement(stmt);
         listeners.prepared(context);
@@ -141,7 +145,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
         // add first batch
         listeners.prePrepare(context);
-        PreparedStatement stmt = connection.prepareStatement(queryString);
+        PreparedStatement stmt = connection().prepareStatement(queryString);
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         if (addBatches) {
             stmt.addBatch();
@@ -162,7 +166,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             stmt = stmts.get(serializer.toString());
             if (stmt == null) {
                 listeners.prePrepare(context);
-                stmt = connection.prepareStatement(serializer.toString());
+                stmt = connection().prepareStatement(serializer.toString());
                 stmts.put(serializer.toString(), stmt);
                 context.addPreparedStatement(stmt);
                 listeners.prepared(context);
@@ -178,7 +182,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
 
     @Override
     public long execute() {
-        context = startContext(connection, metadata, entity);
+        context = startContext(connection(), metadata, entity);
 
         PreparedStatement stmt = null;
         Collection<PreparedStatement> stmts = null;

@@ -655,8 +655,12 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private Connection connection() {
-        if (conn == null && connProvider != null) {
-            conn = connProvider.get();
+        if (conn == null) {
+            if (connProvider != null) {
+                conn = connProvider.get();
+            } else {
+                throw new IllegalStateException("No connection provided");
+            }
         }
         return conn;
     }

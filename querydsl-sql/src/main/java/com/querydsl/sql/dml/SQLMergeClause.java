@@ -17,6 +17,7 @@ import java.sql.*;
 import java.util.*;
 
 import javax.annotation.Nullable;
+import javax.inject.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +45,6 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
-    private final Connection connection;
-
     private final RelationalPath<?> entity;
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
@@ -68,8 +67,13 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     public SQLMergeClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
-        super(configuration);
-        this.connection = connection;
+        super(configuration, connection);
+        this.entity = entity;
+        metadata.addJoin(JoinType.DEFAULT, entity);
+    }
+
+    public SQLMergeClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+        super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
@@ -215,7 +219,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
      * @return result set with generated keys
      */
     public ResultSet executeWithKeys() {
-        context = startContext(connection, metadata, entity);
+        context = startContext(connection(), metadata, entity);
         try {
             if (configuration.getTemplates().isNativeMerge()) {
                 PreparedStatement stmt = null;
@@ -256,7 +260,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             } else {
                 if (hasRow()) {
                     // update
-                    SQLUpdateClause update = new SQLUpdateClause(connection, configuration, entity);
+                    SQLUpdateClause update = new SQLUpdateClause(connection(), configuration, entity);
                     update.addListener(listeners);
                     populate(update);
                     addKeyConditions(update);
@@ -265,7 +269,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                     return EmptyResultSet.DEFAULT;
                 } else {
                     // insert
-                    SQLInsertClause insert = new SQLInsertClause(connection, configuration, entity);
+                    SQLInsertClause insert = new SQLInsertClause(connection(), configuration, entity);
                     insert.addListener(listeners);
                     populate(insert);
                     return insert.executeWithKeys();
@@ -306,7 +310,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     private boolean hasRow() {
-        SQLQuery<?> query = new SQLQuery<Void>(connection, configuration).from(entity);
+        SQLQuery<?> query = new SQLQuery<Void>(connection(), configuration).from(entity);
         addKeyConditions(query);
         return query.select(Expressions.ONE).fetchFirst() != null;
     }
@@ -329,13 +333,13 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     private long executeCompositeMerge() {
         if (hasRow()) {
             // update
-            SQLUpdateClause update = new SQLUpdateClause(connection, configuration, entity);
+            SQLUpdateClause update = new SQLUpdateClause(connection(), configuration, entity);
             populate(update);
             addKeyConditions(update);
             return update.execute();
         } else {
             // insert
-            SQLInsertClause insert = new SQLInsertClause(connection, configuration, entity);
+            SQLInsertClause insert = new SQLInsertClause(connection(), configuration, entity);
             populate(insert);
             return insert.execute();
 
@@ -448,9 +452,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             for (int i = 0; i < target.length; i++) {
                 target[i] = ColumnMetadata.getName(getKeys().get(i));
             }
-            stmt = connection.prepareStatement(queryString, target);
+            stmt = connection().prepareStatement(queryString, target);
         } else {
-            stmt = connection.prepareStatement(queryString);
+            stmt = connection().prepareStatement(queryString);
         }
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         context.addPreparedStatement(stmt);
@@ -460,7 +464,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     private long executeNativeMerge() {
-        context = startContext(connection, metadata, entity);
+        context = startContext(connection(), metadata, entity);
         PreparedStatement stmt = null;
         Collection<PreparedStatement> stmts = null;
         try {
