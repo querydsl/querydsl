@@ -520,6 +520,7 @@
         <module>querydsl-maven-plugin</module>
         <module>querydsl-jpa</module>
         <module>querydsl-jpa-codegen</module>
+        <module>querydsl-hibernate5-codegen</module>
         <module>querydsl-jdo</module>
 
         <!-- Lucene related -->
@@ -560,6 +561,7 @@
         <module>querydsl-maven-plugin</module>
         <module>querydsl-jpa</module>
         <module>querydsl-jpa-codegen</module>
+        <module>querydsl-hibernate5-codegen</module>
       </modules>
     </profile>
 
