@@ -24,28 +24,15 @@ import javax.annotation.Nullable;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.sandbox.queries.DuplicateFilter;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Filter;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.QueryWrapperFilter;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Sort;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.Fetchable;
-import com.querydsl.core.NonUniqueResultException;
-import com.querydsl.core.QueryException;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.SimpleQuery;
+import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
@@ -105,8 +92,9 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
             if (maxDoc == 0) {
                 return 0;
             }
-            return searcher.search(createQuery(), maxDoc,
-                    Sort.INDEXORDER, false, false).totalHits;
+            TotalHitCountCollector collector = new TotalHitCountCollector();
+            searcher.search(createQuery(), getFilter(), collector);
+            return collector.getTotalHits();
         } catch (IOException e) {
             throw new QueryException(e);
         } catch (IllegalArgumentException e) {
