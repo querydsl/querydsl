@@ -93,9 +93,10 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void list_distinct_two_sources() {
+        // XXX List implementation of JDO provider has weird equals implementation
         assertEquals(
-                query().from(product, product2).select(product, product2).fetch(),
-                query().from(product, product2).distinct().select(product, product2).fetch());
+                ImmutableList.copyOf(query().from(product, product2).select(product, product2).fetch()),
+                ImmutableList.copyOf(query().from(product, product2).distinct().select(product, product2).fetch()));
     }
 
     @Test
