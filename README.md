@@ -6,6 +6,7 @@ Instead of writing queries as inline strings or externalizing them into XML file
 
 [![Build Status](https://travis-ci.org/querydsl/querydsl.svg?branch=master)](https://travis-ci.org/querydsl/querydsl)
 [![Coverage Status](https://coveralls.io/repos/querydsl/querydsl/badge.svg?branch=master&service=github)](https://coveralls.io/github/querydsl/querydsl?branch=master)
+[![Stackoverflow](https://img.shields.io/badge/StackOverflow-querydsl-yellow.svg)](https://stackoverflow.com/questions/tagged/querydsl)
 
 **Getting started**
 
