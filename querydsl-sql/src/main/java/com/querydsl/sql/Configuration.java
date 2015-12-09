@@ -223,7 +223,13 @@ public final class Configuration {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> void set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException {
         if (Null.class.isInstance(value)) {
-            Integer sqlType = path != null ? ColumnMetadata.getColumnMetadata(path).getJdbcType() : null;
+            Integer sqlType = null;
+            if (path != null) {
+                ColumnMetadata columnMetadata = ColumnMetadata.getColumnMetadata(path);
+                if (columnMetadata.hasJdbcType()) {
+                    sqlType = columnMetadata.getJdbcType();
+                }
+            }
             if (sqlType != null) {
                 stmt.setNull(i, sqlType);
             } else {

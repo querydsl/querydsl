@@ -31,6 +31,7 @@ import com.querydsl.core.testutil.IncludeIn;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Param;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.dml.SQLUpdateClause;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
@@ -124,6 +125,15 @@ public class UpdateBase extends AbstractBaseTest {
     public void setNull2() {
         long count = query().from(survey).fetchCount();
         assertEquals(count, update(survey).set(survey.name, (String) null).execute());
+    }
+
+    @Test
+    @SkipForQuoted
+    @ExcludeIn({DERBY})
+    public void setNullEmptyRootPath() {
+        StringPath name = Expressions.stringPath("name");
+        long count = query().from(survey).fetchCount();
+        assertEquals(count, execute(update(survey).setNull(name)));
     }
 
     @Test
