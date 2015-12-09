@@ -25,11 +25,11 @@ Use these tutorials to get started
 
 **Support**
 
-Free support is provided in the Querydsl Google Group https://groups.google.com/forum/#!forum/querydsl
+Free support is provided in the [Querydsl Google Group](https://groups.google.com/forum/#!forum/querydsl) and on [StackOverflow](http://stackoverflow.com/questions/tagged/querydsl).
 
 **How to build**
 
-Querydsl provides releases via public Maven repositories, but you can build the sources also yourself like this
+Querydsl provides releases via public Maven repositories, but you can also build the sources yourself like this
 
 ```BASH
 $ mvn -DskipTests=true clean install
