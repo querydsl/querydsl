@@ -28,7 +28,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @param <T>
  */
-public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleExpression<T> {
+public class JTSGeometryExpression<T extends Geometry> extends SimpleExpression<T> {
 
     private static final long serialVersionUID = -1183228394472681995L;
 

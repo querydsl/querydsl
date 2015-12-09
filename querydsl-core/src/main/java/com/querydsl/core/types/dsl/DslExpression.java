@@ -13,10 +13,9 @@
  */
 package com.querydsl.core.types.dsl;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Path;
+import javax.annotation.Nullable;
+
+import com.querydsl.core.types.*;
 
 /**
  * {@code DslExpression} is the base class for DSL expressions, but {@link SimpleExpression} is the base class
@@ -25,7 +24,7 @@ import com.querydsl.core.types.Path;
  * @author tiwe
  * @param <T> expression type
  */
-public abstract class DslExpression<T> implements Expression<T> {
+public class DslExpression<T> implements Expression<T> {
 
     private static final long serialVersionUID = -3383063447710753290L;
 
@@ -36,6 +35,11 @@ public abstract class DslExpression<T> implements Expression<T> {
     public DslExpression(Expression<T> mixin) {
         this.mixin = mixin;
         this.hashCode = mixin.hashCode();
+    }
+
+    @Override
+    public <R, C> R accept(Visitor<R, C> v, @Nullable C context) {
+        return mixin.accept(v, context);
     }
 
     @Override

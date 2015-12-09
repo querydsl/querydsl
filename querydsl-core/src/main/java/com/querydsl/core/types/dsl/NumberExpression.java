@@ -30,7 +30,7 @@ import com.querydsl.core.util.MathUtils;
  * @param <T> expression type
  * @see java.lang.Number
  */
-public abstract class NumberExpression<T extends Number & Comparable<?>> extends ComparableExpressionBase<T> {
+public class NumberExpression<T extends Number & Comparable<?>> extends ComparableExpressionBase<T> {
 
     private static final long serialVersionUID = -5485902768703364888L;
 

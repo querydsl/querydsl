@@ -31,7 +31,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  *
  * @param <T>
  */
-public abstract class LineStringExpression<T extends LineString> extends CurveExpression<T> {
+public class LineStringExpression<T extends LineString> extends CurveExpression<T> {
 
     private static final long serialVersionUID = -6572984614863252657L;
 

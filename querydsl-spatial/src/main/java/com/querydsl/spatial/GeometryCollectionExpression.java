@@ -30,7 +30,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  *
  * @param <T>
  */
-public abstract class GeometryCollectionExpression<T extends GeometryCollection> extends GeometryExpression<T> {
+public class GeometryCollectionExpression<T extends GeometryCollection> extends GeometryExpression<T> {
 
     private static final long serialVersionUID = 8874174644259834690L;
 

@@ -24,7 +24,7 @@ import com.querydsl.core.types.Ops;
  *
  * @param <T>
  */
-public abstract class LiteralExpression<T extends Comparable> extends ComparableExpression<T> {
+public class LiteralExpression<T extends Comparable> extends ComparableExpression<T> {
 
     @Nullable
     private transient volatile StringExpression stringCast;

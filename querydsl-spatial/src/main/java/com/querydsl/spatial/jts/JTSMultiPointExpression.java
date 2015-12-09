@@ -25,7 +25,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
  *
  * @param <T>
  */
-public abstract class JTSMultiPointExpression<T extends MultiPoint> extends JTSGeometryCollectionExpression<T> {
+public class JTSMultiPointExpression<T extends MultiPoint> extends JTSGeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 7221702165705045865L;
 

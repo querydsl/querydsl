@@ -27,7 +27,7 @@ import com.querydsl.core.types.*;
  *
  * @param <T> expression type
  */
-public abstract class SimpleExpression<T> extends DslExpression<T> {
+public class SimpleExpression<T> extends DslExpression<T> {
 
     private static final long serialVersionUID = -4405387187738167105L;
 

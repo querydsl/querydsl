@@ -31,7 +31,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @param <T>
  */
-public abstract class JTSLineStringExpression<T extends LineString> extends JTSCurveExpression<T> {
+public class JTSLineStringExpression<T extends LineString> extends JTSCurveExpression<T> {
 
     private static final long serialVersionUID = -6572984614863252657L;
 

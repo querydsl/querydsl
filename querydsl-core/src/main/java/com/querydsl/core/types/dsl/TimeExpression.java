@@ -29,7 +29,7 @@ import com.querydsl.core.types.Path;
  *
  * @param <T> expression type
  */
-public abstract class TimeExpression<T extends Comparable> extends TemporalExpression<T> {
+public class TimeExpression<T extends Comparable> extends TemporalExpression<T> {
 
     private static final long serialVersionUID = 7360552308332457990L;
 

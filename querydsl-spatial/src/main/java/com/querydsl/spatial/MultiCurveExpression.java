@@ -29,7 +29,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  *
  * @param <T>
  */
-public abstract class MultiCurveExpression<T extends GeometryCollection> extends GeometryCollectionExpression<T> {
+public class MultiCurveExpression<T extends GeometryCollection> extends GeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 6983316799469849656L;
 

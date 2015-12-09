@@ -30,7 +30,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @param <T>
  */
-public abstract class JTSPointExpression<T extends Point> extends JTSGeometryExpression<T> {
+public class JTSPointExpression<T extends Point> extends JTSGeometryExpression<T> {
 
     private static final long serialVersionUID = -3549448861390349654L;
 
