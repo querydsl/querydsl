@@ -6,6 +6,7 @@ Instead of writing queries as inline strings or externalizing them into XML file
 
 [![Build Status](https://travis-ci.org/querydsl/querydsl.svg?branch=master)](https://travis-ci.org/querydsl/querydsl)
 [![Coverage Status](https://coveralls.io/repos/querydsl/querydsl/badge.svg?branch=master&service=github)](https://coveralls.io/github/querydsl/querydsl?branch=master)
+[![Stackoverflow](https://img.shields.io/badge/StackOverflow-querydsl-yellow.svg)](https://stackoverflow.com/questions/tagged/querydsl)
 
 **Getting started**
 
@@ -25,11 +26,11 @@ Use these tutorials to get started
 
 **Support**
 
-Free support is provided in the Querydsl Google Group https://groups.google.com/forum/#!forum/querydsl
+Free support is provided in the [Querydsl Google Group](https://groups.google.com/forum/#!forum/querydsl) and on [StackOverflow](http://stackoverflow.com/questions/tagged/querydsl).
 
 **How to build**
 
-Querydsl provides releases via public Maven repositories, but you can build the sources also yourself like this
+Querydsl provides releases via public Maven repositories, but you can also build the sources yourself like this
 
 ```BASH
 $ mvn -DskipTests=true clean install
