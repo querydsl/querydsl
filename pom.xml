@@ -35,7 +35,7 @@
     </excludedGroups>
 
     <!-- groups to run with surefire plugin - intended to be overridden on the command line -->
-    <groups></groups>
+    <includedGroups></includedGroups>
     
     <argLine>-Xms256m -Xmx512m</argLine>
 
@@ -414,7 +414,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <excludedGroups>${excludedGroups}</excludedGroups>
-          <groups>${groups}</groups>
+          <groups>${includedGroups}</groups>
         </configuration>
         <dependencies>
           <dependency>
