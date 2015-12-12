@@ -264,6 +264,11 @@ public class LuceneQueryTest {
     }
 
     @Test
+    public void in_toString() {
+        assertEquals("year:`____F year:`____H", query.where(year.in(1990, 1864)).toString());
+    }
+
+    @Test
     public void list_sorted_by_year_ascending() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.asc());

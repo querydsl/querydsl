@@ -25,6 +25,7 @@ import org.apache.lucene.document.MapFieldSelector;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.Query;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
@@ -342,7 +343,8 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
 
     @Override
     public String toString() {
-        return createQuery().toString();
+        String str = createQuery().toString();
+        return CharMatcher.JAVA_ISO_CONTROL.replaceFrom(str, '_');
     }
 
     private int maxDoc() throws IOException {
