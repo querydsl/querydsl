@@ -84,6 +84,8 @@ public class LuceneSerializer {
             return bq;
         } else if (op == Ops.LIKE) {
             return like(operation, metadata);
+        } else if (op == Ops.LIKE_IC) {
+            throw new IgnoreCaseUnsupportedException();
         } else if (op == Ops.EQ) {
             return eq(operation, metadata, false);
         } else if (op == Ops.EQ_IGNORE_CASE) {
