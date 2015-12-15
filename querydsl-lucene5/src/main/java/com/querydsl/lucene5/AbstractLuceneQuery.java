@@ -33,6 +33,7 @@ import org.apache.lucene.search.QueryWrapperFilter;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
@@ -398,7 +399,8 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
 
     @Override
     public String toString() {
-        return createQuery().toString();
+        String str = createQuery().toString();
+        return CharMatcher.JAVA_ISO_CONTROL.replaceFrom(str, '_');
     }
 
     private int maxDoc() throws IOException {
