@@ -12,6 +12,14 @@ import com.querydsl.sql.SQLTemplates;
 
 public class SQLDeleteClauseTest {
 
+    @Test(expected = IllegalStateException.class)
+    public void noConnection() {
+        QEmployee emp1 = new QEmployee("emp1");
+        SQLDeleteClause delete = new SQLDeleteClause(null, SQLTemplates.DEFAULT, emp1);
+        delete.where(emp1.id.eq(1));
+        delete.execute();
+    }
+
     @Test(expected = IllegalArgumentException.class)
     @Ignore
     public void error() {
