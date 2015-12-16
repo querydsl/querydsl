@@ -306,7 +306,7 @@ import com.querydsl.core.annotations.Config;
     </itemizedlist>
 
     <para>
-      With this configuration query objects can have their sources genrated
+      With this configuration query objects can have their sources generated
       and compiled during compilation of the domain objects. This will also
       automatically add the generated sources directory to Maven project
       source roots.
