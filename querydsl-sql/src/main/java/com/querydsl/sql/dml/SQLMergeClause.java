@@ -248,6 +248,8 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                             super.close();
                         } finally {
                             stmt2.close();
+                            reset();
+                            endContext(context);
                         }
                     }
                 };
@@ -255,22 +257,25 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 if (hasRow()) {
                     // update
                     SQLUpdateClause update = new SQLUpdateClause(connection, configuration, entity);
+                    update.addListener(listeners);
                     populate(update);
                     addKeyConditions(update);
+                    reset();
+                    endContext(context);
                     return EmptyResultSet.DEFAULT;
                 } else {
                     // insert
                     SQLInsertClause insert = new SQLInsertClause(connection, configuration, entity);
+                    insert.addListener(listeners);
                     populate(insert);
                     return insert.executeWithKeys();
                 }
             }
         } catch (SQLException e) {
             onException(context,e);
-            throw configuration.translate(queryString, constants, e);
-        } finally {
             reset();
             endContext(context);
+            throw configuration.translate(queryString, constants, e);
         }
     }
 

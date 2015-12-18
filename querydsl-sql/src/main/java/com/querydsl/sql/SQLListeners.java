@@ -15,10 +15,11 @@ package com.querydsl.sql;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
@@ -38,7 +39,7 @@ public class SQLListeners implements SQLDetailedListener {
     @Nullable
     private final SQLDetailedListener parent;
 
-    private final List<SQLDetailedListener> listeners = Lists.newArrayList();
+    private final Set<SQLDetailedListener> listeners = Sets.newLinkedHashSet();
 
     public SQLListeners(SQLListener parent) {
         this.parent = new SQLListenerAdapter(parent);
@@ -49,7 +50,15 @@ public class SQLListeners implements SQLDetailedListener {
     }
 
     public void add(SQLListener listener) {
-        listeners.add(new SQLListenerAdapter(listener));
+        if (listener instanceof SQLListeners) {
+            for (SQLListener l : ((SQLListeners) listener).listeners) {
+                add(l);
+            }
+        } else if (listener instanceof SQLDetailedListener) {
+            listeners.add((SQLDetailedListener) listener);
+        } else {
+            listeners.add(new SQLListenerAdapter(listener));
+        }
     }
 
     @Override
