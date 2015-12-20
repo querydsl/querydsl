@@ -30,6 +30,11 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
 
     private final TemplateExpressionImpl<String> templateMixin;
 
+    protected StringTemplate(TemplateExpressionImpl<String> mixin) {
+        super(mixin);
+        this.templateMixin = mixin;
+    }
+
     protected StringTemplate(Template template, ImmutableList<?> args) {
         super(ExpressionUtils.template(String.class, template, args));
         this.templateMixin = (TemplateExpressionImpl<String>) mixin;

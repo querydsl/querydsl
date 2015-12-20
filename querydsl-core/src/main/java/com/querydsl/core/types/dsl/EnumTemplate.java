@@ -31,6 +31,11 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
 
     private final TemplateExpressionImpl<T> templateMixin;
 
+    protected EnumTemplate(TemplateExpressionImpl<T> mixin) {
+        super(mixin);
+        this.templateMixin = mixin;
+    }
+
     protected EnumTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;

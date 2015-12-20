@@ -31,6 +31,11 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
 
     private final TemplateExpressionImpl<T> templateMixin;
 
+    protected TimeTemplate(TemplateExpressionImpl<T> mixin) {
+        super(mixin);
+        this.templateMixin = mixin;
+    }
+
     protected TimeTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;

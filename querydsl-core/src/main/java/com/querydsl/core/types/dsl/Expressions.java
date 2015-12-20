@@ -1471,16 +1471,24 @@ public final class Expressions {
      */
     public static BooleanExpression asBoolean(Expression<Boolean> expr) {
         Expression<Boolean> underlyingMixin = ExpressionUtils.extract(expr);
-        return new BooleanExpression(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new BooleanPath((PathImpl<Boolean>) underlyingMixin);
+        } else if (underlyingMixin instanceof PredicateOperation) {
+            return new BooleanOperation((PredicateOperation) underlyingMixin);
+        } else if (underlyingMixin instanceof PredicateTemplate) {
+            return new BooleanTemplate((PredicateTemplate) underlyingMixin);
+        } else {
+            return new BooleanExpression(underlyingMixin) {
 
-            private static final long serialVersionUID = -8712299418891960222L;
+                private static final long serialVersionUID = -8712299418891960222L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
     }
 
     /**
@@ -1501,16 +1509,25 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> ComparableExpression<T> asComparable(Expression<T> expr) {
         Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
-        return new ComparableExpression<T>(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new ComparablePath<T>((PathImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new ComparableOperation<T>((OperationImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof TemplateExpressionImpl) {
+            return new ComparableTemplate<T>((TemplateExpressionImpl<T>) underlyingMixin);
+        } else {
+            return new ComparableExpression<T>(underlyingMixin) {
 
-            private static final long serialVersionUID = 389920618099394430L;
+                private static final long serialVersionUID = 389920618099394430L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
+
     }
 
     /**
@@ -1531,16 +1548,25 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> DateExpression<T> asDate(Expression<T> expr) {
         Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
-        return new DateExpression<T>(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new DatePath<T>((PathImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new DateOperation<T>((OperationImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof TemplateExpressionImpl) {
+            return new DateTemplate<T>((TemplateExpressionImpl<T>) underlyingMixin);
+        } else {
+            return new DateExpression<T>(underlyingMixin) {
 
-            private static final long serialVersionUID = 389920618099394430L;
+                private static final long serialVersionUID = 389920618099394430L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
+
     }
 
     /**
@@ -1561,16 +1587,25 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> DateTimeExpression<T> asDateTime(Expression<T> expr) {
         Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
-        return new DateTimeExpression<T>(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new DateTimePath<T>((PathImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new DateTimeOperation<T>((OperationImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof TemplateExpressionImpl) {
+            return new DateTimeTemplate<T>((TemplateExpressionImpl<T>) underlyingMixin);
+        } else {
+            return new DateTimeExpression<T>(underlyingMixin) {
 
-            private static final long serialVersionUID = 8007203530480765244L;
+                private static final long serialVersionUID = 8007203530480765244L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
+
     }
 
     /**
@@ -1591,16 +1626,24 @@ public final class Expressions {
      */
     public static <T extends Comparable<?>> TimeExpression<T> asTime(Expression<T> expr) {
         Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
-        return new TimeExpression<T>(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new TimePath<T>((PathImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new TimeOperation<T>((OperationImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof TemplateExpressionImpl) {
+            return new TimeTemplate<T>((TemplateExpressionImpl<T>) underlyingMixin);
+        } else {
+            return new TimeExpression<T>(underlyingMixin) {
 
-            private static final long serialVersionUID = -2402288239000668173L;
+                private static final long serialVersionUID = -2402288239000668173L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
     }
 
     /**
@@ -1621,16 +1664,25 @@ public final class Expressions {
      */
     public static <T extends Enum<T>> EnumExpression<T> asEnum(Expression<T> expr) {
         Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
-        return new EnumExpression<T>(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new EnumPath<T>((PathImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new EnumOperation<T>((OperationImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof TemplateExpressionImpl) {
+            return new EnumTemplate<T>((TemplateExpressionImpl<T>) underlyingMixin);
+        } else {
+            return new EnumExpression<T>(underlyingMixin) {
 
-            private static final long serialVersionUID = 949681836002045152L;
+                private static final long serialVersionUID = 949681836002045152L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
+
     }
 
     /**
@@ -1651,16 +1703,24 @@ public final class Expressions {
      */
     public static <T extends Number & Comparable<?>> NumberExpression<T> asNumber(Expression<T> expr) {
         Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
-        return new NumberExpression<T>(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new NumberPath<T>((PathImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new NumberOperation<T>((OperationImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof TemplateExpressionImpl) {
+            return new NumberTemplate<T>((TemplateExpressionImpl<T>) underlyingMixin);
+        } else {
+            return new NumberExpression<T>(underlyingMixin) {
 
-            private static final long serialVersionUID = -8712299418891960222L;
+                private static final long serialVersionUID = -8712299418891960222L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
     }
 
     /**
@@ -1681,16 +1741,24 @@ public final class Expressions {
      */
     public static StringExpression asString(Expression<String> expr) {
         Expression<String> underlyingMixin = ExpressionUtils.extract(expr);
-        return new StringExpression(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new StringPath((PathImpl<String>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new StringOperation((OperationImpl<String>) underlyingMixin);
+        } else if (underlyingMixin instanceof TemplateExpressionImpl) {
+            return new StringTemplate((TemplateExpressionImpl<String>) underlyingMixin);
+        } else {
+            return new StringExpression(underlyingMixin) {
 
-            private static final long serialVersionUID = 8007203530480765244L;
+                private static final long serialVersionUID = 8007203530480765244L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
     }
 
     /**
@@ -1701,6 +1769,44 @@ public final class Expressions {
      */
     public static StringExpression asString(String value) {
         return asString(constant(value));
+    }
+
+    /**
+     * Create a new SimpleExpression
+     *
+     * @param expr expression
+     * @return new SimpleExpression
+     */
+    public static <T> SimpleExpression<T> asSimple(Expression<T> expr) {
+        Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
+        if (underlyingMixin instanceof PathImpl) {
+            return new SimplePath<T>((PathImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new SimpleOperation<T>((OperationImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof TemplateExpressionImpl) {
+            return new SimpleTemplate<T>((TemplateExpressionImpl<T>) underlyingMixin);
+        } else {
+            return new SimpleExpression<T>(underlyingMixin) {
+
+                private static final long serialVersionUID = -8712299418891960222L;
+
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
+
+            };
+        }
+    }
+
+    /**
+     * Create a new SimpleExpression
+     *
+     * @param value constant
+     * @return new SimpleExpression
+     */
+    public static <T> SimpleExpression<T> asSimple(T value) {
+        return asSimple(constant(value));
     }
 
 }

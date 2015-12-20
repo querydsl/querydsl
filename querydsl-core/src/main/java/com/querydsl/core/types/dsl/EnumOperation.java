@@ -31,6 +31,11 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
 
     private final OperationImpl<T> opMixin;
 
+    protected EnumOperation(OperationImpl<T> mixin) {
+        super(mixin);
+        this.opMixin = mixin;
+    }
+
     protected EnumOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }
