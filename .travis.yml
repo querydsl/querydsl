@@ -10,7 +10,7 @@ env:
     - MODULE=!querydsl-scala
     - MODULE=querydsl-scala
 install:
-  - mvn -B -q install -DskipTests=true
+  - mvn -B -q --projects ${MODULE} install -DskipTests=true
 before_script:
   - mysql -u root -e "source travis/mysql.sql"
   - psql -U postgres -f travis/postgresql.sql  

@@ -86,7 +86,9 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
             if (maxDoc == 0) {
                 return 0;
             }
-            return searcher.search(createQuery(), getFilter(), maxDoc).totalHits;
+            TotalHitCountCollector collector = new TotalHitCountCollector();
+            searcher.search(createQuery(), getFilter(), collector);
+            return collector.getTotalHits();
         } catch (IOException e) {
             throw new QueryException(e);
         } catch (IllegalArgumentException e) {
