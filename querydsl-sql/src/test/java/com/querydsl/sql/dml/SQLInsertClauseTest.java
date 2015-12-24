@@ -11,6 +11,14 @@ import com.querydsl.sql.SQLTemplates;
 
 public class SQLInsertClauseTest {
 
+    @Test(expected = IllegalStateException.class)
+    public void noConnection() {
+        QEmployee emp1 = new QEmployee("emp1");
+        SQLInsertClause insert = new SQLInsertClause(null, SQLTemplates.DEFAULT, emp1);
+        insert.set(emp1.id, 1);
+        insert.execute();
+    }
+
     @Test
     public void getSQL() {
         QEmployee emp1 = new QEmployee("emp1");

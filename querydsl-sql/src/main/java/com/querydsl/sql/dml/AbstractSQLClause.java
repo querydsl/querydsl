@@ -18,6 +18,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+import javax.inject.Provider;
+
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 
@@ -47,10 +50,24 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected SQLListenerContextImpl context;
 
-    public AbstractSQLClause(Configuration configuration) {
+    @Nullable
+    private Provider<Connection> connProvider;
+
+    @Nullable
+    private Connection conn;
+
+    public AbstractSQLClause(Configuration configuration, Provider<Connection> connProvider) {
         this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
         this.useLiterals = configuration.getUseLiterals();
+        this.connProvider = connProvider;
+    }
+
+    public AbstractSQLClause(Configuration configuration, Connection conn) {
+        this.configuration = configuration;
+        this.listeners = new SQLListeners(configuration.getListeners());
+        this.useLiterals = configuration.getUseLiterals();
+        this.conn = conn;
     }
 
     /**
@@ -218,6 +235,17 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected void reset() {
         cleanupMDC();
+    }
+
+    protected Connection connection() {
+        if (conn == null) {
+            if (connProvider != null) {
+                conn = connProvider.get();
+            } else {
+                throw new IllegalStateException("No connection provided");
+            }
+        }
+        return conn;
     }
 
     public void setUseLiterals(boolean useLiterals) {

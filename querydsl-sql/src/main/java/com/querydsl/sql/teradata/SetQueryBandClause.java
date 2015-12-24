@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Provider;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.querydsl.sql.Configuration;
@@ -34,8 +36,6 @@ import com.querydsl.sql.dml.AbstractSQLClause;
  */
 public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
 
-    private final Connection connection;
-
     private boolean forSession = true;
 
     private final Map<String, String> values = Maps.newLinkedHashMap();
@@ -49,8 +49,11 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
     }
 
     public SetQueryBandClause(Connection connection, Configuration configuration) {
-        super(configuration);
-        this.connection = connection;
+        super(configuration, connection);
+    }
+
+    public SetQueryBandClause(Provider<Connection> connection, Configuration configuration) {
+        super(configuration, connection);
     }
 
     public SetQueryBandClause forSession() {
@@ -81,7 +84,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
     public long execute() {
         PreparedStatement stmt = null;
         try {
-            stmt = connection.prepareStatement(toString());
+            stmt = connection().prepareStatement(toString());
             if (parameter != null) {
                 stmt.setString(1, parameter);
             }

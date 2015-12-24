@@ -17,6 +17,7 @@ import java.sql.*;
 import java.util.*;
 
 import javax.annotation.Nullable;
+import javax.inject.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +45,6 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         InsertClause<SQLInsertClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
-
-    private final Connection connection;
 
     private final RelationalPath<?> entity;
 
@@ -85,8 +84,20 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     public SQLInsertClause(Connection connection, Configuration configuration,
             RelationalPath<?> entity) {
-        super(configuration);
-        this.connection = connection;
+        super(configuration, connection);
+        this.entity = entity;
+        metadata.addJoin(JoinType.DEFAULT, entity);
+    }
+
+    public SQLInsertClause(Provider<Connection> connection, Configuration configuration,
+                           RelationalPath<?> entity, SQLQuery<?> subQuery) {
+        this(connection, configuration, entity);
+        this.subQueryBuilder = subQuery;
+    }
+
+    public SQLInsertClause(Provider<Connection> connection, Configuration configuration,
+                           RelationalPath<?> entity) {
+        super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
@@ -303,12 +314,12 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                     String column = ColumnMetadata.getName(path);
                     target[i] = column;
                 }
-                stmt = connection.prepareStatement(queryString, target);
+                stmt = connection().prepareStatement(queryString, target);
             } else {
-                stmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
+                stmt = connection().prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
             }
         } else {
-            stmt = connection.prepareStatement(queryString);
+            stmt = connection().prepareStatement(queryString);
         }
         setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(),
                 metadata.getParams());
@@ -324,7 +335,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * @return result set with generated keys
      */
     public ResultSet executeWithKeys() {
-        context = startContext(connection, metadata, entity);
+        context = startContext(connection(), metadata, entity);
         try {
             PreparedStatement stmt = null;
             if (batches.isEmpty()) {
@@ -371,7 +382,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     @Override
     public long execute() {
-        context = startContext(connection,metadata,entity);
+        context = startContext(connection(), metadata,entity);
         PreparedStatement stmt = null;
         Collection<PreparedStatement> stmts = null;
         try {
