@@ -22,6 +22,7 @@ import static org.junit.Assert.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -237,6 +238,26 @@ public class InsertBase extends AbstractBaseTest {
         assertTrue(rs.next());
         assertTrue(rs.getObject(1) != null);
         rs.close();
+    }
+
+    @Test
+    @ExcludeIn({CUBRID, SQLSERVER})
+    public void insert_with_keys_listener() throws SQLException {
+        final AtomicBoolean result = new AtomicBoolean();
+        SQLListener listener = new SQLBaseListener() {
+            @Override
+            public void end(SQLListenerContext context) {
+                result.set(true);
+            }
+        };
+        SQLInsertClause clause = insert(survey).set(survey.name, "Hello World");
+        clause.addListener(listener);
+        ResultSet rs = clause.executeWithKeys();
+        assertFalse(result.get());
+        assertTrue(rs.next());
+        assertTrue(rs.getObject(1) != null);
+        rs.close();
+        assertTrue(result.get());
     }
 
     @Test

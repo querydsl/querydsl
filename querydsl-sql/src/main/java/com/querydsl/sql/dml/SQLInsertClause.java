@@ -356,15 +356,16 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                         super.close();
                     } finally {
                         stmt2.close();
+                        reset();
+                        endContext(context);
                     }
                 }
             };
         } catch (SQLException e) {
             onException(context, e);
-            throw configuration.translate(queryString, constants, e);
-        } finally {
             reset();
             endContext(context);
+            throw configuration.translate(queryString, constants, e);
         }
     }
 

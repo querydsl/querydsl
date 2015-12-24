@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.After;
 import org.junit.Before;
@@ -59,6 +60,27 @@ public class MergeBase extends AbstractBaseTest {
         assertTrue(rs.next());
         assertTrue(rs.getObject(1) != null);
         rs.close();
+    }
+
+    @Test
+    @ExcludeIn({H2, CUBRID, SQLSERVER})
+    public void merge_with_keys_listener() throws SQLException {
+        final AtomicBoolean result = new AtomicBoolean();
+        SQLListener listener = new SQLBaseListener() {
+            @Override
+            public void end(SQLListenerContext context) {
+                result.set(true);
+            }
+        };
+        SQLMergeClause clause = merge(survey).keys(survey.id)
+                .set(survey.id, 7)
+                .set(survey.name, "Hello World");
+        clause.addListener(listener);
+        ResultSet rs = clause.executeWithKeys();
+        assertTrue(rs.next());
+        assertTrue(rs.getObject(1) != null);
+        rs.close();
+        assertTrue(result.get());
     }
 
     @Test
