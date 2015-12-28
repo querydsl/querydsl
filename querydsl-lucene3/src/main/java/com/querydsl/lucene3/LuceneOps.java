@@ -22,6 +22,7 @@ import com.querydsl.core.types.Operator;
  *
  */
 public enum LuceneOps implements Operator {
+    BOOST(Boolean.class),
     LUCENE_QUERY(Object.class),
     PHRASE(String.class),
     TERM(String.class);

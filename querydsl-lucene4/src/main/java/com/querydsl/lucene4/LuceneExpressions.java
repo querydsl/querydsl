@@ -18,6 +18,7 @@ import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.util.automaton.LevenshteinAutomata;
 
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 /**
@@ -28,6 +29,17 @@ import com.querydsl.core.types.dsl.BooleanExpression;
  *
  */
 public final class LuceneExpressions {
+
+    /**
+     * Create a boost query.
+     *
+     * @param predicate
+     * @param boost
+     * @return
+     */
+    public static BooleanExpression boost(Predicate predicate, float boost) {
+        return new BoostElement(predicate, boost);
+    }
 
     /**
      * Create a fuzzy query

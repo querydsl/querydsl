@@ -706,9 +706,8 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    @Ignore
     public void boost() throws Exception {
-        fail("Not yet implemented!");
+        testQuery(LuceneExpressions.boost(titles.any().eq("Jurassic"), 2), "title:jurassic^2.0", 1);
     }
 
     @Test

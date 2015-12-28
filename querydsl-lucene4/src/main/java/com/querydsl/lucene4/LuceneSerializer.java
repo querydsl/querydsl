@@ -123,6 +123,13 @@ public class LuceneSerializer {
             @SuppressWarnings("unchecked") //this is the expected type
             Constant<Query> expectedConstant = (Constant<Query>) operation.getArg(0);
             return expectedConstant.getConstant();
+        } else if (op == LuceneOps.BOOST) {
+            @SuppressWarnings("unchecked") //this is the expected type
+            Constant<Float> boostFactor = (Constant<Float>) operation.getArg(1);
+
+            Query query = toQuery(operation.getArg(0), metadata);
+            query.setBoost(boostFactor.getConstant());
+            return query;
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
     }
