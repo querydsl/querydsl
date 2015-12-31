@@ -51,9 +51,9 @@ public enum VisitorConfig {
     public static VisitorConfig get(boolean fields, boolean methods, VisitorConfig defaultConfig) {
         if (fields && methods) {
             return VisitorConfig.ALL;
-        } else if (fields && !methods) {
+        } else if (fields) {
             return VisitorConfig.FIELDS_ONLY;
-        } else if (methods && !fields) {
+        } else if (methods) {
             return VisitorConfig.METHODS_ONLY;
         } else {
             return defaultConfig;
