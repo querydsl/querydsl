@@ -77,7 +77,7 @@ public class MetaDataExporterAllTest {
                                             for (boolean exportColumns : booleans) {
                                                 for (boolean schemaToPackage : booleans) {
                                                     if (withBeans) {
-                                                        if (!beanPrefix.isEmpty() | !beanSuffix.isEmpty() |
+                                                        if (!beanPrefix.isEmpty() || !beanSuffix.isEmpty() ||
                                                             beanPackageName != null) {
                                                             continue;
                                                         }
