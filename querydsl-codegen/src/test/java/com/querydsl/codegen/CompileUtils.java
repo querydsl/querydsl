@@ -10,11 +10,11 @@ import java.util.List;
 import javax.tools.JavaCompiler;
 import javax.tools.SimpleJavaFileObject;
 
+import org.junit.Assert;
+
 import com.mysema.codegen.MemFileManager;
 import com.mysema.codegen.MemSourceFileObject;
 import com.mysema.codegen.SimpleCompiler;
-
-import junit.framework.Assert;
 
 public final class CompileUtils {
 
