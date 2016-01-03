@@ -190,7 +190,7 @@ public final class ConstructorUtils {
 
         @Override
         public boolean isApplicable() {
-            return constructor != null ? constructor.isVarArgs() : false;
+            return constructor != null && constructor.isVarArgs();
         }
 
         @Override
@@ -273,7 +273,7 @@ public final class ConstructorUtils {
         @Override
         public boolean isApplicable() {
             return super.isApplicable()
-                    && (componentType != null ? componentType.isPrimitive() : false);
+                    && (componentType != null && componentType.isPrimitive());
         }
 
         @Override

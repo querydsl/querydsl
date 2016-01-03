@@ -18,10 +18,12 @@ import java.util.List;
 import javax.persistence.Entity;
 
 import com.google.common.collect.Lists;
+import com.querydsl.core.support.ConstantHidingExpression;
 import com.querydsl.core.support.EnumConversion;
 import com.querydsl.core.support.NumberConversion;
 import com.querydsl.core.support.NumberConversions;
 import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLOps;
 
@@ -36,6 +38,11 @@ public final class Conversions {
     public static <RT> Expression<RT> convert(Expression<RT> expr) {
         if (expr instanceof FactoryExpression) {
             FactoryExpression<RT> factoryExpr = (FactoryExpression<RT>) expr;
+            for (Expression<?> e: factoryExpr.getArgs()) {
+                if (needsConstantRemoval(e)) {
+                    return convert(new ConstantHidingExpression<RT>(factoryExpr));
+                }
+            }
             for (Expression<?> e : factoryExpr.getArgs()) {
                 if (needsNumberConversion(e)) {
                     return new NumberConversions<RT>(factoryExpr);
@@ -45,6 +52,13 @@ public final class Conversions {
             return new NumberConversion<RT>(expr);
         }
         return expr;
+    }
+
+    private static boolean needsConstantRemoval(Expression<?> expr) {
+        expr = ExpressionUtils.extract(expr);
+        return expr instanceof Constant || expr.equals(Expressions.TRUE) || expr.equals(Expressions.FALSE) ||
+              (expr instanceof Operation && ((Operation<?>) expr).getOperator() == Ops.ALIAS
+                  && needsConstantRemoval(((Operation<?>) expr).getArg(0)));
     }
 
     private static boolean needsNumberConversion(Expression<?> expr) {

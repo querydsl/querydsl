@@ -505,7 +505,6 @@ public abstract class AbstractJPATest {
     }
 
     @Test
-    @NoHibernate // https://github.com/querydsl/querydsl/issues/290
     public void constant() {
         //select cat.id, ?1 as const from Cat cat
         List<Cat> cats = query().from(cat).select(cat).fetch();
@@ -517,16 +516,7 @@ public abstract class AbstractJPATest {
         }
     }
 
-    @Test(expected = ClassCastException.class)
-    @NoEclipseLink
-    @NoBatooJPA
-    public void constant_hibernate() {
-        //select cat.id, ?1 as const from Cat cat
-        query().from(cat).select(cat.id, Expressions.constantAs("abc", Expressions.stringPath("const"))).fetch();
-    }
-
     @Test
-    @NoHibernate // https://github.com/querydsl/querydsl/issues/290
     public void constant2() {
         assertFalse(query().from(cat).select(cat.id, Expressions.constant("name")).fetch().isEmpty());
     }
@@ -544,6 +534,15 @@ public abstract class AbstractJPATest {
     @Test
     public void constructorProjection2() {
         List<Projection> projections = query().from(cat).select(new QProjection(cat.name, cat)).fetch();
+        assertFalse(projections.isEmpty());
+        for (Projection projection : projections) {
+            assertNotNull(projection);
+        }
+    }
+
+    @Test
+    public void constructorProjection3() {
+        List<Projection> projections = query().from(cat).select(new QProjection(cat.id, Expressions.FALSE)).fetch();
         assertFalse(projections.isEmpty());
         for (Projection projection : projections) {
             assertNotNull(projection);
