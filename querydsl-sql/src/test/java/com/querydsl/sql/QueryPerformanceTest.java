@@ -14,11 +14,11 @@ import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.testutil.Benchmark;
+import com.querydsl.core.testutil.H2;
 import com.querydsl.core.testutil.Performance;
 import com.querydsl.core.testutil.Runner;
-import com.querydsl.core.testutil.Derby;
 
-@Category({Derby.class, Performance.class})
+@Category({H2.class, Performance.class})
 public class QueryPerformanceTest {
 
     private static final String QUERY = "select COMPANIES.NAME\n" +
@@ -277,28 +277,4 @@ public class QueryPerformanceTest {
             }
         });
     }
-
-    @Test
-    public void serialization2() throws Exception {
-        QCompanies companies = QCompanies.companies;
-        final QueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, companies);
-        md.addWhere(companies.id.eq(1L));
-        md.setProjection(companies.name);
-
-        Runner.run("ser2 (non normalized)", new Benchmark() {
-            @Override
-            public void run(int times) throws Exception {
-                for (int i = 0; i < times; i++) {
-                    SQLSerializer serializer = new SQLSerializer(conf);
-                    serializer.setNormalize(false);
-                    serializer.serialize(md, false);
-                    serializer.getConstants();
-                    serializer.getConstantPaths();
-                    assertNotNull(serializer.toString());
-                }
-            }
-        });
-    }
-
 }
