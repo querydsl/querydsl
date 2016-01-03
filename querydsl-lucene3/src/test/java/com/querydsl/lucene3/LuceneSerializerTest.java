@@ -18,6 +18,7 @@ import static org.junit.Assert.fail;
 
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.Set;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -39,6 +40,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.collect.Sets;
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
@@ -77,6 +79,9 @@ public class LuceneSerializerTest {
     private RAMDirectory idx;
     private IndexWriter writer;
     private IndexSearcher searcher;
+
+    private static final Set<? extends Operator> UNSUPPORTED_OPERATORS = Sets.immutableEnumSet(Ops.STARTS_WITH_IC,
+            Ops.EQ_IGNORE_CASE, Ops.ENDS_WITH_IC, Ops.STRING_CONTAINS_IC);
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -635,14 +640,7 @@ public class LuceneSerializerTest {
     }
 
     private boolean unsupportedOperation(Predicate filter) {
-        if (filter instanceof Operation<?>) {
-            Operator op = ((Operation<?>) filter).getOperator();
-            if (op == Ops.STARTS_WITH_IC || op == Ops.EQ_IGNORE_CASE || op == Ops.STARTS_WITH_IC
-                || op == Ops.ENDS_WITH_IC || op == Ops.STRING_CONTAINS_IC) {
-                return true;
-            }
-        }
-        return false;
+        return UNSUPPORTED_OPERATORS.contains(((Operation<?>) filter).getOperator());
     }
 
     @Test
