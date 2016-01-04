@@ -281,6 +281,13 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      */
     private String[] imports;
 
+    /**
+     * Whether to skip the exporting execution
+     *
+     * @parameter default-value=false property="maven.querydsl.skip"
+     */
+    private boolean skip;
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -288,6 +295,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             project.addTestCompileSourceRoot(targetFolder);
         } else {
             project.addCompileSourceRoot(targetFolder);
+        }
+
+        if (skip) {
+            return;
         }
 
         try {
@@ -555,5 +566,9 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
     public void setImports(String[] imports) {
         this.imports = imports;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
     }
 }
