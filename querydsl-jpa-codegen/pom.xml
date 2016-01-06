@@ -21,17 +21,17 @@
     <developerConnection>${project.checkout}</developerConnection>
     <url>${project.githubpage}</url>
   </scm>
-  
+
   <properties>
-    <hibernate.version>4.1.7.Final</hibernate.version>
-    <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
+    <hibernate4.version>4.1.7.Final</hibernate4.version>
+    <hibernate4.validator.version>4.3.0.Final</hibernate4.validator.version>
   </properties>
-  
+
   <dependencies>   
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>${hibernate.version}</version>
+      <version>${hibernate4.version}</version>
       <exclusions>
         <exclusion>
           <groupId>cglib</groupId>
@@ -47,13 +47,13 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>${hibernate.version}</version>
+      <version>${hibernate4.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>${hibernate.validator.version}</version>
+      <version>${hibernate4.validator.version}</version>
       <scope>provided</scope>
     <exclusions>
         <exclusion>

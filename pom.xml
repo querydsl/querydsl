@@ -39,7 +39,7 @@
     
     <argLine>-Xms256m -Xmx512m</argLine>
 
-    <!-- deps -->
+    <!-- SQL deps -->
     <derby.version>10.11.1.1</derby.version>
     <hsqldb.version>2.3.2</hsqldb.version>
     <h2.version>1.4.186</h2.version>
@@ -51,6 +51,11 @@
     <sqlite.version>3.7.2</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
     <firebird.version>2.2.5</firebird.version>
+
+    <!-- JPA deps -->
+    <hibernate.version>4.3.11.Final</hibernate.version>
+    <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+    <eclipselink.version>2.6.2</eclipselink.version>
 
     <guava.version>18.0</guava.version>
     <codegen.version>0.6.8</codegen.version>
@@ -561,6 +566,14 @@
         <module>querydsl-jpa</module>
         <module>querydsl-jpa-codegen</module>
       </modules>
+    </profile>
+
+    <profile>
+      <id>hibernate5</id>
+      <properties>
+        <hibernate.version>5.0.5.Final</hibernate.version>
+        <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
+      </properties>
     </profile>
 
     <profile>
