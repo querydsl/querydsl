@@ -260,6 +260,11 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
     }
 
     @Override
+    public int getBatchCount() {
+        return batches.size();
+    }
+
+    @Override
     public String toString() {
         SQLSerializer serializer = createSerializer();
         serializer.serializeDelete(metadata, entity);

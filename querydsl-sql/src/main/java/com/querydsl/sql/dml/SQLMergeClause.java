@@ -566,4 +566,9 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return values.isEmpty();
     }
 
+    @Override
+    public int getBatchCount() {
+        return batches.size();
+    }
+
 }

@@ -252,4 +252,6 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         this.useLiterals = useLiterals;
     }
 
+    public abstract int getBatchCount();
+
 }

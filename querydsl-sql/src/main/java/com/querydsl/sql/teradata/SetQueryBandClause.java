@@ -131,4 +131,9 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
         }
         return queryString;
     }
+
+    @Override
+    public int getBatchCount() {
+        return 0;
+    }
 }
