@@ -106,6 +106,8 @@ public class SQLiteTemplates extends SQLTemplates {
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "log({0}) / log({1})", Precedence.ARITH_HIGH);
 
+        add(SQLOps.GROUP_CONCAT2, "group_concat({0},{1})");
+
         addTypeNameToCode("text", Types.VARCHAR);
     }
 

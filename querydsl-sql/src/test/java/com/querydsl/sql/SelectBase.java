@@ -2040,5 +2040,33 @@ public class SelectBase extends AbstractBaseTest {
         assertTrue(endCalled.get() - getResultsCalled >= 100);
     }
 
+    @Test
+    @ExcludeIn(DERBY)
+    public void groupConcat() {
+        List<String> expected = ImmutableList.of("Mike,Mary", "Joe,Peter,Steve,Jim", "Jennifer,Helen,Daisy,Barbara");
+        if (Connections.getTarget() == POSTGRESQL) {
+            expected = ImmutableList.of("Steve,Jim,Joe,Peter", "Barbara,Helen,Daisy,Jennifer", "Mary,Mike");
+        }
+        assertEquals(
+                expected,
+                query().select(SQLExpressions.groupConcat(employee.firstname))
+                        .from(employee)
+                        .groupBy(employee.superiorId).fetch());
+    }
+
+    @Test
+    @ExcludeIn(DERBY)
+    public void groupConcat2() {
+        List<String> expected = ImmutableList.of("Mike-Mary", "Joe-Peter-Steve-Jim", "Jennifer-Helen-Daisy-Barbara");
+        if (Connections.getTarget() == POSTGRESQL) {
+            expected = ImmutableList.of("Steve-Jim-Joe-Peter", "Barbara-Helen-Daisy-Jennifer", "Mary-Mike");
+        }
+        assertEquals(
+                expected,
+                query().select(SQLExpressions.groupConcat(employee.firstname, "-"))
+                        .from(employee)
+                        .groupBy(employee.superiorId).fetch());
+    }
+
 }
 //CHECKSTYLERULE:ON: FileLength

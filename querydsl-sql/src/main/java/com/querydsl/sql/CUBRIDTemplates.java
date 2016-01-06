@@ -102,6 +102,8 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0*'-1'})) / 2");
         add(Ops.MathOps.TANH, "(exp({0*'2'}) - 1) / (exp({0*'2'}) + 1)");
 
+        add(SQLOps.GROUP_CONCAT2, "group_concat({0} separator '{1s}')");
+
         addTypeNameToCode("numeric(1,0)", Types.BOOLEAN, true);
         addTypeNameToCode("numeric(3,0)", Types.TINYINT, true);
         addTypeNameToCode("numeric(38,0)", Types.BIGINT, true);

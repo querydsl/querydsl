@@ -103,6 +103,8 @@ public class HSQLDBTemplates extends SQLTemplates {
 
         add(Ops.DateTimeOps.DATE, "convert({0}, date)");
 
+        add(SQLOps.GROUP_CONCAT2, "group_concat({0} separator '{1s}')");
+
         addTypeNameToCode("character", Types.CHAR, true);
         addTypeNameToCode("float", Types.DOUBLE, true);
         addTypeNameToCode("real", Types.DOUBLE);
