@@ -35,6 +35,10 @@
             <firstname>John</firstname>
             <surname>Tims</surname>
           </author>
+          <author>
+            <firstname>Robert</firstname>
+            <surname>Bain</surname>
+          </author>
         </authorgroup>
         <mediaobject>
             <imageobject role="fo">
