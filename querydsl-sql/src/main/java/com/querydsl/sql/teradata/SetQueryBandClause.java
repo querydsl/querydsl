@@ -124,7 +124,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
                         + (forSession ? "' for session" : "' for transaction");
                 parameter = null;
             } else {
-                queryString = "set query_band=?" + (forSession ? " for session" : " for transaction");
+                queryString = "set query_band=? for transaction";
                 parameter = builder.toString();
             }
 
