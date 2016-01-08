@@ -25,6 +25,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.querydsl.core.types.*;
 
 /**
@@ -118,7 +119,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addGroupBy(Expression<?> o) {
-        addLastJoin();
         // group by elements can't be validated, since they can refer to projection elements
         // that are declared later
         groupBy = add(groupBy, o);
@@ -126,7 +126,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addHaving(Predicate e) {
-        addLastJoin();
         if (e == null) {
             return;
         }
@@ -139,15 +138,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     private void addLastJoin() {
-        if (joinTarget == null) {
-            return;
+        if (joinTarget != null) {
+            joins = add(joins, new JoinExpression(joinType, joinTarget, joinCondition, joinFlags));
+            joinType = null;
+            joinTarget = null;
+            joinCondition = null;
+            joinFlags = ImmutableSet.of();
         }
-        joins = add(joins, new JoinExpression(joinType, joinTarget, joinCondition, joinFlags));
-
-        joinType = null;
-        joinTarget = null;
-        joinCondition = null;
-        joinFlags = ImmutableSet.of();
     }
 
     @Override
@@ -174,7 +171,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addOrderBy(OrderSpecifier<?> o) {
-        addLastJoin();
         // order specifiers can't be validated, since they can refer to projection elements
         // that are declared later
         orderBy = add(orderBy, o);
@@ -182,7 +178,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void setProjection(Expression<?> o) {
-        addLastJoin();
         validate(o);
         projection = o;
     }
@@ -192,7 +187,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         if (e == null) {
             return;
         }
-        addLastJoin();
         e = (Predicate) ExpressionUtils.extract(e);
         if (e != null) {
             validate(e);
@@ -213,12 +207,15 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public QueryMetadata clone() {
         try {
-            addLastJoin();
             DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
             clone.exprInJoins = copyOf(exprInJoins);
             clone.groupBy = copyOf(groupBy);
             clone.having = having;
             clone.joins = copyOf(joins);
+            clone.joinTarget = joinTarget;
+            clone.joinCondition = joinCondition;
+            clone.joinFlags = copyOf(joinFlags);
+            clone.joinType = joinType;
             clone.modifiers = modifiers;
             clone.orderBy = copyOf(orderBy);
             clone.projection = projection;
@@ -243,8 +240,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public List<JoinExpression> getJoins() {
-        addLastJoin();
-        return joins;
+        if (joinTarget == null) {
+            return joins;
+        } else {
+            List<JoinExpression> j = Lists.newArrayList(joins);
+            j.add(new JoinExpression(joinType, joinTarget, joinCondition, joinFlags));
+            return j;
+        }
     }
 
     @Override
@@ -365,14 +367,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public boolean equals(Object o) {
         if (o instanceof QueryMetadata) {
-            addLastJoin();
             QueryMetadata q = (QueryMetadata) o;
             return q.getFlags().equals(flags)
                 && q.getGroupBy().equals(groupBy)
                 && Objects.equal(q.getHaving(), having)
                 && q.isDistinct() == distinct
                 && q.isUnique() == unique
-                && q.getJoins().equals(joins)
+                && q.getJoins().equals(getJoins())
                 && q.getModifiers().equals(modifiers)
                 && q.getOrderBy().equals(orderBy)
                 && q.getParams().equals(params)
@@ -386,8 +387,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public int hashCode() {
-        addLastJoin();
-        return Objects.hashCode(flags, groupBy, having, joins, modifiers,
+        return Objects.hashCode(flags, groupBy, having, getJoins(), modifiers,
                 orderBy, params, projection, unique, where);
     }
 
