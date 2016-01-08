@@ -86,6 +86,10 @@ public class QBean<T> extends FactoryExpressionBase<T> {
         return cl.isPrimitive() ? Primitives.wrap(cl) : cl;
     }
 
+    private static boolean isAssignableFrom(Class<?> cl1, Class<?> cl2) {
+        return normalize(cl1).isAssignableFrom(normalize(cl2));
+    }
+
     private final ImmutableMap<String, Expression<?>> bindings;
 
     private final List<Field> fields;
@@ -156,7 +160,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
                 try {
                     field = beanType.getDeclaredField(property);
                     field.setAccessible(true);
-                    if (!normalize(field.getType()).isAssignableFrom(expr.getType())) {
+                    if (!isAssignableFrom(field.getType(), expr.getType())) {
                         typeMismatch(field.getType(), expr);
                     }
                     beanType = Object.class;
@@ -186,7 +190,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
                 for (PropertyDescriptor prop : propertyDescriptors) {
                     if (prop.getName().equals(property)) {
                         setter = prop.getWriteMethod();
-                        if (!normalize(prop.getPropertyType()).isAssignableFrom(expr.getType())) {
+                        if (!isAssignableFrom(prop.getPropertyType(), expr.getType())) {
                             typeMismatch(prop.getPropertyType(), expr);
                         }
                         break;
