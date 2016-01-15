@@ -19,6 +19,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
 import com.querydsl.core.types.dsl.Expressions;
 
+import java.util.Collection;
+
 /**
  * {@code FetchableSubQueryBase} extends {@link FetchableQueryBase} to provide fluent Expression creation functionality
  *
@@ -152,5 +154,13 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
     public Class<T> getType() {
         Expression<?> projection = queryMixin.getMetadata().getProjection();
         return (Class) (projection != null ? projection.getType() : Void.class);
+    }
+
+    public BooleanExpression in(Collection<? extends T> right) {
+        if (right.size() == 1) {
+            return eq(right.iterator().next());
+        } else {
+            return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(right));
+        }
     }
 }
