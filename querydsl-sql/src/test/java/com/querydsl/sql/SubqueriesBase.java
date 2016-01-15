@@ -187,4 +187,20 @@ public class SubqueriesBase extends AbstractBaseTest {
             )
             .fetch();
     }
+
+    @Test
+    public void scalarSubQueryInClause2() {
+        this.query()
+            .select(employee)
+            .from(employee)
+            .where(
+                SQLExpressions
+                    .select(employee.firstname)
+                    .from(employee)
+                    .orderBy(employee.salary.asc())
+                    .limit(1)
+                    .in("Mike", "Mary")
+            )
+            .fetch();
+    }
 }
