@@ -65,10 +65,10 @@
       <version>${h2.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.jolbox</groupId>
-      <artifactId>bonecp</artifactId>
-      <version>0.8.0-beta1</version>
-      <classifier>jdk7</classifier>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>2.4.2</version>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>

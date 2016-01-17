@@ -3,12 +3,11 @@ package com.querydsl.example.config;
 import com.google.common.collect.ImmutableSet;
 import com.querydsl.example.dao.*;
 import com.querydsl.example.dto.*;
+
 import org.joda.time.LocalDate;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-@Transactional
 public class TestDataServiceImpl implements TestDataService {
 
     @Resource CustomerDao customerDao;
