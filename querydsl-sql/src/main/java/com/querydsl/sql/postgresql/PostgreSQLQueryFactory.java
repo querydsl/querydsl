@@ -17,10 +17,10 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.querydsl.sql.AbstractSQLQueryFactory;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.PostgreSQLTemplates;
-import com.querydsl.sql.SQLTemplates;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.*;
 
 /**
  * PostgreSQL specific implementation of SQLQueryFactory
@@ -45,6 +45,41 @@ public class PostgreSQLQueryFactory extends AbstractSQLQueryFactory<PostgreSQLQu
     @Override
     public PostgreSQLQuery<?> query() {
         return new PostgreSQLQuery<Void>(connection, configuration);
+    }
+
+    @Override
+    public <T> PostgreSQLQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    @Override
+    public PostgreSQLQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    @Override
+    public <T> PostgreSQLQuery<T> selectDistinct(Expression<T> expr) {
+        return query().select(expr).distinct();
+    }
+
+    @Override
+    public PostgreSQLQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return query().select(exprs).distinct();
+    }
+
+    @Override
+    public PostgreSQLQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    @Override
+    public PostgreSQLQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    @Override
+    public <T> PostgreSQLQuery<T> selectFrom(RelationalPath<T> expr) {
+        return select(expr).from(expr);
     }
 
 

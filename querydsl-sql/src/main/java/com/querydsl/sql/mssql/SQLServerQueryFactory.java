@@ -17,10 +17,10 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.querydsl.sql.AbstractSQLQueryFactory;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.SQLServerTemplates;
-import com.querydsl.sql.SQLTemplates;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.*;
 
 /**
  * SQL Server specific implementation of SQLQueryFactory
@@ -45,6 +45,41 @@ public class SQLServerQueryFactory extends AbstractSQLQueryFactory<SQLServerQuer
     @Override
     public SQLServerQuery<?> query() {
         return new SQLServerQuery<Void>(connection, configuration);
+    }
+
+    @Override
+    public <T> SQLServerQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    @Override
+    public SQLServerQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    @Override
+    public <T> SQLServerQuery<T> selectDistinct(Expression<T> expr) {
+        return query().select(expr).distinct();
+    }
+
+    @Override
+    public SQLServerQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return query().select(exprs).distinct();
+    }
+
+    @Override
+    public SQLServerQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    @Override
+    public SQLServerQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    @Override
+    public <T> SQLServerQuery<T> selectFrom(RelationalPath<T> expr) {
+        return select(expr).from(expr);
     }
 
 }
