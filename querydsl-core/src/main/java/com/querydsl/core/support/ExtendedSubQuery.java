@@ -169,14 +169,14 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
      BooleanOperation isNotNull();
 
     /**
-     * Create a {@code this is (a, b, c)} express
+     * Create a {@code this in (a, b, c)} express
      * @param right
      * @return this in (a, b, c)
      */
      BooleanExpression in(Collection<? extends T> right);
 
      /**
-     * Create a {@code this is (a, b, c)} express
+     * Create a {@code this in (a, b, c)} express
      * @param right
      * @return this in (a, b, c)
      */
