@@ -162,6 +162,7 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
         return (Class) (projection != null ? projection.getType() : Void.class);
     }
 
+    @Override
     public BooleanExpression in(Collection<? extends T> right) {
         if (right.size() == 1) {
             return eq(right.iterator().next());
@@ -170,6 +171,7 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
         }
     }
 
+    @Override
     public BooleanExpression in(T... right) {
         return this.in(Arrays.asList(right));
     }

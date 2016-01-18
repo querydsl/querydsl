@@ -18,6 +18,8 @@ import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
 
+import java.util.Collection;
+
 /**
  * {@code ExtendedSubQuery} extends the {@link SubQueryExpression} interface to provide fluent
  * expression creation functionality
@@ -165,5 +167,19 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
      * @return this is not null
      */
      BooleanOperation isNotNull();
+
+    /**
+     * Create a {@code this is (a, b, c)} express
+     * @param right
+     * @return this in (a, b, c)
+     */
+     BooleanExpression in(Collection<? extends T> right);
+
+     /**
+     * Create a {@code this is (a, b, c)} express
+     * @param right
+     * @return this in (a, b, c)
+     */
+     BooleanExpression in(T... right);
 
 }
