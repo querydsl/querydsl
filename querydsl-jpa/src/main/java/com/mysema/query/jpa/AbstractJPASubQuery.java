@@ -76,7 +76,7 @@ public class AbstractJPASubQuery<Q extends AbstractJPASubQuery<Q>> extends Detac
 
     @Override
     public <P> Q from(CollectionExpression<?,P> target, Path<P> alias) {
-        return queryMixin.fullJoin(Expressions.as((Path)target, alias));
+        return queryMixin.from(Expressions.as((Path)target, alias));
     }
 
     @Override
