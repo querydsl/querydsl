@@ -23,6 +23,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.domain.QCompany;
 import com.querydsl.jpa.domain.QDomesticCat;
 import com.querydsl.jpa.domain.QEmployee;
 
@@ -39,6 +40,16 @@ public class JPACollectionAnyVisitorTest {
     @Test
     public void longer_path() {
         assertEquals("cat_kittens_0.name", serialize(cat.kittens.any().name));
+    }
+
+    @Test
+    public void nested_any_booleanOperation() {
+        QCompany company = QCompany.company;
+        Predicate predicate = company.departments.any().employees.any().firstName.eq("Bob");
+        assertEquals("exists (select 1\n" +
+                "from company.departments as company_departments_0\n" +
+                "  inner join company_departments_0.employees as company_departments_0_employees_1\n" +
+                "where company_departments_0_employees_1.firstName = ?1)", serialize(predicate));
     }
 
     @Test
