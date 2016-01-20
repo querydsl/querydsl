@@ -42,6 +42,11 @@ public class QTupleTest {
         assertEquals(Integer.valueOf(42), tuple.get(second));
         assertEquals(Boolean.TRUE, tuple.get(third));
 
+        assertEquals("1",tuple.toMap().get("x"));
+        assertEquals(Integer.valueOf(42),tuple.toMap().get("y"));
+//        assertEquals("42",tuple.toMap().get("y"));
+        assertEquals(Boolean.TRUE,tuple.toMap().get("z"));
+
     }
 
 }

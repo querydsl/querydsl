@@ -124,6 +124,15 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
         public String toString() {
             return Arrays.toString(a);
         }
+
+        @Override
+        public Map toMap() {
+            Map<String, Object> map = Maps.newHashMap();
+            for (int i = 0; i < a.length; i++) {
+                map.put(QTuple.this.args.get(i).toString(), a[i]);
+            }
+            return map;
+        }
     }
 
     private static final long serialVersionUID = -2640616030595420465L;
@@ -195,5 +204,20 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
     public List<Expression<?>> getArgs() {
         return args;
     }
+
+    public ImmutableMap<Expression<?>, Integer> getBindings() {
+        return bindings;
+    }
+
+    // converter map
+//    public ImmutableMap<String, Integer> createBindingsMap() {
+//        List<Expression<?>> exprs = this.args;
+//        Map<String, Integer> map = Maps.newHashMap();
+//        for (int i = 0; i < exprs.size(); i++) {
+//            Expression<?> e = exprs.get(i);
+//            map.put(e.toString(),i);
+//        }
+//        return ImmutableMap.copyOf(map);
+//    }
 
 }

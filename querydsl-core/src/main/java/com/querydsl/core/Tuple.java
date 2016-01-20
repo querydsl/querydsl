@@ -17,6 +17,8 @@ import javax.annotation.Nullable;
 
 import com.querydsl.core.types.Expression;
 
+import java.util.Map;
+
 /**
  * {@code Tuple} defines an interface for generic query result projection
  *
@@ -89,5 +91,10 @@ public interface Tuple {
     */
    int hashCode();
 
-
+    /**
+     * convert to Map
+     *
+     * @return Map
+     */
+    Map toMap();
 }
