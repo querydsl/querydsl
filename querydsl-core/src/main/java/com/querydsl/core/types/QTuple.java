@@ -209,15 +209,4 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
         return bindings;
     }
 
-    // converter map
-//    public ImmutableMap<String, Integer> createBindingsMap() {
-//        List<Expression<?>> exprs = this.args;
-//        Map<String, Integer> map = Maps.newHashMap();
-//        for (int i = 0; i < exprs.size(); i++) {
-//            Expression<?> e = exprs.get(i);
-//            map.put(e.toString(),i);
-//        }
-//        return ImmutableMap.copyOf(map);
-//    }
-
 }

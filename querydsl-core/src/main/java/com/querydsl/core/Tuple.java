@@ -92,9 +92,9 @@ public interface Tuple {
    int hashCode();
 
     /**
-     * convert to Map
+     * Get the content as an Object array
      *
-     * @return Map
+     * @return tuple in map form
      */
     Map toMap();
 }

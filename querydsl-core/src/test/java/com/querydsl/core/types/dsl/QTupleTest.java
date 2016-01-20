@@ -42,10 +42,15 @@ public class QTupleTest {
         assertEquals(Integer.valueOf(42), tuple.get(second));
         assertEquals(Boolean.TRUE, tuple.get(third));
 
-        assertEquals("1",tuple.toMap().get("x"));
-        assertEquals(Integer.valueOf(42),tuple.toMap().get("y"));
-//        assertEquals("42",tuple.toMap().get("y"));
-        assertEquals(Boolean.TRUE,tuple.toMap().get("z"));
+    }
+
+    @Test
+    public void newInstanceObjectMap() {
+        Tuple tuple = tupleExpression.newInstance("2", 43, false);
+        assertEquals(3, tuple.size());
+        assertEquals("2",tuple.toMap().get("x"));
+        assertEquals(Integer.valueOf(43),tuple.toMap().get("y"));
+        assertEquals(Boolean.FALSE,tuple.toMap().get("z"));
 
     }
 
