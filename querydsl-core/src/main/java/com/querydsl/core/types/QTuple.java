@@ -205,8 +205,4 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
         return args;
     }
 
-    public ImmutableMap<Expression<?>, Integer> getBindings() {
-        return bindings;
-    }
-
 }
