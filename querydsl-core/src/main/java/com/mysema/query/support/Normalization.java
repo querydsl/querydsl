@@ -27,11 +27,11 @@ public final class Normalization {
     // TODO simplify
     private static final Pattern FULL_OPERATION = Pattern.compile(
             "(?<![\\d*/\"?' ])" + "(\\b|\\(|\\s+)"  +
-            "(" + NUMBER + WS + "[+\\-/*]" + WS + ")+" + NUMBER + WS +
+            "(" + NUMBER + WS + "[+\\-/*%]" + WS + ")+" + NUMBER + WS +
             "(?![\\d*/\"' ])");
 
     private static final Pattern[] OPERATIONS = {
-            Pattern.compile(NUMBER + WS + "([*/])" + WS + NUMBER),
+            Pattern.compile(NUMBER + WS + "([*/%])" + WS + NUMBER),
             Pattern.compile(NUMBER + WS + "([+-])" + WS + NUMBER),
     };
 
@@ -47,6 +47,7 @@ public final class Normalization {
                 switch (operator) {
                     case '*': result = first.multiply(second); break;
                     case '/': result = first.divide(second, 10, RoundingMode.HALF_UP); break;
+                    case '%': result = first.remainder(second); break;
                     case '+': result = first.add(second); break;
                     case '-': result = first.subtract(second); break;
                     default: throw new IllegalStateException();
@@ -78,7 +79,7 @@ public final class Normalization {
     private static boolean hasOperators(String queryString) {
         for (int i = 0; i < queryString.length(); i++) {
             char ch = queryString.charAt(i);
-            if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+            if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%') {
                 return true;
             }
         }

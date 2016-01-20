@@ -69,6 +69,12 @@ public class NormalizationTest {
     }
 
     @Test
+    public void Normalize_Modulo() {
+        assertEquals("1", Normalization.normalize("4%3"));
+        assertEquals("3", Normalization.normalize("2 + 4%3"));
+    }
+
+    @Test
     public void Mixed() {
         assertEquals("13", Normalization.normalize("2 * 5 + 3"));
         assertEquals("17", Normalization.normalize("2 + 5 * 3"));
