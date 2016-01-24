@@ -13,10 +13,7 @@
  */
 package com.mysema.query.jpa;
 
-import com.mysema.query.jpa.domain.JobFunction;
-import com.mysema.query.jpa.domain.QCat;
-import com.mysema.query.jpa.domain.QDomesticCat;
-import com.mysema.query.jpa.domain.QEmployee;
+import com.mysema.query.jpa.domain.*;
 import com.mysema.query.support.Context;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
@@ -38,6 +35,16 @@ public class JPACollectionAnyVisitorTest {
     @Test
     public void Longer_Path() {
         assertMatches("cat_kittens.*\\.name", serialize(cat.kittens.any().name));
+    }
+
+    @Test
+    public void Nested_Any_BooleanOperation() {
+        QCompany company = QCompany.company;
+        Predicate predicate = company.departments.any().employees.any().firstName.eq("Bob");
+        assertMatches("exists \\(select 1\n" +
+                "from company.departments as company_departments_.*\n" +
+                "  inner join company_departments_.*.employees as company_departments_.*_employees_.*\n" +
+                "where company_departments_.*_employees_.*.firstName = \\?1\\)", serialize(predicate));
     }
 
     @Test
