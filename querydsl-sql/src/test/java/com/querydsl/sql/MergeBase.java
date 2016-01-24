@@ -155,6 +155,7 @@ public class MergeBase extends AbstractBaseTest {
             .set(survey.id, 5)
             .set(survey.name, "5")
             .addBatch();
+        assertEquals(1, merge.getBatchCount());
 
         merge
             .keys(survey.id)
@@ -162,6 +163,7 @@ public class MergeBase extends AbstractBaseTest {
             .set(survey.name, "6")
             .addBatch();
 
+        assertEquals(2, merge.getBatchCount());
         assertEquals(2, merge.execute());
 
         assertEquals(1L, query().from(survey).where(survey.name.eq("5")).fetchCount());

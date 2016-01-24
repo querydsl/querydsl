@@ -143,7 +143,9 @@ public class UpdateBase extends AbstractBaseTest {
 
         SQLUpdateClause update = update(survey);
         update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
+        assertEquals(1, update.getBatchCount());
         update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
+        assertEquals(2, update.getBatchCount());
         assertEquals(2, update.execute());
     }
 
