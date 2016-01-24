@@ -30,6 +30,11 @@ public class EnumPath<T extends Enum<T>> extends EnumExpression<T> implements Pa
 
     private final PathImpl<T> pathMixin;
 
+    protected EnumPath(PathImpl<T> mixin) {
+        super(mixin);
+        this.pathMixin = mixin;
+    }
+
     protected EnumPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }

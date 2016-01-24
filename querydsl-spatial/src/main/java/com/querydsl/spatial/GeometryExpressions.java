@@ -15,15 +15,8 @@ package com.querydsl.spatial;
 
 import org.geolatte.geom.*;
 
-import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.*;
 
 /**
  * GeometryExpressions contains static functions for GEO operations
@@ -266,16 +259,22 @@ public final class GeometryExpressions {
      */
     public static <T extends Geometry> GeometryExpression<T> asGeometry(Expression<T> expr) {
         Expression<T> underlyingMixin = ExpressionUtils.extract(expr);
-        return new GeometryExpression<T>(underlyingMixin) {
+        if (underlyingMixin instanceof PathImpl) {
+            return new GeometryPath<T>((PathImpl<T>) underlyingMixin);
+        } else if (underlyingMixin instanceof OperationImpl) {
+            return new GeometryOperation<T>((OperationImpl<T>) underlyingMixin);
+        } else {
+            return new GeometryExpression<T>(underlyingMixin) {
 
-            private static final long serialVersionUID = -6714044005570420009L;
+                private static final long serialVersionUID = -6714044005570420009L;
 
-            @Override
-            public <R, C> R accept(Visitor<R, C> v, C context) {
-                return this.mixin.accept(v, context);
-            }
+                @Override
+                public <R, C> R accept(Visitor<R, C> v, C context) {
+                    return this.mixin.accept(v, context);
+                }
 
-        };
+            };
+        }
     }
 
     /**

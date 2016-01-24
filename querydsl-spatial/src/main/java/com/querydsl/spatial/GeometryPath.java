@@ -51,6 +51,11 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
 
     private transient volatile PolyhedralSurfacePath<PolyHedralSurface> polyhedralSurface;
 
+    protected GeometryPath(PathImpl<T> mixin) {
+        super(mixin);
+        this.pathMixin = mixin;
+    }
+
     @SuppressWarnings("unchecked")
     public GeometryPath(Path<?> parent, String property) {
         this((Class<? extends T>) Geometry.class, parent, property);

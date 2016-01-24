@@ -31,6 +31,11 @@ public class DateTemplate<T extends Comparable<?>> extends DateExpression<T> imp
 
     private final TemplateExpressionImpl<T> templateMixin;
 
+    protected DateTemplate(TemplateExpressionImpl<T> mixin) {
+        super(mixin);
+        this.templateMixin = mixin;
+    }
+
     protected DateTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;

@@ -30,6 +30,11 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
 
     private final PredicateOperation opMixin;
 
+    protected BooleanOperation(PredicateOperation mixin) {
+        super(mixin);
+        this.opMixin = mixin;
+    }
+
     protected BooleanOperation(Operator op, Expression<?>... args) {
         this(op, ImmutableList.copyOf(args));
     }

@@ -30,6 +30,11 @@ public class DateTimePath<T extends Comparable> extends DateTimeExpression<T> im
 
     private final PathImpl<T> pathMixin;
 
+    protected DateTimePath(PathImpl<T> mixin) {
+        super(mixin);
+        this.pathMixin = mixin;
+    }
+
     protected DateTimePath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }

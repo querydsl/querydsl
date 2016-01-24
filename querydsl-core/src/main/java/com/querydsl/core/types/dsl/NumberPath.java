@@ -30,6 +30,11 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
 
     private final PathImpl<T> pathMixin;
 
+    protected NumberPath(PathImpl<T> mixin) {
+        super(mixin);
+        this.pathMixin = mixin;
+    }
+
     protected NumberPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }

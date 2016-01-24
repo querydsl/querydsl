@@ -30,6 +30,11 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
 
     private final PathImpl<Boolean> pathMixin;
 
+    protected BooleanPath(PathImpl<Boolean> mixin) {
+        super(mixin);
+        this.pathMixin = mixin;
+    }
+
     protected BooleanPath(Path<?> parent, String property) {
         this(PathMetadataFactory.forProperty(parent, property));
     }

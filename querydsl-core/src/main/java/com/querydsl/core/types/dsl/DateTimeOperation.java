@@ -31,6 +31,11 @@ public class DateTimeOperation<T extends Comparable<?>> extends DateTimeExpressi
 
     private final OperationImpl<T> opMixin;
 
+    protected DateTimeOperation(OperationImpl<T> mixin) {
+        super(mixin);
+        this.opMixin = mixin;
+    }
+
     protected DateTimeOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }

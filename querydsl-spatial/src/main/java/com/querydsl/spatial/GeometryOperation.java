@@ -34,6 +34,11 @@ public class GeometryOperation<T extends Geometry> extends GeometryExpression<T>
 
     private final OperationImpl<T> opMixin;
 
+    protected GeometryOperation(OperationImpl<T> mixin) {
+        super(mixin);
+        this.opMixin = mixin;
+    }
+
     protected GeometryOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }

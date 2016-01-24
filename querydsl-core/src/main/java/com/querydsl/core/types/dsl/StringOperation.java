@@ -30,6 +30,11 @@ public class StringOperation extends StringExpression implements Operation<Strin
 
     private final OperationImpl<String> opMixin;
 
+    protected StringOperation(OperationImpl<String> mixin) {
+        super(mixin);
+        this.opMixin = mixin;
+    }
+
     protected StringOperation(Operator op, Expression<?>... args) {
         this(op, ImmutableList.copyOf(args));
     }

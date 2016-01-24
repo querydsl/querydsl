@@ -30,6 +30,11 @@ public class SimplePath<T> extends SimpleExpression<T> implements Path<T> {
 
     private final PathImpl<T> pathMixin;
 
+    protected SimplePath(PathImpl<T> mixin) {
+        super(mixin);
+        this.pathMixin = mixin;
+    }
+
     protected SimplePath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }

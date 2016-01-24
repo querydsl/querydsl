@@ -31,6 +31,11 @@ public class SimpleOperation<T> extends SimpleExpression<T> implements Operation
 
     private final OperationImpl<T> opMixin;
 
+    protected SimpleOperation(OperationImpl<T> mixin) {
+        super(mixin);
+        this.opMixin = mixin;
+    }
+
     protected SimpleOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
         this(type, op, ImmutableList.copyOf(args));
     }

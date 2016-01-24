@@ -29,6 +29,11 @@ public class StringPath extends StringExpression implements Path<String> {
 
     private final PathImpl<String> pathMixin;
 
+    protected StringPath(PathImpl<String> mixin) {
+        super(mixin);
+        this.pathMixin = mixin;
+    }
+
     protected StringPath(Path<?> parent, String property) {
         this(PathMetadataFactory.forProperty(parent, property));
     }
