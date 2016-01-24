@@ -18,10 +18,16 @@ import static org.junit.Assert.assertSame;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class MathUtilsTest {
+
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void sum() {
@@ -55,6 +61,14 @@ public class MathUtilsTest {
         checkSame((long) 1, Long.class);
         checkSame((short) 1, Short.class);
         checkSame((byte) 1, Byte.class);
+    }
+
+    @Test
+    public void cast_throws_on_unsupported_numbers() {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Unsupported target type");
+
+        checkCast(1, AtomicInteger.class);
     }
 
     private static void checkCast(Number value, Class<? extends Number> targetClass) {
