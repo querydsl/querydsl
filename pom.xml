@@ -184,6 +184,13 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>robertandrewbain</id>
+      <name>Robert Bain</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <licenses>
