@@ -1193,6 +1193,20 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(DERBY) // Derby doesn't support mod with decimal operands
+    public void math3() {
+        // 1.0 + 2.0 * 3.0 - 4.0 / 5.0 + 6.0 % 3.0
+        NumberTemplate<Double> one = Expressions.numberTemplate(Double.class, "1.0");
+        NumberTemplate<Double> two = Expressions.numberTemplate(Double.class, "2.0");
+        NumberTemplate<Double> three = Expressions.numberTemplate(Double.class, "3.0");
+        NumberTemplate<Double> four = Expressions.numberTemplate(Double.class, "4.0");
+        NumberTemplate<Double> five = Expressions.numberTemplate(Double.class, "5.0");
+        NumberTemplate<Double> six = Expressions.numberTemplate(Double.class, "6.0");
+        Double num = query().select(one.add(two.multiply(three)).subtract(four.divide(five)).add(six.mod(three))).fetchFirst();
+        assertEquals(6.2, num, 0.001);
+    }
+
+    @Test
     public void nested_tuple_projection() {
         Concatenation concat = new Concatenation(employee.firstname, employee.lastname);
         List<Tuple> tuples = query().from(employee)
