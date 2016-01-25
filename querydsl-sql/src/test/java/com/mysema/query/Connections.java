@@ -17,8 +17,6 @@ import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 
-import org.hsqldb.types.Types;
-
 import com.google.common.collect.Maps;
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
