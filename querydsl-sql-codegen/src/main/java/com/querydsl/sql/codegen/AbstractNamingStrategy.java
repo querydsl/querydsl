@@ -13,8 +13,9 @@
  */
 package com.querydsl.sql.codegen;
 
+import javax.lang.model.SourceVersion;
+
 import com.querydsl.codegen.EntityType;
-import com.querydsl.core.util.JavaSyntaxUtils;
 import com.querydsl.sql.SchemaAndTable;
 import com.querydsl.sql.codegen.support.ForeignKeyData;
 
@@ -42,7 +43,7 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
           return packageName;
         }
         String suffix = schemaName.toLowerCase();
-        if (JavaSyntaxUtils.isReserved(suffix)) {
+        if (SourceVersion.isKeyword(suffix)) {
             suffix += "_";
         }
         return packageName + "." + suffix;

@@ -19,8 +19,10 @@ import javax.lang.model.SourceVersion;
  * JavaSyntaxUtils defines reserved keywords for Java
  *
  * @author tiwe
+ * @deprecated use the built-in {@link SourceVersion#isKeyword(CharSequence) keyword list} instead.
  *
  */
+@Deprecated
 public final class JavaSyntaxUtils {
 
     private JavaSyntaxUtils() { }

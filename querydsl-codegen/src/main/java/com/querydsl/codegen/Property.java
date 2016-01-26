@@ -16,9 +16,10 @@ package com.querydsl.codegen;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
+import javax.lang.model.SourceVersion;
+
 import com.google.common.base.Objects;
 import com.mysema.codegen.model.Type;
-import com.querydsl.core.util.JavaSyntaxUtils;
 
 /**
  * {@code Property} represents a property in a query domain type.
@@ -65,7 +66,7 @@ public final class Property implements Comparable<Property> {
     }
 
     private static String escapeName(String name) {
-        if (JavaSyntaxUtils.isReserved(name)) {
+        if (SourceVersion.isKeyword(name)) {
             name = name + "$";
         } else if (!Character.isJavaIdentifierStart(name.charAt(0))) {
             name = "_" + name;
