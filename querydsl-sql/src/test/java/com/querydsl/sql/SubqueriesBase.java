@@ -174,33 +174,52 @@ public class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     public void scalarSubQueryInClause() {
-        this.query()
-            .select(employee)
-            .from(employee)
-            .where(
-                SQLExpressions
-                    .select(employee.firstname)
-                    .from(employee)
-                    .orderBy(employee.salary.asc())
-                    .limit(1)
-                    .in(Arrays.asList("Mike", "Mary"))
-            )
-            .fetch();
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+
+        serializer.handle(
+            this.query()
+                .from(employee)
+                .where(
+                    SQLExpressions
+                        .select(employee.firstname)
+                        .from(employee)
+                        .orderBy(employee.salary.asc())
+                        .limit(1)
+                        .in(Arrays.asList("Mike", "Mary"))
+                ));
+
+        expectedQuery = "(\nfrom EMPLOYEE e\n"
+            + "where (select e.FIRSTNAME\n"
+            + "from EMPLOYEE e\n"
+            + "order by e.SALARY asc\n"
+            + "limit ?) in (?, ?))";
+
+        System.out.println(">>>> " + serializer.toString());
+        assertEquals(expectedQuery, serializer.toString());
     }
 
     @Test
     public void scalarSubQueryInClause2() {
-        this.query()
-            .select(employee)
-            .from(employee)
-            .where(
-                SQLExpressions
-                    .select(employee.firstname)
-                    .from(employee)
-                    .orderBy(employee.salary.asc())
-                    .limit(1)
-                    .in("Mike", "Mary")
-            )
-            .fetch();
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+
+        serializer.handle(
+            this.query()
+                .from(employee)
+                .where(
+                    SQLExpressions
+                        .select(employee.firstname)
+                        .from(employee)
+                        .orderBy(employee.salary.asc())
+                        .limit(1)
+                        .in("Mike", "Mary")
+                ));
+
+        expectedQuery = "(\nfrom EMPLOYEE e\n"
+            + "where (select e.FIRSTNAME\n"
+            + "from EMPLOYEE e\n"
+            + "order by e.SALARY asc\n"
+            + "limit ?) in (?, ?))";
+
+        assertEquals(expectedQuery, serializer.toString());
     }
 }
