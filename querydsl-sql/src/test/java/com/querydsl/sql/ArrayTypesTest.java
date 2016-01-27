@@ -3,6 +3,7 @@ package com.querydsl.sql;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.Types;
+import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,8 @@ public class ArrayTypesTest {
     @Before
     public void setUp() {
         configuration = Configuration.DEFAULT;
+        System.setProperty("user.timezone", "UTC");
+        TimeZone.setDefault(null);
     }
 
     @Test

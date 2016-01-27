@@ -19,11 +19,19 @@ import java.lang.reflect.Method;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.Template;
 import com.querydsl.core.util.BeanUtils;
 
 public class ExpressionsTest {
@@ -34,6 +42,12 @@ public class ExpressionsTest {
 
     private enum testEnum {
         TEST;
+    }
+
+    @Before
+    public void before() {
+        System.setProperty("user.timezone", "UTC");
+        TimeZone.setDefault(null);
     }
 
     @Test
