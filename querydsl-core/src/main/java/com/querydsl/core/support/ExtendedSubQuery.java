@@ -13,12 +13,12 @@
  */
 package com.querydsl.core.support;
 
+import java.util.Collection;
+
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
-
-import java.util.Collection;
 
 /**
  * {@code ExtendedSubQuery} extends the {@link SubQueryExpression} interface to provide fluent

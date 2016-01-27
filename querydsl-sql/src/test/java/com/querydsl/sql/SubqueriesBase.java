@@ -1,22 +1,5 @@
 package com.querydsl.sql;
 
-import com.google.common.collect.ImmutableList;
-import com.querydsl.core.testutil.ExcludeIn;
-import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.Param;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.sql.domain.Employee;
-import com.querydsl.sql.domain.QEmployee;
-import org.junit.Test;
-
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-
 import static com.querydsl.core.Target.CUBRID;
 import static com.querydsl.core.Target.DB2;
 import static com.querydsl.core.Target.DERBY;
@@ -35,6 +18,24 @@ import static com.querydsl.sql.Constants.survey2;
 import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.Param;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.Wildcard;
+import com.querydsl.sql.domain.Employee;
+import com.querydsl.sql.domain.QEmployee;
 
 public class SubqueriesBase extends AbstractBaseTest {
 
