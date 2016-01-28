@@ -13,7 +13,7 @@
  */
 package com.querydsl.sql.codegen;
 
-import static com.querydsl.core.util.JavaSyntaxUtils.isReserved;
+import static javax.lang.model.SourceVersion.isKeyword;
 
 /**
  * {@code Naming} provides name normalization functionality
@@ -24,7 +24,7 @@ import static com.querydsl.core.util.JavaSyntaxUtils.isReserved;
 public final class Naming {
 
     public static String normalize(String s, String reservedSuffix) {
-        if (isReserved(s)) {
+        if (isKeyword(s)) {
             return s + reservedSuffix;
         } else {
             StringBuilder sb = new StringBuilder(s.length() + 1);
