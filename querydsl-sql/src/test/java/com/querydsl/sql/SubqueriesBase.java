@@ -8,6 +8,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -155,5 +156,53 @@ public class SubqueriesBase extends AbstractBaseTest {
                 serializer.toString());
     }
 
+    @Test
+    public void scalarSubQueryInClause() {
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
 
+        serializer.handle(
+            this.query()
+                .from(employee)
+                .where(
+                    SQLExpressions
+                        .select(employee.firstname)
+                        .from(employee)
+                        .orderBy(employee.salary.asc())
+                        .limit(1)
+                        .in(Arrays.asList("Mike", "Mary"))
+                ));
+
+        expectedQuery = "(\nfrom EMPLOYEE e\n"
+            + "where (select e.FIRSTNAME\n"
+            + "from EMPLOYEE e\n"
+            + "order by e.SALARY asc\n"
+            + "limit ?) in (?, ?))";
+
+        assertEquals(expectedQuery, serializer.toString());
+    }
+
+    @Test
+    public void scalarSubQueryInClause2() {
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+
+        serializer.handle(
+            this.query()
+                .from(employee)
+                .where(
+                    SQLExpressions
+                        .select(employee.firstname)
+                        .from(employee)
+                        .orderBy(employee.salary.asc())
+                        .limit(1)
+                        .in("Mike", "Mary")
+                ));
+
+        expectedQuery = "(\nfrom EMPLOYEE e\n"
+            + "where (select e.FIRSTNAME\n"
+            + "from EMPLOYEE e\n"
+            + "order by e.SALARY asc\n"
+            + "limit ?) in (?, ?))";
+
+        assertEquals(expectedQuery, serializer.toString());
+    }
 }
