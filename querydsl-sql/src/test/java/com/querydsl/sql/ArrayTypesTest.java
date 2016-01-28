@@ -14,9 +14,10 @@ public class ArrayTypesTest {
 
     @Before
     public void setUp() {
-        configuration = Configuration.DEFAULT;
         System.setProperty("user.timezone", "UTC");
         TimeZone.setDefault(null);
+
+        configuration = Configuration.DEFAULT;
     }
 
     @Test
