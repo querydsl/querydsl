@@ -14,10 +14,18 @@
 package com.querydsl.core.support;
 
 import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.SubQueryExpressionImpl;
+import com.querydsl.core.types.Visitor;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
 import com.querydsl.core.types.dsl.Expressions;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * {@code FetchableSubQueryBase} extends {@link FetchableQueryBase} to provide fluent Expression creation functionality
@@ -152,5 +160,19 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
     public Class<T> getType() {
         Expression<?> projection = queryMixin.getMetadata().getProjection();
         return (Class) (projection != null ? projection.getType() : Void.class);
+    }
+
+    @Override
+    public BooleanExpression in(Collection<? extends T> right) {
+        if (right.size() == 1) {
+            return eq(right.iterator().next());
+        } else {
+            return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(right));
+        }
+    }
+
+    @Override
+    public BooleanExpression in(T... right) {
+        return this.in(Arrays.asList(right));
     }
 }

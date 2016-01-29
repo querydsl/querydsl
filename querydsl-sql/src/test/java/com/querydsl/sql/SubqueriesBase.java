@@ -1,13 +1,27 @@
 package com.querydsl.sql;
 
-import static com.querydsl.core.Target.*;
-import static com.querydsl.sql.Constants.*;
+import static com.querydsl.core.Target.CUBRID;
+import static com.querydsl.core.Target.DB2;
+import static com.querydsl.core.Target.DERBY;
+import static com.querydsl.core.Target.FIREBIRD;
+import static com.querydsl.core.Target.H2;
+import static com.querydsl.core.Target.HSQLDB;
+import static com.querydsl.core.Target.MYSQL;
+import static com.querydsl.core.Target.POSTGRESQL;
+import static com.querydsl.core.Target.SQLITE;
+import static com.querydsl.core.Target.SQLSERVER;
+import static com.querydsl.core.Target.TERADATA;
+import static com.querydsl.sql.Constants.employee;
+import static com.querydsl.sql.Constants.employee2;
+import static com.querydsl.sql.Constants.survey;
+import static com.querydsl.sql.Constants.survey2;
 import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -15,7 +29,11 @@ import org.junit.Test;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.Param;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.sql.domain.Employee;
 import com.querydsl.sql.domain.QEmployee;
 
@@ -155,5 +173,54 @@ public class SubqueriesBase extends AbstractBaseTest {
                 serializer.toString());
     }
 
+    @Test
+    public void scalarSubQueryInClause() {
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
 
+        serializer.handle(
+            this.query()
+                .from(employee)
+                .where(
+                    SQLExpressions
+                        .select(employee.firstname)
+                        .from(employee)
+                        .orderBy(employee.salary.asc())
+                        .limit(1)
+                        .in(Arrays.asList("Mike", "Mary"))
+                ));
+
+        expectedQuery = "(\nfrom EMPLOYEE e\n"
+            + "where (select e.FIRSTNAME\n"
+            + "from EMPLOYEE e\n"
+            + "order by e.SALARY asc\n"
+            + "limit ?) in (?, ?))";
+
+        System.out.println(">>>> " + serializer.toString());
+        assertEquals(expectedQuery, serializer.toString());
+    }
+
+    @Test
+    public void scalarSubQueryInClause2() {
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+
+        serializer.handle(
+            this.query()
+                .from(employee)
+                .where(
+                    SQLExpressions
+                        .select(employee.firstname)
+                        .from(employee)
+                        .orderBy(employee.salary.asc())
+                        .limit(1)
+                        .in("Mike", "Mary")
+                ));
+
+        expectedQuery = "(\nfrom EMPLOYEE e\n"
+            + "where (select e.FIRSTNAME\n"
+            + "from EMPLOYEE e\n"
+            + "order by e.SALARY asc\n"
+            + "limit ?) in (?, ?))";
+
+        assertEquals(expectedQuery, serializer.toString());
+    }
 }

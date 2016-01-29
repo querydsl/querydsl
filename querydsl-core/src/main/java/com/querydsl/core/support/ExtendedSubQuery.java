@@ -13,6 +13,8 @@
  */
 package com.querydsl.core.support;
 
+import java.util.Collection;
+
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -20,14 +22,14 @@ import com.querydsl.core.types.dsl.BooleanOperation;
 
 /**
  * {@code ExtendedSubQuery} extends the {@link SubQueryExpression} interface to provide fluent
- * expression creation functionality
+ * BooleanExpression creation functionality
  *
  * @param <T>
  */
 public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
 
     /**
-     * Create a {@code this == right} expression
+     * Create a {@code this == right} BooleanExpression
      *
      * @param expr rhs of the comparison
      * @return this == right
@@ -35,7 +37,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression eq(Expression<? extends T> expr);
 
     /**
-     * Create a {@code this == right} expression
+     * Create a {@code this == right} BooleanExpression
      *
      * @param constant rhs of the comparison
      * @return this == right
@@ -43,7 +45,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression eq(T constant);
 
     /**
-     * Create a {@code this != right} expression
+     * Create a {@code this != right} BooleanExpression
      *
      * @param expr rhs of the comparison
      * @return this != right
@@ -51,7 +53,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression ne(Expression<? extends T> expr);
 
     /**
-     * Create a {@code this != right} expression
+     * Create a {@code this != right} BooleanExpression
      *
      * @param constant rhs of the comparison
      * @return this != right
@@ -59,7 +61,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression ne(T constant);
 
     /**
-     * Create a {@code right in this} expression
+     * Create a {@code right in this} BooleanExpression
      *
      * @param right rhs of the comparison
      * @return right in this
@@ -67,7 +69,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression contains(Expression<? extends T> right);
 
     /**
-     * Create a {@code right in this} expression
+     * Create a {@code right in this} BooleanExpression
      *
      * @param constant rhs of the comparison
      * @return right in this
@@ -75,21 +77,21 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression contains(T constant);
 
     /**
-     * Create a {@code exists(this)} expression
+     * Create a {@code exists(this)} BooleanExpression
      *
      * @return exists(this)
      */
     BooleanExpression exists();
 
     /**
-     * Create a {@code not exists(this)} expression
+     * Create a {@code not exists(this)} BooleanExpression
      *
      * @return not exists(this)
      */
     BooleanExpression notExists();
 
     /**
-     * Create a {@code this < right} expression
+     * Create a {@code this < right} BooleanExpression
      *
      * @param expr rhs of the comparison
      * @return this &lt; right
@@ -97,7 +99,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression lt(Expression<? extends T> expr);
 
     /**
-     * Create a {@code this < right} expression
+     * Create a {@code this < right} BooleanExpression
      *
      * @param constant rhs of the comparison
      * @return this &lt; right
@@ -105,7 +107,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression lt(T constant);
 
     /**
-     * Create a {@code this > right} expression
+     * Create a {@code this > right} BooleanExpression
      *
      * @param expr rhs of the comparison
      * @return this &gt; right
@@ -113,7 +115,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression gt(Expression<? extends T> expr);
 
     /**
-     * Create a {@code this > right} expression
+     * Create a {@code this > right} BooleanExpression
      *
      * @param constant rhs of the comparison
      * @return this &gt; right
@@ -121,7 +123,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression gt(T constant);
 
     /**
-     * Create a {@code this <= right} expression
+     * Create a {@code this <= right} BooleanExpression
      *
      * @param expr rhs of the comparison
      * @return this &lt;= right
@@ -129,7 +131,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression loe(Expression<? extends T> expr);
 
     /**
-     * Create a {@code this <= right} expression
+     * Create a {@code this <= right} BooleanExpression
      *
      * @param constant rhs of the comparison
      * @return this &lt;= right
@@ -137,7 +139,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression loe(T constant);
 
     /**
-     * Create a {@code this >= right} expression
+     * Create a {@code this >= right} BooleanExpression
      *
      * @param expr rhs of the comparison
      * @return this &gt;= right
@@ -145,7 +147,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression goe(Expression<? extends T> expr);
 
     /**
-     * Create a {@code this >= right} expression
+     * Create a {@code this >= right} BooleanExpression
      *
      * @param constant rhs of the comparison
      * @return this &gt;= right
@@ -153,17 +155,31 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression goe(T constant);
 
     /**
-     * Create a {@code this is null} expression
+     * Create a {@code this is null} BooleanExpression
      *
      * @return this is null
      */
      BooleanOperation isNull();
 
     /**
-     * Create a {@code this is not null} expression
+     * Create a {@code this is not null} BooleanExpression
      *
      * @return this is not null
      */
      BooleanOperation isNotNull();
+
+    /**
+     * Create a {@code this in (a, b, c)} BooleanExpression
+     * @param right
+     * @return this in (a, b, c)
+     */
+     BooleanExpression in(Collection<? extends T> right);
+
+     /**
+     * Create a {@code this in (a, b, c)} BooleanExpression
+     * @param right
+     * @return this in (a, b, c)
+     */
+     BooleanExpression in(T... right);
 
 }
