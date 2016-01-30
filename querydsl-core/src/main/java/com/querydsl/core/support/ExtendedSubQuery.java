@@ -13,13 +13,15 @@
  */
 package com.querydsl.core.support;
 
+import java.util.Collection;
+
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.BooleanOperation;
 
 /**
- * {@code ExtendedSubQuery} extends the {@link SubQueryExpression} interface to provide fluent
+ * {@code ExtendedSubQuery} extends the {@link com.querydsl.core.types.SubQueryExpression} interface to provide fluent
  * expression creation functionality
  *
  * @param <T>
@@ -97,7 +99,7 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
     BooleanExpression lt(Expression<? extends T> expr);
 
     /**
-     * Create a {@code this < right} expression
+     * Create a {@code this < right} BooleanExpression
      *
      * @param constant rhs of the comparison
      * @return this &lt; right
@@ -165,5 +167,19 @@ public interface ExtendedSubQuery<T> extends SubQueryExpression<T> {
      * @return this is not null
      */
      BooleanOperation isNotNull();
+
+    /**
+     * Create a {@code this in (a, b, c)} expression
+     * @param right
+     * @return this in (a, b, c)
+     */
+     BooleanExpression in(Collection<? extends T> right);
+
+     /**
+     * Create a {@code this in (a, b, c)} expression
+     * @param right
+     * @return this in (a, b, c)
+     */
+     BooleanExpression in(T... right);
 
 }
