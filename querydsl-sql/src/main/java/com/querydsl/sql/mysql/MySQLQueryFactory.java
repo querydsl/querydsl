@@ -18,8 +18,10 @@ import java.sql.Connection;
 import javax.inject.Provider;
 
 import com.querydsl.core.QueryFlag.Position;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.*;
 import com.querydsl.sql.dml.SQLInsertClause;
 
@@ -88,6 +90,41 @@ public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<?>> {
 
     public MySQLReplaceClause replace(RelationalPath<?> entity) {
         return new MySQLReplaceClause(connection.get(), configuration, entity);
+    }
+
+    @Override
+    public <T> MySQLQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    @Override
+    public MySQLQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    @Override
+    public <T> MySQLQuery<T> selectDistinct(Expression<T> expr) {
+        return query().select(expr).distinct();
+    }
+
+    @Override
+    public MySQLQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return query().select(exprs).distinct();
+    }
+
+    @Override
+    public MySQLQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    @Override
+    public MySQLQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    @Override
+    public <T> MySQLQuery<T> selectFrom(RelationalPath<T> expr) {
+        return select(expr).from(expr);
     }
 
 }

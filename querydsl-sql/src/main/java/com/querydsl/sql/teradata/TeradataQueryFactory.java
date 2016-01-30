@@ -17,10 +17,10 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.querydsl.sql.AbstractSQLQueryFactory;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.SQLTemplates;
-import com.querydsl.sql.TeradataTemplates;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.*;
 
 /**
  * Teradata specific implementation of SQLQueryFactory
@@ -45,6 +45,41 @@ public class TeradataQueryFactory extends AbstractSQLQueryFactory<TeradataQuery<
     @Override
     public TeradataQuery<?> query() {
         return new TeradataQuery<Void>(connection, configuration);
+    }
+
+    @Override
+    public <T> TeradataQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    @Override
+    public TeradataQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    @Override
+    public <T> TeradataQuery<T> selectDistinct(Expression<T> expr) {
+        return query().select(expr).distinct();
+    }
+
+    @Override
+    public TeradataQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return query().select(exprs).distinct();
+    }
+
+    @Override
+    public TeradataQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    @Override
+    public TeradataQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    @Override
+    public <T> TeradataQuery<T> selectFrom(RelationalPath<T> expr) {
+        return select(expr).from(expr);
     }
 
 

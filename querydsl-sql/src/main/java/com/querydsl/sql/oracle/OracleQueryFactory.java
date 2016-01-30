@@ -17,10 +17,10 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.querydsl.sql.AbstractSQLQueryFactory;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.OracleTemplates;
-import com.querydsl.sql.SQLTemplates;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.*;
 
 /**
  * Oracle specific implementation of SQLQueryFactory
@@ -45,6 +45,41 @@ public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery<?>> 
     @Override
     public OracleQuery<?> query() {
         return new OracleQuery<Void>(connection, configuration);
+    }
+
+    @Override
+    public <T> OracleQuery<T> select(Expression<T> expr) {
+        return query().select(expr);
+    }
+
+    @Override
+    public OracleQuery<Tuple> select(Expression<?>... exprs) {
+        return query().select(exprs);
+    }
+
+    @Override
+    public <T> OracleQuery<T> selectDistinct(Expression<T> expr) {
+        return query().select(expr).distinct();
+    }
+
+    @Override
+    public OracleQuery<Tuple> selectDistinct(Expression<?>... exprs) {
+        return query().select(exprs).distinct();
+    }
+
+    @Override
+    public OracleQuery<Integer> selectZero() {
+        return select(Expressions.ZERO);
+    }
+
+    @Override
+    public OracleQuery<Integer> selectOne() {
+        return select(Expressions.ONE);
+    }
+
+    @Override
+    public <T> OracleQuery<T> selectFrom(RelationalPath<T> expr) {
+        return select(expr).from(expr);
     }
 
 }

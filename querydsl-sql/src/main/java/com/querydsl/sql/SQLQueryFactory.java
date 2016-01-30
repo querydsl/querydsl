@@ -74,73 +74,37 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
         return new SQLQuery<Void>(connection, configuration);
     }
 
-    /**
-     * Create a new SQLQuery instance with the given projection
-     *
-     * @param expr projection
-     * @param <T>
-     * @return select(expr)
-     */
+    @Override
     public <T> SQLQuery<T> select(Expression<T> expr) {
         return query().select(expr);
     }
 
-    /**
-     * Create a new SQLQuery instance with the given projection
-     *
-     * @param exprs projection
-     * @return select(exprs)
-     */
+    @Override
     public SQLQuery<Tuple> select(Expression<?>... exprs) {
         return query().select(exprs);
     }
 
-    /**
-     * Create a new SQLQuery instance with the given projection
-     *
-     * @param expr distinct projection
-     * @param <T>
-     * @return select(distinct expr)
-     */
+    @Override
     public <T> SQLQuery<T> selectDistinct(Expression<T> expr) {
         return query().select(expr).distinct();
     }
 
-    /**
-     * Create a new SQLQuery instance with the given projection
-     *
-     * @param exprs distinct projection
-     * @return select(distinct exprs)
-     */
+    @Override
     public SQLQuery<Tuple> selectDistinct(Expression<?>... exprs) {
         return query().select(exprs).distinct();
     }
 
-    /**
-     * Create a new SQLQuery instance with zero as the projection
-     *
-     * @return select(0)
-     */
+    @Override
     public SQLQuery<Integer> selectZero() {
         return select(Expressions.ZERO);
     }
 
-    /**
-     * Create a new SQLQuery instance with one as the projection
-     *
-     * @return select(1)
-     */
+    @Override
     public SQLQuery<Integer> selectOne() {
         return select(Expressions.ONE);
     }
 
-    /**
-     * Create a new SQLQuery instance with the given projection and source
-     *
-     * @param expr query source and projection
-     * @param <T>
-     * @return select(expr).from(expr)
-     */
+    @Override
     public <T> SQLQuery<T> selectFrom(RelationalPath<T> expr) {
         return select(expr).from(expr);
     }

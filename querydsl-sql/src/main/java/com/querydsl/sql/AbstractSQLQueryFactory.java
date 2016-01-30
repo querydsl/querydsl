@@ -17,6 +17,7 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
@@ -89,5 +90,62 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
     public final Connection getConnection() {
         return connection.get();
     }
+
+    /**
+     * Create a new SQL query with the given projection
+     *
+     * @param expr projection
+     * @param <T> type of the projection
+     * @return select(expr)
+     */
+    public abstract <T> AbstractSQLQuery<T, ?> select(Expression<T> expr);
+
+    /**
+     * Create a new SQL query with the given projection
+     *
+     * @param exprs projection
+     * @return select(exprs)
+     */
+    public abstract AbstractSQLQuery<Tuple, ?> select(Expression<?>... exprs);
+
+    /**
+     * Create a new SQL query with the given projection
+     *
+     * @param expr distinct projection
+     * @param <T> type of the projection
+     * @return select(distinct expr)
+     */
+    public abstract <T> AbstractSQLQuery<T, ?> selectDistinct(Expression<T> expr);
+
+    /**
+     * Create a new SQL query with the given projection
+     *
+     * @param exprs distinct projection
+     * @return select(distinct exprs)
+     */
+    public abstract AbstractSQLQuery<Tuple, ?> selectDistinct(Expression<?>... exprs);
+
+    /**
+     * Create a new SQL query with zero as the projection
+     *
+     * @return select(0)
+     */
+    public abstract AbstractSQLQuery<Integer, ?> selectZero();
+
+    /**
+     * Create a new SQL query with one as the projection
+     *
+     * @return select(1)
+     */
+    public abstract AbstractSQLQuery<Integer, ?> selectOne();
+
+    /**
+     * Create a new SQL query with the given projection and source
+     *
+     * @param expr query source and projection
+     * @param <T> type of the projection
+     * @return select(expr).from(expr)
+     */
+    public abstract <T> AbstractSQLQuery<T, ?> selectFrom(RelationalPath<T> expr);
 
 }
