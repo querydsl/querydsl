@@ -14,13 +14,20 @@
 package com.querydsl.core.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class MathUtilsTest {
+
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void sum() {
@@ -33,25 +40,45 @@ public class MathUtilsTest {
     }
 
     @Test
-    public void cast() {
-        Integer value = 1;
-        assertEquals(BigDecimal.class, MathUtils.cast(value, BigDecimal.class).getClass());
-        assertEquals(BigInteger.class, MathUtils.cast(value, BigInteger.class).getClass());
-        assertEquals(Double.class, MathUtils.cast(value, Double.class).getClass());
-        assertEquals(Float.class, MathUtils.cast(value, Float.class).getClass());
-        assertEquals(Integer.class, MathUtils.cast(value, Integer.class).getClass());
-        assertEquals(Long.class, MathUtils.cast(value, Long.class).getClass());
-        assertEquals(Short.class, MathUtils.cast(value, Short.class).getClass());
-        assertEquals(Byte.class, MathUtils.cast(value, Byte.class).getClass());
+    public void cast_returns_correct_type() {
+        checkCast(1, BigDecimal.class);
+        checkCast(1, BigInteger.class);
+        checkCast(1, Double.class);
+        checkCast(1, Float.class);
+        checkCast(1, Integer.class);
+        checkCast(1, Long.class);
+        checkCast(1, Short.class);
+        checkCast(1, Byte.class);
+    }
 
-        assertEquals(BigDecimal.ONE, MathUtils.cast(value, BigDecimal.class));
-        assertEquals(BigInteger.ONE, MathUtils.cast(value, BigInteger.class));
-        assertEquals(Double.valueOf(1), MathUtils.cast(value, Double.class));
-        assertEquals(Float.valueOf(1), MathUtils.cast(value, Float.class));
-        assertEquals(Integer.valueOf(1), MathUtils.cast(value, Integer.class));
-        assertEquals(Long.valueOf(1), MathUtils.cast(value, Long.class));
-        assertEquals(Short.valueOf((short) 1), MathUtils.cast(value, Short.class));
-        assertEquals(Byte.valueOf((byte) 1), MathUtils.cast(value, Byte.class));
+    @Test
+    public void cast_returns_argument_as_is_when_compatible() {
+        checkSame(BigDecimal.ONE, BigDecimal.class);
+        checkSame(BigInteger.ONE, BigInteger.class);
+        checkSame((double) 1, Double.class);
+        checkSame((float) 1, Float.class);
+        checkSame(1, Integer.class);
+        checkSame((long) 1, Long.class);
+        checkSame((short) 1, Short.class);
+        checkSame((byte) 1, Byte.class);
+    }
+
+    @Test
+    public void cast_throws_on_unsupported_numbers() {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Unsupported target type");
+
+        checkCast(1, AtomicInteger.class);
+    }
+
+    private static void checkCast(Number value, Class<? extends Number> targetClass) {
+        Number target = MathUtils.cast(value, targetClass);
+        assertSame(targetClass, target.getClass());
+    }
+
+    private static <N extends Number> void checkSame(N value, Class<N> targetClass) {
+        N target = MathUtils.cast(value, targetClass);
+        assertSame(value, target);
     }
 
 }
