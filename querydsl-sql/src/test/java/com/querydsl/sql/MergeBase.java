@@ -156,6 +156,7 @@ public class MergeBase extends AbstractBaseTest {
             .set(survey.name, "5")
             .addBatch();
         assertEquals(1, merge.getBatchCount());
+        assertFalse(merge.isEmpty());
 
         merge
             .keys(survey.id)
