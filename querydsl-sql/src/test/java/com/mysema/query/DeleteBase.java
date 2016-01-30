@@ -54,7 +54,9 @@ public class DeleteBase extends AbstractBaseTest{
 
         SQLDeleteClause delete = delete(survey);
         delete.where(survey.name.eq("A")).addBatch();
+        assertEquals(1, delete.getBatchCount());
         delete.where(survey.name.eq("B")).addBatch();
+        assertEquals(2, delete.getBatchCount());
         assertEquals(2, delete.execute());
     }
 

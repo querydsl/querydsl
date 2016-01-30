@@ -333,4 +333,10 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
     public boolean isEmpty() {
         return updates.isEmpty() && batches.isEmpty();
     }
+
+    @Override
+    public int getBatchCount() {
+        return batches.size();
+    }
+
 }

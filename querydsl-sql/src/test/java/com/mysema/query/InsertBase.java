@@ -124,10 +124,13 @@ public class InsertBase extends AbstractBaseTest {
             .set(survey.name, "55")
             .addBatch();
 
+        assertEquals(1, insert.getBatchCount());
+
         insert.set(survey.id, 6)
             .set(survey.name, "66")
             .addBatch();
 
+        assertEquals(2, insert.getBatchCount());
         assertEquals(2, insert.execute());
 
         assertEquals(1l, query().from(survey).where(survey.name.eq("55")).count());
