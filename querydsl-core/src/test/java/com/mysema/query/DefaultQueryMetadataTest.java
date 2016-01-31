@@ -15,6 +15,7 @@ package com.mysema.query;
 
 import java.util.Arrays;
 
+import com.google.common.collect.ImmutableSet;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Predicate;
@@ -91,6 +92,20 @@ public class DefaultQueryMetadataTest {
     public void GetJoins2() {
         metadata.addJoin(JoinType.DEFAULT, str);
         assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
+    }
+
+    @Test
+    public void GetJoins3() {
+        metadata.addJoin(JoinType.DEFAULT, str);
+        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
+        metadata.addJoinCondition(str.isNull());
+        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str, str.isNull(), ImmutableSet.<JoinFlag>of())),
+                metadata.getJoins());
+        metadata.addJoin(JoinType.DEFAULT, str2);
+        assertEquals(Arrays.asList(
+                new JoinExpression(JoinType.DEFAULT, str, str.isNull(), ImmutableSet.<JoinFlag>of()),
+                new JoinExpression(JoinType.DEFAULT, str2)),
+                metadata.getJoins());
     }
 
     @Test
