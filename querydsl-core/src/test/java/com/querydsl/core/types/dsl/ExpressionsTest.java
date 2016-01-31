@@ -19,7 +19,10 @@ import java.lang.reflect.Method;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
@@ -34,6 +37,19 @@ public class ExpressionsTest {
 
     private enum testEnum {
         TEST;
+    }
+
+    private TimeZone timeZone = null;
+
+    @Before
+    public void setUp() {
+        this.timeZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+    @After
+    public void tearDown() {
+        TimeZone.setDefault(this.timeZone);
     }
 
     @Test
