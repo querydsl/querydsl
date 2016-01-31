@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,10 +39,17 @@ public class ExpressionsTest {
         TEST;
     }
 
+    private TimeZone timeZone = null;
+
     @Before
-    public void before() {
-        System.setProperty("user.timezone", "UTC");
-        TimeZone.setDefault(null);
+    public void setUp() {
+        this.timeZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+    @After
+    public void tearDown() {
+        TimeZone.setDefault(this.timeZone);
     }
 
     @Test
