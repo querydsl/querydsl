@@ -385,6 +385,9 @@ public class SQLTemplates extends Templates {
         add(SQLOps.VARPOP, "var_pop({0})");
         add(SQLOps.VARSAMP, "var_samp({0})");
 
+        add(SQLOps.GROUP_CONCAT, "group_concat({0})");
+        add(SQLOps.GROUP_CONCAT2, "group_concat({0} separator {1})");
+
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");
 

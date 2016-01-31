@@ -118,6 +118,9 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_MINUTE, "cast(substring(cast({0} as char(100)) from 1 for 16) || ':00' as timestamp)");
         add(Ops.DateTimeOps.TRUNC_SECOND, "cast(substring(cast({0} as char(100)) from 1 for 19) as timestamp)");
 
+        add(SQLOps.GROUP_CONCAT, "list({0},',')");
+        add(SQLOps.GROUP_CONCAT2, "list({0},{1})");
+
         addTypeNameToCode("smallint", Types.BOOLEAN, true);
         addTypeNameToCode("smallint", Types.BIT, true);
         addTypeNameToCode("smallint", Types.TINYINT, true);

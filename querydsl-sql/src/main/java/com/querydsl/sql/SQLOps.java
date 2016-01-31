@@ -77,7 +77,9 @@ public enum SQLOps implements Operator {
     WITH_ALIAS(Object.class),
     WITH_COLUMNS(Object.class),
     LOCK_IN_SHARE_MODE(Object.class),
-    WITH_REPEATABLE_READ(Object.class);
+    WITH_REPEATABLE_READ(Object.class),
+    GROUP_CONCAT(String.class),
+    GROUP_CONCAT2(String.class);
 
     private final Class<?> type;
 

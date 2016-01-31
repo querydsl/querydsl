@@ -75,6 +75,8 @@ public class PostgreSQLTemplates extends SQLTemplates {
         add(Ops.INDEX_OF_2ARGS, "strpos({0},{1})-1", Precedence.ARITH_LOW); //FIXME
         add(Ops.StringOps.LOCATE,  "strpos({1},{0})");
         add(Ops.StringOps.LOCATE2, "strpos(repeat('^',{2-'1's}) || substr({1},{2s}),{0})");
+        add(SQLOps.GROUP_CONCAT, "string_agg({0},',')");
+        add(SQLOps.GROUP_CONCAT2, "string_agg({0},{1})");
 
         add(Ops.LIKE_ESCAPE_IC, "{0} ilike {1} escape '{2s}'");
         // like without escape

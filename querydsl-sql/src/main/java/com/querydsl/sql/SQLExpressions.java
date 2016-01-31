@@ -1187,6 +1187,27 @@ public final class SQLExpressions {
         return Expressions.stringOperation(Ops.StringOps.RIGHT, lhs, rhs);
     }
 
+    /**
+     * Get a group_concat(expr) expression
+     *
+     * @param expr expression to be aggregated
+     * @return group_concat(expr)
+     */
+    public static StringExpression groupConcat(Expression<String> expr) {
+        return Expressions.stringOperation(SQLOps.GROUP_CONCAT, expr);
+    }
+
+    /**
+     * Get a group_concat(expr, separator) expression
+     *
+     * @param expr expression to be aggregated
+     * @param separator separator string
+     * @return group_concat(expr, separator)
+     */
+    public static StringExpression groupConcat(Expression<String> expr, String separator) {
+        return Expressions.stringOperation(SQLOps.GROUP_CONCAT2, expr, Expressions.constant(separator));
+    }
+
     private SQLExpressions() { }
 
 }

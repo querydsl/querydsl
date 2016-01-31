@@ -89,6 +89,8 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.StringOps.LOCATE2, "instr({1},{0},{2s})");
         add(Ops.StringOps.LEFT, "substr({0},1,{1})");
         add(Ops.StringOps.RIGHT, "substr({0},-{1s},length({0}))");
+        add(SQLOps.GROUP_CONCAT, "listagg({0},',')");
+        add(SQLOps.GROUP_CONCAT2, "listagg({0},{1})");
 
         // Number
         add(Ops.MathOps.CEIL, "ceil({0})");
