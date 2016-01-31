@@ -563,7 +563,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     @Override
     public boolean isEmpty() {
-        return values.isEmpty();
+        return values.isEmpty() && batches.isEmpty();
     }
 
     @Override
