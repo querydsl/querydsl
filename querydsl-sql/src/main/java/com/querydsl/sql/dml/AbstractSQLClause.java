@@ -56,17 +56,19 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     @Nullable
     private Connection conn;
 
-    public AbstractSQLClause(Configuration configuration, Provider<Connection> connProvider) {
+    public AbstractSQLClause(Configuration configuration) {
         this.configuration = configuration;
         this.listeners = new SQLListeners(configuration.getListeners());
         this.useLiterals = configuration.getUseLiterals();
+    }
+
+    public AbstractSQLClause(Configuration configuration, Provider<Connection> connProvider) {
+        this(configuration);
         this.connProvider = connProvider;
     }
 
     public AbstractSQLClause(Configuration configuration, Connection conn) {
-        this.configuration = configuration;
-        this.listeners = new SQLListeners(configuration.getListeners());
-        this.useLiterals = configuration.getUseLiterals();
+        this(configuration);
         this.conn = conn;
     }
 
