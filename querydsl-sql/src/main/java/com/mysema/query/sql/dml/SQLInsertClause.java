@@ -511,4 +511,9 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         return values.isEmpty() && batches.isEmpty();
     }
 
+    @Override
+    public int getBatchCount() {
+        return batches.size();
+    }
+
 }
