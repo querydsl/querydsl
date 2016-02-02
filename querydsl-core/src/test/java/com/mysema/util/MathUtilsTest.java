@@ -50,6 +50,7 @@ public class MathUtilsTest {
         checkCast(1, Byte.class);
     }
 
+    @Test
     public void Cast_Returns_Argument_As_Is_When_Compatible() {
         checkSame(BigDecimal.ONE, BigDecimal.class);
         checkSame(BigInteger.ONE, BigInteger.class);
