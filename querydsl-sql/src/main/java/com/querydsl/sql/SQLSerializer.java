@@ -50,6 +50,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private final List<Object> constants = new ArrayList<Object>();
 
+    private final Set<Path<?>> withAliases = Sets.newHashSet();
+
     private final boolean dml;
 
     protected Stage stage = Stage.SELECT;
@@ -190,17 +192,23 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
-                SchemaAndTable schemaAndTable = getSchemaAndTable(pe);
-                boolean precededByDot;
-                if (templates.isPrintSchema()) {
-                    appendSchemaName(schemaAndTable.getSchema());
-                    append(".");
-                    precededByDot = true;
+                if (withAliases.contains(pe)) {
+                    String name = pe.getMetadata().getName();
+                    appendTableName(pe.getMetadata().getName(), false);
+                    append(templates.getTableAlias());
                 } else {
-                    precededByDot = false;
+                    SchemaAndTable schemaAndTable = getSchemaAndTable(pe);
+                    boolean precededByDot;
+                    if (templates.isPrintSchema()) {
+                        appendSchemaName(schemaAndTable.getSchema());
+                        append(".");
+                        precededByDot = true;
+                    } else {
+                        precededByDot = false;
+                    }
+                    appendTableName(schemaAndTable.getTable(), precededByDot);
+                    append(templates.getTableAlias());
                 }
-                appendTableName(schemaAndTable.getTable(), precededByDot);
-                append(templates.getTableAlias());
             }
         }
         inJoin = true;
@@ -967,6 +975,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         } else {
             super.visitOperation(type, operator, args);
+        }
+
+        if (operator == SQLOps.WITH_ALIAS || operator == SQLOps.WITH_COLUMNS) {
+            if (args.get(0) instanceof Path) {
+                withAliases.add((Path<?>) args.get(0));
+            } else {
+                withAliases.add((Path<?>) ((Operation<?>) args.get(0)).getArg(0));
+            }
         }
     }
 

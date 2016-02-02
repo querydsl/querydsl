@@ -1864,8 +1864,8 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void with() {
-        assertEquals(100, query().with(employee2, query().from(employee)
-                .where(employee.firstname.eq("Tom"))
+        assertEquals(10, query().with(employee2, query().from(employee)
+                .where(employee.firstname.eq("Jim"))
                 .select(Wildcard.all))
                .from(employee, employee2)
                .select(employee.id, employee2.id).fetch().size());
@@ -1875,11 +1875,11 @@ public class SelectBase extends AbstractBaseTest {
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void with2() {
         QEmployee employee3 = new QEmployee("e3");
-        assertEquals(1000, query().with(employee2, query().from(employee)
-                .where(employee.firstname.eq("Tom"))
+        assertEquals(100, query().with(employee2, query().from(employee)
+                .where(employee.firstname.eq("Jim"))
                 .select(Wildcard.all))
                .with(employee2, query().from(employee)
-                       .where(employee.firstname.eq("Tom"))
+                       .where(employee.firstname.eq("Jim"))
                        .select(Wildcard.all))
                .from(employee, employee2, employee3)
                .select(employee.id, employee2.id, employee3.id).fetch().size());
@@ -1888,9 +1888,9 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void with3() {
-        assertEquals(100, query().with(employee2, employee2.all()).as(
+        assertEquals(10, query().with(employee2, employee2.all()).as(
                 query().from(employee)
-                        .where(employee.firstname.eq("Tom"))
+                        .where(employee.firstname.eq("Jim"))
                         .select(Wildcard.all))
                .from(employee, employee2)
                .select(employee.id, employee2.id).fetch().size());
@@ -1899,12 +1899,12 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void with_limit() {
-        assertEquals(50, query().with(employee2, employee2.all()).as(
+        assertEquals(5, query().with(employee2, employee2.all()).as(
                 query().from(employee)
-                        .where(employee.firstname.eq("Tom"))
+                        .where(employee.firstname.eq("Jim"))
                         .select(Wildcard.all))
                 .from(employee, employee2)
-                .limit(50)
+                .limit(5)
                 .orderBy(employee.id.asc(), employee2.id.asc())
                 .select(employee.id, employee2.id).fetch().size());
     }
@@ -1912,13 +1912,13 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @IncludeIn({HSQLDB, ORACLE, POSTGRESQL})
     public void with_limitOffset() {
-        assertEquals(50, query().with(employee2, employee2.all()).as(
+        assertEquals(5, query().with(employee2, employee2.all()).as(
                 query().from(employee)
-                        .where(employee.firstname.eq("Tom"))
+                        .where(employee.firstname.eq("Jim"))
                         .select(Wildcard.all))
                 .from(employee, employee2)
-                .limit(50)
-                .offset(10)
+                .limit(10)
+                .offset(5)
                 .orderBy(employee.id.asc(), employee2.id.asc())
                 .select(employee.id, employee2.id).fetch().size());
     }
@@ -1926,8 +1926,8 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @IncludeIn({ORACLE, POSTGRESQL})
     public void with_recursive() {
-        assertEquals(100, query().withRecursive(employee2, query().from(employee)
-                .where(employee.firstname.eq("Tom"))
+        assertEquals(10, query().withRecursive(employee2, query().from(employee)
+                .where(employee.firstname.eq("Jim"))
                 .select(Wildcard.all))
                .from(employee, employee2)
                .select(employee.id, employee2.id).fetch().size());
@@ -1937,9 +1937,9 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @IncludeIn({ORACLE, POSTGRESQL})
     public void with_recursive2() {
-        assertEquals(100, query().withRecursive(employee2, employee2.all()).as(
+        assertEquals(10, query().withRecursive(employee2, employee2.all()).as(
                 query().from(employee)
-                        .where(employee.firstname.eq("Tom"))
+                        .where(employee.firstname.eq("Jim"))
                         .select(Wildcard.all))
                .from(employee, employee2)
                .select(employee.id, employee2.id).fetch().size());
