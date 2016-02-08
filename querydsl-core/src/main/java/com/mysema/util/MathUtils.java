@@ -40,7 +40,7 @@ public final class MathUtils {
 
     public static <D extends Number> D cast(Number num, Class<D> type) {
         D rv;
-        if (type.isInstance(num)) {
+        if (num == null || type.isInstance(num)) {
             rv = type.cast(num);
         } else if (type.equals(Byte.class)) {
             rv = type.cast(num.byteValue());

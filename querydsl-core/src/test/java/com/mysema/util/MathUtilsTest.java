@@ -13,8 +13,7 @@
  */
 package com.mysema.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -51,6 +50,7 @@ public class MathUtilsTest {
         checkCast(1, Byte.class);
     }
 
+    @Test
     public void Cast_Returns_Argument_As_Is_When_Compatible() {
         checkSame(BigDecimal.ONE, BigDecimal.class);
         checkSame(BigInteger.ONE, BigInteger.class);
@@ -60,6 +60,12 @@ public class MathUtilsTest {
         checkSame((long) 1, Long.class);
         checkSame((short) 1, Short.class);
         checkSame((byte) 1, Byte.class);
+    }
+
+    @Test
+    public void Cast_Returns_Null_When_Input_Is_Null() {
+        Integer result = MathUtils.cast(null, Integer.class);
+        assertNull(result);
     }
 
     @Test
