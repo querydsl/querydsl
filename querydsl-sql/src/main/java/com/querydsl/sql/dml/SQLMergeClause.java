@@ -130,6 +130,15 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return this;
     }
 
+    @Override
+    public void clear() {
+        batches.clear();
+        columns.clear();
+        values.clear();
+        keys.clear();
+        subQuery = null;
+    }
+
     public SQLMergeClause columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return this;

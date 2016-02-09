@@ -40,4 +40,15 @@ public class SQLDeleteClauseTest {
         assertEquals(ImmutableList.of(1), sql.getBindings());
     }
 
+    @Test
+    public void clear() {
+        QEmployee emp1 = new QEmployee("emp1");
+        SQLDeleteClause delete = new SQLDeleteClause(null, SQLTemplates.DEFAULT, emp1);
+        delete.where(emp1.id.eq(1));
+        delete.addBatch();
+        assertEquals(1, delete.getBatchCount());
+        delete.clear();
+        assertEquals(0, delete.getBatchCount());
+    }
+
 }

@@ -116,6 +116,14 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         return this;
     }
 
+    @Override
+    public void clear() {
+        batches.clear();
+        metadata = new DefaultQueryMetadata();
+        metadata.addJoin(JoinType.DEFAULT, entity);
+        metadata.setValidatingVisitor(validatingVisitor);
+    }
+
     private PreparedStatement createStatement() throws SQLException {
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();

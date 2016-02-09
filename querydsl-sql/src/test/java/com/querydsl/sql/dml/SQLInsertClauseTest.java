@@ -42,4 +42,15 @@ public class SQLInsertClauseTest {
                 "values (EMPLOYEE.ID, EMPLOYEE.FIRSTNAME, EMPLOYEE.LASTNAME, EMPLOYEE.SALARY, EMPLOYEE.DATEFIELD, EMPLOYEE.TIMEFIELD, EMPLOYEE.SUPERIOR_ID)", sql.getSQL());
     }
 
+    @Test
+    public void clear() {
+        QEmployee emp1 = new QEmployee("emp1");
+        SQLInsertClause insert = new SQLInsertClause(null, SQLTemplates.DEFAULT, emp1);
+        insert.set(emp1.id, 1);
+        insert.addBatch();
+        assertEquals(1, insert.getBatchCount());
+        insert.clear();
+        assertEquals(0, insert.getBatchCount());
+    }
+
 }

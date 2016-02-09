@@ -144,6 +144,14 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     }
 
     @Override
+    public void clear() {
+        batches.clear();
+        columns.clear();
+        values.clear();
+        subQuery = null;
+    }
+
+    @Override
     public SQLInsertClause columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return this;

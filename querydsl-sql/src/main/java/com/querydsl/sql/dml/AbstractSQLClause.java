@@ -82,6 +82,11 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     }
 
     /**
+     * Clear the internal state of the clause
+     */
+    public abstract void clear();
+
+    /**
      * Called to create and start a new SQL Listener context
      *
      * @param connection the database connection
