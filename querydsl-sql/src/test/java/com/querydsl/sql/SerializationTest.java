@@ -205,8 +205,22 @@ public class SerializationTest {
                 select(survey2.id, survey2.name).from(survey2));
 
         assertEquals("with SURVEY (ID, NAME) as (select survey2.ID, survey2.NAME\n" +
-            "from SURVEY survey2)\n\n" +
-            "from dual", q.toString());
+                "from SURVEY survey2)\n\n" +
+                "from dual", q.toString());
+    }
+
+    @Test
+    public void with_complex() {
+        QSurvey s = new QSurvey("s");
+        SQLQuery<?> q = new SQLQuery<Void>();
+        q.with(s, s.id, s.name).as(
+                select(survey.id, survey.name).from(survey))
+          .select(s.id, s.name, survey.id, survey.name).from(s, survey);
+
+        assertEquals("with s (ID, NAME) as (select SURVEY.ID, SURVEY.NAME\n" +
+                "from SURVEY SURVEY)\n" +
+                "select s.ID, s.NAME, SURVEY.ID, SURVEY.NAME\n" +
+                "from s s, SURVEY SURVEY", q.toString());
     }
 
     @Test
