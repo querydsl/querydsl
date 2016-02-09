@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -223,5 +224,24 @@ public class MergeBase extends AbstractBaseTest {
         assertEquals(1, merge.execute());
     }
 
+    @Test
+    public void merge_listener() {
+        final AtomicInteger calls = new AtomicInteger(0);
+        SQLListener listener = new SQLBaseListener() {
+            @Override
+            public void end(SQLListenerContext context) {
+                if (context.getData(AbstractSQLQuery.PARENT_CONTEXT) == null) {
+                    calls.incrementAndGet();
+                }
+            }
+        };
+
+        SQLMergeClause clause = merge(survey).keys(survey.id)
+                .set(survey.id, 5)
+                .set(survey.name, "Hello World");
+        clause.addListener(listener);
+        assertEquals(1, clause.execute());
+        assertEquals(1, calls.intValue());
+    }
 
 }

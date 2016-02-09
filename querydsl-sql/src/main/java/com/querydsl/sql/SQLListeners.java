@@ -245,4 +245,9 @@ public class SQLListeners implements SQLDetailedListener {
             listener.exception(context);
         }
     }
+
+    public Set<SQLDetailedListener> getListeners() {
+        return listeners;
+    }
+
 }

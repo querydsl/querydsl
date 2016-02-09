@@ -311,6 +311,10 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     private boolean hasRow() {
         SQLQuery<?> query = new SQLQuery<Void>(connection(), configuration).from(entity);
+        for (SQLListener listener : listeners.getListeners()) {
+            query.addListener(listener);
+        }
+        query.addListener(SQLNoCloseListener.DEFAULT);
         addKeyConditions(query);
         return query.select(Expressions.ONE).fetchFirst() != null;
     }
@@ -335,14 +339,22 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             // update
             SQLUpdateClause update = new SQLUpdateClause(connection(), configuration, entity);
             populate(update);
+            addListeners(update);
             addKeyConditions(update);
             return update.execute();
         } else {
             // insert
             SQLInsertClause insert = new SQLInsertClause(connection(), configuration, entity);
+            addListeners(insert);
             populate(insert);
             return insert.execute();
 
+        }
+    }
+
+    private void addListeners(AbstractSQLClause<?> clause) {
+        for (SQLListener listener : listeners.getListeners()) {
+            clause.addListener(listener);
         }
     }
 
