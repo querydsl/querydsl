@@ -13,8 +13,7 @@
  */
 package com.querydsl.core.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -61,6 +60,12 @@ public class MathUtilsTest {
         checkSame((long) 1, Long.class);
         checkSame((short) 1, Short.class);
         checkSame((byte) 1, Byte.class);
+    }
+
+    @Test
+    public void cast_returns_null_when_input_is_null() {
+        Integer result = MathUtils.cast(null, Integer.class);
+        assertNull(result);
     }
 
     @Test
