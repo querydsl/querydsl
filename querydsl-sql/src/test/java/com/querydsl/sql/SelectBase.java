@@ -902,6 +902,28 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void in_null() {
+        assertEquals(0, query().from(employee).where(employee.id.in(ImmutableList.<Integer>of(null))).fetchCount());
+    }
+
+    @Test
+    public void notIn_null() {
+        long count = query().from(employee).fetchCount();
+        assertEquals(count, query().from(employee).where(employee.id.notIn(ImmutableList.<Integer>of(null))).fetchCount());
+    }
+
+    @Test
+    public void in_nulls() {
+        assertEquals(0, query().from(employee).where(employee.id.in(ImmutableList.<Integer>of(1, null, 3))).fetchCount());
+    }
+
+    @Test
+    public void notIn_nulls() {
+        long count = query().from(employee).fetchCount();
+        assertEquals(count, query().from(employee).where(employee.id.notIn(ImmutableList.<Integer>of(1, null, 3))).fetchCount());
+    }
+
+    @Test
     public void inner_join() throws SQLException {
         assertEquals(8, query().from(employee).innerJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
