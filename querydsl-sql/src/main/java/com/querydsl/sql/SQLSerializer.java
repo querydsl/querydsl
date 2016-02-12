@@ -193,7 +193,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             final RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
                 if (withAliases.contains(pe)) {
-                    String name = pe.getMetadata().getName();
                     appendTableName(pe.getMetadata().getName(), false);
                     append(templates.getTableAlias());
                 } else {
