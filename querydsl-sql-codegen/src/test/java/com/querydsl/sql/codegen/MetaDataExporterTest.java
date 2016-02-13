@@ -180,6 +180,32 @@ public class MetaDataExporterTest {
     }
 
     @Test
+    public void minimal_configuration_with_schemas() throws SQLException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC2,PUBLIC");
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(new File("target/8"));
+        exporter.export(metadata);
+
+        assertTrue(new File("target/8/test/QDateTest.java").exists());
+    }
+
+    @Test
+    public void minimal_configuration_with_schemas_and_tables() throws SQLException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC2,PUBLIC");
+        exporter.setTableNamePattern("RESERVED,UNDERSCORE,BEANGEN1");
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(new File("target/82"));
+        exporter.export(metadata);
+
+        assertTrue(new File("target/82/test/QBeangen1.java").exists());
+        assertTrue(new File("target/82/test/QReserved.java").exists());
+        assertTrue(new File("target/82/test/QUnderscore.java").exists());
+        assertFalse(new File("target/82/test/QDefinstance.java").exists());
+    }
+
+    @Test
     public void minimal_configuration_with_tables() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");

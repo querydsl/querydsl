@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
@@ -229,26 +230,32 @@ public class MetaDataExporter {
             typesArray = types.toArray(new String[types.size()]);
         }
 
+        List<String> schemas = Arrays.asList(schemaPattern);
+        if (schemaPattern != null && schemaPattern.contains(",")) {
+            schemas = ImmutableList.copyOf(schemaPattern.split(","));
+        }
+        List<String> tables = Arrays.asList(tableNamePattern);
         if (tableNamePattern != null && tableNamePattern.contains(",")) {
-            for (String table : tableNamePattern.split(",")) {
-                ResultSet tables = md.getTables(null, schemaPattern, table.trim(), typesArray);
-                try {
-                    while (tables.next()) {
-                        handleTable(md, tables);
-                    }
-                } finally {
-                    tables.close();
-                }
+            tables = ImmutableList.copyOf(tableNamePattern.split(","));
+        }
+
+        for (String schema : schemas) {
+            schema = schema != null ? schema.trim() : null;
+            for (String table : tables) {
+                table = table != null ? table.trim() : null;
+                handleTables(md, schema, table, typesArray);
             }
-        } else {
-            ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, typesArray);
-            try {
-                while (tables.next()) {
-                    handleTable(md, tables);
-                }
-            } finally {
-                tables.close();
+        }
+    }
+
+    private void handleTables(DatabaseMetaData md, String schemaPattern, String tablePattern, String[] types) throws SQLException {
+        ResultSet tables = md.getTables(null, schemaPattern, tablePattern, types);
+        try {
+            while (tables.next()) {
+                handleTable(md, tables);
             }
+        } finally {
+            tables.close();
         }
     }
 
