@@ -13,7 +13,6 @@
  */
 package com.querydsl.sql.codegen;
 
-import java.io.File;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -21,13 +20,18 @@ import javax.tools.JavaCompiler;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.AbstractJDBCTest;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest {
+
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     @Override
     @Before
@@ -77,7 +81,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         exporter.setBeanSerializerClass(BeanSerializer.class);
         exporter.setNamePrefix(namePrefix);
         exporter.setPackageName("test");
-        exporter.setTargetFolder(new File("target/cust1"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setNamingStrategy(namingStrategy);
         exporter.export(connection.getMetaData());
 
