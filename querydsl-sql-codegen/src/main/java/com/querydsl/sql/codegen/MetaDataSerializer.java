@@ -321,11 +321,15 @@ public class MetaDataSerializer extends EntitySerializer {
 
     @Override
     protected void customField(EntityType model, Property field, SerializerConfig config,
-            CodeWriter writer) throws IOException {
+                               CodeWriter writer) throws IOException {
         Type queryType = typeMappings.getPathType(field.getType(), model, false);
-        String localRawName = writer.getRawName(field.getType());
-        serialize(model, field, queryType, writer, "create" + field.getType().getSimpleName(),
-                writer.getClassConstant(localRawName));
+        if (queryType.getPackageName().startsWith("com.querydsl")) {
+            String localRawName = writer.getRawName(field.getType());
+            serialize(model, field, queryType, writer, "create" + field.getType().getSimpleName(),
+                    writer.getClassConstant(localRawName));
+        } else {
+            super.customField(model, field, config, writer);
+        }
     }
 
     protected void serializePrimaryKeys(EntityType model, CodeWriter writer,
