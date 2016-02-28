@@ -81,6 +81,11 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
     }
 
     @Override
+    public void clear() {
+        values.clear();
+    }
+
+    @Override
     public long execute() {
         PreparedStatement stmt = null;
         try {

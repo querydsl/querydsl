@@ -111,6 +111,14 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         return this;
     }
 
+    @Override
+    public void clear() {
+        batches.clear();
+        updates = Maps.newLinkedHashMap();
+        metadata = new DefaultQueryMetadata();
+        metadata.addJoin(JoinType.DEFAULT, entity);
+    }
+
     private PreparedStatement createStatement() throws SQLException {
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
