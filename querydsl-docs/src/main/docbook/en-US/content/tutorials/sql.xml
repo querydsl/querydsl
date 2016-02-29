@@ -159,7 +159,8 @@
           </row>
           <row>
             <entry>schemaPattern</entry>
-            <entry>a schema name pattern in LIKE pattern form; must match the schema name as it is stored in the database;
+            <entry>a schema name pattern in LIKE pattern form; must match the schema name as it is stored in the database,
+              multiple can be separated by comma
               (default: null)</entry>
           </row>
           <row>

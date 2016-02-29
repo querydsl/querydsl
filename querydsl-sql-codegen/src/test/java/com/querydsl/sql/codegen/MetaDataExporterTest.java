@@ -18,27 +18,20 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import javax.tools.JavaCompiler;
 
 import org.junit.*;
+import org.junit.rules.TemporaryFolder;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
-import com.querydsl.codegen.Serializer;
 import com.querydsl.core.util.FileUtils;
 
 public class MetaDataExporterTest {
 
-    private static final List<Serializer> BEAN_SERIALIZERS = Arrays.<Serializer>asList(
-            new BeanSerializer());
-
     private static Connection connection;
-
-    private Serializer beanSerializer;
 
     private boolean clean = true;
 
@@ -49,6 +42,9 @@ public class MetaDataExporterTest {
     private DatabaseMetaData metadata;
 
     private JavaCompiler compiler = new SimpleCompiler();
+
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     @BeforeClass
     public static void setUpClass() throws ClassNotFoundException, SQLException {
@@ -141,14 +137,14 @@ public class MetaDataExporterTest {
 
     @Test
     public void normalSettings_repetition() throws SQLException {
-        test("Q", "", "", "", defaultNaming, "target/1", false, false, false);
+        test("Q", "", "", "", defaultNaming, folder.getRoot(), false, false, false);
 
-        File file = new File("target/1/test/QEmployee.java");
+        File file = new File(folder.getRoot(), "test/QEmployee.java");
         long lastModified = file.lastModified();
         assertTrue(file.exists());
 
         clean = false;
-        test("Q", "", "", "", defaultNaming, "target/1", false, false, false);
+        test("Q", "", "", "", defaultNaming, folder.getRoot(), false, false, false);
         assertEquals(lastModified, file.lastModified());
     }
 
@@ -158,14 +154,14 @@ public class MetaDataExporterTest {
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
         exporter.setPackageName("test");
-        exporter.setTargetFolder(new File("target/7"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setNamingStrategy(new DefaultNamingStrategy());
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setBeanPackageName("test2");
         exporter.export(metadata);
 
-        assertTrue(new File("target/7/test/QDateTest.java").exists());
-        assertTrue(new File("target/7/test2/DateTest.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QDateTest.java").exists());
+        assertTrue(new File(folder.getRoot(), "test2/DateTest.java").exists());
     }
 
     @Test
@@ -173,10 +169,36 @@ public class MetaDataExporterTest {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
-        exporter.setTargetFolder(new File("target/8"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(metadata);
 
-        assertTrue(new File("target/8/test/QDateTest.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QDateTest.java").exists());
+    }
+
+    @Test
+    public void minimal_configuration_with_schemas() throws SQLException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC2,PUBLIC");
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.export(metadata);
+
+        assertTrue(new File(folder.getRoot(), "test/QDateTest.java").exists());
+    }
+
+    @Test
+    public void minimal_configuration_with_schemas_and_tables() throws SQLException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC2,PUBLIC");
+        exporter.setTableNamePattern("RESERVED,UNDERSCORE,BEANGEN1");
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.export(metadata);
+
+        assertTrue(new File(folder.getRoot(), "test/QBeangen1.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QReserved.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QUnderscore.java").exists());
+        assertFalse(new File(folder.getRoot(), "test/QDefinstance.java").exists());
     }
 
     @Test
@@ -185,13 +207,28 @@ public class MetaDataExporterTest {
         exporter.setSchemaPattern("PUBLIC");
         exporter.setTableNamePattern("RESERVED,UNDERSCORE,BEANGEN1");
         exporter.setPackageName("test");
-        exporter.setTargetFolder(new File("target/82"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(metadata);
 
-        assertTrue(new File("target/82/test/QBeangen1.java").exists());
-        assertTrue(new File("target/82/test/QReserved.java").exists());
-        assertTrue(new File("target/82/test/QUnderscore.java").exists());
-        assertFalse(new File("target/82/test/QDefinstance.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QBeangen1.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QReserved.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QUnderscore.java").exists());
+        assertFalse(new File(folder.getRoot(), "test/QDefinstance.java").exists());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void minimal_configuration_with_duplicate_tables() throws SQLException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setTableNamePattern("%,%");
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.export(metadata);
+
+        assertTrue(new File(folder.getRoot(), "test/QBeangen1.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QReserved.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QUnderscore.java").exists());
+        assertFalse(new File(folder.getRoot(), "test/QDefinstance.java").exists());
     }
 
     @Test
@@ -201,10 +238,10 @@ public class MetaDataExporterTest {
         exporter.setPackageName("test");
         exporter.setNamePrefix("");
         exporter.setNameSuffix("Type");
-        exporter.setTargetFolder(new File("target/9"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(metadata);
 
-        assertTrue(new File("target/9/test/DateTestType.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/DateTestType.java").exists());
     }
 
     @Test
@@ -214,11 +251,11 @@ public class MetaDataExporterTest {
         exporter.setPackageName("test");
         exporter.setNamePrefix("");
         exporter.setNameSuffix("Type");
-        exporter.setTargetFolder(new File("target/10"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setExportForeignKeys(false);
         exporter.export(metadata);
 
-        assertTrue(new File("target/10/test/DateTestType.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/DateTestType.java").exists());
     }
 
     @Test
@@ -229,11 +266,11 @@ public class MetaDataExporterTest {
         exporter.setNamePrefix("");
         exporter.setBeanPrefix("Bean");
         exporter.setBeanSerializer(new BeanSerializer());
-        exporter.setTargetFolder(new File("target/a"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(metadata);
 
-        assertTrue(new File("target/a/test/DateTest.java").exists());
-        assertTrue(new File("target/a/test/BeanDateTest.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/DateTest.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/BeanDateTest.java").exists());
     }
 
     @Test
@@ -244,33 +281,32 @@ public class MetaDataExporterTest {
         exporter.setNamePrefix("");
         exporter.setBeanSuffix("Bean");
         exporter.setBeanSerializer(new BeanSerializer());
-        exporter.setTargetFolder(new File("target/b"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(metadata);
 
-        assertTrue(new File("target/b/test/DateTest.java").exists());
-        assertTrue(new File("target/b/test/DateTestBean.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/DateTest.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/DateTestBean.java").exists());
     }
 
     @Test
-    public void minimal_configuration_with_bean_folder() throws SQLException {
+    public void minimal_configuration_with_bean_folder() throws SQLException, IOException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
         exporter.setNamePrefix("");
         exporter.setBeanSuffix("Bean");
         exporter.setBeanSerializer(new BeanSerializer());
-        exporter.setTargetFolder(new File("target/b1"));
-        exporter.setBeansTargetFolder(new File("target/b2"));
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.setBeansTargetFolder(folder.newFolder("beans"));
         exporter.export(metadata);
 
-        assertTrue(new File("target/b1/test/DateTest.java").exists());
-        assertTrue(new File("target/b2/test/DateTestBean.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/DateTest.java").exists());
+        assertTrue(new File(folder.getRoot(), "beans/test/DateTestBean.java").exists());
     }
 
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
-            NamingStrategy namingStrategy, String target, boolean withBeans,
+            NamingStrategy namingStrategy, File targetDir, boolean withBeans,
             boolean withInnerClasses, boolean withOrdinalPositioning) throws SQLException {
-        File targetDir = new File(target);
         if (clean) {
             try {
                 if (targetDir.exists()) {
@@ -295,7 +331,7 @@ public class MetaDataExporterTest {
         exporter.setNamingStrategy(namingStrategy);
         exporter.setSchemaToPackage(schemaToPackage);
         if (withBeans) {
-            exporter.setBeanSerializer(beanSerializer);
+            exporter.setBeanSerializer(new BeanSerializer());
         }
         if (withOrdinalPositioning) {
             exporter.setColumnComparatorClass(OrdinalPositionComparator.class);
@@ -306,7 +342,7 @@ public class MetaDataExporterTest {
         int compilationResult = compiler.run(null, System.out, System.err,
                 classes.toArray(new String[classes.size()]));
         if (compilationResult != 0) {
-            Assert.fail("Compilation Failed for " + target);
+            Assert.fail("Compilation Failed for " + targetDir.getAbsolutePath());
         }
     }
 

@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
@@ -188,6 +189,7 @@ public class MetaDataExporter {
             SpatialSupport.addSupport(module);
         }
 
+        classes.clear();
         typeMappings = module.get(TypeMappings.class);
         queryTypeFactory = module.get(QueryTypeFactory.class);
         serializer = module.get(Serializer.class);
@@ -229,26 +231,32 @@ public class MetaDataExporter {
             typesArray = types.toArray(new String[types.size()]);
         }
 
+        List<String> schemas = Arrays.asList(schemaPattern);
+        if (schemaPattern != null && schemaPattern.contains(",")) {
+            schemas = ImmutableList.copyOf(schemaPattern.split(","));
+        }
+        List<String> tables = Arrays.asList(tableNamePattern);
         if (tableNamePattern != null && tableNamePattern.contains(",")) {
-            for (String table : tableNamePattern.split(",")) {
-                ResultSet tables = md.getTables(null, schemaPattern, table.trim(), typesArray);
-                try {
-                    while (tables.next()) {
-                        handleTable(md, tables);
-                    }
-                } finally {
-                    tables.close();
-                }
+            tables = ImmutableList.copyOf(tableNamePattern.split(","));
+        }
+
+        for (String schema : schemas) {
+            schema = schema != null ? schema.trim() : null;
+            for (String table : tables) {
+                table = table != null ? table.trim() : null;
+                handleTables(md, schema, table, typesArray);
             }
-        } else {
-            ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, typesArray);
-            try {
-                while (tables.next()) {
-                    handleTable(md, tables);
-                }
-            } finally {
-                tables.close();
+        }
+    }
+
+    private void handleTables(DatabaseMetaData md, String schemaPattern, String tablePattern, String[] types) throws SQLException {
+        ResultSet tables = md.getTables(null, schemaPattern, tablePattern, types);
+        try {
+            while (tables.next()) {
+                handleTable(md, tables);
             }
+        } finally {
+            tables.close();
         }
     }
 
@@ -396,7 +404,7 @@ public class MetaDataExporter {
             } else {
                 String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
                 String path =  packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
-                write(serializer,new File(targetFolder, path), type);
+                write(serializer, new File(targetFolder, path), type);
             }
 
         } catch (IOException e) {
@@ -405,7 +413,10 @@ public class MetaDataExporter {
     }
 
     private void write(Serializer serializer, File targetFile, EntityType type) throws IOException {
-        classes.add(targetFile.getPath());
+        if (!classes.add(targetFile.getPath())) {
+            throw new IllegalStateException("Attempted to write multiple times to " +
+                    targetFile.getPath() + ", please check your configuration");
+        }
         StringWriter w = new StringWriter();
         CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, writer);

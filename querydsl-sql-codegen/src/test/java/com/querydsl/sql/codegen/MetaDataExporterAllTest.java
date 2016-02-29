@@ -17,6 +17,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
@@ -76,9 +77,8 @@ public class MetaDataExporterAllTest {
                                         for (boolean withOrdinalPositioning : booleans) {
                                             for (boolean exportColumns : booleans) {
                                                 for (boolean schemaToPackage : booleans) {
-                                                    if (withBeans) {
-                                                        if (!beanPrefix.isEmpty() || !beanSuffix.isEmpty() ||
-                                                            beanPackageName != null) {
+                                                    if (withBeans && beanPackageName == null) {
+                                                        if (Objects.equal(namePrefix, beanPrefix) && Objects.equal(nameSuffix, beanSuffix)) {
                                                             continue;
                                                         }
                                                     }

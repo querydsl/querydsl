@@ -13,26 +13,28 @@
  */
 package com.querydsl.sql.codegen;
 
-import java.io.File;
 import java.sql.SQLException;
 
 import org.junit.AfterClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import com.querydsl.sql.Connections;
 
 public abstract class ExportBaseTest {
 
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
     @Test
     public void export() throws SQLException {
-        File folder = new File("target", getClass().getSimpleName());
-        folder.mkdirs();
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSpatial(true);
         exporter.setSchemaPattern(getSchemaPattern());
         exporter.setPackageName("test");
-        exporter.setTargetFolder(folder);
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setNamingStrategy(namingStrategy);
         exporter.export(Connections.getConnection().getMetaData());
     }
