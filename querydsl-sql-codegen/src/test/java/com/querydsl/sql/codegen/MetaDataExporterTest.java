@@ -216,6 +216,21 @@ public class MetaDataExporterTest {
         assertFalse(new File(folder.getRoot(), "test/QDefinstance.java").exists());
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void minimal_configuration_with_duplicate_tables() throws SQLException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setTableNamePattern("%,%");
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.export(metadata);
+
+        assertTrue(new File(folder.getRoot(), "test/QBeangen1.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QReserved.java").exists());
+        assertTrue(new File(folder.getRoot(), "test/QUnderscore.java").exists());
+        assertFalse(new File(folder.getRoot(), "test/QDefinstance.java").exists());
+    }
+
     @Test
     public void minimal_configuration_with_suffix() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();

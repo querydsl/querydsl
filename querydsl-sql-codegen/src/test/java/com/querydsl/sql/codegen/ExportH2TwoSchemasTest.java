@@ -34,7 +34,7 @@ public class ExportH2TwoSchemasTest {
         Statement stmt = Connections.getStatement();
         stmt.execute("create schema if not exists newschema");
         stmt.execute("create table if not exists " +
-                "newschema.SURVEY(ID2 int auto_increment, NAME2 varchar(30), NAME3 varchar(30))");
+                "newschema.SURVEY2(ID2 int auto_increment, NAME2 varchar(30), NAME3 varchar(30))");
     }
 
     @AfterClass

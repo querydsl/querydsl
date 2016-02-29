@@ -189,6 +189,7 @@ public class MetaDataExporter {
             SpatialSupport.addSupport(module);
         }
 
+        classes.clear();
         typeMappings = module.get(TypeMappings.class);
         queryTypeFactory = module.get(QueryTypeFactory.class);
         serializer = module.get(Serializer.class);
@@ -403,7 +404,7 @@ public class MetaDataExporter {
             } else {
                 String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
                 String path =  packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
-                write(serializer,new File(targetFolder, path), type);
+                write(serializer, new File(targetFolder, path), type);
             }
 
         } catch (IOException e) {
@@ -412,7 +413,10 @@ public class MetaDataExporter {
     }
 
     private void write(Serializer serializer, File targetFile, EntityType type) throws IOException {
-        classes.add(targetFile.getPath());
+        if (!classes.add(targetFile.getPath())) {
+            throw new IllegalStateException("Attempted to write multiple times to " +
+                    targetFile.getPath() + ", please check your configuration");
+        }
         StringWriter w = new StringWriter();
         CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, writer);
