@@ -71,6 +71,12 @@ public class MorphiaSerializer extends MongodbSerializer {
     }
 
     @Override
+    protected boolean isImplicitObjectIdConversion() {
+        // see https://github.com/mongodb/morphia/wiki/FrequentlyAskedQuestions
+        return false;
+    }
+
+    @Override
     protected boolean isId(Path<?> arg) {
         return arg.getAnnotatedElement().isAnnotationPresent(Id.class);
     }

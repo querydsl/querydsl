@@ -305,11 +305,16 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         } else if (isId(property)) {
             if (isReference(property.getMetadata().getParent())) {
                 return asReferenceKey(property.getMetadata().getParent().getType(), constant.getConstant());
-            } else if (constant.getType().equals(String.class)) {
-                return new ObjectId((String) constant.getConstant());
+            } else if (constant.getType().equals(String.class) && isImplicitObjectIdConversion()) {
+                String id = (String) constant.getConstant();
+                return ObjectId.isValid(id) ? new ObjectId(id) : id;
             }
         }
         return visit(constant, null);
+    }
+
+    protected boolean isImplicitObjectIdConversion() {
+        return true;
     }
 
     protected DBRef asReferenceKey(Class<?> entity, Object id) {
