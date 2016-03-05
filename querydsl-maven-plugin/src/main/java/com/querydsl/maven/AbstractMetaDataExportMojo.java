@@ -26,6 +26,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
+import com.google.common.base.Strings;
 import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.Configuration;
@@ -394,18 +395,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             }
 
             MetaDataExporter exporter = new MetaDataExporter();
-            if (namePrefix != null) {
-                exporter.setNamePrefix(namePrefix);
-            }
-            if (nameSuffix != null) {
-                exporter.setNameSuffix(nameSuffix);
-            }
-            if (beanPrefix != null) {
-                exporter.setBeanPrefix(beanPrefix);
-            }
-            if (beanSuffix != null) {
-                exporter.setBeanSuffix(beanSuffix);
-            }
+            exporter.setNamePrefix(Strings.nullToEmpty(namePrefix));
+            exporter.setNameSuffix(Strings.nullToEmpty(nameSuffix));
+            exporter.setBeanPrefix(Strings.nullToEmpty(beanPrefix));
+            exporter.setBeanSuffix(Strings.nullToEmpty(beanSuffix));
             if (beansTargetFolder != null) {
                 exporter.setBeansTargetFolder(new File(beansTargetFolder));
             }
