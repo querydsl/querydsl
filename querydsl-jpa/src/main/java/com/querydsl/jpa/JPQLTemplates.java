@@ -106,8 +106,8 @@ public class JPQLTemplates extends Templates {
         add(Ops.MATCHES, "{0} like {1}  escape '" + escape + "'"); // TODO : support real regexes
         add(Ops.MATCHES_IC, "{0} like {1} escape '" + escape + "'"); // TODO : support real regexes
         add(Ops.LOWER, "lower({0})");
-        add(Ops.SUBSTR_1ARG, "substring({0},{1+'1's})", Precedence.ARITH_LOW);
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1+'1's},{2-1s})", Precedence.ARITH_LOW);
+        add(Ops.SUBSTR_1ARG, "substring({0},{1+'1's})");
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1+'1's},{2-1s})");
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
