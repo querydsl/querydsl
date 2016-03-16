@@ -20,4 +20,4 @@ mvn -Dxslthl.config=http://docbook.sourceforge.net/release/xsl/current/highlight
 cp -R target/docbook/publish/en-US/* ../target/dist/reference/
 cd ..
 
-echo "done."
+echo "done with querydsl."
