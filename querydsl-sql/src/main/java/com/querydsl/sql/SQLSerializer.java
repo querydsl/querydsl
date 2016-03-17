@@ -13,6 +13,7 @@
  */
 package com.querydsl.sql;
 
+import java.sql.Types;
 import java.util.*;
 
 import javax.annotation.Nullable;
@@ -858,7 +859,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     public Void visit(TemplateExpression<?> expr, Void context) {
-        if (inJoin && expr instanceof RelationalFunctionCall
+        if (expr.equals(Expressions.TRUE)) {
+            append(templates.serialize("1", Types.BOOLEAN));
+        } else if (expr.equals(Expressions.FALSE)) {
+            append(templates.serialize("0", Types.BOOLEAN));
+        } else if (inJoin && expr instanceof RelationalFunctionCall
                 && templates.isFunctionJoinsWrapped()) {
             append("table(");
             super.visit(expr, context);
