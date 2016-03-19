@@ -1541,6 +1541,12 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void select_booleanExpr3() {
+        assertTrue(query().select(Expressions.TRUE).fetchFirst());
+        assertFalse(query().select(Expressions.FALSE).fetchFirst());
+    }
+
+    @Test
     public void select_concat() throws SQLException {
         for (Tuple row : query().from(survey).select(survey.name, survey.name.append("Hello World")).fetch()) {
             assertEquals(

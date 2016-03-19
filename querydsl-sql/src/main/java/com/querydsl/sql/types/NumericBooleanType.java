@@ -44,6 +44,11 @@ public class NumericBooleanType extends AbstractType<Boolean> {
     }
 
     @Override
+    public String getLiteral(Boolean value) {
+        return value ? "1" : "0";
+    }
+
+    @Override
     @Nullable
     public Boolean getValue(ResultSet rs, int startIndex) throws SQLException {
         Number num = (Number) rs.getObject(startIndex);
