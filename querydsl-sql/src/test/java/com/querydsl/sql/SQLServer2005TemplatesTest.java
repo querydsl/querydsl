@@ -67,10 +67,20 @@ public class SQLServer2005TemplatesTest extends AbstractSQLTemplatesTest {
     @Test
     public void modifiers() {
         query.from(survey1).limit(5).offset(3);
+        query.orderBy(survey1.id.asc());
         query.getMetadata().setProjection(survey1.id);
         assertEquals("select * from (" +
-              "   select survey1.ID, row_number() over () as rn from SURVEY survey1) a " +
+              "   select survey1.ID, row_number() over (order by survey1.ID asc) as rn from SURVEY survey1) a " +
               "where rn > ? and rn <= ? order by rn", query.toString());
+    }
+
+    @Test
+    public void modifiers_noOrder() {
+        query.from(survey1).limit(5).offset(3);
+        query.getMetadata().setProjection(survey1.id);
+        assertEquals("select * from (" +
+                "   select survey1.ID, row_number() over (order by current_timestamp asc) as rn from SURVEY survey1) a " +
+                "where rn > ? and rn <= ? order by rn", query.toString());
     }
 
     @Test

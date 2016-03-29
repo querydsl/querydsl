@@ -91,6 +91,9 @@ public class SQLServer2005Templates extends SQLServerTemplates {
                 for (OrderSpecifier<?> os : metadata.getOrderBy()) {
                     rn.orderBy(os);
                 }
+                if (metadata.getOrderBy().isEmpty()) {
+                    rn.orderBy(Expressions.currentTimestamp().asc());
+                }
                 FactoryExpression<?> pr = Projections.appending(metadata.getProjection(), rn.as("rn"));
                 metadata.setProjection(FactoryExpressionUtils.wrap(pr));
                 metadata.clearOrderBy();

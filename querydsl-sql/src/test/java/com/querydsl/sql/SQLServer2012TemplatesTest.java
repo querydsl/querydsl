@@ -24,6 +24,8 @@ import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.sql.dml.SQLDeleteClause;
+import com.querydsl.sql.dml.SQLUpdateClause;
 
 
 public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
@@ -65,6 +67,33 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
         query.from(survey1).limit(5);
         query.getMetadata().setProjection(survey1.id);
         assertEquals("select top 5 survey1.ID from SURVEY survey1", query.toString());
+    }
+
+    @Test
+    public void limitOffset() {
+        query.from(survey1).limit(5).offset(5);
+        query.getMetadata().setProjection(survey1.id);
+        assertEquals("select survey1.ID from SURVEY survey1 " +
+                "order by 1 asc " +
+                "offset ? rows fetch next ? rows only", query.toString());
+    }
+
+    @Test
+    public void delete_limit() {
+        SQLDeleteClause clause = new SQLDeleteClause(null, createTemplates(), survey1);
+        clause.where(survey1.name.eq("Bob"));
+        clause.limit(5);
+        assertEquals("delete top 5 from SURVEY\n" +
+                "where SURVEY.NAME = ?", clause.toString());
+    }
+
+    @Test
+    public void update_limit() {
+        SQLUpdateClause clause = new SQLUpdateClause(null, createTemplates(), survey1);
+        clause.set(survey1.name, "Bob");
+        clause.limit(5);
+        assertEquals("update top 5 SURVEY\n" +
+                "set NAME = ?", clause.toString());
     }
 
     @Test

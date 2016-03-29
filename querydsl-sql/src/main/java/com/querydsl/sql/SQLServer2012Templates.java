@@ -13,12 +13,15 @@
  */
 package com.querydsl.sql;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
 
 /**
@@ -67,20 +70,54 @@ public class SQLServer2012Templates extends SQLServerTemplates {
     public void serialize(QueryMetadata metadata, boolean forCountRow, SQLSerializer context) {
         if (!forCountRow && metadata.getModifiers().isRestricting() && metadata.getOrderBy().isEmpty()
                 && !metadata.getJoins().isEmpty()) {
+            metadata = metadata.clone();
             QueryModifiers mod = metadata.getModifiers();
             // use top if order by is empty
             if (mod.getOffset() == null) {
                 // select top ...
-                metadata = metadata.clone();
                 metadata.addFlag(new QueryFlag(QueryFlag.Position.AFTER_SELECT,
                         Expressions.template(Integer.class, topTemplate, mod.getLimit())));
-                context.serializeForQuery(metadata, forCountRow);
             } else {
-                throw new IllegalStateException("offset not supported without order by");
+                // order by first column
+                metadata.addOrderBy(Expressions.ONE.asc());
             }
-        } else {
-            context.serializeForQuery(metadata, forCountRow);
         }
+        context.serializeForQuery(metadata, forCountRow);
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    @Override
+    public void serializeDelete(QueryMetadata metadata, RelationalPath<?> entity, SQLSerializer context) {
+        // limit
+        QueryModifiers mod = metadata.getModifiers();
+        if (mod.isRestricting()) {
+            metadata = metadata.clone();
+            metadata.addFlag(new QueryFlag(QueryFlag.Position.AFTER_SELECT,
+                    Expressions.template(Integer.class, topTemplate, mod.getLimit())));
+        }
+
+        context.serializeForDelete(metadata, entity);
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    @Override
+    public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
+                                Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
+        // limit
+        QueryModifiers mod = metadata.getModifiers();
+        if (mod.isRestricting()) {
+            metadata = metadata.clone();
+            metadata.addFlag(new QueryFlag(QueryFlag.Position.AFTER_SELECT,
+                    Expressions.template(Integer.class, topTemplate, mod.getLimit())));
+        }
+
+        context.serializeForUpdate(metadata, entity, updates);
 
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());
