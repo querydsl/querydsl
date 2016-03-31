@@ -22,6 +22,7 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.dsl.Expressions;
 
 public class DerbyTemplatesTest extends AbstractSQLTemplatesTest {
 
@@ -60,6 +61,16 @@ public class DerbyTemplatesTest extends AbstractSQLTemplatesTest {
         assertTrue(p4 < p5);
         assertTrue(p5 < p6);
         assertTrue(p6 < p7);
+    }
+
+    @Test
+    @Override
+    public void booleanTemplate() {
+        assertSerialized(Expressions.booleanPath("b").eq(Expressions.TRUE), "b = true");
+        assertSerialized(Expressions.booleanPath("b").eq(Expressions.FALSE), "b = false");
+        query.setUseLiterals(true);
+        query.where(Expressions.booleanPath("b").eq(true));
+        assertTrue(query.toString(), query.toString().endsWith("where b = true"));
     }
 
 }

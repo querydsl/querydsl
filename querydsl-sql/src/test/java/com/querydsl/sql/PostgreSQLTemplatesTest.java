@@ -105,4 +105,14 @@ public class PostgreSQLTemplatesTest extends AbstractSQLTemplatesTest {
         assertTrue(p10 < p11);
     }
 
+    @Test
+    @Override
+    public void booleanTemplate() {
+        assertSerialized(Expressions.booleanPath("b").eq(Expressions.TRUE), "b = true");
+        assertSerialized(Expressions.booleanPath("b").eq(Expressions.FALSE), "b = false");
+        query.setUseLiterals(true);
+        query.where(Expressions.booleanPath("b").eq(true));
+        assertTrue(query.toString(), query.toString().endsWith("where b = true"));
+    }
+
 }

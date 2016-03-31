@@ -15,6 +15,7 @@ package com.querydsl.sql;
 
 import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -139,6 +140,15 @@ public abstract class AbstractSQLTemplatesTest {
         assertSerialized(one.multiply(two.multiply(1)), "one * (two * ?)"); // XXX could better
         assertSerialized(one.multiply(two.divide(1)), "one * (two / ?)");
         assertSerialized(one.multiply(two.add(1)), "one * (two + ?)");
+    }
+
+    @Test
+    public void booleanTemplate() {
+        assertSerialized(Expressions.booleanPath("b").eq(Expressions.TRUE), "b = 1");
+        assertSerialized(Expressions.booleanPath("b").eq(Expressions.FALSE), "b = 0");
+        query.setUseLiterals(true);
+        query.where(Expressions.booleanPath("b").eq(true));
+        assertTrue(query.toString(), query.toString().endsWith("where b = 1"));
     }
 
     protected void assertSerialized(Expression<?> expr, String serialized) {
