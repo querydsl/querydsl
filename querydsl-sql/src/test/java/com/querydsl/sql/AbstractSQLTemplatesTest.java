@@ -17,13 +17,12 @@ import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Operator;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.TemplatesTestUtils;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.sql.domain.QSurvey;
@@ -155,6 +154,16 @@ public abstract class AbstractSQLTemplatesTest {
         SQLSerializer serializer = new SQLSerializer(new Configuration(templates));
         serializer.handle(expr);
         assertEquals(serialized, serializer.toString());
+    }
+
+    @Test
+    public void in() {
+        CollectionExpression<Collection<Integer>, Integer> ints = Expressions.collectionOperation(Integer.class, Ops.LIST,
+                Expressions.collectionOperation(Integer.class, Ops.LIST, Expressions.ONE, Expressions.TWO),
+                Expressions.THREE);
+        query.from(survey1).where(survey1.id.in(ints));
+        query.getMetadata().setProjection(survey1.name);
+        assertEquals("select survey1.NAME from SURVEY survey1 where survey1.ID in (1, 2, 3)", query.toString());
     }
 
 
