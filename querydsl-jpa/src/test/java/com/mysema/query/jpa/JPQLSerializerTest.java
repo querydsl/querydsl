@@ -275,4 +275,12 @@ public class JPQLSerializerTest {
         serializer.visitLiteral(JobFunction.MANAGER);
         assertEquals("com.mysema.query.jpa.domain.JobFunction.MANAGER", serializer.toString());
     }
+
+    @Test
+    public void substring_indexOf() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        cat.name.substring(cat.name.indexOf("")).accept(serializer, null);
+        assertEquals("substring(cat.name,(locate(?1,cat.name)-1)+1)", serializer.toString());
+    }
 }
