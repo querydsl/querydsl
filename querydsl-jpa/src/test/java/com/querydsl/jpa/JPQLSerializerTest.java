@@ -192,7 +192,7 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QCat cat = QCat.cat;
         serializer.handle(cat.name.substring(cat.name.length().subtract(1), 1));
-        assertEquals("substring(cat.name,(length(cat.name) + ?1),(?2 - (length(cat.name) - ?2)))", serializer.toString());
+        assertEquals("substring(cat.name,length(cat.name) + ?1,?2 - (length(cat.name) - ?2))", serializer.toString());
     }
 
     @Test
@@ -275,5 +275,13 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.visitLiteral(JobFunction.MANAGER);
         assertEquals("com.querydsl.jpa.domain.JobFunction.MANAGER", serializer.toString());
+    }
+
+    @Test
+    public void substring_indexOf() {
+        QCat cat = QCat.cat;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        cat.name.substring(cat.name.indexOf("")).accept(serializer, null);
+        assertEquals("substring(cat.name,locate(?1,cat.name)-1 + ?2)", serializer.toString());
     }
 }
