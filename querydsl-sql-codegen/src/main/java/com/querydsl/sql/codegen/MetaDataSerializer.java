@@ -225,11 +225,13 @@ public class MetaDataSerializer extends EntitySerializer {
             columnMeta.append("ColumnMetadata");
             columnMeta.append(".named(\"" + metadata.getName() + "\")");
             columnMeta.append(".withIndex(" + metadata.getIndex() + ")");
-            String type = String.valueOf(metadata.getJdbcType());
-            if (typeConstants.containsKey(metadata.getJdbcType())) {
-                type = "Types." + typeConstants.get(metadata.getJdbcType());
+            if (metadata.hasJdbcType()) {
+                String type = String.valueOf(metadata.getJdbcType());
+                if (typeConstants.containsKey(metadata.getJdbcType())) {
+                    type = "Types." + typeConstants.get(metadata.getJdbcType());
+                }
+                columnMeta.append(".ofType(" + type + ")");
             }
-            columnMeta.append(".ofType(" + type + ")");
             if (metadata.hasSize()) {
                 columnMeta.append(".withSize(" + metadata.getSize() + ")");
             }
