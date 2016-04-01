@@ -70,11 +70,11 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         throw new UnsupportedOperationException();
     }
 
-    private String asDBKey(Operation<?> expr, int index) {
+    protected String asDBKey(Operation<?> expr, int index) {
         return (String) asDBValue(expr, index);
     }
 
-    private Object asDBValue(Operation<?> expr, int index) {
+    protected Object asDBValue(Operation<?> expr, int index) {
         return expr.getArg(index).accept(this, null);
     }
 
