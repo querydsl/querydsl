@@ -230,6 +230,16 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
     }
 
     /**
+     * Create a {@code this in right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this in right
+     */
+    public BooleanExpression in(Expression<? extends T>... right) {
+        return Expressions.booleanOperation(Ops.IN, mixin, Expressions.list(right));
+    }
+
+    /**
      * Create a {@code this <> right} expression
      *
      * @param right rhs of the comparison

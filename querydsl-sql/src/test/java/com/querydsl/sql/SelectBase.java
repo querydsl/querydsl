@@ -896,6 +896,17 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({MYSQL, TERADATA})
+    public void in_subqueries() {
+        QEmployee e1 = new QEmployee("e1");
+        QEmployee e2 = new QEmployee("e2");
+        assertEquals(2, query().from(employee).where(employee.id.in(
+            query().from(e1).where(e1.firstname.eq("Mike")).select(e1.id),
+            query().from(e2).where(e2.firstname.eq("Mary")).select(e2.id)
+        )).fetchCount());
+    }
+
+    @Test
     public void notIn_empty() {
         long count = query().from(employee).fetchCount();
         assertEquals(count, query().from(employee).where(employee.id.notIn(ImmutableList.<Integer>of())).fetchCount());

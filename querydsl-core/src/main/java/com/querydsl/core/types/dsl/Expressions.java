@@ -1263,6 +1263,33 @@ public final class Expressions {
         return rv;
     }
 
+
+    /**
+     * Combine the given expressions into a list expression
+     *
+     * @param clazz type of list expression
+     * @param exprs list elements
+     * @return list expression
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Expression<T> list(Class<T> clazz, Expression<?>... exprs) {
+        Expression<T> rv = (Expression<T>) exprs[0];
+        for (int i = 1; i < exprs.length; i++) {
+            rv = new SimpleOperation<T>(clazz, Ops.LIST, rv, exprs[i]);
+        }
+        return rv;
+    }
+
+    /**
+     * Combine the given expressions into a list expression
+     *
+     * @param exprs list elements
+     * @return list expression
+     */
+    public static Expression<Tuple> list(Expression<?>... exprs) {
+        return list(Tuple.class, exprs);
+    }
+
     /**
      * Create a null expression for the specified type
      *
