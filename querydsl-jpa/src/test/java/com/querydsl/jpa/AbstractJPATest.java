@@ -607,6 +607,16 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void count_distinctEntity() {
+        QCat cat = QCat.cat;
+        long count = query()
+                .select(cat.mate.countDistinct())
+                .from(cat)
+                .fetchOne();
+        assertEquals(count, 4);
+    }
+
+    @Test
     public void distinctResults() {
         System.out.println("-- fetch results");
         QueryResults<Date> res = query().from(cat).limit(2).select(cat.birthdate).fetchResults();
