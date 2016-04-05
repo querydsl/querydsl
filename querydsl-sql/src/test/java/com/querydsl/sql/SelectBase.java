@@ -896,6 +896,12 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn(DERBY)
+    public void in_null() {
+        assertEquals(1, query().from(employee).where(employee.id.in(1, null)).fetchCount());
+    }
+
+    @Test
     @ExcludeIn({MYSQL, TERADATA})
     public void in_subqueries() {
         QEmployee e1 = new QEmployee("e1");

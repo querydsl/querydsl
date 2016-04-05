@@ -107,7 +107,7 @@ public final class Configuration {
      */
     @SuppressWarnings("unchecked")
     public String asLiteral(Object o) {
-        if (Null.class.isInstance(o)) {
+        if (o == null || o instanceof Null) {
             return "null";
         } else {
             Type type = javaTypeMapping.getType(o.getClass());
@@ -222,7 +222,7 @@ public final class Configuration {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> void set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException {
-        if (Null.class.isInstance(value)) {
+        if (value == null || value instanceof Null) {
             Integer sqlType = null;
             if (path != null) {
                 ColumnMetadata columnMetadata = ColumnMetadata.getColumnMetadata(path);
