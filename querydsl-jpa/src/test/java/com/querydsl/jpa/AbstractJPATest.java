@@ -647,6 +647,14 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoEclipseLink(HSQLDB)
+    public void count_distinct3() {
+        QCat kitten = new QCat("kitten");
+        assertEquals(4, query().from(cat).leftJoin(cat.kittens, kitten).select(kitten.countDistinct()).fetchOne().intValue());
+        assertEquals(6, query().from(cat).leftJoin(cat.kittens, kitten).select(kitten.countDistinct()).fetchCount());
+    }
+
+    @Test
     public void distinctResults() {
         System.out.println("-- fetch results");
         QueryResults<Date> res = query().from(cat).limit(2).select(cat.birthdate).fetchResults();
