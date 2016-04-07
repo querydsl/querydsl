@@ -395,7 +395,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             }
 
             MetaDataExporter exporter = new MetaDataExporter();
-            exporter.setNamePrefix(Strings.nullToEmpty(namePrefix));
+            exporter.setNamePrefix(emptyIfSetToBlank(namePrefix));
             exporter.setNameSuffix(Strings.nullToEmpty(nameSuffix));
             exporter.setBeanPrefix(Strings.nullToEmpty(beanPrefix));
             exporter.setBeanSuffix(Strings.nullToEmpty(beanSuffix));
@@ -667,5 +667,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
 
     public void setSkip(boolean skip) {
         this.skip = skip;
+    }
+
+    private static String emptyIfSetToBlank(String value) {
+        boolean setToBlank = value == null || value.equalsIgnoreCase("BLANK");
+        return setToBlank ? "" : value;
     }
 }
