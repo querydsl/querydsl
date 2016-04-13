@@ -607,6 +607,26 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    @NoEclipseLink
+    public void distinct_orderBy() {
+        QCat cat = QCat.cat;
+        assertEquals(6, query().select(cat.id, cat.mate.id)
+                .distinct()
+                .from(cat)
+                .orderBy(cat.mate.id.asc()).fetch().size());
+    }
+
+    @Test
+    @NoHibernate
+    public void distinct_orderBy2() {
+        QCat cat = QCat.cat;
+        assertEquals(4, query().select(cat.id, cat.mate.id)
+                .distinct()
+                .from(cat)
+                .orderBy(cat.mate.id.asc()).fetch().size());
+    }
+
+    @Test
     public void distinctResults() {
         System.out.println("-- fetch results");
         QueryResults<Date> res = query().from(cat).limit(2).select(cat.birthdate).fetchResults();

@@ -159,6 +159,9 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             Set<Expression<?>> exprs = Sets.newHashSet();
             QueryMetadata md = getMetadata();
             exprs.addAll(md.getGroupBy());
+            if (md.getProjection() != null) {
+                exprs.add(md.getProjection());
+            }
             if (md.getWhere() != null) {
                 exprs.add(md.getWhere());
             }
