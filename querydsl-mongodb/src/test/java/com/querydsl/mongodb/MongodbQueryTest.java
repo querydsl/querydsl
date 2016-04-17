@@ -27,6 +27,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import com.google.common.collect.Lists;
+import com.mongodb.BasicDBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
@@ -579,7 +580,15 @@ public class MongodbQueryTest {
         MorphiaQuery<User> query = query();
         query.setReadPreference(ReadPreference.primary());
         assertEquals(4, query.fetchCount());
+    }
 
+    @Test
+    public void asDBObject() {
+        MorphiaQuery<User> query = query();
+        query.where(user.firstName.eq("Bob"), user.lastName.eq("Wilson"));
+        assertEquals(
+                new BasicDBObject().append("firstName", "Bob").append("lastName", "Wilson"),
+                query.asDBObject());
     }
 
     //TODO

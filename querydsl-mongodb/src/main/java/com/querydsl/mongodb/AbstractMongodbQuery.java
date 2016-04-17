@@ -411,9 +411,18 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
         this.readPreference = readPreference;
     }
 
+    /**
+     * Get the where definition as a DBObject instance
+     *
+     * @return
+     */
+    public DBObject asDBObject() {
+        return createQuery(queryMixin.getMetadata().getWhere());
+    }
+
     @Override
     public String toString() {
-        return createQuery(queryMixin.getMetadata().getWhere()).toString();
+        return asDBObject().toString();
     }
 
 }
