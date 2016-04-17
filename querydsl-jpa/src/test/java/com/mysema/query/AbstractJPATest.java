@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.Calendar;
 import java.util.Map.Entry;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,6 +32,7 @@ import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.group.Group;
 import com.mysema.query.group.GroupBy;
+import com.mysema.query.group.MockTuple;
 import com.mysema.query.group.QPair;
 import com.mysema.query.jpa.JPAExpressions;
 import com.mysema.query.jpa.JPASubQuery;
@@ -544,6 +546,45 @@ public abstract class AbstractJPATest {
 
         System.out.println("-- list distinct");
         assertEquals(1, query().from(cat).distinct().list(cat.birthdate).size());
+    }
+
+    @Test
+    @NoEclipseLink
+    public void Distinct_OrderBy() {
+        QCat cat = QCat.cat;
+        List<Tuple> result = query()
+                .distinct()
+                .from(cat)
+                .orderBy(
+                        cat.mate.id.asc().nullsFirst(),
+                        cat.id.asc().nullsFirst()
+                ).list(cat.id, cat.mate.id);
+        assertThat(result, Matchers.<Tuple>contains(
+                new MockTuple(new Object[]{1, null}),
+                new MockTuple(new Object[]{6, null}),
+                new MockTuple(new Object[]{2, 1}),
+                new MockTuple(new Object[]{3, 2}),
+                new MockTuple(new Object[]{4, 3}),
+                new MockTuple(new Object[]{5, 4})
+        ));
+    }
+
+    @Test
+    @NoHibernate
+    @ExcludeIn(MYSQL)
+    public void Distinct_OrderBy2() {
+        QCat cat = QCat.cat;
+        List<Tuple> result = query()
+                .distinct()
+                .from(cat)
+                .orderBy(cat.mate.id.asc().nullsFirst())
+                .list(cat.id, cat.mate.id);
+        assertThat(result, Matchers.<Tuple>contains(
+                new MockTuple(new Object[]{2, 1}),
+                new MockTuple(new Object[]{3, 2}),
+                new MockTuple(new Object[]{4, 3}),
+                new MockTuple(new Object[]{5, 4})
+        ));
     }
 
     @Test
