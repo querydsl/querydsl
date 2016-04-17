@@ -14,7 +14,7 @@
 package com.querydsl.sql;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -167,7 +167,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
 
     public WindowFunction<A> orderBy(OrderSpecifier<?>... orderBy) {
         value = null;
-        this.orderBy.addAll(Arrays.asList(orderBy));
+        Collections.addAll(this.orderBy, orderBy);
         return this;
     }
 
@@ -179,7 +179,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
 
     public WindowFunction<A> partitionBy(Expression<?>... partitionBy) {
         value = null;
-        this.partitionBy.addAll(Arrays.asList(partitionBy));
+        Collections.addAll(this.partitionBy, partitionBy);
         return this;
     }
 
