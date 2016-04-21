@@ -83,6 +83,7 @@ public class NormalizationTest {
         assertEquals("2 + 3 * hours", Normalization.normalize("2 + 3 * hours"));
         assertEquals("2 + 3 * 0hours", Normalization.normalize("2 + 3 * 0hours"));
         assertEquals("a like '1 + 2 ' and b like '2 * 3'", Normalization.normalize("a like '1 + 2 ' and b like '2 * 3'"));
+        assertEquals("xxx in ('ABC123-4567-3214-EDBD982')", Normalization.normalize("xxx in ('ABC123-4567-3214-EDBD982')"));
     }
 
     @Test
@@ -108,8 +109,8 @@ public class NormalizationTest {
 
     @Test
     public void Substring() {
-        assertEquals("substring(cat.name,1,locate(?1,cat.name)-1)",
-                Normalization.normalize("substring(cat.name,0+1,locate(?1,cat.name)-1-0)"));
+        assertEquals("substring(cat.name,1,locate(?1,cat.name)-1-2)",
+                Normalization.normalize("substring(cat.name,0+1,locate(?1,cat.name)-1-2)"));
     }
 
     @Test
