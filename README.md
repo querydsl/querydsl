@@ -33,8 +33,9 @@ Free support is provided in the [Querydsl Google Group](https://groups.google.co
 Querydsl provides releases via public Maven repositories, but you can also build the sources yourself like this
 
 ```BASH
-$ mvn -DskipTests=true clean install
+$ mvn -Pquickbuild,{projectname} clean install
 ```
+Where projectname is one of the Maven profiles (e.g. `jpa`, `sql`, `mongodb`, etc. or `all`)
 
 For more information visit the project homepage at http://www.querydsl.com/.
 
