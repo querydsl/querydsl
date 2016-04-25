@@ -259,6 +259,20 @@ public class MetaDataExporterTest {
     }
 
     @Test
+    public void minimal_configuration_only_direct_foreign_keys() throws SQLException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setPackageName("test");
+        exporter.setNamePrefix("");
+        exporter.setNameSuffix("Type");
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.setExportInverseForeignKeys(false);
+        exporter.export(metadata);
+
+        assertTrue(new File(folder.getRoot(), "test/DateTestType.java").exists());
+    }
+
+    @Test
     public void minimal_configuration_with_bean_prefix() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");

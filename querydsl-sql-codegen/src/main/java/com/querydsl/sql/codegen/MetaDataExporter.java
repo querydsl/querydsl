@@ -114,6 +114,10 @@ public class MetaDataExporter {
 
     private boolean exportForeignKeys = true;
 
+    private boolean exportDirectForeignKeys = true;
+
+    private boolean exportInverseForeignKeys = true;
+
     private boolean spatial = false;
 
     @Nullable
@@ -347,22 +351,26 @@ public class MetaDataExporter {
         }
 
         if (exportForeignKeys) {
-            // collect foreign keys
-            Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
-                    .getImportedKeys(md, catalog, schema, tableName);
-            if (!foreignKeyData.isEmpty()) {
-                for (ForeignKeyData fkd : foreignKeyData.values()) {
-                    if (namingStrategy.shouldGenerateForeignKey(schemaAndTable, fkd)) {
-                        classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+            if (exportDirectForeignKeys) {
+                // collect foreign keys
+                Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
+                        .getImportedKeys(md, catalog, schema, tableName);
+                if (!foreignKeyData.isEmpty()) {
+                    for (ForeignKeyData fkd : foreignKeyData.values()) {
+                        if (namingStrategy.shouldGenerateForeignKey(schemaAndTable, fkd)) {
+                            classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+                        }
                     }
                 }
             }
 
-            // collect inverse foreign keys
-            Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory
-                    .getExportedKeys(md, catalog, schema, tableName);
-            if (!inverseForeignKeyData.isEmpty()) {
-                classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
+            if (exportInverseForeignKeys) {
+                // collect inverse foreign keys
+                Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory
+                        .getExportedKeys(md, catalog, schema, tableName);
+                if (!inverseForeignKeyData.isEmpty()) {
+                    classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
+                }
             }
         }
 
@@ -713,6 +721,24 @@ public class MetaDataExporter {
      */
     public void setExportForeignKeys(boolean exportForeignKeys) {
         this.exportForeignKeys = exportForeignKeys;
+    }
+
+    /**
+     * Set whether direct foreign keys should be exported
+     *
+     * @param exportDirectForeignKeys
+     */
+    public void setExportDirectForeignKeys(boolean exportDirectForeignKeys) {
+        this.exportDirectForeignKeys = exportDirectForeignKeys;
+    }
+
+    /**
+     * Set whether inverse foreign keys should be exported
+     *
+     * @param exportInverseForeignKeys
+     */
+    public void setExportInverseForeignKeys(boolean exportInverseForeignKeys) {
+        this.exportInverseForeignKeys = exportInverseForeignKeys;
     }
 
     /**
