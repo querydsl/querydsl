@@ -1,5 +1,5 @@
 /*
- * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
+ * Copyright 2016, The Querydsl Team (http://www.querydsl.com/team)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -195,8 +195,10 @@ public class DefaultConfiguration implements Configuration {
                 variableNameFunction = variableNameFunctionClass.newInstance();
             } catch (RuntimeException e) {
                 throw e;
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             } catch (Exception e) {
-               variableNameFunction = DefaultVariableNameFunction.INSTANCE;
+                variableNameFunction = DefaultVariableNameFunction.INSTANCE;
             }
         } else {
             variableNameFunction = DefaultVariableNameFunction.INSTANCE;
