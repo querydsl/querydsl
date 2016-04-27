@@ -176,7 +176,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             for (Expression<?> expr : expressions) {
                 if (expr instanceof Path) {
                     String name = ColumnMetadata.getName((Path<?>) expr);
-                    if (!names.add(name)) {
+                    if (!names.add(name.toLowerCase(Locale.ENGLISH))) {
                         expr = ExpressionUtils.as(expr, "col__" + name + replacements.size());
                     }
                 }
