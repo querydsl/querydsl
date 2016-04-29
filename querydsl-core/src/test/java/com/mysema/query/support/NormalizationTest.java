@@ -83,7 +83,7 @@ public class NormalizationTest {
         assertEquals("2 + 3 * hours", Normalization.normalize("2 + 3 * hours"));
         assertEquals("2 + 3 * 0hours", Normalization.normalize("2 + 3 * 0hours"));
         assertEquals("a like '1 + 2 ' and b like '2 * 3'", Normalization.normalize("a like '1 + 2 ' and b like '2 * 3'"));
-        assertEquals("xxx in ('ABC123-4567-3214-EDBD982')", Normalization.normalize("xxx in ('ABC123-4567-3214-EDBD982')"));
+        assertUntouched("xxx in ('ABC123-4567-3214-EDBD982')");
     }
 
     @Test
@@ -93,12 +93,12 @@ public class NormalizationTest {
 
     @Test
     public void DateTimeLiterals() {
-        assertEquals("'1980-10-10'", Normalization.normalize("'1980-10-10'"));
+        assertUntouched("'1980-10-10'");
     }
 
     @Test
     public void DateTimeLiterals2() {
-        assertEquals("\"1980-10-10\"", Normalization.normalize("\"1980-10-10\""));
+        assertUntouched("\"1980-10-10\"");
     }
 
     @Test
@@ -115,15 +115,19 @@ public class NormalizationTest {
 
     @Test
     public void Literals() {
-        assertEquals("'INPS-ISET-0000-12345678A'", Normalization.normalize("'INPS-ISET-0000-12345678A'"));
-        assertEquals("'INPS-ISET-0000X00000000A'", Normalization.normalize("'INPS-ISET-0000X00000000A'"));
-        assertEquals("'INPS-ISET-0000-00000000A'", Normalization.normalize("'INPS-ISET-0000-00000000A'"));
+        assertUntouched("'INPS-ISET-0000-12345678A'");
+        assertUntouched("'INPS-ISET-0000X00000000A'");
+        assertUntouched("'INPS-ISET-0000-00000000A'");
 
-        assertEquals("column = 'INPS-ISET-0000-00000000A' limit 1", Normalization.normalize("column = 'INPS-ISET-0000-00000000A' limit 1"));
+        assertUntouched("column = 'INPS-ISET-0000-00000000A' limit 1");
     }
 
     @Test
     public void Parameters() {
-        assertEquals("?1 + 1", Normalization.normalize("?1 + 1"));
+        assertUntouched("?1 + 1");
+    }
+
+    private static void assertUntouched(String string) {
+        assertEquals(string, Normalization.normalize(string));
     }
 }
