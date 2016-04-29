@@ -118,6 +118,7 @@ public class NormalizationTest {
         assertUntouched("'INPS-ISET-0000-12345678A'");
         assertUntouched("'INPS-ISET-0000X00000000A'");
         assertUntouched("'INPS-ISET-0000-00000000A'");
+        assertUntouched("'INPS-ISET-0000-0000.0000A'");
 
         assertUntouched("column = 'INPS-ISET-0000-00000000A' limit 1");
     }
