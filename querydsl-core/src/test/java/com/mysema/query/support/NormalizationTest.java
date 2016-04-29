@@ -27,7 +27,7 @@ public class NormalizationTest {
 
     @Test
     public void Variables() {
-        assertEquals("var1 + 3", Normalization.normalize("var1 + 3"));
+        assertUntouched("var1 + 3");
     }
 
     @Test
@@ -79,10 +79,10 @@ public class NormalizationTest {
         assertEquals("13", Normalization.normalize("2 * 5 + 3"));
         assertEquals("17", Normalization.normalize("2 + 5 * 3"));
         assertEquals("-2.5", Normalization.normalize("2.5 * -1"));
-        assertEquals("hours * 2 + 3", Normalization.normalize("hours * 2 + 3"));
-        assertEquals("2 + 3 * hours", Normalization.normalize("2 + 3 * hours"));
-        assertEquals("2 + 3 * 0hours", Normalization.normalize("2 + 3 * 0hours"));
-        assertEquals("a like '1 + 2 ' and b like '2 * 3'", Normalization.normalize("a like '1 + 2 ' and b like '2 * 3'"));
+        assertUntouched("hours * 2 + 3");
+        assertUntouched("2 + 3 * hours");
+        assertUntouched("2 + 3 * 0hours");
+        assertUntouched("a like '1 + 2 ' and b like '2 * 3'");
         assertUntouched("xxx in ('ABC123-4567-3214-EDBD982')");
     }
 
