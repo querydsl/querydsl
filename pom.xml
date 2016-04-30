@@ -697,6 +697,15 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>quickbuild</id>
+      <properties>
+        <skipTests>true</skipTests>
+        <checkstyle.skip>true</checkstyle.skip>
+        <enforcer.skip>true</enforcer.skip>
+        <animal.sniffer.skip>true</animal.sniffer.skip>
+      </properties>
+    </profile>
   </profiles>
   
   <reporting>
