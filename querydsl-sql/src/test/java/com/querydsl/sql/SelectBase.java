@@ -1803,6 +1803,15 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void tuple_all() {
+        Tuple tuple = query()
+                .select(Projections.tuple(SQLExpressions.all))
+                .from(employee)
+                .fetchFirst();
+        assertEquals(7, tuple.size());
+    }
+
+    @Test
     public void twoColumns() {
         // two columns
         for (Tuple row : query().from(survey).select(survey.id, survey.name).fetch()) {
