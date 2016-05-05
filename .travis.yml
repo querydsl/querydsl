@@ -22,3 +22,6 @@ script: mvn -B test -P${PROFILES} --projects ${MODULE} jacoco:report
 sudo: required
 after_success:
   - mvn coveralls:report
+cache:
+  directories:
+    - $HOME/.m2
