@@ -121,4 +121,13 @@ public class PathBuilderTest {
             assertEquals(User.class, entity.get(pathName, User.class).getType());
     }
 
+    @Test
+    public void calling_get_with_the_same_name_and_different_types_returns_specific_type_when_validating() {
+            PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity", PathBuilderValidator.FIELDS);
+            String pathName = "username";
+            assertEquals(String.class, entity.get(pathName).getType());
+            assertEquals(String.class, entity.get(pathName, Comparable.class).getType());
+            assertEquals(String.class, entity.get(pathName, Object.class).getType());
+    }
+
 }
