@@ -107,9 +107,17 @@ public class PostgreSQLTemplates extends SQLTemplates {
         add(Ops.MathOps.TANH, "(exp({0*'2'}) - 1) / (exp({0*'2'}) + 1)");
 
         // Date / time
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "extract(dow from {0}) + 1");
-        add(Ops.DateTimeOps.DAY_OF_YEAR, "extract(doy from {0})");
-        add(Ops.DateTimeOps.YEAR_WEEK, "(extract(isoyear from {0}) * 100 + extract(week from {0}))");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "cast(extract(day from {0}) as integer)");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "cast(extract(dow from {0}) + 1 as integer)");
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "cast(extract(doy from {0}) as integer)");
+        add(Ops.DateTimeOps.HOUR, "cast(extract(hour from {0}) as integer)");
+        add(Ops.DateTimeOps.MINUTE, "cast(extract(minute from {0}) as integer)");
+        add(Ops.DateTimeOps.MONTH, "cast(extract(month from {0}) as integer)");
+        add(Ops.DateTimeOps.SECOND, "cast(extract(second from {0}) as integer)");
+        add(Ops.DateTimeOps.WEEK, "cast(extract(week from {0}) as integer)");
+        add(Ops.DateTimeOps.YEAR, "cast(extract(year from {0}) as integer)");
+        add(Ops.DateTimeOps.YEAR_MONTH, "cast(extract(year from {0}) * 100 + extract(month from {0}) as integer)");
+        add(Ops.DateTimeOps.YEAR_WEEK, "cast(extract(isoyear from {0}) * 100 + extract(week from {0}) as integer)");
 
         add(Ops.AggOps.BOOLEAN_ANY, "bool_or({0})", 0);
         add(Ops.AggOps.BOOLEAN_ALL, "bool_and({0})", 0);
