@@ -29,6 +29,8 @@ import com.querydsl.sql.codegen.support.PrimaryKeyData;
  * {@code ExtendedBeanSerializer} outputs primary key based {@code equals}, {@code hashCode} and
  * {@code toString} implementations
  *
+ * Requires column annotation generation to be enabled
+ *
  * @author tiwe
  *
  */
