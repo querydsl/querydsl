@@ -1265,6 +1265,15 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    public void num_date_operation() {
+        long result = query()
+                .select(employee.datefield.year().mod(1))
+                .from(employee)
+                .fetchFirst();
+        assertEquals(0, result);
+    }
+
+    @Test
     @ExcludeIn({DERBY, FIREBIRD, POSTGRESQL})
     public void number_as_boolean() {
         QNumberTest numberTest = QNumberTest.numberTest;
