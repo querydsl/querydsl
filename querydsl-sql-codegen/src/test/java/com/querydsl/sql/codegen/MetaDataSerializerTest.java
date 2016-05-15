@@ -13,6 +13,8 @@
  */
 package com.querydsl.sql.codegen;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -27,8 +29,12 @@ import org.junit.rules.TemporaryFolder;
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.AbstractJDBCTest;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.types.AbstractType;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest {
+    public static class CustomNumber { }
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -41,6 +47,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         statement.execute("drop table survey if exists");
         statement.execute("drop table date_test if exists");
         statement.execute("drop table date_time_test if exists");
+        statement.execute("drop table spaces if exists");
 
         // survey
         statement.execute("create table survey (id int, name varchar(30), "
@@ -83,6 +90,40 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         exporter.setPackageName("test");
         exporter.setTargetFolder(folder.getRoot());
         exporter.setNamingStrategy(namingStrategy);
+        exporter.export(connection.getMetaData());
+
+        compile(exporter);
+    }
+
+    @Test
+    public void customized_serialization() throws SQLException {
+        String namePrefix = "Q";
+        Configuration conf = new Configuration(SQLTemplates.DEFAULT);
+        conf.register("EMPLOYEE", "ID", new AbstractType<CustomNumber>(0) {
+            @Override
+            public Class<CustomNumber> getReturnedClass() {
+                return CustomNumber.class;
+            }
+
+            @Override
+            public CustomNumber getValue(ResultSet rs, int startIndex) throws SQLException {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void setValue(PreparedStatement st, int startIndex, CustomNumber value) throws SQLException {
+                throw new UnsupportedOperationException();
+            }
+        });
+        NamingStrategy namingStrategy = new DefaultNamingStrategy();
+        // customization of serialization
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setBeanSerializerClass(BeanSerializer.class);
+        exporter.setNamePrefix(namePrefix);
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.setNamingStrategy(namingStrategy);
+        exporter.setConfiguration(conf);
         exporter.export(connection.getMetaData());
 
         compile(exporter);
