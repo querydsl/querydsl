@@ -22,11 +22,11 @@ public final class Normalization {
 
     private static final String WS = "\\s*";
 
-    private static final String NUMBER = "([\\+\\-]?\\d+\\.?\\d*)(?!\\p{Alpha})";
+    private static final String NUMBER = "((?>[\\+\\-]?\\d+\\.?\\d*))(?!\\p{Alpha})";
 
     // TODO simplify
     private static final Pattern FULL_OPERATION = Pattern.compile(
-            "(?<![\\d*/\"?' ])" + "(\\b|\\(|\\s+)"  +
+            "(?<![\\d*/\"?'\\- ])" + "(\\b|\\(|\\s+)"  +
             "(" + NUMBER + WS + "[+\\-/*%]" + WS + ")+" + NUMBER + WS +
             "(?![\\d*/\"' ])");
 

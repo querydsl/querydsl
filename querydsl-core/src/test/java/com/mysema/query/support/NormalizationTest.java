@@ -27,7 +27,7 @@ public class NormalizationTest {
 
     @Test
     public void Variables() {
-        assertEquals("var1 + 3", Normalization.normalize("var1 + 3"));
+        assertUntouched("var1 + 3");
     }
 
     @Test
@@ -79,10 +79,11 @@ public class NormalizationTest {
         assertEquals("13", Normalization.normalize("2 * 5 + 3"));
         assertEquals("17", Normalization.normalize("2 + 5 * 3"));
         assertEquals("-2.5", Normalization.normalize("2.5 * -1"));
-        assertEquals("hours * 2 + 3", Normalization.normalize("hours * 2 + 3"));
-        assertEquals("2 + 3 * hours", Normalization.normalize("2 + 3 * hours"));
-        assertEquals("2 + 3 * 0hours", Normalization.normalize("2 + 3 * 0hours"));
-        assertEquals("a like '1 + 2 ' and b like '2 * 3'", Normalization.normalize("a like '1 + 2 ' and b like '2 * 3'"));
+        assertUntouched("hours * 2 + 3");
+        assertUntouched("2 + 3 * hours");
+        assertUntouched("2 + 3 * 0hours");
+        assertUntouched("a like '1 + 2 ' and b like '2 * 3'");
+        assertUntouched("xxx in ('ABC123-4567-3214-EDBD982')");
     }
 
     @Test
@@ -92,12 +93,12 @@ public class NormalizationTest {
 
     @Test
     public void DateTimeLiterals() {
-        assertEquals("'1980-10-10'", Normalization.normalize("'1980-10-10'"));
+        assertUntouched("'1980-10-10'");
     }
 
     @Test
     public void DateTimeLiterals2() {
-        assertEquals("\"1980-10-10\"", Normalization.normalize("\"1980-10-10\""));
+        assertUntouched("\"1980-10-10\"");
     }
 
     @Test
@@ -108,21 +109,27 @@ public class NormalizationTest {
 
     @Test
     public void Substring() {
-        assertEquals("substring(cat.name,1,locate(?1,cat.name)-1)",
-                Normalization.normalize("substring(cat.name,0+1,locate(?1,cat.name)-1-0)"));
+        assertEquals("substring(cat.name,1,locate(?1,cat.name)-1-2)",
+                Normalization.normalize("substring(cat.name,0+1,locate(?1,cat.name)-1-2)"));
     }
 
     @Test
     public void Literals() {
-        assertEquals("'INPS-ISET-0000-12345678A'", Normalization.normalize("'INPS-ISET-0000-12345678A'"));
-        assertEquals("'INPS-ISET-0000X00000000A'", Normalization.normalize("'INPS-ISET-0000X00000000A'"));
-        assertEquals("'INPS-ISET-0000-00000000A'", Normalization.normalize("'INPS-ISET-0000-00000000A'"));
+        assertUntouched("'INPS-ISET-0000-12345678A'");
+        assertUntouched("'INPS-ISET-0000X00000000A'");
+        assertUntouched("'INPS-ISET-0000-00000000A'");
+        assertUntouched("'INPS-ISET-0000-0000.0000A'");
+        assertUntouched("'INPS-ISET-0000-0000.0000'");
 
-        assertEquals("column = 'INPS-ISET-0000-00000000A' limit 1", Normalization.normalize("column = 'INPS-ISET-0000-00000000A' limit 1"));
+        assertUntouched("column = 'INPS-ISET-0000-00000000A' limit 1");
     }
 
     @Test
     public void Parameters() {
-        assertEquals("?1 + 1", Normalization.normalize("?1 + 1"));
+        assertUntouched("?1 + 1");
+    }
+
+    private static void assertUntouched(String string) {
+        assertEquals(string, Normalization.normalize(string));
     }
 }
