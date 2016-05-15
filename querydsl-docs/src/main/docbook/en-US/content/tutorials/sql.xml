@@ -242,6 +242,14 @@
             <entry>export foreign keys (default: true)</entry>
           </row>
           <row>
+            <entry>exportDirectForeignKeys</entry>
+            <entry>export direct foreign keys (default: true)</entry>
+          </row>
+          <row>
+            <entry>exportInverseForeignKeys</entry>
+            <entry>export inverse foreign keys (default: true)</entry>
+          </row>
+          <row>
             <entry>customTypes</entry>
             <entry>Custom user types (default: none)</entry>
           </row>

@@ -219,6 +219,16 @@ public class AntMetaDataExporter extends Task {
     private boolean exportForeignKeys = true;
 
     /**
+     * export direct foreign keys
+     */
+    private boolean exportDirectForeignKeys = true;
+
+    /**
+     * export inverse foreign keys
+     */
+    private boolean exportInverseForeignKeys = true;
+
+    /**
      * override default column order (default: alphabetical)
      */
     private String columnComparatorClass;
@@ -310,6 +320,8 @@ public class AntMetaDataExporter extends Task {
             exporter.setTableTypesToExport(tableTypesToExport);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
+            exporter.setExportDirectForeignKeys(exportDirectForeignKeys);
+            exporter.setExportInverseForeignKeys(exportInverseForeignKeys);
             exporter.setSpatial(spatial);
 
             if (imports != null && imports.length > 0) {
@@ -646,6 +658,22 @@ public class AntMetaDataExporter extends Task {
 
     public boolean isExportForeignKeys() {
         return exportForeignKeys;
+    }
+
+    public boolean isExportDirectForeignKeys() {
+        return exportDirectForeignKeys;
+    }
+
+    public void setExportDirectForeignKeys(boolean exportDirectForeignKeys) {
+        this.exportDirectForeignKeys = exportDirectForeignKeys;
+    }
+
+    public boolean isExportInverseForeignKeys() {
+        return exportInverseForeignKeys;
+    }
+
+    public void setExportInverseForeignKeys(boolean exportInverseForeignKeys) {
+        this.exportInverseForeignKeys = exportInverseForeignKeys;
     }
 
     public void setExportForeignKeys(boolean exportForeignKeys) {

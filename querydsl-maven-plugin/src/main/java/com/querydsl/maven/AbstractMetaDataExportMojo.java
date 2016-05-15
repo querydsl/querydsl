@@ -323,6 +323,20 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
     private boolean exportForeignKeys;
 
     /**
+     * switch to export direct foreign keys
+     *
+     * @parameter default-value=true
+     */
+    private boolean exportDirectForeignKeys;
+
+    /**
+     * switch to export inverse foreign keys
+     *
+     * @parameter default-value=true
+     */
+    private boolean exportInverseForeignKeys;
+
+    /**
      * override default column order (default: alphabetical)
      *
      * @parameter
@@ -420,6 +434,8 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             exporter.setTableTypesToExport(tableTypesToExport);
             exporter.setExportPrimaryKeys(exportPrimaryKeys);
             exporter.setExportForeignKeys(exportForeignKeys);
+            exporter.setExportDirectForeignKeys(exportDirectForeignKeys);
+            exporter.setExportInverseForeignKeys(exportInverseForeignKeys);
             exporter.setSpatial(spatial);
 
             if (imports != null && imports.length > 0) {
