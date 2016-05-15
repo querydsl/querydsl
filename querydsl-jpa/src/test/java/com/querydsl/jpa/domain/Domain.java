@@ -20,6 +20,10 @@ import com.querydsl.jpa.domain4.BookID;
 import com.querydsl.jpa.domain4.BookMark;
 import com.querydsl.jpa.domain4.BookVersion;
 import com.querydsl.jpa.domain4.Library;
+import com.querydsl.jpa.domain5.MyEmbeddedAttribute;
+import com.querydsl.jpa.domain5.MyEntity;
+import com.querydsl.jpa.domain5.MyMappedSuperclass;
+import com.querydsl.jpa.domain5.MyOtherEntity;
 
 public final class Domain {
 
@@ -84,6 +88,11 @@ public final class Domain {
             BookID.class,
             BookMark.class,
             BookVersion.class,
-            Library.class
+            Library.class,
+
+            MyEmbeddedAttribute.class,
+            MyEntity.class,
+            MyMappedSuperclass.class,
+            MyOtherEntity.class
     );
 }
