@@ -631,6 +631,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoHibernate
+    @ExcludeIn(MYSQL)
     public void distinct_orderBy2() {
         QCat cat = QCat.cat;
         List<Tuple> result = query().select(cat.id, cat.mate.id)
