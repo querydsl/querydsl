@@ -345,6 +345,15 @@ public class SQLSerializerTest {
         assertEquals("datediff('year',EMPLOYEE.DATEFIELD,(date '1970-01-01'))", serializer.toString());
     }
 
+    @Test
+    public void select_normalization() {
+        SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
+        serializer.visit(select(
+                Expressions.stringPath("id"), Expressions.stringPath("ID")), null);
+        assertEquals("(select id, ID as col__ID1\n" +
+                "from dual)", serializer.toString());
+    }
+
     private SQLQuery<?> query() {
         return new SQLQuery<Void>();
     }
