@@ -14,7 +14,7 @@
 package com.querydsl.sql;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -80,7 +80,7 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
 
     public WindowFirstLast<T> orderBy(OrderSpecifier<?>... orderBy) {
         value = null;
-        this.orderBy.addAll(Arrays.asList(orderBy));
+        Collections.addAll(this.orderBy, orderBy);
         return this;
     }
 

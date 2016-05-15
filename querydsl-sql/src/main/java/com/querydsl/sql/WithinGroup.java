@@ -14,6 +14,7 @@
 package com.querydsl.sql;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -98,6 +99,18 @@ public class WithinGroup<T> extends SimpleOperation<T> {
             for (ComparableExpressionBase<?> e : orderBy) {
                 this.orderBy.add(e.asc());
             }
+            return this;
+        }
+
+        public OrderBy orderBy(OrderSpecifier<?> orderBy) {
+            value = null;
+            this.orderBy.add(orderBy);
+            return this;
+        }
+
+        public OrderBy orderBy(OrderSpecifier<?>... orderBy) {
+            value = null;
+            Collections.addAll(this.orderBy, orderBy);
             return this;
         }
     }

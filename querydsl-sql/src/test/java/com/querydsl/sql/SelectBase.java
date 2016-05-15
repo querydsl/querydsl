@@ -2025,6 +2025,7 @@ public class SelectBase extends AbstractBaseTest {
 
         for (WithinGroup<?> wg : exprs) {
             query().from(survey).select(wg.withinGroup().orderBy(survey.id, survey.id)).fetch();
+            query().from(survey).select(wg.withinGroup().orderBy(survey.id.asc(), survey.id.asc())).fetch();
         }
 
         // one arg
@@ -2034,6 +2035,7 @@ public class SelectBase extends AbstractBaseTest {
 
         for (WithinGroup<?> wg : exprs) {
             query().from(survey).select(wg.withinGroup().orderBy(survey.id)).fetch();
+            query().from(survey).select(wg.withinGroup().orderBy(survey.id.asc())).fetch();
         }
     }
 
