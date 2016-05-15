@@ -15,23 +15,12 @@
  */
 package com.mysema.query.codegen;
 
-import com.mysema.codegen.StringUtils;
-import com.mysema.util.JavaSyntaxUtils;
+import com.google.common.base.Function;
 
 /**
- * Default variable name generation strategy which un-capitalizes the first letter of the class name.
+ * The {@link Function} signature to convert {@link EntityType} to {@link String}.
  *
+ * @author Shredder121
  */
-public final class DefaultVariableNameFunction implements NamingFunction {
-
-    public static final DefaultVariableNameFunction INSTANCE = new DefaultVariableNameFunction();
-
-    @Override
-    public String apply(EntityType entity) {
-        String uncapSimpleName = StringUtils.uncapitalize(entity.getInnerType().getSimpleName());
-        if (JavaSyntaxUtils.isReserved(uncapSimpleName)) {
-            uncapSimpleName = uncapSimpleName + "$";
-        }
-        return uncapSimpleName;
-    }
+public interface NamingFunction extends Function<EntityType, String> {
 }
