@@ -94,6 +94,23 @@ public class JPQLSerializerTest {
     }
 
     @Test
+    public void count() {
+        QCat cat = QCat.cat;
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, cat);
+        md.setProjection(cat.mate.countDistinct());
+        JPQLSerializer serializer1 = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer1.serialize(md, true, null);
+        assertEquals("select count(count(distinct cat.mate))\n" +
+                "from Cat cat",  serializer1.toString());
+
+        JPQLSerializer serializer2 = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer2.serialize(md, false, null);
+        assertEquals("select count(distinct cat.mate)\n" +
+                "from Cat cat", serializer2.toString());
+    }
+
+    @Test
     public void fromWithCustomEntityName() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         EntityPath<Location> entityPath = new EntityPathBase<Location>(Location.class, "entity");
