@@ -71,7 +71,7 @@ public class PathBuilderTest {
         PathBuilder<T> entityPath = new PathBuilder<T>((Class<T>) entity.getClass(), "entity");
         BooleanBuilder conditions = new BooleanBuilder();
         Map<String, Object> beanMap = new BeanMap(entity);
-        for (Map.Entry<String,Object> entry : beanMap.entrySet()) {
+        for (Map.Entry<String, Object> entry : beanMap.entrySet()) {
             if (!entry.getKey().equals("class")) {
                 if (entry.getValue() != null) {
                     conditions.and(entityPath.get(entry.getKey()).eq(entry.getValue()));
@@ -110,6 +110,24 @@ public class PathBuilderTest {
         entity.getSimple("simple", Object.class);
         entity.getString("string");
         entity.getTime("time", Time.class);
+    }
+
+    @Test
+    public void calling_get_with_the_same_name_and_different_types_returns_correct_type() {
+            PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity");
+            String pathName = "some_path";
+            assertEquals(Object.class, entity.get(pathName).getType());
+            assertEquals(Integer.class, entity.get(pathName, Integer.class).getType());
+            assertEquals(User.class, entity.get(pathName, User.class).getType());
+    }
+
+    @Test
+    public void calling_get_with_the_same_name_and_different_types_returns_specific_type_when_validating() {
+            PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity", PathBuilderValidator.FIELDS);
+            String pathName = "username";
+            assertEquals(String.class, entity.get(pathName).getType());
+            assertEquals(String.class, entity.get(pathName, Comparable.class).getType());
+            assertEquals(String.class, entity.get(pathName, Object.class).getType());
     }
 
 }
