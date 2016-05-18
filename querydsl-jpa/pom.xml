@@ -298,7 +298,7 @@
           <goals>
             <goal>test</goal>    
           </goals>
-          <phase>verify</phase>
+          <phase>test</phase>
           <configuration>
               <systemProperties>
               <property>
