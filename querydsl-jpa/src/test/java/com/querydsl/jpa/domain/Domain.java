@@ -55,6 +55,7 @@ public final class Domain {
             Family.class,
             Foo.class,
             Formula.class,
+            Group.class,
             Human.class,
             InheritedProperties.class,
             Item.class,
