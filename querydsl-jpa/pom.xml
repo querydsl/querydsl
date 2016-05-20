@@ -300,9 +300,10 @@
           </goals>
           <phase>test</phase>
           <configuration>
-              <systemProperties>
+            <failIfNoTests>true</failIfNoTests>
+            <systemProperties>
               <property>
-                  <name>version</name>
+                <name>version</name>
                 <value>${project.version}</value>
               </property>                  
             </systemProperties>    

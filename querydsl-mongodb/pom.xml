@@ -136,6 +136,7 @@
             </goals>
             <phase>test</phase>
             <configuration>
+              <failIfNoTests>true</failIfNoTests>
               <systemProperties>
                 <property>
                   <name>version</name>
