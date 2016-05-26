@@ -67,6 +67,7 @@ public class SQLiteTemplates extends SQLTemplates {
         setNullsLast(null);
         setDefaultValues("\ndefault values");
         setArraysSupported(false);
+        setBatchToBulkSupported(false);
 
         setPrecedence(Precedence.COMPARISON - 1, Ops.LT, Ops.GT, Ops.LOE, Ops.GOE);
         setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);

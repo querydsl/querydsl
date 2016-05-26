@@ -56,6 +56,7 @@ public class FirebirdTemplates extends SQLTemplates {
         setUnionsWrapped(false);
         setWrapSelectParameters(true);
         setArraysSupported(false);
+        setBatchToBulkSupported(false);
 
         setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
 

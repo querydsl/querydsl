@@ -232,6 +232,8 @@ public class SQLTemplates extends Templates {
 
     private boolean forShareSupported = false;
 
+    private boolean batchToBulkSupported = true;
+
     private int listMaxSize = 0;
 
     private boolean supportsUnquotedReservedWordsAsIdentifier = false;
@@ -759,6 +761,10 @@ public class SQLTemplates extends Templates {
         return supportsUnquotedReservedWordsAsIdentifier;
     }
 
+    public final boolean isBatchToBulkSupported() {
+        return batchToBulkSupported;
+    }
+
     public final QueryFlag getForShareFlag() {
         return forShareFlag;
     }
@@ -1168,6 +1174,10 @@ public class SQLTemplates extends Templates {
 
     protected void setMaxLimit(int i) {
         this.maxLimit = i;
+    }
+
+    protected void setBatchToBulkSupported(boolean b) {
+        this.batchToBulkSupported = b;
     }
 
     protected void setForShareFlag(QueryFlag flag) {

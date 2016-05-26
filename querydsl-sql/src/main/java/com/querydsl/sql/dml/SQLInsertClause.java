@@ -150,7 +150,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
      * Will revert to batches, if bulk is not supported
      */
     public void setBatchToBulk(boolean b) {
-        this.batchToBulk = b;
+        this.batchToBulk = b && configuration.getTemplates().isBatchToBulkSupported();
     }
 
     @Override
