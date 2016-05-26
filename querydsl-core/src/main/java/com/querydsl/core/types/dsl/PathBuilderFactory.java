@@ -13,10 +13,10 @@
  */
 package com.querydsl.core.types.dsl;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.collect.Maps;
 
 /**
  * {@code PathBuilderFactory} is a factory class for PathBuilder creation
@@ -26,7 +26,17 @@ import com.google.common.base.CaseFormat;
  */
 public final class PathBuilderFactory {
 
-    private final Map<Class<?>, PathBuilder<?>> paths = new HashMap<Class<?>, PathBuilder<?>>();
+    private final Map<Class<?>, PathBuilder<?>> paths = Maps.newConcurrentMap();
+
+    private final String suffix;
+
+    public PathBuilderFactory() {
+        this("");
+    }
+
+    public PathBuilderFactory(String suffix) {
+        this.suffix = suffix;
+    }
 
     /**
      * Create a new PathBuilder instance for the given type
@@ -38,10 +48,14 @@ public final class PathBuilderFactory {
     public <T> PathBuilder<T> create(Class<T> type) {
         PathBuilder<T> rv = (PathBuilder<T>) paths.get(type);
         if (rv == null) {
-            rv = new PathBuilder<T>(type, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, type.getSimpleName()));
+            rv = new PathBuilder<T>(type, variableName(type));
             paths.put(type, rv);
         }
         return rv;
+    }
+
+    private String variableName(Class<?> type) {
+        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, type.getSimpleName()) + suffix;
     }
 
 }
