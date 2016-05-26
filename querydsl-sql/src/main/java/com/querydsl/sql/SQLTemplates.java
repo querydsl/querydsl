@@ -30,6 +30,7 @@ import com.google.common.collect.Sets;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
+import com.querydsl.sql.dml.SQLInsertBatch;
 import com.querydsl.sql.types.Type;
 
 /**
@@ -870,6 +871,18 @@ public class SQLTemplates extends Templates {
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());
         }
+    }
+
+    /**
+     * template method for INSERT serialization
+     *
+     * @param metadata
+     * @param batches
+     * @param context
+     */
+    public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity,
+                                List<SQLInsertBatch> batches, SQLSerializer context) {
+       context.serializeForInsert(metadata, entity, batches);
     }
 
     /**

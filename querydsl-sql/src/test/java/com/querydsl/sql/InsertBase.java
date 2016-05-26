@@ -121,15 +121,37 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     public void insert_batch() {
         SQLInsertClause insert = insert(survey)
-            .set(survey.id, 5)
-            .set(survey.name, "55")
-            .addBatch();
+                .set(survey.id, 5)
+                .set(survey.name, "55")
+                .addBatch();
 
         assertEquals(1, insert.getBatchCount());
 
         insert.set(survey.id, 6)
-            .set(survey.name, "66")
-            .addBatch();
+                .set(survey.name, "66")
+                .addBatch();
+
+        assertEquals(2, insert.getBatchCount());
+        assertEquals(2, insert.execute());
+
+        assertEquals(1L, query().from(survey).where(survey.name.eq("55")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("66")).fetchCount());
+    }
+
+    @Test
+    public void insert_batch_to_bulk() {
+        SQLInsertClause insert = insert(survey);
+        insert.setBatchToBulk(true);
+
+        insert.set(survey.id, 5)
+                .set(survey.name, "55")
+                .addBatch();
+
+        assertEquals(1, insert.getBatchCount());
+
+        insert.set(survey.id, 6)
+                .set(survey.name, "66")
+                .addBatch();
 
         assertEquals(2, insert.getBatchCount());
         assertEquals(2, insert.execute());

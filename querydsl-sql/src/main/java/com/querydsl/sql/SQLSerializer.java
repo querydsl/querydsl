@@ -32,6 +32,7 @@ import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.Template.Element;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.dml.SQLInsertBatch;
 import com.querydsl.sql.types.Null;
 
 /**
@@ -530,6 +531,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
         templates.serializeInsert(metadata, entity, columns, values, subQuery, this);
+    }
+
+
+    public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity, List<SQLInsertBatch> batches) {
+        this.entity = entity;
+        templates.serializeInsert(metadata, entity, batches, this);
+    }
+
+    void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<SQLInsertBatch> batches) {
+        serializeForInsert(metadata, entity, batches.get(0).getColumns(), batches.get(0).getValues(), null);
+        for (int i = 1; i < batches.size(); i++) {
+            append(COMMA);
+            append("(");
+            handle(COMMA, batches.get(i).getValues());
+            append(")");
+        }
     }
 
     void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
