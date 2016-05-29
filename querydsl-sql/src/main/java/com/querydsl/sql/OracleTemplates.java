@@ -14,14 +14,17 @@
 package com.querydsl.sql;
 
 import java.sql.Types;
+import java.util.List;
 import java.util.Map;
 
+import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Path;
+import com.querydsl.sql.dml.SQLInsertBatch;
 
 /**
  * {@code OracleTemplates} is an SQL dialect for Oracle
@@ -55,6 +58,10 @@ public class OracleTemplates extends SQLTemplates {
     private String limitOffsetTemplate = "rn > {0s} and rownum <= {1s}";
 
     private String offsetTemplate = "rn > {0}";
+
+    private String bulkInsertTemplate = "insert all";
+
+    private String bulkInsertSeparator = " into ";
 
     public OracleTemplates() {
         this('\\', false);
@@ -219,6 +226,16 @@ public class OracleTemplates extends SQLTemplates {
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());
         }
+    }
+
+    @Override
+    public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity, List<SQLInsertBatch> batches, SQLSerializer context) {
+        context.append(bulkInsertTemplate);
+        metadata.addFlag(new QueryFlag(Position.START_OVERRIDE, bulkInsertSeparator));
+        for (SQLInsertBatch batch : batches) {
+            serializeInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery(), context);
+        }
+        context.append(" select * from dual");
     }
 
     @Override
