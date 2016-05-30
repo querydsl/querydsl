@@ -70,10 +70,11 @@ Querying with Querydsl JDO is as simple as this :
 
 ```JAVA
 QCustomer customer = QCustomer.customer;
-JDOQuery query = new JDOQuery(pm);
-Customer bob = query.from(customer)
+JDOQuery<?> query = new JDOQuery<Void>(pm);
+Customer bob = query.select(customer)
+  .from(customer)
   .where(customer.firstName.eq("Bob"))
-  .uniqueResult(customer);
+  .fetchOne();
 query.close();
 ```
 

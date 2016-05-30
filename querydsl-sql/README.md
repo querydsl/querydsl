@@ -69,9 +69,10 @@ Querying with Querydsl SQL is as simple as this :
 QCustomer customer = new QCustomer("c");
 
 SQLTemplates dialect = new HSQLDBTemplates(); // SQL-dialect
-SQLQuery query = new SQLQuery(connection, dialect); 
-List<String> lastNames = query.from(customer)
+SQLQuery<?> query = new SQLQuery<Void>(connection, dialect);
+List<String> lastNames = query.select(customer.lastName)
+    .from(customer)
     .where(customer.firstName.eq("Bob"))
-    .list(customer.lastName);
+    .fetch();
 ```
 For more information on the Querydsl SQL module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02s03.html
