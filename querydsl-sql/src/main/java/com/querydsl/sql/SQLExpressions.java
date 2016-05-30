@@ -101,6 +101,43 @@ public final class SQLExpressions {
     public static final Expression<Long> countAll = Wildcard.count;
 
     /**
+     * Create an assignment expression
+     *
+     * @param target target expression
+     * @param value value to be set
+     * @param <T>
+     * @return target = value
+     */
+    public static <T> Expression<T> set(Path<T> target, Expression<? extends T> value) {
+        if (value != null) {
+            return Expressions.operation(target.getType(), SQLOps.SET_PATH, target, value);
+        } else {
+            return Expressions.operation(target.getType(), SQLOps.SET_LITERAL,
+                    target, Expressions.nullExpression());
+        }
+
+    }
+
+    /**
+     * Create an assignment expression
+     *
+     * @param target target expression
+     * @param value value to be set
+     * @param <T>
+     * @return target = value
+     */
+    public static <T> Expression<T> set(Path<T> target, T value) {
+        if (value != null) {
+            return Expressions.operation(target.getType(), SQLOps.SET_LITERAL,
+                    target, Expressions.constant(value));
+        } else {
+            return Expressions.operation(target.getType(), SQLOps.SET_LITERAL,
+                    target, Expressions.nullExpression());
+        }
+
+    }
+
+    /**
      * Create a new detached SQLQuery instance with the given projection
      *
      * @param expr projection

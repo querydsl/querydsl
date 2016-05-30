@@ -391,6 +391,9 @@ public class SQLTemplates extends Templates {
         add(Ops.AggOps.BOOLEAN_ANY, "some({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "every({0})");
 
+        add(SQLOps.SET_LITERAL, "{0} = {1}");
+        add(SQLOps.SET_PATH, "{0} = values({1})");
+
         // default type names
         addTypeNameToCode("null", Types.NULL);
         addTypeNameToCode("char", Types.CHAR);

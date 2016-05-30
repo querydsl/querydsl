@@ -24,6 +24,7 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.querydsl.sql.SQLExpressions;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.domain.QSurvey;
@@ -84,8 +85,26 @@ public class MySQLQueryFactoryTest {
     @Test
     public void insertOnDuplicateKeyUpdate_multiple() {
         SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
-                QSurvey.survey.id.eq(2), QSurvey.survey.name.eq("B"));
-        assertEquals("insert into SURVEY\nvalues () on duplicate key update SURVEY.ID = ?, SURVEY.NAME = ?", clause.toString());
+                SQLExpressions.set(QSurvey.survey.id, 2),
+                SQLExpressions.set(QSurvey.survey.name, "B"));
+        assertEquals("insert into SURVEY\n" +
+                "values () on duplicate key update SURVEY.ID = ?, SURVEY.NAME = ?", clause.toString());
+    }
+
+    @Test
+    public void insertOnDuplicateKeyUpdate_values() {
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
+                SQLExpressions.set(QSurvey.survey.name, QSurvey.survey.name));
+        assertEquals("insert into SURVEY\n" +
+                "values () on duplicate key update SURVEY.NAME = values(SURVEY.NAME)", clause.toString());
+    }
+
+    @Test
+    public void insertOnDuplicateKeyUpdate_null() {
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
+                SQLExpressions.set(QSurvey.survey.name, (String) null));
+        assertEquals("insert into SURVEY\n" +
+                "values () on duplicate key update SURVEY.NAME = null", clause.toString());
     }
 
 
