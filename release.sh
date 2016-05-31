@@ -16,7 +16,6 @@ pre() {
 doit() {
   git checkout master
   git pull
-  mvn versions:set -DgenerateBackupPoms=false
   mvn clean deploy -DskipTests -Dgpg.skip=false
   ./dist.sh
   # TODO upload
@@ -24,10 +23,14 @@ doit() {
   echo -e "After deploying the \x1b[33mreference documentation\x1b[m, update the \x1b[33mcurrent symlink\x1b[m"
 }
 
+# TODO finalize release
+
 post() {
   echo "post release stuff"
   # TODO update querydsl.com
   # TODO close github milestone
+  # TODO tag release
+  # TODO bump version
 }
 
 if [ “$1” == “pre” ]; then
