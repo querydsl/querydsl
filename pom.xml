@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>4.1.2.BUILD-SNAPSHOT</version>
+  <version>4.1.2</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -648,6 +648,13 @@
         <module>querydsl-codegen</module>
         <module>querydsl-apt</module>
         <module>querydsl-collections</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>docs</id>
+      <modules>
+        <module>querydsl-docs</module>
       </modules>
     </profile>
 
