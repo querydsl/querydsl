@@ -30,6 +30,7 @@ import com.google.common.collect.Sets;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
+import com.querydsl.sql.dml.SQLInsertBatch;
 import com.querydsl.sql.types.Type;
 
 /**
@@ -230,6 +231,8 @@ public class SQLTemplates extends Templates {
     private boolean arraysSupported = true;
 
     private boolean forShareSupported = false;
+
+    private boolean batchToBulkSupported = true;
 
     private int listMaxSize = 0;
 
@@ -758,6 +761,10 @@ public class SQLTemplates extends Templates {
         return supportsUnquotedReservedWordsAsIdentifier;
     }
 
+    public final boolean isBatchToBulkSupported() {
+        return batchToBulkSupported;
+    }
+
     public final QueryFlag getForShareFlag() {
         return forShareFlag;
     }
@@ -870,6 +877,18 @@ public class SQLTemplates extends Templates {
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());
         }
+    }
+
+    /**
+     * template method for INSERT serialization
+     *
+     * @param metadata
+     * @param batches
+     * @param context
+     */
+    public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity,
+                                List<SQLInsertBatch> batches, SQLSerializer context) {
+       context.serializeForInsert(metadata, entity, batches);
     }
 
     /**
@@ -1155,6 +1174,10 @@ public class SQLTemplates extends Templates {
 
     protected void setMaxLimit(int i) {
         this.maxLimit = i;
+    }
+
+    protected void setBatchToBulkSupported(boolean b) {
+        this.batchToBulkSupported = b;
     }
 
     protected void setForShareFlag(QueryFlag flag) {

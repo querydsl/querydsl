@@ -66,6 +66,8 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
 
     private transient List<Object> constants;
 
+    private transient boolean batchToBulk;
+
     public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
@@ -141,6 +143,14 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         values.clear();
         subQuery = null;
         return this;
+    }
+
+    /**
+     * Set whether batches should be optimized into a single bulk operation.
+     * Will revert to batches, if bulk is not supported
+     */
+    public void setBatchToBulk(boolean b) {
+        this.batchToBulk = b && configuration.getTemplates().isBatchToBulkSupported();
     }
 
     @Override
@@ -250,7 +260,11 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             values.clear();
         }
 
-        serializer.serializeInsert(metadata, entity, columns, values, subQuery);
+        if (!batches.isEmpty() && batchToBulk) {
+            serializer.serializeInsert(metadata, entity, batches);
+        } else {
+            serializer.serializeInsert(metadata, entity, columns, values, subQuery);
+        }
         context.addSQL(serializer.toString());
         listeners.rendered(context);
         return prepareStatementAndSetParameters(serializer, withKeys);
@@ -353,6 +367,13 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
                 listeners.preExecute(context);
                 stmt.executeUpdate();
                 listeners.executed(context);
+            } else if (batchToBulk) {
+                stmt = createStatement(true);
+                listeners.notifyInserts(entity, metadata, batches);
+
+                listeners.preExecute(context);
+                stmt.executeUpdate();
+                listeners.executed(context);
             } else {
                 Collection<PreparedStatement> stmts = createStatements(true);
                 if (stmts != null && stmts.size() > 1) {
@@ -397,6 +418,14 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             if (batches.isEmpty()) {
                 stmt = createStatement(false);
                 listeners.notifyInsert(entity, metadata, columns, values, subQuery);
+
+                listeners.preExecute(context);
+                int rc = stmt.executeUpdate();
+                listeners.executed(context);
+                return rc;
+            } else if (batchToBulk) {
+                stmt = createStatement(false);
+                listeners.notifyInserts(entity, metadata, batches);
 
                 listeners.preExecute(context);
                 int rc = stmt.executeUpdate();

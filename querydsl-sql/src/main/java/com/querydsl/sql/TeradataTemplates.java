@@ -63,6 +63,7 @@ public class TeradataTemplates extends SQLTemplates {
         setDummyTable(null);
         setCountViaAnalytics(true);
         setDefaultValues("\ndefault values");
+        setBatchToBulkSupported(false);
 
         setPrecedence(Precedence.ARITH_LOW + 1, Ops.CONCAT);
         setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
