@@ -72,10 +72,11 @@ Querying with Querydsl JPA is as simple as this :
 
 ```JAVA
 QCustomer customer = QCustomer.customer;
-JPAQuery query = new JPAQuery(entityManager);
-Customer bob = query.from(customer)
+JPAQuery<?> query = new JPAQuery<Void>(entityManager);
+Customer bob = query.select(customer)
+  .from(customer)
   .where(customer.firstName.eq("Bob"))
-  .uniqueResult(customer);
+  .fetchOne();
 ```
 
 For more information on the Querydsl JPA module visit the reference documentation http://www.querydsl.com/static/querydsl/latest/reference/html/ch02.html#jpa_integration

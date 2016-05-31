@@ -53,7 +53,7 @@ IndexSearcher searcher = new IndexSearcher(index);
 LuceneQuery query = new LuceneQuery(true, searcher); 
 List<Document> documents = query
     .where(doc.year.between("1800", "2000").and(doc.title.startsWith("Huckle"))
-    .list();
+    .fetch();
  ```
 
 which is transformed into the following Lucene query :

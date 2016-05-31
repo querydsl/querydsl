@@ -63,8 +63,9 @@ import static com.querydsl.collections.CollQueryFactory.*;
 
 QCat cat = new QCat("cat");
 for (String name : from(cat,cats)
+  .select(cat.name)
   .where(cat.kittens.size().gt(0))
-  .list(cat.name)){
+  .fetch()){
     System.out.println(name);
 }
 ```

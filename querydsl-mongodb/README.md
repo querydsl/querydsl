@@ -69,7 +69,7 @@ QUser user = new QUser("user");
 MorphiaQuery<User> query = new MorphiaQuery<User>(morphia, datastore, user);
 List<User> list = query
     .where(user.firstName.eq("Bob"))
-    .list();
+    .fetch();
 ```
 
 
