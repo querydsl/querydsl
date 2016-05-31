@@ -22,7 +22,7 @@ public class PathBuilderFactoryTest {
 
     @Test
     public void create() {
-        PathBuilderFactory factory = new PathBuilderFactory();
+        PathBuilderFactory factory = new PathBuilderFactory("");
         PathBuilder<Object> pathBuilder = factory.create(Object.class);
         assertEquals("object", pathBuilder.toString());
         assertEquals(Object.class, pathBuilder.getType());
@@ -31,5 +31,18 @@ public class PathBuilderFactoryTest {
         pathBuilder.get("prop", String.class);
         pathBuilder.get("prop", Object.class);
     }
+
+    @Test
+    public void create_withSuffix() {
+        PathBuilderFactory factory = new PathBuilderFactory("_");
+        PathBuilder<Object> pathBuilder = factory.create(Object.class);
+        assertEquals("object_", pathBuilder.toString());
+        assertEquals(Object.class, pathBuilder.getType());
+
+        pathBuilder.get("prop", Object.class);
+        pathBuilder.get("prop", String.class);
+        pathBuilder.get("prop", Object.class);
+    }
+
 
 }

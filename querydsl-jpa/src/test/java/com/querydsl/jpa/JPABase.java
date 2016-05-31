@@ -104,6 +104,11 @@ public class JPABase extends AbstractJPATest implements JPATest {
     }
 
     @Test
+    public void delete2() {
+        assertEquals(0, delete(QGroup.group).execute());
+    }
+
+    @Test
     @NoBatooJPA
     public void delete_where() {
         delete(cat).where(cat.name.eq("XXX")).execute();

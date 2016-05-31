@@ -29,10 +29,13 @@ import org.junit.runner.RunWith;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.domain.QGroup;
 import com.querydsl.jpa.hibernate.DefaultSessionHolder;
+import com.querydsl.jpa.hibernate.HibernateDeleteClause;
 import com.querydsl.jpa.hibernate.HibernateQuery;
 import com.querydsl.jpa.testutil.HibernateTestRunner;
 
@@ -58,6 +61,10 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
     @Override
     protected HibernateQuery<?> query() {
         return new HibernateQuery<Void>(session, getTemplates());
+    }
+
+    protected HibernateDeleteClause delete(EntityPath<?> path) {
+        return new HibernateDeleteClause(session, path);
     }
 
     @Override
@@ -86,6 +93,11 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
         List<Cat> results = query().from(cat).select(cat).createQuery().list();
         assertNotNull(results);
         assertFalse(results.isEmpty());
+    }
+
+    @Test
+    public void delete() {
+        assertEquals(0, delete(QGroup.group).execute());
     }
 
     @Test
