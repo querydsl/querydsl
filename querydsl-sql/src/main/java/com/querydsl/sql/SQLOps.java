@@ -79,7 +79,9 @@ public enum SQLOps implements Operator {
     LOCK_IN_SHARE_MODE(Object.class),
     WITH_REPEATABLE_READ(Object.class),
     GROUP_CONCAT(String.class),
-    GROUP_CONCAT2(String.class);
+    GROUP_CONCAT2(String.class),
+    SET_PATH(Object.class),
+    SET_LITERAL(Object.class);
 
     private final Class<?> type;
 
