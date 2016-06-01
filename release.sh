@@ -1,5 +1,6 @@
 #!/bin/sh
 VERSION=$2
+TAG=QUERYDSL_`sed 's/\./_/g' <<< $VERSION`
 
 pre() {
   git checkout master
@@ -15,21 +16,21 @@ pre() {
 
 doit() {
   git checkout master
-  git pull
+  git pull --ff-only
   mvn clean deploy -DskipTests -Dgpg.skip=false
   ./dist.sh
-  # TODO upload
+  ssh root@querydsl.com "mkdir /var/www/html/static/querydsl/$VERSION"
+  scp -r target/dist/* root@querydsl.com:/var/www/html/static/querydsl/$VERSION/
+  ssh root@querydsl.com "cd /var/www/html/static/querydsl && unlink latest && ln -sT $VERSION latest"
+  git tag $TAG
+  git push --tags
   echo -e "Don't forget \x1b[33mquerydsl-contrib\x1b[m."
-  echo -e "After deploying the \x1b[33mreference documentation\x1b[m, update the \x1b[33mcurrent symlink\x1b[m"
 }
-
-# TODO finalize release
 
 post() {
   echo "post release stuff"
   # TODO update querydsl.com
   # TODO close github milestone
-  # TODO tag release
   # TODO bump version
 }
 
