@@ -32,9 +32,7 @@ public class Annotations implements AnnotatedElement {
 
     public Annotations(AnnotatedElement... elements) {
         for (AnnotatedElement element : elements) {
-            for (Annotation annotation : element.getAnnotations()) {
-                annotations.put(annotation.annotationType(), annotation);
-            }
+            addAnnotations(element);
         }
     }
 
@@ -66,4 +64,9 @@ public class Annotations implements AnnotatedElement {
 
     }
 
+    public void addAnnotations(AnnotatedElement element) {
+        for (Annotation annotation : element.getAnnotations()) {
+            annotations.put(annotation.annotationType(), annotation);
+        }
+    }
 }

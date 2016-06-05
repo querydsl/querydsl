@@ -35,6 +35,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.support.ClassUtils;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.*;
+import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
@@ -386,7 +387,8 @@ public class GenericExporter {
     }
 
     private void addProperties(Class<?> cl, EntityType type) {
-        Set<String> handled = new HashSet<String>();
+        Map<String, Type> types = Maps.newHashMap();
+        Map<String, Annotations> annotations = Maps.newHashMap();
 
         // fields
         if (handleFields) {
@@ -396,18 +398,10 @@ public class GenericExporter {
                         continue;
                     }
                     AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
-                    Method method = ReflectionUtils.getGetterOrNull(cl, field.getName(), field.getType());
-                    Type propertyType = null;
-                    if (method != null && !useFieldTypes) {
-                        propertyType = getPropertyType(cl, annotated, method.getReturnType(), method.getGenericReturnType());
-                    } else {
-                        propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
-                    }
-                    Property property = createProperty(type, field.getName(), propertyType, field);
-                    if (property != null) {
-                        type.addProperty(property);
-                    }
-                    handled.add(field.getName());
+                    Type propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
+                    Annotations ann = new Annotations(field);
+                    types.put(field.getName(), propertyType);
+                    annotations.put(field.getName(), ann);
                 }
             }
         }
@@ -425,15 +419,25 @@ public class GenericExporter {
                     } else {
                         propertyName = BeanUtils.uncapitalize(name.substring(2));
                     }
-                    if (handled.contains(propertyName)) {
-                        continue;
-                    }
                     Type propertyType = getPropertyType(cl, method, method.getReturnType(), method.getGenericReturnType());
-                    Property property = createProperty(type, propertyName, propertyType, method);
-                    if (property != null) {
-                        type.addProperty(property);
+                    if (!types.containsKey(propertyName) || !useFieldTypes) {
+                        types.put(propertyName, propertyType);
                     }
+                    Annotations ann = annotations.get(propertyName);
+                    if (ann == null) {
+                        ann = new Annotations();
+                        annotations.put(propertyName, ann);
+                    }
+                    ann.addAnnotations(method);
                 }
+            }
+        }
+
+        for (Map.Entry<String, Type> entry : types.entrySet()) {
+            Annotations ann = annotations.get(entry.getKey());
+            Property property = createProperty(type, entry.getKey(), entry.getValue(), ann);
+            if (property != null) {
+                type.addProperty(property);
             }
         }
     }
