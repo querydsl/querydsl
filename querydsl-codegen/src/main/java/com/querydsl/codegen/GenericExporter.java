@@ -411,6 +411,8 @@ public class GenericExporter {
             for (Method method : cl.getDeclaredMethods()) {
                 String name = method.getName();
                 if (method.getParameterTypes().length == 0
+                    && !Modifier.isStatic(method.getModifiers())
+                    && !method.isBridge()
                     && ((name.startsWith("get") && name.length() > 3)
                      || (name.startsWith("is") && name.length() > 2))) {
                     String propertyName;
