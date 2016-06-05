@@ -29,6 +29,9 @@ import com.google.common.collect.ImmutableSet;
 import com.querydsl.apt.DefaultConfiguration;
 import com.querydsl.apt.VisitorConfig;
 import com.querydsl.codegen.Keywords;
+import com.querydsl.core.annotations.QueryInit;
+import com.querydsl.core.annotations.QueryTransient;
+import com.querydsl.core.annotations.QueryType;
 
 /**
  * Configuration for {@link JDOAnnotationProcessor}
@@ -45,8 +48,8 @@ public class JDOConfiguration extends DefaultConfiguration {
                     javax.jdo.annotations.Element.class, Embedded.class,
                     Extension.class, Extensions.class, ForeignKey.class,
                     Index.class, Join.class, Key.class, NotPersistent.class,
-                    Order.class, Persistent.class, PrimaryKey.class,
-                    Serialized.class, Transactional.class, Unique.class, Value.class);
+                    Order.class, Persistent.class, PrimaryKey.class, QueryType.class, QueryInit.class,
+                    QueryTransient.class, Serialized.class, Transactional.class, Unique.class, Value.class);
 
     public JDOConfiguration(RoundEnvironment roundEnv,
             Map<String, String> options,

@@ -19,6 +19,7 @@ import java.util.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.querydsl.core.types.PathMetadata;
 
 /**
  * {@code PathInits} defines path initializations that can be attached to
@@ -91,6 +92,16 @@ public class PathInits implements Serializable {
 
     public boolean isInitialized(String property) {
         return initAllProps || propertyToInits.containsKey(property);
+    }
+
+    public static PathInits getFor(PathMetadata metadata, PathInits root) {
+        if (metadata.isRoot()) {
+            return root;
+        } else if (metadata.getParent().getMetadata().isRoot()) {
+            return DIRECT;
+        } else {
+            return DEFAULT;
+        }
     }
 
 }
