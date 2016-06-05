@@ -99,7 +99,10 @@ public class GenericExporter {
 
     private SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
 
+    @Deprecated
     private boolean handleFields = true, handleMethods = true;
+
+    private PropertyHandling propertyHandling = PropertyHandling.ALL;
 
     private boolean useFieldTypes = false;
 
@@ -127,6 +130,7 @@ public class GenericExporter {
     private Set<File> generatedFiles = new HashSet<File>();
 
     private boolean strictMode;
+
 
     /**
      * Create a GenericExporter instance using the given classloader and charset for serializing
@@ -390,8 +394,10 @@ public class GenericExporter {
         Map<String, Type> types = Maps.newHashMap();
         Map<String, Annotations> annotations = Maps.newHashMap();
 
+        PropertyHandling.Config config = propertyHandling.getConfig(cl);
+
         // fields
-        if (handleFields) {
+        if (config.isFields()) {
             for (Field field : cl.getDeclaredFields()) {
                 if (!Modifier.isStatic(field.getModifiers())) {
                     if (Modifier.isTransient(field.getModifiers()) && !field.isAnnotationPresent(QueryType.class)) {
@@ -407,7 +413,7 @@ public class GenericExporter {
         }
 
         // getters
-        if (handleMethods) {
+        if (config.isMethods()) {
             for (Method method : cl.getDeclaredMethods()) {
                 String name = method.getName();
                 if (method.getParameterTypes().length == 0
@@ -706,18 +712,43 @@ public class GenericExporter {
      * Set whether fields are handled (default true)
      *
      * @param b
+     * @deprecated Use {@link #setPropertyHandling(PropertyHandling)} instead
      */
+    @Deprecated
     public void setHandleFields(boolean b) {
         handleFields = b;
+        setPropertyHandling();
     }
 
     /**
      * Set whether methods are handled (default true)
      *
      * @param b
+     * @deprecated Use {@link #setPropertyHandling(PropertyHandling)} instead
      */
+    @Deprecated
     public void setHandleMethods(boolean b) {
         handleMethods = b;
+        setPropertyHandling();
+    }
+
+    private void setPropertyHandling() {
+        if (handleFields) {
+            propertyHandling = handleMethods ? PropertyHandling.ALL : PropertyHandling.FIELDS;
+        } else if (handleMethods) {
+            propertyHandling = PropertyHandling.METHODS;
+        } else {
+            propertyHandling = PropertyHandling.NONE;
+        }
+    }
+
+    /**
+     * Set the property handling mode
+     *
+     * @param propertyHandling
+     */
+    public void setPropertyHandling(PropertyHandling propertyHandling) {
+        this.propertyHandling = propertyHandling;
     }
 
     /**

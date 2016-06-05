@@ -20,6 +20,7 @@ import com.querydsl.apt.domain.Generic2Test;
 import com.querydsl.apt.hibernate.HibernateAnnotationProcessor;
 import com.querydsl.codegen.GenericExporter;
 import com.querydsl.codegen.Keywords;
+import com.querydsl.codegen.PropertyHandling;
 import com.querydsl.core.domain.A;
 
 public class GenericExporterTest extends AbstractProcessorTest {
@@ -45,12 +46,9 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QDelegateTest_User.java");
         expected.add("QDelegate2Test_Entity.java");
         expected.add("QExampleEntity.java");
-
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
         expected.add("QQueryProjectionTest_EntityWithProjection.java");
         expected.add("QEmbeddable3Test_EmbeddableClass.java");
-
-        // FIXME
         expected.add("QQueryEmbedded4Test_User.java");
 
         execute(expected, "GenericExporterTest", "QuerydslAnnotationProcessor");
@@ -72,23 +70,18 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setTargetFolder(new File("target/GenericExporterTest2"));
         exporter.addStopClass(ForwardingSet.class);
         exporter.setStrictMode(true);
+        exporter.setPropertyHandling(PropertyHandling.JPA);
         exporter.export(AbstractEntityTest.class.getPackage(), A.class.getPackage());
 
         List<String> expected = new ArrayList<String>();
         // GenericExporter doesn't include field/method selection
-        expected.add("QFileAttachment.java"); // GenericExporter handles all methods
-        expected.add("QJodaTest_BaseEntity.java");
-        expected.add("QEnum3Test_Entity1.java");
         expected.add("QCustomCollection_MyCustomCollection2.java");
-
         expected.add("QTemporalTest_MyEntity.java");
-
         expected.add("QTemporal2Test_Cheque.java");
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
         expected.add("QQueryProjectionTest_EntityWithProjection.java");
         expected.add("QEmbeddable3Test_EmbeddableClass.java");
-
-        // FIXME
+        expected.add("QGeneric4Test_HidaBez.java");
         expected.add("QGeneric4Test_HidaBezGruppe.java");
         expected.add("QInterfaceType2Test_UserImpl.java");
         expected.add("QOrderTest_Order.java");
@@ -96,9 +89,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QGeneric12Test_ChannelRole.java");
         expected.add("QManyToManyTest_Person.java");
         expected.add("QOneToOneTest_Person.java");
+        expected.add("QGeneric16Test_HidaBez.java");
         expected.add("QGeneric16Test_HidaBezGruppe.java");
-        expected.add("QProperties2Test_ConcreteX.java");
-        expected.add("QProperties3Test_Order.java");
 
         execute(expected, "GenericExporterTest2", "HibernateAnnotationProcessor");
     }
@@ -113,6 +105,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSupertypeAnnotation(MappedSuperclass.class);
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest3"));
+        exporter.setPropertyHandling(PropertyHandling.JPA);
         //exporter.addStopClass(ForwardingSet.class);
         exporter.export(CustomCollection.MyCustomCollection.class,
                         CustomCollection.MyCustomCollection2.class,
@@ -129,6 +122,7 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSupertypeAnnotation(MappedSuperclass.class);
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest4"));
+        exporter.setPropertyHandling(PropertyHandling.JPA);
         exporter.addStopClass(ForwardingSet.class);
         exporter.export(Generic2Test.class.getClasses());
     }
@@ -154,6 +148,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
                 successes++;
             }
         }
+        expected.remove("QGeneric16Test_HidaBez.java"); // unstable
+        expected.remove("QGeneric4Test_HidaBez.java"); // unstable
         expected.remove("QGeneric16Test_HidaBezGruppe.java"); // unstable
         expected.remove("QGeneric4Test_HidaBezGruppe.java"); // unstable
         if (!expected.isEmpty()) {

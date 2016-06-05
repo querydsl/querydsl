@@ -19,6 +19,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.persistence.Embedded;
 
 import com.querydsl.codegen.GenericExporter;
+import com.querydsl.codegen.PropertyHandling;
 
 /**
  * {@code JDOExporterMojo} calls {@link GenericExporter} using the classpath of the module
@@ -36,6 +37,7 @@ public class JDOExporterMojo extends AbstractExporterMojo {
         exporter.setEmbeddedAnnotation(Embedded.class);
         exporter.setEntityAnnotation(PersistenceCapable.class);
         exporter.setSkipAnnotation(NotPersistent.class);
+        exporter.setPropertyHandling(PropertyHandling.JDO);
     }
 
 }
