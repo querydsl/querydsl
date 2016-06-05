@@ -51,7 +51,6 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QEmbeddable3Test_EmbeddableClass.java");
 
         // FIXME
-        expected.add("QExternalEntityTest_MyEntity.java");
         expected.add("QQueryEmbedded4Test_User.java");
 
         execute(expected, "GenericExporterTest", "QuerydslAnnotationProcessor");
@@ -78,10 +77,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
         List<String> expected = new ArrayList<String>();
         // GenericExporter doesn't include field/method selection
         expected.add("QFileAttachment.java");
-        expected.add("QHierarchyTest_A2.java");
         expected.add("QJodaTest_BaseEntity.java");
         expected.add("QEnum3Test_Entity1.java");
-        expected.add("QCustomCollection_MyCustomCollection.java");
         expected.add("QCustomCollection_MyCustomCollection2.java");
 
         expected.add("QTemporalTest_MyEntity.java");
@@ -92,7 +89,6 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QEmbeddable3Test_EmbeddableClass.java");
 
         // FIXME
-        expected.add("QGeneric4Test_HidaBez.java");
         expected.add("QGeneric4Test_HidaBezGruppe.java");
         expected.add("QInterfaceType2Test_UserImpl.java");
         expected.add("QOrderTest_Order.java");
@@ -100,7 +96,6 @@ public class GenericExporterTest extends AbstractProcessorTest {
         expected.add("QGeneric12Test_ChannelRole.java");
         expected.add("QManyToManyTest_Person.java");
         expected.add("QOneToOneTest_Person.java");
-        expected.add("QGeneric16Test_HidaBez.java");
         expected.add("QGeneric16Test_HidaBezGruppe.java");
         expected.add("QProperties2Test_ConcreteX.java");
         expected.add("QProperties3Test_Order.java");
@@ -152,11 +147,17 @@ public class GenericExporterTest extends AbstractProcessorTest {
                 if (!expected.contains(file.getName())) {
                     System.err.println(file.getName());
                     failures.add(file.getName());
+                } else {
+                    expected.remove(file.getName());
                 }
             } else {
                 successes++;
             }
         }
+        if (!expected.isEmpty()) {
+            fail("Following expected failures succeeded: " + expected);
+        }
+
         if (!failures.isEmpty()) {
             for (String failure : failures) {
                 System.err.println(failure);
