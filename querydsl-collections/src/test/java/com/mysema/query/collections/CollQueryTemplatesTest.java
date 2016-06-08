@@ -24,4 +24,13 @@ public class CollQueryTemplatesTest {
         String str = new CollQuerySerializer(CollQueryTemplates.DEFAULT).handle(expr).toString();
         assertEquals("(a + b).toLowerCase()", str);
     }
+
+    @Test
+    public void Concat_ContainsIgnoreCase() {
+        StringPath a = Expressions.stringPath("a");
+        StringPath b = Expressions.stringPath("b");
+        Expression<?> expr = a.append(" ").append(b).containsIgnoreCase("test");
+        String str = new CollQuerySerializer(CollQueryTemplates.DEFAULT).handle(expr).toString();
+        assertEquals("(a + a1 + b).toLowerCase().contains(a2)", str);
+    }
 }
