@@ -33,20 +33,20 @@ public class JavaTemplates extends Templates {
         add(Ops.IS_NULL, "{0} == null");
         add(Ops.IS_NOT_NULL, "{0} != null");
         add(Ops.INSTANCE_OF, "{0} instanceof {1}");
-        add(Ops.ORDINAL, "{0}.ordinal()");
+        add(Ops.ORDINAL, "{0}.ordinal()", Precedence.DOT);
 
         // collection
         add(Ops.IN, "{1}.contains({0})");
         add(Ops.NOT_IN, "!{1}.contains({0})");
-        add(Ops.COL_IS_EMPTY, "{0}.isEmpty()");
-        add(Ops.COL_SIZE, "{0}.size()");
+        add(Ops.COL_IS_EMPTY, "{0}.isEmpty()", Precedence.DOT);
+        add(Ops.COL_SIZE, "{0}.size()", Precedence.DOT);
 
         // array
-        add(Ops.ARRAY_SIZE, "{0}.length");
+        add(Ops.ARRAY_SIZE, "{0}.length", Precedence.DOT);
 
         // map
-        add(Ops.MAP_IS_EMPTY, "{0}.isEmpty()");
-        add(Ops.MAP_SIZE, "{0}.size()");
+        add(Ops.MAP_IS_EMPTY, "{0}.isEmpty()", Precedence.DOT);
+        add(Ops.MAP_SIZE, "{0}.size()", Precedence.DOT);
         add(Ops.CONTAINS_KEY, "{0}.containsKey({1})");
         add(Ops.CONTAINS_VALUE, "{0}.containsValue({1})");
 
@@ -55,15 +55,15 @@ public class JavaTemplates extends Templates {
 
         // String
         add(Ops.CHAR_AT, "{0}.charAt({1})");
-        add(Ops.LOWER, "{0}.toLowerCase()");
+        add(Ops.LOWER, "{0}.toLowerCase()", Precedence.DOT);
         add(Ops.SUBSTR_1ARG, "{0}.substring({1})");
         add(Ops.SUBSTR_2ARGS, "{0}.substring({1},{2})");
-        add(Ops.TRIM, "{0}.trim()");
-        add(Ops.UPPER, "{0}.toUpperCase()");
+        add(Ops.TRIM, "{0}.trim()", Precedence.DOT);
+        add(Ops.UPPER, "{0}.toUpperCase()", Precedence.DOT);
         add(Ops.MATCHES, "{0}.matches({1})");
-        add(Ops.MATCHES_IC, "{0l}.matches({1l})");
-        add(Ops.STRING_LENGTH, "{0}.length()");
-        add(Ops.STRING_IS_EMPTY, "{0}.isEmpty()");
+        add(Ops.MATCHES_IC, "{0l}.matches({1})");
+        add(Ops.STRING_LENGTH, "{0}.length()", Precedence.DOT);
+        add(Ops.STRING_IS_EMPTY, "{0}.isEmpty()", Precedence.DOT);
         add(Ops.STRING_CONTAINS, "{0}.contains({1})");
         add(Ops.STRING_CONTAINS_IC, "{0l}.contains({1l})");
         add(Ops.STARTS_WITH, "{0}.startsWith({1})");
@@ -77,16 +77,16 @@ public class JavaTemplates extends Templates {
         add(Ops.StringOps.LOCATE2, "({1}.indexOf({0},{2s}-1)+1)");
 
         // Date and Time
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDayOfMonth()");
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "{0}.getDayOfWeek()");
-        add(Ops.DateTimeOps.DAY_OF_YEAR, "{0}.getDayOfYear()");
-        add(Ops.DateTimeOps.HOUR, "{0}.getHour()");
-        add(Ops.DateTimeOps.MINUTE, "{0}.getMinute()");
-        add(Ops.DateTimeOps.MONTH, "{0}.getMonth()");
-        add(Ops.DateTimeOps.MILLISECOND, "{0}.getMilliSecond()");
-        add(Ops.DateTimeOps.SECOND, "{0}.getSecond()");
-        add(Ops.DateTimeOps.WEEK, "{0}.getWeek()");
-        add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDayOfMonth()", Precedence.DOT);
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "{0}.getDayOfWeek()", Precedence.DOT);
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "{0}.getDayOfYear()", Precedence.DOT);
+        add(Ops.DateTimeOps.HOUR, "{0}.getHour()", Precedence.DOT);
+        add(Ops.DateTimeOps.MINUTE, "{0}.getMinute()", Precedence.DOT);
+        add(Ops.DateTimeOps.MONTH, "{0}.getMonth()", Precedence.DOT);
+        add(Ops.DateTimeOps.MILLISECOND, "{0}.getMilliSecond()", Precedence.DOT);
+        add(Ops.DateTimeOps.SECOND, "{0}.getSecond()", Precedence.DOT);
+        add(Ops.DateTimeOps.WEEK, "{0}.getWeek()", Precedence.DOT);
+        add(Ops.DateTimeOps.YEAR, "{0}.getYear()", Precedence.DOT);
 
         add(Ops.DateTimeOps.YEAR_MONTH, "{0}.getYear() * 100 + {0}.getMonth()");
 
