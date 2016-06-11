@@ -20,13 +20,18 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.querydsl.core.domain.Cat;
 
 public class GenericExporterTest {
+
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     private GenericExporter exporter;
 
@@ -37,110 +42,126 @@ public class GenericExporterTest {
 
     @Test
     public void export() {
-        exporter.setTargetFolder(new File("target/gen1"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(getClass().getPackage());
-        assertTrue(new File("target/gen1/com/querydsl/codegen/QExampleEmbeddable.java").exists());
-        assertTrue(new File("target/gen1/com/querydsl/codegen/QExampleEmbedded.java").exists());
-        assertTrue(new File("target/gen1/com/querydsl/codegen/QExampleEntity.java").exists());
-        assertTrue(new File("target/gen1/com/querydsl/codegen/QExampleEntityInterface.java").exists());
-        assertTrue(new File("target/gen1/com/querydsl/codegen/QExampleSupertype.java").exists());
-        assertTrue(new File("target/gen1/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbedded.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntity.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntityInterface.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/sub/QExampleEntity2.java").exists());
     }
 
     @Test
     public void export_with_keywords() throws IOException {
         exporter.setKeywords(Keywords.JPA);
-        exporter.setTargetFolder(new File("target/gen1_jpa"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(getClass().getPackage());
-        String str = Files.toString(new File("target/gen1_jpa/com/querydsl/codegen/QGroup.java"), Charsets.UTF_8);
+        String str = Files.toString(new File(folder.getRoot(), "com/querydsl/codegen/QGroup.java"), Charsets.UTF_8);
         assertTrue(str.contains("QGroup group = new QGroup(\"group1\");"));
     }
 
     @Test
     public void export_with_stopClass() {
-        exporter.setTargetFolder(new File("target/gen1_stop"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.addStopClass(Examples.Supertype.class);
         exporter.export(getClass().getPackage());
-        assertFalse(new File("target/gen1_stop/com/querydsl/codegen/QExamples_Supertype.java").exists());
+        assertFalse(new File(folder.getRoot(), "com/querydsl/codegen/QExamples_Supertype.java").exists());
     }
 
     @Test
     public void override_serializer() {
-        exporter.setTargetFolder(new File("target/gen2"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setSerializerClass(EntitySerializer.class);
         exporter.export(getClass().getPackage());
-        assertTrue(new File("target/gen2/com/querydsl/codegen/QExampleEmbeddable.java").exists());
-        assertTrue(new File("target/gen2/com/querydsl/codegen/QExampleEmbedded.java").exists());
-        assertTrue(new File("target/gen2/com/querydsl/codegen/QExampleEntity.java").exists());
-        assertTrue(new File("target/gen2/com/querydsl/codegen/QExampleEntityInterface.java").exists());
-        assertTrue(new File("target/gen2/com/querydsl/codegen/QExampleSupertype.java").exists());
-        assertTrue(new File("target/gen2/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbedded.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntity.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntityInterface.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/sub/QExampleEntity2.java").exists());
     }
 
     @Test
     public void export_package_as_string() {
-        exporter.setTargetFolder(new File("target/gen3"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(getClass().getPackage().getName());
-        assertTrue(new File("target/gen3/com/querydsl/codegen/QExampleEmbeddable.java").exists());
-        assertTrue(new File("target/gen3/com/querydsl/codegen/QExampleEmbedded.java").exists());
-        assertTrue(new File("target/gen3/com/querydsl/codegen/QExampleEntity.java").exists());
-        assertTrue(new File("target/gen3/com/querydsl/codegen/QExampleEntityInterface.java").exists());
-        assertTrue(new File("target/gen3/com/querydsl/codegen/QExampleSupertype.java").exists());
-        assertTrue(new File("target/gen3/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbedded.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntity.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntityInterface.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/sub/QExampleEntity2.java").exists());
     }
 
     @Test
     public void export_with_package_suffix() {
-        exporter.setTargetFolder(new File("target/gen4"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setPackageSuffix("types");
         exporter.export(getClass().getPackage());
-        assertTrue(new File("target/gen4/com/querydsl/codegentypes/QExampleEmbeddable.java").exists());
-        assertTrue(new File("target/gen4/com/querydsl/codegentypes/QExampleEmbedded.java").exists());
-        assertTrue(new File("target/gen4/com/querydsl/codegentypes/QExampleEntity.java").exists());
-        assertTrue(new File("target/gen4/com/querydsl/codegentypes/QExampleEntityInterface.java").exists());
-        assertTrue(new File("target/gen4/com/querydsl/codegentypes/QExampleSupertype.java").exists());
-        assertTrue(new File("target/gen4/com/querydsl/codegen/subtypes/QExampleEntity2.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegentypes/QExampleEmbeddable.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegentypes/QExampleEmbedded.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegentypes/QExampleEntity.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegentypes/QExampleEntityInterface.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegentypes/QExampleSupertype.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/subtypes/QExampleEntity2.java").exists());
     }
 
     @Test
     public void export_handle_no_methods_nor_fields() {
-        exporter.setTargetFolder(new File("target/gen5"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setHandleFields(false);
         exporter.setHandleMethods(false);
         exporter.export(getClass().getPackage());
-        assertTrue(new File("target/gen5/com/querydsl/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbeddable.java").exists());
     }
 
     @Test
     public void export_domain_package() {
-        exporter.setTargetFolder(new File("target/gen6"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.export(Cat.class.getPackage());
     }
 
     @Test
     public void export_serializerConfig() {
-        exporter.setTargetFolder(new File("target/gen7"));
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setSerializerConfig(new SimpleSerializerConfig(true, true, true, true, ""));
         exporter.export(getClass().getPackage());
-        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleEmbeddable.java").exists());
-        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleEmbedded.java").exists());
-        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleEntity.java").exists());
-        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleEntityInterface.java").exists());
-        assertTrue(new File("target/gen7/com/querydsl/codegen/QExampleSupertype.java").exists());
-        assertTrue(new File("target/gen7/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbedded.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntity.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntityInterface.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/sub/QExampleEntity2.java").exists());
     }
 
     @Test
     public void export_useFieldTypes() {
-        exporter.setTargetFolder(new File("target/gen8"));
-        exporter.export(getClass().getPackage());
+        exporter.setTargetFolder(folder.getRoot());
         exporter.setUseFieldTypes(true);
-        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleEmbeddable.java").exists());
-        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleEmbedded.java").exists());
-        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleEntity.java").exists());
-        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleEntityInterface.java").exists());
-        assertTrue(new File("target/gen8/com/querydsl/codegen/QExampleSupertype.java").exists());
-        assertTrue(new File("target/gen8/com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+        exporter.export(getClass().getPackage());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbedded.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntity.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEntityInterface.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+    }
+
+    @Test
+    public void export_propertyHandling() throws IOException {
+        for (PropertyHandling ph : PropertyHandling.values()) {
+            File f = folder.newFolder();
+            GenericExporter e = new GenericExporter();
+            e.setTargetFolder(f);
+            e.setPropertyHandling(ph);
+            e.export(getClass().getPackage());
+            assertTrue(new File(f, "com/querydsl/codegen/QExampleEmbeddable.java").exists());
+            assertTrue(new File(f, "com/querydsl/codegen/QExampleEntity.java").exists());
+            assertTrue(new File(f, "com/querydsl/codegen/QExampleEntityInterface.java").exists());
+            assertTrue(new File(f, "com/querydsl/codegen/QExampleSupertype.java").exists());
+            assertTrue(new File(f, "com/querydsl/codegen/sub/QExampleEntity2.java").exists());
+        }
     }
 
 }

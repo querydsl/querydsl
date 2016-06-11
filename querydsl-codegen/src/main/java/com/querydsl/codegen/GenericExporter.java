@@ -35,6 +35,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.support.ClassUtils;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.*;
+import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
@@ -98,7 +99,10 @@ public class GenericExporter {
 
     private SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
 
+    @Deprecated
     private boolean handleFields = true, handleMethods = true;
+
+    private PropertyHandling propertyHandling = PropertyHandling.ALL;
 
     private boolean useFieldTypes = false;
 
@@ -126,6 +130,7 @@ public class GenericExporter {
     private Set<File> generatedFiles = new HashSet<File>();
 
     private boolean strictMode;
+
 
     /**
      * Create a GenericExporter instance using the given classloader and charset for serializing
@@ -386,37 +391,34 @@ public class GenericExporter {
     }
 
     private void addProperties(Class<?> cl, EntityType type) {
-        Set<String> handled = new HashSet<String>();
+        Map<String, Type> types = Maps.newHashMap();
+        Map<String, Annotations> annotations = Maps.newHashMap();
+
+        PropertyHandling.Config config = propertyHandling.getConfig(cl);
 
         // fields
-        if (handleFields) {
+        if (config.isFields()) {
             for (Field field : cl.getDeclaredFields()) {
                 if (!Modifier.isStatic(field.getModifiers())) {
                     if (Modifier.isTransient(field.getModifiers()) && !field.isAnnotationPresent(QueryType.class)) {
                         continue;
                     }
                     AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
-                    Method method = ReflectionUtils.getGetterOrNull(cl, field.getName(), field.getType());
-                    Type propertyType = null;
-                    if (method != null && !useFieldTypes) {
-                        propertyType = getPropertyType(cl, annotated, method.getReturnType(), method.getGenericReturnType());
-                    } else {
-                        propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
-                    }
-                    Property property = createProperty(type, field.getName(), propertyType, field);
-                    if (property != null) {
-                        type.addProperty(property);
-                    }
-                    handled.add(field.getName());
+                    Type propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
+                    Annotations ann = new Annotations(field);
+                    types.put(field.getName(), propertyType);
+                    annotations.put(field.getName(), ann);
                 }
             }
         }
 
         // getters
-        if (handleMethods) {
+        if (config.isMethods()) {
             for (Method method : cl.getDeclaredMethods()) {
                 String name = method.getName();
                 if (method.getParameterTypes().length == 0
+                    && !Modifier.isStatic(method.getModifiers())
+                    && !method.isBridge()
                     && ((name.startsWith("get") && name.length() > 3)
                      || (name.startsWith("is") && name.length() > 2))) {
                     String propertyName;
@@ -425,15 +427,25 @@ public class GenericExporter {
                     } else {
                         propertyName = BeanUtils.uncapitalize(name.substring(2));
                     }
-                    if (handled.contains(propertyName)) {
-                        continue;
-                    }
                     Type propertyType = getPropertyType(cl, method, method.getReturnType(), method.getGenericReturnType());
-                    Property property = createProperty(type, propertyName, propertyType, method);
-                    if (property != null) {
-                        type.addProperty(property);
+                    if (!types.containsKey(propertyName) || !useFieldTypes) {
+                        types.put(propertyName, propertyType);
                     }
+                    Annotations ann = annotations.get(propertyName);
+                    if (ann == null) {
+                        ann = new Annotations();
+                        annotations.put(propertyName, ann);
+                    }
+                    ann.addAnnotations(method);
                 }
+            }
+        }
+
+        for (Map.Entry<String, Type> entry : types.entrySet()) {
+            Annotations ann = annotations.get(entry.getKey());
+            Property property = createProperty(type, entry.getKey(), entry.getValue(), ann);
+            if (property != null) {
+                type.addProperty(property);
             }
         }
     }
@@ -700,18 +712,43 @@ public class GenericExporter {
      * Set whether fields are handled (default true)
      *
      * @param b
+     * @deprecated Use {@link #setPropertyHandling(PropertyHandling)} instead
      */
+    @Deprecated
     public void setHandleFields(boolean b) {
         handleFields = b;
+        setPropertyHandling();
     }
 
     /**
      * Set whether methods are handled (default true)
      *
      * @param b
+     * @deprecated Use {@link #setPropertyHandling(PropertyHandling)} instead
      */
+    @Deprecated
     public void setHandleMethods(boolean b) {
         handleMethods = b;
+        setPropertyHandling();
+    }
+
+    private void setPropertyHandling() {
+        if (handleFields) {
+            propertyHandling = handleMethods ? PropertyHandling.ALL : PropertyHandling.FIELDS;
+        } else if (handleMethods) {
+            propertyHandling = PropertyHandling.METHODS;
+        } else {
+            propertyHandling = PropertyHandling.NONE;
+        }
+    }
+
+    /**
+     * Set the property handling mode
+     *
+     * @param propertyHandling
+     */
+    public void setPropertyHandling(PropertyHandling propertyHandling) {
+        this.propertyHandling = propertyHandling;
     }
 
     /**

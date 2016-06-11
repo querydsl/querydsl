@@ -13,7 +13,7 @@ public class JodaTest {
 
     @MappedSuperclass
     @Access(AccessType.FIELD)
-    public abstract class BaseEntity {
+    public abstract static class BaseEntity {
 
         public abstract Long getId();
 
