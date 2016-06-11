@@ -28,10 +28,7 @@ import javax.persistence.*;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.apt.*;
 import com.querydsl.codegen.Keywords;
-import com.querydsl.core.annotations.PropertyType;
-import com.querydsl.core.annotations.QueryEntities;
-import com.querydsl.core.annotations.QueryTransient;
-import com.querydsl.core.annotations.QueryType;
+import com.querydsl.core.annotations.*;
 import com.querydsl.core.util.Annotations;
 
 /**
@@ -67,7 +64,7 @@ public class JPAConfiguration extends DefaultConfiguration {
             Access.class, Basic.class, Column.class, ElementCollection.class,
             Embedded.class, EmbeddedId.class, Enumerated.class, GeneratedValue.class, Id.class,
             JoinColumn.class, ManyToOne.class, ManyToMany.class, MapKeyEnumerated.class,
-            OneToOne.class, OneToMany.class, PrimaryKeyJoinColumn.class, QueryType.class,
+            OneToOne.class, OneToMany.class, PrimaryKeyJoinColumn.class, QueryType.class, QueryInit.class,
             QueryTransient.class, Temporal.class, Transient.class, Version.class);
     }
 

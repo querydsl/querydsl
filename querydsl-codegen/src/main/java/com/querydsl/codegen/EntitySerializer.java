@@ -108,14 +108,14 @@ public class EntitySerializer implements Serializer {
             }
             constructorContent(writer, model);
         } else {
-            writer.line("this(", classCast, "path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
+            writer.line("this(", classCast, "path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));");
         }
         writer.end();
 
         // PathMetadata
         if (hasEntityFields) {
             writer.beginConstructor(PATH_METADATA);
-            writer.line("this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);");
+            writer.line("this(metadata, PathInits.getFor(metadata, INITS));");
             writer.end();
         } else {
             if (!localName.equals(genericName)) {
