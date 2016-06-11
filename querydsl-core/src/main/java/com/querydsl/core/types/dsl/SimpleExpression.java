@@ -331,7 +331,15 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         return Expressions.booleanOperation(Ops.NOT_IN, mixin, right);
     }
 
-
+    /**
+     * Create a {@code this not in right} expression
+     *
+     * @param right rhs of the comparison
+     * @return this not in right
+     */
+    public final BooleanExpression notIn(Expression<? extends T>... right) {
+        return Expressions.booleanOperation(Ops.NOT_IN, mixin, Expressions.list(right));
+    }
 
     /**
      * Create a {@code nullif(this, other)} expression
