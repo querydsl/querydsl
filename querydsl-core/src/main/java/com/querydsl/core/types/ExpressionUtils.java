@@ -144,11 +144,25 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
+     * @deprecated Use {@link #predicateTemplate(String, List)} instead.
+     *
      * @param template template
      * @param args template parameters
      * @return template expression
      */
+    @Deprecated
     public static PredicateTemplate predicateTemplate(String template, ImmutableList<?> args) {
+        return predicateTemplate(TemplateFactory.DEFAULT.create(template), args);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static PredicateTemplate predicateTemplate(String template, List<?> args) {
         return predicateTemplate(TemplateFactory.DEFAULT.create(template), args);
     }
 
@@ -166,14 +180,27 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
+     * @deprecated Use {@link #predicateTemplate(Template, List)} instead.
+     *
      * @param template template
      * @param args template parameters
      * @return template expression
      */
+    @Deprecated
     public static PredicateTemplate predicateTemplate(Template template, ImmutableList<?> args) {
         return new PredicateTemplate(template, args);
     }
 
+    /**
+     * Create a new Template expression
+     *
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static PredicateTemplate predicateTemplate(Template template, List<?> args) {
+        return new PredicateTemplate(template, ImmutableList.copyOf(args));
+    }
 
     /**
      * Create a new Template expression
@@ -190,12 +217,27 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
+     * @deprecated Use {@link #template(Class, String, List)} instead.
+     *
      * @param cl type of expression
      * @param template template
      * @param args template parameters
      * @return template expression
      */
+    @Deprecated
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, ImmutableList<?> args) {
+        return template(cl, TemplateFactory.DEFAULT.create(template), args);
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, List<?> args) {
         return template(cl, TemplateFactory.DEFAULT.create(template), args);
     }
 
@@ -214,17 +256,37 @@ public final class ExpressionUtils {
     /**
      * Create a new Template expression
      *
+     * @deprecated Use {@link #template(Class, Template, List)} instead.
+     *
      * @param cl type of expression
      * @param template template
      * @param args template parameters
      * @return template expression
      */
     @SuppressWarnings("unchecked")
+    @Deprecated
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, ImmutableList<?> args) {
         if (cl.equals(Boolean.class)) {
             return (TemplateExpression<T>) new PredicateTemplate(template, args);
         } else {
             return new TemplateExpressionImpl<T>(cl, template, args);
+        }
+    }
+
+    /**
+     * Create a new Template expression
+     *
+     * @param cl type of expression
+     * @param template template
+     * @param args template parameters
+     * @return template expression
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, List<?> args) {
+        if (cl.equals(Boolean.class)) {
+            return (TemplateExpression<T>) new PredicateTemplate(template, ImmutableList.copyOf(args));
+        } else {
+            return new TemplateExpressionImpl<T>(cl, template, ImmutableList.copyOf(args));
         }
     }
 
