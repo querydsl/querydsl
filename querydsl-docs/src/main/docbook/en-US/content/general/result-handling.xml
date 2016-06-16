@@ -71,7 +71,7 @@ List<UserDTO> dtos = query.select(
 
     <programlisting language="java"><![CDATA[
 List<UserDTO> dtos = query.select(
-    Projections.bean(UserDTO.class, user.firstName, user.lastName)).fetch();
+    Projections.constructor(UserDTO.class, user.firstName, user.lastName)).fetch();
 ]]></programlisting>
 
     <para>As an alternative to the generic Constructor expression usage constructors
