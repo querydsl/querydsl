@@ -912,7 +912,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
         }
 
-        if (operator == SQLOps.UNION || operator == SQLOps.UNION_ALL) {
+        if (operator == Ops.SET && args.get(0) instanceof SubQueryExpression) {
+            boolean oldUnion = inUnion;
+            inUnion = true;
+            super.visitOperation(type, SQLOps.UNION, args);
+            inUnion = oldUnion;
+
+        } else if (operator == SQLOps.UNION || operator == SQLOps.UNION_ALL) {
             boolean oldUnion = inUnion;
             inUnion = true;
             super.visitOperation(type, operator, args);

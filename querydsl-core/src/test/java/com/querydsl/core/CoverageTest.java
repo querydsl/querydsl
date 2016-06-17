@@ -115,6 +115,7 @@ public class CoverageTest {
             Ops.CASE_EQ_ELSE,
 
             Ops.LIST,
+            Ops.SET,
             Ops.SINGLETON,
             Ops.COALESCE,
             Ops.ORDINAL, // TODO: add support

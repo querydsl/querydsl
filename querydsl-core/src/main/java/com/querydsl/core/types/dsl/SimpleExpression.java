@@ -236,7 +236,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return this in right
      */
     public BooleanExpression in(Expression<? extends T>... right) {
-        return Expressions.booleanOperation(Ops.IN, mixin, Expressions.list(right));
+        return Expressions.booleanOperation(Ops.IN, mixin, Expressions.set(right));
     }
 
     /**
