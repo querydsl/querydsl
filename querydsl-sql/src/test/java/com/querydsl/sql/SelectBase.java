@@ -1690,6 +1690,18 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @IncludeIn(H2)
+    public void standardTest_turkish() {
+        Locale defaultLocale = Locale.getDefault();
+        Locale.setDefault(new Locale("tr", "TR"));
+        try {
+            standardTest();
+        } finally {
+            Locale.setDefault(defaultLocale);
+        }
+    }
+
+    @Test
     @ExcludeIn(SQLITE)
     public void string() {
         StringExpression str = Expressions.stringTemplate("'  abcd  '");

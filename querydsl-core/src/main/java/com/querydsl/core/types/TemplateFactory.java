@@ -60,7 +60,7 @@ public class TemplateFactory {
                     } else if (arg instanceof Expression) {
                         return ExpressionUtils.operation(String.class, Ops.LOWER, (Expression) arg);
                     } else {
-                        return String.valueOf(arg).toLowerCase(Locale.ENGLISH);
+                        return String.valueOf(arg).toLowerCase();
                     }
                 }
             };
@@ -74,7 +74,7 @@ public class TemplateFactory {
                     } else if (arg instanceof Expression) {
                         return ExpressionUtils.operation(String.class, Ops.UPPER, (Expression) arg);
                     } else {
-                        return String.valueOf(arg).toUpperCase(Locale.ENGLISH);
+                        return String.valueOf(arg).toUpperCase();
                     }
                 }
             };
@@ -103,7 +103,7 @@ public class TemplateFactory {
                         Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, (Expression) arg, PERCENT);
                         return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
                     } else {
-                        return escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH)) + "%";
+                        return escapeForLike(String.valueOf(arg).toLowerCase()) + "%";
                     }
                 }
             };
@@ -132,7 +132,7 @@ public class TemplateFactory {
                         Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
                         return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
                     } else {
-                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH));
+                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase());
                     }
                 }
             };
@@ -163,7 +163,7 @@ public class TemplateFactory {
                         concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, concatenated, PERCENT);
                         return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
                     } else {
-                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase(Locale.ENGLISH)) + "%";
+                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase()) + "%";
                     }
                 }
             };
