@@ -231,7 +231,12 @@ public class TemplateFactory {
                     elements.add(new Template.Operation(index, index2, operator, asString));
                 } else if (m.group(5) != null) {
                     Operator operator = OPERATORS.get(m.group(3));
-                    BigDecimal number = new BigDecimal(m.group(5));
+                    Number number;
+                    if (m.group(5).contains(".")) {
+                        number = new BigDecimal(m.group(5));
+                    } else {
+                        number = Integer.valueOf(m.group(5));
+                    }
                     elements.add(new Template.OperationConst(index, number, operator, asString));
                 } else if (asString) {
                     elements.add(new Template.AsString(index));
