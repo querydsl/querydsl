@@ -174,6 +174,15 @@ public class SQLSerializerTest {
     }
 
     @Test
+    public void crossJoin() {
+        SQLTemplates templates = new DerbyTemplates();
+        templates.setCrossJoin(" cross join ");
+        SQLQuery<?> query = new SQLQuery<Void>(templates);
+        query.from(survey, employee);
+        assertEquals("from SURVEY SURVEY cross join EMPLOYEE EMPLOYEE", query.toString());
+    }
+
+    @Test
     public void keyword_after_dot() {
         SQLQuery<?> query = new SQLQuery<Void>(MySQLTemplates.DEFAULT);
         PathBuilder<Survey> surveyBuilder = new PathBuilder<Survey>(Survey.class, "survey");

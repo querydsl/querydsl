@@ -140,6 +140,8 @@ public class SQLTemplates extends Templates {
 
     private String countStar = "count(*)";
 
+    private String crossJoin = ", ";
+
     private String delete = "delete ";
 
     private String desc = " desc";
@@ -529,6 +531,10 @@ public class SQLTemplates extends Templates {
         return countStar;
     }
 
+    public final String getCrossJoin() {
+        return crossJoin;
+    }
+
     public final String getDelete() {
         return delete;
     }
@@ -584,7 +590,7 @@ public class SQLTemplates extends Templates {
             case FULLJOIN:  return fullJoin;
             case LEFTJOIN:  return leftJoin;
             case RIGHTJOIN: return rightJoin;
-            default:       return ", ";
+            default:        return crossJoin;
         }
     }
 
@@ -977,6 +983,10 @@ public class SQLTemplates extends Templates {
 
     protected void setCountStar(String countStar) {
         this.countStar = countStar;
+    }
+
+    protected void setCrossJoin(String crossJoin) {
+        this.crossJoin = crossJoin;
     }
 
     protected void setDelete(String delete) {
