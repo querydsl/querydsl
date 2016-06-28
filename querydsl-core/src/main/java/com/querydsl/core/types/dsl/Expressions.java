@@ -1601,6 +1601,38 @@ public final class Expressions {
     }
 
     /**
+     * Combine the given expressions into a set expression
+     *
+     * @param clazz type of list expression
+     * @param exprs list elements
+     * @return list expression
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> SimpleExpression<T> set(Class<T> clazz, SimpleExpression<?>... exprs) {
+        SimpleExpression<T> rv = (SimpleExpression<T>) exprs[0];
+        for (int i = 1; i < exprs.length; i++) {
+            rv = new SimpleOperation<T>(clazz, Ops.SET, rv, exprs[i]);
+        }
+        return rv;
+    }
+
+    /**
+     * Combine the given expressions into a set expression
+     *
+     * @param clazz type of list expression
+     * @param exprs list elements
+     * @return list expression
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Expression<T> set(Class<T> clazz, Expression<?>... exprs) {
+        Expression<T> rv = (Expression<T>) exprs[0];
+        for (int i = 1; i < exprs.length; i++) {
+            rv = new SimpleOperation<T>(clazz, Ops.SET, rv, exprs[i]);
+        }
+        return rv;
+    }
+
+    /**
      * Combine the given expressions into a list expression
      *
      * @param exprs list elements
@@ -1608,6 +1640,16 @@ public final class Expressions {
      */
     public static Expression<Tuple> list(Expression<?>... exprs) {
         return list(Tuple.class, exprs);
+    }
+
+    /**
+     * Combine the given expressions into a set expression
+     *
+     * @param exprs list elements
+     * @return list expression
+     */
+    public static Expression<Tuple> set(Expression<?>... exprs) {
+        return set(Tuple.class, exprs);
     }
 
     /**

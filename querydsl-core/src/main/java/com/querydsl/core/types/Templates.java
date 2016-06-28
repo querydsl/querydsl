@@ -70,6 +70,7 @@ public class Templates {
         //CHECKSTYLE:OFF
 
         add(Ops.LIST, "{0}, {1}", Precedence.LIST);
+        add(Ops.SET, "{0}, {1}", Precedence.LIST);
         add(Ops.SINGLETON, "{0}", Precedence.LIST);
         add(Ops.WRAPPED, "({0})");
         add(Ops.ORDER, "order()");

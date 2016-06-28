@@ -34,6 +34,7 @@ public enum Ops implements Operator {
     STRING_CAST(String.class),
     ALIAS(Object.class),
     LIST(Object.class),
+    SET(Object.class),
     SINGLETON(Object.class),
     ORDINAL(Integer.class),
     WRAPPED(Object.class),
