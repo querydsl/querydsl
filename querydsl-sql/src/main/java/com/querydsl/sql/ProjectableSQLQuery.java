@@ -171,6 +171,11 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     }
 
     @Override
+    public <E> Q fullJoin(EntityPath<E> target, Path<E> alias) {
+        return queryMixin.fullJoin(target, alias);
+    }
+
+    @Override
     public <E> Q fullJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.fullJoin(target, alias);
     }
@@ -188,6 +193,11 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     @Override
     public Q innerJoin(EntityPath<?> target) {
         return queryMixin.innerJoin(target);
+    }
+
+    @Override
+    public <E> Q innerJoin(EntityPath<E> target, Path<E> alias) {
+        return queryMixin.innerJoin(target, alias);
     }
 
     @Override
@@ -211,6 +221,11 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     }
 
     @Override
+    public <E> Q join(EntityPath<E> target, Path<E> alias) {
+        return queryMixin.join(target, alias);
+    }
+
+    @Override
     public <E> Q join(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.join(target, alias);
     }
@@ -231,6 +246,11 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     }
 
     @Override
+    public <E> Q leftJoin(EntityPath<E> target, Path<E> alias) {
+        return queryMixin.leftJoin(target, alias);
+    }
+
+    @Override
     public <E> Q leftJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.leftJoin(target, alias);
     }
@@ -248,6 +268,11 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     @Override
     public Q rightJoin(EntityPath<?> target) {
         return queryMixin.rightJoin(target);
+    }
+
+    @Override
+    public <E> Q rightJoin(EntityPath<E> target, Path<E> alias) {
+        return queryMixin.rightJoin(target, alias);
     }
 
     @Override

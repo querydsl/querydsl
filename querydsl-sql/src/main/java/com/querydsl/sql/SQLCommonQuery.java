@@ -106,6 +106,16 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param alias alias
      * @return the current object
      */
+    <E> Q fullJoin(EntityPath<E> o, Path<E> alias);
+
+    /**
+     * Adds a full join to the given target
+     *
+     * @param <E>
+     * @param o full join target
+     * @param alias alias
+     * @return the current object
+     */
     <E> Q fullJoin(RelationalFunctionCall<E> o, Path<E> alias);
 
     /**
@@ -134,6 +144,16 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return the current object
      */
     Q innerJoin(EntityPath<?> o);
+
+    /**
+     * Adds an inner join to the given target
+     *
+     * @param <E>
+     * @param o
+     * @param alias alias
+     * @return the current object
+     */
+    <E> Q innerJoin(EntityPath<E> o, Path<E> alias);
 
     /**
      * Adds a full join to the given target
@@ -180,6 +200,16 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param alias alias
      * @return the current object
      */
+    <E> Q join(EntityPath<E> o, Path<E> alias);
+
+    /**
+     * Adds a full join to the given target
+     *
+     * @param <E>
+     * @param o join target
+     * @param alias alias
+     * @return the current object
+     */
     <E> Q join(RelationalFunctionCall<E> o, Path<E> alias);
 
     /**
@@ -208,6 +238,16 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return the current object
      */
     Q leftJoin(EntityPath<?> o);
+
+    /**
+     * Adds a full join to the given target
+     *
+     * @param <E>
+     * @param o relational function call
+     * @param alias alias
+     * @return the current object
+     */
+    <E> Q leftJoin(EntityPath<E> o, Path<E> alias);
 
     /**
      * Adds a full join to the given target
@@ -253,6 +293,16 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return the current object
      */
     Q rightJoin(EntityPath<?> o);
+
+    /**
+     * Adds a full join to the given target
+     *
+     * @param <E>
+     * @param o relational function call
+     * @param alias alias
+     * @return the current object
+     */
+    <E> Q rightJoin(EntityPath<E> o, Path<E> alias);
 
     /**
      * Adds a full join to the given target
