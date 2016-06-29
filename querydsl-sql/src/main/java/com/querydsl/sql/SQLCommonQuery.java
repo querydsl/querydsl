@@ -149,7 +149,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds an inner join to the given target
      *
      * @param <E>
-     * @param o
+     * @param o inner join target
      * @param alias alias
      * @return the current object
      */
@@ -243,7 +243,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a full join to the given target
      *
      * @param <E>
-     * @param o relational function call
+     * @param o left join target
      * @param alias alias
      * @return the current object
      */
@@ -298,7 +298,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * Adds a full join to the given target
      *
      * @param <E>
-     * @param o relational function call
+     * @param o right join target
      * @param alias alias
      * @return the current object
      */
