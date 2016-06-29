@@ -13,13 +13,13 @@
  */
 package com.querydsl.core.support;
 
-import javax.annotation.Nonnegative;
-
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Predicate;
+
+import javax.annotation.Nonnegative;
 
 /**
  * {@code QueryBase} provides a stub for Query implementations
@@ -30,9 +30,9 @@ import com.querydsl.core.types.Predicate;
  */
 public abstract class QueryBase<Q extends QueryBase<Q>> {
 
-    public static final String MDC_QUERY = "querydsl.query";
+    public static final String MDC_QUERY = "querydsl_query";
 
-    public static final String MDC_PARAMETERS = "querydsl.parameters";
+    public static final String MDC_PARAMETERS = "querydsl_parameters";
 
     protected final QueryMixin<Q> queryMixin;
 
