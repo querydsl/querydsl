@@ -106,6 +106,16 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param alias alias
      * @return the current object
      */
+    <E> Q fullJoin(EntityPath<E> o, Path<E> alias);
+
+    /**
+     * Adds a full join to the given target
+     *
+     * @param <E>
+     * @param o full join target
+     * @param alias alias
+     * @return the current object
+     */
     <E> Q fullJoin(RelationalFunctionCall<E> o, Path<E> alias);
 
     /**
@@ -136,7 +146,17 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     Q innerJoin(EntityPath<?> o);
 
     /**
-     * Adds a full join to the given target
+     * Adds an inner join to the given target
+     *
+     * @param <E>
+     * @param o inner join target
+     * @param alias alias
+     * @return the current object
+     */
+    <E> Q innerJoin(EntityPath<E> o, Path<E> alias);
+
+    /**
+     * Adds a inner join to the given target
      *
      * @param <E>
      * @param o relational function call
@@ -173,7 +193,17 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     Q join(EntityPath<?> o);
 
     /**
-     * Adds a full join to the given target
+     * Adds a join to the given target
+     *
+     * @param <E>
+     * @param o join target
+     * @param alias alias
+     * @return the current object
+     */
+    <E> Q join(EntityPath<E> o, Path<E> alias);
+
+    /**
+     * Adds a join to the given target
      *
      * @param <E>
      * @param o join target
@@ -210,7 +240,17 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     Q leftJoin(EntityPath<?> o);
 
     /**
-     * Adds a full join to the given target
+     * Adds a left join to the given target
+     *
+     * @param <E>
+     * @param o left join target
+     * @param alias alias
+     * @return the current object
+     */
+    <E> Q leftJoin(EntityPath<E> o, Path<E> alias);
+
+    /**
+     * Adds a left join to the given target
      *
      * @param <E>
      * @param o relational function call
@@ -253,6 +293,16 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return the current object
      */
     Q rightJoin(EntityPath<?> o);
+
+    /**
+     * Adds a right join to the given target
+     *
+     * @param <E>
+     * @param o right join target
+     * @param alias alias
+     * @return the current object
+     */
+    <E> Q rightJoin(EntityPath<E> o, Path<E> alias);
 
     /**
      * Adds a full join to the given target
