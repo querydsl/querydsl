@@ -13,8 +13,6 @@
  */
 package com.querydsl.core;
 
-import java.util.Locale;
-
 import javax.annotation.Nullable;
 
 import com.querydsl.core.types.Constant;
@@ -118,7 +116,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Override
     public StringExpression lower() {
         if (lower == null) {
-            lower = new StringConstant(constant.toLowerCase(Locale.ENGLISH));
+            lower = new StringConstant(constant.toLowerCase());
         }
         return lower;
     }
@@ -178,7 +176,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Override
     public StringExpression upper() {
         if (upper == null) {
-            upper = new StringConstant(constant.toUpperCase(Locale.ENGLISH));
+            upper = new StringConstant(constant.toUpperCase());
         }
         return upper;
     }

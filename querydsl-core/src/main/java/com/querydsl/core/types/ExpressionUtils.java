@@ -900,7 +900,7 @@ public final class ExpressionUtils {
     public static Expression<String> toLower(Expression<String> stringExpression) {
         if (stringExpression instanceof Constant) {
             Constant<String> constantExpression = (Constant<String>) stringExpression;
-            return ConstantImpl.create(constantExpression.getConstant().toLowerCase(Locale.ENGLISH));
+            return ConstantImpl.create(constantExpression.getConstant().toLowerCase());
         } else {
             return operation(String.class, Ops.LOWER, stringExpression);
         }
