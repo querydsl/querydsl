@@ -483,6 +483,19 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
+     * Create a {@code locate(str, this, start)} expression
+     *
+     * <p>Get the position of the given String in this String, the first position is 1</p>
+     *
+     * @param str string
+     * @param start start
+     * @return locate(str, this, start)
+     */
+    public NumberExpression<Integer> locate(String str, Expression<Integer> start) {
+        return Expressions.numberOperation(Integer.class, Ops.StringOps.LOCATE2, ConstantImpl.create(str), mixin, start);
+    }
+
+    /**
      * Create a {@code this.toLowerCase()} expression
      *
      * <p>Get the lower case form</p>

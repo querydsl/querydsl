@@ -1699,6 +1699,24 @@ public class SelectBase extends AbstractBaseTest {
         assertEquals(Integer.valueOf(0), firstResult(str.locate("a", 4)));
         assertEquals(Integer.valueOf(4), firstResult(str.locate("b", 2)));
         assertEquals("  abcd",           firstResult(StringExpressions.rtrim(str)));
+        assertEquals("abc",              firstResult(str.substring(2, 5)));
+    }
+
+    @Test
+    @ExcludeIn(SQLITE)
+    public void string_withTemplate() {
+        StringExpression str = Expressions.stringTemplate("'  abcd  '");
+
+        NumberExpression<Integer> four = Expressions.numberTemplate(Integer.class, "4");
+        NumberExpression<Integer> two = Expressions.numberTemplate(Integer.class, "2");
+        NumberExpression<Integer> five = Expressions.numberTemplate(Integer.class, "5");
+
+        assertEquals("abcd  ",           firstResult(StringExpressions.ltrim(str)));
+        assertEquals(Integer.valueOf(3), firstResult(str.locate("a")));
+        assertEquals(Integer.valueOf(0), firstResult(str.locate("a", four)));
+        assertEquals(Integer.valueOf(4), firstResult(str.locate("b", two)));
+        assertEquals("  abcd",           firstResult(StringExpressions.rtrim(str)));
+        assertEquals("abc",              firstResult(str.substring(two, five)));
     }
 
     @Test

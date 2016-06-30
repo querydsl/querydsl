@@ -284,15 +284,20 @@ public final class Template implements Serializable {
 
         private final int index1;
 
-        private final BigDecimal arg2;
+        private final Number arg2;
 
-        private final Expression<BigDecimal> expr2;
+        private final Expression<Number> expr2;
 
         private final Operator operator;
 
         private final boolean asString;
 
+        @Deprecated
         public OperationConst(int index1, BigDecimal arg2, Operator operator, boolean asString) {
+            this(index1, (Number) arg2, operator, asString);
+        }
+
+        public OperationConst(int index1, Number arg2, Operator operator, boolean asString) {
             this.index1 = index1;
             this.arg2 = arg2;
             this.expr2 = Expressions.constant(arg2);
