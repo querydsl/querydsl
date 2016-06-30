@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.querydsl.core.QueryFlag;
 import com.querydsl.sql.KeyAccessorsTest.QEmployee;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLTemplates;
@@ -28,6 +29,21 @@ public class SQLInsertClauseTest {
         SQLBindings sql = insert.getSQL().get(0);
         assertEquals("insert into EMPLOYEE (ID)\nvalues (?)", sql.getSQL());
         assertEquals(ImmutableList.of(1), sql.getBindings());
+    }
+
+    @Test
+    public void bulk() {
+        QEmployee emp1 = new QEmployee("emp1");
+        SQLInsertClause insert = new SQLInsertClause(null, SQLTemplates.DEFAULT, emp1);
+        insert.set(emp1.id, 1);
+        insert.addBatch();
+        insert.set(emp1.id, 2);
+        insert.addBatch();
+        insert.addFlag(QueryFlag.Position.END, " on duplicate key ignore");
+        insert.setBatchToBulk(true);
+        assertEquals("insert into EMPLOYEE (ID)\n" +
+                "values (?), (?) on duplicate key ignore", insert.getSQL().get(0).getSQL());
+
     }
 
     @Test

@@ -461,6 +461,10 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             SQLSerializer serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, columns, values, subQuery);
             return ImmutableList.of(createBindings(metadata, serializer));
+        } else if (batchToBulk) {
+            SQLSerializer serializer = createSerializer();
+            serializer.serializeInsert(metadata, entity, batches);
+            return ImmutableList.of(createBindings(metadata, serializer));
         } else {
             ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
             for (SQLInsertBatch batch : batches) {
@@ -525,7 +529,11 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
     @Override
     public String toString() {
         SQLSerializer serializer = createSerializer();
-        serializer.serializeInsert(metadata, entity, columns, values, subQuery);
+        if (!batches.isEmpty() && batchToBulk) {
+            serializer.serializeInsert(metadata, entity, batches);
+        } else {
+            serializer.serializeInsert(metadata, entity, columns, values, subQuery);
+        }
         return serializer.toString();
     }
 

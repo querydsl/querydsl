@@ -891,7 +891,11 @@ public class SQLTemplates extends Templates {
      */
     public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity,
                                 List<SQLInsertBatch> batches, SQLSerializer context) {
-       context.serializeForInsert(metadata, entity, batches);
+        context.serializeForInsert(metadata, entity, batches);
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
     }
 
     /**
