@@ -156,7 +156,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     <E> Q innerJoin(EntityPath<E> o, Path<E> alias);
 
     /**
-     * Adds a full join to the given target
+     * Adds a inner join to the given target
      *
      * @param <E>
      * @param o relational function call
@@ -193,7 +193,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     Q join(EntityPath<?> o);
 
     /**
-     * Adds a full join to the given target
+     * Adds a join to the given target
      *
      * @param <E>
      * @param o join target
@@ -203,7 +203,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     <E> Q join(EntityPath<E> o, Path<E> alias);
 
     /**
-     * Adds a full join to the given target
+     * Adds a join to the given target
      *
      * @param <E>
      * @param o join target
@@ -240,7 +240,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     Q leftJoin(EntityPath<?> o);
 
     /**
-     * Adds a full join to the given target
+     * Adds a left join to the given target
      *
      * @param <E>
      * @param o left join target
@@ -250,7 +250,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     <E> Q leftJoin(EntityPath<E> o, Path<E> alias);
 
     /**
-     * Adds a full join to the given target
+     * Adds a left join to the given target
      *
      * @param <E>
      * @param o relational function call
@@ -295,7 +295,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     Q rightJoin(EntityPath<?> o);
 
     /**
-     * Adds a full join to the given target
+     * Adds a right join to the given target
      *
      * @param <E>
      * @param o right join target

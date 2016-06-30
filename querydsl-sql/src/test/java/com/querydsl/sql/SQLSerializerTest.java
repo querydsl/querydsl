@@ -120,6 +120,66 @@ public class SQLSerializerTest {
     }
 
     @Test
+    public void fullJoinWithoutCodeGeneration() {
+        SQLQuery<?> sqlQuery = queryForMYSQLTemplate();
+
+        PathBuilder<Object> customerPath = new PathBuilder<Object>(Object.class, "customer");
+        PathBuilder<Object> deptPath = new PathBuilder<Object>(Object.class, "department");
+        Path<Object> deptAliasPath = new PathBuilder<Object>(Object.class, "d");
+        sqlQuery = sqlQuery.from(customerPath.as("c"));
+        NumberPath<Long> idPath = Expressions.numberPath(Long.class, deptAliasPath, "id");
+
+        sqlQuery = sqlQuery.fullJoin(deptPath, deptAliasPath).select(idPath);
+
+        assertEquals("select d.id from customer as c full join department as d", sqlQuery.toString());
+    }
+
+    @Test
+    public void innerJoinWithoutCodeGeneration() {
+        SQLQuery<?> sqlQuery = queryForMYSQLTemplate();
+
+        PathBuilder<Object> customerPath = new PathBuilder<Object>(Object.class, "customer");
+        PathBuilder<Object> deptPath = new PathBuilder<Object>(Object.class, "department");
+        Path<Object> deptAliasPath = new PathBuilder<Object>(Object.class, "d");
+        sqlQuery = sqlQuery.from(customerPath.as("c"));
+        NumberPath<Long> idPath = Expressions.numberPath(Long.class, deptAliasPath, "id");
+
+        sqlQuery = sqlQuery.innerJoin(deptPath, deptAliasPath).select(idPath);
+
+        assertEquals("select d.id from customer as c inner join department as d", sqlQuery.toString());
+    }
+
+    @Test
+    public void joinWithoutCodeGeneration() {
+        SQLQuery<?> sqlQuery = queryForMYSQLTemplate();
+
+        PathBuilder<Object> customerPath = new PathBuilder<Object>(Object.class, "customer");
+        PathBuilder<Object> deptPath = new PathBuilder<Object>(Object.class, "department");
+        Path<Object> deptAliasPath = new PathBuilder<Object>(Object.class, "d");
+        sqlQuery = sqlQuery.from(customerPath.as("c"));
+        NumberPath<Long> idPath = Expressions.numberPath(Long.class, deptAliasPath, "id");
+
+        sqlQuery = sqlQuery.join(deptPath, deptAliasPath).select(idPath);
+
+        assertEquals("select d.id from customer as c join department as d", sqlQuery.toString());
+    }
+
+    @Test
+    public void leftJoinWithoutCodeGeneration() {
+        SQLQuery<?> sqlQuery = queryForMYSQLTemplate();
+
+        PathBuilder<Object> customerPath = new PathBuilder<Object>(Object.class, "customer");
+        PathBuilder<Object> deptPath = new PathBuilder<Object>(Object.class, "department");
+        Path<Object> deptAliasPath = new PathBuilder<Object>(Object.class, "d");
+        sqlQuery = sqlQuery.from(customerPath.as("c"));
+        NumberPath<Long> idPath = Expressions.numberPath(Long.class, deptAliasPath, "id");
+
+        sqlQuery = sqlQuery.leftJoin(deptPath, deptAliasPath).select(idPath);
+
+        assertEquals("select d.id from customer as c left join department as d", sqlQuery.toString());
+    }
+
+    @Test
     public void or_in() {
         StringPath path = Expressions.stringPath("str");
         Expression<?> expr = ExpressionUtils.anyOf(
@@ -356,6 +416,10 @@ public class SQLSerializerTest {
 
     private SQLQuery<?> query() {
         return new SQLQuery<Void>();
+    }
+
+    private SQLQuery<?> queryForMYSQLTemplate() {
+        return new SQLQuery<Void>(MySQLTemplates.builder().printSchema().newLineToSingleSpace().build());
     }
 
 }
