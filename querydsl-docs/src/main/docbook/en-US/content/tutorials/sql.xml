@@ -661,7 +661,7 @@ queryFactory.select(customer.firstName, customer.lastName, company.name)
     <programlisting language="java"><![CDATA[
 queryFactory.select(customer.firstName, customer.lastName, company.name)
     .from(customer)
-    .leftJoin(company).on(customer.company.eq(company.id))
+    .leftJoin(company).on(customer.company.eq(company))
     .fetch();
 ]]></programlisting>
 
