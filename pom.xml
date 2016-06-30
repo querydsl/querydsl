@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>3.7.4.BUILD-SNAPSHOT</version>
+  <version>3.7.4</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -463,7 +463,14 @@
         <module>querydsl-scala</module>
       </modules>
     </profile>
-    
+
+    <profile>
+      <id>docs</id>
+      <modules>
+        <module>querydsl-docs</module>
+      </modules>
+    </profile>
+
     <profile>
       <id>hibernate-search</id>
       <modules>
