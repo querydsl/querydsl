@@ -1,5 +1,5 @@
 approve_by_comment: true
-approve_regex: '(?i)^Approved'
+approve_regex: '(?i)^(approved|looks good|:shipit:|:\+1:)'
 reject_regex: '(?i)^Rejected'
 reset_on_push: false
 always_pending:
