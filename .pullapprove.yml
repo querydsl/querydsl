@@ -1,0 +1,14 @@
+approve_by_comment: true
+approve_regex: (?i)^Approved
+reject_regex: (?i)^Rejected
+reset_on_push: false
+always_pending:
+  labels: progress
+reviewers:
+  members:
+    - timowest
+    - johnktims
+    - Shredder121
+    - robertandrewbain
+  name: pullapprove
+  required: 1
