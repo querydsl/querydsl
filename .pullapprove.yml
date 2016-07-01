@@ -5,10 +5,6 @@ reset_on_push: false
 always_pending:
   labels: progress
 reviewers:
-  members:
-    - timowest
-    - johnktims
-    - Shredder121
-    - robertandrewbain
-  name: pullapprove
+  name: querydsl team
+  teams: developers
   required: 1
