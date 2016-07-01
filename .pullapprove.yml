@@ -1,6 +1,6 @@
 approve_by_comment: true
-approve_regex: (?i)^Approved
-reject_regex: (?i)^Rejected
+approve_regex: '(?i)^Approved'
+reject_regex: '(?i)^Rejected'
 reset_on_push: false
 always_pending:
   labels: progress
