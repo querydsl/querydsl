@@ -132,10 +132,9 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(TemplateExpression<?> expr, C context) {
-        ImmutableList.Builder builder = ImmutableList.builder();
+        ImmutableList.Builder<Object> builder = ImmutableList.builder();
         for (Object arg : expr.getArgs()) {
             if (arg instanceof Expression) {
                 builder.add(((Expression<?>) arg).accept(this, context));
@@ -143,7 +142,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
                 builder.add(arg);
             }
         }
-        ImmutableList args = builder.build();
+        List<? extends Object> args = builder.build();
         if (args.equals(expr.getArgs())) {
             return expr;
         } else {

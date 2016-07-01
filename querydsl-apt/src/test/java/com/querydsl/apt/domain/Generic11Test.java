@@ -14,6 +14,7 @@ public class Generic11Test {
     public static class A<T extends WhatEver> { }
 
     @Entity
+    @SuppressWarnings("rawtypes") //expected
     public static class B extends A { } // note the missing type parameter
 
 
@@ -25,6 +26,7 @@ public class Generic11Test {
     public static class A2<T extends WhatEver2> { }
 
     @Entity
+    @SuppressWarnings("rawtypes") //expected
     public static class B2 extends A2 { } // note the missing type parameter
 
     @Test

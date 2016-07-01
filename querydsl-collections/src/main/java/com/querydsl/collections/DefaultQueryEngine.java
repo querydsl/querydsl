@@ -207,9 +207,9 @@ public class DefaultQueryEngine implements QueryEngine {
             orderByExpr[i] = (Expression) orderBy.get(i).getTarget();
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
         }
-        Expression<?> expr = new ArrayConstructorExpression<Object>(Object[].class, orderByExpr);
-        Evaluator orderEvaluator = evaluatorFactory.create(metadata, sources, expr);
-        Collections.sort(list, new MultiComparator(orderEvaluator, directions));
+        Expression<Object[]> expr = new ArrayConstructorExpression<Object>(Object[].class, orderByExpr);
+        Evaluator<Object[]> orderEvaluator = evaluatorFactory.create(metadata, sources, expr);
+        Collections.sort(list, new MultiComparator<Object>(orderEvaluator, directions));
     }
 
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
@@ -220,9 +220,9 @@ public class DefaultQueryEngine implements QueryEngine {
             aggregator = aggregation.getOperator();
             projection = aggregation.getArg(0);
         }
-        Evaluator projectionEvaluator = evaluatorFactory.create(metadata, sources, projection);
+        Evaluator<?> projectionEvaluator = evaluatorFactory.create(metadata, sources, projection);
         EvaluatorFunction transformer = new EvaluatorFunction(projectionEvaluator);
-        List target = new ArrayList();
+        List<Number> target = new ArrayList<Number>();
         Iterators.addAll(target, Iterators.transform(list.iterator(), transformer));
         if (aggregator != null) {
             return ImmutableList.of(CollQueryFunctions.aggregate(target, projection, aggregator));

@@ -23,10 +23,9 @@ import com.querydsl.jpa.JPQLQuery;
 
 public class PackagelessEntityTest {
 
-    @SuppressWarnings("unchecked")
     @Test
     public void packageLess_path() {
-        PathBuilder<PackagelessEntityTest> builder = new PathBuilder(PackagelessEntityTest.class,"entity");
+        PathBuilder<PackagelessEntityTest> builder = new PathBuilder<PackagelessEntityTest>(PackagelessEntityTest.class,"entity");
         JPQLQuery<?> query = select(builder).from(builder);
         assertEquals("select entity\nfrom PackagelessEntityTest entity", query.toString());
     }

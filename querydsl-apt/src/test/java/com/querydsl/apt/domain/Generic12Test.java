@@ -51,6 +51,7 @@ public class Generic12Test {
 
     @Entity
     @DiscriminatorValue("SUBJECT")
+    @SuppressWarnings("rawtypes") //expected
     public static class SubjectRole extends Role { // missing type param, should be Role<SubjectPermission>
         // some constructors
     }
