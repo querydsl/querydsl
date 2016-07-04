@@ -356,10 +356,15 @@ public class MetaDataExporter {
                 Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
                         .getImportedKeys(md, catalog, schema, tableName);
                 if (!foreignKeyData.isEmpty()) {
+                    Collection<ForeignKeyData> foreignKeysToGenerate = new HashSet<ForeignKeyData>();
                     for (ForeignKeyData fkd : foreignKeyData.values()) {
                         if (namingStrategy.shouldGenerateForeignKey(schemaAndTable, fkd)) {
-                            classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+                            foreignKeysToGenerate.add(fkd);
                         }
+                    }
+
+                    if (!foreignKeysToGenerate.isEmpty()) {
+                        classModel.getData().put(ForeignKeyData.class, foreignKeysToGenerate);
                     }
                 }
             }
