@@ -4,8 +4,10 @@ approve_regex: '(?i)^(approved|looks good|:shipit:|:\+1:)'
 reject_regex: '(?i)^Rejected'
 reset_on_push: false
 always_pending:
-  labels: progress
+  labels:
+  - progress
 reviewers:
-  name: querydsl team
-  teams: developers
-  required: 1
+  - name: querydsl team
+    teams:
+    -  developers
+    required: 1
