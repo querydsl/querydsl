@@ -6,6 +6,7 @@ reset_on_push: false
 always_pending:
   labels:
   - progress
+  explanation: 'This PR is a work in progress'
 reviewers:
   - name: querydsl team
     teams:
