@@ -128,9 +128,11 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
     @SuppressWarnings("unchecked")
     public T newInstance(Object... args) {
         try {
-            if (constructor == null) {
-                constructor = getConstructor(getType(), parameterTypes);
-                transformers = getTransformers(constructor);
+            synchronized(this){
+                if (constructor == null) {
+                    constructor = getConstructor(getType(), parameterTypes);
+                    transformers = getTransformers(constructor);
+                }
             }
             for (Function<Object[], Object[]> transformer : transformers) {
                 args = transformer.apply(args);
