@@ -20,6 +20,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import static com.mysema.query.util.ConstructorUtils.*;
@@ -59,10 +61,9 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
 
     private final Class<?>[] parameterTypes;
 
-    @Nullable
-    private transient Constructor<?> constructor;
+    private final transient Constructor<?> constructor;
 
-    private transient Iterable<Function<Object[], Object[]>> transformers;
+    private final transient Iterable<Function<Object[], Object[]>> transformers;
 
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, ImmutableList.copyOf(args));
@@ -70,8 +71,14 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
 
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
         super(type);
-        this.parameterTypes = getConstructorParameters(type, paramTypes).clone();
-        this.args = args;
+        try {
+            this.parameterTypes = getConstructorParameters(type, paramTypes).clone();
+            this.args = args;
+            this.constructor = getConstructor(getType(), parameterTypes);
+            this.transformers = getTransformers(constructor);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     /**
@@ -121,17 +128,11 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
     @SuppressWarnings("unchecked")
     public T newInstance(Object... args) {
         try {
-            if (constructor == null) {
-                constructor = getConstructor(getType(), parameterTypes);
-                transformers = getTransformers(constructor);
-            }
             for (Function<Object[], Object[]> transformer : transformers) {
                 args = transformer.apply(args);
             }
             return (T) constructor.newInstance(args);
         } catch (SecurityException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (NoSuchMethodException e) {
             throw new ExpressionException(e.getMessage(), e);
         } catch (InstantiationException e) {
             throw new ExpressionException(e.getMessage(), e);
