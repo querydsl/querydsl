@@ -195,7 +195,7 @@ public final class CollQueryFunctions {
     }
 
     public static <T> Collection<T> leftJoin(Collection<T> coll) {
-        if (coll.isEmpty()) {
+        if (coll == null || coll.isEmpty()) {
             @SuppressWarnings("unchecked") // List only contains null
             Collection<T> rv = (Collection<T>) nullList;
             return rv;

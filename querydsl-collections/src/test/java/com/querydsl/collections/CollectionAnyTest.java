@@ -10,6 +10,15 @@ import org.junit.Test;
 public class CollectionAnyTest extends AbstractQueryTest {
 
     @Test
+    public void any_null() {
+        Cat a = new Cat("a");
+        a.setKittens(null);
+
+        assertEquals(0, CollQueryFactory.from(cat, Arrays.asList(a))
+                .where(cat.kittens.any().name.startsWith("a")).fetchCount());
+    }
+
+    @Test
     public void any_in_projection() {
         Cat a = new Cat("a");
         Cat aa = new Cat("aa");
