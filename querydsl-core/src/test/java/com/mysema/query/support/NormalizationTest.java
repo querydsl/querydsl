@@ -32,53 +32,53 @@ public class NormalizationTest {
 
     @Test
     public void Arithmetic() {
-        assertEquals("3", Normalization.normalize("1 - 2 + 4"));
+        assertNormalized("3", "1 - 2 + 4");
     }
 
     @Test
     public void Normalize_Addition() {
-        assertEquals("3", Normalization.normalize("1+2"));
-        assertEquals("where 3 = 3", Normalization.normalize("where 1+2 = 3"));
-        assertEquals("where 3.3 = 3.3", Normalization.normalize("where 1.1+2.2 = 3.3"));
-        assertEquals("where 3.3 = 3.3", Normalization.normalize("where 1.1 + 2.2 = 3.3"));
+        assertNormalized("3", "1+2");
+        assertNormalized("where 3 = 3", "where 1+2 = 3");
+        assertNormalized("where 3.3 = 3.3", "where 1.1+2.2 = 3.3");
+        assertNormalized("where 3.3 = 3.3", "where 1.1 + 2.2 = 3.3");
     }
 
     @Test
     public void Normalize_Subtraction() {
-        assertEquals("3", Normalization.normalize("5-2"));
-        assertEquals("where 3 = 3", Normalization.normalize("where 5-2 = 3"));
-        assertEquals("where 3.3 = 3.3", Normalization.normalize("where 5.5-2.2 = 3.3"));
-        assertEquals("where 3.3 = 3.3", Normalization.normalize("where 5.5 - 2.2 = 3.3"));
+        assertNormalized("3", "5-2");
+        assertNormalized("where 3 = 3", "where 5-2 = 3");
+        assertNormalized("where 3.3 = 3.3", "where 5.5-2.2 = 3.3");
+        assertNormalized("where 3.3 = 3.3", "where 5.5 - 2.2 = 3.3");
     }
 
     @Test
     public void Normalize_Multiplication() {
-        assertEquals("10", Normalization.normalize("5*2"));
-        assertEquals("where 10 = 10", Normalization.normalize("where 5*2 = 10"));
-        assertEquals("where 11 = 11", Normalization.normalize("where 5.5*2 = 11"));
-        assertEquals("where 10.8 = 10.8", Normalization.normalize("where 5.4 * 2 = 10.8"));
-        assertEquals("where 9 = 9 and 13 = 13", Normalization.normalize("where 2 * 3 + 3 = 9 and 5 + 4 * 2 = 13"));
+        assertNormalized("10", "5*2");
+        assertNormalized("where 10 = 10", "where 5*2 = 10");
+        assertNormalized("where 11 = 11", "where 5.5*2 = 11");
+        assertNormalized("where 10.8 = 10.8", "where 5.4 * 2 = 10.8");
+        assertNormalized("where 9 = 9 and 13 = 13", "where 2 * 3 + 3 = 9 and 5 + 4 * 2 = 13");
     }
 
     @Test
     public void Normalize_Division() {
-        assertEquals("2.5", Normalization.normalize("5/2"));
-        assertEquals("where 2.5 = 2.5", Normalization.normalize("where 5/2 = 2.5"));
-        assertEquals("where 2.6 = 2.6", Normalization.normalize("where 5.2/2 = 2.6"));
-        assertEquals("where 2.6 = 2.6", Normalization.normalize("where 5.2 / 2 = 2.6"));
+        assertNormalized("2.5", "5/2");
+        assertNormalized("where 2.5 = 2.5", "where 5/2 = 2.5");
+        assertNormalized("where 2.6 = 2.6", "where 5.2/2 = 2.6");
+        assertNormalized("where 2.6 = 2.6", "where 5.2 / 2 = 2.6");
     }
 
     @Test
     public void Normalize_Modulo() {
-        assertEquals("1", Normalization.normalize("4%3"));
-        assertEquals("3", Normalization.normalize("2 + 4%3"));
+        assertNormalized("1", "4%3");
+        assertNormalized("3", "2 + 4%3");
     }
 
     @Test
     public void Mixed() {
-        assertEquals("13", Normalization.normalize("2 * 5 + 3"));
-        assertEquals("17", Normalization.normalize("2 + 5 * 3"));
-        assertEquals("-2.5", Normalization.normalize("2.5 * -1"));
+        assertNormalized("13", "2 * 5 + 3");
+        assertNormalized("17", "2 + 5 * 3");
+        assertNormalized("-2.5", "2.5 * -1");
         assertUntouched("hours * 2 + 3");
         assertUntouched("2 + 3 * hours");
         assertUntouched("2 + 3 * 0hours");
@@ -88,7 +88,7 @@ public class NormalizationTest {
 
     @Test
     public void PI() {
-        assertEquals("0.1591549431", Normalization.normalize("0.5 / " + Math.PI));
+        assertNormalized("0.1591549431", "0.5 / " + Math.PI);
     }
 
     @Test
@@ -103,14 +103,14 @@ public class NormalizationTest {
 
     @Test
     public void Math1() {
-        assertEquals("fn(1)", Normalization.normalize("fn(-1+2)"));
-        assertEquals("fn(3)", Normalization.normalize("fn(1--2)"));
+        assertNormalized("fn(1)", "fn(-1+2)");
+        assertNormalized("fn(3)", "fn(1--2)");
     }
 
     @Test
     public void Substring() {
-        assertEquals("substring(cat.name,1,locate(?1,cat.name)-1-2)",
-                Normalization.normalize("substring(cat.name,0+1,locate(?1,cat.name)-1-2)"));
+        assertNormalized("substring(cat.name,1,locate(?1,cat.name)-1-2)",
+                "substring(cat.name,0+1,locate(?1,cat.name)-1-2)");
     }
 
     @Test
@@ -129,7 +129,11 @@ public class NormalizationTest {
         assertUntouched("?1 + 1");
     }
 
-    private static void assertUntouched(String string) {
-        assertEquals(string, Normalization.normalize(string));
+    private static void assertUntouched(String untouched) {
+        assertNormalized(untouched, untouched);
+    }
+
+    private static void assertNormalized(String expected, String input) {
+        assertEquals(expected, Normalization.normalize(input));
     }
 }
