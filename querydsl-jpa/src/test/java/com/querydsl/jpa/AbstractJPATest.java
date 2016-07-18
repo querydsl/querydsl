@@ -1196,6 +1196,12 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void map_groupBy() {
+      QShow show = QShow.show;
+      assertEquals(1, query().from(show).select(show.acts.get("X")).groupBy(show.acts.get("a")).fetchCount());
+    }
+
+    @Test
     @Ignore
     public void map_join() {
         //select m.text from Show s join s.acts a where key(a) = 'B'
