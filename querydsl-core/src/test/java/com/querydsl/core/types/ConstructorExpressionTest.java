@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import com.querydsl.core.testutil.Serialization;
 import com.querydsl.core.testutil.ThreadSafety;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
@@ -100,6 +101,12 @@ public class ConstructorExpressionTest {
         constructor = FactoryExpressionUtils.wrap(constructor);
         ProjectionExample projection = constructor.newInstance("12", "34");
         assertEquals("1234", projection.text);
+    }
+
+    @Test
+    public void serializability() {
+        ConstructorExpression<String> expr = Serialization.serialize(Projections.constructor(String.class));
+        assertEquals("", expr.newInstance());
     }
 
     @Test
