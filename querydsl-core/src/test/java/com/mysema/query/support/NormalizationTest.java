@@ -85,6 +85,7 @@ public class NormalizationTest {
         assertUntouched("a like '1 + 2 ' and b like '2 * 3'");
         assertUntouched("xxx in ('ABC123-4567-3214-EDBD982')");
         assertUntouched("xxx in ('CFD9A467-439A-4033-8176-464D3AA0E430')");
+        assertUntouched("xxx in ('CFD9A467-4399-4033-8176-464D3AA0E430')");
     }
 
     @Test
