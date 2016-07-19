@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import com.querydsl.core.testutil.ThreadSafety;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
 
@@ -99,6 +100,18 @@ public class ConstructorExpressionTest {
         constructor = FactoryExpressionUtils.wrap(constructor);
         ProjectionExample projection = constructor.newInstance("12", "34");
         assertEquals("1234", projection.text);
+    }
+
+    @Test
+    public void threadSafety() {
+        final ConstructorExpression<String> expr = Projections.constructor(String.class);
+        Runnable invoker = new Runnable() {
+            @Override
+            public void run() {
+                expr.newInstance();
+            }
+        };
+        ThreadSafety.check(invoker, invoker);
     }
 
 }
