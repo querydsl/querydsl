@@ -9,6 +9,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.reflections.util.ClasspathHelper;
 
+import com.mysema.testutil.ThreadSafety;
+
 public class CycleClassInitDependencyTest {
 
     private static ClassLoader loader;
@@ -27,16 +29,12 @@ public class CycleClassInitDependencyTest {
     }
 
     @Test(timeout = 2000)
-    public void test() throws InterruptedException {
+    public void test() {
 
         // each thread wants to load one part of the dependency circle
-        Thread t1 = new Thread(new LoadClassRunnable("com.mysema.query.types.OperatorImpl"));
-        Thread t2 = new Thread(new LoadClassRunnable("com.mysema.query.types.Ops"));
-        t1.start();
-        t2.start();
-
-        t1.join();
-
+        ThreadSafety.check(
+                new LoadClassRunnable("com.mysema.query.types.OperatorImpl"),
+                new LoadClassRunnable("com.mysema.query.types.Ops"));
     }
 
     private static class LoadClassRunnable implements Runnable {
