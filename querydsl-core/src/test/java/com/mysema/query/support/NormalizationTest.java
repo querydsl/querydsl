@@ -96,6 +96,7 @@ public class NormalizationTest {
     @Test
     public void DateTimeLiterals() {
         assertUntouched("'1980-10-10'");
+        assertUntouched("'2009-06-15T13:45:30.0000000-07:00'");
     }
 
     @Test

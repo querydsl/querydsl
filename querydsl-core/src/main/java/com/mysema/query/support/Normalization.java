@@ -22,12 +22,12 @@ public final class Normalization {
 
     private static final String WS = "\\s*";
 
-    private static final String NUMBER = "(?<!\\p{Alpha})((?>[\\+\\-]?\\d+\\.?\\d*))(?!\\p{Alpha})";
+    private static final String OPERATORS = "[+\\-/*%]";
+    private static final String NUMBER = "(?<![\\s\\p{Alpha}:"+ OPERATORS + "]\\s?)((?>[\\+\\-]?\\d+\\.?\\d*))(?!\\s?[\\s\\p{Alpha}:&&" + OPERATORS + "])";
 
     // TODO simplify
-    private static final Pattern FULL_OPERATION = Pattern.compile(
-            "(?<![\\d*/\"?'\\- ])" + "(\\b|\\(|\\s+)"  +
-            "(" + NUMBER + WS + "[+\\-/*%]" + WS + ")+" + NUMBER + WS +
+    private static final Pattern FULL_OPERATION = Pattern.compile("(?<![\\d*/\"?'\\- ])" + "(\\b|\\(|\\s+)"  +
+            "(" + NUMBER + WS + OPERATORS + WS + ")+" + NUMBER + WS +
             "(?![\\d*/\"' ])");
 
     private static final Pattern[] OPERATIONS = {
