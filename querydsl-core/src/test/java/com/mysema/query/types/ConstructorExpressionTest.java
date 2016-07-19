@@ -20,6 +20,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.mysema.query.types.path.StringPath;
+import com.mysema.testutil.Serialization;
 import com.mysema.testutil.ThreadSafety;
 
 public class ConstructorExpressionTest {
@@ -99,6 +100,12 @@ public class ConstructorExpressionTest {
         constructor = FactoryExpressionUtils.wrap(constructor);
         ProjectionExample projection = constructor.newInstance("12", "34");
         assertEquals("1234", projection.text);
+    }
+
+    @Test
+    public void serializability() {
+        ConstructorExpression<String> expr = Serialization.serialize(Projections.constructor(String.class));
+        assertEquals("", expr.newInstance());
     }
 
     @Test
