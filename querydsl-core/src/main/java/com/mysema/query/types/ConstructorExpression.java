@@ -13,9 +13,12 @@
  */
 package com.mysema.query.types;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import static com.mysema.query.util.ConstructorUtils.*;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +27,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import static com.mysema.query.util.ConstructorUtils.*;
 
 /**
  * ConstructorExpression represents a constructor invocation
@@ -140,6 +142,21 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
             throw new ExpressionException(e.getMessage(), e);
         } catch (InvocationTargetException e) {
             throw new ExpressionException(e.getMessage(), e);
+        }
+    }
+
+    private void readObject(ObjectInputStream ois)
+            throws ClassNotFoundException, IOException {
+        ois.readObject();
+        try {
+            Field constructor = ConstructorExpression.class.getDeclaredField("constructor");
+            constructor.setAccessible(true);
+            constructor.set(this, getConstructor(getType(), parameterTypes));
+            Field transformers = ConstructorExpression.class.getDeclaredField("transformers");
+            transformers.setAccessible(true);
+            transformers.set(this, getTransformers(this.constructor));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
