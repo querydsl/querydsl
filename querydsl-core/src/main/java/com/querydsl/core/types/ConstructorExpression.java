@@ -15,12 +15,14 @@ package com.querydsl.core.types;
 
 import static com.querydsl.core.util.ConstructorUtils.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Function;
@@ -62,10 +64,9 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
 
     private final Class<?>[] parameterTypes;
 
-    @Nullable
-    private transient Constructor<?> constructor;
+    private final transient Constructor<?> constructor;
 
-    private transient Iterable<Function<Object[], Object[]>> transformers;
+    private final transient Iterable<Function<Object[], Object[]>> transformers;
 
     protected ConstructorExpression(Class<? extends T> type, Expression<?>... args) {
         this(type, getParameterTypes(args), ImmutableList.copyOf(args));
@@ -77,8 +78,14 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
 
     protected ConstructorExpression(Class<? extends T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
         super(type);
-        this.parameterTypes = getConstructorParameters(type, paramTypes).clone();
-        this.args = args;
+        try {
+            this.parameterTypes = getConstructorParameters(type, paramTypes).clone();
+            this.args = args;
+            this.constructor = getConstructor(getType(), parameterTypes);
+            this.transformers = getTransformers(constructor);
+        } catch (NoSuchMethodException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     /**
@@ -128,17 +135,11 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
     @SuppressWarnings("unchecked")
     public T newInstance(Object... args) {
         try {
-            if (constructor == null) {
-                constructor = getConstructor(getType(), parameterTypes);
-                transformers = getTransformers(constructor);
-            }
             for (Function<Object[], Object[]> transformer : transformers) {
                 args = transformer.apply(args);
             }
             return (T) constructor.newInstance(args);
         } catch (SecurityException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (NoSuchMethodException e) {
             throw new ExpressionException(e.getMessage(), e);
         } catch (InstantiationException e) {
             throw new ExpressionException(e.getMessage(), e);
@@ -146,6 +147,21 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
             throw new ExpressionException(e.getMessage(), e);
         } catch (InvocationTargetException e) {
             throw new ExpressionException(e.getMessage(), e);
+        }
+    }
+
+    private void readObject(ObjectInputStream ois)
+            throws ClassNotFoundException, IOException {
+        ois.readObject();
+        try {
+            Field constructor = ConstructorExpression.class.getDeclaredField("constructor");
+            constructor.setAccessible(true);
+            constructor.set(this, getConstructor(getType(), parameterTypes));
+            Field transformers = ConstructorExpression.class.getDeclaredField("transformers");
+            transformers.setAccessible(true);
+            transformers.set(this, getTransformers(this.constructor));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
