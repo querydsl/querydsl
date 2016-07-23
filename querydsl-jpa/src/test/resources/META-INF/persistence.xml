@@ -253,7 +253,7 @@
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QPostgreSQL9Dialect" />
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/querydsl" />
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5433/querydsl" />
             <property name="hibernate.connection.username" value="querydsl" />
             <property name="hibernate.connection.password" value="querydsl" />
             <!-- <property name="hibernate.show_sql" value="true"/> -->
@@ -267,7 +267,7 @@
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/querydsl2" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/querydsl2" />
             <property name="javax.persistence.jdbc.user" value="querydsl" />
             <property name="javax.persistence.jdbc.password" value="querydsl" />
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
@@ -285,8 +285,8 @@
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QOracle10gDialect" />
             <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
             <property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:xe" />
-            <property name="hibernate.connection.username" value="querydsl" />
-            <property name="hibernate.connection.password" value="querydsl" />
+            <property name="hibernate.connection.username" value="system" />
+            <property name="hibernate.connection.password" value="oracle" />
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
             <property name="hibernate.hbm2ddl.auto" value="update" />

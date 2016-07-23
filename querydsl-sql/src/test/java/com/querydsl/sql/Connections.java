@@ -89,7 +89,7 @@ public final class Connections {
 
     private static Connection getDB2() throws SQLException, ClassNotFoundException {
         Class.forName("com.ibm.db2.jcc.DB2Driver");
-        String url = "jdbc:db2://db2host:50001/SAMPLE";
+        String url = "jdbc:db2://localhost:50000/sample";
         return DriverManager.getConnection(url, "db2inst1", "a3sd!fDj");
     }
 
@@ -101,8 +101,8 @@ public final class Connections {
 
     private static Connection getFirebird() throws SQLException, ClassNotFoundException {
         Class.forName("org.firebirdsql.jdbc.FBDriver");
-        String url = "jdbc:firebirdsql:localhost/3050:/var/lib/firebird/2.5/data/querydsl.fdb";
-        return DriverManager.getConnection(url, "querydsl", "querydsl");
+        String url = "jdbc:firebirdsql:localhost/3050:/databases/querydsl.fdb";
+        return DriverManager.getConnection(url, "sysdba", "masterkey");
     }
 
     private static Connection getHSQL() throws SQLException, ClassNotFoundException {
@@ -126,12 +126,12 @@ public final class Connections {
     private static Connection getOracle() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        return DriverManager.getConnection(url, "querydsl", "querydsl");
+        return DriverManager.getConnection(url, "system", "oracle");
     }
 
     private static Connection getPostgreSQL() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://localhost:5432/querydsl";
+        String url = "jdbc:postgresql://localhost:5433/querydsl";
         return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
 
