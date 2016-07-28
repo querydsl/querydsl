@@ -986,7 +986,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     } else {
                         result = ExpressionUtils.notInAny(path, partitioned);
                     }
+                    append("(");
                     result.accept(this, null);
+                    append(")");
                 }
             }
 
