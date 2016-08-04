@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
@@ -50,7 +50,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
 
-    protected final Multimap<String,Object> hints = HashMultimap.create();
+    protected final Multimap<String,Object> hints = LinkedHashMultimap.create();
 
     protected final EntityManager entityManager;
 
