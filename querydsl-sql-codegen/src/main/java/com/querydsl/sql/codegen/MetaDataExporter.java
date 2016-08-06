@@ -325,8 +325,10 @@ public class MetaDataExporter {
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
         String catalog = tables.getString("TABLE_CAT");
         String schema = tables.getString("TABLE_SCHEM");
-        String schemaName = normalize(tables.getString("TABLE_SCHEM"));
-        String tableName = normalize(tables.getString("TABLE_NAME"));
+        String table = tables.getString("TABLE_NAME");
+
+        String schemaName = normalize(schema != null ? schema : catalog);
+        String tableName = normalize(table);
 
         String normalizedSchemaName = namingStrategy.normalizeSchemaName(schemaName);
         String normalizedTableName = namingStrategy.normalizeTableName(tableName);
