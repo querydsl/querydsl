@@ -60,6 +60,9 @@ public class DefaultNamingStrategyTest {
         assertEquals("_123AbcDef", namingStrategy.getPropertyName("#123#abc#def", entityModel));
 
         assertEquals("newLine", namingStrategy.getPropertyName("new line", entityModel));
+
+        assertEquals("classCol", namingStrategy.getPropertyName("class", entityModel));
+        assertEquals("classCol", namingStrategy.getPropertyName("Class", entityModel));
     }
 
     @Test
