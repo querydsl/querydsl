@@ -65,6 +65,9 @@
     <slf4j.version>1.6.1</slf4j.version>
     <surefire.version>2.18</surefire.version>
     <animal-sniffer.version>1.14</animal-sniffer.version>
+
+    <jdo.version>3.0.1</jdo.version>
+    <morphia.version>0.105</morphia.version>
     
     <!-- Import-Package definitions for maven-bundle-plugin -->
     <osgi.import.package.root>
