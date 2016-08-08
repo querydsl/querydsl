@@ -13,15 +13,15 @@
  */
 package com.mysema.query.types;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
 import org.junit.Test;
 
 import com.mysema.query.types.path.StringPath;
-import static org.junit.Assert.assertTrue;
+import com.mysema.testutil.Serialization;
+import com.mysema.testutil.ThreadSafety;
 
 public class ConstructorExpressionTest {
 
@@ -102,4 +102,21 @@ public class ConstructorExpressionTest {
         assertEquals("1234", projection.text);
     }
 
+    @Test
+    public void serializability() {
+        ConstructorExpression<String> expr = Serialization.serialize(Projections.constructor(String.class));
+        assertEquals("", expr.newInstance());
+    }
+
+    @Test
+    public void threadSafety() {
+        final ConstructorExpression<String> expr = Projections.constructor(String.class);
+        Runnable invoker = new Runnable() {
+            @Override
+            public void run() {
+                expr.newInstance();
+            }
+        };
+        ThreadSafety.check(invoker, invoker);
+    }
 }
