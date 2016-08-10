@@ -17,7 +17,6 @@
 
   <properties>
     <mongodb.version>2.10.0</mongodb.version>
-    <morphia.version>0.105</morphia.version>
     <osgi.import.package>
       com.mongodb;version="0.0.0",
       org.mongodb.morphia.*;version="0.105",
