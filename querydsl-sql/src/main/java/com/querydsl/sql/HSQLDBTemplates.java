@@ -51,6 +51,7 @@ public class HSQLDBTemplates extends SQLTemplates {
         setAutoIncrement(" identity");
         setDefaultValues("\ndefault values");
         setFunctionJoinsWrapped(true);
+        setUnionsWrapped(false);
 
         setPrecedence(Precedence.ARITH_HIGH, Ops.CONCAT);
         setPrecedence(Precedence.ARITH_LOW + 1, Ops.NOT);
