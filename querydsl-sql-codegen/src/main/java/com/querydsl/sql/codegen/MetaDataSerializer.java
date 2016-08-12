@@ -25,7 +25,6 @@ import javax.inject.Named;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.codegen.*;
@@ -114,8 +113,8 @@ public class MetaDataSerializer extends EntitySerializer {
 
         writer.beginConstructor(new Parameter("variable", Types.STRING),
                                 new Parameter("schema", Types.STRING));
-        writer.line(SUPER, "(", writer.getClassConstant(localName) + COMMA
-                + "forVariable(variable), schema, \"", model.getData().get("table") + "\");");
+        writer.line(SUPER, "(", writer.getClassConstant(localName), COMMA,
+                "forVariable(variable), schema, \"", model.getData().get("table").toString(), "\");");
         constructorContent(writer, model);
         writer.end();
     }
