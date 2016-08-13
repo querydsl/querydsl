@@ -1,21 +1,21 @@
 package com.querydsl.mongodb;
 
-import static org.junit.Assert.assertEquals;
-
-import java.net.UnknownHostException;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-
-import com.mongodb.Mongo;
+import com.github.fakemongo.junit.FongoRule;
 import com.mongodb.MongoException;
 import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.mongodb.domain.*;
 import com.querydsl.mongodb.morphia.MorphiaQuery;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+
+import java.net.UnknownHostException;
+
+import static org.junit.Assert.assertEquals;
 
 @Category(MongoDB.class)
 public class PolymorphicCollectionTest {
@@ -27,10 +27,12 @@ public class PolymorphicCollectionTest {
     private final Chips c1 = new Chips("c1");
 
     public PolymorphicCollectionTest() throws UnknownHostException, MongoException {
-        final Mongo mongo = new Mongo();
         morphia = new Morphia().map(Food.class);
-        ds = morphia.createDatastore(mongo, "testdb");
+        ds = morphia.createDatastore(fongoRule.getFongo().getMongo(), "testdb");
     }
+
+    @Rule
+    public final FongoRule fongoRule = new FongoRule();
 
     @Before
     public void before() throws UnknownHostException, MongoException {

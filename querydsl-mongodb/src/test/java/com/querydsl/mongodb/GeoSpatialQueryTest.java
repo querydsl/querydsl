@@ -13,38 +13,40 @@
  */
 package com.querydsl.mongodb;
 
-import static org.junit.Assert.assertEquals;
-
-import java.net.UnknownHostException;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-
+import com.github.fakemongo.junit.FongoRule;
 import com.mongodb.BasicDBObject;
-import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.mongodb.domain.GeoEntity;
 import com.querydsl.mongodb.domain.QGeoEntity;
 import com.querydsl.mongodb.morphia.MorphiaQuery;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+
+import java.net.UnknownHostException;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @Category(MongoDB.class)
 public class GeoSpatialQueryTest {
 
+    @Rule
+    public final FongoRule fongoRule = new FongoRule();
+
     private final String dbname = "geodb";
-    private final Mongo mongo;
     private final Morphia morphia;
     private final Datastore ds;
     private final QGeoEntity geoEntity = new QGeoEntity("geoEntity");
 
     public GeoSpatialQueryTest() throws UnknownHostException, MongoException {
-        mongo = new Mongo();
         morphia = new Morphia().map(GeoEntity.class);
-        ds = morphia.createDatastore(mongo, dbname);
+        ds = morphia.createDatastore(fongoRule.getFongo().getMongo(), dbname);
+        ds.ensureIndexes(GeoEntity.class);
     }
 
     @Before

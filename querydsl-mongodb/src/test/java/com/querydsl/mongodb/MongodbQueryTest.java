@@ -13,22 +13,9 @@
  */
 package com.querydsl.mongodb;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
-
-import java.net.UnknownHostException;
-import java.util.*;
-
-import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-
+import com.github.fakemongo.junit.FongoRule;
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
-import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
 import com.querydsl.core.NonUniqueResultException;
@@ -42,11 +29,26 @@ import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.mongodb.domain.*;
 import com.querydsl.mongodb.domain.User.Gender;
 import com.querydsl.mongodb.morphia.MorphiaQuery;
+import org.bson.types.ObjectId;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+
+import java.net.UnknownHostException;
+import java.util.*;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.*;
 
 @Category(MongoDB.class)
 public class MongodbQueryTest {
 
-    private final Mongo mongo;
+    @Rule
+    public final FongoRule fongoRule = new FongoRule();
+
     private final Morphia morphia;
     private final Datastore ds;
 
@@ -62,9 +64,8 @@ public class MongodbQueryTest {
     City tampere, helsinki;
 
     public MongodbQueryTest() throws UnknownHostException, MongoException {
-        mongo = new Mongo();
         morphia = new Morphia().map(User.class).map(Item.class).map(MapEntity.class).map(Dates.class);
-        ds = morphia.createDatastore(mongo, dbname);
+        ds = morphia.createDatastore(fongoRule.getFongo().getMongo(), dbname);
     }
 
     @Before

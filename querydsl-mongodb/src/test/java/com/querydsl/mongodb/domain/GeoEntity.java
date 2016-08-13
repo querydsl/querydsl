@@ -13,9 +13,13 @@
  */
 package com.querydsl.mongodb.domain;
 
-import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.*;
+import org.mongodb.morphia.utils.IndexType;
 
 @Entity
+@Indexes({
+    @Index(options = @IndexOptions(name = "location"), fields = @Field(value = "location", type = IndexType.GEO2D))
+})
 public class GeoEntity extends AbstractEntity {
 
     private Double[] location;
