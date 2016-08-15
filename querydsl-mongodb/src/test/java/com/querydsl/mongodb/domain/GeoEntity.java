@@ -14,18 +14,23 @@
 package com.querydsl.mongodb.domain;
 
 import org.mongodb.morphia.annotations.*;
+import org.mongodb.morphia.geo.GeoJson;
+import org.mongodb.morphia.geo.Point;
 import org.mongodb.morphia.utils.IndexType;
 
 @Entity
 @Indexes({
-    @Index(options = @IndexOptions(name = "location"), fields = @Field(value = "location", type = IndexType.GEO2D))
+    @Index(options = @IndexOptions(name = "location"), fields = @Field(value = "location", type = IndexType.GEO2D)),
+    @Index(options = @IndexOptions(name = "locationAsGeoJson"), fields = @Field(value = "locationAsGeoJson", type = IndexType.GEO2DSPHERE))
 })
 public class GeoEntity extends AbstractEntity {
 
     private Double[] location;
+    private Point locationAsGeoJson;
 
     public GeoEntity(double l1, double l2) {
-        location = new Double[]{l1, l2};
+        this.location = new Double[]{l1, l2};
+        this.locationAsGeoJson = GeoJson.point(location[0], location[1]);
     }
 
     public GeoEntity() { }
@@ -34,9 +39,13 @@ public class GeoEntity extends AbstractEntity {
         return location;
     }
 
-    public void setLocation(Double[] location) {
-        this.location = location;
+    public Point getLocationAsGeoJson() {
+        return locationAsGeoJson;
     }
 
+    public void setLocation(double l1, double l2) {
+        this.location = new Double[]{l1, l2};
+        this.locationAsGeoJson = GeoJson.point(location[0], location[1]);
+    }
 
 }

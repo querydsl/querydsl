@@ -13,17 +13,6 @@
  */
 package com.querydsl.mongodb;
 
-import static org.junit.Assert.assertEquals;
-
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -34,7 +23,20 @@ import com.querydsl.mongodb.domain.QAddress;
 import com.querydsl.mongodb.domain.QDummyEntity;
 import com.querydsl.mongodb.domain.QPerson;
 import com.querydsl.mongodb.domain.QUser;
+import com.querydsl.mongodb.morphia.MorphiaExpressions;
 import com.querydsl.mongodb.morphia.MorphiaSerializer;
+import org.bson.types.ObjectId;
+import org.junit.Before;
+import org.junit.Test;
+import org.mongodb.morphia.geo.GeoJson;
+import org.mongodb.morphia.geo.QPoint;
+
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class MongodbSerializerTest {
 
@@ -242,9 +244,23 @@ public class MongodbSerializerTest {
     }
 
     @Test
+    public void near_geojson() {
+        DBObject geoJsonPoint = dbo("$geometry", dbo("type", "Point").append("coordinates", dblist(1.0, 2.0)));
+        BooleanExpression actualExpr = MorphiaExpressions.near(new QPoint("point"), GeoJson.point(2.0, 1.0));
+        assertQuery(actualExpr, dbo("point", dbo("$near", geoJsonPoint)));
+    }
+
+    @Test
     public void near_sphere() {
         assertQuery(MongodbExpressions.nearSphere(new Point("point"), 1.0, 2.0),
                 dbo("point", dbo("$nearSphere", dblist(1.0, 2.0))));
+    }
+
+    @Test
+    public void near_sphere_geojson() {
+        DBObject geoJsonPoint = dbo("$geometry", dbo("type", "Point").append("coordinates", dblist(1.0, 2.0)));
+        BooleanExpression actualExpr = MorphiaExpressions.nearSphere(new QPoint("point"), GeoJson.point(2.0, 1.0));
+        assertQuery(actualExpr, dbo("point", dbo("$nearSphere", geoJsonPoint)));
     }
 
     @Test

@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.geo.GeoJson;
 
 import java.net.UnknownHostException;
 import java.util.List;
@@ -53,27 +54,37 @@ public class GeoSpatialQueryTest {
     public void before() {
         ds.delete(ds.createQuery(GeoEntity.class));
         ds.getCollection(GeoEntity.class).ensureIndex(new BasicDBObject("location","2d"));
+
+        ds.save(new GeoEntity(10.0, 50.0));
+        ds.save(new GeoEntity(20.0, 50.0));
+        ds.save(new GeoEntity(30.0, 50.0));
     }
 
     @Test
     public void near() {
-        ds.save(new GeoEntity(10.0, 50.0));
-        ds.save(new GeoEntity(20.0, 50.0));
-        ds.save(new GeoEntity(30.0, 50.0));
-
         List<GeoEntity> entities = query().where(geoEntity.location.near(50.0, 50.0)).fetch();
-        assertEquals(30.0, entities.get(0).getLocation()[0], 0.1);
-        assertEquals(20.0, entities.get(1).getLocation()[0], 0.1);
-        assertEquals(10.0, entities.get(2).getLocation()[0], 0.1);
+        assertEntities(entities);
+    }
+
+    @Test
+    public void geojson_near() {
+        List<GeoEntity> entities = query().where(geoEntity.locationAsGeoJson().near(GeoJson.point(50.0, 50.0))).fetch();
+        assertEntities(entities);
     }
 
     @Test
     public void near_sphere() {
-        ds.save(new GeoEntity(10.0, 50.0));
-        ds.save(new GeoEntity(20.0, 50.0));
-        ds.save(new GeoEntity(30.0, 50.0));
-
         List<GeoEntity> entities = query().where(geoEntity.location.nearSphere(50.0, 50.0)).fetch();
+        assertEntities(entities);
+    }
+
+    @Test
+    public void geojson_near_sphere() {
+        List<GeoEntity> entities = query().where(geoEntity.locationAsGeoJson().nearSphere(GeoJson.point(50.0, 50.0))).fetch();
+        assertEntities(entities);
+    }
+
+    private void assertEntities(List<GeoEntity> entities) {
         assertEquals(30.0, entities.get(0).getLocation()[0], 0.1);
         assertEquals(20.0, entities.get(1).getLocation()[0], 0.1);
         assertEquals(10.0, entities.get(2).getLocation()[0], 0.1);

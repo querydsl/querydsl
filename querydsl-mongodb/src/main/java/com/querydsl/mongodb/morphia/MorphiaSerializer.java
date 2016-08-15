@@ -13,19 +13,21 @@
  */
 package com.querydsl.mongodb.morphia;
 
-import java.lang.reflect.AnnotatedElement;
-
+import com.mongodb.DBRef;
+import com.querydsl.core.types.Constant;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.mongodb.MongodbSerializer;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.geo.Geometry;
+import org.mongodb.morphia.geo.GeometryQueryConverter;
 import org.mongodb.morphia.mapping.Mapper;
 
-import com.mongodb.DBRef;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.mongodb.MongodbSerializer;
+import java.lang.reflect.AnnotatedElement;
 
 /**
  * {@code MorphiaSerializer} extends {@link MongodbSerializer} with Morphia specific annotation handling
@@ -36,9 +38,20 @@ import com.querydsl.mongodb.MongodbSerializer;
 public class MorphiaSerializer extends MongodbSerializer {
 
     private final Morphia morphia;
+    private final GeometryQueryConverter geometryQueryConverter;
 
     public MorphiaSerializer(Morphia morphia) {
-        this.morphia = morphia;
+        this.morphia = morphia == null ? new Morphia() : morphia;
+        this.geometryQueryConverter = new GeometryQueryConverter(this.morphia.getMapper());
+    }
+
+    @Override
+    public Object visit(Constant<?> expr, Void context) {
+        if (Geometry.class.isAssignableFrom(expr.getType())) {
+            return geometryQueryConverter.encode(expr.getConstant());
+        } else {
+            return super.visit(expr, context);
+        }
     }
 
     @Override
