@@ -14,14 +14,18 @@
 package com.querydsl.mongodb.domain;
 
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.geo.GeoJson;
+import org.mongodb.morphia.geo.Point;
 
 @Entity
 public class GeoEntity extends AbstractEntity {
 
     private Double[] location;
+    private Point locationAsGeoJson;
 
     public GeoEntity(double l1, double l2) {
-        location = new Double[]{l1, l2};
+        this.location = new Double[]{l1, l2};
+        this.locationAsGeoJson = GeoJson.point(location[0], location[1]);
     }
 
     public GeoEntity() { }
@@ -30,9 +34,13 @@ public class GeoEntity extends AbstractEntity {
         return location;
     }
 
-    public void setLocation(Double[] location) {
-        this.location = location;
+    public Point getLocationAsGeoJson() {
+        return locationAsGeoJson;
     }
 
+    public void setLocation(double l1, double l2) {
+        this.location = new Double[]{l1, l2};
+        this.locationAsGeoJson = GeoJson.point(location[0], location[1]);
+    }
 
 }
