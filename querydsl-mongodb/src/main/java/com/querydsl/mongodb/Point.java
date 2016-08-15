@@ -51,4 +51,8 @@ public class Point extends ArrayPath<Double[], Double> {
         return MongodbExpressions.near(this, latVal, longVal);
     }
 
+    public BooleanExpression nearSphere(double latVal, double longVal) {
+        return MongodbExpressions.nearSphere(this, latVal, longVal);
+    }
+
 }
