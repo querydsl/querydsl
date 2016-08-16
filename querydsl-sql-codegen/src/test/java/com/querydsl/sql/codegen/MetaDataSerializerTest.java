@@ -13,6 +13,12 @@
  */
 package com.querydsl.sql.codegen;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.stringContainsInOrder;
+import static org.junit.Assert.assertThat;
+
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +32,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import com.google.common.io.Files;
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.AbstractJDBCTest;
@@ -93,6 +100,20 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         exporter.export(connection.getMetaData());
 
         compile(exporter);
+
+        // validation of output
+        try {
+            //
+            assertMethodsPresent("test/QSurvey.java",
+                    // variable + schema constructor
+                    "    public QSurvey(String variable, String schema) {\n"
+                    + "        super(Survey.class, forVariable(variable), schema, \"SURVEY\");\n"
+                    + "        addMetadata();\n"
+                    + "    }"
+            );
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Test
@@ -127,6 +148,20 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         exporter.export(connection.getMetaData());
 
         compile(exporter);
+
+        // validation of output
+        try {
+            //
+            assertMethodsPresent("test/QSurvey.java",
+                    // variable + schema constructor
+                    "    public QSurvey(String variable, String schema) {\n"
+                    + "        super(Survey.class, forVariable(variable), schema, \"SURVEY\");\n"
+                    + "        addMetadata();\n"
+                    + "    }"
+            );
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private void compile(MetaDataExporter exporter) {
@@ -140,4 +175,8 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         }
     }
 
+    private void assertMethodsPresent(String path, String... methods) throws IOException {
+        String content = Files.toString(folder.getRoot().toPath().resolve(path).toFile(), UTF_8);
+        assertThat(content, stringContainsInOrder(asList(methods)));
+    }
 }
