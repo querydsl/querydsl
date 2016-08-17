@@ -13,7 +13,6 @@
  */
 package com.querydsl.mongodb;
 
-import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -37,7 +36,7 @@ public final class MongodbExpressions {
      * @return predicate
      */
     public static BooleanExpression near(Expression<Double[]> expr, double latVal, double longVal) {
-        return Expressions.booleanOperation(MongodbOps.NEAR, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
+        return Expressions.booleanOperation(MongodbOps.NEAR, expr, Expressions.constant(new Double[]{latVal, longVal}));
     }
 
     /**
@@ -49,7 +48,7 @@ public final class MongodbExpressions {
      * @return predicate
      */
     public static BooleanExpression nearSphere(Expression<Double[]> expr, double latVal, double longVal) {
-        return Expressions.booleanOperation(MongodbOps.NEAR_SPHERE, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
+        return Expressions.booleanOperation(MongodbOps.NEAR_SPHERE, expr, Expressions.constant(new Double[]{latVal, longVal}));
     }
 
 }
