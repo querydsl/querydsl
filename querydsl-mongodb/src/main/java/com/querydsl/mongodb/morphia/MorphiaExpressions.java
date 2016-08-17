@@ -41,6 +41,19 @@ public final class MorphiaExpressions {
     }
 
     /**
+     * Finds the closest points relative to the given location up to a maximum distance
+     * and orders the results with decreasing proximity
+     *
+     * @param expr expression
+     * @param point location
+     * @param maxDistance max distance
+     * @return predicate
+     */
+    public static BooleanExpression near(Expression<Point> expr, Point point, double maxDistance) {
+        return Expressions.booleanOperation(MongodbOps.NEAR, expr, Expressions.constant(point), Expressions.constant(maxDistance));
+    }
+
+    /**
      * Finds the closest points relative to the given location on a sphere and orders the results with decreasing proximity
      *
      * @param expr expression
@@ -49,6 +62,19 @@ public final class MorphiaExpressions {
      */
     public static BooleanExpression nearSphere(Expression<Point> expr, Point point) {
         return Expressions.booleanOperation(MongodbOps.NEAR_SPHERE, expr, Expressions.constant(point));
+    }
+
+    /**
+     * Finds the closest points relative to the given location on a sphere up to a maximum distance
+     * and orders the results with decreasing proximity
+     *
+     * @param expr expression
+     * @param point location
+     * @param maxDistance max distance
+     * @return predicate
+     */
+    public static BooleanExpression nearSphere(Expression<Point> expr, Point point, double maxDistance) {
+        return Expressions.booleanOperation(MongodbOps.NEAR_SPHERE, expr, Expressions.constant(point), Expressions.constant(maxDistance));
     }
 
 }

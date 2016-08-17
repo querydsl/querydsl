@@ -32,7 +32,16 @@ public class QPoint extends EntityPathBase<Point> {
         return MorphiaExpressions.near(this, point);
     }
 
+    public BooleanExpression near(Point point, double maxDistance) {
+        return MorphiaExpressions.near(this, point, maxDistance);
+    }
+
     public BooleanExpression nearSphere(Point point) {
         return MorphiaExpressions.nearSphere(this, point);
     }
+
+    public BooleanExpression nearSphere(Point point, double maxDistance) {
+        return MorphiaExpressions.nearSphere(this, point, maxDistance);
+    }
+
 }

@@ -244,9 +244,10 @@ public class MongodbSerializerTest {
     }
 
     @Test
-    public void near_geojson() {
-        DBObject geoJsonPoint = dbo("$geometry", dbo("type", "Point").append("coordinates", dblist(1.0, 2.0)));
-        BooleanExpression actualExpr = MorphiaExpressions.near(new QPoint("point"), GeoJson.point(2.0, 1.0));
+    public void near_geojson_with_max_distance() {
+        DBObject geoJsonPoint = dbo("$geometry", dbo("type", "Point").append("coordinates", dblist(1.0, 2.0)))
+                .append("$maxDistance", 20.0);
+        BooleanExpression actualExpr = MorphiaExpressions.near(new QPoint("point"), GeoJson.point(2.0, 1.0), 20.0);
         assertQuery(actualExpr, dbo("point", dbo("$near", geoJsonPoint)));
     }
 
@@ -257,9 +258,10 @@ public class MongodbSerializerTest {
     }
 
     @Test
-    public void near_sphere_geojson() {
-        DBObject geoJsonPoint = dbo("$geometry", dbo("type", "Point").append("coordinates", dblist(1.0, 2.0)));
-        BooleanExpression actualExpr = MorphiaExpressions.nearSphere(new QPoint("point"), GeoJson.point(2.0, 1.0));
+    public void near_sphere_geojson_with_max_distance() {
+        DBObject geoJsonPoint = dbo("$geometry", dbo("type", "Point").append("coordinates", dblist(1.0, 2.0)))
+                .append("$maxDistance", 20.0);
+        BooleanExpression actualExpr = MorphiaExpressions.nearSphere(new QPoint("point"), GeoJson.point(2.0, 1.0), 20);
         assertQuery(actualExpr, dbo("point", dbo("$nearSphere", geoJsonPoint)));
     }
 
