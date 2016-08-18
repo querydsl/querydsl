@@ -29,7 +29,9 @@ import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.mongodb.morphia.geo.GeoJson;
+import org.mongodb.morphia.geo.Polygon;
 import org.mongodb.morphia.geo.QPoint;
+import org.mongodb.morphia.query.Shape;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -263,6 +265,25 @@ public class MongodbSerializerTest {
                 .append("$maxDistance", 20.0);
         BooleanExpression actualExpr = MorphiaExpressions.nearSphere(new QPoint("point"), GeoJson.point(2.0, 1.0), 20);
         assertQuery(actualExpr, dbo("point", dbo("$nearSphere", geoJsonPoint)));
+    }
+
+    @Test
+    public void geoWithin() {
+        BooleanExpression actualExpr = MongodbExpressions.geoWithin(
+                new Point("point"), Shape.centerSphere(new Shape.Point(2.0, 1.0), 20 / 3963.2)
+        );
+        assertQuery(actualExpr, dbo("point", dbo("$geoWithin", dbo("$centerSphere", dblist(dblist(2.0, 1.0), 0.005046427129592249)))));
+    }
+
+    @Test
+    public void geoWithin_geojson() {
+        Polygon geometry = GeoJson.polygon(GeoJson.point(10, 20), GeoJson.point(20, 30), GeoJson.point(10, 40), GeoJson.point(10, 20));
+        BooleanExpression actualExpr = MorphiaExpressions.geoWithin(new QPoint("point"), geometry);
+
+        BasicDBList coordinatesAsBSON = dblist(dblist(dblist(20.0, 10.0), dblist(30.0, 20.0), dblist(40.0, 10.0), dblist(20.0, 10.0)));
+        assertQuery(actualExpr, dbo("point", dbo("$geoWithin", dbo("$geometry",
+                dbo("type", "Polygon").append("coordinates", coordinatesAsBSON)
+        ))));
     }
 
     @Test

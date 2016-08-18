@@ -249,6 +249,8 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject(asDBKey(expr, 0), asDBObject("$near", getDBValueFor$NearOp(expr)));
         } else if (op == MongodbOps.NEAR_SPHERE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$nearSphere", getDBValueFor$NearOp(expr)));
+        } else if (op == MongodbOps.GEO_WITHIN) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$geoWithin", asDBValue(expr, 1)));
         } else if (op == MongodbOps.ELEM_MATCH) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
         }

@@ -44,4 +44,8 @@ public class QPoint extends EntityPathBase<Point> {
         return MorphiaExpressions.nearSphere(this, point, maxDistance);
     }
 
+    public BooleanExpression geoWithin(Geometry geometry) {
+        return MorphiaExpressions.geoWithin(this, geometry);
+    }
+
 }

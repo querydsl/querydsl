@@ -17,6 +17,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.mongodb.MongodbOps;
+import org.mongodb.morphia.geo.Geometry;
 import org.mongodb.morphia.geo.Point;
 
 /**
@@ -75,6 +76,17 @@ public final class MorphiaExpressions {
      */
     public static BooleanExpression nearSphere(Expression<Point> expr, Point point, double maxDistance) {
         return Expressions.booleanOperation(MongodbOps.NEAR_SPHERE, expr, Expressions.constant(point), Expressions.constant(maxDistance));
+    }
+
+    /**
+     * Finds the all the points within the given geometry
+     *
+     * @param expr expression
+     * @param geometry geometry
+     * @return predicate
+     */
+    public static BooleanExpression geoWithin(Expression<Point> expr, Geometry geometry) {
+        return Expressions.booleanOperation(MongodbOps.GEO_WITHIN, expr, Expressions.constant(geometry));
     }
 
 }

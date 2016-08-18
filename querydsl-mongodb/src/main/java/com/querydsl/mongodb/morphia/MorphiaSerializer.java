@@ -26,6 +26,7 @@ import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.geo.Geometry;
 import org.mongodb.morphia.geo.GeometryQueryConverter;
 import org.mongodb.morphia.mapping.Mapper;
+import org.mongodb.morphia.query.Shape;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -49,6 +50,8 @@ public class MorphiaSerializer extends MongodbSerializer {
     public Object visit(Constant<?> expr, Void context) {
         if (Geometry.class.isAssignableFrom(expr.getType())) {
             return geometryQueryConverter.encode(expr.getConstant());
+        } else if (Shape.class.isAssignableFrom(expr.getType())) {
+            return ((Shape) expr.getConstant()).toDBObject();
         } else {
             return super.visit(expr, context);
         }

@@ -16,6 +16,7 @@ package com.querydsl.mongodb;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import org.mongodb.morphia.query.Shape;
 
 /**
  * Mongodb specific operations
@@ -51,4 +52,14 @@ public final class MongodbExpressions {
         return Expressions.booleanOperation(MongodbOps.NEAR_SPHERE, expr, Expressions.constant(new Double[]{latVal, longVal}));
     }
 
+    /**
+     * Finds the all the points within the given shape
+     *
+     * @param expr expression
+     * @param shape shape
+     * @return predicate
+     */
+    public static BooleanExpression geoWithin(Expression<Double[]> expr, Shape shape) {
+        return Expressions.booleanOperation(MongodbOps.GEO_WITHIN, expr, Expressions.constant(shape));
+    }
 }
