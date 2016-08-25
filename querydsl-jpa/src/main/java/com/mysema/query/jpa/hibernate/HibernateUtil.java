@@ -57,15 +57,15 @@ public final class HibernateUtil {
 
     private HibernateUtil() {}
 
-    public static void setConstants(Query query, Map<Object,String> constants, 
+    public static void setConstants(Query query, Map<String,Object> constants, 
             Map<ParamExpression<?>, Object> params) {
-        for (Map.Entry<Object, String> entry : constants.entrySet()) {
-            String key = entry.getValue();
-            Object val = entry.getKey();
+        for (Map.Entry<String, Object> entry : constants.entrySet()) {
+            String key = entry.getKey();
+            Object val = entry.getValue();
             if (Param.class.isInstance(val)) {
                 val = params.get(val);
                 if (val == null) {
-                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                    throw new ParamNotSetException((Param<?>) entry.getValue());
                 }
             }
             setValue(query, key, val);

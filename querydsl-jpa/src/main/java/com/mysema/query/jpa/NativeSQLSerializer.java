@@ -200,12 +200,11 @@ public final class NativeSQLSerializer extends SQLSerializer {
                 first = false;
             }
             append(")");
-        } else if (!getConstantToLabel().containsKey(constant)) {
-            String constLabel = String.valueOf(getConstantToLabel().size() + 1);
-            getConstantToLabel().put(constant, constLabel);
+        }
+        else {
+            String constLabel = String.valueOf(getLabelToConstant().size() + 1);
+            getLabelToConstant().put(constLabel, constant);
             append("?"+constLabel);
-        } else {
-            append("?"+getConstantToLabel().get(constant));
         }
     }
 

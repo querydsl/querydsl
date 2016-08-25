@@ -105,9 +105,10 @@ public class DefaultEvaluatorFactory {
             serializer.handle(projection);
         }
         serializer.append(";");
-
-        Map<Object,String> constantToLabel = serializer.getConstantToLabel();
-        Map<String, Object> constants = getConstants(metadata, constantToLabel);
+        
+        Map<String,Object> labelToConstant = serializer.getLabelToConstant();
+        Map<String, Object> constants = getConstants(metadata, labelToConstant);
+        
         Class<?>[] types = new Class<?>[sources.size()];
         String[] names = new String[sources.size()];
         for (int i = 0; i < sources.size(); i++) {
@@ -147,10 +148,10 @@ public class DefaultEvaluatorFactory {
         ser.append("    } catch (NullPointerException npe) { }\n");
         ser.append("}\n");
         ser.append("return rv;");
-
-        Map<Object,String> constantToLabel = ser.getConstantToLabel();
-        Map<String, Object> constants = getConstants(metadata, constantToLabel);
-
+        
+        Map<String,Object> labelToConstant = ser.getLabelToConstant();
+        Map<String, Object> constants = getConstants(metadata, labelToConstant);
+        
         Type sourceType = new ClassType(TypeCategory.SIMPLE, source.getType());
         ClassType sourceListType = new ClassType(TypeCategory.SIMPLE, Iterable.class, sourceType);
 
@@ -260,9 +261,9 @@ public class DefaultEvaluatorFactory {
         }
         ser.append("return rv;");
 
-        Map<Object,String> constantToLabel = ser.getConstantToLabel();
-        Map<String, Object> constants = getConstants(metadata, constantToLabel);
-
+        Map<String,Object> labelToConstant = ser.getLabelToConstant();
+        Map<String, Object> constants = getConstants(metadata, labelToConstant);
+        
         ClassType projectionType = new ClassType(TypeCategory.LIST, List.class, Types.OBJECTS);
         return factory.createEvaluator(
                 ser.toString(),
@@ -274,17 +275,17 @@ public class DefaultEvaluatorFactory {
     }
 
     private Map<String, Object> getConstants(QueryMetadata metadata,
-            Map<Object, String> constantToLabel) {
+            Map<String, Object> labelToConstant) {
         Map<String,Object> constants = new HashMap<String,Object>();
-        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()) {
-            if (entry.getKey() instanceof ParamExpression<?>) {
-                Object value = metadata.getParams().get(entry.getKey());
+        for (Map.Entry<String,Object> entry : labelToConstant.entrySet()) {
+            if (entry.getValue() instanceof ParamExpression<?>) {
+                Object value = metadata.getParams().get(entry.getValue());
                 if (value == null) {
-                    throw new ParamNotSetException((ParamExpression<?>) entry.getKey());
+                    throw new ParamNotSetException((ParamExpression<?>) entry.getValue());
                 }
-                constants.put(entry.getValue(), value);
+                constants.put(entry.getKey(), value);
             } else {
-                constants.put(entry.getValue(), entry.getKey());
+                constants.put(entry.getKey(), entry.getValue());
             }
         }
         return constants;

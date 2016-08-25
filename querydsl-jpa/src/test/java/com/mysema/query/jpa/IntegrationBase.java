@@ -52,7 +52,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
                     JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
                     serializer.serialize(getMetadata(), false, null);
                     Query query = session.createQuery(serializer.toString());
-                    HibernateUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
+                    HibernateUtil.setConstants(query, serializer.getLabelToConstant(), getMetadata().getParams());
                     query.list();
                 } catch (Exception e) {
                     e.printStackTrace();

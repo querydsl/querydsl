@@ -63,10 +63,10 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     private static final String WHERE = "\nWHERE ";
     
-    private static Comparator<Map.Entry<Object,String>> comparator = new Comparator<Map.Entry<Object,String>>() {
+    private static Comparator<Map.Entry<String,Object>> comparator = new Comparator<Map.Entry<String,Object>>() {
         @Override
-        public int compare(Entry<Object, String> o1, Entry<Object, String> o2) {
-            return o1.getValue().compareTo(o2.getValue());
+        public int compare(Entry<String, Object> o1, Entry<String, Object> o2) {
+            return o1.getKey().compareTo(o2.getKey());
         }
     };
 
@@ -74,12 +74,12 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     private final List<Object> constants = new ArrayList<Object>();
 
-    private final Stack<Map<Object,String>> constantToLabel = new Stack<Map<Object,String>>();
+    private final Stack<Map<String,Object>> labelToConstant = new Stack<Map<String,Object>>();
     
     public JDOQLSerializer(JDOQLTemplates templates, Expression<?> candidate) {
         super(templates);
         this.candidatePath = candidate;
-        this.constantToLabel.push(new HashMap<Object,String>());
+        this.labelToConstant.push(new HashMap<String,Object>());
     }
 
     public Expression<?> getCandidatePath() {
@@ -91,8 +91,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
     
     @Override
-    public Map<Object,String> getConstantToLabel() {
-        return constantToLabel.peek();
+    public Map<String,Object> getLabelToConstant() {
+        return labelToConstant.peek();
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subQuery) {
@@ -104,7 +104,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         final Predicate having = metadata.getHaving();
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
-        constantToLabel.push(new HashMap<Object,String>());
+        labelToConstant.push(new HashMap<String,Object>());
         
         // select
         boolean skippedSelect = false;
@@ -187,11 +187,11 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
         
         // parameters        
-        if (!getConstantToLabel().isEmpty()) {
-            insert(position, serializeParameters(metadata.getParams()));            
+        if (!getLabelToConstant().isEmpty()) {
+            insert(position, serializeParameters(metadata.getParams()));
         }
         
-        constantToLabel.pop();
+        labelToConstant.pop();
         
     }
 
@@ -212,24 +212,24 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         final StringBuilder b = new StringBuilder();
         b.append(PARAMETERS);
         boolean first = true;
-        final List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
+        final List<Map.Entry<String, Object>> entries = new ArrayList<Map.Entry<String, Object>>(getLabelToConstant().entrySet());
         Collections.sort(entries, comparator);
-        for (Map.Entry<Object, String> entry : entries) {
+        for (Map.Entry<String, Object> entry : entries) {
             if (!first) {
                 b.append(COMMA);
             }
-            if (Param.class.isInstance(entry.getKey())) {
-                Object constant = params.get(entry.getKey());
+            if (Param.class.isInstance(entry.getValue())) {
+                Object constant = params.get(entry.getValue());
                 if (constant == null) {
-                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                    throw new ParamNotSetException((Param<?>) entry.getValue());
                 }
                 constants.add(constant);
-                b.append(((Param<?>)entry.getKey()).getType().getName());
+                b.append(((Param<?>)entry.getValue()).getType().getName());
             } else {
-                constants.add(entry.getKey());
-                b.append(entry.getKey().getClass().getName());
+                constants.add(entry.getValue());
+                b.append(entry.getValue().getClass().getName());
             }
-            b.append(" ").append(entry.getValue());
+            b.append(" ").append(entry.getKey());
             first = false;
         }
         return b.toString();

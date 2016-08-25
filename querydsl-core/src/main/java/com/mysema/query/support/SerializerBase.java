@@ -22,7 +22,19 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathType;
+import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.types.Templates;
+import com.mysema.query.types.Visitor;
 
 /**
  * SerializerBase is a stub for Serializer implementations which serialize query metadata to Strings
@@ -42,7 +54,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private String anonParamPrefix = "_";
 
-    private Map<Object,String> constantToLabel;
+    private Map<String,Object> labelToConstant;
 
     @SuppressWarnings("unchecked")
     private final S self = (S) this;
@@ -79,11 +91,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return constantPrefix;
     }
 
-    public Map<Object,String> getConstantToLabel() {
-        if (constantToLabel == null) {
-            constantToLabel = new HashMap<Object,String>(4);   
+    public Map<String,Object> getLabelToConstant() {
+        if (labelToConstant == null) {
+        	labelToConstant = new HashMap<String,Object>(4);
         }
-        return constantToLabel;
+        return labelToConstant;
     }
     
     public int getLength() {
@@ -203,13 +215,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
     
     public void visitConstant(Object constant) {
-        if (!getConstantToLabel().containsKey(constant)) {
-            final String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
-            getConstantToLabel().put(constant, constLabel);
-            append(constLabel);
-        } else {
-            append(getConstantToLabel().get(constant));
-        }
+        final String constLabel = constantPrefix + (getLabelToConstant().size() + 1);
+        getLabelToConstant().put(constLabel, constant);
+        append(constLabel);
     }
 
     @Override
@@ -220,7 +228,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         } else {
             paramLabel = paramPrefix + param.getName();
         }
-        getConstantToLabel().put(param, paramLabel);
+        getLabelToConstant().put(paramLabel, param);
         append(paramLabel);
         return null;
     }

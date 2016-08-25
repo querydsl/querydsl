@@ -128,9 +128,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     private Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
         JPQLSerializer serializer = serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstantToLabel());
+        logQuery(queryString, serializer.getLabelToConstant());
         Query query = session.createQuery(queryString);
-        HibernateUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
+        HibernateUtil.setConstants(query, serializer.getLabelToConstant(), getMetadata().getParams());
         if (fetchSize > 0) {
             query.setFetchSize(fetchSize);
         }
@@ -254,7 +254,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
     }
 
-    protected void logQuery(String queryString, Map<Object, String> parameters) {
+    protected void logQuery(String queryString, Map<String, Object> parameters) {
         if (logger.isDebugEnabled()) {
             String normalizedQuery = queryString.replace('\n', ' ');
             MDC.put(MDC_QUERY, normalizedQuery);

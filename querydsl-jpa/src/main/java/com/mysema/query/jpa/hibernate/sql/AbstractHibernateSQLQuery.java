@@ -84,10 +84,10 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     private Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstantToLabel());
+        logQuery(queryString, serializer.getLabelToConstant());
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
-        HibernateUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
+        HibernateUtil.setConstants(query, serializer.getLabelToConstant(), queryMixin.getMetadata().getParams());
 
         if (!forCount) {
             ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
@@ -192,7 +192,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         }
     }
 
-    protected void logQuery(String queryString, Map<Object, String> parameters) {
+    protected void logQuery(String queryString, Map<String, Object> parameters) {
         if (logger.isDebugEnabled()) {
             String normalizedQuery = queryString.replace('\n', ' ');
             MDC.put(MDC_QUERY, normalizedQuery);

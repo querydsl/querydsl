@@ -144,7 +144,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
 
-        logQuery(serializer.toString(), serializer.getConstantToLabel());
+        logQuery(serializer.toString(), serializer.getLabelToConstant());
 
         // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
@@ -167,7 +167,7 @@ public abstract class AbstractJDOQuery<Q extends AbstractJDOQuery<Q>> extends Pr
         return query;
     }
 
-    protected void logQuery(String queryString, Map<Object, String> parameters) {
+    protected void logQuery(String queryString, Map<String, Object> parameters) {
         if (logger.isDebugEnabled()) {
             String normalizedQuery = queryString.replace('\n', ' ');
             MDC.put(MDC_QUERY, normalizedQuery);

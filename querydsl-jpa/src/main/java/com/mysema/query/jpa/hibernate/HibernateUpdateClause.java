@@ -70,7 +70,7 @@ public class HibernateUpdateClause implements
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
         serializer.serializeForUpdate(queryMixin.getMetadata());
-        Map<Object, String> constants = serializer.getConstantToLabel();
+        Map<String, Object> constants = serializer.getLabelToConstant();
 
         Query query = session.createQuery(serializer.toString());
         for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()) {

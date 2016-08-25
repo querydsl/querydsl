@@ -64,19 +64,19 @@ public class JDODeleteClause implements DeleteClause<JDODeleteClause> {
             JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
             serializer.handle(metadata.getWhere());
             query.setFilter(serializer.toString());
-            Map<Object,String> constToLabel = serializer.getConstantToLabel();
+            Map<String,Object> labelToConstant = serializer.getLabelToConstant();
 
             try{
-                if (!constToLabel.isEmpty()) {
-                    List<Object> constants = new ArrayList<Object>(constToLabel.size());
+                if (!labelToConstant.isEmpty()) {
+                    List<Object> constants = new ArrayList<Object>(labelToConstant.size());
                     StringBuilder builder = new StringBuilder();
-                    for (Map.Entry<Object, String> entry : constToLabel.entrySet()) {
+                    for (Map.Entry<String, Object> entry : labelToConstant.entrySet()) {
                         if (builder.length() > 0) {
                             builder.append(", ");
                         }
-                        builder.append(entry.getKey().getClass().getName()).append(" ");
-                        builder.append(entry.getValue());
-                        constants.add(entry.getKey());
+                        builder.append(entry.getValue().getClass().getName()).append(" ");
+                        builder.append(entry.getKey());
+                        constants.add(entry.getValue());
                     }
                     query.declareParameters(builder.toString());
                     return query.deletePersistentAll(constants.toArray());

@@ -48,17 +48,17 @@ public class MathTest extends AbstractQueryTest{
         
     @Test
     public void Add_And_Compare() {
-        assertToString("cat.bodyWeight + ?1 < ?1", cat.bodyWeight.add(10.0).lt(10.0));
+        assertToString("cat.bodyWeight + ?1 < ?2", cat.bodyWeight.add(10.0).lt(10.0));
     }
     
     @Test
     public void Subtract_And_Compare() {
-        assertToString("cat.bodyWeight - ?1 < ?1", cat.bodyWeight.subtract(10.0).lt(10.0));    
+        assertToString("cat.bodyWeight - ?1 < ?2", cat.bodyWeight.subtract(10.0).lt(10.0));    
     }
     
     @Test
     public void Multiply_And_Compare() {
-        assertToString("cat.bodyWeight * ?1 < ?1", cat.bodyWeight.multiply(10.0).lt(10.0));   
+        assertToString("cat.bodyWeight * ?1 < ?2", cat.bodyWeight.multiply(10.0).lt(10.0));   
     }
     
     @Test
