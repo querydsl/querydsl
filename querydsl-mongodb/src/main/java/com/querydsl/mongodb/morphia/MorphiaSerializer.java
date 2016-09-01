@@ -24,6 +24,7 @@ import org.mongodb.morphia.geo.Geometry;
 import org.mongodb.morphia.geo.GeometryQueryConverter;
 import org.mongodb.morphia.mapping.Mapper;
 
+import com.google.common.base.Preconditions;
 import com.mongodb.DBRef;
 import com.querydsl.core.types.Constant;
 import com.querydsl.core.types.Path;
@@ -42,8 +43,9 @@ public class MorphiaSerializer extends MongodbSerializer {
     private final GeometryQueryConverter geometryQueryConverter;
 
     public MorphiaSerializer(Morphia morphia) {
-        this.morphia = morphia == null ? new Morphia() : morphia;
-        this.geometryQueryConverter = new GeometryQueryConverter(this.morphia.getMapper());
+        Preconditions.checkNotNull(morphia);
+        this.morphia = morphia;
+        this.geometryQueryConverter = new GeometryQueryConverter(morphia.getMapper());
     }
 
     @Override
