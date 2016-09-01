@@ -16,6 +16,9 @@ package com.mysema.query.sql;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import com.mysema.query.QueryFlag;
@@ -76,6 +79,18 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
                 "select survey1.ID, count(*) over()  from SURVEY survey1  ) " +
                 "a) " +
                 "where rn > 3 and rownum <= 5", query.toString());
+    }
+
+    @Test
+    public void In() {
+        List<Integer> ids = new ArrayList<Integer>();
+        for (int i = 0; i < 2000; i++) {
+            ids.add(i);
+        }
+        query.from(survey1);
+        query.where(survey1.id.isNotNull());
+        query.where(survey1.id.in(ids));
+        assertTrue(query.toString().startsWith("from SURVEY survey1 where survey1.ID is not null and (survey1.ID in "));
     }
 
     @Test
