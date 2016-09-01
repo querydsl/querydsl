@@ -220,6 +220,30 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void alias_in_orderBy() {
+        assertEquals(6, query().select(cat.name.as("catName"))
+                .from(cat)
+                .orderBy(Expressions.stringPath("catName").asc()).fetch().size());
+    }
+
+    @Test
+    public void alias_in_orderBy2() {
+        System.out.println(select(
+                cat.name.as("catName"),
+                ExpressionUtils.as(
+                JPAExpressions.select(otherCat.id.count()).from(cat.kittens, otherCat), "otherCount"))
+                .from(cat)
+                .orderBy(Expressions.numberPath(Long.class, "otherCount").asc()));
+
+        assertEquals(6, query().select(
+                    cat.name.as("catName"),
+                ExpressionUtils.as(
+                    JPAExpressions.select(otherCat.id.count()).from(cat.kittens, otherCat), "otherCount"))
+                .from(cat)
+                .orderBy(Expressions.numberPath(Long.class, "otherCount").asc()).fetch().size());
+    }
+
+    @Test
     public void any_and_gt() {
         assertEquals(0, query().from(cat).where(
                 cat.kittens.any().name.eq("Ruth123"),
