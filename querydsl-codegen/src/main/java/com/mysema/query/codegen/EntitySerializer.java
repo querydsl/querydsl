@@ -698,6 +698,10 @@ public class EntitySerializer implements Serializer {
     protected void serializeProperties(EntityType model,  SerializerConfig config,
             CodeWriter writer) throws IOException {
         for (Property property : model.getProperties()) {
+
+            //Add a navigational javadoc comment
+            writer.javadoc("{@link "+ property.getDeclaringType().getFullName() + "#" + property.getName() + "}");
+
             // FIXME : the custom types should have the custom type category
             if (typeMappings.isRegistered(property.getType())
                     && property.getType().getCategory() != TypeCategory.CUSTOM
