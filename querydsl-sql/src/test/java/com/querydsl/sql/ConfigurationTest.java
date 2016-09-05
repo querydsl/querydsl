@@ -26,7 +26,13 @@ import org.junit.Test;
 
 import com.querydsl.core.alias.Gender;
 import com.querydsl.sql.domain.QSurvey;
-import com.querydsl.sql.types.*;
+import com.querydsl.sql.namemapping.ChangeCaseNameMapping;
+import com.querydsl.sql.namemapping.ChangeCaseNameMapping.LetterCase;
+import com.querydsl.sql.types.EnumByNameType;
+import com.querydsl.sql.types.InputStreamType;
+import com.querydsl.sql.types.Null;
+import com.querydsl.sql.types.StringType;
+import com.querydsl.sql.types.UtilDateType;
 
 public class ConfigurationTest {
 
@@ -68,9 +74,16 @@ public class ConfigurationTest {
         assertEquals("pub", configuration.getOverride(new SchemaAndTable("public", "")).getSchema());
         assertEquals("emp", configuration.getOverride(new SchemaAndTable("", "employee")).getTable());
         assertEquals("employees", configuration.getOverride(new SchemaAndTable("public", "employee")).getTable());
-//        assertEquals("pub", configuration.getSchema("public"));
-//        assertEquals("emp", configuration.getTable("", "employee"));
-//        assertEquals("employees", configuration.getTable("public", "employee"));
+
+        configuration.setDynamicNameMapping(new ChangeCaseNameMapping(LetterCase.UPPER));
+        String notDirectOverriden = "notDirectOverriden";
+        assertEquals(notDirectOverriden.toUpperCase(),
+                configuration.getOverride(new SchemaAndTable("public", notDirectOverriden)).getTable());
+
+        // assertEquals("pub", configuration.getSchema("public"));
+        // assertEquals("emp", configuration.getTable("", "employee"));
+        // assertEquals("employees", configuration.getTable("public",
+        // "employee"));
     }
 
     @Test

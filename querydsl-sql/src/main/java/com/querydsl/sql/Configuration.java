@@ -26,10 +26,14 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.Path;
+import com.querydsl.sql.namemapping.ChainedNameMapping;
+import com.querydsl.sql.namemapping.NameMapping;
+import com.querydsl.sql.namemapping.PreConfiguredNameMapping;
 import com.querydsl.sql.types.ArrayType;
 import com.querydsl.sql.types.Null;
 import com.querydsl.sql.types.Type;
@@ -50,7 +54,11 @@ public final class Configuration {
 
     private final JavaTypeMapping javaTypeMapping = new JavaTypeMapping();
 
-    private final NameMapping nameMapping = new NameMapping();
+    private final PreConfiguredNameMapping internalNameMapping = new PreConfiguredNameMapping();
+
+    private NameMapping nameMapping = internalNameMapping;
+
+    private final Map<String, String> schemaMapping = Maps.newHashMap();
 
     private final Map<String, Class<?>> typeToName = Maps.newHashMap();
 
@@ -196,7 +204,11 @@ public final class Configuration {
      */
     @Nullable
     public SchemaAndTable getOverride(SchemaAndTable key) {
-        return nameMapping.getOverride(key);
+        SchemaAndTable result = nameMapping.getOverride(key).or(key);
+        if (schemaMapping.containsKey(key.getSchema())) {
+            result = new SchemaAndTable(schemaMapping.get(key.getSchema()), result.getTable());
+        }
+        return result;
     }
 
     /**
@@ -207,7 +219,24 @@ public final class Configuration {
      * @return overridden column
      */
     public String getColumnOverride(SchemaAndTable key, String column) {
-        return nameMapping.getColumnOverride(key, column);
+        return nameMapping.getColumnOverride(key, column).or(column);
+    }
+
+    /**
+     * Programmers can specify name mappings by implementing the
+     * {@link NameMapping} interface. The mapping rules that are specified by
+     * this property are checked if no mapping is specified by any of the
+     * <code>register*Override</code> functions.
+     *
+     * @param nameMapping
+     *            The name mapping that is implemented by the user.
+     */
+    public void setDynamicNameMapping(NameMapping nameMapping) {
+        if (nameMapping == null) {
+            this.nameMapping = this.internalNameMapping;
+        } else {
+            this.nameMapping = new ChainedNameMapping(this.nameMapping, nameMapping);
+        }
     }
 
     /**
@@ -290,7 +319,7 @@ public final class Configuration {
      * @return previous override value
      */
     public String registerSchemaOverride(String oldSchema, String newSchema) {
-        return nameMapping.registerSchemaOverride(oldSchema, newSchema);
+        return schemaMapping.put(oldSchema, newSchema);
     }
 
     /**
@@ -301,7 +330,7 @@ public final class Configuration {
      * @return previous override value
      */
     public String registerTableOverride(String oldTable, String newTable) {
-        return nameMapping.registerTableOverride(oldTable, newTable);
+        return internalNameMapping.registerTableOverride(oldTable, newTable);
     }
 
     /**
@@ -338,7 +367,7 @@ public final class Configuration {
      * @return previous override
      */
     public SchemaAndTable registerTableOverride(SchemaAndTable from, SchemaAndTable to) {
-        return nameMapping.registerTableOverride(from, to);
+        return internalNameMapping.registerTableOverride(from, to);
     }
 
     /**
@@ -351,7 +380,7 @@ public final class Configuration {
      * @return previous override
      */
     public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
-        return nameMapping.registerColumnOverride(schema, table, oldColumn, newColumn);
+        return internalNameMapping.registerColumnOverride(schema, table, oldColumn, newColumn);
     }
 
     /**
@@ -363,7 +392,7 @@ public final class Configuration {
      * @return previous override
      */
     public String registerColumnOverride(String table, String oldColumn, String newColumn) {
-        return nameMapping.registerColumnOverride(table, oldColumn, newColumn);
+        return internalNameMapping.registerColumnOverride(table, oldColumn, newColumn);
     }
 
     /**

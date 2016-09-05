@@ -11,18 +11,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.sql;
+package com.querydsl.sql.namemapping;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
+import com.querydsl.sql.SchemaAndTable;
 
-final class NameMapping {
+/**
+ * {@link NameMapping} implementation that allows specifying exact schema, table and column name mappings.
+ */
+public class PreConfiguredNameMapping implements NameMapping {
 
     private final Map<SchemaAndTable, SchemaAndTable> schemaTables = Maps.newHashMap();
-
-    private final Map<String, String> schemas = Maps.newHashMap();
 
     private final Map<String, String> tables = Maps.newHashMap();
 
@@ -30,42 +33,32 @@ final class NameMapping {
 
     private final Map<String, Map<String, String>> tableColumns = Maps.newHashMap();
 
-    public SchemaAndTable getOverride(SchemaAndTable key) {
+    public Optional<SchemaAndTable> getOverride(SchemaAndTable key) {
         if (!schemaTables.isEmpty() && key.getSchema() != null) {
             if (schemaTables.containsKey(key)) {
-                return schemaTables.get(key);
+                return Optional.of(schemaTables.get(key));
             }
-        }
-        String schema = key.getSchema(), table = key.getTable();
-        boolean changed = false;
-        if (schemas.containsKey(key.getSchema())) {
-            schema = schemas.get(key.getSchema());
-            changed = true;
         }
 
         if (tables.containsKey(key.getTable())) {
-            table = tables.get(key.getTable());
-            changed = true;
+            String table = tables.get(key.getTable());
+            return Optional.of(new SchemaAndTable(key.getSchema(), table));
         }
-        return changed ? new SchemaAndTable(schema, table) : key;
+        return Optional.absent();
     }
 
-    public String getColumnOverride(SchemaAndTable key, String column) {
+    public Optional<String> getColumnOverride(SchemaAndTable key, String column) {
         Map<String, String> columnOverrides;
         String newColumn = null;
         columnOverrides = schemaTableColumns.get(key);
         if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
-            return newColumn;
+            return Optional.of(newColumn);
         }
         columnOverrides = tableColumns.get(key.getTable());
         if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
-            return newColumn;
+            return Optional.of(newColumn);
         }
-        return column;
-    }
-
-    public String registerSchemaOverride(String oldSchema, String newSchema) {
-        return schemas.put(oldSchema, newSchema);
+        return Optional.absent();
     }
 
     public String registerTableOverride(String oldTable, String newTable) {
