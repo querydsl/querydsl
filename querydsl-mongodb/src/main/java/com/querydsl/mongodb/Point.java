@@ -17,6 +17,7 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.ArrayPath;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import org.mongodb.morphia.query.Shape;
 
 /**
  * {@code Point} is an adapter type for Double[] arrays to use geo spatial querying features of Mongodb
@@ -49,6 +50,14 @@ public class Point extends ArrayPath<Double[], Double> {
      */
     public BooleanExpression near(double latVal, double longVal) {
         return MongodbExpressions.near(this, latVal, longVal);
+    }
+
+    public BooleanExpression nearSphere(double latVal, double longVal) {
+        return MongodbExpressions.nearSphere(this, latVal, longVal);
+    }
+
+    public BooleanExpression geoWithin(Shape shape) {
+        return MongodbExpressions.geoWithin(this, shape);
     }
 
 }

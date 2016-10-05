@@ -1,16 +1,6 @@
 package com.querydsl.mongodb;
 
-import static org.junit.Assert.*;
-
-import java.net.UnknownHostException;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-
-import com.mongodb.Mongo;
+import com.github.fakemongo.junit.FongoRule;
 import com.mongodb.MongoException;
 import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.core.types.Predicate;
@@ -18,11 +8,23 @@ import com.querydsl.mongodb.domain.Item;
 import com.querydsl.mongodb.domain.QUser;
 import com.querydsl.mongodb.domain.User;
 import com.querydsl.mongodb.morphia.MorphiaQuery;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+
+import java.net.UnknownHostException;
+
+import static org.junit.Assert.*;
 
 @Category(MongoDB.class)
 public class JoinTest {
 
-    private final Mongo mongo;
+    @Rule
+    public final FongoRule fongoRule = new FongoRule();
+
     private final Morphia morphia;
     private final Datastore ds;
 
@@ -33,9 +35,8 @@ public class JoinTest {
     private final QUser enemy = new QUser("enemy");
 
     public JoinTest() throws UnknownHostException, MongoException {
-        mongo = new Mongo();
         morphia = new Morphia().map(User.class).map(Item.class);
-        ds = morphia.createDatastore(mongo, dbname);
+        ds = morphia.createDatastore(fongoRule.getFongo().getMongo(), dbname);
     }
 
     @Before

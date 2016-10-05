@@ -13,20 +13,19 @@
  */
 package com.querydsl.mongodb;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import org.bson.BSONObject;
-import org.bson.types.ObjectId;
-
 import com.google.common.collect.Sets;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.DBRef;
 import com.querydsl.core.types.*;
+import org.bson.BSONObject;
+import org.bson.types.ObjectId;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Serializes the given Querydsl query to a DBObject query for MongoDB
@@ -247,16 +246,29 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject(visit(path, context) + "." + key.toString(), asDBObject("$exists", true));
 
         } else if (op == MongodbOps.NEAR) {
-            return asDBObject(asDBKey(expr, 0), asDBObject("$near", asDBValue(expr, 1)));
-
+            return asDBObject(asDBKey(expr, 0), asDBObject("$near", getDBValueFor$NearOp(expr)));
         } else if (op == MongodbOps.NEAR_SPHERE) {
-            return asDBObject(asDBKey(expr, 0), asDBObject("$nearSphere", asDBValue(expr, 1)));
-
+            return asDBObject(asDBKey(expr, 0), asDBObject("$nearSphere", getDBValueFor$NearOp(expr)));
+        } else if (op == MongodbOps.GEO_WITHIN) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$geoWithin", asDBValue(expr, 1)));
         } else if (op == MongodbOps.ELEM_MATCH) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
         }
 
         throw new UnsupportedOperationException("Illegal operation " + expr);
+    }
+
+    private Object getDBValueFor$NearOp(Operation<?> expr) {
+        Object value = asDBValue(expr, 1);
+
+        if (value instanceof BSONObject && expr.getArgs().size() > 2) {
+            BSONObject geometry = (BSONObject) value;
+            Object maxDistanceMeters = asDBValue(expr, 2);
+            geometry.put("$maxDistance", maxDistanceMeters);
+            return geometry;
+        } else {
+            return value;
+        }
     }
 
     private Object negate(BasicDBObject arg) {

@@ -11,30 +11,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.mongodb;
-
-import com.querydsl.core.types.Operator;
 
 /**
- * MongoDB specific operators
- *
- * @author tiwe
- *
+ * MongoDB geo support
  */
-public enum MongodbOps implements Operator {
-    NEAR(Boolean.class),
-    ELEM_MATCH(Boolean.class),
-    NEAR_SPHERE(Boolean.class),
-    GEO_WITHIN(Boolean.class);
-
-    private final Class<?> type;
-
-    private MongodbOps(Class<?> type) {
-        this.type = type;
-    }
-
-    @Override
-    public Class<?> getType() {
-        return type;
-    }
-}
+package org.mongodb.morphia.geo;
