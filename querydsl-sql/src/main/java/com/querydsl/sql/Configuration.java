@@ -234,7 +234,7 @@ public final class Configuration {
         if (nameMapping == null) {
             this.nameMapping = this.internalNameMapping;
         } else {
-            this.nameMapping = new ChainedNameMapping(this.nameMapping, nameMapping);
+            this.nameMapping = new ChainedNameMapping(this.internalNameMapping, nameMapping);
         }
     }
 
