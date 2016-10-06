@@ -26,11 +26,11 @@ import com.querydsl.sql.SchemaAndTable;
  * from the <code>stores*Identifiers</code> function of the
  * {@link java.sql.DatabaseMetaData}
  */
-public class ChangeCaseNameMapping implements NameMapping {
+public class ChangeLetterCaseNameMapping implements NameMapping {
 
     /**
-     * The target letter-case (lower or upper) that the
-     * {@link ChangeCaseNameMapping} should use to convert the identifiers
+     * The target character-case (lower or upper) that the
+     * {@link ChangeLetterCaseNameMapping} should use to convert the identifiers
      * names.
      */
     public enum LetterCase {
@@ -46,7 +46,7 @@ public class ChangeCaseNameMapping implements NameMapping {
      * @param targetCase The characters of all table and column names will be converted to the specified letter-case.
      * @param locale The locale that is used for the letter-case conversion.
      */
-    public ChangeCaseNameMapping(LetterCase targetCase, Locale locale) {
+    public ChangeLetterCaseNameMapping(LetterCase targetCase, Locale locale) {
         this.locale = Preconditions.checkNotNull(locale);
         this.targetCase = Preconditions.checkNotNull(targetCase);
     }

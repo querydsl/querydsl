@@ -27,8 +27,8 @@ import org.junit.Test;
 
 import com.querydsl.core.alias.Gender;
 import com.querydsl.sql.domain.QSurvey;
-import com.querydsl.sql.namemapping.ChangeCaseNameMapping;
-import com.querydsl.sql.namemapping.ChangeCaseNameMapping.LetterCase;
+import com.querydsl.sql.namemapping.ChangeLetterCaseNameMapping;
+import com.querydsl.sql.namemapping.ChangeLetterCaseNameMapping.LetterCase;
 import com.querydsl.sql.types.EnumByNameType;
 import com.querydsl.sql.types.InputStreamType;
 import com.querydsl.sql.types.Null;
@@ -76,7 +76,7 @@ public class ConfigurationTest {
         assertEquals("emp", configuration.getOverride(new SchemaAndTable("", "employee")).getTable());
         assertEquals("employees", configuration.getOverride(new SchemaAndTable("public", "employee")).getTable());
 
-        configuration.setDynamicNameMapping(new ChangeCaseNameMapping(LetterCase.UPPER, Locale.getDefault()));
+        configuration.setDynamicNameMapping(new ChangeLetterCaseNameMapping(LetterCase.UPPER, Locale.getDefault()));
         String notDirectOverriden = "notDirectOverriden";
         assertEquals(notDirectOverriden.toUpperCase(),
                 configuration.getOverride(new SchemaAndTable("public", notDirectOverriden)).getTable());
