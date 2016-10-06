@@ -13,6 +13,8 @@
  */
 package com.querydsl.sql.namemapping;
 
+import java.util.Locale;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.querydsl.sql.SchemaAndTable;
@@ -35,9 +37,17 @@ public class ChangeCaseNameMapping implements NameMapping {
         LOWER, UPPER
     }
 
+    private Locale locale;
+
     private final LetterCase targetCase;
 
-    public ChangeCaseNameMapping(LetterCase targetCase) {
+    /**
+     * Constructor.
+     * @param targetCase The characters of all table and column names will be converted to the specified letter-case.
+     * @param locale The locale that is used for the letter-case conversion.
+     */
+    public ChangeCaseNameMapping(LetterCase targetCase, Locale locale) {
+        this.locale = Preconditions.checkNotNull(locale);
         this.targetCase = Preconditions.checkNotNull(targetCase);
     }
 
@@ -61,9 +71,9 @@ public class ChangeCaseNameMapping implements NameMapping {
         }
 
         if (targetCase == LetterCase.LOWER) {
-            return text.toLowerCase();
+            return text.toLowerCase(locale);
         } else {
-            return text.toUpperCase();
+            return text.toUpperCase(locale);
         }
     }
 

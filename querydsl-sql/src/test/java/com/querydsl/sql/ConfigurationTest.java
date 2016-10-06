@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Locale;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -75,7 +76,7 @@ public class ConfigurationTest {
         assertEquals("emp", configuration.getOverride(new SchemaAndTable("", "employee")).getTable());
         assertEquals("employees", configuration.getOverride(new SchemaAndTable("public", "employee")).getTable());
 
-        configuration.setDynamicNameMapping(new ChangeCaseNameMapping(LetterCase.UPPER));
+        configuration.setDynamicNameMapping(new ChangeCaseNameMapping(LetterCase.UPPER, Locale.getDefault()));
         String notDirectOverriden = "notDirectOverriden";
         assertEquals(notDirectOverriden.toUpperCase(),
                 configuration.getOverride(new SchemaAndTable("public", notDirectOverriden)).getTable());
