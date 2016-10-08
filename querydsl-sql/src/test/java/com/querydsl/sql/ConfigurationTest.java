@@ -78,7 +78,7 @@ public class ConfigurationTest {
 
         configuration.setDynamicNameMapping(new ChangeLetterCaseNameMapping(LetterCase.UPPER, Locale.getDefault()));
         String notDirectOverriden = "notDirectOverriden";
-        assertEquals(notDirectOverriden.toUpperCase(),
+        assertEquals(notDirectOverriden.toUpperCase(Locale.getDefault()),
                 configuration.getOverride(new SchemaAndTable("public", notDirectOverriden)).getTable());
 
         // assertEquals("pub", configuration.getSchema("public"));
