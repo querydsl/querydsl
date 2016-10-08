@@ -53,15 +53,11 @@ public class ChangeLetterCaseNameMapping implements NameMapping {
 
     @Override
     public Optional<String> getColumnOverride(SchemaAndTable key, String column) {
-        return Optional.of(column.toUpperCase());
+        return Optional.of(targetCaseOrNull(column));
     }
 
     @Override
     public Optional<SchemaAndTable> getOverride(SchemaAndTable key) {
-        String schema = key.getSchema();
-        if (schema != null) {
-            schema = schema.toUpperCase();
-        }
         return Optional.of(new SchemaAndTable(targetCaseOrNull(key.getSchema()), targetCaseOrNull(key.getTable())));
     }
 
