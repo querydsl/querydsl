@@ -23,6 +23,7 @@ import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.mapping.Mapper;
 
 import com.mongodb.DBRef;
+import com.querydsl.core.types.Constant;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.mongodb.MongodbSerializer;
@@ -39,6 +40,12 @@ public class MorphiaSerializer extends MongodbSerializer {
 
     public MorphiaSerializer(Morphia morphia) {
         this.morphia = morphia;
+    }
+
+    @Override
+    public Object visit(Constant<?> expr, Void context) {
+        Object value = super.visit(expr, context);
+        return morphia.getMapper().toMongoObject(null, null, value);
     }
 
     @Override
