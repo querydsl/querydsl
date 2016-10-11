@@ -96,6 +96,11 @@ public final class APTOptions {
      */
     public static final String QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS = "querydsl.variableNameFunctionClass";
 
+    /**
+     * set whether info level messages should be written to stdout (default: false)
+     */
+    public static final String QUERYDSL_LOG_INFO = "querydsl.logInfo";
+
     private APTOptions() { }
 
 }
