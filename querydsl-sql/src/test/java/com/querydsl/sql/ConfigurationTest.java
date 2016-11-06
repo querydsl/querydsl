@@ -23,7 +23,6 @@ import java.sql.Types;
 import java.util.Locale;
 
 import org.easymock.EasyMock;
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.querydsl.core.alias.Gender;

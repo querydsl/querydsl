@@ -362,7 +362,7 @@ public final class Configuration {
      * @param newSchema override schema
      * @param newTable override table
      * @return previous override value
-     * 
+     *
      * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
     @Deprecated
@@ -393,7 +393,7 @@ public final class Configuration {
      * @param newColumn override
      * @return previous override
      *
-     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead. 
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
     @Deprecated
     public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
