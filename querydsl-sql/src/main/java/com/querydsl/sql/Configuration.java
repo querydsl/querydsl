@@ -316,7 +316,10 @@ public final class Configuration {
      * @param oldSchema schema to override
      * @param newSchema override
      * @return previous override value
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerSchemaOverride(String oldSchema, String newSchema) {
         return schemaMapping.put(oldSchema, newSchema);
     }
@@ -327,7 +330,10 @@ public final class Configuration {
      * @param oldTable table to override
      * @param newTable override
      * @return previous override value
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerTableOverride(String oldTable, String newTable) {
         return internalNameMapping.registerTableOverride(oldTable, newTable);
     }
@@ -339,7 +345,10 @@ public final class Configuration {
      * @param oldTable table to override
      * @param newTable override
      * @return previous override value
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerTableOverride(String schema, String oldTable, String newTable) {
         SchemaAndTable st = registerTableOverride(schema, oldTable, schema, newTable);
         return st != null ? st.getTable() : null;
@@ -353,7 +362,10 @@ public final class Configuration {
      * @param newSchema override schema
      * @param newTable override table
      * @return previous override value
+     * 
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public SchemaAndTable registerTableOverride(String schema, String oldTable, String newSchema, String newTable) {
         return registerTableOverride(new SchemaAndTable(schema, oldTable), new SchemaAndTable(newSchema, newTable));
     }
@@ -364,7 +376,10 @@ public final class Configuration {
      * @param from schema and table to override
      * @param to override
      * @return previous override
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public SchemaAndTable registerTableOverride(SchemaAndTable from, SchemaAndTable to) {
         return internalNameMapping.registerTableOverride(from, to);
     }
@@ -377,7 +392,10 @@ public final class Configuration {
      * @param oldColumn column
      * @param newColumn override
      * @return previous override
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead. 
      */
+    @Deprecated
     public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
         return internalNameMapping.registerColumnOverride(schema, table, oldColumn, newColumn);
     }
@@ -389,7 +407,10 @@ public final class Configuration {
      * @param oldColumn column
      * @param newColumn override
      * @return previous override
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerColumnOverride(String table, String oldColumn, String newColumn) {
         return internalNameMapping.registerColumnOverride(table, oldColumn, newColumn);
     }
