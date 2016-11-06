@@ -62,10 +62,6 @@ public class ChangeLetterCaseNameMapping implements NameMapping {
     }
 
     private String targetCaseOrNull(String text) {
-        if (text == null) {
-            return null;
-        }
-
         if (targetCase == LetterCase.LOWER) {
             return text.toLowerCase(locale);
         } else {

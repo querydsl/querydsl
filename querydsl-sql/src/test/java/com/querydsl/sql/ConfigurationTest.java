@@ -23,12 +23,16 @@ import java.sql.Types;
 import java.util.Locale;
 
 import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.querydsl.core.alias.Gender;
 import com.querydsl.sql.domain.QSurvey;
+import com.querydsl.sql.namemapping.ChainedNameMapping;
 import com.querydsl.sql.namemapping.ChangeLetterCaseNameMapping;
 import com.querydsl.sql.namemapping.ChangeLetterCaseNameMapping.LetterCase;
+import com.querydsl.sql.namemapping.NameMapping;
+import com.querydsl.sql.namemapping.PreConfiguredNameMapping;
 import com.querydsl.sql.types.EnumByNameType;
 import com.querydsl.sql.types.InputStreamType;
 import com.querydsl.sql.types.Null;
@@ -76,15 +80,50 @@ public class ConfigurationTest {
         assertEquals("emp", configuration.getOverride(new SchemaAndTable("", "employee")).getTable());
         assertEquals("employees", configuration.getOverride(new SchemaAndTable("public", "employee")).getTable());
 
+        configuration.setDynamicNameMapping(new PreConfiguredNameMapping());
+        SchemaAndTable notOverriddenSchemaAndTable = new SchemaAndTable("notoverridden", "notoverridden");
+        assertEquals(notOverriddenSchemaAndTable, configuration.getOverride(notOverriddenSchemaAndTable));
+
         configuration.setDynamicNameMapping(new ChangeLetterCaseNameMapping(LetterCase.UPPER, Locale.getDefault()));
         String notDirectOverriden = "notDirectOverriden";
         assertEquals(notDirectOverriden.toUpperCase(Locale.getDefault()),
                 configuration.getOverride(new SchemaAndTable("public", notDirectOverriden)).getTable());
 
-        // assertEquals("pub", configuration.getSchema("public"));
-        // assertEquals("emp", configuration.getTable("", "employee"));
-        // assertEquals("employees", configuration.getTable("public",
-        // "employee"));
+    }
+
+    @Test
+    public void columnOverride() {
+        Configuration configuration = new Configuration(new H2Templates());
+        assertEquals("notoverriddencolumn", configuration.getColumnOverride(new SchemaAndTable("myschema", "mytable"), "notoverriddencolumn"));
+
+        // Testing when chained name mapping does not give back any result.
+        configuration.setDynamicNameMapping(new PreConfiguredNameMapping());
+        assertEquals("notoverriddencolumn", configuration.getColumnOverride(new SchemaAndTable("myschema", "mytable"), "notoverriddencolumn"));
+
+        // Testing all other use-cases when letter case changing is in the end of the chain
+        configuration.setDynamicNameMapping(new ChangeLetterCaseNameMapping(LetterCase.LOWER, Locale.getDefault()));
+
+        configuration.registerColumnOverride("mytable", "oldcolumn", "newcolumn");
+        configuration.registerColumnOverride("mytable", "oldcolumn2", "newcolumn2");
+        assertEquals("newcolumn", configuration.getColumnOverride(new SchemaAndTable("myschema", "mytable"), "oldcolumn"));
+        assertEquals("newcolumn2", configuration.getColumnOverride(new SchemaAndTable("myschema", "mytable"), "oldcolumn2"));
+
+        configuration.registerColumnOverride("myschema", "mytable", "oldcolumn", "newcolumnwithschema");
+        configuration.registerColumnOverride("myschema", "mytable", "oldcolumn2", "newcolumnwithschema2");
+        assertEquals("newcolumnwithschema2", configuration.getColumnOverride(new SchemaAndTable("myschema", "mytable"), "oldcolumn2"));
+        assertEquals("notoverriddencolumn", configuration.getColumnOverride(new SchemaAndTable("myschema", "mytable"), "notoverriddencolumn"));
+
+        assertEquals("lower", configuration.getColumnOverride(new SchemaAndTable("myschema", "mytable"), "LOWER"));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void npeWithNullParameterOfChainedNameMappingConstructor() {
+        new ChainedNameMapping((NameMapping[]) null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void npeWithNullElementInParameterOfChainedNameMappingConstructor() {
+        new ChainedNameMapping(new NameMapping[]  {null});
     }
 
     @Test
