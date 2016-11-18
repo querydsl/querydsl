@@ -176,7 +176,7 @@ public class AntMetaDataExporter extends Task {
     /**
      * custom types to use
      */
-    private String[] customTypes;
+    private List<String> customTypes = Lists.newArrayList();
 
     /**
      * scala generation mode
@@ -592,12 +592,11 @@ public class AntMetaDataExporter extends Task {
         this.columnAnnotations = columnAnnotations;
     }
 
-    public String[] getCustomTypes() {
-        return customTypes;
-    }
-
-    public void setCustomTypes(String[] customTypes) {
-        this.customTypes = customTypes;
+    /**
+     * Adds custom type to ant
+     */
+    public void addCustomType(String customType) {
+        customTypes.add(customType);
     }
 
     public boolean isCreateScalaSources() {
