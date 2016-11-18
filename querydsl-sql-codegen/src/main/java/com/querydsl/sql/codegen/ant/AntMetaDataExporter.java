@@ -31,6 +31,7 @@ import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.codegen.DefaultNamingStrategy;
 import com.querydsl.sql.codegen.MetaDataExporter;
 import com.querydsl.sql.codegen.NamingStrategy;
+import com.querydsl.sql.codegen.support.CustomType;
 import com.querydsl.sql.codegen.support.NumericMapping;
 import com.querydsl.sql.codegen.support.RenameMapping;
 import com.querydsl.sql.codegen.support.TypeMapping;
@@ -176,7 +177,7 @@ public class AntMetaDataExporter extends Task {
     /**
      * custom types to use
      */
-    private List<String> customTypes = Lists.newArrayList();
+    private List<CustomType> customTypes = Lists.newArrayList();
 
     /**
      * scala generation mode
@@ -351,8 +352,8 @@ public class AntMetaDataExporter extends Task {
                 exporter.setSourceEncoding(sourceEncoding);
             }
             if (customTypes != null) {
-                for (String cl : customTypes) {
-                    configuration.register((Type<?>) Class.forName(cl).newInstance());
+                for (CustomType customType : customTypes) {
+                    configuration.register((Type<?>) Class.forName(customType.getClassName()).newInstance());
                 }
             }
             if (typeMappings != null) {
@@ -595,7 +596,7 @@ public class AntMetaDataExporter extends Task {
     /**
      * Adds custom type to ant
      */
-    public void addCustomType(String customType) {
+    public void addCustomType(CustomType customType) {
         customTypes.add(customType);
     }
 
