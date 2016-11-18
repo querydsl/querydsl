@@ -600,6 +600,34 @@ public class AntMetaDataExporter extends Task {
         customTypes.add(customType);
     }
 
+    /**
+     * Gets a list of custom types
+     * @return a list of custom types
+     * @deprecated Use addCustomType instead
+     */
+    public String[] getCustomTypes() {
+        String[] customTypes = new String[this.customTypes.size()];
+        for (int i = 0; i < this.customTypes.size(); i++) {
+            CustomType customType = this.customTypes.get(i);
+            customTypes[i] = customType.getClassName();
+        }
+        return customTypes;
+    }
+
+    /**
+     * Sets a list of custom types
+     * @param strings a list of custom types
+     * @deprecated Use addCustomType instead
+     */
+    public void setCustomTypes(String[] strings) {
+        this.customTypes.clear();
+        for (String string : strings) {
+            CustomType customType = new CustomType();
+            customType.setClassName(string);
+            this.customTypes.add(customType);
+        }
+    }
+
     public boolean isCreateScalaSources() {
         return createScalaSources;
     }
