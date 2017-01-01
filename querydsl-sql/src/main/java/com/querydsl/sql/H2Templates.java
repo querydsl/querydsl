@@ -46,7 +46,7 @@ public class H2Templates extends SQLTemplates {
     }
 
     public H2Templates(char escape, boolean quote) {
-        super(Keywords.H2, "\"", escape, quote);
+        super(Keywords.H2, "\"", escape, quote, false);
         setNativeMerge(true);
         setMaxLimit(2 ^ 31);
         setLimitRequired(true);

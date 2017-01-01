@@ -61,7 +61,7 @@ public class DB2Templates extends SQLTemplates {
     }
 
     public DB2Templates(char escape, boolean quote) {
-        super(Keywords.DB2, "\"", escape, quote);
+        super(Keywords.DB2, "\"", escape, quote, false);
         setDummyTable("sysibm.sysdummy1");
         setAutoIncrement(" generated always as identity");
         setFunctionJoinsWrapped(true);

@@ -46,7 +46,7 @@ public class HSQLDBTemplates extends SQLTemplates {
     }
 
     public HSQLDBTemplates(char escape, boolean quote) {
-        super(Keywords.HSQLDB, "\"", escape, quote);
+        super(Keywords.HSQLDB, "\"", escape, quote, false);
         setLimitRequired(true);
         setAutoIncrement(" identity");
         setDefaultValues("\ndefault values");
