@@ -466,9 +466,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(Position.AFTER_SELECT, metadata.getFlags());
         append("from ");
 
+        boolean originalDmlWithSchema = dmlWithSchema;
         dmlWithSchema = true;
         handle(entity);
-        dmlWithSchema = false;
+        dmlWithSchema = originalDmlWithSchema;
 
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
@@ -490,9 +491,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         serialize(Position.AFTER_SELECT, metadata.getFlags());
 
+        boolean originalDmlWithSchema = dmlWithSchema;
         dmlWithSchema = true;
         handle(entity);
-        dmlWithSchema = false;
+        dmlWithSchema = originalDmlWithSchema;
         append(" ");
         // columns
         if (!columns.isEmpty()) {
@@ -558,9 +560,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         serialize(Position.AFTER_SELECT, metadata.getFlags());
 
+        boolean originalDmlWithSchema = dmlWithSchema;
         dmlWithSchema = true;
         handle(entity);
-        dmlWithSchema = false;
+        dmlWithSchema = originalDmlWithSchema;
         // columns
         if (!columns.isEmpty()) {
             append(" (");
@@ -612,9 +615,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         serialize(Position.AFTER_SELECT, metadata.getFlags());
 
+        boolean originalDmlWithSchema = dmlWithSchema;
         dmlWithSchema = true;
         handle(entity);
-        dmlWithSchema = false;
+        dmlWithSchema = originalDmlWithSchema;
         append("\n");
         append(templates.getSet());
         boolean first = true;
