@@ -17,20 +17,20 @@ import static com.querydsl.sql.SQLExpressions.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.querydsl.core.types.*;
+import com.querydsl.sql.dml.SQLDeleteClause;
+import org.easymock.EasyMock;
 import org.junit.Test;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QEmployeeNoPK;
@@ -421,6 +421,31 @@ public class SQLSerializerTest {
                 Expressions.stringPath("id"), Expressions.stringPath("ID")), null);
         assertEquals("(select id, ID as col__ID1\n" +
                 "from dual)", serializer.toString());
+    }
+
+    @Test
+    public void noSchemaInWhere() {
+        Configuration defaultWithPrintSchema = new Configuration(new SQLTemplates(Keywords.DEFAULT, "\"", '\\', false, false));
+        defaultWithPrintSchema.getTemplates().setPrintSchema(true);
+
+        QEmployee e = QEmployee.employee;
+        SQLDeleteClause delete = new SQLDeleteClause(EasyMock.createNiceMock(Connection.class), defaultWithPrintSchema, e);
+        delete.where(e.id.gt(100));
+
+        assertEquals("delete from PUBLIC.EMPLOYEE\n" +
+                "where EMPLOYEE.ID > ?", delete.toString());
+    }
+
+    @Test
+    public void schemaInWhere() {
+        Configuration derbyWithPrintSchema = new Configuration(DerbyTemplates.builder().printSchema().build());
+
+        QEmployee e = QEmployee.employee;
+        SQLDeleteClause delete = new SQLDeleteClause(EasyMock.createNiceMock(Connection.class), derbyWithPrintSchema, e);
+        delete.where(e.id.gt(100));
+
+        assertEquals("delete from \"PUBLIC\".EMPLOYEE\n" +
+                "where \"PUBLIC\".EMPLOYEE.ID > ?", delete.toString());
     }
 
     private SQLQuery<?> query() {
