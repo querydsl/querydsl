@@ -694,11 +694,11 @@ public class EntitySerializer implements Serializer {
     }
 
     private String constantFieldName(String fieldName) {
-        String name = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, fieldName);
-        if (Character.isDigit(name.charAt(0))) {
-            name = "_" + name;
+        String constantName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, fieldName);
+        if (Character.isDigit(constantName.charAt(0)) || fieldName.equals(constantName)) {
+            constantName = "_" + constantName;
         }
-        return name;
+        return constantName;
     }
 
     protected void customField(EntityType model, Property field, SerializerConfig config,
