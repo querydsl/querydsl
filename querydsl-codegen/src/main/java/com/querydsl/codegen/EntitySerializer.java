@@ -664,7 +664,7 @@ public class EntitySerializer implements Serializer {
     protected void serialize(EntityType model, Property field, Type type, CodeWriter writer,
             String factoryMethod, String... args) throws IOException {
 
-        String constantFieldName = constantFieldName(field.getName());
+        String constantFieldName = constantFieldName(field.getEscapedName());
         writer.publicStaticFinal(new ClassType(String.class), constantFieldName, "\"" + field.getName() + "\"");
 
         Supertype superType = model.getSuperType();
@@ -694,11 +694,7 @@ public class EntitySerializer implements Serializer {
     }
 
     private String constantFieldName(String fieldName) {
-        String constantName = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, fieldName);
-        if (Character.isDigit(constantName.charAt(0)) || fieldName.equals(constantName)) {
-            constantName = "_" + constantName;
-        }
-        return constantName;
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, fieldName);
     }
 
     protected void customField(EntityType model, Property field, SerializerConfig config,
