@@ -13,24 +13,67 @@
  */
 package com.querydsl.codegen;
 
-import static com.mysema.codegen.Symbols.*;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.*;
-
-import javax.annotation.Generated;
-import javax.inject.Inject;
-import javax.inject.Named;
-
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.*;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
+import com.mysema.codegen.model.Types;
+import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.ArrayPath;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.CollectionPath;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.EnumPath;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.MapPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.PathInits;
+import com.querydsl.core.types.dsl.SetPath;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.TimePath;
+
+import javax.annotation.Generated;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static com.mysema.codegen.Symbols.ASSIGN;
+import static com.mysema.codegen.Symbols.COMMA;
+import static com.mysema.codegen.Symbols.DOT;
+import static com.mysema.codegen.Symbols.EMPTY;
+import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.QUOTE;
+import static com.mysema.codegen.Symbols.RETURN;
+import static com.mysema.codegen.Symbols.SEMICOLON;
+import static com.mysema.codegen.Symbols.STAR;
+import static com.mysema.codegen.Symbols.SUPER;
+import static com.mysema.codegen.Symbols.THIS;
+import static com.mysema.codegen.Symbols.UNCHECKED;
 
 /**
  * {@code EntitySerializer} is a {@link Serializer} implementation for entity types
@@ -620,6 +663,10 @@ public class EntitySerializer implements Serializer {
 
     protected void serialize(EntityType model, Property field, Type type, CodeWriter writer,
             String factoryMethod, String... args) throws IOException {
+
+        String constantFieldName = constantFieldName(field.getName());
+        writer.publicStaticFinal(new ClassType(String.class), constantFieldName, "\"" + field.getName() + "\"");
+
         Supertype superType = model.getSuperType();
         // construct value
         StringBuilder value = new StringBuilder();
@@ -628,7 +675,7 @@ public class EntitySerializer implements Serializer {
                 value.append("_super." + field.getEscapedName());
             }
         } else {
-            value.append(factoryMethod + "(\"" + field.getName() + QUOTE);
+            value.append(factoryMethod + "("  + constantFieldName);
             for (String arg : args) {
                 value.append(COMMA + arg);
             }
@@ -644,6 +691,14 @@ public class EntitySerializer implements Serializer {
         } else {
             writer.publicFinal(type, field.getEscapedName());
         }
+    }
+
+    private String constantFieldName(String fieldName) {
+        String name = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, fieldName);
+        if (Character.isDigit(name.charAt(0))) {
+            name = "_" + name;
+        }
+        return name;
     }
 
     protected void customField(EntityType model, Property field, SerializerConfig config,
