@@ -63,6 +63,15 @@ public interface SQLListenerContext {
     String getSQL();
 
     /**
+     * Return the underlying sql including bindings or first in a batch query
+     *
+     * <p>NOTE : This can be null depending on the stage of the query execution</p>
+     *
+     * @return the underlying sql including bindings or first in a batch query
+     */
+    SQLBindings getSQLBindings();
+
+    /**
      * Return the underlying sql collection if the query is a batch query
      *
      * <p>NOTE : This can be empty depending on the stage of the query execution</p>
@@ -70,6 +79,15 @@ public interface SQLListenerContext {
      * @return the underlying sql collection if the query is a batch query
      */
     Collection<String> getSQLStatements();
+
+    /**
+     * Return the underlying sql collection including bindings if the query is a batch query
+     *
+     * <p>NOTE : This can be empty depending on the stage of the query execution</p>
+     *
+     * @return the underlying sql collection including bindings if the query is a batch query
+     */
+    Collection<SQLBindings> getAllSQLBindings();
 
     /**
      * Return the underlying entity affected

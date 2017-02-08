@@ -277,7 +277,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             SQLSerializer serializer = serialize(false);
             queryString = serializer.toString();
             logQuery(queryString, serializer.getConstants());
-            context.addSQL(queryString);
+            context.addSQL(getSQL(serializer));
             listeners.rendered(context);
 
             listeners.notifyQuery(queryMixin.getMetadata());
@@ -353,7 +353,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             SQLSerializer serializer = serialize(false);
             queryString = serializer.toString();
             logQuery(queryString, serializer.getConstants());
-            context.addSQL(queryString);
+            context.addSQL(getSQL(serializer));
             listeners.rendered(context);
 
 
@@ -429,7 +429,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             SQLSerializer serializer = serialize(false);
             queryString = serializer.toString();
             logQuery(queryString, serializer.getConstants());
-            context.addSQL(queryString);
+            context.addSQL(getSQL(serializer));
             listeners.rendered(context);
 
             listeners.notifyQuery(queryMixin.getMetadata());
@@ -600,7 +600,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             SQLSerializer serializer = serialize(true);
             queryString = serializer.toString();
             logQuery(queryString, serializer.getConstants());
-            context.addSQL(queryString);
+            context.addSQL(getSQL(serializer));
             listeners.rendered(context);
 
             constants = serializer.getConstants();

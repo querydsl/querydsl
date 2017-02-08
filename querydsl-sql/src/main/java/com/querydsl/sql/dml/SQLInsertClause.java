@@ -265,7 +265,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         } else {
             serializer.serializeInsert(metadata, entity, columns, values, subQuery);
         }
-        context.addSQL(serializer.toString());
+        context.addSQL(createBindings(metadata, serializer));
         listeners.rendered(context);
         return prepareStatementAndSetParameters(serializer, withKeys);
     }
@@ -290,7 +290,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             stmt.addBatch();
         }
         stmts.put(serializer.toString(), stmt);
-        context.addSQL(serializer.toString());
+        context.addSQL(createBindings(metadata, serializer));
         listeners.rendered(context);
 
         // add other batches
@@ -301,7 +301,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
             serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, batch.getColumns(),
                     batch.getValues(), batch.getSubQuery());
-            context.addSQL(serializer.toString());
+            context.addSQL(createBindings(metadata, serializer));
             listeners.rendered(context);
 
             stmt = stmts.get(serializer.toString());

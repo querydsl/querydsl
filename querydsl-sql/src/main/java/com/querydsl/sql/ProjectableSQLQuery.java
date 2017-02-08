@@ -498,7 +498,10 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * @return SQL string and bindings
      */
     public SQLBindings getSQL() {
-        SQLSerializer serializer = serialize(false);
+        return getSQL(serialize(false));
+    }
+
+    protected SQLBindings getSQL(SQLSerializer serializer) {
         ImmutableList.Builder<Object> args = ImmutableList.builder();
         Map<ParamExpression<?>, Object> params = getMetadata().getParams();
         for (Object o : serializer.getConstants()) {

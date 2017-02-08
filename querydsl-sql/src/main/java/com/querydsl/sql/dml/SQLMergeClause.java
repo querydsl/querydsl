@@ -381,7 +381,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         PreparedStatement stmt = null;
         if (batches.isEmpty()) {
             serializer.serializeMerge(metadata, entity, keys, columns, values, subQuery);
-            context.addSQL(serializer.toString());
+            context.addSQL(createBindings(metadata, serializer));
             listeners.rendered(context);
 
             listeners.prePrepare(context);
@@ -392,7 +392,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
             serializer.serializeMerge(metadata, entity,
                     batches.get(0).getKeys(), batches.get(0).getColumns(),
                     batches.get(0).getValues(), batches.get(0).getSubQuery());
-            context.addSQL(serializer.toString());
+            context.addSQL(createBindings(metadata, serializer));
             listeners.rendered(context);
 
             stmt = prepareStatementAndSetParameters(serializer, withKeys);
@@ -408,7 +408,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
                 listeners.preRender(context);
                 serializer = createSerializer();
                 serializer.serializeMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
-                context.addSQL(serializer.toString());
+                context.addSQL(createBindings(metadata, serializer));
                 listeners.rendered(context);
 
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
@@ -430,7 +430,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         serializer.serializeMerge(metadata, entity,
                 batches.get(0).getKeys(), batches.get(0).getColumns(),
                 batches.get(0).getValues(), batches.get(0).getSubQuery());
-        context.addSQL(serializer.toString());
+        context.addSQL(createBindings(metadata, serializer));
         listeners.rendered(context);
 
         PreparedStatement stmt = prepareStatementAndSetParameters(serializer, withKeys);
