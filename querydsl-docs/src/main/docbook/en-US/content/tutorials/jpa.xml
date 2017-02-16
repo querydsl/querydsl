@@ -227,7 +227,7 @@ public class Customer {
         firstName = fn;
     }
 
-    public void setLastName(String ln)[
+    public void setLastName(String ln) {
         lastName = ln;
     }
 }
