@@ -259,6 +259,7 @@
                 <value>target/derby.log</value>
             </property>
           </systemProperties>
+          <argLine>-Duser.timezone=UTC</argLine>
         </configuration>
       </plugin>         
       
