@@ -64,7 +64,7 @@ public class SQLServerTemplates extends SQLTemplates {
     }
 
     protected SQLServerTemplates(Set<String> keywords, char escape, boolean quote) {
-        super(keywords, "\"", escape, quote);
+        super(keywords, "\"", escape, quote, false);
         setDummyTable("");
         setNullsFirst(null);
         setNullsLast(null);

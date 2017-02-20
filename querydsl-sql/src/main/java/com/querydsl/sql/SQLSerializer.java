@@ -471,7 +471,21 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         dmlWithSchema = false;
 
         if (metadata.getWhere() != null) {
-            append(templates.getWhere()).handle(metadata.getWhere());
+            serializeForWhere(metadata);
+        }
+    }
+
+    void serializeForWhere(QueryMetadata metadata) {
+        boolean requireSchemaInWhere = templates.isRequiresSchemaInWhere();
+        boolean originalDmlWithSchema = dmlWithSchema;
+
+        if (requireSchemaInWhere) {
+            dmlWithSchema = true;
+        }
+        append(templates.getWhere()).handle(metadata.getWhere());
+
+        if (requireSchemaInWhere) {
+            dmlWithSchema = originalDmlWithSchema;
         }
     }
 
@@ -634,7 +648,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         skipParent = false;
 
         if (metadata.getWhere() != null) {
-            append(templates.getWhere()).handle(metadata.getWhere());
+            serializeForWhere(metadata);
         }
     }
 

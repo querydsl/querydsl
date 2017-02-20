@@ -48,7 +48,7 @@ public class PostgreSQLTemplates extends SQLTemplates {
     }
 
     public PostgreSQLTemplates(char escape, boolean quote) {
-        super(Keywords.POSTGRESQL, "\"", escape, quote);
+        super(Keywords.POSTGRESQL, "\"", escape, quote, false);
         setDummyTable(null);
         setCountDistinctMultipleColumns(true);
         setCountViaAnalytics(true);

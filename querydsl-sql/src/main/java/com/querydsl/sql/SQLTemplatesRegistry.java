@@ -75,7 +75,7 @@ public class SQLTemplatesRegistry {
             return new SQLTemplates.Builder() {
                 @Override
                 protected SQLTemplates build(char escape, boolean quote) {
-                    return new SQLTemplates(Keywords.DEFAULT, "\"", escape, quote);
+                    return new SQLTemplates(Keywords.DEFAULT, "\"", escape, quote, false);
                 }
             };
         }
