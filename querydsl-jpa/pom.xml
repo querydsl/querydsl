@@ -92,6 +92,10 @@
       <version>${project.version}</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </dependency>
     
     <dependency>
       <groupId>com.querydsl</groupId>
