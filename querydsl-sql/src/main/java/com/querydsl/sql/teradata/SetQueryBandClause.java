@@ -16,12 +16,14 @@ package com.querydsl.sql.teradata;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Provider;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLBindings;
@@ -108,9 +110,9 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
     public List<SQLBindings> getSQL() {
         SQLBindings bindings;
         if (configuration.getUseLiterals() || forSession) {
-            bindings = new SQLBindings(toString(), ImmutableList.of());
+            bindings = new SQLBindings(toString(), Collections.emptyList());
         } else {
-            bindings = new SQLBindings(toString(), ImmutableList.<Object>of(parameter));
+            bindings = new SQLBindings(toString(), Lists.<Object>newArrayList(parameter));
         }
         return ImmutableList.of(bindings);
     }
