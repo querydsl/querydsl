@@ -1037,6 +1037,11 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void isNull() {
+        assertEquals(2, query().from(cat).where(cat.mate.isNull()).fetchCount());
+    }
+
+    @Test
     @NoEclipseLink
     @ExcludeIn({ORACLE, TERADATA})
     public void joinEmbeddable() {
