@@ -203,13 +203,15 @@ public class DefaultQueryEngine implements QueryEngine {
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         Expression<Object>[] orderByExpr = new Expression[orderBy.size()];
         boolean[] directions = new boolean[orderBy.size()];
+        boolean[] nullsLast = new boolean[orderBy.size()];
         for (int i = 0; i < orderBy.size(); i++) {
             orderByExpr[i] = (Expression) orderBy.get(i).getTarget();
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
+            nullsLast[i] = orderBy.get(i).getNullHandling() == OrderSpecifier.NullHandling.NullsLast;
         }
         Expression<?> expr = new ArrayConstructorExpression<Object>(Object[].class, orderByExpr);
         Evaluator orderEvaluator = evaluatorFactory.create(metadata, sources, expr);
-        Collections.sort(list, new MultiComparator(orderEvaluator, directions));
+        Collections.sort(list, new MultiComparator(orderEvaluator, directions, nullsLast));
     }
 
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
