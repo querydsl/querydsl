@@ -135,11 +135,10 @@ class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends Seriali
 
   def writeClass(model: EntityType, writer: ScalaWriter) = {
     model.getAnnotations foreach writer.annotation
-    val parameters = model.getProperties
-      .map(p => new Parameter(p.getEscapedName, p.getType)).toArray
+    val parameters = model.getProperties.toVector
+      .map(p => new Parameter(p.getEscapedName, p.getType))
     writer.caseClass(model.getSimpleName, parameters:_*)
   }
-
 }
 
 
