@@ -76,6 +76,19 @@ public final class JTSGeometryExpressions {
     }
 
     /**
+     * Transform the SRID on a geometry to a particular integer value.
+     *
+     * @param expr geometry
+     * @param srid SRID
+     * @param <T>
+     * @return geometry
+     */
+    public static <T extends Geometry> JTSGeometryExpression<T> transformSRID(Expression<T> expr, int srid) {
+        return geometryOperation(expr.getType(), SpatialOps.TRANSFORM,
+                expr, ConstantImpl.create(srid));
+    }
+
+    /**
      * Returns X minima of a bounding box 2d or 3d or a geometry.
      *
      * @param expr geometry
