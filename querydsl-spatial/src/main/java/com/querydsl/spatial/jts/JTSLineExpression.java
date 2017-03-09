@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.LineString;
  *
  * @param <T>
  */
-public abstract class JTSLineExpression<T extends LineString> extends JTSLineStringExpression<T> {
+public class JTSLineExpression<T extends LineString> extends JTSLineStringExpression<T> {
 
     private static final long serialVersionUID = -4849454664355502296L;
 

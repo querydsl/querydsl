@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  *
  * @param <T>
  */
-public abstract class JTSMultiLineStringExpression<T extends MultiLineString> extends JTSMultiCurveExpression<T> {
+public class JTSMultiLineStringExpression<T extends MultiLineString> extends JTSMultiCurveExpression<T> {
 
     private static final long serialVersionUID = -3103756880812584473L;
 

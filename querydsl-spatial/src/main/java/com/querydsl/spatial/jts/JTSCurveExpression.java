@@ -32,7 +32,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @param <T>
  */
-public abstract class JTSCurveExpression<T extends Geometry> extends JTSGeometryExpression<T> {
+public class JTSCurveExpression<T extends Geometry> extends JTSGeometryExpression<T> {
 
     private static final long serialVersionUID = 6139188586728676033L;
 

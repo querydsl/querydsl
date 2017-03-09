@@ -31,7 +31,7 @@ import com.querydsl.core.types.Path;
  * @author tiwe
  * @see <a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Gregorian calendar</a>
  */
-public abstract class DateExpression<T extends Comparable> extends TemporalExpression<T> {
+public class DateExpression<T extends Comparable> extends TemporalExpression<T> {
 
     private static class Constants {
         private static final DateExpression<Date> CURRENT_DATE = currentDate(Date.class);

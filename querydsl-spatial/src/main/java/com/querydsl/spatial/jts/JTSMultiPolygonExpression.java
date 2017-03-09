@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  *
  * @param <T>
  */
-public abstract class JTSMultiPolygonExpression<T extends MultiPolygon> extends JTSMultiSurfaceExpression<T> {
+public class JTSMultiPolygonExpression<T extends MultiPolygon> extends JTSMultiSurfaceExpression<T> {
 
     private static final long serialVersionUID = -2285946852207189655L;
 

@@ -33,7 +33,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @param <T>
  */
-public abstract class JTSMultiSurfaceExpression<T extends GeometryCollection> extends JTSGeometryCollectionExpression<T> {
+public class JTSMultiSurfaceExpression<T extends GeometryCollection> extends JTSGeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 4133386816772862010L;
 

@@ -28,7 +28,7 @@ import com.querydsl.core.types.dsl.*;
  *
  * @param <T>
  */
-public abstract class GeometryExpression<T extends Geometry> extends SimpleExpression<T> {
+public class GeometryExpression<T extends Geometry> extends SimpleExpression<T> {
 
     private static final long serialVersionUID = -1183228394472681995L;
 

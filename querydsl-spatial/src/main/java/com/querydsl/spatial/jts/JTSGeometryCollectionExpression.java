@@ -30,7 +30,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  *
  * @param <T>
  */
-public abstract class JTSGeometryCollectionExpression<T extends GeometryCollection> extends JTSGeometryExpression<T> {
+public class JTSGeometryCollectionExpression<T extends GeometryCollection> extends JTSGeometryExpression<T> {
 
     private static final long serialVersionUID = 8874174644259834690L;
 

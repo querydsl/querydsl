@@ -32,7 +32,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  *
  * @param <T>
  */
-public abstract class PolygonExpression<T extends Polygon> extends SurfaceExpression<T> {
+public class PolygonExpression<T extends Polygon> extends SurfaceExpression<T> {
 
     private static final long serialVersionUID = 7544382956232485312L;
 

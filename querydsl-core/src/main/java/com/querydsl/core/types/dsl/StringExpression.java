@@ -23,7 +23,7 @@ import com.querydsl.core.types.*;
  * @author tiwe
  * @see java.lang.String
  */
-public abstract class StringExpression extends LiteralExpression<String> {
+public class StringExpression extends LiteralExpression<String> {
 
     private static final long serialVersionUID = 1536955079961023361L;
 

@@ -32,7 +32,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @param <T>
  */
-public abstract class JTSPolygonExpression<T extends Polygon> extends JTSSurfaceExpression<T> {
+public class JTSPolygonExpression<T extends Polygon> extends JTSSurfaceExpression<T> {
 
     private static final long serialVersionUID = 7544382956232485312L;
 

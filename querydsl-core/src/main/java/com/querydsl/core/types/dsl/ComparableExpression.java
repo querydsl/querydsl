@@ -24,7 +24,7 @@ import com.querydsl.core.types.*;
  *
  * @param <T> expression type
  */
-public abstract class ComparableExpression<T extends Comparable> extends ComparableExpressionBase<T> {
+public class ComparableExpression<T extends Comparable> extends ComparableExpressionBase<T> {
 
     private static final long serialVersionUID = 5761359576767404270L;
 

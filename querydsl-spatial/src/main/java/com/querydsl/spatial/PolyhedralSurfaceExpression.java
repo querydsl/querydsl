@@ -33,7 +33,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  *
  * @param <T>
  */
-public abstract class PolyhedralSurfaceExpression<T extends PolyHedralSurface> extends SurfaceExpression<T> {
+public class PolyhedralSurfaceExpression<T extends PolyHedralSurface> extends SurfaceExpression<T> {
 
     private static final long serialVersionUID = -6732418858467327780L;
 

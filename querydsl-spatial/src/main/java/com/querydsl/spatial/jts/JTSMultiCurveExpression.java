@@ -29,7 +29,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  *
  * @param <T>
  */
-public abstract class JTSMultiCurveExpression<T extends GeometryCollection> extends JTSGeometryCollectionExpression<T> {
+public class JTSMultiCurveExpression<T extends GeometryCollection> extends JTSGeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 6983316799469849656L;
 

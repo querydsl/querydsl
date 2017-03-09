@@ -24,7 +24,7 @@ import com.querydsl.core.types.Expression;
  *
  * @param <T>
  */
-public abstract class MultiLineStringExpression<T extends MultiLineString> extends MultiCurveExpression<T> {
+public class MultiLineStringExpression<T extends MultiLineString> extends MultiCurveExpression<T> {
 
     private static final long serialVersionUID = -3103756880812584473L;
 

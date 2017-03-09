@@ -24,7 +24,7 @@ import com.querydsl.core.types.Expression;
  *
  * @param <T>
  */
-public abstract class LineExpression<T extends LineString> extends LineStringExpression<T> {
+public class LineExpression<T extends LineString> extends LineStringExpression<T> {
 
     private static final long serialVersionUID = -4849454664355502296L;
 
