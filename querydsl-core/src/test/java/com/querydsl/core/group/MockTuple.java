@@ -1,6 +1,7 @@
 package com.querydsl.core.group;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
@@ -48,6 +49,11 @@ public class MockTuple implements Tuple {
     @Override
     public int hashCode() {
         return Arrays.hashCode(a);
+    }
+
+    @Override
+    public Map toMap() {
+        return null;
     }
 
     @Override

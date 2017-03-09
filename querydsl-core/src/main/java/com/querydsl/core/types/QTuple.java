@@ -124,6 +124,15 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
         public String toString() {
             return Arrays.toString(a);
         }
+
+        @Override
+        public Map toMap() {
+            Map<String, Object> map = Maps.newHashMap();
+            for (int i = 0; i < a.length; i++) {
+                map.put(QTuple.this.args.get(i).toString(), a[i]);
+            }
+            return map;
+        }
     }
 
     private static final long serialVersionUID = -2640616030595420465L;

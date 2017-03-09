@@ -44,4 +44,14 @@ public class QTupleTest {
 
     }
 
+    @Test
+    public void newInstanceObjectMap() {
+        Tuple tuple = tupleExpression.newInstance("2", 43, false);
+        assertEquals(3, tuple.size());
+        assertEquals("2",tuple.toMap().get("x"));
+        assertEquals(Integer.valueOf(43),tuple.toMap().get("y"));
+        assertEquals(Boolean.FALSE,tuple.toMap().get("z"));
+
+    }
+
 }
