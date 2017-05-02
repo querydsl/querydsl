@@ -13,10 +13,9 @@
  */
 package com.querydsl.codegen;
 
-import java.util.Collection;
-
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Collection;
 
 /**
  * {@code SupertypeSerializer} is a {@link Serializer} implementation for supertypes
@@ -33,8 +32,12 @@ public final class SupertypeSerializer extends EntitySerializer {
      * @param keywords keywords to be used
      */
     @Inject
-    public SupertypeSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
-        super(typeMappings, keywords);
+    public SupertypeSerializer(
+        TypeMappings typeMappings,
+        @Named("keywords") Collection<String> keywords,
+        @Named("namesAsConstants") boolean namesAsConstants
+    ) {
+        super(typeMappings, keywords, namesAsConstants);
     }
 
 }

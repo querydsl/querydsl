@@ -13,21 +13,20 @@
  */
 package com.querydsl.sql.codegen;
 
-import static com.mysema.codegen.Symbols.*;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.*;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
-import com.querydsl.codegen.*;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
+import com.querydsl.codegen.EntitySerializer;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.Property;
+import com.querydsl.codegen.SerializerConfig;
+import com.querydsl.codegen.TypeMappings;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.ForeignKey;
 import com.querydsl.sql.PrimaryKey;
@@ -35,6 +34,23 @@ import com.querydsl.sql.codegen.support.ForeignKeyData;
 import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 import com.querydsl.sql.codegen.support.KeyData;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.mysema.codegen.Symbols.COMMA;
+import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.SUPER;
 
 /**
  * {@code MetaDataSerializer} defines the Query type serialization logic for {@link MetaDataExporter}.
@@ -85,7 +101,7 @@ public class MetaDataSerializer extends EntitySerializer {
             @Named(SQLCodegenModule.IMPORTS) Set<String> imports,
             @Named(SQLCodegenModule.COLUMN_COMPARATOR) Comparator<Property> columnComparator,
             @Named(SQLCodegenModule.ENTITYPATH_TYPE) Class<?> entityPathType) {
-        super(typeMappings,Collections.<String>emptyList());
+        super(typeMappings,Collections.<String>emptyList(), false);
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
         this.imports = new HashSet<String>(imports);

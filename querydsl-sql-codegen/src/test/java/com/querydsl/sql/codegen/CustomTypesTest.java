@@ -81,7 +81,7 @@ public class CustomTypesTest extends AbstractJDBCTest {
         exporter.export(connection.getMetaData());
         String person = Files.toString(new File("target/customExport/test/QPerson.java"), Charsets.UTF_8);
         //System.err.println(person);
-        assertTrue(person.contains("createEnum(GENDER"));
+        assertTrue(person.contains("createEnum(\"gender\""));
     }
 
     @Test

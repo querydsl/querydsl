@@ -95,6 +95,8 @@ public class EntitySerializer implements Serializer {
 
     protected final Collection<String> keywords;
 
+    private final boolean namesAsConstants;
+
     /**
      * Create a new {@code EntitySerializer} instance
      *
@@ -102,19 +104,22 @@ public class EntitySerializer implements Serializer {
      * @param keywords keywords to be used
      */
     @Inject
-    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords) {
+    public EntitySerializer(
+        TypeMappings mappings,
+        @Named("keywords") Collection<String> keywords,
+        @Named("namesAsConstants") boolean namesAsConstants
+    ) {
         this.typeMappings = mappings;
         this.keywords = keywords;
+        this.namesAsConstants = namesAsConstants;
     }
 
     private boolean superTypeHasEntityFields(EntityType model) {
         Supertype superType = model.getSuperType();
-        return null != superType && null != superType.getEntityType()
-                && superType.getEntityType().hasEntityFields();
+        return superType != null && superType.getEntityType() != null && superType.getEntityType().hasEntityFields();
     }
 
-    protected void constructors(EntityType model, SerializerConfig config,
-            CodeWriter writer) throws IOException {
+    protected void constructors(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {
 
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
@@ -125,7 +130,6 @@ public class EntitySerializer implements Serializer {
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
         String additionalParams = getAdditionalConstructorParameter(model);
         String classCast = localName.equals(genericName) ? EMPTY : "(Class) ";
-
 
         // String
         constructorsForVariables(writer, model);
@@ -306,8 +310,8 @@ public class EntitySerializer implements Serializer {
         }
     }
 
-    protected void intro(EntityType model, SerializerConfig config,
-            CodeWriter writer) throws IOException {
+    protected void intro(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {
+
         introPackage(writer, model);
         introImports(writer, config, model);
 
@@ -373,8 +377,14 @@ public class EntitySerializer implements Serializer {
         if (keywords.contains(simpleName.toUpperCase())) {
             alias += "1";
         }
-        writer.publicStaticFinal(queryType, simpleName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");
 
+        String parameter = QUOTE + alias + QUOTE;
+        if (namesAsConstants) {
+            writer.publicStaticFinal(new ClassType(String.class), "ENTITY_NAME", QUOTE + alias + QUOTE);
+            parameter = "ENTITY_NAME";
+        }
+
+        writer.publicStaticFinal(queryType, simpleName, NEW + queryType.getSimpleName() + "(" + parameter + ")");
     }
 
     protected void introFactoryMethods(CodeWriter writer, final EntityType model) throws IOException {
@@ -632,8 +642,8 @@ public class EntitySerializer implements Serializer {
     }
 
     @Override
-    public void serialize(EntityType model, SerializerConfig config,
-            CodeWriter writer) throws IOException {
+    public void serialize(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {
+
         intro(model, config, writer);
 
         // properties
@@ -661,11 +671,15 @@ public class EntitySerializer implements Serializer {
         outro(model, writer);
     }
 
-    protected void serialize(EntityType model, Property field, Type type, CodeWriter writer,
-            String factoryMethod, String... args) throws IOException {
+    protected void serialize(
+        EntityType model, Property field, Type type, CodeWriter writer, String factoryMethod, String... args
+    ) throws IOException {
 
-        String constantFieldName = constantFieldName(field.getEscapedName());
-        writer.publicStaticFinal(new ClassType(String.class), constantFieldName, "\"" + field.getName() + "\"");
+        String constantFieldName = null;
+        if (namesAsConstants) {
+            constantFieldName = constantFieldName(field.getEscapedName());
+            writer.publicStaticFinal(new ClassType(String.class), constantFieldName, QUOTE + field.getName() + QUOTE);
+        }
 
         Supertype superType = model.getSuperType();
         // construct value
@@ -675,7 +689,12 @@ public class EntitySerializer implements Serializer {
                 value.append("_super." + field.getEscapedName());
             }
         } else {
-            value.append(factoryMethod + "("  + constantFieldName);
+
+            if (namesAsConstants) {
+                value.append(factoryMethod + "("  + constantFieldName);
+            } else {
+                value.append(factoryMethod + "(" + QUOTE + field.getName() + QUOTE);
+            }
             for (String arg : args) {
                 value.append(COMMA + arg);
             }

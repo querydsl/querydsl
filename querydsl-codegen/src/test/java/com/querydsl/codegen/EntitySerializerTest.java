@@ -13,7 +13,14 @@
  */
 package com.querydsl.codegen;
 
-import static org.junit.Assert.assertTrue;
+import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
+import com.querydsl.core.annotations.PropertyType;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -23,11 +30,7 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.junit.Test;
-
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.*;
-import com.querydsl.core.annotations.PropertyType;
+import static org.junit.Assert.assertTrue;
 
 public class EntitySerializerTest {
 
@@ -35,7 +38,11 @@ public class EntitySerializerTest {
 
     private final TypeMappings typeMappings = new JavaTypeMappings();
 
-    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet());
+    private final EntitySerializer serializer = createSerializer(false);
+
+    private EntitySerializer createSerializer(boolean namesAsConstants) {
+        return new EntitySerializer(typeMappings, Collections.<String>emptySet(), namesAsConstants);
+    }
 
     private final StringWriter writer = new StringWriter();
 
@@ -79,8 +86,7 @@ public class EntitySerializerTest {
 
     @Test
     public void original_category() throws IOException {
-        Map<TypeCategory, String> categoryToSuperClass
-                = new EnumMap<TypeCategory, String>(TypeCategory.class);
+        Map<TypeCategory, String> categoryToSuperClass = new EnumMap<TypeCategory, String>(TypeCategory.class);
         categoryToSuperClass.put(TypeCategory.COMPARABLE, "ComparablePath<Entity>");
         categoryToSuperClass.put(TypeCategory.ENUM, "EnumPath<Entity>");
         categoryToSuperClass.put(TypeCategory.DATE, "DatePath<Entity>");
@@ -120,6 +126,18 @@ public class EntitySerializerTest {
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("public final SimplePath<byte[]> bytes"));
+        CompileUtils.assertCompiles("QEntity", writer.toString());
+    }
+
+    @Test
+    public void field_names_as_constants() throws IOException {
+        SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
+        EntityType entityType = new EntityType(type);
+        entityType.addProperty(new Property(entityType, "bytes", new ClassType(byte[].class)));
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
+        createSerializer(true).serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        assertTrue(writer.toString().contains("public static final String BYTES = \"bytes\";"));
+        assertTrue(writer.toString().contains("public final SimplePath<byte[]> bytes = createSimple(BYTES, byte[].class);"));
         CompileUtils.assertCompiles("QEntity", writer.toString());
     }
 

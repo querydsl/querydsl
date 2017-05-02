@@ -13,18 +13,17 @@
  */
 package com.querydsl.codegen;
 
-import static org.junit.Assert.assertTrue;
+import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.TypeCategory;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collections;
 
-import org.junit.Test;
-
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.TypeCategory;
+import static org.junit.Assert.assertTrue;
 
 public class CustomTypeTest {
 
@@ -32,7 +31,7 @@ public class CustomTypeTest {
 
     private final TypeMappings typeMappings = new JavaTypeMappings();
 
-    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet());
+    private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet(), false);
 
     private final StringWriter writer = new StringWriter();
 

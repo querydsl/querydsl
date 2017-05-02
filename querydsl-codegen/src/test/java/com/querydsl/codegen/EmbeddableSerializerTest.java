@@ -13,7 +13,14 @@
  */
 package com.querydsl.codegen;
 
-import static org.junit.Assert.assertTrue;
+import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
+import com.querydsl.core.annotations.PropertyType;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -23,11 +30,7 @@ import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.junit.Test;
-
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.*;
-import com.querydsl.core.annotations.PropertyType;
+import static org.junit.Assert.assertTrue;
 
 public class EmbeddableSerializerTest {
 
@@ -35,7 +38,7 @@ public class EmbeddableSerializerTest {
 
     private final TypeMappings typeMappings = new JavaTypeMappings();
 
-    private final EntitySerializer serializer = new EmbeddableSerializer(typeMappings, Collections.<String>emptySet());
+    private final EntitySerializer serializer = new EmbeddableSerializer(typeMappings, Collections.<String>emptySet(), false);
 
     private final StringWriter writer = new StringWriter();
 

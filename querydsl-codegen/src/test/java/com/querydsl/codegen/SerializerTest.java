@@ -13,17 +13,28 @@
  */
 package com.querydsl.codegen;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.*;
-
+import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.StringUtils;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
+import com.mysema.codegen.model.TypeSuper;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.StringUtils;
-import com.mysema.codegen.model.*;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 public class SerializerTest {
 
@@ -63,25 +74,25 @@ public class SerializerTest {
 
     @Test
     public void entitySerializer() throws Exception {
-        new EntitySerializer(typeMappings, Collections.<String>emptyList())
+        new EntitySerializer(typeMappings, Collections.<String>emptyList(), false)
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
     public void entitySerializer2() throws Exception {
-        new EntitySerializer(typeMappings,Collections.<String>emptyList())
+        new EntitySerializer(typeMappings,Collections.<String>emptyList(), false)
             .serialize(type, new SimpleSerializerConfig(true,true,true,true,""), new JavaWriter(writer));
     }
 
     @Test
     public void embeddableSerializer() throws Exception {
-        new EmbeddableSerializer(typeMappings,Collections.<String>emptyList())
+        new EmbeddableSerializer(typeMappings,Collections.<String>emptyList(), false)
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
     public void supertypeSerializer() throws IOException {
-        new SupertypeSerializer(typeMappings,Collections.<String>emptyList())
+        new SupertypeSerializer(typeMappings,Collections.<String>emptyList(), false)
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 

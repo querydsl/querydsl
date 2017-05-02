@@ -96,6 +96,11 @@ public final class APTOptions {
      */
     public static final String QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS = "querydsl.variableNameFunctionClass";
 
+    /**
+     * generate field names as public static constants
+     */
+    public static final String QUERYDSL_NAMES_AS_CONSTANTS = "querydsl.namesAsConstants";
+
     private APTOptions() { }
 
 }
