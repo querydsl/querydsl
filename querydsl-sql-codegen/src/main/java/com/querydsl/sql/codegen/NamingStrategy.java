@@ -16,6 +16,7 @@ package com.querydsl.sql.codegen;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.sql.SchemaAndTable;
 import com.querydsl.sql.codegen.support.ForeignKeyData;
+import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 
 /**
  * {@code NamingStrategy} defines a conversion strategy from table to class and column
@@ -185,4 +186,14 @@ public interface NamingStrategy {
      */
     String getPackage(String basePackage, SchemaAndTable schemaAndTable);
 
-}
+    /**
+     * Returns <code>true</code> if the inverse foreign key reference should be generated in the table,
+     * otherwise <code>false</code>.
+     *
+     * @param schemaAndTable the schema and table
+     * @param inverseForeignKeyData the inverse foreign key in the table
+     * @return
+     */
+    boolean shouldGenerateInverseForeignKeys(SchemaAndTable schemaAndTable, InverseForeignKeyData inverseForeignKeyData);
+
+    }

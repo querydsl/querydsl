@@ -18,6 +18,7 @@ import javax.lang.model.SourceVersion;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.sql.SchemaAndTable;
 import com.querydsl.sql.codegen.support.ForeignKeyData;
+import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 
 /**
  * {@code AbstractNamingStrategy} is an abstract base class for {@link NamingStrategy} implementations
@@ -149,4 +150,8 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
         return getClassName(schemaAndTable.getTable());
     }
 
+    @Override
+    public boolean shouldGenerateInverseForeignKeys(SchemaAndTable schemaAndTable, InverseForeignKeyData inverseForeignKeyData) {
+        return true;
+    }
 }

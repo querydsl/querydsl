@@ -24,6 +24,8 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -331,7 +333,7 @@ public class MetaDataExporter {
         String normalizedSchemaName = namingStrategy.normalizeSchemaName(schemaName);
         String normalizedTableName = namingStrategy.normalizeTableName(tableName);
 
-        SchemaAndTable schemaAndTable = new SchemaAndTable(
+        final SchemaAndTable schemaAndTable = new SchemaAndTable(
             normalizedSchemaName, normalizedTableName);
 
         if (!namingStrategy.shouldGenerateClass(schemaAndTable)) {
@@ -374,7 +376,15 @@ public class MetaDataExporter {
                 Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory
                         .getExportedKeys(md, catalog, schema, tableName);
                 if (!inverseForeignKeyData.isEmpty()) {
-                    classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
+                    Collection<InverseForeignKeyData> values = Collections2.filter(inverseForeignKeyData.values(), new Predicate<InverseForeignKeyData>() {
+                        @Override
+                        public boolean apply(@Nullable InverseForeignKeyData ifk) {
+                            return namingStrategy.shouldGenerateInverseForeignKeys(schemaAndTable, ifk);
+                        }
+                    });
+                    if (!values.isEmpty()) {
+                        classModel.getData().put(InverseForeignKeyData.class, values);
+                    }
                 }
             }
         }
