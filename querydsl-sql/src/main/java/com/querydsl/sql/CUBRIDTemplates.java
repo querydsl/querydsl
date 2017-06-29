@@ -53,7 +53,7 @@ public class CUBRIDTemplates extends SQLTemplates {
     }
 
     public CUBRIDTemplates(char escape, boolean quote) {
-        super(Keywords.CUBRID, "\"", escape, quote);
+        super(Keywords.CUBRID, "\"", escape, quote, false);
         setDummyTable(null);
         addCustomType(NumericBooleanType.DEFAULT);
         setParameterMetadataAvailable(false);
