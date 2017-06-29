@@ -83,9 +83,9 @@ public class ConfigurationTest {
         SchemaAndTable notOverriddenSchemaAndTable = new SchemaAndTable("notoverridden", "notoverridden");
         assertEquals(notOverriddenSchemaAndTable, configuration.getOverride(notOverriddenSchemaAndTable));
 
-        configuration.setDynamicNameMapping(new ChangeLetterCaseNameMapping(LetterCase.UPPER, Locale.getDefault()));
+        configuration.setDynamicNameMapping(new ChangeLetterCaseNameMapping(LetterCase.UPPER, Locale.ENGLISH));
         String notDirectOverriden = "notDirectOverriden";
-        assertEquals(notDirectOverriden.toUpperCase(Locale.getDefault()),
+        assertEquals(notDirectOverriden.toUpperCase(Locale.ENGLISH),
                 configuration.getOverride(new SchemaAndTable("public", notDirectOverriden)).getTable());
 
     }
@@ -100,7 +100,7 @@ public class ConfigurationTest {
         assertEquals("notoverriddencolumn", configuration.getColumnOverride(new SchemaAndTable("myschema", "mytable"), "notoverriddencolumn"));
 
         // Testing all other use-cases when letter case changing is in the end of the chain
-        configuration.setDynamicNameMapping(new ChangeLetterCaseNameMapping(LetterCase.LOWER, Locale.getDefault()));
+        configuration.setDynamicNameMapping(new ChangeLetterCaseNameMapping(LetterCase.LOWER, Locale.ENGLISH));
 
         configuration.registerColumnOverride("mytable", "oldcolumn", "newcolumn");
         configuration.registerColumnOverride("mytable", "oldcolumn2", "newcolumn2");
