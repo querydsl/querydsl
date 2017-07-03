@@ -140,5 +140,4 @@ public class ConfigurationTest {
         assertEquals(configuration.getJavaType(Types.NUMERIC, "", 19, 0, "", ""), BigInteger.class);
     }
 
-
 }
