@@ -64,6 +64,7 @@ public class SQLServer2012Templates extends SQLServerTemplates {
 
     protected SQLServer2012Templates(Set<String> keywords, char escape, boolean quote) {
         super(keywords, escape, quote);
+        add(SQLOps.NEXTVAL, "next value for {0s}");
     }
 
     @Override
