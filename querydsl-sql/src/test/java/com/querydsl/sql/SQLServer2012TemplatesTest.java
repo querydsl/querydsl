@@ -105,7 +105,7 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
 
     @Test
     public void nextVal() {
-        Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));       
+        Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertSerialized(nextval, "next value for myseq");
     }
 
