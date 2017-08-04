@@ -503,10 +503,11 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         for (String init : property.getInits()) {
             if (!init.startsWith("*") && property.getType() instanceof EntityType) {
                 String initProperty = init.contains(".") ? init.substring(0, init.indexOf('.')) : init;
-                if (!((EntityType)property.getType()).getPropertyNames().contains(initProperty)) {
+                Set<String> propertyNames = ((EntityType) property.getType()).getPropertyNames();
+                if (!propertyNames.contains(initProperty)) {
                     processingEnv.getMessager().printMessage(Kind.ERROR,
                         "Illegal inits of " + entityType.getFullName()+ "." + property.getName() + ": " +
-                        initProperty + " not found");
+                        initProperty + " not found in " + propertyNames);
                 }
             }
         }
