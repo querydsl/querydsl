@@ -14,7 +14,9 @@
 package com.mysema.query.sql;
 
 import java.sql.Types;
+import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
@@ -42,6 +44,15 @@ public class SQLServerTemplates extends SQLTemplates {
         };
     }
 
+    private static final Set<String> MSSQL_SPECIFIC_KEYWORDS
+            = ImmutableSet.of("KEY");
+
+    private static final Set<String> MSSQL_RESERVED_WORDS
+            = ImmutableSet.<String>builder()
+                          .addAll(SQL_RESERVED_WORDS)
+                          .addAll(MSSQL_SPECIFIC_KEYWORDS)
+                          .build();
+
     private String topTemplate = "top {0s} ";
 
     public SQLServerTemplates() {
@@ -53,7 +64,7 @@ public class SQLServerTemplates extends SQLTemplates {
     }
 
     public SQLServerTemplates(char escape, boolean quote) {
-        super("\"", escape, quote);
+        super(MSSQL_RESERVED_WORDS, "\"", escape, quote);
         setDummyTable("");
         setNullsFirst(null);
         setNullsLast(null);
