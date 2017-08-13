@@ -71,7 +71,7 @@ public class SQLTemplates extends Templates {
                     "GLOBAL", "GRANT", "GROUP", "GROUPING", "HAVING", "HOLD",
                     "HOUR", "IDENTITY", "IN", "INDICATOR", "INNER", "INOUT",
                     "INSENSITIVE", "INSERT", "INT", "INTEGER", "INTERSECT",
-                    "INTERSECTION", "INTERVAL", "INTO", "IS", "JOIN", "LAG",
+                    "INTERSECTION", "INTERVAL", "INTO", "IS", "JOIN", "KEY", "LAG",
                     "LANGUAGE", "LARGE", "LAST_VALUE", "LATERAL", "LEAD",
                     "LEADING", "LEFT", "LIKE", "LIKE_REGEX", "LN", "LOCAL",
                     "LOCALTIME", "LOCALTIMESTAMP", "LOWER", "MATCH", "MAX",
