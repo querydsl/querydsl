@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>4.1.4</version>
+  <version>4.1.4-upgrade-mongo</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -67,7 +67,7 @@
     <animal-sniffer.version>1.14</animal-sniffer.version>
 
     <jdo.version>3.0.1</jdo.version>
-    <morphia.version>0.105</morphia.version>
+    <morphia.version>1.3.2</morphia.version>
     
     <!-- Import-Package definitions for maven-bundle-plugin -->
     <osgi.import.package.root>
@@ -752,5 +752,18 @@
       </plugin>
     </plugins>
   </reporting>
+
+  <distributionManagement>
+    <repository>
+      <id>releases</id>
+      <name>Nexus Release Repository</name>
+      <url>http://maven.qima-inc.com/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Nexus Snapshot Repository</name>
+      <url>http://maven.qima-inc.com/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
   
 </project>
