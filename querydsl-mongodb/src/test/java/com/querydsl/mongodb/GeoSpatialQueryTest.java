@@ -24,8 +24,7 @@ import org.junit.experimental.categories.Category;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.mongodb.domain.GeoEntity;
@@ -36,13 +35,13 @@ import com.querydsl.mongodb.morphia.MorphiaQuery;
 public class GeoSpatialQueryTest {
 
     private final String dbname = "geodb";
-    private final Mongo mongo;
+    private final MongoClient mongo;
     private final Morphia morphia;
     private final Datastore ds;
     private final QGeoEntity geoEntity = new QGeoEntity("geoEntity");
 
     public GeoSpatialQueryTest() throws UnknownHostException, MongoException {
-        mongo = new Mongo();
+        mongo = new MongoClient();
         morphia = new Morphia().map(GeoEntity.class);
         ds = morphia.createDatastore(mongo, dbname);
     }
@@ -50,7 +49,7 @@ public class GeoSpatialQueryTest {
     @Before
     public void before() {
         ds.delete(ds.createQuery(GeoEntity.class));
-        ds.getCollection(GeoEntity.class).ensureIndex(new BasicDBObject("location","2d"));
+        ds.ensureIndexes(GeoEntity.class);
     }
 
     @Test

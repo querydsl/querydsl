@@ -67,7 +67,7 @@
     <animal-sniffer.version>1.14</animal-sniffer.version>
 
     <jdo.version>3.0.1</jdo.version>
-    <morphia.version>0.105</morphia.version>
+    <morphia.version>1.3.2</morphia.version>
     
     <!-- Import-Package definitions for maven-bundle-plugin -->
     <osgi.import.package.root>

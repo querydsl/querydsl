@@ -28,7 +28,7 @@ import org.mongodb.morphia.Morphia;
 
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.ReadPreference;
 import com.querydsl.core.NonUniqueResultException;
@@ -46,7 +46,7 @@ import com.querydsl.mongodb.morphia.MorphiaQuery;
 @Category(MongoDB.class)
 public class MongodbQueryTest {
 
-    private final Mongo mongo;
+    private final MongoClient mongo;
     private final Morphia morphia;
     private final Datastore ds;
 
@@ -63,7 +63,7 @@ public class MongodbQueryTest {
     City tampere, helsinki;
 
     public MongodbQueryTest() throws UnknownHostException, MongoException {
-        mongo = new Mongo();
+        mongo = new MongoClient();
         morphia = new Morphia().map(User.class).map(Item.class).map(MapEntity.class).map(Dates.class);
         ds = morphia.createDatastore(mongo, dbname);
     }
