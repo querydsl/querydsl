@@ -268,5 +268,20 @@ public class TemplateFactory {
         return rv.toString();
     }
 
+    /**
+     * Allow eviction of cache entry to avoid leaking memory. For example:
+     *          TemplateFactory.DEFAULT.clearCache(someKey);
+     * @param key
+     */
+    public void clearCache(final String key){
+        cache.remove(key);
+    }
 
+    /**
+     * Allow eviction of  all cache entries to avoid leaking memory. For example:
+     *          TemplateFactory.DEFAULT.clearCache();
+     */
+    public void clearCache(){
+        cache.clear();
+    }
 }
