@@ -37,6 +37,7 @@ import com.querydsl.codegen.utils.model.Type;
 import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.*;
 import com.querydsl.core.annotations.QueryDelegate;
+import com.querydsl.core.annotations.QueryDelegateSource;
 import com.querydsl.core.annotations.QueryExclude;
 import com.querydsl.core.annotations.QueryProjection;
 
@@ -272,7 +273,6 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             }
         }
 
-
         return elements;
     }
 
@@ -334,7 +334,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
         if (typeName.startsWith(Collection.class.getName())
          || typeName.startsWith(List.class.getName())
-         || typeName.startsWith(Set.class.getName())) {
+                || typeName.startsWith(Set.class.getName())) {
             type = ((DeclaredType) type).getTypeArguments().get(0);
 
         } else if (typeName.startsWith(Map.class.getName())) {
@@ -432,7 +432,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     private Set<TypeElement> processDelegateMethods() {
-        Set<? extends Element> delegateMethods = getElements(QueryDelegate.class);
+        HashSet<Element> delegateMethods = findQueryDelegates();
+
         Set<TypeElement> typeElements = new HashSet<TypeElement>();
 
         for (Element delegateMethod : delegateMethods) {
@@ -477,6 +478,39 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
 
         return typeElements;
+    }
+
+    private HashSet<Element> findQueryDelegates() {
+        HashSet<Element> delegateMethods = new HashSet<Element>(getElements(QueryDelegate.class));
+        
+        // Search elements that are not part of the compiled sources, but are references by a QueryDelegateSource
+        // annotation. This fixes a problem, that query delegation methods were not generated, when the class
+        // containing the method was not part of an incremental compile.
+        Set<? extends Element> delegateMethodSources = getElements(QueryDelegateSource.class);
+        for (Element delegateMethodSource : delegateMethodSources) {
+            AnnotationMirror delegateSourceAnnotation = TypeUtils.getAnnotationMirrorOfType(delegateMethodSource,
+                    QueryDelegateSource.class);
+
+            Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = delegateSourceAnnotation
+                    .getElementValues();
+
+            for (AnnotationValue av : elementValues.values()) {
+                @SuppressWarnings("unchecked")
+                Collection<AnnotationValue> values = (Collection<AnnotationValue>) av.getValue();
+                for (AnnotationValue valueEntry : values) {
+                    DeclaredType annotationValue = (DeclaredType) valueEntry.getValue();
+
+                    List<? extends Element> allMembers = processingEnv.getElementUtils()
+                            .getAllMembers((TypeElement) annotationValue.asElement());
+                    for (Element el : allMembers) {
+                        if (TypeUtils.getAnnotationMirrorOfType(el, QueryDelegate.class) != null) {
+                            delegateMethods.add(el);
+                        }
+                    }
+                }
+            }
+        }
+        return delegateMethods;
     }
 
     private void validateMetaTypes() {
