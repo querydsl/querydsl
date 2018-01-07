@@ -496,7 +496,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 Set<String> propertyNames = ((EntityType) property.getType()).getPropertyNames();
                 if (!propertyNames.contains(initProperty)) {
                     processingEnv.getMessager().printMessage(Kind.ERROR,
-                            "Illegal inits of " + entityType.getFullName()+ "." + property.getName() + ": " +
+                            "Illegal inits of " + entityType.getFullName() + "." + property.getName() + ": " +
                                     initProperty + " not found in " + propertyNames);
                 }
             }
