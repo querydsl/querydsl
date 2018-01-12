@@ -68,7 +68,7 @@ public class MorphiaQuery<K> extends AbstractMongodbQuery<K, MorphiaQuery<K>> {
         super(datastore.getCollection(entityType), new Function<DBObject, K>() {
             @Override
             public K apply(DBObject dbObject) {
-                return morphia.fromDBObject(entityType, dbObject, cache);
+                return morphia.fromDBObject(datastore, entityType, dbObject, cache);
             }
         }, new MorphiaSerializer(morphia));
         this.datastore = datastore;

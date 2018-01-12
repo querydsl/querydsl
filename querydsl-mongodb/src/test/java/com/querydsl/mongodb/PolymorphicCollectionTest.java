@@ -10,7 +10,7 @@ import org.junit.experimental.categories.Category;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.core.types.Predicate;
@@ -27,7 +27,7 @@ public class PolymorphicCollectionTest {
     private final Chips c1 = new Chips("c1");
 
     public PolymorphicCollectionTest() throws UnknownHostException, MongoException {
-        final Mongo mongo = new Mongo();
+        final MongoClient mongo = new MongoClient();
         morphia = new Morphia().map(Food.class);
         ds = morphia.createDatastore(mongo, "testdb");
     }

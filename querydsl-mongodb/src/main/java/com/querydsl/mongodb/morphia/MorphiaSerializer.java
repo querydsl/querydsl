@@ -91,12 +91,13 @@ public class MorphiaSerializer extends MongodbSerializer {
     @Override
     protected DBRef asReference(Object constant) {
         Key<?> key = morphia.getMapper().getKey(constant);
-        return morphia.getMapper().keyToRef(key);
+        return morphia.getMapper().keyToDBRef(key);
     }
 
     @Override
     protected DBRef asReferenceKey(Class<?> entity, Object id) {
-        Key<?> key = new Key<Object>(entity, id);
-        return morphia.getMapper().keyToRef(key);
+        String collection = morphia.getMapper().getCollectionName(entity);
+        Key<?> key = new Key<Object>(entity, collection, id);
+        return morphia.getMapper().keyToDBRef(key);
     }
 }

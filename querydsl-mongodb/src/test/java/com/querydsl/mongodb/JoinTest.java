@@ -10,7 +10,7 @@ import org.junit.experimental.categories.Category;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.core.types.Predicate;
@@ -22,7 +22,7 @@ import com.querydsl.mongodb.morphia.MorphiaQuery;
 @Category(MongoDB.class)
 public class JoinTest {
 
-    private final Mongo mongo;
+    private final MongoClient mongo;
     private final Morphia morphia;
     private final Datastore ds;
 
@@ -33,7 +33,7 @@ public class JoinTest {
     private final QUser enemy = new QUser("enemy");
 
     public JoinTest() throws UnknownHostException, MongoException {
-        mongo = new Mongo();
+        mongo = new MongoClient();
         morphia = new Morphia().map(User.class).map(Item.class);
         ds = morphia.createDatastore(mongo, dbname);
     }

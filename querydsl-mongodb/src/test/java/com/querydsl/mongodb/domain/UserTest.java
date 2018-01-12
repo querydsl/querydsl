@@ -38,7 +38,7 @@ public class UserTest {
     @Test
     public void friend() {
         User friend = new User();
-        friend.setId(new ObjectId(1,2,3));
+        friend.setId(ObjectId.createFromLegacyFormat(1,2,3));
 
         User user = new User();
         user.setFriend(friend);
@@ -49,7 +49,7 @@ public class UserTest {
     @Test
     public void friends() {
         User friend = new User();
-        friend.setId(new ObjectId(1,2,3));
+        friend.setId(ObjectId.createFromLegacyFormat(1,2,3));
 
         User user = new User();
         user.addFriend(friend);
