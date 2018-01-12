@@ -34,6 +34,8 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 /**
  * {@code ProjectableSQLQuery} is the base type for SQL query implementations
  *
@@ -498,8 +500,11 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      * @return SQL string and bindings
      */
     public SQLBindings getSQL() {
-        SQLSerializer serializer = serialize(false);
-        ImmutableList.Builder<Object> args = ImmutableList.builder();
+        return getSQL(serialize(false));
+    }
+
+    protected SQLBindings getSQL(SQLSerializer serializer) {
+        List<Object> args = newArrayList();
         Map<ParamExpression<?>, Object> params = getMetadata().getParams();
         for (Object o : serializer.getConstants()) {
             if (o instanceof ParamExpression) {
@@ -510,7 +515,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
             }
             args.add(o);
         }
-        return new SQLBindings(serializer.toString(), args.build());
+        return new SQLBindings(serializer.toString(), args);
     }
 
     @Override

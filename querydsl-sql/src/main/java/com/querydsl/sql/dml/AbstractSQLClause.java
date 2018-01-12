@@ -24,7 +24,6 @@ import javax.inject.Provider;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.DMLClause;
 import com.querydsl.core.support.QueryBase;
@@ -32,6 +31,8 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.Path;
 import com.querydsl.sql.*;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * {@code AbstractSQLClause} is a superclass for SQL based DMLClause implementations
@@ -124,7 +125,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected SQLBindings createBindings(QueryMetadata metadata, SQLSerializer serializer) {
         String queryString = serializer.toString();
-        ImmutableList.Builder<Object> args = ImmutableList.builder();
+        List<Object> args = newArrayList();
         Map<ParamExpression<?>, Object> params = metadata.getParams();
         for (Object o : serializer.getConstants()) {
             if (o instanceof ParamExpression) {
@@ -135,7 +136,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
             }
             args.add(o);
         }
-        return new SQLBindings(queryString, args.build());
+        return new SQLBindings(queryString, args);
     }
 
     protected SQLSerializer createSerializer() {

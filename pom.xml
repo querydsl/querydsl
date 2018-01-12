@@ -286,6 +286,7 @@
                   <excludes>
                     <exclude>com/querydsl/core/types/dsl/PathBuilderValidator</exclude>
                     <exclude>com/querydsl/sql/Union</exclude>
+                    <exclude>com/querydsl/sql/SQLListenerContextImpl</exclude>
                   </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>

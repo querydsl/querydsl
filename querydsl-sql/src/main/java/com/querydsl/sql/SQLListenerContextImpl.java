@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.base.Function;
 import com.querydsl.core.QueryMetadata;
 
 /**
@@ -34,7 +35,7 @@ public class SQLListenerContextImpl implements SQLListenerContext {
 
     private final QueryMetadata md;
 
-    private final List<String> sqlStatements;
+    private final List<SQLBindings> sqlStatements;
 
     private final List<PreparedStatement> preparedStatements;
 
@@ -61,7 +62,7 @@ public class SQLListenerContextImpl implements SQLListenerContext {
         this(metadata, null, null);
     }
 
-    public void addSQL(final String sql) {
+    public void addSQL(final SQLBindings sql) {
         this.sqlStatements.add(sql);
     }
 
@@ -93,11 +94,26 @@ public class SQLListenerContextImpl implements SQLListenerContext {
 
     @Override
     public String getSQL() {
+        return sqlStatements.isEmpty() ? null : sqlStatements.get(0).getSQL();
+    }
+
+    @Override
+    public SQLBindings getSQLBindings() {
         return sqlStatements.isEmpty() ? null : sqlStatements.get(0);
     }
 
     @Override
     public Collection<String> getSQLStatements() {
+        return Lists.transform(sqlStatements, new Function<SQLBindings, String>() {
+            @Override
+            public String apply(SQLBindings sqlBindings) {
+                return sqlBindings.getSQL();
+            }
+        });
+    }
+
+    @Override
+    public Collection<SQLBindings> getAllSQLBindings() {
         return sqlStatements;
     }
 

@@ -126,7 +126,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logQuery(logger, queryString, constants);
-        context.addSQL(queryString);
+        context.addSQL(createBindings(metadata, serializer));
         listeners.prepared(context);
 
         listeners.prePrepare(context);
@@ -146,7 +146,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         queryString = serializer.toString();
         constants = serializer.getConstants();
         logQuery(logger, queryString, constants);
-        context.addSQL(queryString);
+        context.addSQL(createBindings(metadata, serializer));
         listeners.rendered(context);
 
         Map<String, PreparedStatement> stmts = Maps.newHashMap();
@@ -168,7 +168,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
             listeners.preRender(context);
             serializer = createSerializer();
             serializer.serializeUpdate(batches.get(i).getMetadata(), entity, batches.get(i).getUpdates());
-            context.addSQL(serializer.toString());
+            context.addSQL(createBindings(metadata, serializer));
             listeners.rendered(context);
 
             stmt = stmts.get(serializer.toString());
