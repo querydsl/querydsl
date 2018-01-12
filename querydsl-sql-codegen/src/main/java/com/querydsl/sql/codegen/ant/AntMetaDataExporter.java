@@ -31,6 +31,7 @@ import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.codegen.DefaultNamingStrategy;
 import com.querydsl.sql.codegen.MetaDataExporter;
 import com.querydsl.sql.codegen.NamingStrategy;
+import com.querydsl.sql.codegen.support.CustomType;
 import com.querydsl.sql.codegen.support.NumericMapping;
 import com.querydsl.sql.codegen.support.RenameMapping;
 import com.querydsl.sql.codegen.support.TypeMapping;
@@ -176,7 +177,7 @@ public class AntMetaDataExporter extends Task {
     /**
      * custom types to use
      */
-    private String[] customTypes;
+    private List<CustomType> customTypes = Lists.newArrayList();
 
     /**
      * scala generation mode
@@ -350,8 +351,8 @@ public class AntMetaDataExporter extends Task {
                 exporter.setSourceEncoding(sourceEncoding);
             }
             if (customTypes != null) {
-                for (String cl : customTypes) {
-                    configuration.register((Type<?>) Class.forName(cl).newInstance());
+                for (CustomType customType : customTypes) {
+                    configuration.register((Type<?>) Class.forName(customType.getClassName()).newInstance());
                 }
             }
             if (typeMappings != null) {
@@ -591,12 +592,39 @@ public class AntMetaDataExporter extends Task {
         this.columnAnnotations = columnAnnotations;
     }
 
+    /**
+     * Adds custom type to ant
+     */
+    public void addCustomType(CustomType customType) {
+        customTypes.add(customType);
+    }
+
+    /**
+     * Gets a list of custom types
+     * @return a list of custom types
+     * @deprecated Use addCustomType instead
+     */
     public String[] getCustomTypes() {
+        String[] customTypes = new String[this.customTypes.size()];
+        for (int i = 0; i < this.customTypes.size(); i++) {
+            CustomType customType = this.customTypes.get(i);
+            customTypes[i] = customType.getClassName();
+        }
         return customTypes;
     }
 
-    public void setCustomTypes(String[] customTypes) {
-        this.customTypes = customTypes;
+    /**
+     * Sets a list of custom types
+     * @param strings a list of custom types
+     * @deprecated Use addCustomType instead
+     */
+    public void setCustomTypes(String[] strings) {
+        this.customTypes.clear();
+        for (String string : strings) {
+            CustomType customType = new CustomType();
+            customType.setClassName(string);
+            this.customTypes.add(customType);
+        }
     }
 
     public boolean isCreateScalaSources() {
