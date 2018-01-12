@@ -1,3 +1,4 @@
+
 package com.querydsl.sql.spatial;
 
 import static com.querydsl.core.Target.*;
