@@ -88,6 +88,10 @@
          <groupId>hsqldb</groupId>
          <artifactId>hsqldb</artifactId>
        </exclusion>
+        <exclusion>
+          <artifactId>hibernate-core</artifactId>
+          <groupId>org.hibernate</groupId>
+        </exclusion>
       </exclusions>
     </dependency>  
     <dependency>

@@ -41,6 +41,12 @@
       <groupId>org.mongodb.morphia</groupId>
       <artifactId>morphia</artifactId>
       <version>${morphia.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>mongo-java-driver</artifactId>
+          <groupId>org.mongodb</groupId>
+        </exclusion>
+      </exclusions>
       <optional>true</optional>
     </dependency>
     <dependency>
