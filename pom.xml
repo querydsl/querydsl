@@ -304,6 +304,7 @@
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>
                 </requireBackwardCompatibility>
+                <dependencyConvergence/>
               </rules>
             </configuration>
           </execution>
