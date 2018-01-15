@@ -282,8 +282,20 @@
         <version>1.4.1</version>
         <executions>
           <execution>
+            <id>enforce-maven</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <dependencyConvergence/>
+              </rules>
+            </configuration>
+          </execution>
+          <execution>
             <id>check</id>
-            <phase>verify</phase> 
+            <phase>verify</phase>
             <goals>
               <goal>enforce</goal>
             </goals>
@@ -304,7 +316,6 @@
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>
                 </requireBackwardCompatibility>
-                <dependencyConvergence/>
               </rules>
             </configuration>
           </execution>
