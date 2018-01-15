@@ -13,31 +13,17 @@
  */
 package com.querydsl.mongodb.document;
 
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import org.bson.Document;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.mongodb.ReadPreference;
 import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.JoinExpression;
-import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.SimpleQuery;
 import com.querydsl.core.support.QueryMixin;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.FactoryExpression;
-import com.querydsl.core.types.Operation;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.ParamExpression;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.CollectionPathBase;
+import org.bson.Document;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
 
 /**
  * {@code AbstractMongodbQuery} provides a base class for general Querydsl query implementation.
@@ -102,45 +88,6 @@ public abstract class AbstractMongodbQuery<Q extends AbstractMongodbQuery<Q>> im
     public <T> AnyEmbeddedBuilder<Q> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
         return new AnyEmbeddedBuilder<Q>(queryMixin, collection);
     }
-
-    @Nullable
-    protected Predicate createFilter(QueryMetadata metadata) {
-        Predicate filter;
-        if (!metadata.getJoins().isEmpty()) {
-            filter = ExpressionUtils.allOf(metadata.getWhere(), createJoinFilter(metadata));
-        } else {
-            filter = metadata.getWhere();
-        }
-        return filter;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Nullable
-    protected Predicate createJoinFilter(QueryMetadata metadata) {
-        Multimap<Expression<?>, Predicate> predicates = HashMultimap.create();
-        List<JoinExpression> joins = metadata.getJoins();
-        for (int i = joins.size() - 1; i >= 0; i--) {
-            JoinExpression join = joins.get(i);
-            Path<?> source = (Path) ((Operation<?>) join.getTarget()).getArg(0);
-            Path<?> target = (Path) ((Operation<?>) join.getTarget()).getArg(1);
-            Collection<Predicate> extraFilters = predicates.get(target.getRoot());
-            Predicate filter = ExpressionUtils.allOf(join.getCondition(), allOf(extraFilters));
-            List<? extends Object> ids = getIds(target.getType(), filter);
-            if (ids.isEmpty()) {
-                throw new NoResults();
-            }
-            Path<?> path = ExpressionUtils.path(String.class, source, "$id");
-            predicates.put(source.getRoot(), ExpressionUtils.in((Path<Object>) path, ids));
-        }
-        Path<?> source = (Path) ((Operation) joins.get(0).getTarget()).getArg(0);
-        return allOf(predicates.get(source.getRoot()));
-    }
-
-    private Predicate allOf(Collection<Predicate> predicates) {
-        return predicates != null ? ExpressionUtils.allOf(predicates) : null;
-    }
-
-    protected abstract List<Object> getIds(Class<?> targetType, Predicate condition);
 
     @Override
     public Q distinct() {

@@ -14,20 +14,20 @@
 package com.querydsl.mongodb.document;
 
 import com.google.common.base.Function;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.mongodb.ReadPreference;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.*;
 import org.bson.Document;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -258,9 +258,45 @@ public abstract class AbstractFetchableMongodbQuery<K, Q extends AbstractFetchab
         return cursor;
     }
 
+    @Nullable
+    protected Predicate createFilter(QueryMetadata metadata) {
+        Predicate filter;
+        if (!metadata.getJoins().isEmpty()) {
+            filter = ExpressionUtils.allOf(metadata.getWhere(), createJoinFilter(metadata));
+        } else {
+            filter = metadata.getWhere();
+        }
+        return filter;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    protected Predicate createJoinFilter(QueryMetadata metadata) {
+        Multimap<Expression<?>, Predicate> predicates = HashMultimap.create();
+        List<JoinExpression> joins = metadata.getJoins();
+        for (int i = joins.size() - 1; i >= 0; i--) {
+            JoinExpression join = joins.get(i);
+            Path<?> source = (Path) ((Operation<?>) join.getTarget()).getArg(0);
+            Path<?> target = (Path) ((Operation<?>) join.getTarget()).getArg(1);
+            Collection<Predicate> extraFilters = predicates.get(target.getRoot());
+            Predicate filter = ExpressionUtils.allOf(join.getCondition(), allOf(extraFilters));
+            List<? extends Object> ids = getIds(target.getType(), filter);
+            if (ids.isEmpty()) {
+                throw new NoResults();
+            }
+            Path<?> path = ExpressionUtils.path(String.class, source, "$id");
+            predicates.put(source.getRoot(), ExpressionUtils.in((Path<Object>) path, ids));
+        }
+        Path<?> source = (Path) ((Operation) joins.get(0).getTarget()).getArg(0);
+        return allOf(predicates.get(source.getRoot()));
+    }
+
+    private Predicate allOf(Collection<Predicate> predicates) {
+        return predicates != null ? ExpressionUtils.allOf(predicates) : null;
+    }
+
     protected abstract MongoCollection<Document> getCollection(Class<?> type);
 
-    @Override
     protected List<Object> getIds(Class<?> targetType, Predicate condition) {
         MongoCollection<Document> collection = getCollection(targetType);
         // TODO : fetch only ids
