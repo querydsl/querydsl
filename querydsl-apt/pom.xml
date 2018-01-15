@@ -112,7 +112,6 @@
     <dependency>
       <groupId>org.eclipse.jdt.core.compiler</groupId>
       <artifactId>ecj</artifactId>
-      <version>3.7.1</version>
       <scope>test</scope>
     </dependency>
             
