@@ -307,7 +307,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
 
     @Nullable
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }

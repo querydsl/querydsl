@@ -196,7 +196,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     }
 
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         queryMixin.setUnique(true);
         if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2L);

@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
@@ -86,7 +87,7 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
     }
 
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         throw new UnsupportedOperationException();
     }
 

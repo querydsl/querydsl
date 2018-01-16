@@ -222,7 +222,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     @SuppressWarnings("unchecked")
     @Override
     @Nullable
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }

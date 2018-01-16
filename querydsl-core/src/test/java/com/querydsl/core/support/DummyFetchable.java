@@ -37,7 +37,7 @@ public class DummyFetchable<T> implements Fetchable<T> {
 
     @Nullable
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         if (results.size() > 1) {
             throw new NonUniqueResultException();
         } else if (results.isEmpty()) {

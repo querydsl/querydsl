@@ -322,14 +322,14 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     @SuppressWarnings("unchecked")
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         try {
             QueryModifiers modifiers = getMetadata().getModifiers();
             Query query = createQuery(modifiers, false);
             try {
                 return (T) query.uniqueResult();
             } catch (org.hibernate.NonUniqueResultException e) {
-                throw new NonUniqueResultException();
+                throw new NonUniqueResultException(e);
             }
         } finally {
             reset();
