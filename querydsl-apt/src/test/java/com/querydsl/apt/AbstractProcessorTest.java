@@ -66,8 +66,8 @@ public abstract class AbstractProcessorTest {
         options.addAll(getAPTOptions());
         options.addAll(classes);
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ByteArrayOutputStream err = new ByteArrayOutputStream();
+        ByteArrayOutputStream out = getStdOut();
+        ByteArrayOutputStream err = getStdErr();
         int compilationResult = compiler.run(null, out, err, options.toArray(new String[options.size()]));
 
 //        Processor.elementCache.clear();
@@ -75,6 +75,14 @@ public abstract class AbstractProcessorTest {
             System.err.println(compiler.getClass().getName());
             Assert.fail("Compilation Failed:\n " + new String(err.toByteArray(), "UTF-8"));
         }
+    }
+
+    protected ByteArrayOutputStream getStdOut() {
+        return new ByteArrayOutputStream();
+    }
+
+    protected ByteArrayOutputStream getStdErr() {
+        return new ByteArrayOutputStream();
     }
 
     protected Collection<String> getAPTOptions() {

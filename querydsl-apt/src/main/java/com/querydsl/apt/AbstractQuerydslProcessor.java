@@ -13,6 +13,8 @@
  */
 package com.querydsl.apt;
 
+import static com.querydsl.apt.APTOptions.*;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
@@ -26,7 +28,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
 
@@ -63,16 +64,19 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     private Context context;
 
+    private boolean shouldLogInfo;
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
+        setLogInfo();
+        logInfo("Running " + getClass().getSimpleName());
 
         if (roundEnv.processingOver() || annotations.size() == 0) {
             return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
         }
 
         if (roundEnv.getRootElements() == null || roundEnv.getRootElements().isEmpty()) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "No sources to process");
+            logInfo("No sources to process");
             return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
         }
 
@@ -504,27 +508,27 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
     private void serializeMetaTypes() {
         if (!context.supertypes.isEmpty()) {
-            processingEnv.getMessager().printMessage(Kind.NOTE, "Serializing Supertypes");
+            logInfo("Serializing Supertypes");
             serialize(conf.getSupertypeSerializer(), context.supertypes.values());
         }
 
         if (!context.entityTypes.isEmpty()) {
-            processingEnv.getMessager().printMessage(Kind.NOTE, "Serializing Entity types");
+            logInfo("Serializing Entity types");
             serialize(conf.getEntitySerializer(), context.entityTypes.values());
         }
 
         if (!context.extensionTypes.isEmpty()) {
-            processingEnv.getMessager().printMessage(Kind.NOTE, "Serializing Extension types");
+            logInfo("Serializing Extension types");
             serialize(conf.getEmbeddableSerializer(), context.extensionTypes.values());
         }
 
         if (!context.embeddableTypes.isEmpty()) {
-            processingEnv.getMessager().printMessage(Kind.NOTE, "Serializing Embeddable types");
+            logInfo("Serializing Embeddable types");
             serialize(conf.getEmbeddableSerializer(), context.embeddableTypes.values());
         }
 
         if (!context.projectionTypes.isEmpty()) {
-            processingEnv.getMessager().printMessage(Kind.NOTE, "Serializing Projection types");
+            logInfo("Serializing Projection types");
             serialize(conf.getDTOSerializer(), context.projectionTypes.values());
         }
 
@@ -537,6 +541,27 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
+    }
+
+    @Override
+    public Set<String> getSupportedOptions() {
+        Set<String> optionKeys = new HashSet<String>();
+        optionKeys.add(QUERYDSL_LOG_INFO);
+        return optionKeys;
+    }
+
+    private void setLogInfo() {
+        boolean hasProperty = processingEnv.getOptions().containsKey(QUERYDSL_LOG_INFO);
+        if (hasProperty) {
+            String val = processingEnv.getOptions().get(QUERYDSL_LOG_INFO);
+            shouldLogInfo = Boolean.parseBoolean(val);
+        }
+    }
+
+    private void logInfo(String message) {
+        if (shouldLogInfo) {
+            processingEnv.getMessager().printMessage(Kind.NOTE, message);
+        }
     }
 
     private void serialize(Serializer serializer, Collection<EntityType> models) {
@@ -565,7 +590,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                     }
                 }
 
-                processingEnv.getMessager().printMessage(Kind.NOTE, "Generating " + className + " for " + elements);
+                logInfo("Generating " + className + " for " + elements);
                 JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(className,
                         elements.toArray(new Element[elements.size()]));
                 Writer writer = fileObject.openWriter();
