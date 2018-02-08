@@ -44,19 +44,19 @@ import com.querydsl.sql.types.Null;
  */
 public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implements UpdateClause<SQLUpdateClause> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
+    protected static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
-    private final RelationalPath<?> entity;
+    protected final RelationalPath<?> entity;
 
-    private final List<SQLUpdateBatch> batches = new ArrayList<SQLUpdateBatch>();
+    protected final List<SQLUpdateBatch> batches = new ArrayList<SQLUpdateBatch>();
 
-    private Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
+    protected Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
 
-    private QueryMetadata metadata = new DefaultQueryMetadata();
+    protected QueryMetadata metadata = new DefaultQueryMetadata();
 
-    private transient String queryString;
+    protected transient String queryString;
 
-    private transient List<Object> constants;
+    protected transient List<Object> constants;
 
     public SQLUpdateClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
@@ -119,7 +119,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
-    private PreparedStatement createStatement() throws SQLException {
+    protected PreparedStatement createStatement() throws SQLException {
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         serializer.serializeUpdate(metadata, entity, updates);
@@ -138,7 +138,7 @@ public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implemen
         return stmt;
     }
 
-    private Collection<PreparedStatement> createStatements() throws SQLException {
+    protected Collection<PreparedStatement> createStatements() throws SQLException {
         boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();

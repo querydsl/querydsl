@@ -45,21 +45,21 @@ import com.querydsl.sql.*;
  */
 public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implements DeleteClause<SQLDeleteClause> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
+    protected static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
 
-    private static final ValidatingVisitor validatingVisitor = new ValidatingVisitor("Undeclared path '%s'. " +
+    protected static final ValidatingVisitor validatingVisitor = new ValidatingVisitor("Undeclared path '%s'. " +
             "A delete operation can only reference a single table. " +
             "Consider this alternative: DELETE ... WHERE EXISTS (subquery)");
 
-    private final RelationalPath<?> entity;
+    protected final RelationalPath<?> entity;
 
-    private final List<QueryMetadata> batches = new ArrayList<QueryMetadata>();
+    protected final List<QueryMetadata> batches = new ArrayList<QueryMetadata>();
 
-    private DefaultQueryMetadata metadata = new DefaultQueryMetadata();
+    protected DefaultQueryMetadata metadata = new DefaultQueryMetadata();
 
-    private transient String queryString;
+    protected transient String queryString;
 
-    private transient List<Object> constants;
+    protected transient List<Object> constants;
 
     public SQLDeleteClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
@@ -124,7 +124,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         metadata.setValidatingVisitor(validatingVisitor);
     }
 
-    private PreparedStatement createStatement() throws SQLException {
+    protected PreparedStatement createStatement() throws SQLException {
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         serializer.serializeDelete(metadata, entity);
@@ -144,7 +144,7 @@ public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implemen
         return stmt;
     }
 
-    private Collection<PreparedStatement> createStatements() throws SQLException {
+    protected Collection<PreparedStatement> createStatements() throws SQLException {
         boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();

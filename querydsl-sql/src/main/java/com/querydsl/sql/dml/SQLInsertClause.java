@@ -44,29 +44,29 @@ import com.querydsl.sql.types.Null;
 public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implements
         InsertClause<SQLInsertClause> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
+    protected static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
-    private final RelationalPath<?> entity;
+    protected final RelationalPath<?> entity;
 
-    private final QueryMetadata metadata = new DefaultQueryMetadata();
-
-    @Nullable
-    private SubQueryExpression<?> subQuery;
+    protected final QueryMetadata metadata = new DefaultQueryMetadata();
 
     @Nullable
-    private SQLQuery<?> subQueryBuilder;
+    protected SubQueryExpression<?> subQuery;
 
-    private final List<SQLInsertBatch> batches = new ArrayList<SQLInsertBatch>();
+    @Nullable
+    protected SQLQuery<?> subQueryBuilder;
 
-    private final List<Path<?>> columns = new ArrayList<Path<?>>();
+    protected final List<SQLInsertBatch> batches = new ArrayList<SQLInsertBatch>();
 
-    private final List<Expression<?>> values = new ArrayList<Expression<?>>();
+    protected final List<Path<?>> columns = new ArrayList<Path<?>>();
 
-    private transient String queryString;
+    protected final List<Expression<?>> values = new ArrayList<Expression<?>>();
 
-    private transient List<Object> constants;
+    protected transient String queryString;
 
-    private transient boolean batchToBulk;
+    protected transient List<Object> constants;
+
+    protected transient boolean batchToBulk;
 
     public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
@@ -195,7 +195,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         return executeWithKey(type, null);
     }
 
-    private <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
+    protected <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = null;
         try {
             rs = executeWithKeys();
@@ -233,7 +233,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         return executeWithKeys(type, null);
     }
 
-    private <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
+    protected <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = null;
         try {
             rs = executeWithKeys();
@@ -252,7 +252,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         }
     }
 
-    private PreparedStatement createStatement(boolean withKeys) throws SQLException {
+    protected PreparedStatement createStatement(boolean withKeys) throws SQLException {
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         if (subQueryBuilder != null) {
@@ -270,7 +270,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         return prepareStatementAndSetParameters(serializer, withKeys);
     }
 
-    private Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
+    protected Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
         boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
 
@@ -320,7 +320,7 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         return stmts.values();
     }
 
-    private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
+    protected PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
             boolean withKeys) throws SQLException {
         listeners.prePrepare(context);
 
