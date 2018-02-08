@@ -10,6 +10,7 @@ env:
     - MODULE=querydsl-scala PROFILES=all,travis
 install: /bin/true
 before_script:
+  - mvn -version
   - sudo /etc/init.d/mysql stop
   - ./travis/docker_bootstrap.sh
 script: mvn --batch-mode test --activate-profiles ${PROFILES} --projects ${MODULE} jacoco:report
