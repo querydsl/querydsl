@@ -44,37 +44,37 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     protected enum Stage { SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY, MODIFIERS }
 
-    private static final Expression<?> Q = Expressions.template(Object.class, "?");
+    protected static final Expression<?> Q = Expressions.template(Object.class, "?");
 
-    private static final String COMMA = ", ";
+    protected static final String COMMA = ", ";
 
-    private final LinkedList<Path<?>> constantPaths = new LinkedList<Path<?>>();
+    protected final LinkedList<Path<?>> constantPaths = new LinkedList<Path<?>>();
 
-    private final List<Object> constants = new ArrayList<Object>();
+    protected final List<Object> constants = new ArrayList<Object>();
 
-    private final Set<Path<?>> withAliases = Sets.newHashSet();
+    protected final Set<Path<?>> withAliases = Sets.newHashSet();
 
-    private final boolean dml;
+    protected final boolean dml;
 
     protected Stage stage = Stage.SELECT;
 
-    private boolean skipParent;
+    protected boolean skipParent;
 
-    private boolean dmlWithSchema;
+    protected boolean dmlWithSchema;
 
-    private RelationalPath<?> entity;
+    protected RelationalPath<?> entity;
 
-    private final Configuration configuration;
+    protected final Configuration configuration;
 
-    private final SQLTemplates templates;
+    protected final SQLTemplates templates;
 
-    private boolean inUnion = false;
+    protected boolean inUnion = false;
 
-    private boolean inJoin = false;
+    protected boolean inJoin = false;
 
-    private boolean inSubquery = false;
+    protected boolean inSubquery = false;
 
-    private boolean useLiterals = false;
+    protected boolean useLiterals = false;
 
     public SQLSerializer(Configuration conf) {
         this(conf, false);
@@ -96,7 +96,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.quoteIdentifier(column, precededByDot));
     }
 
-    private SchemaAndTable getSchemaAndTable(RelationalPath<?> path) {
+    protected SchemaAndTable getSchemaAndTable(RelationalPath<?> path) {
         return configuration.getOverride(path.getSchemaAndTable());
     }
 
@@ -123,7 +123,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
      * @return identifier columns
      */
     @SuppressWarnings("unchecked")
-    private List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins, boolean alias) {
+    protected List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins, boolean alias) {
         if (joins.size() == 1) {
             JoinExpression join = joins.get(0);
             if (join.getTarget() instanceof RelationalPath) {
@@ -221,7 +221,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         templates.serialize(metadata, forCountRow, this);
     }
 
-    void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
+    protected void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
         boolean oldInSubquery = inSubquery;
         inSubquery = inSubquery || getLength() > 0;
         boolean oldSkipParent = skipParent;
@@ -457,7 +457,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         templates.serializeDelete(metadata, entity, this);
     }
 
-    void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
+    protected void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
         serialize(Position.START, metadata.getFlags());
 
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
@@ -476,7 +476,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    void serializeForWhere(QueryMetadata metadata) {
+    protected void serializeForWhere(QueryMetadata metadata) {
         boolean requireSchemaInWhere = templates.isRequiresSchemaInWhere();
         boolean originalDmlWithSchema = dmlWithSchema;
 
@@ -496,7 +496,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         templates.serializeMerge(metadata, entity, keys, columns, values, subQuery, this);
     }
 
-    void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
+    protected void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         serialize(Position.START, metadata.getFlags());
 
@@ -555,7 +555,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         templates.serializeInsert(metadata, entity, batches, this);
     }
 
-    void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<SQLInsertBatch> batches) {
+    protected void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<SQLInsertBatch> batches) {
         serializeForInsert(metadata, entity, batches.get(0).getColumns(), batches.get(0).getValues(), null);
         for (int i = 1; i < batches.size(); i++) {
             append(COMMA);
@@ -565,7 +565,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
+    protected void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
             List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         serialize(Position.START, metadata.getFlags());
 
@@ -618,7 +618,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         templates.serializeUpdate(metadata, entity, updates, this);
     }
 
-    void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity,
+    protected void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity,
             Map<Path<?>, Expression<?>> updates) {
         this.entity = entity;
 
@@ -656,7 +656,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    private void serializeSources(List<JoinExpression> joins) {
+    protected void serializeSources(List<JoinExpression> joins) {
         if (joins.isEmpty()) {
             String dummyTable = templates.getDummyTable();
             if (!Strings.isNullOrEmpty(dummyTable)) {
