@@ -71,23 +71,21 @@ public interface Tuple {
      */
     Object[] toArray();
 
-   /**
-    * All Tuples should override equals and hashCode. For compatibility
-    * across different Tuple implementations, equality check should use
-    * {@link java.util.Arrays#equals(Object[], Object[])} with {@link #toArray()} as parameters.
-    *
-    * @see Object#equals(Object)
-    */
-   boolean equals(Object o);
+    /**
+     * All Tuples should override equals and hashCode. For compatibility
+     * across different Tuple implementations, equality check should use
+     * {@link java.util.Arrays#equals(Object[], Object[])} with {@link #toArray()} as parameters.
+     *
+     * @see Object#equals(Object)
+     */
+    boolean equals(Object o);
 
-   /**
-    * All Tuples should override equals and hashCode. For compatibility
-    * across different Tuple implementations, hashCode should use
-    * {@link java.util.Arrays#hashCode(Object[])} with {@link #toArray()} as parameter.
-    *
-    * @see Object#hashCode()
-    */
-   int hashCode();
-
-
+    /**
+     * All Tuples should override equals and hashCode. For compatibility
+     * across different Tuple implementations, hashCode should use
+     * {@link java.util.Arrays#hashCode(Object[])} with {@link #toArray()} as parameter.
+     *
+     * @see Object#hashCode()
+     */
+    int hashCode();
 }

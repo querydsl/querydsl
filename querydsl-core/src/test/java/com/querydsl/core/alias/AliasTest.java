@@ -30,17 +30,17 @@ public class AliasTest {
 
     @Test
     public void comparableEntity() {
-       ComparableEntity entity = Alias.alias(ComparableEntity.class);
-       Path<ComparableEntity> path = $(entity);
-       assertEquals(ComparableEntity.class, path.getType());
+        ComparableEntity entity = Alias.alias(ComparableEntity.class);
+        Path<ComparableEntity> path = $(entity);
+        assertEquals(ComparableEntity.class, path.getType());
     }
 
     @Test
     public void comparableEntity_property() {
-       ComparableEntity entity = Alias.alias(ComparableEntity.class);
-       Path<String> propertyPath = $(entity.getProperty());
-       assertEquals(String.class, propertyPath.getType());
-       assertEquals("property", propertyPath.getMetadata().getName());
+        ComparableEntity entity = Alias.alias(ComparableEntity.class);
+        Path<String> propertyPath = $(entity.getProperty());
+        assertEquals(String.class, propertyPath.getType());
+        assertEquals("property", propertyPath.getMetadata().getName());
     }
 
     @Test

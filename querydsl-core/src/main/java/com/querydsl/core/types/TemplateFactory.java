@@ -51,122 +51,114 @@ public class TemplateFactory {
 
     private final char escape;
 
-    private final Function<Object,Object> toLowerCase =
-            new Function<Object,Object>() {
-                @Override
-                public Object apply(Object arg) {
-                    if (arg instanceof Constant<?>) {
-                        return ConstantImpl.create(apply(arg.toString()).toString());
-                    } else if (arg instanceof Expression) {
-                        return ExpressionUtils.operation(String.class, Ops.LOWER, (Expression) arg);
-                    } else {
-                        return String.valueOf(arg).toLowerCase();
-                    }
-                }
-            };
+    private final Function<Object, Object> toLowerCase = new Function<Object, Object>() {
+        @Override
+        public Object apply(Object arg) {
+            if (arg instanceof Constant<?>) {
+                return ConstantImpl.create(apply(arg.toString()).toString());
+            } else if (arg instanceof Expression) {
+                return ExpressionUtils.operation(String.class, Ops.LOWER, (Expression) arg);
+            } else {
+                return String.valueOf(arg).toLowerCase();
+            }
+        }
+    };
 
-    private final Function<Object,Object> toUpperCase =
-            new Function<Object,Object>() {
-                @Override
-                public Object apply(Object arg) {
-                    if (arg instanceof Constant<?>) {
-                        return ConstantImpl.create(apply(arg.toString()).toString());
-                    } else if (arg instanceof Expression) {
-                        return ExpressionUtils.operation(String.class, Ops.UPPER, (Expression) arg);
-                    } else {
-                        return String.valueOf(arg).toUpperCase();
-                    }
-                }
-            };
+    private final Function<Object, Object> toUpperCase = new Function<Object, Object>() {
+        @Override
+        public Object apply(Object arg) {
+            if (arg instanceof Constant<?>) {
+                return ConstantImpl.create(apply(arg.toString()).toString());
+            } else if (arg instanceof Expression) {
+                return ExpressionUtils.operation(String.class, Ops.UPPER, (Expression) arg);
+            } else {
+                return String.valueOf(arg).toUpperCase();
+            }
+        }
+    };
 
-    private final Function<Object,Object> toStartsWithViaLike =
-            new Function<Object,Object>() {
-                @Override
-                public Object apply(Object arg) {
-                    if (arg instanceof Constant<?>) {
-                        return ConstantImpl.create(apply(arg.toString()).toString());
-                    } else if (arg instanceof Expression) {
-                        return ExpressionUtils.operation(String.class, Ops.CONCAT, (Expression) arg, PERCENT);
-                    } else {
-                        return escapeForLike(String.valueOf(arg)) + "%";
-                    }
-                }
-            };
+    private final Function<Object, Object> toStartsWithViaLike = new Function<Object, Object>() {
+        @Override
+        public Object apply(Object arg) {
+            if (arg instanceof Constant<?>) {
+                return ConstantImpl.create(apply(arg.toString()).toString());
+            } else if (arg instanceof Expression) {
+                return ExpressionUtils.operation(String.class, Ops.CONCAT, (Expression) arg, PERCENT);
+            } else {
+                return escapeForLike(String.valueOf(arg)) + "%";
+            }
+        }
+    };
 
-    private final Function<Object,Object> toStartsWithViaLikeLower =
-            new Function<Object,Object>() {
-                @Override
-                public Object apply(Object arg) {
-                    if (arg instanceof Constant<?>) {
-                        return ConstantImpl.create(apply(arg.toString()).toString());
-                    } else if (arg instanceof Expression) {
-                        Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, (Expression) arg, PERCENT);
-                        return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
-                    } else {
-                        return escapeForLike(String.valueOf(arg).toLowerCase()) + "%";
-                    }
-                }
-            };
+    private final Function<Object, Object> toStartsWithViaLikeLower = new Function<Object, Object>() {
+        @Override
+        public Object apply(Object arg) {
+            if (arg instanceof Constant<?>) {
+                return ConstantImpl.create(apply(arg.toString()).toString());
+            } else if (arg instanceof Expression) {
+                Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, (Expression) arg, PERCENT);
+                return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
+            } else {
+                return escapeForLike(String.valueOf(arg).toLowerCase()) + "%";
+            }
+        }
+    };
 
-    private final Function<Object,Object> toEndsWithViaLike =
-            new Function<Object,Object>() {
-                @Override
-                public Object apply(Object arg) {
-                    if (arg instanceof Constant) {
-                        return ConstantImpl.create(apply(arg.toString()).toString());
-                    } else if (arg instanceof Expression) {
-                        return ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
-                    } else {
-                        return "%" + escapeForLike(String.valueOf(arg));
-                    }
-                }
-            };
+    private final Function<Object, Object> toEndsWithViaLike = new Function<Object, Object>() {
+        @Override
+        public Object apply(Object arg) {
+            if (arg instanceof Constant) {
+                return ConstantImpl.create(apply(arg.toString()).toString());
+            } else if (arg instanceof Expression) {
+                return ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
+            } else {
+                return "%" + escapeForLike(String.valueOf(arg));
+            }
+        }
+    };
 
-    private final Function<Object,Object> toEndsWithViaLikeLower =
-            new Function<Object,Object>() {
-                @Override
-                public Object apply(Object arg) {
-                    if (arg instanceof Constant<?>) {
-                        return ConstantImpl.create(apply(arg.toString()).toString());
-                    } else if (arg instanceof Expression) {
-                        Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
-                        return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
-                    } else {
-                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase());
-                    }
-                }
-            };
+    private final Function<Object, Object> toEndsWithViaLikeLower = new Function<Object, Object>() {
+        @Override
+        public Object apply(Object arg) {
+            if (arg instanceof Constant<?>) {
+                return ConstantImpl.create(apply(arg.toString()).toString());
+            } else if (arg instanceof Expression) {
+                Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
+                return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
+            } else {
+                return "%" + escapeForLike(String.valueOf(arg).toLowerCase());
+            }
+        }
+    };
 
-    private final Function<Object,Object> toContainsViaLike =
-            new Function<Object,Object>() {
-                @Override
-                public Object apply(Object arg) {
-                    if (arg instanceof Constant<?>) {
-                        return ConstantImpl.create(apply(arg.toString()).toString());
-                    } else if (arg instanceof Expression) {
-                        Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
-                        return ExpressionUtils.operation(String.class, Ops.CONCAT, concatenated, PERCENT);
-                    } else {
-                        return "%" + escapeForLike(String.valueOf(arg)) + "%";
-                    }
-                }
-            };
+    private final Function<Object, Object> toContainsViaLike = new Function<Object, Object>() {
+        @Override
+        public Object apply(Object arg) {
+            if (arg instanceof Constant<?>) {
+                return ConstantImpl.create(apply(arg.toString()).toString());
+            } else if (arg instanceof Expression) {
+                Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
+                return ExpressionUtils.operation(String.class, Ops.CONCAT, concatenated, PERCENT);
+            } else {
+                return "%" + escapeForLike(String.valueOf(arg)) + "%";
+            }
+        }
+    };
 
-    private final Function<Object,Object> toContainsViaLikeLower =
-            new Function<Object,Object>() {
-                @Override
-                public Object apply(Object arg) {
-                    if (arg instanceof Constant<?>) {
-                        return ConstantImpl.create(apply(arg.toString()).toString());
-                    } else if (arg instanceof Expression) {
-                        Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
-                        concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, concatenated, PERCENT);
-                        return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
-                    } else {
-                        return "%" + escapeForLike(String.valueOf(arg).toLowerCase()) + "%";
-                    }
-                }
-            };
+    private final Function<Object, Object> toContainsViaLikeLower = new Function<Object, Object>() {
+        @Override
+        public Object apply(Object arg) {
+            if (arg instanceof Constant<?>) {
+                return ConstantImpl.create(apply(arg.toString()).toString());
+            } else if (arg instanceof Expression) {
+                Expression<String> concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, PERCENT, (Expression) arg);
+                concatenated = ExpressionUtils.operation(String.class, Ops.CONCAT, concatenated, PERCENT);
+                return ExpressionUtils.operation(String.class, Ops.LOWER, concatenated);
+            } else {
+                return "%" + escapeForLike(String.valueOf(arg).toLowerCase()) + "%";
+            }
+        }
+    };
 
     public TemplateFactory(char escape) {
         this.escape = escape;

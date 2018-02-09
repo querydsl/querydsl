@@ -82,7 +82,7 @@ public class CollQueryStandardTest {
     @Test
     public void tupleProjection() {
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
-            .select(cat.name, cat.birthdate).fetch();
+                .select(cat.name, cat.birthdate).fetch();
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
@@ -93,7 +93,7 @@ public class CollQueryStandardTest {
     public void nested_tupleProjection() {
         Concatenation concat = new Concatenation(cat.name, cat.name);
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
-            .select(concat, cat.name, cat.birthdate).fetch();
+                .select(concat, cat.name, cat.birthdate).fetch();
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
@@ -105,7 +105,7 @@ public class CollQueryStandardTest {
     @Test
     public void arrayProjection() {
         List<String[]> results =  CollQueryFactory.from(cat, data)
-            .select(new ArrayConstructorExpression<String>(String[].class, cat.name)).fetch();
+                .select(new ArrayConstructorExpression<String>(String[].class, cat.name)).fetch();
         assertFalse(results.isEmpty());
         for (String[] result : results) {
             assertNotNull(result[0]);
@@ -115,7 +115,7 @@ public class CollQueryStandardTest {
     @Test
     public void constructorProjection() {
         List<Projection> projections =  CollQueryFactory.from(cat, data)
-            .select(Projections.constructor(Projection.class, cat.name, cat)).fetch();
+                .select(Projections.constructor(Projection.class, cat.name, cat)).fetch();
         assertFalse(projections.isEmpty());
         for (Projection projection : projections) {
             assertNotNull(projection);

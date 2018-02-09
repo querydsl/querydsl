@@ -354,7 +354,8 @@ public class GenericExporter {
             }
 
             if (cl.getSuperclass() != null && !stopClasses.contains(cl.getSuperclass())
-                && !cl.getSuperclass().isAnnotationPresent(QueryExclude.class)) {
+                    && !cl.getSuperclass().isAnnotationPresent(QueryExclude.class)) {
+
                 type.addSupertype(new Supertype(typeFactory.get(cl.getSuperclass(), cl.getGenericSuperclass())));
             }
             if (cl.isInterface()) {
@@ -416,11 +417,13 @@ public class GenericExporter {
         if (config.isMethods()) {
             for (Method method : cl.getDeclaredMethods()) {
                 String name = method.getName();
+//CHECKSTYLERULE:OFF: Indentation
                 if (method.getParameterTypes().length == 0
-                    && !Modifier.isStatic(method.getModifiers())
-                    && !method.isBridge()
-                    && ((name.startsWith("get") && name.length() > 3)
-                     || (name.startsWith("is") && name.length() > 2))) {
+                        && !Modifier.isStatic(method.getModifiers())
+                        && !method.isBridge()
+                        && ((name.startsWith("get") && name.length() > 3)
+                            || (name.startsWith("is") && name.length() > 2))) {
+//CHECKSTYLERULE:OFF: Indentation
                     String propertyName;
                     if (name.startsWith("get")) {
                         propertyName = BeanUtils.uncapitalize(name.substring(3));

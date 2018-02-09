@@ -35,7 +35,7 @@ import com.querydsl.core.types.dsl.Expressions;
 public class SQLServerTemplates extends SQLTemplates {
 
     protected static final Expression<?> WITH_REPEATABLE_READ = ExpressionUtils.operation(
-        Object.class, SQLOps.WITH_REPEATABLE_READ, ImmutableList.<Expression<?>>of());
+            Object.class, SQLOps.WITH_REPEATABLE_READ, ImmutableList.<Expression<?>>of());
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLServerTemplates DEFAULT = new SQLServerTemplates();

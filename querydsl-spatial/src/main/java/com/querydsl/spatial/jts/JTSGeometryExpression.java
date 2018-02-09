@@ -258,7 +258,7 @@ public abstract class JTSGeometryExpression<T extends Geometry> extends SimpleEx
      * @return true, if crosses
      */
     public BooleanExpression crosses(Geometry geometry) {
-         return crosses(ConstantImpl.create(geometry));
+        return crosses(ConstantImpl.create(geometry));
     }
 
     /**

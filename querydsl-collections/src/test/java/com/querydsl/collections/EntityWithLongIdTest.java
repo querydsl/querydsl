@@ -33,9 +33,9 @@ public class EntityWithLongIdTest {
         QEntityWithLongId root = new QEntityWithLongId("root1");
         QEntityWithLongId root2 = new QEntityWithLongId("root2");
         assertEquals(entities.size(), new CollQuery<Void>()
-            .from(root, entities).from(root2, entities)
-            .where(root2.id.eq(root.id))
-            .fetchCount());
+                .from(root, entities).from(root2, entities)
+                .where(root2.id.eq(root.id))
+                .fetchCount());
     }
 
     @Test
@@ -43,9 +43,9 @@ public class EntityWithLongIdTest {
         QEntityWithLongId root = new QEntityWithLongId("root1");
         QEntityWithLongId root2 = new QEntityWithLongId("root2");
         assertEquals(2, new CollQuery<Void>()
-            .from(root, entities).from(root2, entities)
-            .where(root2.id.eq(root.id.add(1)))
-            .fetchCount());
+                .from(root, entities).from(root2, entities)
+                .where(root2.id.eq(root.id.add(1)))
+                .fetchCount());
     }
 
 }

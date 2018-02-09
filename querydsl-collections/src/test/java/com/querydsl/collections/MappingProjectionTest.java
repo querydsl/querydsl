@@ -33,14 +33,15 @@ public class MappingProjectionTest extends AbstractQueryTest {
         };
 
         List<ResultObject> list = query().from(cat, cats).select(
-            new MappingProjection<ResultObject>(ResultObject.class, key) {
+                new MappingProjection<ResultObject>(ResultObject.class, key) {
 
-                @Override
-                protected ResultObject map(Tuple row) {
-                    ResultPart consolidationKey = row.get(key);
-                    return new ResultObject();
-                }
-            }).fetch();
+                    @Override
+                    protected ResultObject map(Tuple row) {
+                        ResultPart consolidationKey = row.get(key);
+                        return new ResultObject();
+                    }
+                })
+                .fetch();
 
         assertEquals(cats.size(), list.size());
     }

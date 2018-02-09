@@ -31,7 +31,7 @@ final class Constants {
             NumberPath.class,
             SimplePath.class,
             TimePath.class
-            ));
+    ));
 
     public static boolean isTyped(Class<?> cl) {
         return typedClasses.contains(cl);

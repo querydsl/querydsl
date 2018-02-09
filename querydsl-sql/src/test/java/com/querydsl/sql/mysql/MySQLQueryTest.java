@@ -100,7 +100,7 @@ public class MySQLQueryTest {
         query.getMetadata().setProjection(survey.name);
 
         assertEquals("select survey.NAME from SURVEY survey ignore index (col1_index) " +
-                     "order by survey.NAME asc", toString(query));
+                "order by survey.NAME asc", toString(query));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class MySQLQueryTest {
         query.getMetadata().setProjection(survey.name);
 
         assertEquals("select survey.NAME from SURVEY survey use index (col1_index) " +
-                     "order by survey.NAME asc", toString(query));
+                "order by survey.NAME asc", toString(query));
     }
 
     @Test
@@ -124,7 +124,7 @@ public class MySQLQueryTest {
         query.getMetadata().setProjection(survey.name);
 
         assertEquals("select survey.NAME from SURVEY survey use index (col1_index, col2_index) " +
-                     "order by survey.NAME asc", toString(query));
+                "order by survey.NAME asc", toString(query));
     }
 
     @Test
@@ -210,28 +210,28 @@ public class MySQLQueryTest {
     public void intoOutfile() {
         query.intoOutfile(new File("target/out"));
         assertEquals("select survey.NAME from SURVEY survey " +
-                     "order by survey.NAME asc into outfile 'target" + File.separator + "out'", toString(query));
+                "order by survey.NAME asc into outfile 'target" + File.separator + "out'", toString(query));
     }
 
     @Test
     public void intoDumpfile() {
         query.intoDumpfile(new File("target/out"));
         assertEquals("select survey.NAME from SURVEY survey " +
-                     "order by survey.NAME asc into dumpfile 'target" + File.separator + "out'", toString(query));
+                "order by survey.NAME asc into dumpfile 'target" + File.separator + "out'", toString(query));
     }
 
     @Test
     public void intoString() {
         query.into("var1");
         assertEquals("select survey.NAME from SURVEY survey " +
-                     "order by survey.NAME asc into var1", toString(query));
+                "order by survey.NAME asc into var1", toString(query));
     }
 
     @Test
     public void lockInShareMode() {
         query.lockInShareMode();
         assertEquals("select survey.NAME from SURVEY survey " +
-                     "order by survey.NAME asc lock in share mode", toString(query));
+                "order by survey.NAME asc lock in share mode", toString(query));
     }
 
     private String toString(MySQLQuery<?> query) {

@@ -123,7 +123,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         }
         Predicate where = expr.getMetadata().getWhere();
         if (where != null) {
-           md.addWhere((Predicate) where.accept(this, context));
+            md.addWhere((Predicate) where.accept(this, context));
         }
         if (expr.getMetadata().equals(md)) {
             return expr;

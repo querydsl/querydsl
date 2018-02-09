@@ -49,22 +49,22 @@ public class BeanPopulationBase extends AbstractBaseTest {
 
         // Query
         Employee smith = extQuery().from(e).where(e.lastname.eq("S"))
-            .limit(1)
-            .uniqueResult(Employee.class, e.lastname, e.firstname);
+                .limit(1)
+                .uniqueResult(Employee.class, e.lastname, e.firstname);
         assertEquals("John", smith.getFirstname());
         assertEquals("S", smith.getLastname());
 
         // Query with alias
         smith = extQuery().from(e).where(e.lastname.eq("S"))
-            .limit(1)
-            .uniqueResult(Employee.class, e.lastname.as("lastname"), e.firstname.as("firstname"));
+                .limit(1)
+                .uniqueResult(Employee.class, e.lastname.as("lastname"), e.firstname.as("firstname"));
         assertEquals("John", smith.getFirstname());
         assertEquals("S", smith.getLastname());
 
         // Query into custom type
         OtherEmployee other = extQuery().from(e).where(e.lastname.eq("S"))
-            .limit(1)
-            .uniqueResult(OtherEmployee.class, e.lastname, e.firstname);
+                .limit(1)
+                .uniqueResult(OtherEmployee.class, e.lastname, e.firstname);
         assertEquals("John", other.getFirstname());
         assertEquals("S", other.getLastname());
 

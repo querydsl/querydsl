@@ -24,7 +24,7 @@ import com.querydsl.core.types.Expression;
  * @param <K> Map key type
  * @param <V> Map value type
  */
- public final class QPair<K, V> extends ConstructorExpression<Pair<K, V>> {
+public final class QPair<K, V> extends ConstructorExpression<Pair<K, V>> {
 
     private static final long serialVersionUID = -1943990903548916056L;
 

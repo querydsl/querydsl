@@ -10,17 +10,17 @@ public class InterfaceType3Test {
 
     @QueryEntity
     public interface A {
-      String getA();
+        String getA();
     }
 
     @QueryEntity
     public interface B {
-      String getB();
+        String getB();
     }
 
     @QueryEntity
     public interface C extends A, B {
-      String getC();
+        String getC();
     }
 
     @Test

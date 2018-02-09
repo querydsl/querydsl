@@ -70,8 +70,9 @@ public class FirebirdTemplatesTest extends AbstractSQLTemplatesTest {
         int p2 = getPrecedence(Ops.NEGATE);
         int p3 = getPrecedence(Ops.MULT, Ops.DIV);
         int p4 = getPrecedence(Ops.SUB, Ops.ADD);
-        int p5 = getPrecedence(Ops.EQ, Ops.GOE, Ops.GT, Ops.LT, Ops.NE, Ops.IS_NULL, Ops.IS_NOT_NULL,
-                               Ops.MATCHES, Ops.IN, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN);
+        int p5 = getPrecedence(
+                Ops.EQ, Ops.GOE, Ops.GT, Ops.LT, Ops.NE, Ops.IS_NULL, Ops.IS_NOT_NULL,
+                Ops.MATCHES, Ops.IN, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN);
         int p6 = getPrecedence(Ops.NOT);
         int p7 = getPrecedence(Ops.AND);
         int p8 = getPrecedence(Ops.XOR, Ops.XNOR);

@@ -37,10 +37,10 @@ import com.querydsl.sql.dml.SQLUpdateClause;
  * @param <M> merge clause type
  */
 public interface SQLCommonQueryFactory<Q extends SQLCommonQuery<?>, // extends AbstractSQLQuery<?>
-    D extends SQLDeleteClause,
-    U extends SQLUpdateClause,
-    I extends SQLInsertClause,
-    M extends SQLMergeClause> extends QueryFactory<Q> {
+        D extends SQLDeleteClause,
+        U extends SQLUpdateClause,
+        I extends SQLInsertClause,
+        M extends SQLMergeClause> extends QueryFactory<Q> {
 
     /**
      * Create a new DELETE clause

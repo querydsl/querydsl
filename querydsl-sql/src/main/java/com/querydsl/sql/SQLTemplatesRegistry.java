@@ -66,9 +66,12 @@ public class SQLTemplatesRegistry {
         } else if (name.equals("microsoft sql server")) {
             switch (md.getDatabaseMajorVersion()) {
                 case 12:
-                case 11: return SQLServer2012Templates.builder();
-                case 10: return SQLServer2008Templates.builder();
-                case 9:  return SQLServer2005Templates.builder();
+                case 11:
+                    return SQLServer2012Templates.builder();
+                case 10:
+                    return SQLServer2008Templates.builder();
+                case 9:
+                    return SQLServer2005Templates.builder();
                 default: return SQLServerTemplates.builder();
             }
         } else {

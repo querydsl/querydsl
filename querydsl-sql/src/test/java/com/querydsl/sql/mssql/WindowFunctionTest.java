@@ -47,25 +47,25 @@ public class WindowFunctionTest {
     @Test
     public void orderBy() {
         assertEquals("row_number() over (order by e.FIRSTNAME asc)",
-            toString(rowNumber().over().orderBy(employee.firstname.asc())));
+                toString(rowNumber().over().orderBy(employee.firstname.asc())));
 
         assertEquals("row_number() over (order by e.FIRSTNAME asc)",
-            toString(rowNumber().over().orderBy(employee.firstname)));
+                toString(rowNumber().over().orderBy(employee.firstname)));
 
         assertEquals("row_number() over (order by e.FIRSTNAME asc) as rn",
-            toString(rowNumber().over().orderBy(employee.firstname.asc()).as("rn")));
+                toString(rowNumber().over().orderBy(employee.firstname.asc()).as("rn")));
 
         assertEquals("row_number() over (order by e.FIRSTNAME desc)",
-            toString(rowNumber().over().orderBy(employee.firstname.desc())));
+                toString(rowNumber().over().orderBy(employee.firstname.desc())));
     }
 
     @Test
     public void partitionBy() {
         assertEquals("row_number() over (partition by e.LASTNAME order by e.FIRSTNAME asc)",
-            toString(rowNumber().over().partitionBy(employee.lastname).orderBy(employee.firstname.asc())));
+                toString(rowNumber().over().partitionBy(employee.lastname).orderBy(employee.firstname.asc())));
 
         assertEquals("row_number() over (partition by e.LASTNAME, e.FIRSTNAME order by e.FIRSTNAME asc)",
-            toString(rowNumber().over().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc())));
+                toString(rowNumber().over().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc())));
     }
 
 

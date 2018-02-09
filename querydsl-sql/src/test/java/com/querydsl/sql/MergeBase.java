@@ -107,16 +107,16 @@ public class MergeBase extends AbstractBaseTest {
     public void merge_with_keys_columns_and_values() {
         // keys + columns + values
         assertEquals(1, merge(survey).keys(survey.id)
-            .set(survey.id, 5)
-            .set(survey.name, "Hello World").execute());
+                .set(survey.id, 5)
+                .set(survey.name, "Hello World").execute());
     }
 
     @Test
     public void merge_with_keys_columns_and_values_using_null() {
         // keys + columns + values
         assertEquals(1, merge(survey).keys(survey.id)
-            .set(survey.id, 5)
-            .set(survey.name, (String) null).execute());
+                .set(survey.id, 5)
+                .set(survey.name, (String) null).execute());
     }
 
     @Test
@@ -152,10 +152,10 @@ public class MergeBase extends AbstractBaseTest {
     @IncludeIn(H2)
     public void mergeBatch() {
         SQLMergeClause merge = merge(survey)
-            .keys(survey.id)
-            .set(survey.id, 5)
-            .set(survey.name, "5")
-            .addBatch();
+                .keys(survey.id)
+                .set(survey.id, 5)
+                .set(survey.name, "5")
+                .addBatch();
         assertEquals(1, merge.getBatchCount());
         assertFalse(merge.isEmpty());
 
@@ -176,10 +176,10 @@ public class MergeBase extends AbstractBaseTest {
     @IncludeIn(H2)
     public void mergeBatch_templates() {
         SQLMergeClause merge = merge(survey)
-            .keys(survey.id)
-            .set(survey.id, 5)
-            .set(survey.name, Expressions.stringTemplate("'5'"))
-            .addBatch();
+                .keys(survey.id)
+                .set(survey.id, 5)
+                .set(survey.name, Expressions.stringTemplate("'5'"))
+                .addBatch();
 
         merge
             .keys(survey.id)
@@ -198,10 +198,10 @@ public class MergeBase extends AbstractBaseTest {
     @IncludeIn(H2)
     public void mergeBatch_with_subquery() {
         SQLMergeClause merge = merge(survey)
-            .keys(survey.id)
-            .columns(survey.id, survey.name)
-            .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
-            .addBatch();
+                .keys(survey.id)
+                .columns(survey.id, survey.name)
+                .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
+                .addBatch();
 
         merge(survey)
             .keys(survey.id)

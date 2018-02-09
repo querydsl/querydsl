@@ -36,9 +36,11 @@ public class SQLUpdateClauseTest {
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");
         SQLUpdateClause update = new SQLUpdateClause(null, SQLTemplates.DEFAULT, emp1);
+//CHECKSTYLERULE:OFF: Indentation
         update.set(emp1.id, 1)
-              .where(emp1.id.eq(select(emp2.id).from(emp2)
-                      .where(emp2.superiorId.isNotNull())));
+                .where(emp1.id.eq(select(emp2.id).from(emp2)
+                        .where(emp2.superiorId.isNotNull())));
+//CHECKSTYLERULE:ON: Indentation
 
         SQLBindings sql = update.getSQL().get(0);
         assertEquals("update EMPLOYEE\n" +
@@ -54,7 +56,7 @@ public class SQLUpdateClauseTest {
         QEmployee emp2 = new QEmployee("emp2");
         SQLUpdateClause update = new SQLUpdateClause(null, SQLTemplates.DEFAULT, emp1);
         update.set(emp1.id, select(emp2.id).from(emp2)
-              .where(emp2.superiorId.isNotNull()));
+                .where(emp2.superiorId.isNotNull()));
 
         SQLBindings sql = update.getSQL().get(0);
         assertEquals("update EMPLOYEE\n" +

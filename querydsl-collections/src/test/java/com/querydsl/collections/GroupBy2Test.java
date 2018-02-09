@@ -106,16 +106,18 @@ public class GroupBy2Test {
         QGroupBy2Test_Role role = QGroupBy2Test_Role.role;
         QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.securityGroup;
 
+//CHECKSTYLERULE:OFF: Indentation
         Map<Long, UserDto> userDtos = CollQueryFactory.from(user, users)
                 .innerJoin(user.roles, role)
                 .innerJoin(role.groups, group)
                 .transform(GroupBy.groupBy(user.id)
-                    .as(new QGroupBy2Test_UserDto(
-                            user.id,
-                            user.name,
-                            list(role.id),
-                            list(role.name),
-                            list(group.id))));
+                        .as(new QGroupBy2Test_UserDto(
+                                user.id,
+                                user.name,
+                                list(role.id),
+                                list(role.name),
+                                list(group.id))));
+//CHECKSTYLERULE:ON: Indentation
 
         UserDto dto1 = userDtos.get(3L);
         assertEquals(1, dto1.roleIds.size());
@@ -134,15 +136,17 @@ public class GroupBy2Test {
         QGroupBy2Test_Role role = QGroupBy2Test_Role.role;
         QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.securityGroup;
 
+//CHECKSTYLERULE:OFF: Indentation
         Map<Long, UserDto> userDtos = CollQueryFactory.from(user, users)
                 .innerJoin(user.roles, role)
                 .innerJoin(role.groups, group)
                 .transform(GroupBy.groupBy(user.id)
-                    .as(new QGroupBy2Test_UserDto(
-                            user.id,
-                            user.name,
-                            map(role.id, role.name),
-                            map(group.id, group.name))));
+                        .as(new QGroupBy2Test_UserDto(
+                                user.id,
+                                user.name,
+                                map(role.id, role.name),
+                                map(group.id, group.name))));
+//CHECKSTYLERULE:ON: Indentation
 
         UserDto dto1 = userDtos.get(3L);
         assertEquals(1, dto1.roleIds.size());

@@ -124,8 +124,9 @@ public final class JTSGeometryExpressions {
      * @param distance distance
      * @return true, if with distance of each other
      */
-    public static BooleanExpression dwithin(Expression<? extends Geometry> expr1,
-                                            Expression<? extends Geometry> expr2, Expression<Double> distance) {
+    public static BooleanExpression dwithin(
+            Expression<? extends Geometry> expr1, Expression<? extends Geometry> expr2, Expression<Double> distance) {
+
         return Expressions.booleanOperation(SpatialOps.DWITHIN, expr1, expr2, distance);
     }
 
@@ -138,8 +139,9 @@ public final class JTSGeometryExpressions {
      * @param distance distance
      * @return true, if with distance of each other
      */
-    public static BooleanExpression dwithin(Expression<? extends Geometry> expr1,
-                                            Expression<? extends Geometry> expr2, double distance) {
+    public static BooleanExpression dwithin(
+            Expression<? extends Geometry> expr1, Expression<? extends Geometry> expr2, double distance) {
+
         return Expressions.booleanOperation(SpatialOps.DWITHIN, expr1, expr2, ConstantImpl.create(distance));
     }
 
@@ -221,8 +223,9 @@ public final class JTSGeometryExpressions {
      * @param args arguments
      * @return operation expression
      */
-    public static <T extends Geometry> JTSGeometryExpression<T> geometryOperation(Class<? extends T> type,
-                                                                                  Operator op, Expression<?>... args) {
+    public static <T extends Geometry> JTSGeometryExpression<T> geometryOperation(
+            Class<? extends T> type, Operator op, Expression<?>... args) {
+
         return new JTSGeometryOperation<T>(type, op, args);
     }
 

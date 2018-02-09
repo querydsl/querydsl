@@ -57,11 +57,11 @@ public class SQLTemplates extends Templates {
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
-    protected static final Set<? extends Operator> OTHER_LIKE_CASES
-            = Sets.immutableEnumSet(Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
-                    Ops.LIKE_IC, Ops.LIKE_ESCAPE_IC,
-                    Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
-                    Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+    protected static final Set<? extends Operator> OTHER_LIKE_CASES  = Sets.immutableEnumSet(
+            Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+            Ops.LIKE_IC, Ops.LIKE_ESCAPE_IC,
+            Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
+            Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
 
     private static final CharMatcher NON_UNDERSCORE_ALPHA_NUMERIC =
             CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).or(inRange('0', '9'))
@@ -906,8 +906,10 @@ public class SQLTemplates extends Templates {
      * @param batches
      * @param context
      */
-    public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity,
-                                List<SQLInsertBatch> batches, SQLSerializer context) {
+    public void serializeInsert(
+            QueryMetadata metadata, RelationalPath<?> entity,
+            List<SQLInsertBatch> batches, SQLSerializer context) {
+
         context.serializeForInsert(metadata, entity, batches);
 
         if (!metadata.getFlags().isEmpty()) {

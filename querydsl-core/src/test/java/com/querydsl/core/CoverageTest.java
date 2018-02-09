@@ -96,40 +96,40 @@ public class CoverageTest {
 
         // missing mappings
         usedOperators.addAll(Arrays.<Operator>asList(
-            Ops.INSTANCE_OF,
-            Ops.ALIAS,
-            Ops.ARRAY_SIZE,
-            Ops.MOD,
-            Ops.STRING_CAST,
-//            Ops.DELEGATE,
-            Ops.WRAPPED,
-            Ops.ORDER,
+                Ops.INSTANCE_OF,
+                Ops.ALIAS,
+                Ops.ARRAY_SIZE,
+                Ops.MOD,
+                Ops.STRING_CAST,
+//                Ops.DELEGATE,
+                Ops.WRAPPED,
+                Ops.ORDER,
 
-            Ops.XOR,
-            Ops.XNOR,
+                Ops.XOR,
+                Ops.XNOR,
 
-            Ops.CASE_WHEN,
-            Ops.CASE_ELSE,
+                Ops.CASE_WHEN,
+                Ops.CASE_ELSE,
 
-            Ops.CASE_EQ_WHEN,
-            Ops.CASE_EQ_ELSE,
+                Ops.CASE_EQ_WHEN,
+                Ops.CASE_EQ_ELSE,
 
-            Ops.LIST,
-            Ops.SET,
-            Ops.SINGLETON,
-            Ops.COALESCE,
-            Ops.ORDINAL, // TODO: add support
-            Ops.MATCHES_IC,
+                Ops.LIST,
+                Ops.SET,
+                Ops.SINGLETON,
+                Ops.COALESCE,
+                Ops.ORDINAL, // TODO: add support
+                Ops.MATCHES_IC,
 
-            // aggregation
-            Ops.AggOps.AVG_AGG,
-            Ops.AggOps.MAX_AGG,
-            Ops.AggOps.MIN_AGG,
-            Ops.AggOps.SUM_AGG,
-            Ops.AggOps.COUNT_AGG,
-            Ops.AggOps.COUNT_ALL_AGG,
-            Ops.EXISTS
-         ));
+                // aggregation
+                Ops.AggOps.AVG_AGG,
+                Ops.AggOps.MAX_AGG,
+                Ops.AggOps.MIN_AGG,
+                Ops.AggOps.SUM_AGG,
+                Ops.AggOps.COUNT_AGG,
+                Ops.AggOps.COUNT_ALL_AGG,
+                Ops.EXISTS
+        ));
 
         List<Operator> notContained = new ArrayList<Operator>();
         for (Field field : Ops.class.getFields()) {

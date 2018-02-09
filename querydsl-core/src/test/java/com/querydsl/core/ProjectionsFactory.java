@@ -141,9 +141,9 @@ public class ProjectionsFactory {
         if (!(other instanceof Constant<?> || module == Module.JDO || module == Module.RDFBEAN)) {
             CaseBuilder cases = new CaseBuilder();
             rv.add(NumberConstant.create(1).add(cases
-                .when(expr.gt(10)).then(expr)
-                .when(expr.between(0, 10)).then((NumberExpression<A>) other)
-                .otherwise((NumberExpression<A>) other)));
+                    .when(expr.gt(10)).then(expr)
+                    .when(expr.between(0, 10)).then((NumberExpression<A>) other)
+                    .otherwise((NumberExpression<A>) other)));
 
             rv.add(expr
                     .when((NumberExpression<A>) other).then(expr)
@@ -198,12 +198,12 @@ public class ProjectionsFactory {
         if (!(other instanceof Constant<?> || module == Module.JDO || module == Module.RDFBEAN)) {
             CaseBuilder cases = new CaseBuilder();
             rv.add(cases.when(expr.eq("A")).then(other)
-                        .when(expr.eq("B")).then(expr)
-                        .otherwise(other));
+                    .when(expr.eq("B")).then(expr)
+                    .otherwise(other));
 
             rv.add(expr.when("A").then(other)
-                       .when("B").then(expr)
-                       .otherwise(other));
+                    .when("B").then(expr)
+                    .otherwise(other));
         }
 
         rv.add(expr.trim());

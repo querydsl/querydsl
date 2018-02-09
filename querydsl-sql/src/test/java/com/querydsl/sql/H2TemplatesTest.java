@@ -30,8 +30,8 @@ public class H2TemplatesTest extends AbstractSQLTemplatesTest {
     @Test
     public void builder() {
         SQLTemplates templates = H2Templates.builder().quote()
-            .newLineToSingleSpace()
-            .build();
+                .newLineToSingleSpace()
+                .build();
 
         assertNotNull(templates);
     }

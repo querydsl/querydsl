@@ -170,8 +170,9 @@ public final class GroupBy {
      * @param comparator comparator of the created TreeSet instance
      * @return wrapper expression
      */
-    public static <E> AbstractGroupExpression<E, SortedSet<E>> sortedSet(Expression<E> expression,
-                                                                         Comparator<? super E> comparator) {
+    public static <E> AbstractGroupExpression<E, SortedSet<E>> sortedSet(
+            Expression<E> expression, Comparator<? super E> comparator) {
+
         return GSet.createSorted(expression, comparator);
     }
 
@@ -182,8 +183,9 @@ public final class GroupBy {
      * @param comparator comparator of the created TreeSet instance
      * @return wrapper expression
      */
-    public static <E, F> GroupExpression<E, SortedSet<F>> sortedSet(GroupExpression<E, F> groupExpression,
-                                                                    Comparator<? super F> comparator) {
+    public static <E, F> GroupExpression<E, SortedSet<F>> sortedSet(
+            GroupExpression<E, F> groupExpression, Comparator<? super F> comparator) {
+
         return new MixinGroupExpression<E, F, SortedSet<F>>(groupExpression, GSet.createSorted(groupExpression, comparator));
     }
 
@@ -195,8 +197,9 @@ public final class GroupBy {
      * @param value value for the map entries
      * @return wrapper expression
      */
-    public static <K, V> AbstractGroupExpression<Pair<K, V>,Map<K, V>> map(Expression<K> key,
-                                                                           Expression<V> value) {
+    public static <K, V> AbstractGroupExpression<Pair<K, V>,Map<K, V>> map(
+            Expression<K> key, Expression<V> value) {
+
         return GMap.createLinked(QPair.create(key, value));
     }
 
@@ -207,8 +210,9 @@ public final class GroupBy {
      * @param value value for the map entries
      * @return wrapper expression
      */
-    public static <K, V, T> AbstractGroupExpression<Pair<K, V>, Map<T, V>> map(GroupExpression<K, T> key,
-                                                                               Expression<V> value) {
+    public static <K, V, T> AbstractGroupExpression<Pair<K, V>, Map<T, V>> map(
+            GroupExpression<K, T> key, Expression<V> value) {
+
         return map(key, new GOne<V>(value));
     }
 
@@ -219,8 +223,9 @@ public final class GroupBy {
      * @param value value for the map entries
      * @return wrapper expression
      */
-    public static <K, V, U> AbstractGroupExpression<Pair<K, V>, Map<K, U>> map(Expression<K> key,
-                                                                               GroupExpression<V, U> value) {
+    public static <K, V, U> AbstractGroupExpression<Pair<K, V>, Map<K, U>> map(
+            Expression<K> key, GroupExpression<V, U> value) {
+
         return map(new GOne<K>(key), value);
     }
 
@@ -231,8 +236,9 @@ public final class GroupBy {
      * @param value value for the map entries
      * @return wrapper expression
      */
-    public static <K, V, T, U> AbstractGroupExpression<Pair<K, V>, Map<T, U>> map(GroupExpression<K, T> key,
-                                                                                  GroupExpression<V, U> value) {
+    public static <K, V, T, U> AbstractGroupExpression<Pair<K, V>, Map<T, U>> map(
+            GroupExpression<K, T> key, GroupExpression<V, U> value) {
+
         return new GMap.Mixin<K, V, T, U, Map<T, U>>(key, value, GMap.createLinked(QPair.create(key, value)));
     }
 
@@ -243,8 +249,9 @@ public final class GroupBy {
      * @param value value for the map entries
      * @return wrapper expression
      */
-    public static <K extends Comparable<? super K>, V> AbstractGroupExpression<Pair<K, V>, SortedMap<K, V>> sortedMap(Expression<K> key,
-                                                                                                                      Expression<V> value) {
+    public static <K extends Comparable<? super K>, V> AbstractGroupExpression<Pair<K, V>, SortedMap<K, V>> sortedMap(
+            Expression<K> key, Expression<V> value) {
+
         return GMap.createSorted(QPair.create(key, value));
     }
 
@@ -255,8 +262,9 @@ public final class GroupBy {
      * @param value value for the map entries
      * @return wrapper expression
      */
-    public static <K, V, T extends Comparable<? super T>> AbstractGroupExpression<Pair<K, V>, SortedMap<T, V>> sortedMap(GroupExpression<K, T> key,
-                                                                                                                         Expression<V> value) {
+    public static <K, V, T extends Comparable<? super T>> AbstractGroupExpression<Pair<K, V>, SortedMap<T, V>> sortedMap(
+            GroupExpression<K, T> key, Expression<V> value) {
+
         return sortedMap(key, new GOne<V>(value));
     }
 
@@ -267,8 +275,9 @@ public final class GroupBy {
      * @param value value for the map entries
      * @return wrapper expression
      */
-    public static <K extends Comparable<? super K>, V, U> AbstractGroupExpression<Pair<K, V>, SortedMap<K, U>> sortedMap(Expression<K> key,
-                                                                                                                         GroupExpression<V, U> value) {
+    public static <K extends Comparable<? super K>, V, U> AbstractGroupExpression<Pair<K, V>, SortedMap<K, U>> sortedMap(
+            Expression<K> key, GroupExpression<V, U> value) {
+
         return sortedMap(new GOne<K>(key), value);
     }
 
@@ -279,8 +288,9 @@ public final class GroupBy {
      * @param value value for the map entries
      * @return wrapper expression
      */
-    public static <K, V, T extends Comparable<? super T>, U> AbstractGroupExpression<Pair<K, V>, SortedMap<T, U>> sortedMap(GroupExpression<K, T> key,
-                                                                                                                            GroupExpression<V, U> value) {
+    public static <K, V, T extends Comparable<? super T>, U> AbstractGroupExpression<Pair<K, V>, SortedMap<T, U>> sortedMap(
+            GroupExpression<K, T> key, GroupExpression<V, U> value) {
+
         return new GMap.Mixin<K, V, T, U, SortedMap<T, U>>(key, value, GMap.createSorted(QPair.create(key, value)));
     }
 
@@ -292,9 +302,9 @@ public final class GroupBy {
      * @param comparator comparator for the created TreeMap instances
      * @return wrapper expression
      */
-    public static <K, V> AbstractGroupExpression<Pair<K, V>, SortedMap<K, V>> sortedMap(Expression<K> key,
-                                                                                        Expression<V> value,
-                                                                                        Comparator<? super K> comparator) {
+    public static <K, V> AbstractGroupExpression<Pair<K, V>, SortedMap<K, V>> sortedMap(
+            Expression<K> key, Expression<V> value, Comparator<? super K> comparator) {
+
         return GMap.createSorted(QPair.create(key, value), comparator);
     }
 
@@ -306,9 +316,9 @@ public final class GroupBy {
      * @param comparator comparator for the created TreeMap instances
      * @return wrapper expression
      */
-    public static <K, V, T> AbstractGroupExpression<Pair<K, V>, SortedMap<T, V>> sortedMap(GroupExpression<K, T> key,
-                                                                                           Expression<V> value,
-                                                                                           Comparator<? super T> comparator) {
+    public static <K, V, T> AbstractGroupExpression<Pair<K, V>, SortedMap<T, V>> sortedMap(
+            GroupExpression<K, T> key, Expression<V> value, Comparator<? super T> comparator) {
+
         return sortedMap(key, new GOne<V>(value), comparator);
     }
 
@@ -320,9 +330,9 @@ public final class GroupBy {
      * @param comparator comparator for the created TreeMap instances
      * @return wrapper expression
      */
-    public static <K, V, U> AbstractGroupExpression<Pair<K, V>, SortedMap<K, U>> sortedMap(Expression<K> key,
-                                                                                           GroupExpression<V, U> value,
-                                                                                           Comparator<? super K> comparator) {
+    public static <K, V, U> AbstractGroupExpression<Pair<K, V>, SortedMap<K, U>> sortedMap(
+            Expression<K> key, GroupExpression<V, U> value, Comparator<? super K> comparator) {
+
         return sortedMap(new GOne<K>(key), value, comparator);
     }
 
@@ -334,9 +344,9 @@ public final class GroupBy {
      * @param comparator comparator for the created TreeMap instances
      * @return wrapper expression
      */
-    public static <K, V, T, U> AbstractGroupExpression<Pair<K, V>, SortedMap<T, U>> sortedMap(GroupExpression<K, T> key,
-                                                                                              GroupExpression<V, U> value,
-                                                                                              Comparator<? super T> comparator) {
+    public static <K, V, T, U> AbstractGroupExpression<Pair<K, V>, SortedMap<T, U>> sortedMap(
+            GroupExpression<K, T> key, GroupExpression<V, U> value, Comparator<? super T> comparator) {
+
         return new GMap.Mixin<K, V, T, U, SortedMap<T, U>>(key, value, GMap.createSorted(QPair.create(key, value), comparator));
     }
 

@@ -34,7 +34,7 @@ import com.querydsl.sql.dml.SQLUpdateClause;
  * @author tiwe
  */
 public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> implements SQLCommonQueryFactory<Q,
-    SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
+        SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
 
     protected final Configuration configuration;
 

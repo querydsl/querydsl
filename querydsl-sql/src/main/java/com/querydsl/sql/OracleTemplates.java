@@ -239,8 +239,10 @@ public class OracleTemplates extends SQLTemplates {
     }
 
     @Override
-    public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
-                                Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
+    public void serializeUpdate(
+            QueryMetadata metadata, RelationalPath<?> entity,
+            Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
+
         context.serializeForUpdate(metadata, entity, updates);
 
         // limit

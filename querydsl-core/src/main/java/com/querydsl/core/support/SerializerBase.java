@@ -31,7 +31,7 @@ import com.querydsl.core.types.*;
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
 
     private static final Set<Operator> SAME_PRECEDENCE = ImmutableSet.<Operator>of(Ops.CASE,
-        Ops.CASE_WHEN, Ops.CASE_ELSE, Ops.CASE_EQ, Ops.CASE_EQ_WHEN, Ops.CASE_EQ_ELSE);
+            Ops.CASE_WHEN, Ops.CASE_ELSE, Ops.CASE_EQ, Ops.CASE_EQ_WHEN, Ops.CASE_EQ_ELSE);
 
     private final StringBuilder builder = new StringBuilder(128);
 

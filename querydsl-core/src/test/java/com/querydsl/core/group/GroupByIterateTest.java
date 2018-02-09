@@ -31,7 +31,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void group_order() {
         CloseableIterator<Group> resultsIt = BASIC_RESULTS
-            .transform(groupBy(postId).iterate(postName, set(commentId)));
+                .transform(groupBy(postId).iterate(postName, set(commentId)));
         List<Group> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(4, results.size());
@@ -40,7 +40,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void first_set_and_list() {
         CloseableIterator<Group> resultsIt = BASIC_RESULTS.transform(
-            groupBy(postId).iterate(postName, set(commentId), list(commentText)));
+                groupBy(postId).iterate(postName, set(commentId), list(commentText)));
         List<Group> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(4, results.size());
@@ -55,7 +55,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void group_by_null() {
         CloseableIterator<Group> resultsIt = BASIC_RESULTS.transform(
-            groupBy(postId).iterate(postName, set(commentId), list(commentText)));
+                groupBy(postId).iterate(postName, set(commentId), list(commentText)));
         List<Group> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(4, results.size());
@@ -71,7 +71,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test(expected = NoSuchElementException.class)
     public void noSuchElementException() {
         CloseableIterator<Group> resultsIt = BASIC_RESULTS.transform(
-            groupBy(postId).iterate(postName, set(commentId), list(commentText)));
+                groupBy(postId).iterate(postName, set(commentId), list(commentText)));
         List<Group> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(4, results.size());
@@ -83,7 +83,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test(expected = ClassCastException.class)
     public void classCastException() {
         CloseableIterator<Group> resultsIt = BASIC_RESULTS.transform(
-            groupBy(postId).iterate(postName, set(commentId), list(commentText)));
+                groupBy(postId).iterate(postName, set(commentId), list(commentText)));
         List<Group> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(4, results.size());
@@ -95,7 +95,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void map1() {
         CloseableIterator<Group> resultsIt = MAP_RESULTS.transform(
-            groupBy(postId).iterate(postName, map(commentId, commentText)));
+                groupBy(postId).iterate(postName, map(commentId, commentText)));
         List<Group> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(4, results.size());
@@ -109,7 +109,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void map2() {
         CloseableIterator<Map<Integer, String>> resultsIt = MAP2_RESULTS.transform(
-            groupBy(postId).iterate(map(commentId, commentText)));
+                groupBy(postId).iterate(map(commentId, commentText)));
         List<Map<Integer, String>> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(4, results.size());
@@ -122,7 +122,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void map22() {
         CloseableIterator<Map<Integer, String>> results = MAP2_RESULTS.transform(
-            groupBy(postId).iterate(map(commentId, commentText)));
+                groupBy(postId).iterate(map(commentId, commentText)));
         List<Map<Integer, String>> actual = IteratorAdapter.asList(results);
 
         Object commentId = null;
@@ -133,7 +133,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
             Object[] array = tuple.toArray();
 
             if (comments == null || !(commentId == array[0] || commentId != null && commentId.equals(array[0]))) {
-                comments = new LinkedHashMap<Integer,String>();
+                comments = new LinkedHashMap<Integer, String>();
                 expected.add(comments);
             }
             commentId = array[0];
@@ -148,7 +148,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void map3() {
         CloseableIterator<Map<Integer, Map<Integer, String>>> results = MAP3_RESULTS.transform(
-            groupBy(postId).iterate(map(postId, map(commentId, commentText))));
+                groupBy(postId).iterate(map(postId, map(commentId, commentText))));
         List<Map<Integer, Map<Integer, String>>> actual = IteratorAdapter.asList(results);
 
         Object postId = null;
@@ -180,7 +180,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void map4() {
         CloseableIterator<Map<Map<Integer, String>, String>> results = MAP4_RESULTS.transform(
-            groupBy(postId).iterate(map(map(postId, commentText), postName)));
+                groupBy(postId).iterate(map(map(postId, commentText), postName)));
         List<Map<Map<Integer, String>, String>> actual = IteratorAdapter.asList(results);
 
         Object commentId = null;
@@ -207,7 +207,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void array_access() {
         CloseableIterator<Group> resultsIt = BASIC_RESULTS.transform(
-            groupBy(postId).iterate(postName, set(commentId), list(commentText)));
+                groupBy(postId).iterate(postName, set(commentId), list(commentText)));
         List<Group> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(4, results.size());
@@ -254,7 +254,7 @@ public class GroupByIterateTest extends AbstractGroupByTest {
     @Test
     public void oneToOneToMany_projection() {
         CloseableIterator<User> resultsIt = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).iterate(Projections.constructor(User.class, userName,
+                groupBy(userName).iterate(Projections.constructor(User.class, userName,
                 Projections.constructor(Post.class, postId, postName, set(qComment)))));
         List<User> results = IteratorAdapter.asList(resultsIt);
 
@@ -269,9 +269,11 @@ public class GroupByIterateTest extends AbstractGroupByTest {
 
     @Test
     public void oneToOneToMany_projection_as_bean() {
+//CHECKSTYLERULE:OFF: Indentation
         CloseableIterator<User> resultsIt = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).iterate(Projections.bean(User.class, userName,
-                Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
+                groupBy(userName).iterate(Projections.bean(User.class, userName,
+                        Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
+//CHECKSTYLERULE:ON: Indentation
         List<User> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(2, results.size());
@@ -285,9 +287,11 @@ public class GroupByIterateTest extends AbstractGroupByTest {
 
     @Test
     public void oneToOneToMany_projection_as_bean_and_constructor() {
+//CHECKSTYLERULE:OFF: Indentation
         CloseableIterator<User> resultsIt = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).iterate(Projections.bean(User.class, userName,
-                Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
+                groupBy(userName).iterate(Projections.bean(User.class, userName,
+                        Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
+//CHECKSTYLERULE:ON: Indentation
         List<User> results = IteratorAdapter.asList(resultsIt);
 
         assertEquals(2, results.size());

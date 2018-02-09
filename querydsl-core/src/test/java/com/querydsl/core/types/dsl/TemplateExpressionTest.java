@@ -34,15 +34,15 @@ public class TemplateExpressionTest {
         Template template = TemplateFactory.DEFAULT.create("{0}");
         ImmutableList<Expression<?>> args = ImmutableList.<Expression<?>>of(new StringPath("a"));
         List<TemplateExpression<?>> customs = Arrays.<TemplateExpression<?>>asList(
-            new BooleanTemplate(template, args),
-            new ComparableTemplate<String>(String.class, template, args),
-            new DateTemplate<java.sql.Date>(java.sql.Date.class, template, args),
-            new DateTimeTemplate<Date>(Date.class, template, args),
-            new EnumTemplate<PropertyType>(PropertyType.class, template, args),
-            new NumberTemplate<Integer>(Integer.class, template, args),
-            new SimpleTemplate<Object>(Object.class, template, args),
-            new StringTemplate(template, args),
-            new TimeTemplate<Time>(Time.class, template, args)
+                new BooleanTemplate(template, args),
+                new ComparableTemplate<String>(String.class, template, args),
+                new DateTemplate<java.sql.Date>(java.sql.Date.class, template, args),
+                new DateTimeTemplate<Date>(Date.class, template, args),
+                new EnumTemplate<PropertyType>(PropertyType.class, template, args),
+                new NumberTemplate<Integer>(Integer.class, template, args),
+                new SimpleTemplate<Object>(Object.class, template, args),
+                new StringTemplate(template, args),
+                new TimeTemplate<Time>(Time.class, template, args)
         );
         TemplateExpression<?> prev = null;
         for (TemplateExpression<?> custom : customs) {

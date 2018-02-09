@@ -72,33 +72,36 @@ public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implemen
         this(connection, new Configuration(templates), entity);
     }
 
-    public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity,
-            SQLQuery<?> subQuery) {
+    public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity, SQLQuery<?> subQuery) {
         this(connection, new Configuration(templates), entity);
         this.subQueryBuilder = subQuery;
     }
 
-    public SQLInsertClause(Connection connection, Configuration configuration,
-            RelationalPath<?> entity, SQLQuery<?> subQuery) {
+    public SQLInsertClause(
+            Connection connection, Configuration configuration, RelationalPath<?> entity, SQLQuery<?> subQuery) {
+
         this(connection, configuration, entity);
         this.subQueryBuilder = subQuery;
     }
 
-    public SQLInsertClause(Connection connection, Configuration configuration,
-            RelationalPath<?> entity) {
+    public SQLInsertClause(
+            Connection connection, Configuration configuration, RelationalPath<?> entity) {
+
         super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
-    public SQLInsertClause(Provider<Connection> connection, Configuration configuration,
-                           RelationalPath<?> entity, SQLQuery<?> subQuery) {
+    public SQLInsertClause(
+            Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity, SQLQuery<?> subQuery) {
+
         this(connection, configuration, entity);
         this.subQueryBuilder = subQuery;
     }
 
-    public SQLInsertClause(Provider<Connection> connection, Configuration configuration,
-                           RelationalPath<?> entity) {
+    public SQLInsertClause(
+            Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+
         super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);

@@ -53,8 +53,8 @@ public class GeneratedKeysH2Test {
     public void test() throws SQLException {
         stmt.execute("drop table GENERATED_KEYS if exists");
         stmt.execute("create table GENERATED_KEYS(" +
-                 "ID int AUTO_INCREMENT PRIMARY KEY, " +
-                 "NAME varchar(30))");
+                "ID int AUTO_INCREMENT PRIMARY KEY, " +
+                "NAME varchar(30))");
 
         QGeneratedKeysEntity entity = new QGeneratedKeysEntity("entity");
         SQLInsertClause insertClause = new SQLInsertClause(conn, new H2Templates(), entity);

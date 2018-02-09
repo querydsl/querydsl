@@ -85,14 +85,14 @@ public class ExtendedSQLTest {
         QBook book = QBook.book;
         MySQLQuery<?> query = new MySQLQuery<Void>(null);
         query.from(author)
-           .join(book).on(author.id.eq(book.authorId))
-           .where(book.language.eq("DE"), book.published.eq(new Date()))
-           .groupBy(author.firstName, author.lastName)
-           .having(Wildcard.count.gt(5))
-           .orderBy(author.lastName.asc())
-           .limit(2)
-           .offset(1)
-           .forUpdate();
+                .join(book).on(author.id.eq(book.authorId))
+                .where(book.language.eq("DE"), book.published.eq(new Date()))
+                .groupBy(author.firstName, author.lastName)
+                .having(Wildcard.count.gt(5))
+                .orderBy(author.lastName.asc())
+                .limit(2)
+                .offset(1)
+                .forUpdate();
            // of(author.firstName, author.lastName)
 
         query.getMetadata().setProjection(Projections.tuple(author.firstName, author.lastName, Wildcard.count));
@@ -101,16 +101,16 @@ public class ExtendedSQLTest {
         serializer.serialize(query.getMetadata(), false);
 
         assertEquals("select author.FIRST_NAME, author.LAST_NAME, count(*)\n" +
-                     "from AUTHOR author\n" +
-                     "join BOOK book\n" +
-                     "on author.ID = book.AUTHOR_ID\n" +
-                     "where book.LANGUAGE = ? and book.PUBLISHED = ?\n" +
-                     "group by author.FIRST_NAME, author.LAST_NAME\n" +
-                     "having count(*) > ?\n" +
-                     "order by author.LAST_NAME asc\n" +
-                     "limit ?\n" +
-                     "offset ?\n" +
-                     "for update", serializer.toString());
+                "from AUTHOR author\n" +
+                "join BOOK book\n" +
+                "on author.ID = book.AUTHOR_ID\n" +
+                "where book.LANGUAGE = ? and book.PUBLISHED = ?\n" +
+                "group by author.FIRST_NAME, author.LAST_NAME\n" +
+                "having count(*) > ?\n" +
+                "order by author.LAST_NAME asc\n" +
+                "limit ?\n" +
+                "offset ?\n" +
+                "for update", serializer.toString());
 
     }
 

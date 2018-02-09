@@ -31,7 +31,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test
     public void group_order() {
         List<Group> results = BASIC_RESULTS
-            .transform(groupBy(postId).list(postName, set(commentId)));
+                .transform(groupBy(postId).list(postName, set(commentId)));
 
         assertEquals(4, results.size());
     }
@@ -39,7 +39,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test
     public void first_set_and_list() {
         List<Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).list(postName, set(commentId), list(commentText)));
+                groupBy(postId).list(postName, set(commentId), list(commentText)));
 
         assertEquals(4, results.size());
 
@@ -53,7 +53,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test
     public void group_by_null() {
         List<Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).list(postName, set(commentId), list(commentText)));
+                groupBy(postId).list(postName, set(commentId), list(commentText)));
 
         assertEquals(4, results.size());
 
@@ -68,7 +68,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test(expected = NoSuchElementException.class)
     public void noSuchElementException() {
         List<Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).list(postName, set(commentId), list(commentText)));
+                groupBy(postId).list(postName, set(commentId), list(commentText)));
 
         assertEquals(4, results.size());
 
@@ -79,7 +79,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test(expected = ClassCastException.class)
     public void classCastException() {
         List<Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).list(postName, set(commentId), list(commentText)));
+                groupBy(postId).list(postName, set(commentId), list(commentText)));
 
         assertEquals(4, results.size());
 
@@ -90,7 +90,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test
     public void map1() {
         List<Group> results = MAP_RESULTS.transform(
-            groupBy(postId).list(postName, map(commentId, commentText)));
+                groupBy(postId).list(postName, map(commentId, commentText)));
 
         assertEquals(4, results.size());
 
@@ -103,7 +103,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test
     public void map2() {
         List<Map<Integer, String>> results = MAP2_RESULTS.transform(
-            groupBy(postId).list(map(commentId, commentText)));
+                groupBy(postId).list(map(commentId, commentText)));
 
         assertEquals(4, results.size());
 
@@ -115,7 +115,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test
     public void map3() {
         List<Map<Integer, Map<Integer, String>>> actual = MAP3_RESULTS.transform(
-            groupBy(postId).list(map(postId, map(commentId, commentText))));
+                groupBy(postId).list(map(postId, map(commentId, commentText))));
 
         Object postId = null;
         Map<Integer, Map<Integer, String>> posts = null;
@@ -146,7 +146,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test
     public void map4() {
         CloseableIterator<Map<Map<Integer, String>, String>> results = MAP4_RESULTS.transform(
-            groupBy(postId).iterate(map(map(postId, commentText), postName)));
+                groupBy(postId).iterate(map(map(postId, commentText), postName)));
         List<Map<Map<Integer, String>, String>> actual = IteratorAdapter.asList(results);
 
         Object commentId = null;
@@ -173,7 +173,7 @@ public class GroupByListTest extends AbstractGroupByTest {
     @Test
     public void array_access() {
         List<Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).list(postName, set(commentId), list(commentText)));
+                groupBy(postId).list(postName, set(commentId), list(commentText)));
 
         assertEquals(4, results.size());
 
@@ -216,9 +216,11 @@ public class GroupByListTest extends AbstractGroupByTest {
 
     @Test
     public void oneToOneToMany_projection() {
+//CHECKSTYLERULE:OFF: Indentation
         List<User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).list(Projections.constructor(User.class, userName,
-                Projections.constructor(Post.class, postId, postName, set(qComment)))));
+                groupBy(userName).list(Projections.constructor(User.class, userName,
+                        Projections.constructor(Post.class, postId, postName, set(qComment)))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 
@@ -231,9 +233,11 @@ public class GroupByListTest extends AbstractGroupByTest {
 
     @Test
     public void oneToOneToMany_projection_as_bean() {
+//CHECKSTYLERULE:OFF: Indentation
         List<User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).list(Projections.bean(User.class, userName,
-                Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
+                groupBy(userName).list(Projections.bean(User.class, userName,
+                    Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 
@@ -246,9 +250,11 @@ public class GroupByListTest extends AbstractGroupByTest {
 
     @Test
     public void oneToOneToMany_projection_as_bean_and_constructor() {
+//CHECKSTYLERULE:OFF: Indentation
         List<User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).list(Projections.bean(User.class, userName,
-                Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
+                groupBy(userName).list(Projections.bean(User.class, userName,
+                    Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 

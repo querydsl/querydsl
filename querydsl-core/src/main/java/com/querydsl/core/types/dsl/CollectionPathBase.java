@@ -34,7 +34,7 @@ import com.querydsl.core.types.PathMetadata;
  * @param <Q> expression type for {@code any()} results
  */
 public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends SimpleExpression<? super E>>
-    extends CollectionExpressionBase<C, E> implements Path<C> {
+        extends CollectionExpressionBase<C, E> implements Path<C> {
 
     private static final long serialVersionUID = -9004995667633601298L;
 

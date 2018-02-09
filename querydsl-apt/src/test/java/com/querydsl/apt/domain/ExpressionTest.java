@@ -95,7 +95,7 @@ public class ExpressionTest {
                     continue;
                 }
                 if (method.getReturnType() != void.class
-                 && !method.getReturnType().isPrimitive()) {
+                        && !method.getReturnType().isPrimitive()) {
                     Class<?>[] types = method.getParameterTypes();
                     Object[] args;
                     if (types.length == 0) {

@@ -41,23 +41,27 @@ public class GroupBy3Test {
         QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.assetThreat;
         QGroupBy3Test_Threat threat = QGroupBy3Test_Threat.threat;
 
+//CHECKSTYLERULE:OFF: Indentation
         ResultTransformer<Map<String,RiskAnalysis>> transformer =
                 groupBy(riskAnalysis.id)
-                  .as(Projections.bean(RiskAnalysis.class,
-                          riskAnalysis.id,
-                          set(Projections.bean(AssetThreat.class,
-                              assetThreat.id,
-                              set(Projections.bean(Threat.class, threat.id)).as("threats")))
-                          .as("assetThreats")));
+                        .as(Projections.bean(RiskAnalysis.class,
+                                riskAnalysis.id,
+                                set(Projections.bean(AssetThreat.class,
+                                        assetThreat.id,
+                                        set(Projections.bean(Threat.class, threat.id)).as("threats")))
+                                .as("assetThreats")));
+//CHECKSTYLERULE:ON: Indentation
 
         CloseableIterator iter = createMock(CloseableIterator.class);
         FetchableQuery projectable = createMock(FetchableQuery.class);
+//CHECKSTYLERULE:OFF: Indentation
         expect(projectable.select(Projections.tuple(
                 riskAnalysis.id,
                 riskAnalysis.id,
                 assetThreat.id,
-                Projections.bean(Threat.class, threat.id))))
-            .andReturn(projectable);
+                Projections.bean(Threat.class, threat.id)
+        ))).andReturn(projectable);
+//CHECKSTYLERULE:ON: Indentation
         expect(projectable.iterate()).andReturn(iter);
         expect(iter.hasNext()).andReturn(false);
         iter.close();
@@ -73,22 +77,26 @@ public class GroupBy3Test {
         QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.assetThreat;
         QGroupBy3Test_Threat threat = QGroupBy3Test_Threat.threat;
 
+//CHECKSTYLERULE:OFF: Indentation
         ResultTransformer<Map<String,Group>> transformer =
                 groupBy(riskAnalysis.id)
-                  .as(riskAnalysis.id,
-                      set(Projections.bean(AssetThreat.class,
-                          assetThreat.id,
-                           set(Projections.bean(Threat.class, threat.id)).as("threats"))
-                          .as("assetThreats")));
+                        .as(riskAnalysis.id,
+                                set(Projections.bean(AssetThreat.class,
+                                        assetThreat.id,
+                                        set(Projections.bean(Threat.class, threat.id)).as("threats"))
+                                .as("assetThreats")));
+//CHECKSTYLERULE:ON: Indentation
 
         CloseableIterator iter = createMock(CloseableIterator.class);
         FetchableQuery projectable = createMock(FetchableQuery.class);
+//CHECKSTYLERULE:OFF: Indentation
         expect(projectable.select(Projections.tuple(
                 riskAnalysis.id,
                 riskAnalysis.id,
                 assetThreat.id,
-                Projections.bean(Threat.class, threat.id))))
-            .andReturn(projectable);
+                Projections.bean(Threat.class, threat.id)
+        ))).andReturn(projectable);
+//CHECKSTYLERULE:ON: Indentation
         expect(projectable.iterate()).andReturn(iter);
         expect(iter.hasNext()).andReturn(false);
         iter.close();

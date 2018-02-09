@@ -136,9 +136,9 @@ public class JPAConfiguration extends DefaultConfiguration {
         if (temporal != null && element.getAnnotation(ElementCollection.class) == null) {
             PropertyType propertyType = null;
             switch (temporal.value()) {
-            case DATE: propertyType = PropertyType.DATE; break;
-            case TIME: propertyType = PropertyType.TIME; break;
-            case TIMESTAMP: propertyType = PropertyType.DATETIME;
+                case DATE: propertyType = PropertyType.DATE; break;
+                case TIME: propertyType = PropertyType.TIME; break;
+                case TIMESTAMP: propertyType = PropertyType.DATETIME; break;
             }
             annotations.addAnnotation(new QueryTypeImpl(propertyType));
         }

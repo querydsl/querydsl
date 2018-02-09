@@ -28,12 +28,12 @@ public class CompilationOverheadTest {
     @Test
     public void test() {
         List<BooleanExpression> conditions = Arrays.asList(
-            cat.mate.isNull(),
-            cat.mate.isNotNull(),
-            cat.mate.name.eq("Kitty"),
-            cat.mate.name.ne("Kitty"),
-            cat.mate.isNotNull().and(cat.mate.name.eq("Kitty")),
-            cat.mate.isNotNull().and(cat.mate.name.eq("Kitty")).and(cat.kittens.isEmpty())
+                cat.mate.isNull(),
+                cat.mate.isNotNull(),
+                cat.mate.name.eq("Kitty"),
+                cat.mate.name.ne("Kitty"),
+                cat.mate.isNotNull().and(cat.mate.name.eq("Kitty")),
+                cat.mate.isNotNull().and(cat.mate.name.eq("Kitty")).and(cat.kittens.isEmpty())
         );
 
         // 1st

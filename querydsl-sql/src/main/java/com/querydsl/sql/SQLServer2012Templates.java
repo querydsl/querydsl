@@ -107,8 +107,10 @@ public class SQLServer2012Templates extends SQLServerTemplates {
     }
 
     @Override
-    public void serializeUpdate(QueryMetadata metadata, RelationalPath<?> entity,
-                                Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
+    public void serializeUpdate(
+            QueryMetadata metadata, RelationalPath<?> entity,
+            Map<Path<?>, Expression<?>> updates, SQLSerializer context) {
+
         // limit
         QueryModifiers mod = metadata.getModifiers();
         if (mod.isRestricting()) {

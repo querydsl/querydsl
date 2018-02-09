@@ -815,8 +815,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
         } else {
             if (stage == Stage.SELECT
-                && !Null.class.isInstance(constant)
-                && configuration.getTemplates().isWrapSelectParameters()) {
+                    && !Null.class.isInstance(constant)
+                    && configuration.getTemplates().isWrapSelectParameters()) {
                 String typeName = configuration.getTypeNameForCast(constant.getClass());
                 Expression type = Expressions.constant(typeName);
                 super.visitOperation(constant.getClass(), SQLOps.CAST, ImmutableList.<Expression<?>>of(Q, type));
@@ -910,10 +910,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         boolean pathAdded = false;
         if (args.size() == 2
-         && !useLiterals
-         && args.get(0) instanceof Path<?>
-         && args.get(1) instanceof Constant<?>
-         && operator != Ops.NUMCAST) {
+                && !useLiterals
+                && args.get(0) instanceof Path<?>
+                && args.get(1) instanceof Constant<?>
+                && operator != Ops.NUMCAST) {
             Object constant = ((Constant<?>) args.get(1)).getConstant();
             if (!Collection.class.isInstance(constant) || !((Collection) constant).isEmpty()) {
                 for (Element element : templates.getTemplate(operator).getElements()) {

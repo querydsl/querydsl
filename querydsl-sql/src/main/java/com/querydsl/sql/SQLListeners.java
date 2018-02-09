@@ -92,8 +92,10 @@ public class SQLListeners implements SQLDetailedListener {
     }
 
     @Override
-    public void notifyMerge(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> keys,
-                            List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery) {
+    public void notifyMerge(
+            RelationalPath<?> entity, QueryMetadata md, List<Path<?>> keys,
+            List<Path<?>> columns, List<Expression<?>> values, SubQueryExpression<?> subQuery) {
+
         if (parent != null) {
             parent.notifyMerge(entity, md, keys, columns, values, subQuery);
         }
@@ -113,8 +115,10 @@ public class SQLListeners implements SQLDetailedListener {
     }
 
     @Override
-    public void notifyInsert(RelationalPath<?> entity, QueryMetadata md, List<Path<?>> columns,
-                             List<Expression<?>> values, SubQueryExpression<?> subQuery) {
+    public void notifyInsert(
+            RelationalPath<?> entity, QueryMetadata md, List<Path<?>> columns,
+            List<Expression<?>> values, SubQueryExpression<?> subQuery) {
+
         if (parent != null) {
             parent.notifyInsert(entity, md, columns, values, subQuery);
         }
@@ -124,8 +128,10 @@ public class SQLListeners implements SQLDetailedListener {
     }
 
     @Override
-    public void notifyInserts(RelationalPath<?> entity, QueryMetadata md,
-                              List<SQLInsertBatch> batches) {
+    public void notifyInserts(
+            RelationalPath<?> entity, QueryMetadata md,
+            List<SQLInsertBatch> batches) {
+
         if (parent != null) {
             parent.notifyInserts(entity, md, batches);
         }
@@ -135,8 +141,10 @@ public class SQLListeners implements SQLDetailedListener {
     }
 
     @Override
-    public void notifyUpdate(RelationalPath<?> entity, QueryMetadata md,
-                             Map<Path<?>, Expression<?>> updates) {
+    public void notifyUpdate(
+            RelationalPath<?> entity, QueryMetadata md,
+            Map<Path<?>, Expression<?>> updates) {
+
         if (parent != null) {
             parent.notifyUpdate(entity, md, updates);
         }

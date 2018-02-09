@@ -183,7 +183,8 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             throw new UnsupportedOperationException("Aggregation operators are only supported as single expressions");
         }
         if (args.size() == 2 && OPERATOR_SYMBOLS.containsKey(operator)
-             && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())) {
+                && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())) {
+
             handle(args.get(0));
             append(OPERATOR_SYMBOLS.get(operator));
             handle(args.get(1));

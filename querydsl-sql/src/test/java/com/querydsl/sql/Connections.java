@@ -1151,8 +1151,10 @@ public final class Connections {
         teradataInited = true;
     }
 
-    static void addEmployee(String sql, int id, String firstName, String lastName,
-                            double salary, int superiorId) throws SQLException {
+    static void addEmployee(
+            String sql, int id, String firstName, String lastName,
+            double salary, int superiorId) throws SQLException {
+
         PreparedStatement stmt = connHolder.get().prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.setString(2, firstName);

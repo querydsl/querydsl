@@ -90,9 +90,9 @@ public enum MethodType {
     public static MethodType get(Method method) {
         for (MethodType methodType : values()) {
             if (methodType.pattern.matcher(method.getName()).matches()
-                && (methodType.returnType == Object.class || methodType.returnType.isAssignableFrom(method.getReturnType()))
-                && (methodType.ownerType == Object.class || methodType.ownerType.isAssignableFrom(method.getDeclaringClass()))
-                && Arrays.equals(methodType.paramTypes, method.getParameterTypes())) {
+                    && (methodType.returnType == Object.class || methodType.returnType.isAssignableFrom(method.getReturnType()))
+                    && (methodType.ownerType == Object.class || methodType.ownerType.isAssignableFrom(method.getDeclaringClass()))
+                    && Arrays.equals(methodType.paramTypes, method.getParameterTypes())) {
                 return methodType;
             }
         }

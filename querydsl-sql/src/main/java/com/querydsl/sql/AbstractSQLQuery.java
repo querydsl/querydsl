@@ -514,7 +514,8 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         QueryModifiers originalModifiers = queryMixin.getMetadata().getModifiers();
         try {
             if (configuration.getTemplates().isCountViaAnalytics()
-                && queryMixin.getMetadata().getGroupBy().isEmpty()) {
+                    && queryMixin.getMetadata().getGroupBy().isEmpty()) {
+
                 List<T> results;
                 try {
                     queryMixin.addFlag(rowCountFlag);

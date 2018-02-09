@@ -49,7 +49,7 @@ public abstract class AbstractGroupByTest {
 
     protected static final DummyFetchableQuery<Tuple> MAP2_RESULTS = projectable(
             row(null, pair(7, "comment 7")),
-            row(null,  pair(8, "comment 8")),
+            row(null, pair(8, "comment 8")),
             row(1, pair(1, "comment 1")),
             row(1, pair(2, "comment 2")),
             row(1, pair(3, "comment 3")),
@@ -58,23 +58,23 @@ public abstract class AbstractGroupByTest {
     );
 
     protected static final DummyFetchableQuery<Tuple> MAP3_RESULTS = projectable(
-        row(1, pair(1, pair(1, "comment 1"))),
-        row(1, pair(1, pair(2, "comment 2"))),
-        row(2, pair(2, pair(5, "comment 5"))),
-        row(3, pair(3, pair(6, "comment 6"))),
-        row(null, pair(null, pair(7, "comment 7"))),
-        row(null, pair(null,  pair(8, "comment 8"))),
-        row(1, pair(1, pair(3, "comment 3")))
+            row(1, pair(1, pair(1, "comment 1"))),
+            row(1, pair(1, pair(2, "comment 2"))),
+            row(2, pair(2, pair(5, "comment 5"))),
+            row(3, pair(3, pair(6, "comment 6"))),
+            row(null, pair(null, pair(7, "comment 7"))),
+            row(null, pair(null, pair(8, "comment 8"))),
+            row(1, pair(1, pair(3, "comment 3")))
     );
 
     protected static final DummyFetchableQuery<Tuple> MAP4_RESULTS = projectable(
-        row(1, pair(pair(1, "comment 1"), "post 1")),
-        row(1, pair(pair(1, "comment 2"), "post 1")),
-        row(2, pair(pair(2, "comment 5"), "post 2")),
-        row(3, pair(pair(3, "comment 6"), "post 3")),
-        row(null, pair(pair(null, "comment 7"), "null post")),
-        row(null, pair(pair(null, "comment 8"), "null post")),
-        row(1, pair(pair(1, "comment 3"), "post 1"))
+            row(1, pair(pair(1, "comment 1"), "post 1")),
+            row(1, pair(pair(1, "comment 2"), "post 1")),
+            row(2, pair(pair(2, "comment 5"), "post 2")),
+            row(3, pair(pair(3, "comment 6"), "post 3")),
+            row(null, pair(pair(null, "comment 7"), "null post")),
+            row(null, pair(pair(null, "comment 8"), "null post")),
+            row(1, pair(pair(1, "comment 3"), "post 1"))
     );
 
     protected static final DummyFetchableQuery<Tuple> POST_W_COMMENTS = projectable(
@@ -140,7 +140,7 @@ public abstract class AbstractGroupByTest {
         return i;
     }
 
-    protected <T >Set<T> toSet(T... s) {
+    protected <T> Set<T> toSet(T... s) {
         return new HashSet<T>(Arrays.asList(s));
     }
 

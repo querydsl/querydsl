@@ -51,7 +51,7 @@ public class CollQueryTest extends AbstractQueryTest {
         assertEquals(
                 Arrays.asList(c1, c2),
                 query().from(cat, Arrays.asList(c1, c2)).where(cat.instanceOf(Cat.class))
-                       .select(cat).fetch());
+                .select(cat).fetch());
     }
 
     @Test

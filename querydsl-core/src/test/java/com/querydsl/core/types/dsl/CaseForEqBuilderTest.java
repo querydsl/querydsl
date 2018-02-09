@@ -38,10 +38,10 @@ public class CaseForEqBuilderTest {
         Customer c = alias(Customer.class, "customer");
 
         NumberExpression<Integer> cases = $(c.getAnnualSpending())
-            .when(1000L).then(1)
-            .when(2000L).then(2)
-            .when(5000L).then(3)
-            .otherwise(4);
+                .when(1000L).then(1)
+                .when(2000L).then(2)
+                .when(5000L).then(3)
+                .otherwise(4);
 
         assertEquals(
                 "case customer.annualSpending " +
@@ -57,10 +57,10 @@ public class CaseForEqBuilderTest {
         Customer c = alias(Customer.class, "customer");
 
         StringExpression cases = $(c.getAnnualSpending())
-            .when(1000L).then("bronze")
-            .when(2000L).then("silver")
-            .when(5000L).then("gold")
-            .otherwise("platinum");
+                .when(1000L).then("bronze")
+                .when(2000L).then("silver")
+                .when(5000L).then("gold")
+                .otherwise("platinum");
 
         assertNotNull(cases);
 
@@ -71,8 +71,8 @@ public class CaseForEqBuilderTest {
         Customer c = alias(Customer.class, "customer");
 
         BooleanExpression cases = $(c.getAnnualSpending())
-            .when(1000L).then(true)
-            .otherwise(false);
+                .when(1000L).then(true)
+                .otherwise(false);
 
         assertNotNull(cases);
     }

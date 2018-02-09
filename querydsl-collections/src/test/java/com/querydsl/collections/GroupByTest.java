@@ -54,8 +54,8 @@ public class GroupByTest {
     @Test
     public void group_min() {
         Map<Integer, String> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(min(comment.text)));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(min(comment.text)));
 
         assertEquals("Comment 1", results.get(1));
         assertEquals("Comment 2", results.get(2));
@@ -75,8 +75,8 @@ public class GroupByTest {
     @Test
     public void group_max() {
         Map<Integer, String> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(max(comment.text)));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(max(comment.text)));
 
         assertEquals("Comment 1", results.get(1));
         assertEquals("Comment 3", results.get(2));
@@ -108,8 +108,8 @@ public class GroupByTest {
     @Test
     public void group_order() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(post.name, set(comment.id)));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(post.name, set(comment.id)));
 
         assertEquals(3, results.size());
     }
@@ -117,8 +117,8 @@ public class GroupByTest {
     @Test
     public void first_set_and_list() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
 
         Group group = results.get(1);
         assertEquals(toInt(1), group.getOne(post.id));
@@ -131,8 +131,8 @@ public class GroupByTest {
     @Ignore
     public void group_by_null() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
 
         Group group = results.get(null);
         assertNull(group.getOne(post.id));
@@ -154,8 +154,8 @@ public class GroupByTest {
     @Test(expected = ClassCastException.class)
     public void classCastException() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
 
         Group group = results.get(1);
         group.getList(comment.id);
@@ -165,8 +165,8 @@ public class GroupByTest {
     @Ignore
     public void map_() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(post.name, map(comment.id, comment.text)));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(post.name, map(comment.id, comment.text)));
 
         Group group = results.get(1);
         Map<Integer, String> comments = group.getMap(comment.id, comment.text);
@@ -177,8 +177,8 @@ public class GroupByTest {
     @Test
     public void array_access() {
         Map<Integer, Group> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(post.name, set(comment.id), list(comment.text)));
 
         Group group = results.get(1);
         Object[] array = group.toArray();
@@ -191,8 +191,8 @@ public class GroupByTest {
     @Test
     public void transform_results() {
         Map<Integer, Post> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(QPost.create(post.id, post.name, set(qComment))));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(QPost.create(post.id, post.name, set(qComment))));
 
         Post post = results.get(1);
         assertNotNull(post);
@@ -204,8 +204,8 @@ public class GroupByTest {
     @Test
     public void transform_as_bean() {
         Map<Integer, Post> results = CollQueryFactory.from(post, posts).from(comment, comments)
-            .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id).as(Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments"))));
+                .where(comment.post.id.eq(post.id))
+                .transform(groupBy(post.id).as(Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments"))));
 
         Post post = results.get(1);
         assertNotNull(post);
@@ -217,10 +217,12 @@ public class GroupByTest {
 
     @Test
     public void oneToOneToMany_projection() {
+//CHECKSTYLERULE:OFF: Indentation
         Map<String, User> results = CollQueryFactory.from(user, users).from(post, posts).from(comment, comments)
-            .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
-            .transform(groupBy(user.name).as(Projections.constructor(User.class, user.name,
-                    QPost.create(post.id, post.name, set(qComment)))));
+                .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
+                .transform(groupBy(user.name).as(Projections.constructor(User.class, user.name,
+                        QPost.create(post.id, post.name, set(qComment)))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 
@@ -234,10 +236,12 @@ public class GroupByTest {
 
     @Test
     public void oneToOneToMany_projection_as_bean() {
+//CHECKSTYLERULE:OFF: Indentation
         Map<String, User> results = CollQueryFactory.from(user, users).from(post, posts).from(comment, comments)
-            .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
-            .transform(groupBy(user.name).as(Projections.bean(User.class, user.name,
-                    Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments")).as("latestPost"))));
+                .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
+                .transform(groupBy(user.name).as(Projections.bean(User.class, user.name,
+                        Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments")).as("latestPost"))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 
@@ -250,10 +254,12 @@ public class GroupByTest {
 
     @Test
     public void oneToOneToMany_projection_as_bean_and_constructor() {
+//CHECKSTYLERULE:OFF: Indentation
         Map<String, User> results = CollQueryFactory.from(user, users).from(post, posts).from(comment, comments)
-            .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
-            .transform(groupBy(user.name).as(Projections.bean(User.class, user.name,
-                QPost.create(post.id, post.name, set(qComment)).as("latestPost"))));
+                .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
+                .transform(groupBy(user.name).as(Projections.bean(User.class, user.name,
+                        QPost.create(post.id, post.name, set(qComment)).as("latestPost"))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 

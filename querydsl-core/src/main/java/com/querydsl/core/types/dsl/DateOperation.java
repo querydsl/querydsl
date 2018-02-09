@@ -26,7 +26,7 @@ import com.querydsl.core.types.*;
  * @param <T> expression type
  */
 public class DateOperation<T extends Comparable<?>> extends
-    DateExpression<T> implements Operation<T> {
+        DateExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = -7859020164194396995L;
 

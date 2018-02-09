@@ -184,52 +184,52 @@ public class DefaultEvaluatorFactory {
                 vars.append(",");
             }
             switch (join.getType()) {
-            case DEFAULT:
-                ser.append("for (" + typeName + " " + target + " : " + target + "_) {\n");
-                vars.append(target);
-                sourceNames.add(target + "_");
-                sourceTypes.add(new SimpleType(Types.ITERABLE, new ClassType(TypeCategory.SIMPLE,target.getType())));
-                sourceClasses.add(Iterable.class);
-                break;
+                case DEFAULT:
+                    ser.append("for (" + typeName + " " + target + " : " + target + "_) {\n");
+                    vars.append(target);
+                    sourceNames.add(target + "_");
+                    sourceTypes.add(new SimpleType(Types.ITERABLE, new ClassType(TypeCategory.SIMPLE,target.getType())));
+                    sourceClasses.add(Iterable.class);
+                    break;
 
-            case INNERJOIN:
-            case LEFTJOIN:
-                Operation<?> alias = (Operation<?>) join.getTarget();
-                boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
-                boolean leftJoin = join.getType() == JoinType.LEFTJOIN;
-                String matcher = null;
-                if (colAnyJoin) {
-                    matcher = alias.getArg(1).toString() + "_matched";
-                    ser.append("boolean " + matcher + " = false;\n");
-                    anyJoinMatchers.add(matcher);
-                }
-                ser.append("for (" + typeName + " " + alias.getArg(1) + " : ");
-                if (leftJoin) {
-                    ser.append(CollQueryFunctions.class.getName() + ".leftJoin(");
-                }
-                if (colAnyJoin) {
-                    Context context = new Context();
-                    Expression<?> replacement = alias.getArg(0)
-                            .accept(collectionAnyVisitor, context);
-                    ser.handle(replacement);
-                } else {
-                    ser.handle(alias.getArg(0));
-                }
-                if (alias.getArg(0).getType().equals(Map.class)) {
-                    ser.append(".values()");
-                }
-                if (leftJoin) {
-                    ser.append(")");
-                }
-                ser.append(") {\n");
-                if (matcher != null) {
-                    ser.append("if (!" + matcher + ") {\n");
-                }
-                vars.append(alias.getArg(1));
-                break;
+                case INNERJOIN:
+                case LEFTJOIN:
+                    Operation<?> alias = (Operation<?>) join.getTarget();
+                    boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
+                    boolean leftJoin = join.getType() == JoinType.LEFTJOIN;
+                    String matcher = null;
+                    if (colAnyJoin) {
+                        matcher = alias.getArg(1).toString() + "_matched";
+                        ser.append("boolean " + matcher + " = false;\n");
+                        anyJoinMatchers.add(matcher);
+                    }
+                    ser.append("for (" + typeName + " " + alias.getArg(1) + " : ");
+                    if (leftJoin) {
+                        ser.append(CollQueryFunctions.class.getName() + ".leftJoin(");
+                    }
+                    if (colAnyJoin) {
+                        Context context = new Context();
+                        Expression<?> replacement = alias.getArg(0)
+                                .accept(collectionAnyVisitor, context);
+                        ser.handle(replacement);
+                    } else {
+                        ser.handle(alias.getArg(0));
+                    }
+                    if (alias.getArg(0).getType().equals(Map.class)) {
+                        ser.append(".values()");
+                    }
+                    if (leftJoin) {
+                        ser.append(")");
+                    }
+                    ser.append(") {\n");
+                    if (matcher != null) {
+                        ser.append("if (!" + matcher + ") {\n");
+                    }
+                    vars.append(alias.getArg(1));
+                    break;
 
-            default:
-                throw new IllegalArgumentException("Illegal join expression " + join);
+                default:
+                    throw new IllegalArgumentException("Illegal join expression " + join);
             }
         }
 

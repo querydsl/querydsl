@@ -59,7 +59,7 @@ public class DistinctTest extends AbstractQueryTest {
     @Test
     public void null_() {
         assertEquals(Arrays.asList(null, 1),
-            CollQueryFactory.from(intVar1, Arrays.asList(null, 1)).distinct().fetch());
+                CollQueryFactory.from(intVar1, Arrays.asList(null, 1)).distinct().fetch());
     }
 
 }

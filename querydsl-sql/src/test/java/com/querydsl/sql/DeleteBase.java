@@ -130,9 +130,9 @@ public class DeleteBase extends AbstractBaseTest {
     @ExcludeIn({CUBRID, SQLITE})
     public void delete_with_tempateExpression_in_batch() {
         assertEquals(1, delete(survey)
-            .where(survey.name.eq(Expressions.stringTemplate("'Hello World'")))
-            .addBatch()
-            .execute());
+                .where(survey.name.eq(Expressions.stringTemplate("'Hello World'")))
+                .addBatch()
+                .execute());
     }
 
 

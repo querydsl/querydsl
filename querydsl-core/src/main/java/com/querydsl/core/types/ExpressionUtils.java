@@ -50,8 +50,9 @@ public final class ExpressionUtils {
      * @param args operation arguments
      * @return operation expression
      */
-    public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
-                                             Expression<?>... args) {
+    public static <T> Operation<T> operation(
+            Class<? extends T> type, Operator operator, Expression<?>... args) {
+
         return operation(type, operator, ImmutableList.copyOf(args));
     }
 
@@ -64,8 +65,9 @@ public final class ExpressionUtils {
      * @return operation expression
      */
     @SuppressWarnings("unchecked")
-    public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
-                                             ImmutableList<Expression<?>> args) {
+    public static <T> Operation<T> operation(
+            Class<? extends T> type, Operator operator, ImmutableList<Expression<?>> args) {
+
         if (type.equals(Boolean.class)) {
             return (Operation<T>) new PredicateOperation(operator, args);
         } else {

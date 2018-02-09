@@ -49,8 +49,10 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
         this(conf, stmt, rs, null, null);
     }
 
-    public SQLResultIterator(Configuration conf, Statement stmt, ResultSet rs,
-                             SQLDetailedListener listener, SQLListenerContext context) {
+    public SQLResultIterator(
+            Configuration conf, Statement stmt, ResultSet rs,
+            SQLDetailedListener listener, SQLListenerContext context) {
+
         this.configuration = conf;
         this.stmt = stmt;
         this.rs = rs;

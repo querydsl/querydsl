@@ -391,7 +391,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     @Override
     public T fetchOne() {
         if (getMetadata().getModifiers().getLimit() == null
-            && !queryMixin.getMetadata().getProjection().toString().contains("count(")) {
+                && !queryMixin.getMetadata().getProjection().toString().contains("count(")) {
             limit(2);
         }
         CloseableIterator<T> iterator = iterate();
@@ -471,8 +471,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         SQLSerializer serializer = createSerializer();
         if (union != null) {
             if (queryMixin.getMetadata().getProjection() == null ||
-                expandProjection(queryMixin.getMetadata().getProjection())
-                .equals(expandProjection(firstUnionSubQuery.getMetadata().getProjection()))) {
+                    expandProjection(queryMixin.getMetadata().getProjection())
+                    .equals(expandProjection(firstUnionSubQuery.getMetadata().getProjection()))) {
                 serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
             } else {
                 QueryMixin<Q> mixin2 = new QueryMixin<Q>(queryMixin.getMetadata().clone());

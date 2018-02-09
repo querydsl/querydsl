@@ -474,6 +474,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+        <!-- TODO: update to 3.0.0 -->
         <version>2.15</version>
         <executions>
           <execution>
@@ -485,7 +486,7 @@
             <configuration>
               <configLocation>src/main/resources/querydsl_checks_base.xml</configLocation>
               <includeTestSourceDirectory>true</includeTestSourceDirectory>
-              <failOnViolation>true</failOnViolation>
+              <failOnViolation>false</failOnViolation>
             </configuration>
           </execution>
           <execution>
@@ -496,7 +497,7 @@
             </goals>
             <configuration>
               <configLocation>src/main/resources/querydsl_checks_main.xml</configLocation>
-              <failOnViolation>true</failOnViolation>
+              <failOnViolation>false</failOnViolation>
             </configuration>
           </execution>
         </executions>

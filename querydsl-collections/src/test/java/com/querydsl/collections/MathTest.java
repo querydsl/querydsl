@@ -32,8 +32,7 @@ public class MathTest {
         assertEquals(log(0.5, 10),   unique(MathExpressions.log(expr, 10)), 0.001);
         assertEquals(0.25,           unique(MathExpressions.power(expr, 2)), 0.001);
         assertEquals(radians(0.5),   unique(MathExpressions.radians(expr)), 0.001);
-        assertEquals(Integer.valueOf(1),
-                                     unique(MathExpressions.sign(expr)));
+        assertEquals(Integer.valueOf(1), unique(MathExpressions.sign(expr)));
         assertEquals(Math.sin(0.5),  unique(MathExpressions.sin(expr)), 0.001);
         assertEquals(Math.sinh(0.5), unique(MathExpressions.sinh(expr)), 0.001);
         assertEquals(Math.tan(0.5),  unique(MathExpressions.tan(expr)), 0.001);

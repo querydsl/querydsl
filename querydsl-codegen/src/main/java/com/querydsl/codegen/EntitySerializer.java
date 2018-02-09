@@ -182,8 +182,8 @@ public class EntitySerializer implements Serializer {
             writer.line(thisOrSuper,"(forVariable(variable)",additionalParams,");");
         } else {
             writer.line(thisOrSuper,"(", localName.equals(genericName) ? EMPTY : "(Class) ",
-            writer.getClassConstant(localName) + COMMA + "forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
-                            additionalParams,");");
+                    writer.getClassConstant(localName) + COMMA + "forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
+                    additionalParams,");");
         }
         if (!hasEntityFields) {
             constructorContent(writer, model);
@@ -254,10 +254,10 @@ public class EntitySerializer implements Serializer {
             boolean hasEntityFields = field.getType() instanceof EntityType
                     && ((EntityType) field.getType()).hasEntityFields();
             writer.line("this." + field.getEscapedName() + ASSIGN,
-                "inits.isInitialized(\"" + field.getName() + "\") ? ",
-                NEW + writer.getRawName(queryType) + "(forProperty(\"" + field.getName() + "\")",
-                hasEntityFields ? (", inits.get(\"" + field.getName() + "\")") : EMPTY,
-                ") : null;");
+                    "inits.isInitialized(\"" + field.getName() + "\") ? ",
+                    NEW + writer.getRawName(queryType) + "(forProperty(\"" + field.getName() + "\")",
+                    hasEntityFields ? (", inits.get(\"" + field.getName() + "\")") : EMPTY,
+                    ") : null;");
         } else if (!config.useEntityAccessors()) {
             writer.line("this.", field.getEscapedName(), ASSIGN, "_super.", field.getEscapedName(), SEMICOLON);
         }
@@ -346,8 +346,7 @@ public class EntitySerializer implements Serializer {
             }
             Type returnType = new ClassType(ConstructorExpression.class, model);
             final boolean asExpr = sizes.add(c.getParameters().size());
-            writer.beginStaticMethod(returnType, "create", c.getParameters(),
-                    new Function<Parameter, Parameter>() {
+            writer.beginStaticMethod(returnType, "create", c.getParameters(), new Function<Parameter, Parameter>() {
                 @Override
                 public Parameter apply(Parameter p) {
                     Type type;
@@ -403,8 +402,8 @@ public class EntitySerializer implements Serializer {
         // import package of query type
         Type queryType = typeMappings.getPathType(model, model, true);
         if (!model.getPackageName().isEmpty()
-            && !queryType.getPackageName().equals(model.getPackageName())
-            && !queryType.getSimpleName().equals(model.getSimpleName())) {
+                && !queryType.getPackageName().equals(model.getPackageName())
+                && !queryType.getSimpleName().equals(model.getSimpleName())) {
             String fullName = model.getFullName();
             String packageName = model.getPackageName();
             if (fullName.substring(packageName.length() + 1).contains(".")) {
@@ -512,7 +511,7 @@ public class EntitySerializer implements Serializer {
     protected void introJavadoc(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
         writer.javadoc(queryType.getSimpleName() + " is a Querydsl query type for " +
-        model.getSimpleName());
+                model.getSimpleName());
     }
 
     protected void introPackage(CodeWriter writer, EntityType model) throws IOException {
@@ -707,104 +706,106 @@ public class EntitySerializer implements Serializer {
             String inits = getInits(property);
 
             switch (property.getType().getCategory()) {
-            case STRING:
-                serialize(model, property, queryType, writer, "createString");
-                break;
+                case STRING:
+                    serialize(model, property, queryType, writer, "createString");
+                    break;
 
-            case BOOLEAN:
-                serialize(model, property, queryType, writer, "createBoolean");
-                break;
+                case BOOLEAN:
+                    serialize(model, property, queryType, writer, "createBoolean");
+                    break;
 
-            case SIMPLE:
-                serialize(model, property, queryType, writer, "createSimple", writer.getClassConstant(localRawName));
-                break;
+                case SIMPLE:
+                    serialize(model, property, queryType, writer, "createSimple", writer.getClassConstant(localRawName));
+                    break;
 
-            case COMPARABLE:
-                serialize(model, property, queryType, writer, "createComparable", writer.getClassConstant(localRawName));
-                break;
+                case COMPARABLE:
+                    serialize(model, property, queryType, writer, "createComparable", writer.getClassConstant(localRawName));
+                    break;
 
-            case ENUM:
-                serialize(model, property, queryType, writer, "createEnum", writer.getClassConstant(localRawName));
-                break;
+                case ENUM:
+                    serialize(model, property, queryType, writer, "createEnum", writer.getClassConstant(localRawName));
+                    break;
 
-            case DATE:
-                serialize(model, property, queryType, writer, "createDate", writer.getClassConstant(localRawName));
-                break;
+                case DATE:
+                    serialize(model, property, queryType, writer, "createDate", writer.getClassConstant(localRawName));
+                    break;
 
-            case DATETIME:
-                serialize(model, property, queryType, writer, "createDateTime", writer.getClassConstant(localRawName));
-                break;
+                case DATETIME:
+                    serialize(model, property, queryType, writer, "createDateTime", writer.getClassConstant(localRawName));
+                    break;
 
-            case TIME:
-                serialize(model, property, queryType, writer, "createTime", writer.getClassConstant(localRawName));
-                break;
+                case TIME:
+                    serialize(model, property, queryType, writer, "createTime", writer.getClassConstant(localRawName));
+                    break;
 
-            case NUMERIC:
-                serialize(model, property, queryType, writer, "createNumber", writer.getClassConstant(localRawName));
-                break;
+                case NUMERIC:
+                    serialize(model, property, queryType, writer, "createNumber", writer.getClassConstant(localRawName));
+                    break;
 
-            case CUSTOM:
-                customField(model, property, config, writer);
-                break;
+                case CUSTOM:
+                    customField(model, property, config, writer);
+                    break;
 
-            case ARRAY:
-                serialize(model, property, new ClassType(ArrayPath.class,
-                        property.getType(),
-                        wrap(property.getType().getComponentType())),
-                        writer, "createArray", writer.getClassConstant(localRawName));
-                break;
+                case ARRAY:
+                    serialize(model, property, new ClassType(ArrayPath.class,
+                            property.getType(),
+                            wrap(property.getType().getComponentType())),
+                            writer, "createArray", writer.getClassConstant(localRawName));
+                    break;
 
-            case COLLECTION:
-                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
-                String genericKey = writer.getGenericName(true, property.getParameter(0));
-                localRawName = writer.getRawName(property.getParameter(0));
-                queryType = typeMappings.getPathType(property.getParameter(0), model, true);
+                case COLLECTION:
+                    genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
+                    String genericKey = writer.getGenericName(true, property.getParameter(0));
+                    localRawName = writer.getRawName(property.getParameter(0));
+                    queryType = typeMappings.getPathType(property.getParameter(0), model, true);
 
-                serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0)), genericQueryType),
-                        writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createCollection",
-                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
-                break;
+                    serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0)), genericQueryType),
+                            writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createCollection",
+                            writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
+                    break;
 
-            case SET:
-                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
-                genericKey = writer.getGenericName(true, property.getParameter(0));
-                localRawName = writer.getRawName(property.getParameter(0));
-                queryType = typeMappings.getPathType(property.getParameter(0), model, true);
+                case SET:
+                    genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
+                    genericKey = writer.getGenericName(true, property.getParameter(0));
+                    localRawName = writer.getRawName(property.getParameter(0));
+                    queryType = typeMappings.getPathType(property.getParameter(0), model, true);
 
-                serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0)), genericQueryType),
-                        writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createSet",
-                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
-                break;
+                    serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0)), genericQueryType),
+                            writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createSet",
+                            writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
+                    break;
 
-            case LIST:
-                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
-                genericKey = writer.getGenericName(true, property.getParameter(0));
-                localRawName = writer.getRawName(property.getParameter(0));
-                queryType = typeMappings.getPathType(property.getParameter(0), model, true);
+                case LIST:
+                    genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
+                    genericKey = writer.getGenericName(true, property.getParameter(0));
+                    localRawName = writer.getRawName(property.getParameter(0));
+                    queryType = typeMappings.getPathType(property.getParameter(0), model, true);
 
-                serialize(model, property, new ClassType(ListPath.class, getRaw(property.getParameter(0)), genericQueryType),
-                        writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createList",
-                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
-                break;
+                    serialize(model, property, new ClassType(ListPath.class, getRaw(property.getParameter(0)), genericQueryType),
+                            writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createList",
+                            writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
+                    break;
 
-            case MAP:
-                genericKey = writer.getGenericName(true, property.getParameter(0));
-                String genericValue = writer.getGenericName(true, property.getParameter(1));
-                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false);
-                String keyType = writer.getRawName(property.getParameter(0));
-                String valueType = writer.getRawName(property.getParameter(1));
-                queryType = typeMappings.getPathType(property.getParameter(1), model, true);
+                case MAP:
+                    genericKey = writer.getGenericName(true, property.getParameter(0));
+                    String genericValue = writer.getGenericName(true, property.getParameter(1));
+                    genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false);
+                    String keyType = writer.getRawName(property.getParameter(0));
+                    String valueType = writer.getRawName(property.getParameter(1));
+                    queryType = typeMappings.getPathType(property.getParameter(1), model, true);
 
-                serialize(model, property, new ClassType(MapPath.class, getRaw(property.getParameter(0)),
-                        getRaw(property.getParameter(1)), genericQueryType),
-                        writer, "this.<" + genericKey + COMMA + genericValue + COMMA +
-                            writer.getGenericName(true, genericQueryType) + ">createMap",
-                 writer.getClassConstant(keyType), writer.getClassConstant(valueType), writer.getClassConstant(writer.getRawName(queryType)));
-                break;
+//CHECKSTYLERULE:OFF: Indentation (there is no way to have multiple levels of continuation
+                    serialize(model, property, new ClassType(MapPath.class, getRaw(property.getParameter(0)),
+                            getRaw(property.getParameter(1)), genericQueryType),
+                            writer, "this.<" + genericKey + COMMA + genericValue + COMMA +
+                                writer.getGenericName(true, genericQueryType) + ">createMap",
+                            writer.getClassConstant(keyType), writer.getClassConstant(valueType), writer.getClassConstant(writer.getRawName(queryType)));
+//CHECKSTYLERULE:ON: Indentation
+                    break;
 
-            case ENTITY:
-                entityField(model, property, config, writer);
-                break;
+                case ENTITY:
+                    entityField(model, property, config, writer);
+                    break;
             }
         }
     }

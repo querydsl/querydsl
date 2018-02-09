@@ -81,7 +81,7 @@ public class BooleanBuilderTest {
     public void basic() {
 //        new BooleanBuilder().and(first).or(second);
         assertEquals(first.or(second).toString(),
-            new BooleanBuilder().and(first).or(second).toString());
+                new BooleanBuilder().and(first).or(second).toString());
     }
 
     @Test

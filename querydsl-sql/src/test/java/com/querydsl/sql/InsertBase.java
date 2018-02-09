@@ -101,10 +101,8 @@ public class InsertBase extends AbstractBaseTest {
         SQLInsertClause insert = insert(survey);
         insert.columns(survey.id, survey.name);
         insert.select(select(survey.id, emp2.firstname).from(survey)
-          .innerJoin(emp1)
-           .on(survey.id.eq(emp1.id))
-          .innerJoin(emp2)
-           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname)));
+                .innerJoin(emp1).on(survey.id.eq(emp1.id))
+                .innerJoin(emp2).on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname)));
 
         assertEquals(0, insert.execute());
     }
@@ -113,9 +111,9 @@ public class InsertBase extends AbstractBaseTest {
     public void insert_alternative_syntax() {
         // with columns
         assertEquals(1, insert(survey)
-            .set(survey.id, 3)
-            .set(survey.name, "Hello")
-            .execute());
+                .set(survey.id, 3)
+                .set(survey.name, "Hello")
+                .execute());
     }
 
     @Test
@@ -314,8 +312,8 @@ public class InsertBase extends AbstractBaseTest {
     @SkipForQuoted
     public void insert_with_special_options() {
         SQLInsertClause clause = insert(survey)
-            .columns(survey.id, survey.name)
-            .values(3, "Hello");
+                .columns(survey.id, survey.name)
+                .values(3, "Hello");
 
         clause.addFlag(Position.START_OVERRIDE, "insert ignore into ");
 
@@ -328,9 +326,9 @@ public class InsertBase extends AbstractBaseTest {
     public void insert_with_subQuery() {
         int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
-            .columns(survey.id, survey.name)
-            .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
-            .execute());
+                .columns(survey.id, survey.name)
+                .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
+                .execute());
     }
 
     @Test
@@ -341,11 +339,14 @@ public class InsertBase extends AbstractBaseTest {
 //        where not exists
 //        (select 1 from modules where modules.name = 'MyModule')
 
+//CHECKSTYLERULE:OFF: Indentation
         assertEquals(1, insert(survey).set(survey.name,
-            query().where(query().from(survey2)
-                           .where(survey2.name.eq("MyModule")).notExists())
-                .select(Expressions.constant("MyModule")).fetchFirst())
-            .execute());
+                query().where(
+                        query().from(survey2)
+                                .where(survey2.name.eq("MyModule")).notExists())
+                        .select(Expressions.constant("MyModule")).fetchFirst())
+                .execute());
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(1L , query().from(survey).where(survey.name.eq("MyModule")).fetchCount());
     }
@@ -358,11 +359,14 @@ public class InsertBase extends AbstractBaseTest {
 //        where not exists
 //        (select 1 from modules where modules.name = 'MyModule')
 
+//CHECKSTYLERULE:OFF: Indentation
         assertEquals(1, insert(survey).columns(survey.name).select(
-            query().where(query().from(survey2)
-                           .where(survey2.name.eq("MyModule2")).notExists())
-                .select(Expressions.constant("MyModule2")))
-            .execute());
+                query().where(
+                        query().from(survey2)
+                                .where(survey2.name.eq("MyModule2")).notExists())
+                        .select(Expressions.constant("MyModule2")))
+                .execute());
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(1L , query().from(survey).where(survey.name.eq("MyModule2")).fetchCount());
     }
@@ -376,9 +380,9 @@ public class InsertBase extends AbstractBaseTest {
 
         int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
-            .columns(survey.id, survey.name)
-            .select(sq.select(survey2.id.add(param), survey2.name))
-            .execute());
+                .columns(survey.id, survey.name)
+                .select(sq.select(survey2.id.add(param), survey2.name))
+                .execute());
     }
 
     @Test
@@ -396,8 +400,8 @@ public class InsertBase extends AbstractBaseTest {
     public void insert_with_subQuery_Without_Columns() {
         int count = (int) query().from(survey).fetchCount();
         assertEquals(count, insert(survey)
-            .select(query().from(survey2).select(survey2.id.add(10), survey2.name, survey2.name2))
-            .execute());
+                .select(query().from(survey2).select(survey2.id.add(10), survey2.name, survey2.name2))
+                .execute());
 
     }
 
@@ -412,14 +416,14 @@ public class InsertBase extends AbstractBaseTest {
     @ExcludeIn(FIREBIRD) // too slow
     public void insertBatch_with_subquery() {
         SQLInsertClause insert = insert(survey)
-            .columns(survey.id, survey.name)
-            .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
-            .addBatch();
+                .columns(survey.id, survey.name)
+                .select(query().from(survey2).select(survey2.id.add(20), survey2.name))
+                .addBatch();
 
         insert(survey)
-            .columns(survey.id, survey.name)
-            .select(query().from(survey2).select(survey2.id.add(40), survey2.name))
-            .addBatch();
+                .columns(survey.id, survey.name)
+                .select(query().from(survey2).select(survey2.id.add(40), survey2.name))
+                .addBatch();
 
         assertEquals(1, insert.execute());
     }
@@ -453,7 +457,7 @@ public class InsertBase extends AbstractBaseTest {
     public void replace() {
         SQLInsertClause clause = mysqlReplace(survey);
         clause.columns(survey.id, survey.name)
-            .values(3, "Hello");
+                .values(3, "Hello");
 
         assertEquals("replace into SURVEY (ID, NAME) values (?, ?)", clause.toString());
         clause.execute();

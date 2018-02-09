@@ -42,14 +42,13 @@ import com.querydsl.core.annotations.QueryType;
 public class JDOConfiguration extends DefaultConfiguration {
 
     @SuppressWarnings("unchecked")
-    private static final Iterable<Class<? extends Annotation>> relevantAnnotations
-            = ImmutableSet.of(
-                    Cacheable.class, Column.class, Columns.class,
-                    javax.jdo.annotations.Element.class, Embedded.class,
-                    Extension.class, Extensions.class, ForeignKey.class,
-                    Index.class, Join.class, Key.class, NotPersistent.class,
-                    Order.class, Persistent.class, PrimaryKey.class, QueryType.class, QueryInit.class,
-                    QueryTransient.class, Serialized.class, Transactional.class, Unique.class, Value.class);
+    private static final Iterable<Class<? extends Annotation>> relevantAnnotations = ImmutableSet.of(
+            Cacheable.class, Column.class, Columns.class,
+            javax.jdo.annotations.Element.class, Embedded.class,
+            Extension.class, Extensions.class, ForeignKey.class,
+            Index.class, Join.class, Key.class, NotPersistent.class,
+            Order.class, Persistent.class, PrimaryKey.class, QueryType.class, QueryInit.class,
+            QueryTransient.class, Serialized.class, Transactional.class, Unique.class, Value.class);
 
     public JDOConfiguration(RoundEnvironment roundEnv,
             Map<String, String> options,

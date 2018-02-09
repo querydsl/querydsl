@@ -45,9 +45,8 @@ class AliasFactory {
     // caches top level paths (class/var as key)
     private final LoadingCache<Pair<Class<?>,String>, EntityPath<?>> pathCache;
 
-    private final LoadingCache<Pair<Class<?>,Expression<?>>, ManagedObject> proxyCache =
-        CacheBuilder.newBuilder().build(
-            new CacheLoader<Pair<Class<?>,Expression<?>>,ManagedObject>() {
+    private final LoadingCache<Pair<Class<?>, Expression<?>>, ManagedObject> proxyCache = CacheBuilder.newBuilder()
+            .build(new CacheLoader<Pair<Class<?>, Expression<?>>, ManagedObject>() {
                 @Override
                 public ManagedObject load(Pair<Class<?>, Expression<?>> input) {
                     return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
@@ -81,7 +80,7 @@ class AliasFactory {
         try {
             return (A) proxyCache.get(Pair.<Class<?>, Expression<?>>of(cl, expr));
         } catch (ExecutionException e) {
-           throw new QueryException(e);
+            throw new QueryException(e);
         }
     }
 

@@ -76,10 +76,12 @@ public class KeywordQuotingBase extends AbstractBaseTest {
     @Test
     public void keywords() {
         Quoting from = new Quoting("from");
+//CHECKSTLYERULE:OFF: Indentation
         assertEquals("from", query().from(quoting.as(from))
                 .where(from.from.eq("from")
                         .and(from.all.isNotNull()))
                 .select(from.from).fetchFirst());
+//CHECKSTLYERULE:ON: Indentation
     }
 
 }

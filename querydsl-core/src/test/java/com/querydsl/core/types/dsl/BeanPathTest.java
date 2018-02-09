@@ -101,7 +101,7 @@ public class BeanPathTest {
         BooleanExpression pred2 = beanPath.instanceOfAny(BeanPathTest.class, SubClass.class);
         assertEquals(pred1, pred2);
         assertEquals("p instanceof class com.querydsl.core.types.dsl.BeanPathTest || " +
-                 "p instanceof class com.querydsl.core.types.dsl.BeanPathTest$SubClass", pred2.toString());
+                "p instanceof class com.querydsl.core.types.dsl.BeanPathTest$SubClass", pred2.toString());
     }
 
 }

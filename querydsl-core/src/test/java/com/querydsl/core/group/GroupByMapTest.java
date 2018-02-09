@@ -44,7 +44,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void group_order() {
         Map<Integer, Group> results = BASIC_RESULTS
-            .transform(groupBy(postId).as(postName, set(commentId)));
+                .transform(groupBy(postId).as(postName, set(commentId)));
         assertEquals(4, results.size());
     }
 
@@ -75,7 +75,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void first_set_and_list() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(1);
         assertEquals(toInt(1), group.getOne(postId));
@@ -87,7 +87,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void group_by_null() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(null);
         assertNull(group.getOne(postId));
@@ -100,7 +100,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test(expected = NoSuchElementException.class)
     public void noSuchElementException() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(1);
         group.getSet(qComment);
@@ -109,7 +109,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test(expected = ClassCastException.class)
     public void classCastException() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(1);
         group.getList(commentId);
@@ -118,7 +118,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void map1() {
         Map<Integer, Group> results = MAP_RESULTS.transform(
-            groupBy(postId).as(postName, map(commentId, commentText)));
+                groupBy(postId).as(postName, map(commentId, commentText)));
 
         Group group = results.get(1);
 
@@ -157,7 +157,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void map2() {
         Map<Integer, Map<Integer, String>> results = MAP2_RESULTS.transform(
-            groupBy(postId).as(map(commentId, commentText)));
+                groupBy(postId).as(map(commentId, commentText)));
 
         Map<Integer, String> comments = results.get(1);
         assertEquals(3, comments.size());
@@ -167,7 +167,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void map3() {
         Map<Integer, Map<Integer, Map<Integer, String>>> actual = MAP3_RESULTS.transform(
-            groupBy(postId).as(map(postId, map(commentId, commentText))));
+                groupBy(postId).as(map(postId, map(commentId, commentText))));
 
         Map<Integer, Map<Integer, Map<Integer, String>>> expected = new LinkedHashMap<Integer, Map<Integer, Map<Integer, String>>>();
         for (Iterator<Tuple> iterator = MAP3_RESULTS.iterate(); iterator.hasNext();) {
@@ -196,7 +196,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void map4() {
         Map<Integer, Map<Map<Integer, String>, String>> actual = MAP4_RESULTS.transform(
-            groupBy(postId).as(map(map(postId, commentText), postName)));
+                groupBy(postId).as(map(map(postId, commentText), postName)));
 
         Map<Integer, Map<Map<Integer, String>, String>> expected = new LinkedHashMap<Integer, Map<Map<Integer, String>, String>>();
         for (Iterator<Tuple> iterator = MAP4_RESULTS.iterate(); iterator.hasNext();) {
@@ -220,7 +220,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void array_access() {
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId).as(postName, set(commentId), list(commentText)));
+                groupBy(postId).as(postName, set(commentId), list(commentText)));
 
         Group group = results.get(1);
         Object[] array = group.toArray();
@@ -278,9 +278,11 @@ public class GroupByMapTest extends AbstractGroupByTest {
 
     @Test
     public void oneToOneToMany_projection() {
+//CHECKSTYLERULE:OFF: Indentation
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).as(Projections.constructor(User.class, userName,
-                Projections.constructor(Post.class, postId, postName, set(qComment)))));
+                groupBy(userName).as(Projections.constructor(User.class, userName,
+                        Projections.constructor(Post.class, postId, postName, set(qComment)))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 
@@ -293,9 +295,11 @@ public class GroupByMapTest extends AbstractGroupByTest {
 
     @Test
     public void oneToOneToMany_projection_as_bean() {
+//CHECKSTYLERULE:OFF: Indentation
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).as(Projections.bean(User.class, userName,
-                Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
+                groupBy(userName).as(Projections.bean(User.class, userName,
+                        Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 
@@ -308,9 +312,11 @@ public class GroupByMapTest extends AbstractGroupByTest {
 
     @Test
     public void oneToOneToMany_projection_as_bean_and_constructor() {
+//CHECKSTYLERULE:OFF: Indentation
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName).as(Projections.bean(User.class, userName,
-                Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
+                groupBy(userName).as(Projections.bean(User.class, userName,
+                        Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
+//CHECKSTYLERULE:ON: Indentation
 
         assertEquals(2, results.size());
 
@@ -326,12 +332,14 @@ public class GroupByMapTest extends AbstractGroupByTest {
         StringPath str = Expressions.stringPath("str");
         NumberPath<BigDecimal> bigd = Expressions.numberPath(BigDecimal.class, "bigd");
 
+//CHECKSTYLERULE:OFF: Indentation
         ResultTransformer<Map<String, SortedMap<BigDecimal, SortedMap<BigDecimal, Map<String, String>>>>> resultTransformer = GroupBy.groupBy(str).as(
                 GroupBy.sortedMap(bigd,
                         GroupBy.sortedMap(bigd,
                                 GroupBy.map(str, str),
                                 Ordering.natural().nullsLast()),
-                           Ordering.natural().nullsFirst()));
+                        Ordering.natural().nullsFirst()));
+//CHECKSTYLERULE:ON: Indentation
         assertNotNull(resultTransformer);
     }
 

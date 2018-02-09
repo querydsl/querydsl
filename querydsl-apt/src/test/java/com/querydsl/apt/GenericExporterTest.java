@@ -108,8 +108,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setPropertyHandling(PropertyHandling.JPA);
         //exporter.addStopClass(ForwardingSet.class);
         exporter.export(CustomCollection.MyCustomCollection.class,
-                        CustomCollection.MyCustomCollection2.class,
-                        CustomCollection.MyEntity.class);
+                CustomCollection.MyCustomCollection2.class,
+                CustomCollection.MyEntity.class);
     }
 
     @Test

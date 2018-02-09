@@ -326,8 +326,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         String typeName = type.toString();
 
         if (typeName.startsWith(Collection.class.getName())
-         || typeName.startsWith(List.class.getName())
-         || typeName.startsWith(Set.class.getName())) {
+                || typeName.startsWith(List.class.getName())
+                || typeName.startsWith(Set.class.getName())) {
+
             type = ((DeclaredType) type).getTypeArguments().get(0);
 
         } else if (typeName.startsWith(Map.class.getName())) {
@@ -494,9 +495,13 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             if (!init.startsWith("*") && property.getType() instanceof EntityType) {
                 String initProperty = init.contains(".") ? init.substring(0, init.indexOf('.')) : init;
                 if (!((EntityType) property.getType()).getPropertyNames().contains(initProperty)) {
+                    processingEnv.getMessager().printMessage(Kind.ERROR, String.format(
+                            "Illegal inits of %s.%s: %s not found",
+                            entityType.getFullName(), property.getName(), initProperty
+                    ));
                     processingEnv.getMessager().printMessage(Kind.ERROR,
-                        "Illegal inits of " + entityType.getFullName() + "." + property.getName() + ": " +
-                        initProperty + " not found");
+                            "Illegal inits of " + entityType.getFullName() + "." + property.getName() + ": " +
+                            initProperty + " not found");
                 }
             }
         }

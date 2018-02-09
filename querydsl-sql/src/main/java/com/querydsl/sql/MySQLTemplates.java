@@ -33,7 +33,7 @@ import com.querydsl.core.types.Ops;
 public class MySQLTemplates extends SQLTemplates {
 
     protected static final Expression<?> LOCK_IN_SHARE_MODE = ExpressionUtils.operation(
-        Object.class, SQLOps.LOCK_IN_SHARE_MODE, ImmutableList.<Expression<?>>of());
+            Object.class, SQLOps.LOCK_IN_SHARE_MODE, ImmutableList.<Expression<?>>of());
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final MySQLTemplates DEFAULT = new MySQLTemplates();
@@ -172,12 +172,15 @@ public class MySQLTemplates extends SQLTemplates {
             case Types.TINYINT:
             case Types.SMALLINT:
             case Types.INTEGER:
-            case Types.BIGINT: return "signed";
+            case Types.BIGINT:
+                return "signed";
             case Types.FLOAT:
             case Types.DOUBLE:
             case Types.REAL:
-            case Types.DECIMAL: return "decimal";
-            case Types.VARCHAR: return "char";
+            case Types.DECIMAL:
+                return "decimal";
+            case Types.VARCHAR:
+                return "char";
             default: return super.getCastTypeNameForCode(code);
         }
     }

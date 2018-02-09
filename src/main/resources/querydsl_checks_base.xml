@@ -41,7 +41,7 @@
     <module name="TypeName"/>-->
 
     <module name="IllegalImport">
-      <property name="illegalPkgs" value="junit.framework, sun" />
+      <property name="illegalPkgs" value="com.sun, junit.framework, sun" />
     </module>
 
     <!-- XXX <module name="RedundantImport"/> -->
@@ -60,6 +60,7 @@
     <!-- FIXME <module name="MethodLength"/> -->
     <module name="Indentation">
       <property name="lineWrappingIndentation" value="8" />
+      <!-- There is no level of continuation, but we can suppress per case -->
       <property name="forceStrictCondition" value="true" />
     </module>
 
@@ -71,6 +72,7 @@
     <module name="TypecastParenPad"/>
 
     <module name="WhitespaceAfter">
+      <!-- TODO add COMMA to the tokens -->
       <property name="tokens" value="SEMI, TYPECAST"/>
     </module>
     <module name="WhitespaceAround"/>

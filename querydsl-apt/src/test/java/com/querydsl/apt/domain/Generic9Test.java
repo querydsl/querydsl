@@ -10,7 +10,7 @@ public class Generic9Test {
 
     @MappedSuperclass
     public abstract static class CommonOrganizationalUnit<T extends EntityLocalized, E extends TenantPreference, P extends CommonOrganizationalUnit<?, ?, ?>> extends
-        LocalizableEntity<T> implements Serializable, Comparable<CommonOrganizationalUnit<T, E, P>> {
+            LocalizableEntity<T> implements Serializable, Comparable<CommonOrganizationalUnit<T, E, P>> {
 
         P parent;
 
@@ -22,7 +22,7 @@ public class Generic9Test {
 
     @MappedSuperclass
     public abstract static class ProductionSurface<T extends EntityLocalized, E extends TenantPreference, P extends CommonOrganizationalUnit<?, ?, ?>> extends
-        CommonOrganizationalUnit<T, E, P> implements Serializable {
+            CommonOrganizationalUnit<T, E, P> implements Serializable {
 
     }
 

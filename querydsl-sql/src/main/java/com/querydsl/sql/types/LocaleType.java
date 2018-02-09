@@ -55,9 +55,9 @@ public class LocaleType extends AbstractType<Locale> {
     public static Locale toLocale(String val) {
         String[] tokens = LOCALE.split(val);
         switch (tokens.length) {
-        case 1: return new Locale(tokens[0]);
-        case 2: return new Locale(tokens[0], tokens[1]);
-        case 3: return new Locale(tokens[0], tokens[1], tokens[2]);
+            case 1: return new Locale(tokens[0]);
+            case 2: return new Locale(tokens[0], tokens[1]);
+            case 3: return new Locale(tokens[0], tokens[1], tokens[2]);
         }
         return null;
     }

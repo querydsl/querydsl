@@ -76,6 +76,7 @@ public class ConstructorExpressionTest {
         Expression<Long> longVal = ConstantImpl.create(0L);
         Expression<Float> floatVal = ConstantImpl.create(0.0F);
         Expression<Double> doubleVal = ConstantImpl.create(0.0);
+//CHECKSTYLERULE:OFF: Indentation
         ProjectionExample instance = Projections.constructor(ProjectionExample.class,
                 booleanVal, byteVal,
                 charVal, shortVal,
@@ -85,6 +86,7 @@ public class ConstructorExpressionTest {
                         null, null,
                         null, null,
                         null, null);
+//CHECKSTYLERULE:ON: Indentation
         assertNotNull(instance);
     }
 

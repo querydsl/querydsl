@@ -43,7 +43,7 @@ public class TemplateTest {
         match("[0 ADD 1]",               factory.create("{0+'1'}"));
         match("[0 DIV 1.0]",             factory.create("{0/'1.0'}"));
         match("[0 MULT 3.141592653589793, ' / 180.0)']",
-            factory.create("{0*'3.141592653589793'} / 180.0)"));
+                factory.create("{0*'3.141592653589793'} / 180.0)"));
     }
 
     @Test

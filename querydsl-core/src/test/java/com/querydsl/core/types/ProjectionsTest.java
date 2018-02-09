@@ -107,6 +107,7 @@ public class ProjectionsTest {
     public void constructor_varArgs3() {
         Constant<Long> longVal = ConstantImpl.create(1L);
         Constant<Character> charVal = ConstantImpl.create('\0');
+//CHECKSTYLERULE:OFF: Indentation
         ProjectionExample instance = Projections
                 .constructor(ProjectionExample.class,
                         longVal, charVal,
@@ -121,10 +122,11 @@ public class ProjectionsTest {
                         'a', null,
                         'l', 't',
                         'd');
+//CHECKSTYLERULE:ON: Indentation
         assertEquals(0L, (long) instance.id);
         // null character cannot be inserted, so a literal String can't be used.
         String expectedText = String.valueOf(new char[]{'m', 'y', 's', 'e', 'm', 'a',
-            '\0', 'l', 't', 'd'});
+                '\0', 'l', 't', 'd'});
         assertEquals(expectedText, instance.text);
     }
 

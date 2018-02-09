@@ -61,29 +61,29 @@ final class ExtendedTypeFactory {
         @Override
         public Type visitPrimitive(PrimitiveType primitiveType, Boolean p) {
             switch (primitiveType.getKind()) {
-            case BOOLEAN: return Types.BOOLEAN;
-            case BYTE: return Types.BYTE;
-            case SHORT: return Types.SHORT;
-            case INT: return Types.INTEGER;
-            case LONG: return Types.LONG;
-            case CHAR: return Types.CHARACTER;
-            case FLOAT: return Types.FLOAT;
-            case DOUBLE: return Types.DOUBLE;
-            default: return null;
+                case BOOLEAN: return Types.BOOLEAN;
+                case BYTE: return Types.BYTE;
+                case SHORT: return Types.SHORT;
+                case INT: return Types.INTEGER;
+                case LONG: return Types.LONG;
+                case CHAR: return Types.CHARACTER;
+                case FLOAT: return Types.FLOAT;
+                case DOUBLE: return Types.DOUBLE;
+                default: return null;
             }
         }
 
         private Type getPrimitive(PrimitiveType primitiveType) {
             switch (primitiveType.getKind()) {
-            case BOOLEAN: return Types.BOOLEAN_P;
-            case BYTE: return Types.BYTE_P;
-            case SHORT: return Types.SHORT_P;
-            case INT: return Types.INT;
-            case LONG: return Types.LONG_P;
-            case CHAR: return Types.CHAR;
-            case FLOAT: return Types.FLOAT_P;
-            case DOUBLE: return Types.DOUBLE_P;
-            default: return null;
+                case BOOLEAN: return Types.BOOLEAN_P;
+                case BYTE: return Types.BYTE_P;
+                case SHORT: return Types.SHORT_P;
+                case INT: return Types.INT;
+                case LONG: return Types.LONG_P;
+                case CHAR: return Types.CHAR;
+                case FLOAT: return Types.FLOAT_P;
+                case DOUBLE: return Types.DOUBLE_P;
+                default: return null;
             }
         }
 
@@ -110,7 +110,8 @@ final class ExtendedTypeFactory {
                 switch (typeElement.getKind()) {
                     case ENUM:      return createEnumType(declaredType, typeElement, p);
                     case ANNOTATION_TYPE:
-                    case CLASS:     return createClassType(declaredType, typeElement, p);
+                    case CLASS:
+                        return createClassType(declaredType, typeElement, p);
                     case INTERFACE: return createInterfaceType(declaredType, typeElement, p);
                     default: throw new IllegalArgumentException("Illegal type " + typeElement);
                 }
@@ -426,8 +427,7 @@ final class ExtendedTypeFactory {
         return new SimpleType(Types.MAP, keyType, valueType);
     }
 
-    private Type createCollectionType(Type baseType,
-                                      Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+    private Type createCollectionType(Type baseType, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()) {
             return new SimpleType(baseType, defaultType);
         }
@@ -610,7 +610,8 @@ final class ExtendedTypeFactory {
             if (entityType.getProperties().isEmpty()) {
                 for (Map.Entry<List<String>, EntityType> entry : entityTypeCache.entrySet()) {
                     if (entry.getKey().get(0).equals(entityType.getFullName()) &&
-                        !entry.getValue().getProperties().isEmpty()) {
+                            !entry.getValue().getProperties().isEmpty()) {
+
                         for (Property property : entry.getValue().getProperties()) {
                             entityType.addProperty(property);
                         }

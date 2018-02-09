@@ -36,8 +36,8 @@ public class CaseBuilderTest {
     @Test
     public void general() {
         SimpleExpression<Object> expr = new CaseBuilder()
-            .when(Expressions.TRUE).then(new Object())
-            .otherwise(null);
+                .when(Expressions.TRUE).then(new Object())
+                .otherwise(null);
         assertNotNull(expr);
     }
 
@@ -45,8 +45,8 @@ public class CaseBuilderTest {
     public void booleanTyped() {
         Customer c = alias(Customer.class, "customer");
         BooleanExpression cases = new CaseBuilder()
-            .when($(c.getAnnualSpending()).gt(10000)).then(true)
-            .otherwise(false);
+                .when($(c.getAnnualSpending()).gt(10000)).then(true)
+                .otherwise(false);
 
         assertEquals(
                 "case " +
@@ -63,20 +63,19 @@ public class CaseBuilderTest {
                 .when($(c.getAnnualSpending()).gt(10000)).then(true)
                 .otherwise(false);
 
-        assertEquals(
-                "case " +
-                        "when customer.annualSpending > 20000 then false " +
-                        "when customer.annualSpending > 10000 then true " +
-                        "else false " +
-                        "end", cases.toString());
+        assertEquals("case " +
+                "when customer.annualSpending > 20000 then false " +
+                "when customer.annualSpending > 10000 then true " +
+                "else false " +
+                "end", cases.toString());
     }
 
     @Test
     public void enumTyped() {
         Customer c = alias(Customer.class, "customer");
         EnumExpression<Gender> cases = new CaseBuilder()
-            .when($(c.getAnnualSpending()).gt(10000)).then(Gender.MALE)
-            .otherwise(Gender.FEMALE);
+                .when($(c.getAnnualSpending()).gt(10000)).then(Gender.MALE)
+                .otherwise(Gender.FEMALE);
 
         assertEquals(
                 "case " +
@@ -89,13 +88,12 @@ public class CaseBuilderTest {
     public void numberTyped() {
         Customer c = alias(Customer.class, "customer");
         NumberExpression<Integer> cases = new CaseBuilder()
-            .when($(c.getAnnualSpending()).gt(10000)).then(1)
-            .when($(c.getAnnualSpending()).gt(5000)).then(2)
-            .when($(c.getAnnualSpending()).gt(2000)).then(3)
-            .otherwise(4);
+                .when($(c.getAnnualSpending()).gt(10000)).then(1)
+                .when($(c.getAnnualSpending()).gt(5000)).then(2)
+                .when($(c.getAnnualSpending()).gt(2000)).then(3)
+                .otherwise(4);
 
-        assertEquals(
-                "case " +
+        assertEquals("case " +
                 "when customer.annualSpending > 10000 then 1 " +
                 "when customer.annualSpending > 5000 then 2 " +
                 "when customer.annualSpending > 2000 then 3 " +
@@ -114,19 +112,18 @@ public class CaseBuilderTest {
 
         Customer c = alias(Customer.class, "customer");
         StringExpression cases = new CaseBuilder()
-            .when($(c.getAnnualSpending()).gt(10000)).then("Premier")
-            .when($(c.getAnnualSpending()).gt(5000)).then("Gold")
-            .when($(c.getAnnualSpending()).gt(2000)).then("Silver")
-            .otherwise("Bronze");
+                .when($(c.getAnnualSpending()).gt(10000)).then("Premier")
+                .when($(c.getAnnualSpending()).gt(5000)).then("Gold")
+                .when($(c.getAnnualSpending()).gt(2000)).then("Silver")
+                .otherwise("Bronze");
 
         // NOTE : this is just a test serialization, not the real one
-        assertEquals(
-           "case " +
-           "when customer.annualSpending > 10000 then Premier " +
-           "when customer.annualSpending > 5000 then Gold " +
-           "when customer.annualSpending > 2000 then Silver " +
-           "else Bronze " +
-           "end", cases.toString());
+        assertEquals("case " +
+                "when customer.annualSpending > 10000 then Premier " +
+                "when customer.annualSpending > 5000 then Gold " +
+                "when customer.annualSpending > 2000 then Silver " +
+                "else Bronze " +
+                "end", cases.toString());
 
     }
 

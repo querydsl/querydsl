@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa.support;
 
+import org.hibernate.dialect.PostgreSQL82Dialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 
 import com.querydsl.sql.PostgreSQLTemplates;
@@ -21,7 +22,7 @@ import com.querydsl.sql.SQLTemplates;
 /**
  * {@code QPostgreSQLDialect} extends {@code PostgreSQLDialect} with additional functions
  */
-public class QPostgreSQLDialect extends PostgreSQLDialect {
+public class QPostgreSQLDialect extends PostgreSQL82Dialect {
 
     public QPostgreSQLDialect() {
         SQLTemplates templates = PostgreSQLTemplates.DEFAULT;

@@ -244,13 +244,13 @@ public class MatchingFiltersFactory {
 
         if (module != Module.LUCENE) {
             if (!module.equals(Module.SQL)
-            || (!target.equals(Target.HSQLDB)
-            && !target.equals(Target.FIREBIRD)
-            && !target.equals(Target.H2)
-            && !target.equals(Target.DB2)
-            && !target.equals(Target.DERBY)
-            && !target.equals(Target.SQLITE)
-            && !target.equals(Target.SQLSERVER))) {
+                    || (!target.equals(Target.HSQLDB)
+                    && !target.equals(Target.FIREBIRD)
+                    && !target.equals(Target.H2)
+                    && !target.equals(Target.DB2)
+                    && !target.equals(Target.DERBY)
+                    && !target.equals(Target.SQLITE)
+                    && !target.equals(Target.SQLSERVER))) {
 
                 rv.add(expr.matches(other));
 

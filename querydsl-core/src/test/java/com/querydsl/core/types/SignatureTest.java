@@ -56,11 +56,12 @@ public class SignatureTest {
             }
             for (Method m : cl.getDeclaredMethods()) {
                 if (!skippedMethods.contains(m.getName())
-                 && Modifier.isPublic(m.getModifiers())
-                 && Expression.class.isAssignableFrom(m.getReturnType())
-                 && !Coalesce.class.isAssignableFrom(m.getReturnType())
-                 && !DslExpression.class.isAssignableFrom(m.getReturnType())
-                 && !SimpleExpression.class.isAssignableFrom(m.getReturnType())) {
+                        && Modifier.isPublic(m.getModifiers())
+                        && Expression.class.isAssignableFrom(m.getReturnType())
+                        && !Coalesce.class.isAssignableFrom(m.getReturnType())
+                        && !DslExpression.class.isAssignableFrom(m.getReturnType())
+                        && !SimpleExpression.class.isAssignableFrom(m.getReturnType())) {
+
                     errors.add(cl.getSimpleName() + "." + m.getName() + " has illegal return type");
                 }
             }

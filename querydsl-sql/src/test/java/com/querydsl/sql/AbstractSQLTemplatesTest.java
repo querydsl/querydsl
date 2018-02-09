@@ -64,9 +64,9 @@ public abstract class AbstractSQLTemplatesTest {
         NumberExpression<Integer> three = Expressions.THREE;
         Path<Integer> col1 = Expressions.path(Integer.class,"col1");
         Union union = query.union(
-            select(one.as(col1)),
-            select(two),
-            select(three));
+                select(one.as(col1)),
+                select(two),
+                select(three));
 
         if (templates.getDummyTable() == null) {
             if (templates.isUnionsWrapped()) {
