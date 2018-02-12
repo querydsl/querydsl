@@ -13,6 +13,10 @@
  */
 package com.querydsl.sql.oracle;
 
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
@@ -20,9 +24,6 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.OracleTemplates;
 import com.querydsl.sql.SQLTemplates;
-
-import javax.inject.Provider;
-import java.sql.Connection;
 
 /**
  * {@code OracleQuery} provides Oracle specific extensions to the base SQL query type

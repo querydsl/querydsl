@@ -13,6 +13,10 @@
  */
 package com.querydsl.sql.postgresql;
 
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -23,9 +27,6 @@ import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLQuery;
-
-import javax.inject.Provider;
-import java.sql.Connection;
 
 /**
  * {@code PostgreSQLQuery} provides PostgreSQL related extensions to SQLQuery

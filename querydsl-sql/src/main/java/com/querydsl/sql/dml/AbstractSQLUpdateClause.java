@@ -13,14 +13,21 @@
  */
 package com.querydsl.sql.dml;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
+
+import javax.annotation.Nonnegative;
+import javax.inject.Provider;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.JoinType;
-import com.querydsl.core.QueryFlag;
+import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
@@ -31,19 +38,6 @@ import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLSerializer;
 import com.querydsl.sql.types.Null;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnegative;
-import javax.inject.Provider;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Provides a base class for dialect-specific UPDATE clauses.

@@ -13,6 +13,11 @@
  */
 package com.querydsl.sql.mysql;
 
+import java.io.File;
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.google.common.base.Joiner;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag.Position;
@@ -20,10 +25,6 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLQuery;
-
-import javax.inject.Provider;
-import java.io.File;
-import java.sql.Connection;
 
 /**
  * {@code MySQLQuery} provides MySQL related extensions to SQLQuery.

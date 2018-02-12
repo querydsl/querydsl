@@ -13,15 +13,17 @@
  */
 package com.querydsl.sql.dml;
 
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLTemplates;
 
-import javax.inject.Provider;
-import java.sql.Connection;
-
 /**
  * Defines an UPDATE clause.
+ * If you need to subtype this, use {@link AbstractSQLUpdateClause} instead.
  */
 public class SQLUpdateClause extends AbstractSQLUpdateClause<SQLUpdateClause> {
     public SQLUpdateClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {

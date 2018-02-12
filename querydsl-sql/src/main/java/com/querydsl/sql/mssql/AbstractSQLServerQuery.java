@@ -13,13 +13,14 @@
  */
 package com.querydsl.sql.mssql;
 
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
-
-import javax.inject.Provider;
-import java.sql.Connection;
 
 /**
  * {@code AbstractSQLServerQuery} provides SQL Server related extensions to SQLQuery

@@ -13,16 +13,18 @@
  */
 package com.querydsl.sql.dml;
 
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLTemplates;
 
-import javax.inject.Provider;
-import java.sql.Connection;
-
 /**
  * SQLInsertClause defines an INSERT INTO clause
+ * If you need to subtype this, use {@link AbstractSQLInsertClause} instead.
  *
  * @author tiwe
  *

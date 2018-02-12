@@ -13,15 +13,16 @@
  */
 package com.querydsl.sql.oracle;
 
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
-
-import javax.inject.Provider;
-import java.sql.Connection;
 
 /**
  * {@code OracleQuery} provides Oracle specific extensions to the base SQL query type

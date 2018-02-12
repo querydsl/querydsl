@@ -13,6 +13,10 @@
  */
 package com.querydsl.sql.teradata;
 
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryMetadata;
@@ -24,9 +28,6 @@ import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLOps;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.TeradataTemplates;
-
-import javax.inject.Provider;
-import java.sql.Connection;
 
 /**
  * {@code TeradataQuery} provides Teradata related extensions to SQLQuery

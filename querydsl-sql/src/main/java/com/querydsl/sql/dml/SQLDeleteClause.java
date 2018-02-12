@@ -13,17 +13,20 @@
  */
 package com.querydsl.sql.dml;
 
+import java.sql.Connection;
+
+import javax.inject.Provider;
+
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLTemplates;
 
-import javax.inject.Provider;
-import java.sql.Connection;
-
 /**
- * TODO: Document this class / interface here
+ * {@code SQLDeleteClause} defines a DELETE clause.
+ * If you need to subtype this, use {@link AbstractSQLDeleteClause} instead.
  *
- * @since v7.0
+ * @author tiwe
+ *
  */
 public class SQLDeleteClause extends AbstractSQLDeleteClause<SQLDeleteClause> {
     public SQLDeleteClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
