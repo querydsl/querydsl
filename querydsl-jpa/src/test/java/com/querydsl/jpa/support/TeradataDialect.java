@@ -41,6 +41,7 @@ import org.hibernate.type.StandardBasicTypes;
  *
  * @author Jay Nance
  */
+@Deprecated // what was this used for? @timowest?
 public class TeradataDialect extends Dialect {
 
     /**
@@ -139,11 +140,6 @@ public class TeradataDialect extends Dialect {
     @Override
     public String getForUpdateString() {
         return "";
-    }
-
-    @Override
-    public boolean supportsIdentityColumns() {
-        return false;
     }
 
     @Override
