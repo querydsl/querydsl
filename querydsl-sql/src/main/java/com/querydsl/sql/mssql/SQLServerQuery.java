@@ -13,28 +13,27 @@
  */
 package com.querydsl.sql.mssql;
 
-import java.sql.Connection;
-
-import javax.inject.Provider;
-
 import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLServerTemplates;
 import com.querydsl.sql.SQLTemplates;
 
+import javax.inject.Provider;
+import java.sql.Connection;
+
 /**
  * {@code SQLServerQuery} provides SQL Server related extensions to SQLQuery
+ *
+ * If you need to subtype this, use the base class instead.
  *
  * @param <T> result type
  *
  * @author tiwe
  */
-public class SQLServerQuery<T> extends AbstractSQLQuery<T, SQLServerQuery<T>> {
+public class SQLServerQuery<T> extends AbstractSQLServerQuery<T, SQLServerQuery<T>> {
 
     public SQLServerQuery(Connection conn) {
         this(conn, SQLServerTemplates.DEFAULT, new DefaultQueryMetadata());
@@ -53,7 +52,7 @@ public class SQLServerQuery<T> extends AbstractSQLQuery<T, SQLServerQuery<T>> {
     }
 
     public SQLServerQuery(Connection conn, Configuration configuration) {
-        super(conn, configuration);
+        super(conn, configuration, new DefaultQueryMetadata());
     }
 
     public SQLServerQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
@@ -61,21 +60,7 @@ public class SQLServerQuery<T> extends AbstractSQLQuery<T, SQLServerQuery<T>> {
     }
 
     public SQLServerQuery(Provider<Connection> connProvider, Configuration configuration) {
-        super(connProvider, configuration);
-    }
-
-    /**
-     * Set the table hints
-     *
-     * @param tableHints table hints
-     * @return the current object
-     */
-    public SQLServerQuery<T> tableHints(SQLServerTableHints... tableHints) {
-        if (tableHints.length > 0) {
-            String hints = SQLServerGrammar.tableHints(tableHints);
-            addJoinFlag(hints, JoinFlag.Position.END);
-        }
-        return this;
+        super(connProvider, configuration, new DefaultQueryMetadata());
     }
 
     @Override
