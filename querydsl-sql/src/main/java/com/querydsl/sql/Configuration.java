@@ -30,6 +30,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.Path;
+import com.querydsl.sql.namemapping.ChainedNameMapping;
+import com.querydsl.sql.namemapping.NameMapping;
+import com.querydsl.sql.namemapping.PreConfiguredNameMapping;
 import com.querydsl.sql.types.ArrayType;
 import com.querydsl.sql.types.Null;
 import com.querydsl.sql.types.Type;
@@ -50,7 +53,11 @@ public final class Configuration {
 
     private final JavaTypeMapping javaTypeMapping = new JavaTypeMapping();
 
-    private final NameMapping nameMapping = new NameMapping();
+    private final PreConfiguredNameMapping internalNameMapping = new PreConfiguredNameMapping();
+
+    private NameMapping nameMapping = internalNameMapping;
+
+    private final Map<String, String> schemaMapping = Maps.newHashMap();
 
     private final Map<String, Class<?>> typeToName = Maps.newHashMap();
 
@@ -196,7 +203,11 @@ public final class Configuration {
      */
     @Nullable
     public SchemaAndTable getOverride(SchemaAndTable key) {
-        return nameMapping.getOverride(key);
+        SchemaAndTable result = nameMapping.getOverride(key).or(key);
+        if (schemaMapping.containsKey(key.getSchema())) {
+            result = new SchemaAndTable(schemaMapping.get(key.getSchema()), result.getTable());
+        }
+        return result;
     }
 
     /**
@@ -207,7 +218,24 @@ public final class Configuration {
      * @return overridden column
      */
     public String getColumnOverride(SchemaAndTable key, String column) {
-        return nameMapping.getColumnOverride(key, column);
+        return nameMapping.getColumnOverride(key, column).or(column);
+    }
+
+    /**
+     * Programmers can specify name mappings by implementing the
+     * {@link NameMapping} interface. The mapping rules that are specified by
+     * this property are checked if no mapping is specified by any of the
+     * <code>register*Override</code> functions.
+     *
+     * @param nameMapping
+     *            The name mapping that is implemented by the user.
+     */
+    public void setDynamicNameMapping(NameMapping nameMapping) {
+        if (nameMapping == null) {
+            this.nameMapping = this.internalNameMapping;
+        } else {
+            this.nameMapping = new ChainedNameMapping(this.internalNameMapping, nameMapping);
+        }
     }
 
     /**
@@ -288,9 +316,12 @@ public final class Configuration {
      * @param oldSchema schema to override
      * @param newSchema override
      * @return previous override value
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerSchemaOverride(String oldSchema, String newSchema) {
-        return nameMapping.registerSchemaOverride(oldSchema, newSchema);
+        return schemaMapping.put(oldSchema, newSchema);
     }
 
     /**
@@ -299,9 +330,12 @@ public final class Configuration {
      * @param oldTable table to override
      * @param newTable override
      * @return previous override value
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerTableOverride(String oldTable, String newTable) {
-        return nameMapping.registerTableOverride(oldTable, newTable);
+        return internalNameMapping.registerTableOverride(oldTable, newTable);
     }
 
     /**
@@ -311,7 +345,10 @@ public final class Configuration {
      * @param oldTable table to override
      * @param newTable override
      * @return previous override value
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerTableOverride(String schema, String oldTable, String newTable) {
         SchemaAndTable st = registerTableOverride(schema, oldTable, schema, newTable);
         return st != null ? st.getTable() : null;
@@ -325,7 +362,10 @@ public final class Configuration {
      * @param newSchema override schema
      * @param newTable override table
      * @return previous override value
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public SchemaAndTable registerTableOverride(String schema, String oldTable, String newSchema, String newTable) {
         return registerTableOverride(new SchemaAndTable(schema, oldTable), new SchemaAndTable(newSchema, newTable));
     }
@@ -336,9 +376,12 @@ public final class Configuration {
      * @param from schema and table to override
      * @param to override
      * @return previous override
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public SchemaAndTable registerTableOverride(SchemaAndTable from, SchemaAndTable to) {
-        return nameMapping.registerTableOverride(from, to);
+        return internalNameMapping.registerTableOverride(from, to);
     }
 
     /**
@@ -349,9 +392,12 @@ public final class Configuration {
      * @param oldColumn column
      * @param newColumn override
      * @return previous override
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
-        return nameMapping.registerColumnOverride(schema, table, oldColumn, newColumn);
+        return internalNameMapping.registerColumnOverride(schema, table, oldColumn, newColumn);
     }
 
     /**
@@ -361,9 +407,12 @@ public final class Configuration {
      * @param oldColumn column
      * @param newColumn override
      * @return previous override
+     *
+     * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
+    @Deprecated
     public String registerColumnOverride(String table, String oldColumn, String newColumn) {
-        return nameMapping.registerColumnOverride(table, oldColumn, newColumn);
+        return internalNameMapping.registerColumnOverride(table, oldColumn, newColumn);
     }
 
     /**
