@@ -18,24 +18,21 @@ import java.sql.Connection;
 import javax.inject.Provider;
 
 import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.QueryFlag;
-import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.sql.*;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.PostgreSQLTemplates;
+import com.querydsl.sql.SQLTemplates;
 
 /**
- * {@code PostgreSQLQuery} provides PostgreSQL related extensions to SQLQuery
+ * {@code PostgreSQLQuery} provides Postgres related extensions to SQLQuery.
  *
- * @param <T> result type
+ * If you need to subtype this, use the base class instead.
  *
- * @see SQLQuery
- * @author tiwe
+ * @param <T> the result type
  */
-public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> {
+public class PostgreSQLQuery<T> extends AbstractPostgreSQLQuery<T, PostgreSQLQuery<T>> {
 
     public PostgreSQLQuery(Connection conn) {
         this(conn, new Configuration(PostgreSQLTemplates.DEFAULT), new DefaultQueryMetadata());
@@ -58,57 +55,7 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
     }
 
     public PostgreSQLQuery(Provider<Connection> connProvider, Configuration configuration) {
-        super(connProvider, configuration);
-    }
-
-    /**
-     * FOR SHARE causes the rows retrieved by the SELECT statement to be locked as though for update.
-     *
-     * @return the current object
-     */
-    public PostgreSQLQuery<T> forShare() {
-        // global forShare support was added later, delegating to super implementation
-        return super.forShare();
-    }
-
-    /**
-     * With NOWAIT, the statement reports an error, rather than waiting, if a selected row cannot
-     * be locked immediately.
-     *
-     * @return the current object
-     */
-    public PostgreSQLQuery<T> noWait() {
-        QueryFlag noWaitFlag = configuration.getTemplates().getNoWaitFlag();
-        return addFlag(noWaitFlag);
-    }
-
-    /**
-     * FOR UPDATE / FOR SHARE OF tables
-     *
-     * @param paths tables
-     * @return the current object
-     */
-    public PostgreSQLQuery<T> of(RelationalPath<?>... paths) {
-        StringBuilder builder = new StringBuilder(" of ");
-        for (RelationalPath<?> path : paths) {
-            if (builder.length() > 4) {
-                builder.append(", ");
-            }
-            builder.append(getConfiguration().getTemplates().quoteIdentifier(path.getTableName()));
-        }
-        return addFlag(Position.END, builder.toString());
-    }
-
-    /**
-     * adds a DISTINCT ON clause
-     *
-     * @param exprs
-     * @return
-     */
-    public PostgreSQLQuery<T> distinctOn(Expression<?>... exprs) {
-        return addFlag(Position.AFTER_SELECT,
-            Expressions.template(Object.class, "distinct on({0}) ",
-            ExpressionUtils.list(Object.class, exprs)));
+        super(connProvider, configuration, new DefaultQueryMetadata());
     }
 
 
@@ -123,7 +70,7 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
     public <U> PostgreSQLQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         @SuppressWarnings("unchecked") // This is the new type
-        PostgreSQLQuery<U> newType = (PostgreSQLQuery<U>) this;
+                PostgreSQLQuery<U> newType = (PostgreSQLQuery<U>) this;
         return newType;
     }
 
@@ -131,7 +78,7 @@ public class PostgreSQLQuery<T> extends AbstractSQLQuery<T, PostgreSQLQuery<T>> 
     public PostgreSQLQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
         @SuppressWarnings("unchecked") // This is the new type
-        PostgreSQLQuery<Tuple> newType = (PostgreSQLQuery<Tuple>) this;
+                PostgreSQLQuery<Tuple> newType = (PostgreSQLQuery<Tuple>) this;
         return newType;
     }
 }

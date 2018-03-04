@@ -41,26 +41,26 @@ import com.querydsl.sql.types.Null;
  */
 public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements StoreClause<SQLMergeClause> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
+    protected static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
 
-    private final List<Path<?>> columns = new ArrayList<Path<?>>();
+    protected final List<Path<?>> columns = new ArrayList<Path<?>>();
 
-    private final RelationalPath<?> entity;
+    protected final RelationalPath<?> entity;
 
-    private final QueryMetadata metadata = new DefaultQueryMetadata();
+    protected final QueryMetadata metadata = new DefaultQueryMetadata();
 
-    private final List<Path<?>> keys = new ArrayList<Path<?>>();
+    protected final List<Path<?>> keys = new ArrayList<Path<?>>();
 
     @Nullable
-    private SubQueryExpression<?> subQuery;
+    protected SubQueryExpression<?> subQuery;
 
-    private final List<SQLMergeBatch> batches = new ArrayList<SQLMergeBatch>();
+    protected final List<SQLMergeBatch> batches = new ArrayList<SQLMergeBatch>();
 
-    private final List<Expression<?>> values = new ArrayList<Expression<?>>();
+    protected final List<Expression<?>> values = new ArrayList<Expression<?>>();
 
-    private transient String queryString;
+    protected transient String queryString;
 
-    private transient List<Object> constants;
+    protected transient List<Object> constants;
 
     public SQLMergeClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
@@ -102,7 +102,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return this;
     }
 
-    private List<? extends Path<?>> getKeys() {
+    protected List<? extends Path<?>> getKeys() {
         if (!keys.isEmpty()) {
             return keys;
         } else if (entity.getPrimaryKey() != null) {
@@ -170,7 +170,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return executeWithKey(type, null);
     }
 
-    private <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
+    protected <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = executeWithKeys();
         try {
             if (rs.next()) {
@@ -203,7 +203,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return executeWithKeys(type, null);
     }
 
-    private <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
+    protected <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = null;
         try {
             rs = executeWithKeys();
@@ -318,7 +318,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         }
     }
 
-    private boolean hasRow() {
+    protected boolean hasRow() {
         SQLQuery<?> query = new SQLQuery<Void>(connection(), configuration).from(entity);
         for (SQLListener listener : listeners.getListeners()) {
             query.addListener(listener);
@@ -329,7 +329,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     @SuppressWarnings("unchecked")
-    private void addKeyConditions(FilteredClause<?> query) {
+    protected void addKeyConditions(FilteredClause<?> query) {
         List<? extends Path<?>> keys = getKeys();
         for (int i = 0; i < columns.size(); i++) {
             if (keys.contains(columns.get(i))) {
@@ -343,7 +343,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     }
 
     @SuppressWarnings("unchecked")
-    private long executeCompositeMerge() {
+    protected long executeCompositeMerge() {
         if (hasRow()) {
             // update
             SQLUpdateClause update = new SQLUpdateClause(connection(), configuration, entity);
@@ -361,20 +361,20 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         }
     }
 
-    private void addListeners(AbstractSQLClause<?> clause) {
+    protected void addListeners(AbstractSQLClause<?> clause) {
         for (SQLListener listener : listeners.getListeners()) {
             clause.addListener(listener);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void populate(StoreClause<?> clause) {
+    protected void populate(StoreClause<?> clause) {
         for (int i = 0; i < columns.size(); i++) {
             clause.set((Path) columns.get(i), (Object) values.get(i));
         }
     }
 
-    private PreparedStatement createStatement(boolean withKeys) throws SQLException {
+    protected PreparedStatement createStatement(boolean withKeys) throws SQLException {
         boolean addBatches = !configuration.getUseLiterals();
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
@@ -420,7 +420,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return stmt;
     }
 
-    private Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
+    protected Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
         boolean addBatches = !configuration.getUseLiterals();
         Map<String, PreparedStatement> stmts = Maps.newHashMap();
 
@@ -460,7 +460,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return stmts.values();
     }
 
-    private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
+    protected PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer,
             boolean withKeys) throws SQLException {
         listeners.prePrepare(context);
 
@@ -484,7 +484,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         return stmt;
     }
 
-    private long executeNativeMerge() {
+    protected long executeNativeMerge() {
         context = startContext(connection(), metadata, entity);
         PreparedStatement stmt = null;
         Collection<PreparedStatement> stmts = null;

@@ -18,12 +18,9 @@ import java.sql.Connection;
 import javax.inject.Provider;
 
 import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.sql.AbstractSQLQuery;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.OracleTemplates;
 import com.querydsl.sql.SQLTemplates;
@@ -31,21 +28,12 @@ import com.querydsl.sql.SQLTemplates;
 /**
  * {@code OracleQuery} provides Oracle specific extensions to the base SQL query type
  *
+ * If you need to subtype this, use the base class instead.
+ *
  * @author tiwe
  * @param <T> result type
  */
-public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
-
-    private static final String CONNECT_BY = "\nconnect by ";
-
-    private static final String CONNECT_BY_NOCYCLE_PRIOR = "\nconnect by nocycle prior ";
-
-    private static final String CONNECT_BY_PRIOR = "\nconnect by prior ";
-
-    private static final String ORDER_SIBLINGS_BY = "\norder siblings by ";
-
-    private static final String START_WITH = "\nstart with ";
-
+public class OracleQuery<T> extends AbstractOracleQuery<T, OracleQuery<T>> {
     public OracleQuery(Connection conn) {
         this(conn, OracleTemplates.DEFAULT, new DefaultQueryMetadata());
     }
@@ -71,59 +59,9 @@ public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
     }
 
     public OracleQuery(Provider<Connection> connProvider, Configuration configuration) {
-        super(connProvider, configuration);
+        super(connProvider, configuration, new DefaultQueryMetadata());
     }
 
-    /**
-     * CONNECT BY specifies the relationship between parent rows and child rows of the hierarchy.
-     *
-     * @param cond condition
-     * @return the current object
-     */
-    public OracleQuery<T> connectByPrior(Predicate cond) {
-        return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
-    }
-
-    /**
-     * CONNECT BY specifies the relationship between parent rows and child rows of the hierarchy.
-     *
-     * @param cond condition
-     * @return the current object
-     */
-    public OracleQuery<T> connectBy(Predicate cond) {
-        return addFlag(Position.BEFORE_ORDER, CONNECT_BY, cond);
-    }
-
-    /**
-     * CONNECT BY specifies the relationship between parent rows and child rows of the hierarchy.
-     *
-     * @param cond condition
-     * @return the current object
-     */
-    public OracleQuery<T> connectByNocyclePrior(Predicate cond) {
-        return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
-    }
-
-    /**
-     * START WITH specifies the root row(s) of the hierarchy.
-     *
-     * @param cond condition
-     * @return the current object
-     */
-    public <A> OracleQuery<T> startWith(Predicate cond) {
-        return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
-    }
-
-    /**
-     * ORDER SIBLINGS BY preserves any ordering specified in the hierarchical query clause and then
-     * applies the order_by_clause to the siblings of the hierarchy.
-     *
-     * @param path path
-     * @return the current object
-     */
-    public OracleQuery<T> orderSiblingsBy(Expression<?> path) {
-        return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
-    }
 
     @Override
     public OracleQuery<T> clone(Connection conn) {
@@ -132,19 +70,11 @@ public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
         return q;
     }
 
-    // TODO : connect by root
-
-    // TODO : connect by iscycle
-
-    // TODO : connect by isleaf (pseudocolumn)
-
-    // TODO : sys connect path
-
     @Override
     public <U> OracleQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         @SuppressWarnings("unchecked") // This is the new type
-        OracleQuery<U> newType = (OracleQuery<U>) this;
+                OracleQuery<U> newType = (OracleQuery<U>) this;
         return newType;
     }
 
@@ -152,9 +82,7 @@ public class OracleQuery<T> extends AbstractSQLQuery<T, OracleQuery<T>> {
     public OracleQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
         @SuppressWarnings("unchecked") // This is the new type
-        OracleQuery<Tuple> newType = (OracleQuery<Tuple>) this;
+                OracleQuery<Tuple> newType = (OracleQuery<Tuple>) this;
         return newType;
     }
 }
-
-

@@ -32,7 +32,7 @@ import com.querydsl.sql.dml.SQLInsertClause;
  */
 public class MySQLReplaceClause extends SQLInsertClause {
 
-    private static final String REPLACE_INTO = "replace into ";
+    protected static final String REPLACE_INTO = "replace into ";
 
     public MySQLReplaceClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         super(connection, templates, entity);
