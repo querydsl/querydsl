@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.DeleteClause;
@@ -44,7 +45,7 @@ import com.querydsl.sql.SQLSerializer;
  * @param <C> The type extending this class.
  *
  */
-public abstract class AbstractSQLDeleteClause<C extends AbstractSQLClause<C> & DeleteClause<C>> extends AbstractSQLClause<C> implements DeleteClause<C> {
+public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<C>> extends AbstractSQLClause<C> implements DeleteClause<C> {
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractSQLDeleteClause.class);
 
@@ -83,6 +84,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLClause<C> & D
      * @param flag query flag
      * @return the current object
      */
+    @WithBridgeMethods(SQLDeleteClause.class)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -95,6 +97,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLClause<C> & D
      * @param flag query flag
      * @return the current object
      */
+    @WithBridgeMethods(SQLDeleteClause.class)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -105,6 +108,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLClause<C> & D
      *
      * @return the current object
      */
+    @WithBridgeMethods(SQLDeleteClause.class)
     public C addBatch() {
         batches.add(metadata);
         metadata = new DefaultQueryMetadata();
@@ -246,12 +250,14 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLClause<C> & D
         }
     }
 
+    @WithBridgeMethods(SQLDeleteClause.class)
     public C where(Predicate p) {
         metadata.addWhere(p);
         return (C) this;
     }
 
     @Override
+    @WithBridgeMethods(SQLDeleteClause.class)
     public C where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);
@@ -259,6 +265,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLClause<C> & D
         return (C) this;
     }
 
+    @WithBridgeMethods(SQLDeleteClause.class)
     public C limit(@Nonnegative long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
