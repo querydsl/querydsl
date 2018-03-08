@@ -287,6 +287,14 @@
                     <exclude>com/querydsl/core/types/dsl/PathBuilderValidator</exclude>
                     <exclude>com/querydsl/sql/Union</exclude>
                     <exclude>com/querydsl/sql/SQLListenerContextImpl</exclude>
+                    <exclude>com/querydsl/sql/dml/SQLDeleteClause</exclude>
+                    <exclude>com/querydsl/sql/dml/SQLInsertClause</exclude>
+                    <exclude>com/querydsl/sql/dml/SQLUpdateClause</exclude>
+                    <exclude>com/querydsl/sql/mssql/SQLServerQuery</exclude>
+                    <exclude>com/querydsl/sql/mysql/MySQLQuery</exclude>
+                    <exclude>com/querydsl/sql/oracle/OracleQuery</exclude>
+                    <exclude>com/querydsl/sql/postgresql/PostgreSQLQuery</exclude>
+                    <exclude>com/querydsl/sql/teradata/TeradataQuery</exclude>
                   </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
