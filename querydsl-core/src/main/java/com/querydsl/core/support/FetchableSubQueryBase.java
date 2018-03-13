@@ -76,7 +76,7 @@ public abstract class FetchableSubQueryBase<T, Q extends FetchableSubQueryBase<T
 
     @Override
     public BooleanExpression ne(T constant) {
-        return eq(Expressions.constant(constant));
+        return ne(Expressions.constant(constant));
     }
 
 
