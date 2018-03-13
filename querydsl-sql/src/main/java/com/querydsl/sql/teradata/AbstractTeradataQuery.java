@@ -32,7 +32,7 @@ import com.querydsl.sql.TeradataTemplates;
  *
  * @author tiwe
  */
-public abstract class AbstractTeradataQuery<T, C extends AbstractSQLQuery<T, C>> extends AbstractSQLQuery<T, C> {
+public abstract class AbstractTeradataQuery<T, C extends AbstractTeradataQuery<T, C>> extends AbstractSQLQuery<T, C> {
     public AbstractTeradataQuery(Connection conn) {
         this(conn, new Configuration(TeradataTemplates.DEFAULT), new DefaultQueryMetadata());
     }

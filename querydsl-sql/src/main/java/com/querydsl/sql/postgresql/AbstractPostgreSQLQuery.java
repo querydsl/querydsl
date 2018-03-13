@@ -17,6 +17,7 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
+import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -37,7 +38,7 @@ import com.querydsl.sql.SQLQuery;
  * @see SQLQuery
  * @author tiwe
  */
-public abstract class AbstractPostgreSQLQuery<T, C extends AbstractSQLQuery<T, C>> extends AbstractSQLQuery<T, C> {
+public abstract class AbstractPostgreSQLQuery<T, C extends AbstractPostgreSQLQuery<T, C>> extends AbstractSQLQuery<T, C> {
     public AbstractPostgreSQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
     }
@@ -51,6 +52,7 @@ public abstract class AbstractPostgreSQLQuery<T, C extends AbstractSQLQuery<T, C
      *
      * @return the current object
      */
+    @WithBridgeMethods(PostgreSQLQuery.class)
     public C forShare() {
         // global forShare support was added later, delegating to super implementation
         return super.forShare();
@@ -62,6 +64,7 @@ public abstract class AbstractPostgreSQLQuery<T, C extends AbstractSQLQuery<T, C
      *
      * @return the current object
      */
+    @WithBridgeMethods(PostgreSQLQuery.class)
     public C noWait() {
         QueryFlag noWaitFlag = configuration.getTemplates().getNoWaitFlag();
         return addFlag(noWaitFlag);
@@ -73,6 +76,7 @@ public abstract class AbstractPostgreSQLQuery<T, C extends AbstractSQLQuery<T, C
      * @param paths tables
      * @return the current object
      */
+    @WithBridgeMethods(PostgreSQLQuery.class)
     public C of(RelationalPath<?>... paths) {
         StringBuilder builder = new StringBuilder(" of ");
         for (RelationalPath<?> path : paths) {
@@ -90,6 +94,7 @@ public abstract class AbstractPostgreSQLQuery<T, C extends AbstractSQLQuery<T, C
      * @param exprs
      * @return
      */
+    @WithBridgeMethods(PostgreSQLQuery.class)
     public C distinctOn(Expression<?>... exprs) {
         return addFlag(Position.AFTER_SELECT,
             Expressions.template(Object.class, "distinct on({0}) ",

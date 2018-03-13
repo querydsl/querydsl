@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.UpdateClause;
@@ -46,7 +47,7 @@ import com.querydsl.sql.types.Null;
  * @param <C> The type extending this class.
  *
  */
-public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & UpdateClause<C>> extends AbstractSQLClause<C> implements UpdateClause<C> {
+public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<C>> extends AbstractSQLClause<C> implements UpdateClause<C> {
 
     protected static final Logger logger = LoggerFactory.getLogger(AbstractSQLUpdateClause.class);
 
@@ -81,6 +82,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
      * @param flag query flag
      * @return the current object
      */
+    @WithBridgeMethods(SQLUpdateClause.class)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -93,6 +95,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
      * @param flag query flag
      * @return the current object
      */
+    @WithBridgeMethods(SQLUpdateClause.class)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -103,6 +106,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
      *
      * @return the current object
      */
+    @WithBridgeMethods(SQLUpdateClause.class)
     public C addBatch() {
         batches.add(new SQLUpdateBatch(metadata, updates));
         updates = Maps.newLinkedHashMap();
@@ -245,6 +249,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
     }
 
     @Override
+    @WithBridgeMethods(SQLUpdateClause.class)
     public <T> C set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
             updates.put(path, (Expression<?>) value);
@@ -257,6 +262,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
     }
 
     @Override
+    @WithBridgeMethods(SQLUpdateClause.class)
     public <T> C set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
             updates.put(path, expression);
@@ -267,12 +273,14 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
     }
 
     @Override
+    @WithBridgeMethods(SQLUpdateClause.class)
     public <T> C setNull(Path<T> path) {
         updates.put(path, Null.CONSTANT);
         return (C) this;
     }
 
     @Override
+    @WithBridgeMethods(SQLUpdateClause.class)
     public C set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) instanceof Expression) {
@@ -286,12 +294,14 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
         return (C) this;
     }
 
+    @WithBridgeMethods(SQLUpdateClause.class)
     public C where(Predicate p) {
         metadata.addWhere(p);
         return (C) this;
     }
 
     @Override
+    @WithBridgeMethods(SQLUpdateClause.class)
     public C where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);
@@ -299,6 +309,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
         return (C) this;
     }
 
+    @WithBridgeMethods(SQLUpdateClause.class)
     public C limit(@Nonnegative long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
@@ -320,6 +331,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
      * @return the current object
      */
     @SuppressWarnings("unchecked")
+    @WithBridgeMethods(SQLUpdateClause.class)
     public C populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
     }
@@ -332,6 +344,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLClause<C> & U
      * @return the current object
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
+    @WithBridgeMethods(SQLUpdateClause.class)
     public <T> C populate(T obj, Mapper<T> mapper) {
         Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null
                 ? entity.getPrimaryKey().getLocalColumns()
