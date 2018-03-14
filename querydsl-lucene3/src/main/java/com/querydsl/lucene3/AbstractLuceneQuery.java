@@ -330,7 +330,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     }
 
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         return oneResult(true);
     }
 

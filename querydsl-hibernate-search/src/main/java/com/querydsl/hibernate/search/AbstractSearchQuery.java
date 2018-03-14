@@ -152,11 +152,11 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
 
     @SuppressWarnings("unchecked")
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         try {
             return (T) createQuery(false).uniqueResult();
         } catch (org.hibernate.NonUniqueResultException e) {
-            throw new NonUniqueResultException();
+            throw new NonUniqueResultException(e);
         }
     }
 

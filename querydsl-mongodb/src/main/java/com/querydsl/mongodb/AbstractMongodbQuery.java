@@ -338,7 +338,7 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
     }
 
     @Override
-    public K fetchOne() {
+    public K fetchOne() throws NonUniqueResultException {
         try {
             Long limit = queryMixin.getMetadata().getModifiers().getLimit();
             if (limit == null) {

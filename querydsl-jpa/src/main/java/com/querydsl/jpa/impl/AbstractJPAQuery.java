@@ -247,7 +247,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     @Nullable
     @SuppressWarnings("unchecked")
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         try {
             Query query = createQuery(getMetadata().getModifiers(), false);
             return (T) getSingleResult(query);
@@ -255,7 +255,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
             logger.trace(e.getMessage(),e);
             return null;
         } catch (javax.persistence.NonUniqueResultException e) {
-            throw new NonUniqueResultException();
+            throw new NonUniqueResultException(e);
         } finally {
             reset();
         }

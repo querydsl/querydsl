@@ -211,7 +211,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
 
     @SuppressWarnings("unchecked")
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         try {
             Query query = createQuery();
             return (T) uniqueResult(query);
@@ -225,7 +225,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
         try {
             return query.uniqueResult();
         } catch (org.hibernate.NonUniqueResultException e) {
-            throw new NonUniqueResultException();
+            throw new NonUniqueResultException(e);
         }
     }
 

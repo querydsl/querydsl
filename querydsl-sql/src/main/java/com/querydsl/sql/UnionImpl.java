@@ -18,6 +18,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.Query;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryResults;
@@ -55,7 +56,7 @@ public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  imple
     }
 
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         return query.fetchOne();
     }
 

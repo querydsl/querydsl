@@ -46,7 +46,7 @@ public interface Fetchable<T> {
      * @throws NonUniqueResultException if there is more than one matching result
      * @return first result or null
      */
-    T fetchOne();
+    T fetchOne() throws NonUniqueResultException;
 
     /**
      * Get the projection as a typed closeable Iterator

@@ -292,7 +292,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
 
     @Override
     @SuppressWarnings("unchecked")
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         Query query = createQuery();
         return (T) uniqueResult(query);
     }
@@ -305,7 +305,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
             logger.trace(e.getMessage(),e);
             return null;
         } catch (javax.persistence.NonUniqueResultException e) {
-            throw new NonUniqueResultException();
+            throw new NonUniqueResultException(e);
         } finally {
             reset();
         }

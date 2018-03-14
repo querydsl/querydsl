@@ -25,6 +25,7 @@ import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.JoinFlag;
+import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.Query;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
@@ -391,7 +392,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     }
 
     @Override
-    public T fetchOne() {
+    public T fetchOne() throws NonUniqueResultException {
         if (getMetadata().getModifiers().getLimit() == null
             && !queryMixin.getMetadata().getProjection().toString().contains("count(")) {
             limit(2);
