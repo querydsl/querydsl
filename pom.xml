@@ -284,7 +284,23 @@
               <rules>
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
                   <excludes>
+                    <exclude>com/querydsl/core/Fetchable</exclude>
                     <exclude>com/querydsl/core/types/dsl/PathBuilderValidator</exclude>
+                    <exclude>com/querydsl/collections/AbstractCollQuery</exclude>
+                    <exclude>com/querydsl/hibernate/search/AbstractSearchQuery</exclude>
+                    <exclude>com/querydsl/jdo/AbstractJDOQuery</exclude>
+                    <exclude>com/querydsl/jdo/sql/AbstractSQLQuery</exclude>
+                    <exclude>com/querydsl/jpa/hibernate/AbstractHibernateQuery</exclude>
+                    <exclude>com/querydsl/jpa/JPASubQuery</exclude>
+                    <exclude>com/querydsl/jpa/hibernate/sql/AbstractHibernateSQLQuery</exclude>
+                    <exclude>com/querydsl/jpa/impl/AbstractJPAQuery</exclude>
+                    <exclude>com/querydsl/jpa/sql/AbstractJPASQLQuery</exclude>
+                    <exclude>com/querydsl/lucene3/AbstractLuceneQuery</exclude>
+                    <exclude>com/querydsl/lucene4/AbstractLuceneQuery</exclude>
+                    <exclude>com/querydsl/lucene5/AbstractLuceneQuery</exclude>
+                    <exclude>com/querydsl/mongodb/AbstractMongodbQuery</exclude>
+                    <exclude>com/querydsl/sql/ProjectableSQLQuery</exclude>
+                    <exclude>com/querydsl/sql/UnionImpl</exclude>
                     <exclude>com/querydsl/sql/Union</exclude>
                     <exclude>com/querydsl/sql/SQLListenerContextImpl</exclude>
                     <exclude>com/querydsl/sql/dml/SQLDeleteClause</exclude>

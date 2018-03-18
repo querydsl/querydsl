@@ -32,4 +32,8 @@ public class NonUniqueResultException extends QueryException {
         super(message);
     }
 
+    public NonUniqueResultException(Exception e) {
+        super(e);
+    }
+
 }
