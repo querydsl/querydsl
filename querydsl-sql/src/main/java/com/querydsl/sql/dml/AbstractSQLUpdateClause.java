@@ -82,7 +82,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -95,7 +95,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -106,7 +106,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      *
      * @return the current object
      */
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C addBatch() {
         batches.add(new SQLUpdateBatch(metadata, updates));
         updates = Maps.newLinkedHashMap();
@@ -249,7 +249,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
     }
 
     @Override
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public <T> C set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
             updates.put(path, (Expression<?>) value);
@@ -262,7 +262,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
     }
 
     @Override
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public <T> C set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
             updates.put(path, expression);
@@ -273,14 +273,14 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
     }
 
     @Override
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public <T> C setNull(Path<T> path) {
         updates.put(path, Null.CONSTANT);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) instanceof Expression) {
@@ -294,14 +294,14 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         return (C) this;
     }
 
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C where(Predicate p) {
         metadata.addWhere(p);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);
@@ -309,7 +309,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         return (C) this;
     }
 
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C limit(@Nonnegative long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
@@ -331,7 +331,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      * @return the current object
      */
     @SuppressWarnings("unchecked")
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
     }
@@ -344,7 +344,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      * @return the current object
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    @WithBridgeMethods(SQLUpdateClause.class)
+    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public <T> C populate(T obj, Mapper<T> mapper) {
         Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null
                 ? entity.getPrimaryKey().getLocalColumns()

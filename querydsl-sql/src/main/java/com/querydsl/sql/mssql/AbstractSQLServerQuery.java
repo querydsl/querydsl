@@ -46,7 +46,7 @@ public abstract class AbstractSQLServerQuery<T, C extends AbstractSQLServerQuery
      * @param tableHints table hints
      * @return the current object
      */
-    @WithBridgeMethods(SQLServerQuery.class)
+    @WithBridgeMethods(value = SQLServerQuery.class, castRequired = true)
     public C tableHints(SQLServerTableHints... tableHints) {
         if (tableHints.length > 0) {
             String hints = SQLServerGrammar.tableHints(tableHints);

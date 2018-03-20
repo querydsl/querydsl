@@ -84,7 +84,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(SQLDeleteClause.class)
+    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -97,7 +97,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(SQLDeleteClause.class)
+    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -108,7 +108,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
      *
      * @return the current object
      */
-    @WithBridgeMethods(SQLDeleteClause.class)
+    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired =  true)
     public C addBatch() {
         batches.add(metadata);
         metadata = new DefaultQueryMetadata();
@@ -250,14 +250,14 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
         }
     }
 
-    @WithBridgeMethods(SQLDeleteClause.class)
+    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C where(Predicate p) {
         metadata.addWhere(p);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(SQLDeleteClause.class)
+    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);
@@ -265,7 +265,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
         return (C) this;
     }
 
-    @WithBridgeMethods(SQLDeleteClause.class)
+    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C limit(@Nonnegative long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
