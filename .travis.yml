@@ -17,7 +17,7 @@ before_script:
 
   - sudo /etc/init.d/mysql stop
   - ./travis/docker_bootstrap.sh
-script: mvn --batch-mode test --activate-profiles ${PROFILES} --projects ${MODULE} jacoco:report
+script: mvn --batch-mode test --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report
 sudo: required
 after_success:
   - mvn coveralls:report
