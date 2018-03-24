@@ -55,6 +55,7 @@ public class SQLTemplatesRegistry {
         // sqlserver
         if (name.equals("microsft sql server")) {
             switch (md.getDatabaseMajorVersion()) {
+                case 13:
                 case 12:
                 case 11: return sqlserver2012;
                 case 10: return sqlserver2008;
