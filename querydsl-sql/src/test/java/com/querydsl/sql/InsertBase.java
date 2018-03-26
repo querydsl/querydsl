@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
@@ -297,6 +298,24 @@ public class InsertBase extends AbstractBaseTest {
         Path<Object> idPath = ExpressionUtils.path(Object.class, "id");
         Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
         assertNotNull(id);
+    }
+
+    @Test(expected = QueryException.class)
+    @IncludeIn({DERBY, HSQLDB})
+    public void insert_with_keys_OverriddenColumn() throws SQLException {
+      String originalColumnName = ColumnMetadata.getName(survey.id);
+        try {
+            configuration.registerColumnOverride(survey.getSchemaName(), survey.getTableName(),
+                originalColumnName, "wrongColumnName");
+
+            SQLInsertClause sqlInsertClause = new SQLInsertClause(connection, configuration, survey);
+            sqlInsertClause.addListener(new TestLoggingListener());
+            Object id = sqlInsertClause.set(survey.name, "Hello you").executeWithKey(survey.id);
+            assertNotNull(id);
+        } finally {
+            configuration.registerColumnOverride(survey.getSchemaName(), survey.getTableName(),
+                originalColumnName, originalColumnName);
+        }
     }
 
  // http://sourceforge.net/tracker/index.php?func=detail&aid=3513432&group_id=280608&atid=2377440
