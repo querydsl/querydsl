@@ -16,11 +16,15 @@ package com.querydsl.core.types;
 import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Function;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Template.Element;
@@ -40,6 +44,9 @@ public class TemplateFactory {
 
     private static final Constant<String> PERCENT = ConstantImpl.create("%");
 
+    private static final long CACHE_SIZE = Long.getLong("queryDSL.query.cache.size", 5000L);
+    private static final long CACHE_TTL = Long.getLong("queryDSL.query.cache.time.to.live.minute", 10L);
+
     private static final Pattern elementPattern = Pattern.compile("\\{"
             + "(%?%?)"
             + "(\\d+)"
@@ -47,7 +54,10 @@ public class TemplateFactory {
             + "([slu%]?%?)"
             + "\\}");
 
-    private final Map<String,Template> cache = new ConcurrentHashMap<String,Template>();
+    private final Cache<String,Template> queryCache = CacheBuilder.newBuilder()
+            .maximumSize(CACHE_SIZE)
+            .expireAfterWrite(CACHE_TTL, TimeUnit.MINUTES)
+            .build();
 
     private final char escape;
 
@@ -173,9 +183,23 @@ public class TemplateFactory {
     }
 
     public Template create(String template) {
-        if (cache.containsKey(template)) {
-            return cache.get(template);
-        } else {
+        try {
+            return getOrCreate(template);
+        } catch (ExecutionException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    private Template getOrCreate(final String template) throws ExecutionException {
+        return queryCache.get(template, new Callable<Template>() {
+            @Override
+            public Template call() {
+                return newTemplate(template);
+            }
+        });
+    }
+
+    private Template newTemplate(String template) {
             Matcher m = elementPattern.matcher(template);
             final ImmutableList.Builder<Element> elements = ImmutableList.builder();
             int end = 0;
@@ -250,10 +274,7 @@ public class TemplateFactory {
             if (end < template.length()) {
                 elements.add(new Template.StaticText(template.substring(end)));
             }
-            Template rv = new Template(template, elements.build());
-            cache.put(template, rv);
-            return rv;
-        }
+            return new Template(template, elements.build());
     }
 
     public String escapeForLike(String str) {
@@ -266,22 +287,5 @@ public class TemplateFactory {
             rv.append(ch);
         }
         return rv.toString();
-    }
-
-    /**
-     * Allow eviction of cache entry to avoid leaking memory. For example:
-     *          TemplateFactory.DEFAULT.clearCache(someKey);
-     * @param key
-     */
-    public void clearCache(final String key){
-        cache.remove(key);
-    }
-
-    /**
-     * Allow eviction of  all cache entries to avoid leaking memory. For example:
-     *          TemplateFactory.DEFAULT.clearCache();
-     */
-    public void clearCache(){
-        cache.clear();
     }
 }
