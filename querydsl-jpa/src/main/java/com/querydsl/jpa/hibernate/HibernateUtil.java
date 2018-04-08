@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.type.*;
 
 import com.google.common.collect.ImmutableMap;

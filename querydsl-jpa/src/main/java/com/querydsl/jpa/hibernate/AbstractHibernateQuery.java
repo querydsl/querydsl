@@ -20,7 +20,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.hibernate.*;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;

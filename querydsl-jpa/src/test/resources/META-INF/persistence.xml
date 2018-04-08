@@ -9,7 +9,7 @@
     <!-- derby -->
 
     <persistence-unit name="derby">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QDerbyDialect" />
@@ -46,7 +46,7 @@
     <!-- hsqldb -->
 
     <persistence-unit name="hsqldb">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QHSQLDialect" />
@@ -75,7 +75,7 @@
     <!-- h2 -->
 
     <persistence-unit name="h2" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QH2Dialect" />
@@ -89,7 +89,7 @@
     </persistence-unit>
     
     <persistence-unit name="h2perf" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QH2Dialect" />
@@ -200,7 +200,7 @@
     <!-- mysql -->
 
     <persistence-unit name="mysql">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QMySQL5InnoDBDialect" />
@@ -231,7 +231,7 @@
     <!--mssql -->
 
   <persistence-unit name="mssql">
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <properties>
       <property name="hibernate.archive.autodetection" value="class" />
       <property name="hibernate.dialect" value="com.querydsl.jpa.support.QSQLServer2008Dialect" />
@@ -248,7 +248,7 @@
     <!-- postgresql -->
 
     <persistence-unit name="postgresql">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QPostgreSQL9Dialect" />
@@ -279,7 +279,7 @@
     <!-- oracle -->
 
     <persistence-unit name="oracle">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QOracle10gDialect" />
@@ -296,7 +296,7 @@
     <!-- teradata -->
     
     <persistence-unit name="teradata">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.TeradataDialect" />

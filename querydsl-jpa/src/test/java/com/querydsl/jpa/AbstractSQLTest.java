@@ -1,15 +1,9 @@
 package com.querydsl.jpa;
 
-import static com.querydsl.sql.SQLExpressions.select;
-import static org.junit.Assert.*;
-
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-
-import org.junit.Ignore;
-import org.junit.Test;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Target;
@@ -25,6 +19,15 @@ import com.querydsl.jpa.domain.Color;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.domain.QCompany;
 import com.querydsl.jpa.domain.sql.SAnimal;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import static com.querydsl.sql.SQLExpressions.select;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractSQLTest {
 
@@ -278,7 +281,7 @@ public abstract class AbstractSQLTest {
     public void union() throws SQLException {
         SubQueryExpression<Integer> sq1 = select(cat.id.max()).from(cat);
         SubQueryExpression<Integer> sq2 = select(cat.id.min()).from(cat);
-        List<Integer> list = query().union(sq1, sq2).list();
+        List<Integer> list = query().union(sq1, sq2).fetch();
         assertFalse(list.isEmpty());
     }
 
@@ -287,7 +290,7 @@ public abstract class AbstractSQLTest {
     public void union_all() {
         SubQueryExpression<Integer> sq1 = select(cat.id.max()).from(cat);
         SubQueryExpression<Integer> sq2 = select(cat.id.min()).from(cat);
-        List<Integer> list = query().unionAll(sq1, sq2).list();
+        List<Integer> list = query().unionAll(sq1, sq2).fetch();
         assertFalse(list.isEmpty());
     }
 
@@ -299,7 +302,7 @@ public abstract class AbstractSQLTest {
         List<Tuple> rows = query().union(
                 select(cat.name, cat.id).from(cat).where(cat.name.eq("Beck")).distinct(),
                 select(cat.name, null).from(cat).where(cat.name.eq("Kate")).distinct())
-        .list();
+        .fetch();
 
         assertEquals(2, rows.size());
         for (Tuple row : rows) {
@@ -316,7 +319,7 @@ public abstract class AbstractSQLTest {
         List<Tuple> rows = query().union(
                 select(cat.id, cat2.id).from(cat).innerJoin(cat2).on(cat2.id.eq(cat.id)),
                 select(cat.id, null).from(cat))
-        .list();
+        .fetch();
 
         assertEquals(12, rows.size());
         int nulls = 0;
@@ -348,7 +351,7 @@ public abstract class AbstractSQLTest {
         List<Tuple> rows = query().union(
                 select(cat.id, cat2.id).from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))),
                 select(cat.id, cat2.id).from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))))
-        .list();
+        .fetch();
 
         assertEquals(5, rows.size());
         for (Tuple row : rows) {

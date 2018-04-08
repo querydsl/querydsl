@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>4.2.1</version>
+  <version>5.0.0</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
@@ -53,8 +53,8 @@
     <firebird.version>2.2.5</firebird.version>
 
     <!-- JPA deps -->
-    <hibernate.version>4.3.11.Final</hibernate.version>
-    <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+    <hibernate.version>5.2.16.Final</hibernate.version>
+    <hibernate.validator.version>6.0.9.Final</hibernate.validator.version>
     <eclipselink.version>2.6.2</eclipselink.version>
 
     <guava.version>18.0</guava.version>
@@ -550,7 +550,7 @@
         <module>querydsl-lucene3</module>
         <module>querydsl-lucene4</module>
         <module>querydsl-lucene5</module>
-        <module>querydsl-hibernate-search</module>
+        <!--<module>querydsl-hibernate-search</module>-->
 
         <!-- NoSQL -->
         <module>querydsl-mongodb</module>
@@ -590,8 +590,8 @@
     <profile>
       <id>hibernate5</id>
       <properties>
-        <hibernate.version>5.0.5.Final</hibernate.version>
-        <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
+        <hibernate.version>5.2.16.Final</hibernate.version>
+        <hibernate.validator.version>6.0.9.Final</hibernate.validator.version>
       </properties>
     </profile>
 

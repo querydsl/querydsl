@@ -13,16 +13,99 @@
  */
 package com.querydsl.jpa;
 
-import static com.querydsl.core.Target.*;
-import static com.querydsl.jpa.JPAExpressions.select;
-import static org.junit.Assert.*;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mysema.commons.lang.Pair;
+import com.querydsl.core.Fetchable;
+import com.querydsl.core.FilterFactory;
+import com.querydsl.core.MatchingFiltersFactory;
+import com.querydsl.core.Module;
+import com.querydsl.core.ProjectionsFactory;
+import com.querydsl.core.QueryExecution;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.Target;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.group.Group;
+import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.group.MockTuple;
+import com.querydsl.core.group.QPair;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.ArrayConstructorExpression;
+import com.querydsl.core.types.Concatenation;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.ParamNotSetException;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.EnumPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.ListExpression;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.Param;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.types.dsl.SimplePath;
+import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.domain.Animal;
+import com.querydsl.jpa.domain.Author;
+import com.querydsl.jpa.domain.Book;
+import com.querydsl.jpa.domain.Cat;
+import com.querydsl.jpa.domain.Color;
+import com.querydsl.jpa.domain.Company;
+import com.querydsl.jpa.domain.Company.Rating;
+import com.querydsl.jpa.domain.DomesticCat;
+import com.querydsl.jpa.domain.DoubleProjection;
+import com.querydsl.jpa.domain.Employee;
+import com.querydsl.jpa.domain.Entity1;
+import com.querydsl.jpa.domain.Entity2;
+import com.querydsl.jpa.domain.FloatProjection;
+import com.querydsl.jpa.domain.Foo;
+import com.querydsl.jpa.domain.JobFunction;
+import com.querydsl.jpa.domain.Numeric;
+import com.querydsl.jpa.domain.QAnimal;
+import com.querydsl.jpa.domain.QAuthor;
+import com.querydsl.jpa.domain.QBook;
+import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.domain.QCompany;
+import com.querydsl.jpa.domain.QDomesticCat;
+import com.querydsl.jpa.domain.QDoubleProjection;
+import com.querydsl.jpa.domain.QEmployee;
+import com.querydsl.jpa.domain.QEntity1;
+import com.querydsl.jpa.domain.QFamily;
+import com.querydsl.jpa.domain.QFloatProjection;
+import com.querydsl.jpa.domain.QFoo;
+import com.querydsl.jpa.domain.QHuman;
+import com.querydsl.jpa.domain.QMammal;
+import com.querydsl.jpa.domain.QNumeric;
+import com.querydsl.jpa.domain.QShow;
+import com.querydsl.jpa.domain.QSimpleTypes;
+import com.querydsl.jpa.domain.QUser;
+import com.querydsl.jpa.domain.QWorld;
+import com.querydsl.jpa.domain.Show;
+import com.querydsl.jpa.domain4.QBookMark;
+import com.querydsl.jpa.domain4.QBookVersion;
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -31,24 +114,20 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.mysema.commons.lang.Pair;
-import com.querydsl.core.*;
-import com.querydsl.core.group.Group;
-import com.querydsl.core.group.GroupBy;
-import com.querydsl.core.group.QPair;
-import com.querydsl.core.group.MockTuple;
-import com.querydsl.core.testutil.ExcludeIn;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.*;
-import com.querydsl.jpa.domain.*;
-import com.querydsl.jpa.domain.Company.Rating;
-import com.querydsl.jpa.domain4.QBookMark;
-import com.querydsl.jpa.domain4.QBookVersion;
-
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
+import static com.querydsl.core.Target.DERBY;
+import static com.querydsl.core.Target.HSQLDB;
+import static com.querydsl.core.Target.MYSQL;
+import static com.querydsl.core.Target.ORACLE;
+import static com.querydsl.core.Target.POSTGRESQL;
+import static com.querydsl.core.Target.SQLSERVER;
+import static com.querydsl.core.Target.TERADATA;
+import static com.querydsl.jpa.JPAExpressions.select;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author tiwe
@@ -422,7 +501,7 @@ public abstract class AbstractJPATest {
     @Test
     @NoEclipseLink // EclipseLink uses a left join for cat.mate
     public void case5() {
-        assertEquals(ImmutableList.of(0, 1, 1, 1),
+        assertEquals(ImmutableList.of(1, 0, 1, 1, 1, 1),
                 query().from(cat).orderBy(cat.id.asc())
                         .select(cat.mate.when(savedCats.get(0)).then(0).otherwise(1)).fetch());
     }

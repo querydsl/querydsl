@@ -19,17 +19,14 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.hibernate.Query;
-import org.hibernate.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
+import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.jpa.AbstractSQLQuery;
@@ -42,6 +39,15 @@ import com.querydsl.jpa.hibernate.SessionHolder;
 import com.querydsl.jpa.hibernate.StatelessSessionHolder;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLSerializer;
+import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.hibernate.StatelessSession;
+import org.hibernate.query.NativeQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * {@code AbstractHibernateSQLQuery} is the base class for Hibernate Native SQL queries
@@ -78,15 +84,15 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
         this.session = session;
     }
 
-    public Query createQuery() {
+    public org.hibernate.query.Query createQuery() {
         return createQuery(false);
     }
 
-    private Query createQuery(boolean forCount) {
+    private org.hibernate.query.Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
         logQuery(queryString, serializer.getConstantToLabel());
-        org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
+        NativeQuery query = session.createSQLQuery(queryString);
         // set constants
         HibernateUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
 
@@ -163,7 +169,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     @Override
     public CloseableIterator<T> iterate() {
         try {
-            Query query = createQuery();
+            org.hibernate.query.Query query = createQuery();
             ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
             return new ScrollableResultsIterator<T>(results);
         } finally {

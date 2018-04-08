@@ -13,8 +13,8 @@
  */
 package com.querydsl.jpa.hibernate;
 
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 /**
  * Abstraction for different Hibernate Session signatures
@@ -38,6 +38,6 @@ public interface SessionHolder {
      * @param queryString JPQL query string
      * @return query
      */
-    SQLQuery createSQLQuery(String queryString);
+    NativeQuery createSQLQuery(String queryString);
 
 }

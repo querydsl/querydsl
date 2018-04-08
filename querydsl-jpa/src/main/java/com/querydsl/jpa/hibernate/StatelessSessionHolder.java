@@ -13,9 +13,9 @@
  */
 package com.querydsl.jpa.hibernate;
 
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.StatelessSession;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 /**
  * SessionHolder implementation using StatelessSession
@@ -37,8 +37,8 @@ public class StatelessSessionHolder implements SessionHolder {
     }
 
     @Override
-    public SQLQuery createSQLQuery(String queryString) {
-        return session.createSQLQuery(queryString);
+    public NativeQuery createSQLQuery(String queryString) {
+        return session.createNativeQuery(queryString);
     }
 
 }

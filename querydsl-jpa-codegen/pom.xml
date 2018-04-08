@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>4.2.1</version>
+    <version>5.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -22,16 +22,11 @@
     <url>${project.githubpage}</url>
   </scm>
 
-  <properties>
-    <hibernate4.version>4.1.7.Final</hibernate4.version>
-    <hibernate4.validator.version>4.3.0.Final</hibernate4.validator.version>
-  </properties>
-
-  <dependencies>   
+  <dependencies>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>${hibernate4.version}</version>
+      <version>${hibernate.version}</version>
       <exclusions>
         <exclusion>
           <groupId>cglib</groupId>
@@ -47,13 +42,13 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>${hibernate4.version}</version>
+      <version>${hibernate.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>${hibernate4.validator.version}</version>
+      <version>${hibernate.validator.version}</version>
       <scope>provided</scope>
     <exclusions>
         <exclusion>

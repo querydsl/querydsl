@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>4.2.1</version>
+    <version>5.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -50,7 +50,7 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
       <optional>true</optional>

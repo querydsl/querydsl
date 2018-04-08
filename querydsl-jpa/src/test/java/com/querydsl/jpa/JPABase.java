@@ -13,10 +13,6 @@
  */
 package com.querydsl.jpa;
 
-import static com.querydsl.jpa.JPAExpressions.selectFrom;
-import static com.querydsl.jpa.JPAExpressions.selectOne;
-import static org.junit.Assert.*;
-
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +22,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.Target;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.domain.Cat;
+import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.domain.QCatSummary;
+import com.querydsl.jpa.domain.QChild;
+import com.querydsl.jpa.domain.QGroup;
+import com.querydsl.jpa.domain.QParent;
+import com.querydsl.jpa.impl.JPADeleteClause;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.testutil.JPATestRunner;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -33,18 +44,12 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.Target;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.testutil.ExcludeIn;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.domain.*;
-import com.querydsl.jpa.impl.JPADeleteClause;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.testutil.JPATestRunner;
+import static com.querydsl.jpa.JPAExpressions.selectFrom;
+import static com.querydsl.jpa.JPAExpressions.selectOne;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author tiwe
@@ -252,23 +257,10 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @NoEclipseLink
     @NoBatooJPA
     public void createQuery() {
-        List<Tuple> rows = query().from(cat)
+        List<Object> rows = query().from(cat)
                 .select(cat.id, cat.name).createQuery().getResultList();
-        for (Tuple row : rows) {
-            assertEquals(2, row.size());
-        }
-    }
+        assertEquals(6, rows.size());
 
-    @SuppressWarnings("unchecked")
-    @Test
-    @NoEclipseLink
-    @NoBatooJPA
-    public void createQuery2() {
-        List<Tuple> rows = query().from(cat)
-                .select(new Expression<?>[]{cat.id, cat.name}).createQuery().getResultList();
-        for (Tuple row : rows) {
-            assertEquals(2, row.size());
-        }
     }
 
     @Test

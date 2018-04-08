@@ -23,7 +23,7 @@ import java.util.Properties;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -39,7 +39,7 @@ public abstract class AbstractQueryTest {
     public static void setUpClass() throws IOException {
         FileUtils.delete(new File("target/derbydb"));
         FileUtils.delete(new File("target/lucene3"));
-        AnnotationConfiguration cfg = new AnnotationConfiguration();
+        Configuration cfg = new Configuration();
         cfg.addAnnotatedClass(User.class);
         Properties props = new Properties();
         InputStream is = SearchQueryTest.class.getResourceAsStream("/derby.properties");
@@ -80,7 +80,7 @@ public abstract class AbstractQueryTest {
 
     @After
     public void tearDown() throws HibernateException, SQLException {
-        if (!session.getTransaction().wasRolledBack()) {
+        if (!session.getTransaction().getRollbackOnly()) {
             session.getTransaction().commit();
         }
         session.close();
