@@ -336,4 +336,105 @@ public class MetadataExportMojoTest {
     }
 
     // endregion Schema Pattern Matching - Empty Values
+
+    // region Schema Pattern Matching - BLANK Values
+
+    @Test
+    public void executeWithBlankUppercaseSchemaPattern() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("BLANK");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithBlankLowercaseSchemaPattern() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("blank");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+
+    @Test
+    public void executeWithSchemaPatternContainingBlank() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("SCHEMA1BLANK");
+        mojo.execute();
+
+        assertFalse(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+    @Test
+    public void executeWithMultipleSchemaPatternsAndInterleavedBlank() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("SCHEMA1,BLANK,SCHEMA2");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithMultipleSchemaPatternsAndLeadingBlank() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("BLANK,SCHEMA2");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+    }
+
+    @Test
+    @Ignore("Trailing empty strings are not handled correctly by the MetaDataExporter")
+    public void executeWithMultipleSchemaPatternsAndTrailingBlank() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("SCHEMA1,BLANK");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithMultipleSchemaPatternsAndContainingBlank() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("SCHEMA1,SCHEMA2BLANK");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    // endregion Schema Pattern Matching - BLANK Values
 }
