@@ -14,6 +14,7 @@
 package com.querydsl.maven;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -23,7 +24,9 @@ import java.util.Collections;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import com.querydsl.sql.codegen.ExtendedBeanSerializer;
 import com.querydsl.sql.codegen.OriginalNamingStrategy;
@@ -37,11 +40,19 @@ import com.querydsl.sql.types.LocalTimeType;
 
 public class MetadataExportMojoTest {
 
-    private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
+    private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis() + ";INIT=" +
+            "CREATE TABLE NO_SCHEMA_TABLE (COL1 INT)        \\;" +
+            "CREATE SCHEMA SCHEMA1                          \\;" +
+            "CREATE TABLE SCHEMA1.SCHEMA1_TABLE (COL1 INT)  \\;" +
+            "CREATE SCHEMA SCHEMA2                          \\;" +
+            "CREATE TABLE SCHEMA2.SCHEMA2_TABLE (COL1 INT)  \\;";
 
     private final MavenProject project = new MavenProject();
 
     private final MetadataExportMojo mojo = new MetadataExportMojo();
+
+    @Rule
+    public TestName testName = new TestName();
 
     @Before
     public void setUp() {
@@ -193,4 +204,136 @@ public class MetadataExportMojoTest {
         assertEquals(Collections.singletonList("target/export13"), project.getCompileSourceRoots());
         assertTrue(new File("target/export13").exists());
     }
+
+    // region Schema Pattern Matching
+
+    @Test
+    public void executeWithUnsetSchemaPattern() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern(null);
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithExactSchemaPattern() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("SCHEMA1");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithSimilarSchemaPattern() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("%EMA1");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithMismatchedSchemaPattern() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("NON_EXISTENT_SCHEMA");
+        mojo.execute();
+
+        assertFalse(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithMultipleSchemaPatterns() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("SCHEMA1,SCHEMA2");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+    }
+
+    // endregion Schema Pattern Matching
+
+    // region Schema Pattern Matching - Empty Values
+
+    @Test
+    public void executeWithEmptySchemaPattern() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithMultipleSchemaPatternsAndInterleavedEmpty() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("SCHEMA1,,SCHEMA2");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    @Test
+    public void executeWithMultipleSchemaPatternsAndLeadingEmpty() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern(",SCHEMA2");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+    }
+
+    @Test
+    @Ignore("Trailing empty strings are not handled correctly by the MetaDataExporter")
+    public void executeWithMultipleSchemaPatternsAndTrailingEmpty() throws Exception {
+        String targetFolder = "target/" + testName.getMethodName();
+
+        mojo.setTargetFolder(targetFolder);
+        mojo.setSchemaPattern("SCHEMA1,");
+        mojo.execute();
+
+        assertTrue(new File(targetFolder + "/com/example/QNoSchemaTable.java").exists());
+        assertTrue(new File(targetFolder + "/com/example/QSchema1Table.java").exists());
+
+        assertFalse(new File(targetFolder + "/com/example/QSchema2Table.java").exists());
+    }
+
+    // endregion Schema Pattern Matching - Empty Values
 }
