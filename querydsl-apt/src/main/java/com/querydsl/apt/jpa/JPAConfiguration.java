@@ -113,7 +113,12 @@ public class JPAConfiguration extends DefaultConfiguration {
         }
         if (mirror != null) {
             TypeMirror typeArg = TypeUtils.getAnnotationValueAsTypeMirror(mirror, "targetEntity");
-            TypeMirror erasure = types.erasure(element.asType());
+            TypeMirror erasure;
+            if (element instanceof ExecutableElement) {
+                erasure = ((ExecutableElement) element).getReturnType();
+            } else {
+                erasure = types.erasure(element.asType());
+            }
             TypeElement typeElement = (TypeElement) types.asElement(erasure);
             if (typeElement != null && typeArg != null) {
                 if (typeElement.getTypeParameters().size() == 1) {
