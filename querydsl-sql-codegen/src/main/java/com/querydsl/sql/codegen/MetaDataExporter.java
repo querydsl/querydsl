@@ -277,6 +277,7 @@ public class MetaDataExporter {
         Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
         int columnIndex = columns.getInt("ORDINAL_POSITION");
         int nullable = columns.getInt("NULLABLE");
+        String columnDefaultValue = columns.getString("COLUMN_DEF");
 
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType,
@@ -311,7 +312,7 @@ public class MetaDataExporter {
             property.addAnnotation(new ColumnImpl(normalizedColumnName));
         }
         if (validationAnnotations) {
-            if (nullable == DatabaseMetaData.columnNoNulls) {
+            if (nullable == DatabaseMetaData.columnNoNulls && columnDefaultValue == null) {
                 property.addAnnotation(new NotNullImpl());
             }
             int size = columns.getInt("COLUMN_SIZE");
