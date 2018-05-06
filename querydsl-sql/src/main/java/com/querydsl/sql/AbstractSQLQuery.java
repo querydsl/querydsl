@@ -20,12 +20,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 
+import com.querydsl.sql.types.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -447,15 +449,17 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                 listeners.executed(context);
                 try {
                     lastCell = null;
-                    final List<T> rv = new ArrayList<T>();
+                    final List<T> rv = new LinkedList<T>();
                     if (expr instanceof FactoryExpression) {
                         FactoryExpression<T> fe = (FactoryExpression<T>) expr;
+                        List<Type<T>> types = getTypesFromExpressions(fe.getArgs());
+                        int sizeOfTypes = types.size();
                         while (rs.next()) {
                             if (getLastCell) {
                                 lastCell = rs.getObject(fe.getArgs().size() + 1);
                                 getLastCell = false;
                             }
-                            rv.add(newInstance(fe, rs, 0));
+                            rv.add(fe.newInstance(populateArguments(sizeOfTypes, types, rs)));
                         }
                     } else if (expr.equals(Wildcard.all)) {
                         while (rs.next()) {
@@ -470,12 +474,14 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                             rv.add((T) row);
                         }
                     } else {
+                        Path<?> path = (expr instanceof Path) ? (Path<?>) expr : null;
+                        Type<? extends T> type = configuration.getType(path, expr.getType());
                         while (rs.next()) {
                             if (getLastCell) {
                                 lastCell = rs.getObject(2);
                                 getLastCell = false;
                             }
-                            rv.add(get(rs, expr, 1, expr.getType()));
+                            rv.add(configuration.get(rs, 1, type));
                         }
                     }
                     return rv;
@@ -560,6 +566,26 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             args[i] = get(rs, c.getArgs().get(i), offset + i + 1, c.getArgs().get(i).getType());
         }
         return c.newInstance(args);
+    }
+
+    private Object[] populateArguments(int typesSize, List<Type<T>> types, ResultSet rs)
+        throws InstantiationException, IllegalAccessException, InvocationTargetException, SQLException {
+        Object[] args = new Object[typesSize];
+        int i = 0;
+        for (Type type : types) {
+            args[i] = type.getValue(rs, ++i);
+        }
+        return args;
+    }
+
+    private List<Type<T>> getTypesFromExpressions(List<Expression<?>> expressions) {
+        List<Type<T>> types = new ArrayList<Type<T>>();
+        for (Expression e : expressions) {
+            Path path = e instanceof Path ? (Path<?>) e : null;
+            Type t = configuration.getType(path, e.getType());
+            types.add(t);
+        }
+        return types;
     }
 
     private void reset() {
