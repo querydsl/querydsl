@@ -34,9 +34,11 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
     static class DataSourceProvider implements Provider<Connection> {
 
         private final DataSource ds;
+        private final Configuration configuration;
 
-        public DataSourceProvider(DataSource ds) {
+        public DataSourceProvider(DataSource ds, Configuration configuration) {
             this.ds = ds;
+            this.configuration = configuration;
         }
 
         @Override
@@ -44,7 +46,7 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
             try {
                 return ds.getConnection();
             } catch (SQLException e) {
-                throw new RuntimeException(e.getMessage(), e);
+                throw configuration.translate(e);
             }
         }
 
@@ -63,7 +65,7 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
     }
 
     public SQLQueryFactory(Configuration configuration, DataSource dataSource, boolean release) {
-        super(configuration, new DataSourceProvider(dataSource));
+        super(configuration, new DataSourceProvider(dataSource, configuration));
         if (release) {
             configuration.addListener(SQLCloseListener.DEFAULT);
         }

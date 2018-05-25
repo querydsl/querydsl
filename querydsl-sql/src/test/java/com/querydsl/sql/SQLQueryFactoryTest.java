@@ -16,13 +16,17 @@ package com.querydsl.sql;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLTransientConnectionException;
 
 import javax.inject.Provider;
+import javax.sql.DataSource;
 
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.querydsl.core.QueryException;
 import com.querydsl.sql.domain.QSurvey;
 
 public class SQLQueryFactoryTest {
@@ -70,4 +74,15 @@ public class SQLQueryFactoryTest {
         assertNotNull(queryFactory.merge(QSurvey.survey));
     }
 
+    @Test(expected = QueryException.class)
+    public void dataSourceProviderException() throws SQLException {
+        SQLException e = new SQLTransientConnectionException();
+
+        DataSource ds = EasyMock.createStrictMock(DataSource.class);
+        EasyMock.expect(ds.getConnection()).andThrow(e);
+        EasyMock.replay(ds);
+
+        SQLQueryFactory exceptionQueryFactory = new SQLQueryFactory(new Configuration(SQLTemplates.DEFAULT), ds);
+        exceptionQueryFactory.getConnection();
+    }
 }
