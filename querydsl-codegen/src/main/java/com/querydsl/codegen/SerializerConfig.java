@@ -50,6 +50,13 @@ public interface SerializerConfig {
     boolean createDefaultVariable();
 
     /**
+     * the static properties for default variable is created
+     *
+     * @return if the static properties for default variable is created
+     */
+    boolean createStaticPropertiesForDefaultVariable();
+
+    /**
      * the name of the default variable
      *
      * @return the name of the default variable

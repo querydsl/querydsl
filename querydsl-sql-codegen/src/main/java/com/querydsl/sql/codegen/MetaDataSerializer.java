@@ -333,7 +333,7 @@ public class MetaDataSerializer extends EntitySerializer {
         if (queryType.getPackageName().startsWith("com.querydsl")) {
             String localRawName = writer.getRawName(field.getType());
             serialize(model, field, queryType, writer, "create" + field.getType().getSimpleName(),
-                    writer.getClassConstant(localRawName));
+                    config, writer.getClassConstant(localRawName));
         } else {
             super.customField(model, field, config, writer);
         }

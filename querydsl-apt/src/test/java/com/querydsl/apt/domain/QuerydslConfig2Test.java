@@ -13,7 +13,10 @@
  */
 package com.querydsl.apt.domain;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -38,6 +41,18 @@ public class QuerydslConfig2Test {
 
     }
 
+    @Config(entityAccessors = true, createDefaultVariableStaticProperties = true)
+    @QueryEntity
+    public static class EntityWithStaticProperties extends Superclass {
+
+        Entity prop1;
+
+        String stringProp;
+
+        List<String> stringProps;
+
+    }
+
     @QueryEntity
     public static class Superclass {
 
@@ -56,9 +71,30 @@ public class QuerydslConfig2Test {
         assertNotNull(QQuerydslConfig2Test_Entity.entity);
     }
 
+    @Test
+    public void testStaticProperties() {
+        assertEquals(QQuerydslConfig2Test_EntityWithStaticProperties.prop1_,
+                QQuerydslConfig2Test_EntityWithStaticProperties.entityWithStaticProperties.prop1);
+
+        assertEquals(QQuerydslConfig2Test_EntityWithStaticProperties.prop2_,
+                QQuerydslConfig2Test_EntityWithStaticProperties.entityWithStaticProperties.prop2);
+
+        assertEquals(QQuerydslConfig2Test_EntityWithStaticProperties.stringProp_,
+                QQuerydslConfig2Test_EntityWithStaticProperties.entityWithStaticProperties.stringProp);
+
+        assertEquals(QQuerydslConfig2Test_EntityWithStaticProperties.stringProps_,
+                QQuerydslConfig2Test_EntityWithStaticProperties.entityWithStaticProperties.stringProps);
+    }
+
     @Test(expected = NoSuchFieldException.class)
     public void create_default_variable() throws SecurityException, NoSuchFieldException {
         QQuerydslConfig2Test_Entity2.class.getField("entity2");
     }
+
+    @Test(expected = NoSuchFieldException.class)
+    public void create_entity_static_properties() throws SecurityException, NoSuchFieldException {
+        QQuerydslConfig2Test_Entity.class.getField("prop1_");
+    }
+
 }
 

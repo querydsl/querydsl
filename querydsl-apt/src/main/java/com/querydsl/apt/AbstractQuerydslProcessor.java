@@ -330,8 +330,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         String typeName = type.toString();
 
         if (typeName.startsWith(Collection.class.getName())
-         || typeName.startsWith(List.class.getName())
-         || typeName.startsWith(Set.class.getName())) {
+                || typeName.startsWith(List.class.getName())
+                || typeName.startsWith(Set.class.getName())) {
             type = ((DeclaredType) type).getTypeArguments().get(0);
 
         } else if (typeName.startsWith(Map.class.getName())) {
@@ -478,7 +478,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     private void validateMetaTypes() {
         @SuppressWarnings("unchecked") // Only concatenated
-        Iterable<? extends EntityType> entityTypes = Iterables.concat(
+                Iterable<? extends EntityType> entityTypes = Iterables.concat(
                 context.supertypes.values(),
                 context.entityTypes.values(),
                 context.extensionTypes.values(),

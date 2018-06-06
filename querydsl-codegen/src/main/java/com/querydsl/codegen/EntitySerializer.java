@@ -213,6 +213,11 @@ public class EntitySerializer implements Serializer {
         } else {
             writer.publicFinal(queryType, field.getEscapedName());
         }
+
+        if (config.createDefaultVariable() && config.createStaticPropertiesForDefaultVariable()) {
+            String staticValue = model.getModifiedSimpleName() + "." + field.getEscapedName();
+            writer.publicStaticFinal(queryType, field.getEscapedName() + "_", staticValue);
+        }
     }
 
     protected boolean hasOwnEntityProperties(EntityType model) {
@@ -619,7 +624,7 @@ public class EntitySerializer implements Serializer {
     }
 
     protected void serialize(EntityType model, Property field, Type type, CodeWriter writer,
-            String factoryMethod, String... args) throws IOException {
+            String factoryMethod, SerializerConfig config, String... args) throws IOException {
         Supertype superType = model.getSuperType();
         // construct value
         StringBuilder value = new StringBuilder();
@@ -643,6 +648,11 @@ public class EntitySerializer implements Serializer {
             writer.publicFinal(type, field.getEscapedName(), value.toString());
         } else {
             writer.publicFinal(type, field.getEscapedName());
+        }
+
+        if (config.createDefaultVariable() && config.createStaticPropertiesForDefaultVariable()) {
+            String staticValue = model.getModifiedSimpleName() + "." + field.getEscapedName();
+            writer.publicStaticFinal(type, field.getEscapedName() + "_", staticValue);
         }
     }
 
@@ -708,39 +718,39 @@ public class EntitySerializer implements Serializer {
 
             switch (property.getType().getCategory()) {
             case STRING:
-                serialize(model, property, queryType, writer, "createString");
+                serialize(model, property, queryType, writer, "createString", config);
                 break;
 
             case BOOLEAN:
-                serialize(model, property, queryType, writer, "createBoolean");
+                serialize(model, property, queryType, writer, "createBoolean", config);
                 break;
 
             case SIMPLE:
-                serialize(model, property, queryType, writer, "createSimple", writer.getClassConstant(localRawName));
+                serialize(model, property, queryType, writer, "createSimple", config, writer.getClassConstant(localRawName));
                 break;
 
             case COMPARABLE:
-                serialize(model, property, queryType, writer, "createComparable", writer.getClassConstant(localRawName));
+                serialize(model, property, queryType, writer, "createComparable", config, writer.getClassConstant(localRawName));
                 break;
 
             case ENUM:
-                serialize(model, property, queryType, writer, "createEnum", writer.getClassConstant(localRawName));
+                serialize(model, property, queryType, writer, "createEnum", config, writer.getClassConstant(localRawName));
                 break;
 
             case DATE:
-                serialize(model, property, queryType, writer, "createDate", writer.getClassConstant(localRawName));
+                serialize(model, property, queryType, writer, "createDate", config, writer.getClassConstant(localRawName));
                 break;
 
             case DATETIME:
-                serialize(model, property, queryType, writer, "createDateTime", writer.getClassConstant(localRawName));
+                serialize(model, property, queryType, writer, "createDateTime", config, writer.getClassConstant(localRawName));
                 break;
 
             case TIME:
-                serialize(model, property, queryType, writer, "createTime", writer.getClassConstant(localRawName));
+                serialize(model, property, queryType, writer, "createTime", config, writer.getClassConstant(localRawName));
                 break;
 
             case NUMERIC:
-                serialize(model, property, queryType, writer, "createNumber", writer.getClassConstant(localRawName));
+                serialize(model, property, queryType, writer, "createNumber", config, writer.getClassConstant(localRawName));
                 break;
 
             case CUSTOM:
@@ -751,7 +761,7 @@ public class EntitySerializer implements Serializer {
                 serialize(model, property, new ClassType(ArrayPath.class,
                         property.getType(),
                         wrap(property.getType().getComponentType())),
-                        writer, "createArray", writer.getClassConstant(localRawName));
+                        writer, "createArray", config, writer.getClassConstant(localRawName));
                 break;
 
             case COLLECTION:
@@ -762,7 +772,7 @@ public class EntitySerializer implements Serializer {
 
                 serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createCollection",
-                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
+                        config, writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
                 break;
 
             case SET:
@@ -773,7 +783,7 @@ public class EntitySerializer implements Serializer {
 
                 serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createSet",
-                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
+                        config, writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
                 break;
 
             case LIST:
@@ -784,7 +794,7 @@ public class EntitySerializer implements Serializer {
 
                 serialize(model, property, new ClassType(ListPath.class, getRaw(property.getParameter(0)), genericQueryType),
                         writer, "this.<" + genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createList",
-                        writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
+                        config, writer.getClassConstant(localRawName), writer.getClassConstant(writer.getRawName(queryType)), inits);
                 break;
 
             case MAP:
@@ -798,7 +808,7 @@ public class EntitySerializer implements Serializer {
                 serialize(model, property, new ClassType(MapPath.class, getRaw(property.getParameter(0)),
                         getRaw(property.getParameter(1)), genericQueryType),
                         writer, "this.<" + genericKey + COMMA + genericValue + COMMA +
-                            writer.getGenericName(true, genericQueryType) + ">createMap",
+                            writer.getGenericName(true, genericQueryType) + ">createMap", config,
                  writer.getClassConstant(keyType), writer.getClassConstant(valueType), writer.getClassConstant(writer.getRawName(queryType)));
                 break;
 

@@ -53,6 +53,11 @@ public @interface Config {
     boolean createDefaultVariable() default true;
 
     /**
+     * Create static properties for default variable in query type
+     */
+    boolean createDefaultVariableStaticProperties() default false;
+
+    /**
      * The name of the default variable in query type
      */
     String defaultVariableName() default "";

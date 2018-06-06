@@ -23,7 +23,7 @@ import com.querydsl.core.annotations.Config;
  */
 public final class SimpleSerializerConfig implements SerializerConfig {
 
-    public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true, "");
+    public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true, false, "");
 
     public static SerializerConfig getConfig(Config annotation) {
         return new SimpleSerializerConfig(
@@ -31,10 +31,11 @@ public final class SimpleSerializerConfig implements SerializerConfig {
                 annotation.listAccessors(),
                 annotation.mapAccessors(),
                 annotation.createDefaultVariable(),
+                annotation.createDefaultVariableStaticProperties(),
                 annotation.defaultVariableName());
     }
 
-    private final boolean entityAccessors, listAccessors, mapAccessors, createDefaultVariable;
+    private final boolean entityAccessors, listAccessors, mapAccessors, createDefaultVariable, createDefaultVariableStaticProperties;
 
     private final String defaultVariableName;
 
@@ -48,6 +49,22 @@ public final class SimpleSerializerConfig implements SerializerConfig {
         this.listAccessors = listAccessors;
         this.mapAccessors = mapAccessors;
         this.createDefaultVariable = createDefaultVariable;
+        this.createDefaultVariableStaticProperties = false;
+        this.defaultVariableName = defaultVariableName;
+    }
+
+  public SimpleSerializerConfig(
+            boolean entityAccessors,
+            boolean listAccessors,
+            boolean mapAccessors,
+            boolean createDefaultVariable,
+            boolean createDefaultVariableStaticProperties,
+            String defaultVariableName) {
+        this.entityAccessors = entityAccessors;
+        this.listAccessors = listAccessors;
+        this.mapAccessors = mapAccessors;
+        this.createDefaultVariable = createDefaultVariable;
+        this.createDefaultVariableStaticProperties = createDefaultVariableStaticProperties;
         this.defaultVariableName = defaultVariableName;
     }
 
@@ -69,6 +86,11 @@ public final class SimpleSerializerConfig implements SerializerConfig {
     @Override
     public boolean createDefaultVariable() {
         return createDefaultVariable;
+    }
+
+    @Override
+    public boolean createStaticPropertiesForDefaultVariable() {
+        return createDefaultVariableStaticProperties;
     }
 
     @Override
