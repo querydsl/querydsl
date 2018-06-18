@@ -11,20 +11,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.apt;
+
+package com.querydsl.codegen;
 
 import java.util.Map;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.model.SimpleType;
-import com.querydsl.codegen.AbstractModule;
-import com.querydsl.codegen.CodegenModule;
-import com.querydsl.codegen.TypeMappings;
 
-final class SpatialSupport {
+/**
+ * Registers spatial paths for both geolatte and JTS. Registration can be done either to an
+ * {@link AbstractModule} or directly to {@link TypeMappings}.
+ *
+ */
+public final class SpatialSupport {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpatialSupport.class);
 
     private static void registerTypes(TypeMappings typeMappings) {
         Map<String, String> additions = Maps.newHashMap();
@@ -39,9 +47,8 @@ final class SpatialSupport {
         additions.put("Polygon", "PolygonPath");
         additions.put("PolyHedralSurface", "PolyhedralSurfacePath");
         for (Map.Entry<String, String> entry : additions.entrySet()) {
-            typeMappings.register(
-                    new SimpleType("org.geolatte.geom." + entry.getKey()),
-                    new SimpleType("com.querydsl.spatial." + entry.getValue()));
+            typeMappings.register(new SimpleType("org.geolatte.geom." + entry.getKey()),
+                                  new SimpleType("com.querydsl.spatial." + entry.getValue()));
         }
     }
 
@@ -57,9 +64,8 @@ final class SpatialSupport {
         additions.put("Point", "JTSPointPath");
         additions.put("Polygon", "JTSPolygonPath");
         for (Map.Entry<String, String> entry : additions.entrySet()) {
-            typeMappings.register(
-                    new SimpleType("com.vividsolutions.jts.geom." + entry.getKey()),
-                    new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
+            typeMappings.register(new SimpleType("com.vividsolutions.jts.geom." + entry.getKey()),
+                                  new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
         }
     }
 
@@ -77,12 +83,45 @@ final class SpatialSupport {
         module.bind(CodegenModule.IMPORTS, imports);
     }
 
-    public static void addSupport(AbstractModule module) {
-        registerTypes(module.get(TypeMappings.class));
-        addImports(module,"com.querydsl.spatial.path");
-        registerJTSTypes(module.get(TypeMappings.class));
-        addImports(module,"com.querydsl.spatial.jts.path");
+    /**
+     * Registers support for spatial path mappings. Does nothing, if spatial module is not on the classpath.
+     *
+     * @param typeMappings
+     *        the type mappings
+     */
+    public static void addSupport(TypeMappings typeMappings) {
+        if (isSpatialOnClassPath()) {
+            registerTypes(typeMappings);
+            registerJTSTypes(typeMappings);
+        }
     }
 
-    private SpatialSupport() { }
+    /**
+     * Adds support for spatial path mappings. Does nothing, if spatial module is not on the classpath.
+     *
+     * @param module
+     *        the module
+     */
+    public static void addSupport(AbstractModule module) {
+        if (isSpatialOnClassPath()) {
+            addSupport(module.get(TypeMappings.class));
+            addImports(module, "com.querydsl.spatial.path");
+            addImports(module, "com.querydsl.spatial.jts.path");
+        }
+    }
+
+    public static boolean isSpatialOnClassPath() {
+        try {
+            // register additional mappings if querydsl-spatial is on the classpath
+            Class.forName("com.querydsl.spatial.GeometryExpression");
+            return true;
+        } catch (Exception e) {
+            LOGGER.warn("Spatial module not found on classpath! Skip register spatial types.");
+            return false;
+        }
+
+    }
+
+    private SpatialSupport() {
+    }
 }

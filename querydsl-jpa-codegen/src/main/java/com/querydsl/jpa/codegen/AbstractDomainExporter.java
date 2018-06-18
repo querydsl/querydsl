@@ -90,6 +90,8 @@ public abstract class AbstractDomainExporter {
 
     private Function<EntityType, String> variableNameFunction;
 
+    private boolean spatial;
+
     @SuppressWarnings("unchecked")
     public AbstractDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             SerializerConfig serializerConfig, Charset charset) {
@@ -108,6 +110,10 @@ public abstract class AbstractDomainExporter {
         this.variableNameFunction = module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS);
     }
 
+    public void setSpatial(boolean spatial) {
+        this.spatial = spatial;
+    }
+
     /**
      * Export the contents
      *
@@ -117,6 +123,9 @@ public abstract class AbstractDomainExporter {
         // collect types
         try {
             collectTypes();
+            if (spatial) {
+                SpatialSupport.addSupport(typeMappings);
+            }
         } catch (Exception e) {
             throw new QueryException(e);
         }

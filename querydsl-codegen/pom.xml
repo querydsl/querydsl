@@ -45,6 +45,11 @@
       <version>0.9.9</version>
     </dependency>
     
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    
     <!-- test -->    
     <dependency>
       <groupId>com.querydsl</groupId>
