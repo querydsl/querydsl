@@ -124,7 +124,7 @@ public abstract class AbstractDomainExporter {
         try {
             collectTypes();
             if (spatial) {
-                SpatialSupport.addSupport(typeMappings);
+                SpatialTypeMapper.addSpatialTypeMappings(typeMappings);
             }
         } catch (Exception e) {
             throw new QueryException(e);

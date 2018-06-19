@@ -30,9 +30,9 @@ import com.mysema.codegen.model.SimpleType;
  * {@link AbstractModule} or directly to {@link TypeMappings}.
  *
  */
-public final class SpatialSupport {
+public final class SpatialTypeMapper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpatialSupport.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpatialTypeMapper.class);
 
     private static void registerTypes(TypeMappings typeMappings) {
         Map<String, String> additions = Maps.newHashMap();
@@ -89,7 +89,7 @@ public final class SpatialSupport {
      * @param typeMappings
      *        the type mappings
      */
-    public static void addSupport(TypeMappings typeMappings) {
+    public static void addSpatialTypeMappings(TypeMappings typeMappings) {
         if (isSpatialOnClassPath()) {
             registerTypes(typeMappings);
             registerJTSTypes(typeMappings);
@@ -102,9 +102,9 @@ public final class SpatialSupport {
      * @param module
      *        the module
      */
-    public static void addSupport(AbstractModule module) {
+    public static void addSpatialTypeMappings(AbstractModule module) {
         if (isSpatialOnClassPath()) {
-            addSupport(module.get(TypeMappings.class));
+            addSpatialTypeMappings(module.get(TypeMappings.class));
             addImports(module, "com.querydsl.spatial.path");
             addImports(module, "com.querydsl.spatial.jts.path");
         }
@@ -122,6 +122,6 @@ public final class SpatialSupport {
 
     }
 
-    private SpatialSupport() {
+    private SpatialTypeMapper() {
     }
 }

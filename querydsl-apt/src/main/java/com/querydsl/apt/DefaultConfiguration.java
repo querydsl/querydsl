@@ -205,8 +205,12 @@ public class DefaultConfiguration implements Configuration {
         }
         module.bind(CodegenModule.VARIABLE_NAME_FUNCTION_CLASS, variableNameFunction);
 
-        if (SpatialSupport.isSpatialOnClassPath()) {
+        try {
+            // register additional mappings if querydsl-spatial is on the classpath
+            Class.forName("com.querydsl.spatial.GeometryExpression");
             SpatialSupport.addSupport(module);
+        } catch (Exception e) {
+            // do nothing
         }
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
