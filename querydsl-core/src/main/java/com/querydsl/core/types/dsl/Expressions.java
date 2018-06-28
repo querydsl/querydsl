@@ -1895,6 +1895,18 @@ public final class Expressions {
                     return this.mixin.accept(v, context);
                 }
 
+                @Override
+                public boolean equals(Object o) {
+                    if (o == this) {
+                        return true;
+                    } else if (o instanceof BooleanExpression) {
+                        BooleanExpression other = (BooleanExpression) o;
+                        return (other.mixin.equals(this.mixin));
+                    } else {
+                        return false;
+                    }
+                }
+
             };
         }
     }
@@ -1931,6 +1943,18 @@ public final class Expressions {
                 @Override
                 public <R, C> R accept(Visitor<R, C> v, C context) {
                     return this.mixin.accept(v, context);
+                }
+
+                @Override
+                public boolean equals(Object o) {
+                    if (o == this) {
+                        return true;
+                    } else if (o instanceof ComparableExpression) {
+                        ComparableExpression other = (ComparableExpression) o;
+                        return (other.mixin.equals(this.mixin));
+                    } else {
+                        return false;
+                    }
                 }
 
             };
@@ -2088,6 +2112,18 @@ public final class Expressions {
                     return this.mixin.accept(v, context);
                 }
 
+                @Override
+                public boolean equals(Object o) {
+                    if (o == this) {
+                        return true;
+                    } else if (o instanceof EnumExpression) {
+                        EnumExpression other = (EnumExpression) o;
+                        return (other.mixin.equals(this.mixin));
+                    } else {
+                        return false;
+                    }
+                }
+
             };
         }
 
@@ -2125,6 +2161,18 @@ public final class Expressions {
                 @Override
                 public <R, C> R accept(Visitor<R, C> v, C context) {
                     return this.mixin.accept(v, context);
+                }
+
+                @Override
+                public boolean equals(Object o) {
+                    if (o == this) {
+                        return true;
+                    } else if (o instanceof NumberExpression) {
+                        NumberExpression other = (NumberExpression) o;
+                        return (other.mixin.equals(this.mixin));
+                    } else {
+                        return false;
+                    }
                 }
 
             };
@@ -2165,6 +2213,17 @@ public final class Expressions {
                     return this.mixin.accept(v, context);
                 }
 
+                @Override
+                public boolean equals(Object o) {
+                    if (o == this) {
+                        return true;
+                    } else if (o instanceof StringExpression) {
+                        StringExpression other = (StringExpression) o;
+                        return (other.mixin.equals(this.mixin));
+                    } else {
+                        return false;
+                    }
+                }
             };
         }
     }
