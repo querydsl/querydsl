@@ -58,7 +58,7 @@ class EclipseLinkHandler implements QueryHandler {
         boolean canUseCursor = false;
         try {
             canUseCursor = query.unwrap(Query.class) instanceof JpaQuery;
-        } catch (PersistenceException e) {} // can't unwrap, just ignore the exception
+        } catch (PersistenceException e) { } // can't unwrap, just ignore the exception
 
         Iterator<T> iterator = null;
         Closeable closeable = null;
@@ -74,7 +74,7 @@ class EclipseLinkHandler implements QueryHandler {
             };
             iterator = new Iterator<T>() {
                 private int rowsSinceLastClear = 0;
-                
+
                 @Override
                 public boolean hasNext() {
                     return cursor.hasNext();
