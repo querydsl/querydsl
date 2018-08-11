@@ -322,12 +322,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 append("(");
             }
             append("?");
-            if (!getConstantToLabel().containsKey(constant)) {
-                final String constLabel = String.valueOf(getConstantToLabel().size() + 1);
-                getConstantToLabel().put(constant, constLabel);
-                append(constLabel);
+            if (!getConstantToAllLabels().containsKey(constant)) {
+                final Integer constLabel = getConstantToNumberedLabel().size() + 1;
+                getConstantToNumberedLabel().put(constant, constLabel);
+                append(constLabel.toString());
             } else {
-                append(getConstantToLabel().get(constant));
+                append(getConstantToAllLabels().get(constant));
             }
             if (wrap) {
                 append(")");
@@ -342,12 +342,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     @Override
     public Void visit(ParamExpression<?> param, Void context) {
         append("?");
-        if (!getConstantToLabel().containsKey(param)) {
-            final String paramLabel = String.valueOf(getConstantToLabel().size() + 1);
-            getConstantToLabel().put(param, paramLabel);
-            append(paramLabel);
+        if (!getConstantToAllLabels().containsKey(param)) {
+            final Integer paramLabel = getConstantToNumberedLabel().size() + 1;
+            getConstantToNumberedLabel().put(param, paramLabel);
+            append(paramLabel.toString());
         } else {
-            append(getConstantToLabel().get(param));
+            append(getConstantToAllLabels().get(param));
         }
         return null;
     }

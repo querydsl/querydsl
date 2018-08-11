@@ -15,12 +15,8 @@ package com.querydsl.jpa.hibernate;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import com.google.common.primitives.Ints;
 import org.hibernate.Query;
 import org.hibernate.type.*;
 
@@ -34,7 +30,6 @@ import com.querydsl.core.types.dsl.Param;
  * {@code HibernateUtil} provides static utility methods for Hibernate
  *
  * @author tiwe
- *
  */
 public final class HibernateUtil {
 
@@ -64,11 +59,24 @@ public final class HibernateUtil {
         TYPES = builder.build();
     }
 
-    private HibernateUtil() { }
+    private HibernateUtil() {
+    }
 
-    public static void setConstants(Query query, Map<Object,String> constants,
-            Map<ParamExpression<?>, Object> params) {
-        for (Map.Entry<Object, String> entry : constants.entrySet()) {
+    public static void setConstants(
+            Query query,
+            Map<Object, String> namedConstants,
+            Map<ParamExpression<?>, Object> params
+    ) {
+        setConstants(query, namedConstants, new HashMap<Object, Integer>(), params);
+    }
+
+    public static void setConstants(
+            Query query,
+            Map<Object, String> namedConstants,
+            Map<Object, Integer> numberedConstants,
+            Map<ParamExpression<?>, Object> params
+    ) {
+        for (Map.Entry<Object, String> entry : namedConstants.entrySet()) {
             String key = entry.getValue();
             Object val = entry.getKey();
             if (Param.class.isInstance(val)) {
@@ -78,32 +86,43 @@ public final class HibernateUtil {
                 }
             }
 
-            setValue(query, key, val);
+            setValueWithNamedLabel(query, key, val);
+        }
+
+        for (Map.Entry<Object, Integer> entry : numberedConstants.entrySet()) {
+            Integer key = entry.getValue();
+            Object val = entry.getKey();
+            if (Param.class.isInstance(val)) {
+                val = params.get(val);
+                if (val == null) {
+                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                }
+            }
+
+            setValueWithNumberedLabel(query, key, val);
         }
     }
 
-    private static void setValue(Query query, String key, Object val) {
+    private static void setValueWithNamedLabel(Query query, String key, Object val) {
         if (val instanceof Collection<?>) {
             query.setParameterList(key, (Collection<?>) val);
         } else if (val instanceof Object[] && !BUILT_IN.contains(val.getClass())) {
             query.setParameterList(key, (Object[]) val);
+        } else if (val instanceof Number && TYPES.containsKey(val.getClass())) {
+            query.setParameter(key, val, getType(val.getClass()));
         } else {
-            Integer numberedKey = Ints.tryParse(key);
-            if (numberedKey != null) {
-                if (val instanceof Number && TYPES.containsKey(val.getClass())) {
-                    query.setParameter(numberedKey, val, getType(val.getClass()));
-                } else {
-                    query.setParameter(numberedKey, val);
-                }
-            } else {
-                if (val instanceof Number && TYPES.containsKey(val.getClass())) {
-                    query.setParameter(key, val, getType(val.getClass()));
-                } else {
-                    query.setParameter(key, val);
-                }
-            }
+            query.setParameter(key, val);
         }
     }
+
+    private static void setValueWithNumberedLabel(Query query, Integer key, Object val) {
+        if (val instanceof Number && TYPES.containsKey(val.getClass())) {
+            query.setParameter(key, val, getType(val.getClass()));
+        } else {
+            query.setParameter(key, val);
+        }
+    }
+
 
     public static Type getType(Class<?> clazz) {
         return TYPES.get(clazz);

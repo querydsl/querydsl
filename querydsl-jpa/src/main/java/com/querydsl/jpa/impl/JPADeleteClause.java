@@ -60,7 +60,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause> {
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
         serializer.serializeForDelete(queryMixin.getMetadata());
-        Map<Object,String> constants = serializer.getConstantToLabel();
+        Map<Object,String> constants = serializer.getConstantToAllLabels();
 
         Query query = entityManager.createQuery(serializer.toString());
         if (lockMode != null) {

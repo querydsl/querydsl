@@ -93,6 +93,11 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     @Override
     public Map<Object,String> getConstantToLabel() {
+        return getConstantToAllLabels();
+    }
+
+    @Override
+    public Map<Object,String> getConstantToAllLabels() {
         return constantToLabel.peek();
     }
 
@@ -188,7 +193,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
 
         // parameters
-        if (!getConstantToLabel().isEmpty()) {
+        if (!getConstantToAllLabels().isEmpty()) {
             insert(position, serializeParameters(metadata.getParams()));
         }
 
@@ -213,7 +218,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         final StringBuilder b = new StringBuilder();
         b.append(PARAMETERS);
         boolean first = true;
-        final List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
+        final List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToAllLabels().entrySet());
         Collections.sort(entries, comparator);
         for (Map.Entry<Object, String> entry : entries) {
             if (!first) {

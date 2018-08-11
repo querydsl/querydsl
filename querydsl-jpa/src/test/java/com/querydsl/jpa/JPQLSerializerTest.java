@@ -139,7 +139,7 @@ public class JPQLSerializerTest {
         serializer.handle(doublePath.add(1));
         serializer.handle(doublePath.between((float) 1.0, 1L));
         serializer.handle(doublePath.lt((byte) 1));
-        for (Object constant : serializer.getConstantToLabel().keySet()) {
+        for (Object constant : serializer.getConstantToAllLabels().keySet()) {
             assertEquals(Double.class, constant.getClass());
         }
     }
@@ -193,7 +193,7 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.handle(Expressions.stringPath("str").contains("abc!"));
         assertEquals("str like ?1 escape '!'", serializer.toString());
-        assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
+        assertEquals("%abc!!%", serializer.getConstantToAllLabels().keySet().iterator().next().toString());
     }
 
     @Test
@@ -201,7 +201,7 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.handle(Expressions.stringPath("str").containsIgnoreCase("ABc!"));
         assertEquals("lower(str) like ?1 escape '!'", serializer.toString());
-        assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
+        assertEquals("%abc!!%", serializer.getConstantToAllLabels().keySet().iterator().next().toString());
     }
 
     @Test
