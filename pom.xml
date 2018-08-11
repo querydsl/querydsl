@@ -590,7 +590,7 @@
     <profile>
       <id>hibernate5</id>
       <properties>
-        <hibernate.version>5.0.5.Final</hibernate.version>
+        <hibernate.version>5.3.4.Final</hibernate.version>
         <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
       </properties>
     </profile>

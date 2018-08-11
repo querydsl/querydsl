@@ -44,6 +44,18 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
     }
 
     @Test
+    public void find_list_by_predicate_with_hibernate() {
+        User poster = new User("dr_frank");
+        userRepository.save(poster);
+
+        repository.save(new Tweet(poster, "It is a alive! #YOLO", Collections.<User>emptyList(), null));
+        repository.save(new Tweet(poster, "Oh the humanity!", Collections.<User>emptyList(), null));
+        repository.save(new Tweet(poster, "#EpicFail", Collections.<User>emptyList(), null));
+        assertEquals(1, repository.findAllWithHibernateQuery(tweet.content.contains("#YOLO")).size());
+    }
+
+
+    @Test
     public void find_list_by_complex_predicate() {
         List<String> usernames = Lists.newArrayList("dr_frank", "mike", "maggie", "liza");
         List<User> users = Lists.newArrayList();

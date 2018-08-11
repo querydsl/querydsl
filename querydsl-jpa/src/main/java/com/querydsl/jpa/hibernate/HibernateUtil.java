@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.primitives.Ints;
 import org.hibernate.Query;
 import org.hibernate.type.*;
 
@@ -76,6 +77,7 @@ public final class HibernateUtil {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
                 }
             }
+
             setValue(query, key, val);
         }
     }
@@ -85,10 +87,21 @@ public final class HibernateUtil {
             query.setParameterList(key, (Collection<?>) val);
         } else if (val instanceof Object[] && !BUILT_IN.contains(val.getClass())) {
             query.setParameterList(key, (Object[]) val);
-        } else if (val instanceof Number && TYPES.containsKey(val.getClass())) {
-            query.setParameter(key, val, getType(val.getClass()));
         } else {
-            query.setParameter(key, val);
+            Integer numberedKey = Ints.tryParse(key);
+            if (numberedKey != null) {
+                if (val instanceof Number && TYPES.containsKey(val.getClass())) {
+                    query.setParameter(numberedKey, val, getType(val.getClass()));
+                } else {
+                    query.setParameter(numberedKey, val);
+                }
+            } else {
+                if (val instanceof Number && TYPES.containsKey(val.getClass())) {
+                    query.setParameter(key, val, getType(val.getClass()));
+                } else {
+                    query.setParameter(key, val);
+                }
+            }
         }
     }
 
