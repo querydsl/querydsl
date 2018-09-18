@@ -24,6 +24,7 @@
     <module>querydsl-example-sql-spring</module>
     <module>querydsl-example-sql-guice</module>
     <module>querydsl-example-jpa-guice</module>
+    <module>querydsl-example-jpa-springboot</module>
   </modules>
 
   <build>
