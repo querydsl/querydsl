@@ -24,6 +24,6 @@ public class UserRepositoryTest extends BaseTest {
     @Test
     public void get_all() {
         repository.save(new User("jimmy"));
-        assertTrue(repository.all().size() > 0);
+        assertTrue(repository.all().size() == 1);
     }
 }
