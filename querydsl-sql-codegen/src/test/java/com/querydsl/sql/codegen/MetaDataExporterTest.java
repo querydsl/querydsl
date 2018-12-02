@@ -15,17 +15,24 @@ package com.querydsl.sql.codegen;
 
 import static org.junit.Assert.*;
 
+import com.google.common.base.Function;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.sql.*;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.tools.JavaCompiler;
 
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
+import com.mysema.codegen.CodeWriter;
+import com.mysema.codegen.ScalaWriter;
 import com.mysema.codegen.SimpleCompiler;
+import com.mysema.codegen.model.Parameter;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.core.util.FileUtils;
 
@@ -318,6 +325,48 @@ public class MetaDataExporterTest {
         assertTrue(new File(folder.getRoot(), "beans/test/DateTestBean.java").exists());
     }
 
+    @Test
+    public void minimal_configuration_with_custom_file_suffix() throws SQLException, IOException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setPackageName("test");
+        exporter.setNamePrefix("");
+        exporter.setBeanSuffix("Bean");
+        exporter.setBeanSerializer(new BeanSerializer());
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.setBeansTargetFolder(folder.newFolder("beans"));
+        exporter.setCustomFileSuffix(".java2");
+        exporter.export(metadata);
+
+        assertTrue(new File(folder.getRoot(), "test/DateTest.java2").exists());
+        assertTrue(new File(folder.getRoot(), "beans/test/DateTestBean.java2").exists());
+    }
+
+    @Test
+    public void minimal_configuration_with_custom_code_writer() throws SQLException, IOException {
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setPackageName("test");
+        exporter.setNamePrefix("");
+        exporter.setBeanSuffix("Bean");
+        exporter.setBeanSerializer(new BeanSerializer());
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.setBeansTargetFolder(folder.newFolder("beans"));
+        exporter.setCustomCodeWriter(new Function<Writer, CodeWriter>() {
+            @Override
+            public CodeWriter apply(@Nullable Writer writer) {
+                return new CustomScalaCodeWriter(writer);
+            }
+        });
+        try {
+            exporter.export(metadata);
+        } catch (CustomCodeWriterException ccwe) {
+            // expected
+            return;
+        }
+        fail(String.format("Should have thrown a %s", CustomCodeWriterException.class));
+    }
+
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
             NamingStrategy namingStrategy, File targetDir, boolean withBeans,
             boolean withInnerClasses, boolean withOrdinalPositioning) throws SQLException {
@@ -360,4 +409,18 @@ public class MetaDataExporterTest {
         }
     }
 
+    private static final class CustomScalaCodeWriter extends ScalaWriter {
+        public CustomScalaCodeWriter(Appendable appendable) {
+            super(appendable);
+        }
+
+        @Override
+        public ScalaWriter beginConstructor(Parameter... params) throws IOException {
+            throw new CustomCodeWriterException();
+        }
+    }
+
+    private static final class CustomCodeWriterException extends RuntimeException {
+
+    }
 }

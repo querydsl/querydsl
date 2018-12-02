@@ -16,6 +16,7 @@ package com.querydsl.sql.codegen;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -120,6 +121,10 @@ public class MetaDataExporter {
 
     private boolean spatial = false;
 
+    private Function<Writer, CodeWriter> customCodeWriter;
+
+    private String customFileSuffix;
+
     @Nullable
     private String tableTypesToExport;
 
@@ -200,6 +205,9 @@ public class MetaDataExporter {
         beanSerializer = module.get(Serializer.class, SQLCodegenModule.BEAN_SERIALIZER);
         namingStrategy = module.get(NamingStrategy.class);
         configuration = module.get(Configuration.class);
+        customFileSuffix = module.get(String.class, SQLCodegenModule.CUSTOM_FILE_SUFFIX);
+        //noinspection unchecked
+        customCodeWriter = module.get(Function.class, SQLCodegenModule.CUSTOM_CODE_WRITER);
 
         SQLTemplates templates = sqlTemplatesRegistry.getTemplates(md);
         if (templates != null) {
@@ -405,7 +413,7 @@ public class MetaDataExporter {
 
     private void serialize(EntityType type, SchemaAndTable schemaAndTable) {
         try {
-            String fileSuffix = createScalaSources ? ".scala" : ".java";
+            String fileSuffix = customFileSuffix != null ? customFileSuffix : (createScalaSources ? ".scala" : ".java");
 
             if (beanSerializer != null) {
                 String packageName = normalizePackage(beanPackageName, schemaAndTable);
@@ -431,7 +439,7 @@ public class MetaDataExporter {
                     targetFile.getPath() + ", please check your configuration");
         }
         StringWriter w = new StringWriter();
-        CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
+        CodeWriter writer = customCodeWriter != null ? customCodeWriter.apply(w) : (createScalaSources ? new ScalaWriter(w) : new JavaWriter(w));
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, writer);
 
         // conditional creation
@@ -772,6 +780,23 @@ public class MetaDataExporter {
      */
     public void setTableTypesToExport(String tableTypesToExport) {
         this.tableTypesToExport = tableTypesToExport;
+    }
+
+
+    /**
+     * Set a custom CodeWriter to use. (i.e. a KotlinCodeWriter)
+     * @param customCodeWriter
+     */
+    public void setCustomCodeWriter(Function<Writer, CodeWriter> customCodeWriter) {
+        this.module.bind(SQLCodegenModule.CUSTOM_CODE_WRITER, customCodeWriter);
+    }
+
+    /**
+     * Set a custom file suffix (i.e. '.kt')
+     * @param customFileSuffix
+     */
+    public void setCustomFileSuffix(String customFileSuffix) {
+        this.module.bind(SQLCodegenModule.CUSTOM_FILE_SUFFIX, customFileSuffix);
     }
 
 }

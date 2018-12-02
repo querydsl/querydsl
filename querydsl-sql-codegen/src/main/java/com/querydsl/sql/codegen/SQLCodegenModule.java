@@ -48,6 +48,10 @@ public class SQLCodegenModule extends CodegenModule {
 
     public static final String COLUMN_COMPARATOR = "columnComparator";
 
+    public static final String CUSTOM_CODE_WRITER = "customCodeWriter";
+
+    public static final String CUSTOM_FILE_SUFFIX = "customFileSuffix";
+
     @Override
     protected void configure() {
         super.configure();
@@ -66,6 +70,8 @@ public class SQLCodegenModule extends CodegenModule {
         bind(SCHEMA_TO_PACKAGE, false);
         bindInstance(ENTITYPATH_TYPE, RelationalPathBase.class);
         bind(COLUMN_COMPARATOR, null);
+        bind(CUSTOM_CODE_WRITER, null);
+        bind(CUSTOM_FILE_SUFFIX, null);
     }
 
     public String getPrefix() {
