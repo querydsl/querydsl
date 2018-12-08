@@ -28,6 +28,7 @@ import javax.tools.JavaCompiler;
 import javax.validation.constraints.NotNull;
 
 import com.querydsl.core.util.ReflectionUtils;
+import com.querydsl.sql.Connections;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
@@ -156,6 +157,7 @@ public class MetaDataExporterTest {
     @Test
     public void explicit_configuration() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setCatalogPattern("%TESTDB%");
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
         exporter.setPackageName("test");
@@ -374,6 +376,47 @@ public class MetaDataExporterTest {
 
         assertTrue(new File(folder.getRoot(), "test/DateTest.java").exists());
         assertTrue(new File(folder.getRoot(), "beans/test/DateTestBean.java").exists());
+    }
+
+    @Test
+    public void catalog_pattern() throws SQLException, IOException, ClassNotFoundException {
+        Connections.initMySQL();
+        Connection connection = Connections.getConnection();
+        Statement stmt = Connections.getStatement();
+        try {
+            stmt.execute("CREATE DATABASE IF NOT EXISTS catalog_test_one");
+            stmt.execute("CREATE TABLE IF NOT EXISTS catalog_test_one.test_catalog_table_one(id INT PRIMARY KEY, foo VARCHAR(32) NOT NULL)");
+            stmt.execute("CREATE DATABASE IF NOT EXISTS catalog_test_two");
+            stmt.execute("CREATE TABLE IF NOT EXISTS catalog_test_two.test_catalog_table_two(id INT PRIMARY KEY, foo VARCHAR(32) NOT NULL)");
+
+            MetaDataExporter exporter = new MetaDataExporter();
+            exporter.setSchemaPattern("PUBLIC");
+            exporter.setCatalogPattern("catalog_test_one");
+            exporter.setPackageName("test");
+            exporter.setNamePrefix("");
+            exporter.setBeanSuffix("Bean");
+            exporter.setBeanSerializer(new BeanSerializer());
+            exporter.setTargetFolder(folder.getRoot());
+            exporter.setBeansTargetFolder(folder.newFolder("beans"));
+
+            exporter.export(connection.getMetaData());
+            assertTrue(new File(folder.getRoot(), "test/TestCatalogTableOne.java").exists());
+            assertTrue(new File(folder.getRoot(), "beans/test/TestCatalogTableOneBean.java").exists());
+
+            assertFalse(new File(folder.getRoot(), "test/TestCatalogTableTwo.java").exists());
+            assertFalse(new File(folder.getRoot(), "beans/test/TestCatalogTableTwoBean.java").exists());
+
+            exporter.setCatalogPattern("catalog_test_two");
+            exporter.export(connection.getMetaData());
+
+            assertTrue(new File(folder.getRoot(), "test/TestCatalogTableTwo.java").exists());
+            assertTrue(new File(folder.getRoot(), "beans/test/TestCatalogTableTwoBean.java").exists());
+        } finally {
+            stmt.execute("DROP DATABASE IF EXISTS catalog_test_one");
+            stmt.execute("DROP DATABASE IF EXISTS catalog_test_two");
+            stmt.close();
+            Connections.close();
+        }
     }
 
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
