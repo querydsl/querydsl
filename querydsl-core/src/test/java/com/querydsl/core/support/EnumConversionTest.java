@@ -11,7 +11,14 @@ import com.querydsl.core.types.dsl.StringPath;
 
 public class EnumConversionTest {
 
-    public enum Color { GREEN, BLUE, RED, YELLOW, BLACK, WHITE }
+    public enum Color { GREEN, BLUE, RED, YELLOW, B, W }
+
+    @Test
+    public void nameForCharacter() {
+        EnumPath<Color> color = Expressions.enumPath(Color.class, "path");
+        EnumConversion<Color> conv = new EnumConversion<Color>(color);
+        assertEquals(Color.W, conv.newInstance('W'));
+    }
 
     @Test
     public void name() {
