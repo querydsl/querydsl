@@ -58,9 +58,9 @@ public class EnumConversion<T> extends FactoryExpressionBase<T> {
     @Override
     public T newInstance(Object... args) {
         if (args[0] != null) {
-            if (args[0] instanceof String) {
+            if (args[0] instanceof String || args[0] instanceof Character) {
                 @SuppressWarnings("unchecked") //The expression type is an enum
-                T rv = (T) Enum.valueOf(getType().asSubclass(Enum.class), (String) args[0]);
+                T rv = (T) Enum.valueOf(getType().asSubclass(Enum.class), (String) args[0].toString());
                 return rv;
             } else if (args[0] instanceof Number) {
                 return values[((Number) args[0]).intValue()];
