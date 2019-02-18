@@ -17,7 +17,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * {@code JTSPolygonOperation} extends {@link JTSPolygonExpression} to implement the

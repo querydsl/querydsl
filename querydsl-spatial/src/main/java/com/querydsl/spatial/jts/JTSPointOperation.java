@@ -17,7 +17,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Point;
 
 /**
  * {@code JTSPointOperation} extends {@link JTSPointExpression} to implement the

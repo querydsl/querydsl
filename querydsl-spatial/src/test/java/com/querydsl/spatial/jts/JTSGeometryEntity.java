@@ -1,7 +1,7 @@
 package com.querydsl.spatial.jts;
 
 import com.querydsl.core.annotations.QueryEntity;
-import com.vividsolutions.jts.geom.*;
+import org.locationtech.jts.geom.*;
 
 @QueryEntity
 public class JTSGeometryEntity {

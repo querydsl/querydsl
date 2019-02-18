@@ -14,7 +14,7 @@
 package com.querydsl.spatial.jts;
 
 import com.querydsl.core.types.Expression;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * A LinearRing is a LineString that is both closed and simple.

@@ -19,7 +19,7 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.spatial.SpatialOps;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Geometry is the root class of the hierarchy. Geometry is an abstract (non-instantiable) class.

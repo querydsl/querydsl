@@ -16,7 +16,7 @@ package com.querydsl.spatial.jts;
 import java.lang.reflect.AnnotatedElement;
 
 import com.querydsl.core.types.*;
-import com.vividsolutions.jts.geom.LinearRing;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * {@code JTSLinearRingPath} extends {@link JTSLinearRingExpression} to implement the

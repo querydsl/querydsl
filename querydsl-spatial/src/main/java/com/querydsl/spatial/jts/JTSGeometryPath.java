@@ -16,7 +16,7 @@ package com.querydsl.spatial.jts;
 import java.lang.reflect.AnnotatedElement;
 
 import com.querydsl.core.types.*;
-import com.vividsolutions.jts.geom.*;
+import org.locationtech.jts.geom.*;
 
 /**
  * {@code JTSGeometryPath} extends {@link JTSGeometryExpression} to implement the

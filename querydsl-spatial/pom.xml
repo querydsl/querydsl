@@ -25,7 +25,7 @@
     <dependency>
       <groupId>org.geolatte</groupId>
       <artifactId>geolatte-geom</artifactId>
-      <version>0.13</version>
+      <version>1.4.0</version>
     </dependency>
 
     <!--test -->
