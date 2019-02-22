@@ -69,6 +69,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final String UPDATE = "update ";
 
+    private static final String INSERT = "insert into ";
+
     private static final String WHERE = "\nwhere ";
 
     private static final String WITH = " with ";
@@ -256,6 +258,25 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         if (md.getWhere() != null) {
             append(WHERE).handle(md.getWhere());
         }
+    }
+
+    public void serializeForInsert(QueryMetadata md, List<Path<?>> columns, SubQueryExpression<?> query) {
+        append(INSERT);
+        JoinExpression je = md.getJoins().get(0);
+        final EntityPath<?> pe = (EntityPath<?>) je.getTarget();
+        append(pe.toString());
+        //handleJoinTarget(je);
+        append(" (");
+        boolean first = true;
+        for (Path<?> path : columns) {
+            if (!first) {
+                append(", ");
+            }
+            handle(path);
+            first = false;
+        }
+        append(")\n");
+        serialize(query.getMetadata(), false, null);
     }
 
     public void serializeForUpdate(QueryMetadata md, Map<Path<?>, Expression<?>> updates) {
