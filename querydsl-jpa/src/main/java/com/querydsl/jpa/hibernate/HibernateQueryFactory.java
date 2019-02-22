@@ -114,7 +114,7 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
     public HibernateUpdateClause update(EntityPath<?> path) {
         return new HibernateUpdateClause(session.get(), path, templates);
     }
-    
+
     @Override
     public HibernateInsertClause insert(EntityPath<?> path) {
         return new HibernateInsertClause(session.get(), path, templates);
