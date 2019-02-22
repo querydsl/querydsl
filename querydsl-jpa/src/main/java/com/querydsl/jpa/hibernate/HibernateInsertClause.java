@@ -24,22 +24,17 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.InsertClause;
-import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPAQueryMixin;
 import com.querydsl.jpa.JPQLSerializer;
 import com.querydsl.jpa.JPQLTemplates;
-import com.querydsl.jpa.impl.JPAInsertClause;
 
 /**
  * UpdateClause implementation for Hibernate
@@ -96,15 +91,13 @@ public class HibernateInsertClause implements
     }
 
     @Override
-    public HibernateInsertClause columns(Path<?>... columns)
-    {
+    public HibernateInsertClause columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return this;
     }
 
     @Override
-    public HibernateInsertClause select(SubQueryExpression<?> sq)
-    {
+    public HibernateInsertClause select(SubQueryExpression<?> sq) {
         subQuery = sq;
         return this;
     }
@@ -132,29 +125,25 @@ public class HibernateInsertClause implements
     }
 
     @Override
-    public <T> HibernateInsertClause set(Path<T> path, T value)
-    {
+    public <T> HibernateInsertClause set(Path<T> path, T value) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> HibernateInsertClause set(Path<T> path, Expression<? extends T> expression)
-    {
+    public <T> HibernateInsertClause set(Path<T> path, Expression<? extends T> expression) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> HibernateInsertClause setNull(Path<T> path)
-    {
+    public <T> HibernateInsertClause setNull(Path<T> path) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public HibernateInsertClause values(Object... v)
-    {
+    public HibernateInsertClause values(Object... v)  {
         // TODO Auto-generated method stub
         return null;
     }

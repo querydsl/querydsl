@@ -23,18 +23,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.InsertClause;
-import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.SubQueryExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAQueryMixin;
 import com.querydsl.jpa.JPQLSerializer;
 import com.querydsl.jpa.JPQLTemplates;
@@ -99,50 +94,43 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     }
 
     @Override
-    public JPAInsertClause columns(Path<?>... columns)
-    {
+    public JPAInsertClause columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return this;
     }
 
     @Override
-    public JPAInsertClause select(SubQueryExpression<?> sq)
-    {
+    public JPAInsertClause select(SubQueryExpression<?> sq) {
         subQuery = sq;
         return this;
     }
 
     @Override
-    public JPAInsertClause values(Object... v)
-    {
+    public JPAInsertClause values(Object... v) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public <T> JPAInsertClause set(Path<T> path, T value)
-    {
+    public <T> JPAInsertClause set(Path<T> path, T value) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> JPAInsertClause set(Path<T> path, Expression<? extends T> expression)
-    {
+    public <T> JPAInsertClause set(Path<T> path, Expression<? extends T> expression) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> JPAInsertClause setNull(Path<T> path)
-    {
+    public <T> JPAInsertClause setNull(Path<T> path) {
         // TODO Auto-generated method stub
         return null;
     }
