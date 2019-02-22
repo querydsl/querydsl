@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
+import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.support.QueryMixin;
@@ -30,6 +31,7 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAQueryMixin;
 import com.querydsl.jpa.JPQLSerializer;
 import com.querydsl.jpa.JPQLTemplates;
@@ -45,6 +47,8 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
+
+    private final Map<Path<?>, Expression<?>> inserts = Maps.newLinkedHashMap();
 
     private final List<Expression<?>> values = new ArrayList<Expression<?>>();
 
@@ -70,7 +74,7 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, subQuery);
+        serializer.serializeForInsert(queryMixin.getMetadata(), columns, subQuery, inserts);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
@@ -89,7 +93,7 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, subQuery);
+        serializer.serializeForInsert(queryMixin.getMetadata(), columns, subQuery, inserts);
         return serializer.toString();
     }
 
@@ -119,20 +123,28 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
 
     @Override
     public <T> JPAInsertClause set(Path<T> path, T value) {
-        // TODO Auto-generated method stub
-        return null;
+        if (value != null) {
+            inserts.put(path, Expressions.constant(value));
+        } else {
+            setNull(path);
+        }
+        return this;
     }
 
     @Override
     public <T> JPAInsertClause set(Path<T> path, Expression<? extends T> expression) {
-        // TODO Auto-generated method stub
-        return null;
+        if (expression != null) {
+            inserts.put(path, expression);
+        } else {
+            setNull(path);
+        }
+        return this;
     }
 
     @Override
     public <T> JPAInsertClause setNull(Path<T> path) {
-        // TODO Auto-generated method stub
-        return null;
+        inserts.put(path, Expressions.nullExpression(path));
+        return this;
     }
 
 }

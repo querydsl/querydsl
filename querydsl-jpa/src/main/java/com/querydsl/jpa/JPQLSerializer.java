@@ -260,7 +260,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
     }
 
-    public void serializeForInsert(QueryMetadata md, List<Path<?>> columns, SubQueryExpression<?> query) {
+    public void serializeForInsert(QueryMetadata md, List<Path<?>> columns, SubQueryExpression<?> query, Map<Path<?>, Expression<?>> inserts) {
         append(INSERT);
         JoinExpression je = md.getJoins().get(0);
         final EntityPath<?> pe = (EntityPath<?>) je.getTarget();
@@ -276,7 +276,22 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             first = false;
         }
         append(")\n");
-        serialize(query.getMetadata(), false, null);
+
+        if (inserts != null && inserts.entrySet().size() > 0) {
+            first = true;
+            for (Map.Entry<Path<?>, Expression<?>> entry : inserts.entrySet()) {
+                if (!first) {
+                    append(", ");
+                }
+                handle(entry.getKey());
+                append(" = ");
+                handle(entry.getValue());
+                first = false;
+            }
+        }
+        else {
+            serialize(query.getMetadata(), false, null);
+        }
     }
 
     public void serializeForUpdate(QueryMetadata md, Map<Path<?>, Expression<?>> updates) {

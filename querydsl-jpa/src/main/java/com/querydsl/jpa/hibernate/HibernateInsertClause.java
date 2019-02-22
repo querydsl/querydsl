@@ -24,6 +24,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
+import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.support.QueryMixin;
@@ -31,6 +32,7 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.SubQueryExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPAQueryMixin;
 import com.querydsl.jpa.JPQLSerializer;
@@ -46,6 +48,8 @@ public class HibernateInsertClause implements
         InsertClause<HibernateInsertClause> {
 
     private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
+
+    private final Map<Path<?>, Expression<?>> inserts = Maps.newLinkedHashMap();
 
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
@@ -79,7 +83,7 @@ public class HibernateInsertClause implements
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, subQuery);
+        serializer.serializeForInsert(queryMixin.getMetadata(), columns, subQuery, inserts);
         Map<Object, String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
@@ -115,7 +119,7 @@ public class HibernateInsertClause implements
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, subQuery);
+        serializer.serializeForInsert(queryMixin.getMetadata(), columns, subQuery, inserts);
         return serializer.toString();
     }
 
@@ -126,20 +130,28 @@ public class HibernateInsertClause implements
 
     @Override
     public <T> HibernateInsertClause set(Path<T> path, T value) {
-        // TODO Auto-generated method stub
-        return null;
+        if (value != null) {
+            inserts.put(path, Expressions.constant(value));
+        } else {
+            setNull(path);
+        }
+        return this;
     }
 
     @Override
     public <T> HibernateInsertClause set(Path<T> path, Expression<? extends T> expression) {
-        // TODO Auto-generated method stub
-        return null;
+        if (expression != null) {
+            inserts.put(path, expression);
+        } else {
+            setNull(path);
+        }
+        return this;
     }
 
     @Override
     public <T> HibernateInsertClause setNull(Path<T> path) {
-        // TODO Auto-generated method stub
-        return null;
+        inserts.put(path, Expressions.nullExpression(path));
+        return this;
     }
 
     @Override
