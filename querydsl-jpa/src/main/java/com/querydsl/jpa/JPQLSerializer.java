@@ -71,6 +71,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final String INSERT = "insert into ";
 
+    private static final String VALUES = "\nvalues ";
+
     private static final String WHERE = "\nwhere ";
 
     private static final String WITH = " with ";
@@ -260,7 +262,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
     }
 
-    public void serializeForInsert(QueryMetadata md, List<Path<?>> columns, SubQueryExpression<?> query, Map<Path<?>, Expression<?>> inserts) {
+    public void serializeForInsert(QueryMetadata md, List<Path<?>> columns, List<Object> values, SubQueryExpression<?> query, Map<Path<?>, Expression<?>> inserts) {
         append(INSERT);
         handleJoinTarget(md.getJoins().get(0));
         append(" (");
@@ -273,6 +275,19 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             first = false;
         }
         append(")\n");
+
+        if (values != null && values.size() > 0) {
+            append(VALUES);
+            append(" (");
+            first = true;
+            for (Object value : values) {
+                if (!first) {
+                    append(", ");
+                }
+                handle(value);
+                first = false;
+            }
+        }
 
         if (inserts != null && inserts.entrySet().size() > 0) {
             first = true;
