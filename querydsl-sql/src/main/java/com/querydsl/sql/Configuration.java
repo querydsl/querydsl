@@ -259,7 +259,11 @@ public final class Configuration {
                 }
             }
             if (sqlType != null) {
-                stmt.setNull(i, sqlType);
+                if (sqlType == java.sql.Types.OTHER && this.getTemplates().getClass().getSimpleName().contains("Oracle")) {
+                    stmt.setNull(i, Types.STRUCT, "MDSYS.SDO_GEOMETRY");
+                } else {
+                    stmt.setNull(i, sqlType);
+                }
             } else {
                 stmt.setNull(i, Types.NULL);
             }
