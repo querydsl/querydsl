@@ -86,15 +86,15 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>ojdbc6</artifactId>
+      <groupId>com.oracle.jdbc</groupId>
+      <artifactId>ojdbc8</artifactId>
       <version>${oracle.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>oracle</groupId>
+      <groupId>com.oracle</groupId>
       <artifactId>sdoapi</artifactId>
-      <version>11.2.0</version>
+      <version>${oracle.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
