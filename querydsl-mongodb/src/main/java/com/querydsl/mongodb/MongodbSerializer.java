@@ -37,6 +37,7 @@ import com.querydsl.core.types.*;
 public abstract class MongodbSerializer implements Visitor<Object, Void> {
     /**
      * Flag to skip pattern quote.
+     * {@link java.util.regex.Pattern}
      * By default false.
      */
     public static boolean skipPatternQuote = false;
