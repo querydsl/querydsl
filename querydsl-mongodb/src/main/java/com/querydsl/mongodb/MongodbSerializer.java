@@ -35,7 +35,11 @@ import com.querydsl.core.types.*;
  *
  */
 public abstract class MongodbSerializer implements Visitor<Object, Void> {
-
+    /**
+     * Flag to skip pattern quote.
+     * By default false.
+     */
+    public static boolean skipPatternQuote = false;
     public Object handle(Expression<?> expression) {
         return expression.accept(this, null);
     }
@@ -79,6 +83,9 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
     }
 
     private String regexValue(Operation<?> expr, int index) {
+        if (skipPatternQuote) {
+          return expr.getArg(index).accept(this, null).toString();
+        }
         return Pattern.quote(expr.getArg(index).accept(this, null).toString());
     }
 
