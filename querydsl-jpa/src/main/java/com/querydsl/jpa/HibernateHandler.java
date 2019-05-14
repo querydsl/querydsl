@@ -13,46 +13,54 @@
  */
 package com.querydsl.jpa;
 
-import java.util.Iterator;
-
-import javax.persistence.Query;
-
-import org.hibernate.SQLQuery;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.jpa.HibernateQuery;
-import org.hibernate.transform.ResultTransformer;
-
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.transform.ResultTransformer;
+
+import javax.persistence.Query;
+import java.util.Iterator;
 
 /**
  * {@code HibernateHandler} is the {@link QueryHandler} implementation for Hibernate
  *
  * @author tiwe
- *
  */
 class HibernateHandler implements QueryHandler {
 
     @Override
     public void addEntity(Query query, String alias, Class<?> type) {
-        if (query instanceof HibernateQuery) {
-            org.hibernate.Query hibernateQuery = ((HibernateQuery) query).getHibernateQuery();
-            if (hibernateQuery instanceof SQLQuery) {
-                ((SQLQuery) hibernateQuery).addEntity(alias, type);
-            }
+        if (query instanceof NativeQuery) {
+            ((NativeQuery) query).addEntity(alias, type);
+        }
+    }
+
+
+    @Override
+    public void addScalar(Query query, String alias, Class<?> type) {
+        if (query instanceof NativeQuery) {
+            ((NativeQuery) query).addScalar(alias);
         }
     }
 
     @Override
-    public void addScalar(Query query, String alias, Class<?> type) {
-        if (query instanceof HibernateQuery) {
-            org.hibernate.Query hibernateQuery = ((HibernateQuery) query).getHibernateQuery();
-            if (hibernateQuery instanceof SQLQuery) {
-                ((SQLQuery) hibernateQuery).addScalar(alias);
-            }
+    public boolean transform(Query query, FactoryExpression<?> projection) {
+        ResultTransformer transformer = new FactoryExpressionTransformer(projection);
+
+        if (query instanceof org.hibernate.query.Query) {
+            ((org.hibernate.query.Query) query).setResultTransformer(transformer);
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    @Override
+    public boolean wrapEntityProjections() {
+        return true;
     }
 
     @Override
@@ -60,12 +68,11 @@ class HibernateHandler implements QueryHandler {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
-        if (query instanceof HibernateQuery) {
-            HibernateQuery hQuery = (HibernateQuery) query;
-            ScrollableResults results = hQuery.getHibernateQuery().scroll(ScrollMode.FORWARD_ONLY);
+        if (query instanceof NativeQuery) {
+            NativeQuery nativeQuery = (NativeQuery) query;
+            ScrollableResults results = nativeQuery.scroll(ScrollMode.FORWARD_ONLY);
             CloseableIterator<T> iterator = new ScrollableResultsIterator<T>(results);
             if (projection != null) {
                 iterator = new TransformingIterator<T>(iterator, projection);
@@ -80,21 +87,4 @@ class HibernateHandler implements QueryHandler {
             }
         }
     }
-
-    @Override
-    public boolean transform(Query query, FactoryExpression<?> projection) {
-        if (query instanceof HibernateQuery) {
-            ResultTransformer transformer = new FactoryExpressionTransformer(projection);
-            ((HibernateQuery) query).getHibernateQuery().setResultTransformer(transformer);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean wrapEntityProjections() {
-        return true;
-    }
-
 }

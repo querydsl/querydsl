@@ -421,6 +421,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink // EclipseLink uses a left join for cat.mate
+    @NoHibernate
     public void case5() {
         assertEquals(ImmutableList.of(0, 1, 1, 1),
                 query().from(cat).orderBy(cat.id.asc())

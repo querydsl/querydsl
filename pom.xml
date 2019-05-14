@@ -53,8 +53,8 @@
     <firebird.version>2.2.5</firebird.version>
 
     <!-- JPA deps -->
-    <hibernate.version>4.3.11.Final</hibernate.version>
-    <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+    <hibernate.version>5.4.2.Final</hibernate.version>
+    <hibernate.validator.version>6.0.16.Final</hibernate.validator.version>
     <eclipselink.version>2.6.2</eclipselink.version>
 
     <guava.version>18.0</guava.version>
@@ -419,7 +419,7 @@
         <executions>
           <execution>
             <phase>package</phase>
-            <goals>            
+            <goals>
               <goal>jar</goal>
             </goals>
           </execution>
@@ -447,27 +447,6 @@
             <version>${surefire.version}</version>
           </dependency>
         </dependencies>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>animal-sniffer-maven-plugin</artifactId>
-        <version>${animal-sniffer.version}</version>
-        <configuration>
-          <signature>
-            <groupId>org.codehaus.mojo.signature</groupId>
-            <artifactId>java16</artifactId>
-            <version>1.1</version>
-          </signature>
-        </configuration>
-        <executions>
-          <execution>
-            <id>ensure-java-1.6-class-library</id>
-            <phase>test</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -585,14 +564,6 @@
         <module>querydsl-jpa</module>
         <module>querydsl-jpa-codegen</module>
       </modules>
-    </profile>
-
-    <profile>
-      <id>hibernate5</id>
-      <properties>
-        <hibernate.version>5.0.5.Final</hibernate.version>
-        <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
-      </properties>
     </profile>
 
     <profile>

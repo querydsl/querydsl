@@ -13,6 +13,15 @@
  */
 package com.querydsl.jpa.hibernate;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Ints;
+import com.querydsl.core.types.ParamExpression;
+import com.querydsl.core.types.ParamNotSetException;
+import com.querydsl.core.types.dsl.Param;
+import org.hibernate.Query;
+import org.hibernate.type.*;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
@@ -20,20 +29,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.Query;
-import org.hibernate.type.*;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.querydsl.core.types.ParamExpression;
-import com.querydsl.core.types.ParamNotSetException;
-import com.querydsl.core.types.dsl.Param;
-
 /**
  * {@code HibernateUtil} provides static utility methods for Hibernate
  *
  * @author tiwe
- *
  */
 public final class HibernateUtil {
 
@@ -63,10 +62,11 @@ public final class HibernateUtil {
         TYPES = builder.build();
     }
 
-    private HibernateUtil() { }
+    private HibernateUtil() {
+    }
 
-    public static void setConstants(Query query, Map<Object,String> constants,
-            Map<ParamExpression<?>, Object> params) {
+    public static void setConstants(Query query, Map<Object, String> constants,
+                                    Map<ParamExpression<?>, Object> params) {
         for (Map.Entry<Object, String> entry : constants.entrySet()) {
             String key = entry.getValue();
             Object val = entry.getKey();
@@ -81,14 +81,29 @@ public final class HibernateUtil {
     }
 
     private static void setValue(Query query, String key, Object val) {
-        if (val instanceof Collection<?>) {
-            query.setParameterList(key, (Collection<?>) val);
-        } else if (val instanceof Object[] && !BUILT_IN.contains(val.getClass())) {
-            query.setParameterList(key, (Object[]) val);
-        } else if (val instanceof Number && TYPES.containsKey(val.getClass())) {
-            query.setParameter(key, val, getType(val.getClass()));
+
+        Integer intKey = Ints.tryParse(key);
+
+        if (intKey == null) {
+            if (val instanceof Collection<?>) {
+                query.setParameterList(key, (Collection<?>) val);
+            } else if (val instanceof Object[] && !BUILT_IN.contains(val.getClass())) {
+                query.setParameterList(key, (Object[]) val);
+            } else if (val instanceof Number && TYPES.containsKey(val.getClass())) {
+                query.setParameter(key, val, getType(val.getClass()));
+            } else {
+                query.setParameter(key, val);
+            }
         } else {
-            query.setParameter(key, val);
+            if (val instanceof Collection<?>) {
+                query.setParameterList(intKey, (Collection<?>) val);
+            } else if (val instanceof Object[] && !BUILT_IN.contains(val.getClass())) {
+                query.setParameterList(intKey, (Object[]) val);
+            } else if (val instanceof Number && TYPES.containsKey(val.getClass())) {
+                query.setParameter(intKey, val, getType(val.getClass()));
+            } else {
+                query.setParameter(intKey, val);
+            }
         }
     }
 
