@@ -1,13 +1,15 @@
 package com.querydsl.sql.types;
 
-import java.sql.*;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 import javax.annotation.Nullable;
-
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * JSR310LocalDateTimeType maps {@linkplain java.time.LocalDateTime}
@@ -44,7 +46,6 @@ public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDat
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalDateTime value) throws SQLException {
-        Instant i = value.toInstant(ZoneOffset.UTC);
-        st.setTimestamp(startIndex, new Timestamp(i.toEpochMilli()), utc());
+        st.setTimestamp(startIndex, Timestamp.from(value.toInstant(ZoneOffset.UTC)), utc());
     }
 }
