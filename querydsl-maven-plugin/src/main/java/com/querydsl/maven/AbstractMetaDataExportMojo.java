@@ -451,10 +451,16 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
                 }
             }
             if (exportBeans) {
+                Class cls = null;
+                Object obj =  null;
                 if (beanSerializerClass != null) {
-                    exporter.setBeanSerializerClass((Class) Class.forName(beanSerializerClass));
+                    cls = Class.forName(beanSerializerClass);
+                    obj = cls.newInstance();
+                }
+                if (!(obj instanceof BeanSerializer)) {
+                    exporter.setBeanSerializerClass(cls);
                 } else {
-                    BeanSerializer serializer = new BeanSerializer();
+                    BeanSerializer serializer = (obj == null ? new BeanSerializer() : (BeanSerializer) obj);
                     if (beanInterfaces != null) {
                         for (String iface : beanInterfaces) {
                             int sepIndex = iface.lastIndexOf('.');
