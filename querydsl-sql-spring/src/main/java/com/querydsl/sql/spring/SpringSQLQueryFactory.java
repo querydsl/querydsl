@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 /**
- *
+ * Support connection is not transactional when used in spring, spring manages and releases resources.
  * <p>Usage example</p>
  * <pre>
  * {@code
@@ -38,10 +38,7 @@ public class SpringSQLQueryFactory extends SQLQueryFactory {
         return configuration;
     }
 
-    /**
-     * @author <a href="mailto:hedyn@foxmail.com">HeDYn</a>
-     */
-    private static class SpringSQLListener extends SQLBaseListener {
+    private static final class SpringSQLListener extends SQLBaseListener {
 
         private SpringSQLListener() {
         }
@@ -65,10 +62,7 @@ public class SpringSQLQueryFactory extends SQLQueryFactory {
         }
     }
 
-    /**
-     * @author <a href="mailto:hedyn@foxmail.com">HeDYn</a>
-     */
-    private static class LazySpringConnectionProvider implements Provider<Connection> {
+    private static final class LazySpringConnectionProvider implements Provider<Connection> {
 
         private final DataSource dataSource;
 

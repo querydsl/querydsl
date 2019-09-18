@@ -23,9 +23,11 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 /**
+ * Get and releases connection from spring.
+ *
  * @author <a href="mailto:hedyn@foxmail.com">HeDYn</a>
  */
-class LazySpringConnection implements Connection {
+final class LazySpringConnection implements Connection {
 
     private final DataSource dataSource;
     private Connection connection;
