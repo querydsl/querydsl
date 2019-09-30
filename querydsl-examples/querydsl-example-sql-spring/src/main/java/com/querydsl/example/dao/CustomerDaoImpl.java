@@ -20,7 +20,6 @@ import static com.querydsl.example.sql.QCustomer.customer;
 import static com.querydsl.example.sql.QCustomerAddress.customerAddress;
 import static com.querydsl.example.sql.QPerson.person;
 
-@Transactional
 public class CustomerDaoImpl implements CustomerDao {
 
     @Inject
@@ -51,6 +50,7 @@ public class CustomerDaoImpl implements CustomerDao {
             .transform(GroupBy.groupBy(customer.id).list(customerBean));
     }
 
+    @Transactional
     @Override
     public Customer save(Customer c) {
         Long id = c.getId();
@@ -99,6 +99,7 @@ public class CustomerDaoImpl implements CustomerDao {
         return queryFactory.from(customer).fetchCount();
     }
 
+    @Transactional
     @Override
     public void delete(Customer c) {
         // TODO use combined delete clause
