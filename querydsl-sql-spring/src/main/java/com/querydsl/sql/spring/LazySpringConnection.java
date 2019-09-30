@@ -299,6 +299,10 @@ final class LazySpringConnection implements Connection {
         return connection().isWrapperFor(iface);
     }
     
+    public void setSchema(String schema) throws SQLException {
+        connection().setSchema(schema);
+    }
+    
     public String getSchema() throws SQLException {
         return connection().getSchema();
     }
