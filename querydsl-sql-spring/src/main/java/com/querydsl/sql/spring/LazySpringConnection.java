@@ -299,22 +299,27 @@ final class LazySpringConnection implements Connection {
         return connection().isWrapperFor(iface);
     }
     
+    @Override
     public void setSchema(String schema) throws SQLException {
         connection().setSchema(schema);
     }
     
+    @Override
     public String getSchema() throws SQLException {
         return connection().getSchema();
     }
 
+    @Override
     public void abort(Executor executor) throws SQLException {
         connection().abort(executor);
     }
 
+    @Override
     public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
         connection().setNetworkTimeout(executor, milliseconds);
     }
 
+    @Override
     public int getNetworkTimeout() throws SQLException {
         return connection().getNetworkTimeout();
     }
