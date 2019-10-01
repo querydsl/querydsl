@@ -4,7 +4,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
 import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.SQLQueryFactory;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.sql.spring.SpringConnectionProvider;
+import com.querydsl.sql.spring.LazySpringSQLQueryFactory;
 import com.querydsl.sql.spring.SpringExceptionTranslator;
 import com.querydsl.sql.types.DateTimeType;
 import com.querydsl.sql.types.LocalDateType;
@@ -53,8 +53,9 @@ public class JdbcConfiguration {
 
     @Bean
     public SQLQueryFactory queryFactory() {
-        Provider<Connection> provider = new SpringConnectionProvider(dataSource());
-        return new SQLQueryFactory(querydslConfiguration(), provider);
+        // Provider<Connection> provider = new SpringConnectionProvider(dataSource());
+        // return new SQLQueryFactory(querydslConfiguration(), provider);
+        return new LazySpringSQLQueryFactory(querydslConfiguration(), dataSource());
     }
 
 }
