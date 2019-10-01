@@ -4,8 +4,8 @@ import com.jolbox.bonecp.BoneCPDataSource;
 import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.SQLQueryFactory;
 import com.querydsl.sql.SQLTemplates;
-import com.querydsl.sql.spring.SpringSQLQueryFactory;
 import com.querydsl.sql.spring.SpringExceptionTranslator;
+import com.querydsl.sql.spring.SpringSQLQueryFactory;
 import com.querydsl.sql.types.DateTimeType;
 import com.querydsl.sql.types.LocalDateType;
 import org.springframework.context.annotation.Bean;
@@ -16,9 +16,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.sql.DataSource;
-import java.sql.Connection;
 
 @Configuration
 @PropertySource({"classpath:jdbc.properties"})
