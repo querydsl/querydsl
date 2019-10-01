@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2019, apexes.net. All rights reserved.
- *
- *          http://www.apexes.net
- */
-
 package com.querydsl.example.dao;
 
 import com.querydsl.core.group.GroupBy;
