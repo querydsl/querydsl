@@ -48,7 +48,7 @@ final class LazySpringConnection implements Connection {
     }
 
     void insureRelease() {
-        if (connection != null) {
+        if (connection != null && !DataSourceUtils.isConnectionTransactional(connection, dataSource)) {
             DataSourceUtils.releaseConnection(connection, dataSource);
             connection = null;
         }
