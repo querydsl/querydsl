@@ -695,7 +695,8 @@
           com.querydsl.core.testutil.SQLServer,
           com.querydsl.core.testutil.Teradata,
           com.querydsl.core.testutil.Oracle,
-          com.querydsl.core.testutil.CUBRID
+          com.querydsl.core.testutil.CUBRID,
+          com.querydsl.core.testutil.Firebird
         </excludedGroups>
       </properties>
       <build>
