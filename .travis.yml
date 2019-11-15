@@ -15,9 +15,10 @@ before_script:
   - mkdir -p ~/.local/bin
   - curl 'https://bitbucket.org/mjensen/mvnvm/raw/master/mvn' > ~/.local/bin/mvn
   - chmod +x ~/.local/bin/mvn
+  - docker-compose --file travis/docker-compose.yml up -d mysql postgresql firebird mongo
 
-  - ./travis/docker_bootstrap.sh
-script: mvn --batch-mode test --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report
+script:
+  - mvn --batch-mode test --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report
 after_success:
   - mvn coveralls:report
 cache:
