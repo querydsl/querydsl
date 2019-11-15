@@ -15,7 +15,7 @@ before_script:
   - mkdir -p ~/.local/bin
   - curl 'https://bitbucket.org/mjensen/mvnvm/raw/master/mvn' > ~/.local/bin/mvn
   - chmod +x ~/.local/bin/mvn
-  - docker-compose --file travis/docker-compose.yml up -d mysql postgresql firebird mongo
+  - docker-compose --file travis/docker-compose.yml up --detach mysql postgresql mongo
 
 script:
   - mvn --batch-mode test --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report
