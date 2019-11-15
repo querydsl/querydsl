@@ -20,12 +20,19 @@ import java.nio.charset.Charset;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
@@ -37,9 +44,26 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.querydsl.codegen.*;
-import com.querydsl.sql.*;
-import com.querydsl.sql.codegen.support.*;
+import com.querydsl.codegen.CodegenModule;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.Property;
+import com.querydsl.codegen.QueryTypeFactory;
+import com.querydsl.codegen.Serializer;
+import com.querydsl.codegen.SimpleSerializerConfig;
+import com.querydsl.codegen.TypeMappings;
+import com.querydsl.sql.ColumnImpl;
+import com.querydsl.sql.ColumnMetadata;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.SQLTemplatesRegistry;
+import com.querydsl.sql.SchemaAndTable;
+import com.querydsl.sql.codegen.support.ForeignKeyData;
+import com.querydsl.sql.codegen.support.InverseForeignKeyData;
+import com.querydsl.sql.codegen.support.NotNullImpl;
+import com.querydsl.sql.codegen.support.PrimaryKeyData;
+import com.querydsl.sql.codegen.support.SizeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@code MetadataExporter} exports JDBC metadata to Querydsl query types
@@ -58,6 +82,7 @@ import com.querydsl.sql.codegen.support.*;
 public class MetaDataExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
+    private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\r?\\n");
 
     private final SQLTemplatesRegistry sqlTemplatesRegistry = new SQLTemplatesRegistry();
 
@@ -126,31 +151,39 @@ public class MetaDataExporter {
     public MetaDataExporter() { }
 
     protected EntityType createEntityType(SchemaAndTable schemaAndTable,
-            final String className) {
-        EntityType classModel;
+			final String className) {
+		EntityType classModel;
 
-        if (beanSerializer == null) {
-            String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
-            String simpleName = module.getPrefix() + className + module.getSuffix();
-            Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
-                    packageName + "." + simpleName,  packageName, simpleName, false, false);
-            classModel = new EntityType(classTypeModel, module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
-            typeMappings.register(classModel, classModel);
+		if (beanSerializer == null) {
+			String packageName = normalizePackage(module.getPackageName(), schemaAndTable);
+			String simpleName = module.getPrefix() + className + module.getSuffix();
+			Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
+					packageName + "." + simpleName,  packageName, simpleName, false, false);
+			classModel = new EntityType(classTypeModel, module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
+			typeMappings.register(classModel, classModel);
 
-        } else {
-            String beanPackage = normalizePackage(beanPackageName, schemaAndTable);
-            String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
-            Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
-                    beanPackage + "." + simpleName, beanPackage, simpleName, false, false);
-            classModel = new EntityType(classTypeModel, module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
+		} else {
+			String beanPackage = normalizePackage(beanPackageName, schemaAndTable);
+			String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
+			Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
+					beanPackage + "." + simpleName, beanPackage, simpleName, false, false);
+			classModel = new EntityType(classTypeModel, module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
 
-            Type mappedType = queryTypeFactory.create(classModel);
-            entityToWrapped.put(classModel, mappedType);
-            typeMappings.register(classModel, mappedType);
-        }
+			Type mappedType = queryTypeFactory.create(classModel);
+			entityToWrapped.put(classModel, mappedType);
+			typeMappings.register(classModel, mappedType);
+		}
 
-        classModel.getData().put("schema", schemaAndTable.getSchema());
-        classModel.getData().put("table", schemaAndTable.getTable());
+		classModel.getData().put("schema", schemaAndTable.getSchema());
+		classModel.getData().put("table", schemaAndTable.getTable());
+
+		return classModel;
+	}
+
+    protected EntityType createEntityType(SchemaAndTable schemaAndTable,
+            final String className, final String remarks) {
+		EntityType classModel = createEntityType(schemaAndTable, className);
+		classModel.getData().put("remarks", remarks);
         return classModel;
     }
 
@@ -277,6 +310,7 @@ public class MetaDataExporter {
         Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
         int columnIndex = columns.getInt("ORDINAL_POSITION");
         int nullable = columns.getInt("NULLABLE");
+        String remarks = columns.getString("REMARKS");
 
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType,
@@ -295,7 +329,11 @@ public class MetaDataExporter {
         }
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, normalizedColumnName, propertyName, typeModel);
-        ColumnMetadata column = ColumnMetadata.named(normalizedColumnName).ofType(columnType).withIndex(columnIndex);
+        ColumnMetadata column = ColumnMetadata
+                .named(normalizedColumnName)
+                .ofType(columnType)
+                .withIndex(columnIndex)
+                .withRemarks(remarks);
         if (nullable == DatabaseMetaData.columnNoNulls) {
             column = column.notNull();
         }
@@ -306,6 +344,7 @@ public class MetaDataExporter {
             column = column.withDigits(columnDigits.intValue());
         }
         property.getData().put("COLUMN", column);
+        property.getData().put("remarks", remarks);
 
         if (columnAnnotations) {
             property.addAnnotation(new ColumnImpl(normalizedColumnName));
@@ -327,6 +366,7 @@ public class MetaDataExporter {
         String schema = tables.getString("TABLE_SCHEM");
         String schemaName = normalize(tables.getString("TABLE_SCHEM"));
         String tableName = normalize(tables.getString("TABLE_NAME"));
+        String remarks = tables.getString("REMARKS");
 
         String normalizedSchemaName = namingStrategy.normalizeSchemaName(schemaName);
         String normalizedTableName = namingStrategy.normalizeTableName(tableName);
@@ -339,7 +379,7 @@ public class MetaDataExporter {
         }
 
         String className = namingStrategy.getClassName(schemaAndTable);
-        EntityType classModel = createEntityType(schemaAndTable, className);
+        EntityType classModel = createEntityType(schemaAndTable, className, remarks);
 
         if (exportPrimaryKeys) {
             // collect primary keys

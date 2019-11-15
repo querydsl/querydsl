@@ -13,11 +13,13 @@
  */
 package com.querydsl.codegen;
 
-import static com.mysema.codegen.Symbols.*;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Generated;
 import javax.inject.Inject;
@@ -28,9 +30,50 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.*;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
+import com.mysema.codegen.model.Types;
+import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.ArrayPath;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.CollectionPath;
+import com.querydsl.core.types.dsl.ComparableExpression;
+import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.DatePath;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.EnumPath;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.MapPath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.PathInits;
+import com.querydsl.core.types.dsl.SetPath;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.TimePath;
+
+import static com.mysema.codegen.Symbols.ASSIGN;
+import static com.mysema.codegen.Symbols.COMMA;
+import static com.mysema.codegen.Symbols.DOT;
+import static com.mysema.codegen.Symbols.EMPTY;
+import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.QUOTE;
+import static com.mysema.codegen.Symbols.RETURN;
+import static com.mysema.codegen.Symbols.SEMICOLON;
+import static com.mysema.codegen.Symbols.STAR;
+import static com.mysema.codegen.Symbols.SUPER;
+import static com.mysema.codegen.Symbols.THIS;
+import static com.mysema.codegen.Symbols.UNCHECKED;
 
 /**
  * {@code EntitySerializer} is a {@link Serializer} implementation for entity types
@@ -509,10 +552,32 @@ public class EntitySerializer implements Serializer {
         }
     }
 
+    private String[] buildJavadocLines(Property property) {
+        ArrayList<String> comments = new ArrayList<String>();
+        String propertyComments = (String) property.getData().get("remarks");
+        if (propertyComments == null || propertyComments.isEmpty()) {
+            return null;
+        }
+        comments.add(propertyComments);
+        return comments.toArray(new String[0]);
+    }
+
+    private String[] buildJavadocLines(EntityType model, String generated) {
+        ArrayList<String> comments = new ArrayList<String>();
+        String entityComments = (String) model.getData().get("remarks");
+        if (entityComments != null) {
+            comments.add(entityComments);
+            comments.add("");
+        }
+        comments.add(generated);
+        return comments.toArray(new String[0]);
+    }
+
     protected void introJavadoc(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
-        writer.javadoc(queryType.getSimpleName() + " is a Querydsl query type for " +
-        model.getSimpleName());
+        String generated = queryType.getSimpleName() + " is a Querydsl query type for " + model.getSimpleName();
+        String[] javadocLines = buildJavadocLines(model, generated);
+        writer.javadoc(javadocLines);
     }
 
     protected void introPackage(CodeWriter writer, EntityType model) throws IOException {
@@ -635,7 +700,12 @@ public class EntitySerializer implements Serializer {
             value.append(")");
         }
 
+        String[] remarks = buildJavadocLines(field);
+
         // serialize it
+        if (remarks != null) {
+            writer.javadoc(remarks);
+        }
         if (field.isInherited()) {
             writer.line("//inherited");
         }

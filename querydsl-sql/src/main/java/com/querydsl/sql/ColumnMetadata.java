@@ -67,7 +67,7 @@ public final class ColumnMetadata implements Serializable {
      *             if the name is null
      */
     public static ColumnMetadata named(String name) {
-        return new ColumnMetadata(null, name, null, true, UNDEFINED, UNDEFINED);
+        return new ColumnMetadata(null, name, null, true, UNDEFINED, UNDEFINED, null);
     }
 
     private static final int UNDEFINED = -1;
@@ -84,14 +84,17 @@ public final class ColumnMetadata implements Serializable {
 
     private final int decimalDigits;
 
+    private final String remarks;
+
     private ColumnMetadata(Integer index, String name, Integer jdbcType, boolean nullable, int size,
-            int decimalDigits) {
+            int decimalDigits, String remarks) {
         this.index = index;
         this.name = name;
         this.jdbcType = jdbcType;
         this.nullable = nullable;
         this.size = size;
         this.decimalDigits = decimalDigits;
+        this.remarks = remarks;
     }
 
     public String getName() {
@@ -103,7 +106,7 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata withIndex(int index) {
-        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits, remarks);
     }
 
     public int getJdbcType() {
@@ -115,7 +118,7 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata ofType(int jdbcType) {
-        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits, remarks);
     }
 
     public boolean isNullable() {
@@ -123,7 +126,7 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata notNull() {
-        return new ColumnMetadata(index, name, jdbcType, false, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, false, size, decimalDigits, remarks);
     }
 
     /**
@@ -140,7 +143,7 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata withSize(int size) {
-        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits, remarks);
     }
 
     /**
@@ -157,7 +160,19 @@ public final class ColumnMetadata implements Serializable {
     }
 
     public ColumnMetadata withDigits(int decimalDigits) {
-        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits);
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits, remarks);
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public boolean hasRemarks() {
+        return remarks != null;
+    }
+
+    public ColumnMetadata withRemarks(String remarks) {
+        return new ColumnMetadata(index, name, jdbcType, nullable, size, decimalDigits, remarks);
     }
 
     @Override
@@ -170,7 +185,8 @@ public final class ColumnMetadata implements Serializable {
                 && Objects.equal(jdbcType, md.jdbcType)
                 && nullable == md.nullable
                 && size == md.size
-                && decimalDigits == md.decimalDigits;
+                && decimalDigits == md.decimalDigits
+                && Objects.equal(remarks, md.remarks);
         } else {
             return false;
         }

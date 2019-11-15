@@ -121,7 +121,8 @@ public class BeanSerializer implements Serializer {
         writer.importClasses(importedClasses.toArray(new String[importedClasses.size()]));
 
         // javadoc
-        writer.javadoc(simpleName + javadocSuffix);
+        String[] javadocLines = buildJavadocLines(model, simpleName + javadocSuffix);
+        writer.javadoc(javadocLines);
 
         // header
         for (Annotation annotation : model.getAnnotations()) {
@@ -152,6 +153,10 @@ public class BeanSerializer implements Serializer {
 
         // fields
         for (Property property : model.getProperties()) {
+            String[] remarks = buildJavadocLines(property);
+            if (remarks != null) {
+                writer.javadoc(remarks);
+            }
             if (propertyAnnotations) {
                 for (Annotation annotation : property.getAnnotations()) {
                     writer.annotation(annotation);
@@ -163,11 +168,18 @@ public class BeanSerializer implements Serializer {
         // accessors
         for (Property property : model.getProperties()) {
             String propertyName = property.getEscapedName();
+            String[] remarks = buildJavadocLines(property);
             // getter
+            if (remarks != null) {
+                writer.javadoc(remarks);
+            }
             writer.beginPublicMethod(property.getType(), "get" + BeanUtils.capitalize(propertyName));
             writer.line("return ", propertyName, ";");
             writer.end();
             // setter
+            if (remarks != null) {
+                writer.javadoc(remarks);
+            }
             Parameter parameter = new Parameter(propertyName, property.getType());
             writer.beginPublicMethod(Types.VOID, "set" + BeanUtils.capitalize(propertyName), parameter);
             writer.line("this.", propertyName, " = ", propertyName, ";");
@@ -183,7 +195,30 @@ public class BeanSerializer implements Serializer {
         writer.end();
     }
 
+    private String[] buildJavadocLines(Property property) {
+        ArrayList<String> comments = new ArrayList<String>();
+        String propertyComments = (String) property.getData().get("remarks");
+        if (propertyComments == null || propertyComments.isEmpty()) {
+            return null;
+        }
+        comments.add(propertyComments);
+        return comments.toArray(new String[0]);
+    }
+
+    private String[] buildJavadocLines(EntityType model, String generated) {
+        ArrayList<String> comments = new ArrayList<String>();
+        String entityComments = (String) model.getData().get("remarks");
+        if (entityComments != null && !entityComments.isEmpty()) {
+            comments.add(entityComments);
+            comments.add("");
+        }
+        comments.add(generated);
+        return comments.toArray(new String[0]);
+    }
+
     protected void addFullConstructor(EntityType model, CodeWriter writer) throws IOException {
+        //TODO: constructor @param javadoc from remarks
+
         // public empty constructor
         writer.beginConstructor();
         writer.end();
