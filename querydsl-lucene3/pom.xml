@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-lucene3</artifactId>
   <name>Querydsl - Lucene 3 support</name>
   <description>Lucene support for Querydsl</description>

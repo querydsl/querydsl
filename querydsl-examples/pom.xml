@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-examples</artifactId>
   <name>Querydsl - Examples</name>
   <url>${project.homepage}</url>

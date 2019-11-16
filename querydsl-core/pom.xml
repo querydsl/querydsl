@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-core</artifactId>
   <name>Querydsl - Core module</name>
   <description>core module for querydsl</description>
@@ -59,13 +58,7 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>org.jvnet.hudson</groupId>
-      <artifactId>annotation-indexer</artifactId>
-      <version>1.2</version>
-      <optional>true</optional>
-    </dependency>
-    
+
     <!--  test -->    
     <dependency>
       <groupId>jdepend</groupId>
@@ -104,11 +97,6 @@
                 <artifactId>annotation-indexer</artifactId>
               </exclusion>
             </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>org.jvnet.hudson</groupId>
-            <artifactId>annotation-indexer</artifactId>
-            <version>1.2</version>
           </dependency>
         </dependencies>
       </plugin>

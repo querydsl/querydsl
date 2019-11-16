@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-hibernate-search</artifactId>
   <name>Querydsl - Hibernate Search support</name>
   <description>Hibernate Search support for querydsl</description>

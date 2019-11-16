@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-sql-codegen</artifactId>
   <name>Querydsl - SQL codegen support</name>
   <description>SQL codegen support for Querydsl</description>

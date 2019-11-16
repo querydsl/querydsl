@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-docs</artifactId>
   <name>Querydsl - Documentation</name>
   <packaging>jdocbook</packaging>

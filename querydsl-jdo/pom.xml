@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jdo</artifactId>
   <name>Querydsl - JDO support</name>
   <description>JDO support for Querydsl</description>

@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-scala</artifactId>
   <name>Querydsl - Scala support</name>
   <packaging>jar</packaging>

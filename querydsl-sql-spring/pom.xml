@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-sql-spring</artifactId>
   <name>Querydsl - SQL Spring support</name>
   <description>SQL Spring support for Querydsl</description>

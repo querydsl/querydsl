@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-mongodb</artifactId>
   <name>Querydsl - Mongodb support</name>
   <description>Mongodb support for Querydsl</description>

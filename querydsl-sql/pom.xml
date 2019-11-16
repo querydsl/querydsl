@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-sql</artifactId>
   <name>Querydsl - SQL support</name>
   <description>SQL support for Querydsl</description>
@@ -180,12 +179,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>org.jvnet.hudson</groupId>
-      <artifactId>annotation-indexer</artifactId>
-      <version>1.2</version>
-      <optional>true</optional>
-    </dependency>
   </dependencies>
   
   <build>
@@ -213,11 +206,6 @@
                 <artifactId>annotation-indexer</artifactId>
               </exclusion>
             </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>org.jvnet.hudson</groupId>
-            <artifactId>annotation-indexer</artifactId>
-            <version>1.2</version>
           </dependency>
         </dependencies>
       </plugin>

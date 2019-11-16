@@ -2,7 +2,6 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
   <version>4.2.1</version>
   <name>Querydsl</name>
@@ -225,7 +224,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.3</version>
+          <version>3.8.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -400,7 +399,7 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.4</version>
         <configuration>
-          <targetJdk>1.6</targetJdk>   
+          <targetJdk>1.8</targetJdk>
           <includeTests>true</includeTests>     
         </configuration>
       </plugin>      
@@ -408,8 +407,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
       <plugin>
@@ -455,19 +454,10 @@
         <configuration>
           <signature>
             <groupId>org.codehaus.mojo.signature</groupId>
-            <artifactId>java16</artifactId>
-            <version>1.1</version>
+            <artifactId>java18</artifactId>
+            <version>1.0</version>
           </signature>
         </configuration>
-        <executions>
-          <execution>
-            <id>ensure-java-1.6-class-library</id>
-            <phase>test</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

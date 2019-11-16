@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jpa-codegen</artifactId>
   <name>Querydsl - JPA Codegen support</name>
   <description>JPA Codegen support for Querydsl</description>

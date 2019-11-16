@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-spatial</artifactId>
   <name>Querydsl - Spatial module</name>
   <description>core module for querydsl</description>

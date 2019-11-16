@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-collections</artifactId>
   <name>Querydsl - Collections support</name>
   <description>Collections support for Querydsl</description>

@@ -9,7 +9,6 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
   <artifactId>querydsl-jpa</artifactId>
   <name>Querydsl - JPA support</name>
   <description>JPA support for Querydsl</description>
