@@ -526,7 +526,7 @@
         <module>querydsl-codegen</module>
         <module>querydsl-spatial</module>
         <module>querydsl-apt</module>
-        <module>querydsl-collections</module>
+<!--        <module>querydsl-collections</module>-->
         <module>querydsl-sql</module>
         <module>querydsl-sql-spatial</module>
         <module>querydsl-sql-codegen</module>
