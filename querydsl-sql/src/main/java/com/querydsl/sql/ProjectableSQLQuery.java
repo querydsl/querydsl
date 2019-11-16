@@ -163,9 +163,8 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
-        return queryMixin.from(ExpressionUtils.as((Expression) subQuery, alias));
+        return queryMixin.from((Q) ExpressionUtils.as((Expression) subQuery, alias));
     }
 
     @Override
@@ -350,7 +349,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      */
     @SuppressWarnings("unchecked")
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
+        return from((Q) UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
     }
 
     /**
@@ -388,7 +387,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      */
     @SuppressWarnings("unchecked")
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, true));
+        return from((Q) UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, true));
     }
 
     @Override
