@@ -8,14 +8,19 @@ env:
   matrix:
     - MODULE=!querydsl-scala PROFILES=all,travis,examples
     - MODULE=!querydsl-jpa-codegen PROFILES=jpa,hibernate5,travis,examples
-    - MODULE=querydsl-scala PROFILES=all,travis
+    - MODULE=querydsl-scala PROFILES=all,travis EXTRA_ARGS="--resume-from querydsl-scala"
+
+install: mvn clean install -DskipTests
 before_script:
   - docker-compose --file travis/docker-compose.yml up --detach mysql postgresql mongo
 
 script:
-  - mvn --batch-mode verify --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report
+  - mvn --batch-mode verify --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report ${EXTRA_ARGS}
 after_success:
   - mvn coveralls:report
+
+before_cache:
+  - rm -rf $HOME/.m2/repository/com/querydsl/
 cache:
   directories:
     - $HOME/.m2
