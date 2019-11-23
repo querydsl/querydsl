@@ -11,10 +11,6 @@ env:
     - MODULE=querydsl-scala PROFILES=all,travis
 install: /bin/true
 before_script:
-  # Install mvnvm
-  - mkdir -p ~/.local/bin
-  - curl 'https://bitbucket.org/mjensen/mvnvm/raw/master/mvn' > ~/.local/bin/mvn
-  - chmod +x ~/.local/bin/mvn
   - docker-compose --file travis/docker-compose.yml up --detach mysql postgresql mongo
 
 script:
