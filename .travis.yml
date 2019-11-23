@@ -6,16 +6,16 @@ services:
   - docker
 env:
   matrix:
-    - MODULE=!querydsl-scala PROFILES=all,travis,examples
-    - MODULE=!querydsl-jpa-codegen PROFILES=jpa,hibernate5,travis,examples
-    - MODULE=querydsl-scala PROFILES=all,travis EXTRA_ARGS="--resume-from querydsl-scala"
+    - ARGS='--activate-profiles all,travis,examples --projects !querydsl-scala'
+    - ARGS='--activate-profiles jpa,hibernate5,travis,examples --projects !querydsl-jpa-codegen'
+    - ARGS='--activate-profiles all,travis --projects querydsl-scala --resume-from querydsl-scala'
 
 install: mvn clean install -DskipTests
 before_script:
   - docker-compose --file travis/docker-compose.yml up --detach mysql postgresql mongo
 
 script:
-  - mvn --batch-mode verify --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report ${EXTRA_ARGS}
+  - mvn --batch-mode verify -am jacoco:report ${ARGS}
 after_success:
   - mvn coveralls:report
 
