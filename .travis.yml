@@ -9,12 +9,11 @@ env:
     - MODULE=!querydsl-scala PROFILES=all,travis,examples
     - MODULE=!querydsl-jpa-codegen PROFILES=jpa,hibernate5,travis,examples
     - MODULE=querydsl-scala PROFILES=all,travis
-install: /bin/true
 before_script:
   - docker-compose --file travis/docker-compose.yml up --detach mysql postgresql mongo
 
 script:
-  - mvn --batch-mode test --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report
+  - mvn --batch-mode verify --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report
 after_success:
   - mvn coveralls:report
 cache:
