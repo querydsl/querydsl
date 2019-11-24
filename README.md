@@ -77,10 +77,6 @@ If you are unsure about the details of a contribution, ask on the Querydsl Googl
 
 **Continuous integration**
 
-Querydsl uses Cloudbees for Jenkins based CI
-
-[![CloudBees](http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png)](https://querydsl.ci.cloudbees.com)
-
 As well as Travis CI for pull request validation
 
 [![Build Status](https://travis-ci.org/querydsl/querydsl.svg?branch=master)](https://travis-ci.org/querydsl/querydsl)
