@@ -6,21 +6,21 @@ services:
   - docker
 env:
   matrix:
-    - MODULE=!querydsl-scala PROFILES=all,travis,examples
-    - MODULE=!querydsl-jpa-codegen PROFILES=jpa,hibernate5,travis,examples
-    - MODULE=querydsl-scala PROFILES=all,travis
-install: /bin/true
+    - ARGS='--activate-profiles all,travis,examples --projects !querydsl-scala'
+    - ARGS='--activate-profiles jpa,hibernate5,travis,examples --projects !querydsl-jpa-codegen'
+    - ARGS='--activate-profiles all,travis --projects querydsl-scala --resume-from querydsl-scala'
+
+install: mvn clean install -DskipTests
 before_script:
-  # Install mvnvm
-  - mkdir -p ~/.local/bin
-  - curl 'https://bitbucket.org/mjensen/mvnvm/raw/master/mvn' > ~/.local/bin/mvn
-  - chmod +x ~/.local/bin/mvn
   - docker-compose --file travis/docker-compose.yml up --detach mysql postgresql mongo
 
 script:
-  - mvn --batch-mode test --activate-profiles ${PROFILES} --projects ${MODULE} -am jacoco:report
+  - mvn --batch-mode verify -am jacoco:report ${ARGS}
 after_success:
   - mvn coveralls:report
+
+before_cache:
+  - rm -rf $HOME/.m2/repository/com/querydsl/
 cache:
   directories:
     - $HOME/.m2
