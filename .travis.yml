@@ -9,18 +9,25 @@ env:
     - ARGS='--activate-profiles all,travis,examples --projects !querydsl-scala'
     - ARGS='--activate-profiles jpa,hibernate5,travis,examples --projects !querydsl-jpa-codegen'
     - ARGS='--activate-profiles all,travis --projects querydsl-scala --resume-from querydsl-scala'
-
+  global:
+    - secure: nmokASh/5D4hXXHKDk+nm1VZO9oXm5ZGPVty3guRCOAnx8tGhD+AszyuhHPuD2XNFVEDrCReg/mQXxE2lPph32gXw23/AM/f8qpubv8x4kR6C7xwshpgA14EJ+ssc0Wv0k6ZCveF/OWlf/LHGaIuROCfrTjD4GQkZXf5tkqU30Y=
+    - secure: N1ysx2ZX6sZrBk2UWIdP6MDVyAvenD6R4ghUQkzkkRjF//LOKwSTFImE63ChXTy/e3VjC338NbZo+KQkAviJIGIhDXau/daYSd9mH9tOROJlJf7kJBJAiUWOV8vrwomRplmkkZdzgpS/5O9nxKloanFLR799UIYDKF8FwMJo5x4=
 install: mvn clean install -DskipTests
 before_script:
   - docker-compose --file travis/docker-compose.yml up --detach mysql postgresql mongo
-
 script:
   - mvn --batch-mode verify -am jacoco:report ${ARGS}
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: mvn deploy --settings deploy/.m2/settings.xml -DskipTests
+    on:
+      branch: master
+
 after_success:
   - mvn coveralls:report
-
 before_cache:
   - rm -rf $HOME/.m2/repository/com/querydsl/
 cache:
   directories:
-    - $HOME/.m2
+    - "$HOME/.m2"
