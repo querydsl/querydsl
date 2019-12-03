@@ -93,15 +93,15 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     public Map<Object, String> getConstantToAllLabels() {
-        Map<Object, String> named = getConstantToNamedLabel();
-        Map<Object, Integer> numbered = getConstantToNumberedLabel();
+        Map<Object, String> namedLabels = getConstantToNamedLabel();
+        Map<Object, Integer> numberedLabels = getConstantToNumberedLabel();
 
-        Map<Object, String> combined = new HashMap<Object, String>(named);
-        for (Map.Entry<Object, Integer> entry : numbered.entrySet()) {
-            combined.put(entry.getValue(), entry.getValue().toString());
+        Map<Object, String> allLabels = new HashMap<Object, String>(namedLabels);
+        for (Map.Entry<Object, Integer> entry : numberedLabels.entrySet()) {
+            allLabels.put(entry.getKey(), entry.getValue().toString());
         }
 
-        return Collections.unmodifiableMap(combined);
+        return Collections.unmodifiableMap(allLabels);
     }
 
     protected int getLength() {
