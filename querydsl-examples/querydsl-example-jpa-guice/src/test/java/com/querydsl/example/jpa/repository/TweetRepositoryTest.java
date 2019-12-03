@@ -64,7 +64,7 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
         }
         User poster = new User("duplo");
         userRepository.save(poster);
-        for (int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 100; i++) {
             repository.save(new Tweet(poster, "spamming @dr_frank " + i, users.subList(0, 1), null));
         }
         assertTrue(repository.findAll(tweet.mentions.contains(users.get(1))).isEmpty());
@@ -74,5 +74,26 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
         assertTrue(repository.findAll(tweet.mentions.any().username.eq("duplo")).isEmpty());
 
         assertEquals(100, repository.findAll(tweet.mentions.any().username.eq("dr_frank")).size());
+    }
+
+    @Test
+    public void find_list_by_complex_predicate_hibernate() {
+        List<String> usernames = Lists.newArrayList("dr_frank", "mike", "maggie", "liza");
+        List<User> users = Lists.newArrayList();
+        for (String username : usernames) {
+            users.add(userRepository.save(new User(username)));
+        }
+        User poster = new User("duplo");
+        userRepository.save(poster);
+        for (int i = 0; i < 100; i++) {
+            repository.save(new Tweet(poster, "spamming @dr_frank " + i, users.subList(0, 1), null));
+        }
+        assertTrue(repository.findAllWithHibernateQuery(tweet.mentions.contains(users.get(1))).isEmpty());
+
+        assertEquals(100, repository.findAllWithHibernateQuery(tweet.mentions.contains(users.get(0))).size());
+
+        assertTrue(repository.findAllWithHibernateQuery(tweet.mentions.any().username.eq("duplo")).isEmpty());
+
+        assertEquals(100, repository.findAllWithHibernateQuery(tweet.mentions.any().username.eq("dr_frank")).size());
     }
 }
