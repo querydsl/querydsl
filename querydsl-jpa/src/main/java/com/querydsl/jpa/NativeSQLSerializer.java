@@ -206,7 +206,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
     @Override
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         if (operator == SQLOps.ALL
-                && !RelationalPath.class.isInstance(args.get(0))
+                && !(args.get(0) instanceof RelationalPath)
                 && wrapEntityProjections) {
             append("{");
             super.visitOperation(type, operator, args);
