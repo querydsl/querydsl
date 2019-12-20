@@ -296,7 +296,6 @@ public abstract class AbstractJPATest {
         assertEquals(1, query().from(cat).where(cat.kittens.any().kittens.any().name.eq("Ruth123")).fetchCount());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection() {
         List<String[]> results = query().from(cat)
@@ -1211,12 +1210,12 @@ public abstract class AbstractJPATest {
 
     @Test
     public void max() {
-        assertEquals(6.0, query().from(cat).select(cat.bodyWeight.max()).fetchFirst().doubleValue(), 0.0001);
+        assertEquals(6.0, query().from(cat).select(cat.bodyWeight.max()).fetchFirst(), 0.0001);
     }
 
     @Test
     public void min() {
-        assertEquals(1.0, query().from(cat).select(cat.bodyWeight.min()).fetchFirst().doubleValue(), 0.0001);
+        assertEquals(1.0, query().from(cat).select(cat.bodyWeight.min()).fetchFirst(), 0.0001);
     }
 
     @Test
@@ -1575,21 +1574,21 @@ public abstract class AbstractJPATest {
 
     @Test
     @Ignore
-    public void sum() throws RecognitionException, TokenStreamException {
+    public void sum() {
         // NOT SUPPORTED
         query().from(cat).select(cat.kittens.size().sum()).fetch();
     }
 
     @Test
     @Ignore
-    public void sum_2() throws RecognitionException, TokenStreamException {
+    public void sum_2() {
         // NOT SUPPORTED
         query().from(cat).where(cat.kittens.size().sum().gt(0)).select(cat).fetch();
     }
 
     @Test
     public void sum_3() {
-        assertEquals(21.0, query().from(cat).select(cat.bodyWeight.sum()).fetchFirst().doubleValue(), 0.0001);
+        assertEquals(21.0, query().from(cat).select(cat.bodyWeight.sum()).fetchFirst(), 0.0001);
     }
 
     @Test
@@ -1663,19 +1662,19 @@ public abstract class AbstractJPATest {
     @Test
     public void sum_coalesce() {
         int val = query().from(cat).select(cat.weight.sum().coalesce(0)).fetchFirst();
-        assertTrue(val == 0);
+        assertEquals(0, val);
     }
 
     @Test
     public void sum_noRows_double() {
-        assertEquals(null, query().from(cat)
+        assertNull(query().from(cat)
                 .where(cat.name.eq(UUID.randomUUID().toString()))
                 .select(cat.bodyWeight.sum()).fetchFirst());
     }
 
     @Test
     public void sum_noRows_float() {
-        assertEquals(null, query().from(cat)
+        assertNull(query().from(cat)
                 .where(cat.name.eq(UUID.randomUUID().toString()))
                 .select(cat.floatProperty.sum()).fetchFirst());
     }

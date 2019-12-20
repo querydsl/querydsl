@@ -224,7 +224,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             if (!first) {
                 b.append(COMMA);
             }
-            if (Param.class.isInstance(entry.getKey())) {
+            if (entry.getKey() instanceof Param) {
                 Object constant = params.get(entry.getKey());
                 if (constant == null) {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
