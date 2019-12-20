@@ -36,10 +36,8 @@ import org.junit.runner.RunWith;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.Target;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.domain.*;
 import com.querydsl.jpa.impl.JPADeleteClause;
@@ -217,7 +215,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
         javax.persistence.Query query = query().from(cat)
                 .setLockMode(LockModeType.PESSIMISTIC_READ)
                 .select(cat).createQuery();
-        assertTrue(query.getLockMode().equals(LockModeType.PESSIMISTIC_READ));
+        assertEquals(query.getLockMode(), LockModeType.PESSIMISTIC_READ);
         assertFalse(query.getResultList().isEmpty());
     }
 
@@ -230,8 +228,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @Test
     public void queryExposure() {
         //save(new Cat(20));
-        List<Cat> results = query().from(cat)
-                .select(cat).createQuery().getResultList();
+        List<Cat> results = query().from(cat).select(cat).createQuery().getResultList();
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
@@ -273,10 +270,9 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     public void createQuery3() {
-        List<String> rows = query().from(cat)
-                .select(cat.name).createQuery().getResultList();
+        List<String> rows = query().from(cat).select(cat.name).createQuery().getResultList();
         for (String row : rows) {
-            assertTrue(row instanceof String);
+            assertNotNull(row);
         }
     }
 }
