@@ -252,10 +252,10 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @NoEclipseLink
     @NoBatooJPA
     public void createQuery() {
-        List<Tuple> rows = query().from(cat)
+        List<Object[]> rows = query().from(cat)
                 .select(cat.id, cat.name).createQuery().getResultList();
-        for (Tuple row : rows) {
-            assertEquals(2, row.size());
+        for (Object[] row : rows) {
+            assertEquals(2, row.length);
         }
     }
 
@@ -264,10 +264,10 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @NoEclipseLink
     @NoBatooJPA
     public void createQuery2() {
-        List<Tuple> rows = query().from(cat)
-                .select(new Expression<?>[]{cat.id, cat.name}).createQuery().getResultList();
-        for (Tuple row : rows) {
-            assertEquals(2, row.size());
+        List<Object[]> rows = query().from(cat)
+                .select(cat.id, cat.name).createQuery().getResultList();
+        for (Object[] row : rows) {
+            assertEquals(2, row.length);
         }
     }
 
