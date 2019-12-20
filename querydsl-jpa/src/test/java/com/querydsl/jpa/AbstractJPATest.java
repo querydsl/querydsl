@@ -47,9 +47,6 @@ import com.querydsl.jpa.domain.Company.Rating;
 import com.querydsl.jpa.domain4.QBookMark;
 import com.querydsl.jpa.domain4.QBookVersion;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-
 /**
  * @author tiwe
  *
