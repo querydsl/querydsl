@@ -76,11 +76,11 @@ class HibernateHandler implements QueryHandler {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean transform(Query query, FactoryExpression<?> projection) {
         if (query instanceof NativeQuery) {
             ResultTransformer transformer = new FactoryExpressionTransformer(projection);
-            //noinspection deprecation
             ((NativeQuery) query).setResultTransformer(transformer);
             return true;
         } else {
