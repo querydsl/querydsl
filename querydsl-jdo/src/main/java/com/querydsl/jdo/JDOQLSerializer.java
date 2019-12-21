@@ -101,6 +101,11 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         return constantToLabel.peek();
     }
 
+    @Override
+    public Map<Object,String> getConstantToNamedLabel() {
+        return constantToLabel.peek();
+    }
+
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subQuery) {
         final Expression<?> select = metadata.getProjection();
         final List<JoinExpression> joins = metadata.getJoins();
