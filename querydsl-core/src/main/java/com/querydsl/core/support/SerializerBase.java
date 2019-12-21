@@ -13,13 +13,19 @@
  */
 package com.querydsl.core.support;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.types.*;
+
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * {@code SerializerBase} is a stub for Serializer implementations which serialize query metadata to Strings
@@ -101,7 +107,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             allLabels.put(entry.getKey(), entry.getValue().toString());
         }
 
-        return Collections.unmodifiableMap(allLabels);
+        return unmodifiableMap(allLabels);
     }
 
     protected int getLength() {
