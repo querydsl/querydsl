@@ -323,7 +323,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
             append("?");
             if (!getConstantToAllLabels().containsKey(constant)) {
-                final Integer constLabel = getConstantToNumberedLabel().size() + 1;
+                Integer constLabel = getConstantToNumberedLabel().size() + 1;
                 getConstantToNumberedLabel().put(constant, constLabel);
                 append(constLabel.toString());
             } else {
