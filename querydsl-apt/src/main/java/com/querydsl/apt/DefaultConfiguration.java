@@ -213,6 +213,12 @@ public class DefaultConfiguration implements Configuration {
             // do nothing
         }
 
+        ServiceLoader<Extension> loader = ServiceLoader.load(Extension.class, Extension.class.getClassLoader());
+
+        for (Extension extension : loader) {
+            extension.addSupport(module);
+        }
+
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
                 mapAccessors, createDefaultVariable, "");
 
