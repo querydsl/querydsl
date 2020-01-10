@@ -17,8 +17,8 @@ package com.querydsl.apt.jdo;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.jdo.annotations.*;
 import javax.lang.model.element.Element;
@@ -51,14 +51,14 @@ public class JDOConfiguration extends DefaultConfiguration {
                     Order.class, Persistent.class, PrimaryKey.class, QueryType.class, QueryInit.class,
                     QueryTransient.class, Serialized.class, Transactional.class, Unique.class, Value.class);
 
-    public JDOConfiguration(RoundEnvironment roundEnv,
-            Map<String, String> options,
+    public JDOConfiguration(ProcessingEnvironment processingEnvironment,
+            RoundEnvironment roundEnv,
             Class<? extends Annotation> entitiesAnn,
             Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> embeddedAnn, Class<? extends Annotation> skipAnn) {
-        super(roundEnv, options, Keywords.JDO, entitiesAnn, entityAnn, superTypeAnn,
+        super(processingEnvironment, roundEnv, Keywords.JDO, entitiesAnn, entityAnn, superTypeAnn,
                 embeddableAnn, embeddedAnn, skipAnn);
     }
 

@@ -15,7 +15,6 @@ package com.querydsl.apt.jpa;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -45,13 +44,12 @@ public class JPAConfiguration extends DefaultConfiguration {
 
     public JPAConfiguration(RoundEnvironment roundEnv,
             ProcessingEnvironment processingEnv,
-            Map<String,String> options,
             Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> embeddedAnn,
             Class<? extends Annotation> skipAnn) {
-        super(roundEnv, options, Keywords.JPA, QueryEntities.class, entityAnn, superTypeAnn,
+        super(processingEnv, roundEnv, Keywords.JPA, QueryEntities.class, entityAnn, superTypeAnn,
             embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
         this.types = processingEnv.getTypeUtils();

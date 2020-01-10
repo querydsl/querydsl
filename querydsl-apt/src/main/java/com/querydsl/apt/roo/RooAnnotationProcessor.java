@@ -47,7 +47,7 @@ public class RooAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> embeddable = Embeddable.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = Transient.class;
-        DefaultConfiguration conf = new JPAConfiguration(roundEnv, processingEnv, processingEnv.getOptions(),
+        DefaultConfiguration conf = new JPAConfiguration(roundEnv, processingEnv,
                 entity, superType, embeddable, embedded, skip);
         conf.setAlternativeEntityAnnotation(RooJpaActiveRecord.class);
         return conf;

@@ -20,6 +20,7 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
@@ -78,8 +79,8 @@ public class DefaultConfiguration implements Configuration {
     private Function<EntityType, String> variableNameFunction;
 
     public DefaultConfiguration(
+            ProcessingEnvironment processingEnvironment,
             RoundEnvironment roundEnv,
-            Map<String, String> options,
             Collection<String> keywords,
             @Nullable Class<? extends Annotation> entitiesAnn,
             Class<? extends Annotation> entityAnn,
@@ -91,6 +92,7 @@ public class DefaultConfiguration implements Configuration {
         this.excludedPackages = new HashSet<String>();
         this.includedClasses = new HashSet<String>();
         this.includedPackages = new HashSet<String>();
+        module.bind(ProcessingEnvironment.class, processingEnvironment);
         module.bind(RoundEnvironment.class, roundEnv);
         module.bind(CodegenModule.KEYWORDS, keywords);
         this.entitiesAnn = entitiesAnn;
@@ -122,6 +124,7 @@ public class DefaultConfiguration implements Configuration {
         boolean listAccessors = false;
         boolean mapAccessors = false;
         boolean createDefaultVariable = true;
+        Map<String, String> options = processingEnvironment.getOptions();
 
         if (options.containsKey(QUERYDSL_ENTITY_ACCESSORS)) {
             entityAccessors = Boolean.valueOf(options.get(QUERYDSL_ENTITY_ACCESSORS));

@@ -41,7 +41,7 @@ public class QuerydslAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> skip = QueryTransient.class;
 
         return new DefaultConfiguration(
-                roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), entities,
+                processingEnv, roundEnv, Collections.<String>emptySet(), entities,
                 entity, superType, embeddable, embedded, skip);
     }
 

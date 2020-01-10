@@ -46,8 +46,8 @@ public class MorphiaAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> superType = QuerySupertype.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = Transient.class;
-        DefaultConfiguration conf = new DefaultConfiguration(roundEnv,
-                processingEnv.getOptions(), Collections.<String>emptySet(),
+        DefaultConfiguration conf = new DefaultConfiguration(processingEnv, roundEnv,
+                Collections.<String>emptySet(),
                 entities, entity, superType, null, embedded, skip);
         try {
             @SuppressWarnings("unchecked") // Point is an Expression<Double[]>
