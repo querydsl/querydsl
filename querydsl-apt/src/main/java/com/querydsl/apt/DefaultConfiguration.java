@@ -48,7 +48,7 @@ public class DefaultConfiguration implements Configuration {
 
     private boolean unknownAsEmbedded;
 
-    private final CodegenModule module = new CodegenModule();
+    private final CodegenModule module;
 
     private final SerializerConfig defaultSerializerConfig;
 
@@ -87,11 +87,28 @@ public class DefaultConfiguration implements Configuration {
             @Nullable Class<? extends Annotation> superTypeAnn,
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> embeddedAnn,
-            @Nullable Class<? extends Annotation> skipAnn) {
+            @Nullable Class<? extends Annotation> skipAnn
+            ) {
+        this(processingEnvironment, roundEnv, keywords, entitiesAnn, entityAnn, superTypeAnn, embeddableAnn,
+             embeddedAnn, skipAnn, new CodegenModule());
+    }
+
+    public DefaultConfiguration(
+            ProcessingEnvironment processingEnvironment,
+            RoundEnvironment roundEnv,
+            Collection<String> keywords,
+            @Nullable Class<? extends Annotation> entitiesAnn,
+            Class<? extends Annotation> entityAnn,
+            @Nullable Class<? extends Annotation> superTypeAnn,
+            @Nullable Class<? extends Annotation> embeddableAnn,
+            @Nullable Class<? extends Annotation> embeddedAnn,
+            @Nullable Class<? extends Annotation> skipAnn,
+            CodegenModule codegenModule) {
         this.excludedClasses = new HashSet<String>();
         this.excludedPackages = new HashSet<String>();
         this.includedClasses = new HashSet<String>();
         this.includedPackages = new HashSet<String>();
+        module = codegenModule;
         module.bind(ProcessingEnvironment.class, processingEnvironment);
         module.bind(RoundEnvironment.class, roundEnv);
         module.bind(CodegenModule.KEYWORDS, keywords);

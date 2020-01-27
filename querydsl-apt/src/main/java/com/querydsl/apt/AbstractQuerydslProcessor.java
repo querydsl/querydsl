@@ -85,8 +85,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         Set<Class<? extends Annotation>> entityAnnotations = conf.getEntityAnnotations();
         TypeMappings typeMappings = conf.getTypeMappings();
         QueryTypeFactory queryTypeFactory = conf.getQueryTypeFactory();
-        this.typeFactory = new ExtendedTypeFactory(processingEnv, entityAnnotations, typeMappings, queryTypeFactory, conf.getVariableNameFunction());
-        elementHandler = new TypeElementHandler(conf, typeFactory, typeMappings, queryTypeFactory);
+        this.typeFactory = createTypeFactory(entityAnnotations, typeMappings, queryTypeFactory);
+        elementHandler = createElementHandler(typeMappings, queryTypeFactory);
         this.roundEnv = roundEnv;
 
         // process annotations
@@ -100,7 +100,16 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
     }
 
-    private void processAnnotations() {
+    protected TypeElementHandler createElementHandler(TypeMappings typeMappings, QueryTypeFactory queryTypeFactory) {
+        return new TypeElementHandler(conf, typeFactory, typeMappings, queryTypeFactory);
+    }
+
+    protected ExtendedTypeFactory createTypeFactory(Set<Class<? extends Annotation>> entityAnnotations,
+                                                  TypeMappings typeMappings, QueryTypeFactory queryTypeFactory) {
+        return new ExtendedTypeFactory(processingEnv, entityAnnotations, typeMappings, queryTypeFactory, conf.getVariableNameFunction());
+    }
+
+    protected void processAnnotations() {
         processExclusions();
 
         Set<TypeElement> elements = collectElements();
@@ -120,7 +129,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         for (TypeElement element : elements) {
             EntityType entityType = elementHandler.handleEntityType(element);
             registerTypeElement(entityType.getFullName(), element);
-            if (element.getAnnotation(conf.getEntityAnnotation()) != null) {
+            if (typeFactory.isSimpleTypeEntity(element, conf.getEntityAnnotation())) {
                 context.entityTypes.put(entityType.getFullName(), entityType);
             } else if (altEntityAnn && element.getAnnotation(conf.getAlternativeEntityAnnotation()) != null) {
                 context.entityTypes.put(entityType.getFullName(), entityType);
@@ -567,9 +576,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     private void serialize(Serializer serializer, Collection<EntityType> models) {
         for (EntityType model : models) {
             try {
-                Type type = conf.getTypeMappings().getPathType(model, model, true);
-                String packageName = type.getPackageName();
-                String className = !packageName.isEmpty() ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
+                String className = getClassName(model);
 
                 // skip if type is excluded class or in excluded package
                 if (conf.isExcludedPackage(model.getPackageName()) || conf.isExcludedClass(model.getFullName())) {
@@ -610,6 +617,11 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
     }
 
+    protected String getClassName(EntityType model) {
+        Type type = conf.getTypeMappings().getPathType(model, model, true);
+        String packageName = type.getPackageName();
+        return !packageName.isEmpty() ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
+    }
 
     protected abstract Configuration createConfiguration(RoundEnvironment roundEnv);
 
