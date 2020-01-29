@@ -620,7 +620,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     protected String getClassName(EntityType model) {
         Type type = conf.getTypeMappings().getPathType(model, model, true);
         String packageName = type.getPackageName();
-        return !packageName.isEmpty() ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
+        return packageName.isEmpty() ? type.getSimpleName(): (packageName + "." + type.getSimpleName());
     }
 
     protected abstract Configuration createConfiguration(RoundEnvironment roundEnv);
