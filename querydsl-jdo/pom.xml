@@ -278,14 +278,14 @@
   <repositories>
     <repository>
       <id>datanucleus</id>
-      <url>http://www.datanucleus.org/downloads/maven2</url>
+      <url>https://www.datanucleus.org/downloads/maven2</url>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
       <id>datanucleus</id>
-      <url>http://www.datanucleus.org/downloads/maven2</url>
+      <url>https://www.datanucleus.org/downloads/maven2</url>
     </pluginRepository>
   </pluginRepositories>
 
