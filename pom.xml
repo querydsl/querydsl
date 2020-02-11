@@ -512,18 +512,18 @@
   <repositories>
     <repository>
       <id>querydsl</id>
-      <url>http://www.querydsl.com/maven</url>
+      <url>https://www.querydsl.com/maven</url>
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
       <id>com.springsource.repository.bundles.release</id>
-      <url>http://repository.springsource.com/maven/bundles/release</url>
+      <url>https://repository.springsource.com/maven/bundles/release</url>
     </pluginRepository>
     <pluginRepository>
       <id>com.springsource.repository.bundles.external</id>
-      <url>http://repository.springsource.com/maven/bundles/external</url>
+      <url>https://repository.springsource.com/maven/bundles/external</url>
     </pluginRepository>
   </pluginRepositories>
  
