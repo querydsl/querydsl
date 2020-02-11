@@ -13,16 +13,6 @@
  */
 package com.querydsl.sql.codegen;
 
-import static com.mysema.codegen.Symbols.*;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.*;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.codegen.CodeWriter;
@@ -35,6 +25,15 @@ import com.querydsl.sql.codegen.support.ForeignKeyData;
 import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 import com.querydsl.sql.codegen.support.KeyData;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.*;
+
+import static com.mysema.codegen.Symbols.*;
 
 /**
  * {@code MetaDataSerializer} defines the Query type serialization logic for {@link MetaDataExporter}.
@@ -99,6 +98,7 @@ public class MetaDataSerializer extends EntitySerializer {
 
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
+        String classCast = localName.equals(genericName) ? EMPTY : "(Class) ";
 
         if (!localName.equals(genericName)) {
             writer.suppressWarnings("all");
@@ -106,14 +106,14 @@ public class MetaDataSerializer extends EntitySerializer {
         writer.beginConstructor(new Parameter("variable", Types.STRING),
                                 new Parameter("schema", Types.STRING),
                                 new Parameter("table", Types.STRING));
-        writer.line(SUPER,"(", writer.getClassConstant(localName) + COMMA
+        writer.line(SUPER, "(", classCast + writer.getClassConstant(localName) + COMMA
                 + "forVariable(variable), schema, table);");
         constructorContent(writer, model);
         writer.end();
 
         writer.beginConstructor(new Parameter("variable", Types.STRING),
                                 new Parameter("schema", Types.STRING));
-        writer.line(SUPER, "(", writer.getClassConstant(localName), COMMA,
+        writer.line(SUPER, "(", classCast + writer.getClassConstant(localName), COMMA,
                 "forVariable(variable), schema, \"", model.getData().get("table").toString(), "\");");
         constructorContent(writer, model);
         writer.end();
