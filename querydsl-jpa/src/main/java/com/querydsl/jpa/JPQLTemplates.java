@@ -144,6 +144,7 @@ public class JPQLTemplates extends Templates {
         // path types
         add(PathType.PROPERTY, "{0}.{1s}");
         add(PathType.VARIABLE, "{0s}");
+        add(PathType.TREATED_PATH, "treat({0} as {1s})");
 
         // case for eq
         add(Ops.CASE_EQ, "case {1} end");

@@ -65,7 +65,12 @@ public enum PathType implements Operator {
     /**
      * Root path
      */
-    VARIABLE;
+    VARIABLE,
+
+    /**
+     * Treated path
+     */
+    TREATED_PATH;
 
     @Override
     public Class<?> getType() {

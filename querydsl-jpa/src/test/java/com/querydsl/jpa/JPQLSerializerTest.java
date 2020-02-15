@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.domain.QAnimal;
 import com.querydsl.core.domain.QCat;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
@@ -251,6 +252,21 @@ public class JPQLSerializerTest {
         assertEquals("select domesticCat\n" +
                 "from Cat cat\n" +
                 "  inner join treat(cat.mate as DomesticCat) as domesticCat", serializer.toString());
+    }
+
+    @Test
+    public void treated_path() {
+        QAnimal animal = QAnimal.animal;
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, animal);
+
+        md.addWhere(JPAExpressions.treat(animal, QCat.class).breed.eq(1));
+        md.setProjection(animal);
+        serializer.serialize(md, false, null);
+        assertEquals("select animal\n" +
+                "from Animal animal\n" +
+                "where treat(animal as Cat).breed = ?1", serializer.toString());
     }
 
     @Test
