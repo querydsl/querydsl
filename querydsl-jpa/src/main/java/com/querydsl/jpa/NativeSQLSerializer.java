@@ -194,19 +194,19 @@ public final class NativeSQLSerializer extends SQLSerializer {
                 first = false;
             }
             append(")");
-        } else if (!getConstantToLabel().containsKey(constant)) {
-            String constLabel = String.valueOf(getConstantToLabel().size() + 1);
-            getConstantToLabel().put(constant, constLabel);
+        } else if (!getConstantToAllLabels().containsKey(constant)) {
+            final Integer constLabel = getConstantToNumberedLabel().size() + 1;
+            getConstantToNumberedLabel().put(constant, constLabel);
             append("?" + constLabel);
         } else {
-            append("?" + getConstantToLabel().get(constant));
+            append("?" + getConstantToAllLabels().get(constant));
         }
     }
 
     @Override
     protected void visitOperation(Class<?> type, Operator operator, List<? extends Expression<?>> args) {
         if (operator == SQLOps.ALL
-                && !RelationalPath.class.isInstance(args.get(0))
+                && !(args.get(0) instanceof RelationalPath)
                 && wrapEntityProjections) {
             append("{");
             super.visitOperation(type, operator, args);

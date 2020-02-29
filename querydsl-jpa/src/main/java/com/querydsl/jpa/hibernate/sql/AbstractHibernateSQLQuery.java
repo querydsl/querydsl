@@ -85,10 +85,11 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     private Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstantToLabel());
+        logQuery(queryString, serializer.getConstantToAllLabels());
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
-        HibernateUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
+        HibernateUtil.setConstants(query, serializer.getConstantToNamedLabel(), serializer.getConstantToNumberedLabel(),
+                queryMixin.getMetadata().getParams());
 
         if (!forCount) {
             ListMultimap<Expression<?>, String> aliases = serializer.getAliases();

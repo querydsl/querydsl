@@ -42,7 +42,7 @@
         </exclusion>
       </exclusions>      
       <optional>true</optional>
-    </dependency>   
+    </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
@@ -50,11 +50,11 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
       <optional>true</optional>
-      <exclusions>    
+      <exclusions>
         <exclusion>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -103,7 +103,7 @@
       <version>${project.version}</version>
       <scope>compile</scope>
       <optional>true</optional>
-    </dependency>    
+    </dependency>
     
     <dependency>
       <groupId>org.slf4j</groupId>
