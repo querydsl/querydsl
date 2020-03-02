@@ -195,11 +195,6 @@ public final class Configuration {
         return getType(path, clazz).getValue(rs, i);
     }
 
-    @Nullable
-    public <T> T get(ResultSet rs,int i, Type<T> type) throws SQLException {
-        return type.getValue(rs, i);
-    }
-
     /**
      * Get the schema/table override
      *
@@ -274,7 +269,7 @@ public final class Configuration {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
+    private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
         if (hasTableColumnTypes && path != null && !clazz.equals(Null.class)
                 && path.getMetadata().getParent() instanceof RelationalPath) {
             String table = ((RelationalPath) path.getMetadata().getParent()).getTableName();
