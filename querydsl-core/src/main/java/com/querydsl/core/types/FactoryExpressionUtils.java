@@ -16,6 +16,8 @@ package com.querydsl.core.types;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.querydsl.core.util.ArrayUtils;
+
 /**
  * Utility class to expand {@link FactoryExpression} constructor arguments and compress {@link FactoryExpression}
  * invocation arguments
@@ -57,7 +59,7 @@ public final class FactoryExpressionUtils {
 
         @Override
         public T newInstance(Object... a) {
-            return inner.newInstance(compress(inner.getArgs(), a, 0));
+            return inner.newInstance(compress(inner.getArgs(), a));
         }
 
         @Override
@@ -138,7 +140,7 @@ public final class FactoryExpressionUtils {
         return counter;
     }
 
-    private static Object[] compress(List<Expression<?>> exprs, Object[] args, int from) {
+    private static Object[] compress(List<Expression<?>> exprs, Object[] args) {
         Object[] rv = new Object[exprs.size()];
         int offset = 0;
         for (int i = 0; i < exprs.size(); i++) {
@@ -149,11 +151,11 @@ public final class FactoryExpressionUtils {
             if (expr instanceof FactoryExpression<?>) {
                 FactoryExpression<?> fe = (FactoryExpression<?>) expr;
                 int fullArgsLength = countArguments(fe);
-                Object[] compressed = compress(fe.getArgs(), args, offset);
+                Object[] compressed = compress(fe.getArgs(), ArrayUtils.subarray(args, offset, offset + fullArgsLength));
                 rv[i] = fe.newInstance(compressed);
                 offset += fullArgsLength;
             } else {
-                rv[i] = args[from + offset];
+                rv[i] = args[offset];
                 offset++;
             }
         }
