@@ -37,16 +37,18 @@ class HibernateHandler implements QueryHandler {
     @Override
     public void addEntity(Query query, String alias, Class<?> type) {
         if (query instanceof NativeQuery) {
-            NativeQuery hibernateQuery = (NativeQuery) query;
-            hibernateQuery.addEntity(alias, type);
+            query.unwrap(NativeQuery.class).addEntity(alias, type);
+        } else {
+            throw new IllegalArgumentException(String.format("invalid Query type `%s` in HibernateHandler", query.getClass()));
         }
     }
 
     @Override
     public void addScalar(Query query, String alias, Class<?> type) {
         if (query instanceof NativeQuery) {
-            NativeQuery hibernateQuery = (NativeQuery) query;
-            hibernateQuery.addScalar(alias);
+            query.unwrap(NativeQuery.class).addScalar(alias);
+        } else {
+            throw new IllegalArgumentException(String.format("invalid Query type `%s` in HibernateHandler", query.getClass()));
         }
     }
 
@@ -81,7 +83,7 @@ class HibernateHandler implements QueryHandler {
     public boolean transform(Query query, FactoryExpression<?> projection) {
         if (query instanceof NativeQuery) {
             ResultTransformer transformer = new FactoryExpressionTransformer(projection);
-            ((NativeQuery) query).setResultTransformer(transformer);
+            query.unwrap(NativeQuery.class).setResultTransformer(transformer);
             return true;
         } else {
             return false;
