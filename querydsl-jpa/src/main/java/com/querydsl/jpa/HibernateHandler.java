@@ -36,20 +36,12 @@ class HibernateHandler implements QueryHandler {
 
     @Override
     public void addEntity(Query query, String alias, Class<?> type) {
-        if (query instanceof NativeQuery) {
-            query.unwrap(NativeQuery.class).addEntity(alias, type);
-        } else {
-            throw new IllegalArgumentException(String.format("invalid Query type `%s` in HibernateHandler", query.getClass()));
-        }
+        query.unwrap(NativeQuery.class).addEntity(alias, type);
     }
 
     @Override
     public void addScalar(Query query, String alias, Class<?> type) {
-        if (query instanceof NativeQuery) {
-            query.unwrap(NativeQuery.class).addScalar(alias);
-        } else {
-            throw new IllegalArgumentException(String.format("invalid Query type `%s` in HibernateHandler", query.getClass()));
-        }
+        query.unwrap(NativeQuery.class).addScalar(alias);
     }
 
     @Override

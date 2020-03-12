@@ -3,8 +3,11 @@ package com.querydsl.jpa;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import org.batoo.jpa.core.impl.criteria.QueryImpl;
+import org.eclipse.persistence.internal.localization.ExceptionLocalization;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.spi.ScrollableResultsImplementor;
 import org.hibernate.transform.ResultTransformer;
@@ -42,6 +45,19 @@ public class HibernateHandlerTest {
         verify(nativeQuery);
     }
 
+    @Test(expected = PersistenceException.class)
+    public void addEntity_should_throw_persistence_exception_when_invalid_query_type() {
+        Query notSupportedQuery = createMock(QueryImpl.class);
+        PersistenceException expectedThrow =
+            new PersistenceException(ExceptionLocalization.buildMessage("unable_to_unwrap_jpa",
+                                                                        new String[]{Query.class.getName(), NativeQuery.class.getName()}));
+
+        expect(notSupportedQuery.unwrap(NativeQuery.class)).andThrow(expectedThrow);
+        replay(notSupportedQuery);
+
+        hibernateHandler.addEntity(notSupportedQuery, alias, classType);
+    }
+
     @Test
     public void should_add_scalar() {
         expect(nativeQuery.unwrap(NativeQuery.class)).andReturn(nativeQuery);
@@ -51,6 +67,19 @@ public class HibernateHandlerTest {
         hibernateHandler.addScalar(nativeQuery, alias, classType);
 
         verify(nativeQuery);
+    }
+
+    @Test(expected = PersistenceException.class)
+    public void addScalar_should_throw_persistence_exception_when_invalid_query_type() {
+        Query notSupportedQuery = createMock(QueryImpl.class);
+        PersistenceException expectedThrow =
+            new PersistenceException(ExceptionLocalization.buildMessage("unable_to_unwrap_jpa",
+                                                                        new String[]{Query.class.getName(), NativeQuery.class.getName()}));
+
+        expect(notSupportedQuery.unwrap(NativeQuery.class)).andThrow(expectedThrow);
+        replay(notSupportedQuery);
+
+        hibernateHandler.addScalar(notSupportedQuery, alias, classType);
     }
 
     @Test
