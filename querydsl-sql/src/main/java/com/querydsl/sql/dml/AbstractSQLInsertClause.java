@@ -325,6 +325,7 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
                 for (int i = 0; i < target.length; i++) {
                     Path<?> path = entity.getPrimaryKey().getLocalColumns().get(i);
                     String column = ColumnMetadata.getName(path);
+                    column = configuration.getColumnOverride(entity.getSchemaAndTable(), column);
                     target[i] = column;
                 }
                 stmt = connection().prepareStatement(queryString, target);
