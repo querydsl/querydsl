@@ -89,13 +89,46 @@ public class DefaultConfiguration implements Configuration {
             @Nullable Class<? extends Annotation> embeddedAnn,
             @Nullable Class<? extends Annotation> skipAnn
             ) {
-        this(processingEnvironment, roundEnv, keywords, entitiesAnn, entityAnn, superTypeAnn, embeddableAnn,
+        this(processingEnvironment, roundEnv, processingEnvironment.getOptions(), keywords, entitiesAnn, entityAnn, superTypeAnn, embeddableAnn,
              embeddedAnn, skipAnn, new CodegenModule());
+    }
+
+    @Deprecated
+    public DefaultConfiguration(
+            RoundEnvironment roundEnv,
+            Map<String, String> options,
+            Collection<String> keywords,
+            @Nullable Class<? extends Annotation> entitiesAnn,
+            Class<? extends Annotation> entityAnn,
+            @Nullable Class<? extends Annotation> superTypeAnn,
+            @Nullable Class<? extends Annotation> embeddableAnn,
+            @Nullable Class<? extends Annotation> embeddedAnn,
+            @Nullable Class<? extends Annotation> skipAnn
+    ) {
+        this(null, roundEnv, options, keywords, entitiesAnn, entityAnn, superTypeAnn, embeddableAnn,
+                embeddedAnn, skipAnn, new CodegenModule());
+    }
+
+    @Deprecated
+    public DefaultConfiguration(
+            ProcessingEnvironment processingEnvironment,
+            RoundEnvironment roundEnv,
+            Collection<String> keywords,
+            @Nullable Class<? extends Annotation> entitiesAnn,
+            Class<? extends Annotation> entityAnn,
+            @Nullable Class<? extends Annotation> superTypeAnn,
+            @Nullable Class<? extends Annotation> embeddableAnn,
+            @Nullable Class<? extends Annotation> embeddedAnn,
+            @Nullable Class<? extends Annotation> skipAnn,
+            CodegenModule codegenModule) {
+        this(processingEnvironment, roundEnv, processingEnvironment.getOptions(), keywords, entitiesAnn, entityAnn, superTypeAnn, embeddableAnn,
+                embeddedAnn, skipAnn, codegenModule);
     }
 
     public DefaultConfiguration(
             ProcessingEnvironment processingEnvironment,
             RoundEnvironment roundEnv,
+            Map<String, String> options,
             Collection<String> keywords,
             @Nullable Class<? extends Annotation> entitiesAnn,
             Class<? extends Annotation> entityAnn,
@@ -141,7 +174,6 @@ public class DefaultConfiguration implements Configuration {
         boolean listAccessors = false;
         boolean mapAccessors = false;
         boolean createDefaultVariable = true;
-        Map<String, String> options = processingEnvironment.getOptions();
 
         if (options.containsKey(QUERYDSL_ENTITY_ACCESSORS)) {
             entityAccessors = Boolean.valueOf(options.get(QUERYDSL_ENTITY_ACCESSORS));
