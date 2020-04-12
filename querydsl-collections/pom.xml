@@ -68,6 +68,13 @@
     </dependency>
 
     <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-guava</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
       <version>${cglib.version}</version>

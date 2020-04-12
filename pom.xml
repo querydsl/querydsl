@@ -5,7 +5,10 @@
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
   <version>5.0.0-SNAPSHOT</version>
-  <name>Querydsl</name>
+    <modules>
+        <module>querydsl-guava</module>
+    </modules>
+    <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>${project.homepage}</url>
   

@@ -36,7 +36,7 @@ import com.querydsl.core.types.Projections;
  * @author tiwe
  *
  */
-public final class GroupBy {
+public class GroupBy {
 
     /**
      * Create a new GroupByBuilder for the given key expression
@@ -340,6 +340,6 @@ public final class GroupBy {
         return new GMap.Mixin<K, V, T, U, SortedMap<T, U>>(key, value, GMap.createSorted(QPair.create(key, value), comparator));
     }
 
-    private GroupBy() { }
+    protected GroupBy() { }
 
 }
