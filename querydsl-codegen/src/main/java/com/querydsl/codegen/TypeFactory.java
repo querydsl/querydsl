@@ -188,15 +188,15 @@ public final class TypeFactory {
         TypeCategory typeCategory = TypeCategory.get(cl.getName());
         if (annotationHelper != null) {
             typeCategory = annotationHelper.getTypeByAnnotation(cl, annotation);
-        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
-                && !cl.equals(Comparable.class)) {
-            typeCategory = TypeCategory.COMPARABLE;
         } else if (embeddableTypes.contains(cl)) {
+            typeCategory = TypeCategory.CUSTOM;
+        } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
             typeCategory = TypeCategory.CUSTOM;
         } else if (typeCategory == TypeCategory.SIMPLE && entity) {
             typeCategory = TypeCategory.ENTITY;
-        } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
-            typeCategory = TypeCategory.CUSTOM;
+        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
+                && !cl.equals(Comparable.class)) {
+            typeCategory = TypeCategory.COMPARABLE;
         }
 
         return new ClassType(typeCategory, cl, parameters);
