@@ -50,7 +50,7 @@ import com.querydsl.core.util.ResultSetAdapter;
  */
 public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
 
-    protected static final String PARENT_CONTEXT = AbstractSQLQuery.class.getName() + "#PARENT_CONTEXT";
+    public static final String PARENT_CONTEXT = AbstractSQLQuery.class.getName() + "#PARENT_CONTEXT";
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 

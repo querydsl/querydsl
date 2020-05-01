@@ -1280,6 +1280,20 @@ public class JdbcConfiguration {
 }
 ]]></programlisting>
 
+    <para>If you want to control the transaction more finely, such as using ShardingSphere or MyCat.
+      You need to control the connection closing operation of non-transactional operations.
+      Below is a configuration example:</para>
+
+    <programlisting language="java"><![CDATA[
+    @Bean
+    public SQLQueryFactory queryFactory(@Autowired DataSource dataSource) {
+        Configuration configuration = new Configuration(MySQLTemplates.builder().build());
+        configuration.addListener(new SpringSQLCloseListener(dataSource));
+        return new SQLQueryFactory(
+                configuration,
+                () -> DataSourceUtils.getConnection(dataSource));
+    }
+    ]]></programlisting>
 
   </sect2>
 
