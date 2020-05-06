@@ -985,6 +985,16 @@ public abstract class AbstractJPATest {
     }
 
     @Test
+    public void in_unique_null_collection() {
+        assertEquals(0, query().from(cat).where(cat.name.in(Collections.singleton((String) null))).fetchCount());
+    }
+
+    @Test
+    public void in_unique_null_array() {
+        assertEquals(0, query().from(cat).where(cat.name.in(new String[] {null})).fetchCount());
+    }
+
+    @Test
     @NoOpenJPA
     public void indexOf() {
         assertEquals(Integer.valueOf(0), query().from(cat).where(cat.name.eq("Bob123"))
@@ -1268,6 +1278,16 @@ public abstract class AbstractJPATest {
     public void not_in_empty() {
         long count = query().from(cat).fetchCount();
         assertEquals(count, query().from(cat).where(cat.name.notIn(Collections.<String>emptyList())).fetchCount());
+    }
+
+    @Test
+    public void not_in_unique_null_collection() {
+        assertEquals(0, query().from(cat).where(cat.name.notIn(Collections.singleton((String) null))).fetchCount());
+    }
+
+    @Test
+    public void not_in_unique_null_array() {
+        assertEquals(0, query().from(cat).where(cat.name.notIn(new String[] {null})).fetchCount());
     }
 
     @Test

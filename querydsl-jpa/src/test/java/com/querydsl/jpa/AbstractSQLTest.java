@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -164,6 +165,18 @@ public abstract class AbstractSQLTest {
     @Test
     public void in() {
         assertEquals(6L, query().from(cat).where(cat.dtype.in("C", "CX")).fetchCount());
+    }
+
+    @Test
+    @ExcludeIn(Target.DERBY)
+    public void in_unique_null_collection() {
+        assertEquals(0, query().from(cat).where(cat.name.in(Collections.singleton((String) null))).fetchCount());
+    }
+
+    @Test
+    @ExcludeIn(Target.DERBY)
+    public void in_unique_null_array() {
+        assertEquals(0, query().from(cat).where(cat.name.in(new String[] {null})).fetchCount());
     }
 
     @Test

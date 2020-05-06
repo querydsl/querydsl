@@ -14,6 +14,7 @@
 package com.querydsl.core.types.dsl;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.annotation.Nullable;
 
@@ -189,10 +190,14 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression in(Collection<? extends T> right) {
         if (right.size() == 1) {
-            return eq(right.iterator().next());
-        } else {
-            return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(right));
+            T elem = right.iterator().next();
+
+            if (elem != null) {
+                return eq(elem);
+            }
         }
+
+        return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(right));
     }
 
     /**
@@ -203,7 +208,11 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression in(T... right) {
         if (right.length == 1) {
-            return eq(right[0]);
+            if (right[0] != null) {
+                return eq(right[0]);
+            } else {
+                return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(Collections.singleton(null)));
+            }
         } else {
             return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(ImmutableList.copyOf(right)));
         }
@@ -291,10 +300,14 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression notIn(Collection<? extends T> right) {
         if (right.size() == 1) {
-            return ne(right.iterator().next());
-        } else {
-            return Expressions.booleanOperation(Ops.NOT_IN, mixin, ConstantImpl.create(right));
+            T elem = right.iterator().next();
+
+            if (elem != null) {
+                return ne(elem);
+            }
         }
+
+        return Expressions.booleanOperation(Ops.NOT_IN, mixin, ConstantImpl.create(right));
     }
 
     /**
@@ -305,7 +318,11 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression notIn(T... right) {
         if (right.length == 1) {
-            return ne(right[0]);
+            if (right[0] != null) {
+                return ne(right[0]);
+            } else {
+                return Expressions.booleanOperation(Ops.NOT_IN, mixin, ConstantImpl.create(Collections.singleton(null)));
+            }
         } else {
             return Expressions.booleanOperation(Ops.NOT_IN, mixin, ConstantImpl.create(ImmutableList.copyOf(right)));
         }
