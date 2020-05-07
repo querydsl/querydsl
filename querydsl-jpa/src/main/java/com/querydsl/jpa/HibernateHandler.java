@@ -52,8 +52,8 @@ class HibernateHandler implements QueryHandler {
     @SuppressWarnings("unchecked")
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
-        if (query instanceof NativeQuery) {
-            NativeQuery hQuery = (NativeQuery) query;
+        if (query instanceof org.hibernate.query.Query) {
+            org.hibernate.query.Query hQuery = (org.hibernate.query.Query) query;
             ScrollableResults results = hQuery.scroll(ScrollMode.FORWARD_ONLY);
             CloseableIterator<T> iterator = new ScrollableResultsIterator<T>(results);
             if (projection != null) {
@@ -73,9 +73,9 @@ class HibernateHandler implements QueryHandler {
     @SuppressWarnings("deprecation")
     @Override
     public boolean transform(Query query, FactoryExpression<?> projection) {
-        if (query instanceof NativeQuery) {
+        if (query instanceof org.hibernate.query.Query) {
             ResultTransformer transformer = new FactoryExpressionTransformer(projection);
-            query.unwrap(NativeQuery.class).setResultTransformer(transformer);
+            query.unwrap(org.hibernate.query.Query.class).setResultTransformer(transformer);
             return true;
         } else {
             return false;

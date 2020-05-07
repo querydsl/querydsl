@@ -6,9 +6,9 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
-import org.batoo.jpa.core.impl.criteria.QueryImpl;
 import org.eclipse.persistence.internal.localization.ExceptionLocalization;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.internal.QueryImpl;
 import org.hibernate.query.spi.ScrollableResultsImplementor;
 import org.hibernate.transform.ResultTransformer;
 import org.junit.Test;
@@ -30,19 +30,20 @@ import static org.junit.Assert.assertTrue;
 public class HibernateHandlerTest {
 
     private final HibernateHandler hibernateHandler = new HibernateHandler();
-    private final NativeQuery nativeQuery = createMock(NativeQuery.class);
+    private final NativeQuery nativeQueryFromJpaSqlQuery = createMock(NativeQuery.class);
+    final QueryImpl queryImplFromJpaQuery = createMock(org.hibernate.query.internal.QueryImpl.class);
     private final String alias = "library";
     private final Class<Library> classType = Library.class;
 
     @Test
     public void should_add_entity() {
-        expect(nativeQuery.unwrap(NativeQuery.class)).andReturn(nativeQuery);
-        expect(nativeQuery.addEntity(alias, classType)).andReturn(nativeQuery);
-        replay(nativeQuery);
+        expect(nativeQueryFromJpaSqlQuery.unwrap(NativeQuery.class)).andReturn(nativeQueryFromJpaSqlQuery);
+        expect(nativeQueryFromJpaSqlQuery.addEntity(alias, classType)).andReturn(nativeQueryFromJpaSqlQuery);
+        replay(nativeQueryFromJpaSqlQuery);
 
-        hibernateHandler.addEntity(nativeQuery, alias, classType);
+        hibernateHandler.addEntity(nativeQueryFromJpaSqlQuery, alias, classType);
 
-        verify(nativeQuery);
+        verify(nativeQueryFromJpaSqlQuery);
     }
 
     @Test(expected = PersistenceException.class)
@@ -60,13 +61,13 @@ public class HibernateHandlerTest {
 
     @Test
     public void should_add_scalar() {
-        expect(nativeQuery.unwrap(NativeQuery.class)).andReturn(nativeQuery);
-        expect(nativeQuery.addScalar(alias)).andReturn(nativeQuery);
-        replay(nativeQuery);
+        expect(nativeQueryFromJpaSqlQuery.unwrap(NativeQuery.class)).andReturn(nativeQueryFromJpaSqlQuery);
+        expect(nativeQueryFromJpaSqlQuery.addScalar(alias)).andReturn(nativeQueryFromJpaSqlQuery);
+        replay(nativeQueryFromJpaSqlQuery);
 
-        hibernateHandler.addScalar(nativeQuery, alias, classType);
+        hibernateHandler.addScalar(nativeQueryFromJpaSqlQuery, alias, classType);
 
-        verify(nativeQuery);
+        verify(nativeQueryFromJpaSqlQuery);
     }
 
     @Test(expected = PersistenceException.class)
@@ -93,14 +94,25 @@ public class HibernateHandlerTest {
     }
 
     @Test
-    public void should_return_transforming_iterator_when_call_iterate_function() {
+    public void should_return_transforming_iterator_when_call_iterate_by_using_native_query() {
         ScrollableResultsImplementor scrollableResultsImplementor = createMock(ScrollableResultsImplementor.class);
         FactoryExpression<?> factoryExpression = createMock(FactoryExpression.class);
 
-        expect(nativeQuery.unwrap(NativeQuery.class)).andReturn(nativeQuery);
-        expect(nativeQuery.scroll(FORWARD_ONLY)).andReturn(scrollableResultsImplementor);
+        expect(nativeQueryFromJpaSqlQuery.unwrap(NativeQuery.class)).andReturn(nativeQueryFromJpaSqlQuery);
+        expect(nativeQueryFromJpaSqlQuery.scroll(FORWARD_ONLY)).andReturn(scrollableResultsImplementor);
 
-        assertEquals(TransformingIterator.class, hibernateHandler.iterate(nativeQuery, factoryExpression).getClass());
+        assertEquals(TransformingIterator.class, hibernateHandler.iterate(nativeQueryFromJpaSqlQuery, factoryExpression).getClass());
+    }
+
+    @Test
+    public void should_return_transforming_iterator_when_call_iterate_function_by_using_query_impl() {
+        ScrollableResultsImplementor scrollableResultsImplementor = createMock(ScrollableResultsImplementor.class);
+        FactoryExpression<?> factoryExpression = createMock(FactoryExpression.class);
+
+        expect(queryImplFromJpaQuery.unwrap(QueryImpl.class)).andReturn(queryImplFromJpaQuery);
+        expect(queryImplFromJpaQuery.scroll(FORWARD_ONLY)).andReturn(scrollableResultsImplementor);
+
+        assertEquals(TransformingIterator.class, hibernateHandler.iterate(queryImplFromJpaQuery, factoryExpression).getClass());
     }
 
     @Test
@@ -117,7 +129,7 @@ public class HibernateHandlerTest {
     }
 
     @Test
-    public void should_ReturnTransformingIterator_when_other_query_implementor() {
+    public void should_return_transforming_iterator_when_other_query_implementor() {
         Query query = createMock(Query.class);
         FactoryExpression<?> factoryExpression = createMock(FactoryExpression.class);
         List queryResultList = createMock(List.class);
@@ -132,13 +144,13 @@ public class HibernateHandlerTest {
 
     @Test
     public void should_transform() {
-        FactoryExpression<?> projection = createMock(FactoryExpression.class);
+        final FactoryExpression<?> projection = createMock(FactoryExpression.class);
 
-        expect(nativeQuery.unwrap(NativeQuery.class)).andReturn(nativeQuery);
-        expect(nativeQuery.setResultTransformer(anyObject(ResultTransformer.class))).andReturn(nativeQuery);
-        replay(nativeQuery);
+        expect(queryImplFromJpaQuery.unwrap(org.hibernate.query.Query.class)).andReturn(nativeQueryFromJpaSqlQuery);
+        expect(queryImplFromJpaQuery.setResultTransformer(anyObject(ResultTransformer.class))).andReturn(queryImplFromJpaQuery);
+        replay(queryImplFromJpaQuery);
 
-        assertTrue(hibernateHandler.transform(nativeQuery, projection));
+        assertTrue(hibernateHandler.transform(queryImplFromJpaQuery, projection));
     }
 
 }
