@@ -24,7 +24,6 @@ import com.querydsl.core.types.dsl.EnumPath
 import com.querydsl.core.types.dsl.ListPath
 import com.querydsl.core.types.dsl.MapPath
 import com.querydsl.core.types.dsl.NumberPath
-import com.querydsl.core.types.dsl.PathInits
 import com.querydsl.core.types.dsl.SetPath
 import com.querydsl.core.types.dsl.StringPath
 import com.querydsl.core.types.dsl.TimePath
@@ -40,6 +39,7 @@ import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.WildcardTypeName
 import com.squareup.kotlinpoet.asTypeName
+import com.squareup.kotlinpoet.buildCodeBlock
 import javax.annotation.Generated
 import javax.inject.Inject
 import javax.inject.Named
@@ -98,23 +98,8 @@ open class KotlinEntitySerializer @Inject constructor(protected val mappings: Ty
     protected open fun introCompanion(model: EntityType, config: SerializerConfig): TypeSpec {
         return TypeSpec.companionObjectBuilder()
                 .addProperty(PropertySpec.builder("serialVersionUID", Long::class, KModifier.CONST, KModifier.PRIVATE).initializer("%L", model.fullName.hashCode()).build())
-                .introInits(model, config)
                 .let { if (config.createDefaultVariable()) it.introDefaultInstance(model, config.defaultVariableName()) else it }
                 .build()
-    }
-
-    protected open fun TypeSpec.Builder.introInits(model: EntityType, config: SerializerConfig): TypeSpec.Builder = apply {
-        val inits = model.properties.flatMap { property -> property.inits.map { "${property.escapedName}.$it" } }
-        val builder = PropertySpec.builder("INITS", PathInits::class, KModifier.PRIVATE)
-        if (inits.isNotEmpty()) {
-            addProperty(builder.initializer(CodeBlock.of("%T(%L)", PathInits::class, ((inits + "*").joinToCode()))).build())
-        } else if (model.hasEntityFields() || superTypeHasEntityFields(model)) {
-            addProperty(builder.initializer("%T.DIRECT2", PathInits::class).build())
-        }
-    }
-
-    private fun superTypeHasEntityFields(model: EntityType): Boolean {
-        return model.superType?.entityType?.hasEntityFields() ?: false
     }
 
     protected open fun TypeSpec.Builder.introJavadoc(model: EntityType, config: SerializerConfig): TypeSpec.Builder = apply {
@@ -132,11 +117,12 @@ open class KotlinEntitySerializer @Inject constructor(protected val mappings: Ty
         val superType = model.superType?.entityType
         if (superType != null) {
             val superQueryType = mappings.getPathTypeName(superType, model)
-            val builder = PropertySpec.builder("_super", superQueryType, KModifier.PUBLIC)
-            if (!superType.hasEntityFields()) {
-                builder.initializer("%T(this)", superQueryType)
-            }
-            addProperty(builder.build())
+            addProperty(PropertySpec.builder("_super", superQueryType, KModifier.PUBLIC)
+                    .delegate(buildCodeBlock {
+                        beginControlFlow("lazy")
+                        addStatement("%T(this)", superQueryType)
+                        endControlFlow()
+                    }).build())
         }
     }
 
@@ -183,15 +169,7 @@ open class KotlinEntitySerializer @Inject constructor(protected val mappings: Ty
         val qType = mappings.getPathClassName(property.getParameter(0), model)
         serialize(model, property, pathClass.parameterizedBy(getRaw(property.getParameter(0)), genericQueryType),
                 CodeBlock.of("this.%L<%T, %T>", factoryMethod, property.getParameter(0).asTypeName(), genericQueryType.asTypeName()),
-                property.getParameter(0).asClassNameStatement(), qType.asClassStatement(), getInits(property))
-    }
-
-    private fun getInits(property: Property): CodeBlock {
-        return if (property.inits.isNotEmpty()) {
-            CodeBlock.of("INITS.get(%S)", property.name)
-        } else {
-            CodeBlock.of("%T.DIRECT2", PathInits::class)
-        }
+                property.getParameter(0).asClassNameStatement(), qType.asClassStatement(), "null".asCodeBlock())
     }
 
     protected open fun TypeSpec.Builder.customField(model: EntityType, field: Property, config: SerializerConfig) {
@@ -199,12 +177,13 @@ open class KotlinEntitySerializer @Inject constructor(protected val mappings: Ty
         val builder = PropertySpec.builder(field.escapedName, queryType, KModifier.PUBLIC).addKdoc("custom")
         if (field.isInherited) {
             builder.addKdoc("inherited")
-            val superType = model.superType
-            if (superType?.entityType?.hasEntityFields() == false) {
-                builder.initializer("%T(_super.%L)", queryType, field.escapedName)
-            }
+            builder.delegate(buildCodeBlock {
+                beginControlFlow("lazy")
+                addStatement("%T(_super.%L)", queryType, field.escapedName)
+                endControlFlow()
+            })
         } else {
-            builder.initializer("%T(forProperty(%S)", queryType, field.name)
+            builder.initializer("%T(forProperty(%S))", queryType, field.name)
         }
         addProperty(builder.build())
     }
@@ -213,9 +192,11 @@ open class KotlinEntitySerializer @Inject constructor(protected val mappings: Ty
         val superType = model.superType
         val builder = PropertySpec.builder(field.escapedName, type, KModifier.PUBLIC)
         if (field.isInherited && superType != null) {
-            if (superType.entityType?.hasEntityFields() == false) {
-                builder.initializer("_super.%L", field.escapedName)
-            }
+            builder.delegate(buildCodeBlock {
+                beginControlFlow("lazy")
+                addStatement("_super.%L", field.escapedName)
+                endControlFlow()
+            })
         } else {
             builder.initializer("%L(%S${", %L".repeat(args.size)})", factoryMethod, field.name, *args)
         }
@@ -234,16 +215,21 @@ open class KotlinEntitySerializer @Inject constructor(protected val mappings: Ty
     }
 
     protected open fun TypeSpec.Builder.entityField(model: EntityType, field: Property, config: SerializerConfig) {
-        val builder = PropertySpec.builder(field.escapedName, mappings.getPathTypeName(field.type, model))
+        val fieldType = mappings.getPathTypeName(field.type, model)
+        val builder = PropertySpec.builder(field.escapedName, fieldType)
         if (field.isInherited) {
             builder.addKdoc("inherited")
         }
         builder.addModifiers(if (config.useEntityAccessors()) KModifier.PROTECTED else KModifier.PUBLIC)
+        builder.delegate(buildCodeBlock {
+            beginControlFlow("lazy")
+            addStatement("%T(forProperty(%S))", fieldType, field.name)
+            endControlFlow()
+        })
         addProperty(builder.build())
     }
 
     protected open fun TypeSpec.Builder.constructors(model: EntityType, config: SerializerConfig): TypeSpec.Builder {
-        val hasEntityFields = model.hasEntityFields() || superTypeHasEntityFields(model)
         val stringOrBoolean = (model.originalCategory == TypeCategory.STRING || model.originalCategory == TypeCategory.BOOLEAN)
 
         // String
@@ -252,92 +238,33 @@ open class KotlinEntitySerializer @Inject constructor(protected val mappings: Ty
         // Path
         val path = ParameterSpec.builder("path", if (model.isFinal) Path::class.parameterizedBy(model) else Path::class.parameterizedBy(model.asOutTypeName())).build()
         val pathConstructor = FunSpec.constructorBuilder().addParameter(path)
-        if (!hasEntityFields) {
-            if (stringOrBoolean) {
-                pathConstructor.callSuperConstructor(CodeBlock.of("%N.metadata", path))
-            } else {
-                pathConstructor.callSuperConstructor(CodeBlock.of("%N.type", path), CodeBlock.of("%N.metadata", path))
-            }
-            pathConstructor.addCode(constructorContent(model))
+        if (stringOrBoolean) {
+            pathConstructor.callSuperConstructor(CodeBlock.of("%N.metadata", path))
         } else {
-            pathConstructor.callThisConstructor(CodeBlock.of("%N.type", path), CodeBlock.of("%N.metadata", path),
-                    CodeBlock.of("%T.getFor(%N.metadata, INITS)", PathInits::class, path))
+            pathConstructor.callSuperConstructor(CodeBlock.of("%N.type", path), CodeBlock.of("%N.metadata", path))
         }
+        pathConstructor.addCode(constructorContent(model))
         addFunction(pathConstructor.build())
 
         // PathMetadata
         val metadata = ParameterSpec.builder("metadata", PathMetadata::class).build()
         val pathMetadataConstructor = FunSpec.constructorBuilder().addParameter(metadata)
-        if (hasEntityFields) {
-            pathMetadataConstructor.callThisConstructor(metadata.asCodeBlock(), CodeBlock.of("%T.getFor(%N, INITS)", PathInits::class, metadata))
+        if (stringOrBoolean) {
+            pathMetadataConstructor.callSuperConstructor(metadata.asCodeBlock())
         } else {
-            if (stringOrBoolean) {
-                pathMetadataConstructor.callSuperConstructor(metadata.asCodeBlock())
-            } else {
-                pathMetadataConstructor.callSuperConstructor(model.asClassNameStatement(), metadata.asCodeBlock())
-            }
-            pathConstructor.addCode(constructorContent(model))
+            pathMetadataConstructor.callSuperConstructor(model.asClassNameStatement(), metadata.asCodeBlock())
         }
+        pathConstructor.addCode(constructorContent(model))
         addFunction(pathMetadataConstructor.build())
 
-        // PathMetadata, PathInits
-        val inits = ParameterSpec.builder("inits", PathInits::class).build()
-        if (hasEntityFields) {
-            val builder = FunSpec.constructorBuilder()
-                    .addParameter(metadata)
-                    .addParameter(inits)
-            if (hasEntityFields) {
-                builder.callThisConstructor(model.asClassNameStatement(), metadata.asCodeBlock(), inits.asCodeBlock())
-            } else {
-                builder.callSuperConstructor(model.asClassNameStatement(), metadata.asCodeBlock(), inits.asCodeBlock())
-            }
-            addFunction(builder.build())
-        }
-
-        // Class, PathMetadata, PathInits
+        // Class, PathMetadata
         val type = ParameterSpec.builder("type", Class::class.asTypeName().parameterizedBy(WildcardTypeName.producerOf(model.asTypeName()))).build()
-        if (hasEntityFields) {
-            addFunction(FunSpec.constructorBuilder()
-                    .addParameter(type)
-                    .addParameter(metadata)
-                    .addParameter(inits)
-                    .callSuperConstructor(type.asCodeBlock(), metadata.asCodeBlock(), inits.asCodeBlock())
-                    .addCode(initEntityFields(config, model, type, metadata, inits))
-                    .addCode(constructorContent(model)).build())
-        }
+        addFunction(FunSpec.constructorBuilder()
+                .addParameter(type)
+                .addParameter(metadata)
+                .callSuperConstructor(type.asCodeBlock(), metadata.asCodeBlock())
+                .addCode(constructorContent(model)).build())
         return this
-    }
-
-    protected open fun initEntityFields(config: SerializerConfig, model: EntityType, type : ParameterSpec, metadata: ParameterSpec, inits: ParameterSpec): CodeBlock {
-        val builder = CodeBlock.builder()
-        val entityType = model.superType?.entityType
-        if (entityType?.hasEntityFields() == true) {
-            builder.addStatement("this._super = %T(%N, %N, %N)", mappings.getPathTypeName(entityType, model), type, metadata, inits)
-        }
-        for (field in model.properties) {
-            if (field.type.category == TypeCategory.ENTITY) {
-                builder.initEntityField(config, model, field, inits)
-            } else if (field.isInherited && entityType?.hasEntityFields() == true) {
-                builder.addStatement("this.%1L = _super.%1L", field.escapedName)
-            }
-        }
-        return builder.build()
-    }
-
-    protected open fun CodeBlock.Builder.initEntityField(config: SerializerConfig, model: EntityType, field: Property, inits: ParameterSpec) {
-        val queryType = mappings.getPathTypeName(field.type, model)
-        if (!field.isInherited) {
-            val hasEntityFields = (field.type is EntityType && (field.type as EntityType).hasEntityFields())
-            if (hasEntityFields) {
-                addStatement("this.%1L = if (%5N.isInitialized(%2S)) %3T(forProperty(%2S), %5N.get(%2S)) else throw %4T()",
-                        field.escapedName, field.name, queryType, IllegalStateException::class, inits)
-            } else {
-                addStatement("this.%1L = if (%5N.isInitialized(%2S)) %3T(forProperty(%2S)) else throw %4T()",
-                        field.escapedName, field, queryType, IllegalStateException::class, inits)
-            }
-        } else if (!config.useEntityAccessors()) {
-            addStatement("this.%1L = _super.%1L", field.escapedName)
-        }
     }
 
     protected open fun constructorContent(model: EntityType): CodeBlock {
@@ -347,26 +274,15 @@ open class KotlinEntitySerializer @Inject constructor(protected val mappings: Ty
 
     protected open fun TypeSpec.Builder.constructorsForVariables(model: EntityType) {
         val stringOrBoolean = (model.originalCategory == TypeCategory.STRING || model.originalCategory == TypeCategory.BOOLEAN)
-        val hasEntityFields = model.hasEntityFields() || superTypeHasEntityFields(model)
 
         val variable = ParameterSpec.builder("variable", String::class).build()
         val builder = FunSpec.constructorBuilder().addParameter(variable)
         if (stringOrBoolean) {
-            if (hasEntityFields) {
-                builder.callThisConstructor(CodeBlock.of("forVariable(%N)", variable))
-            } else {
-                builder.callSuperConstructor(CodeBlock.of("forVariable(%N)", variable))
-            }
+            builder.callSuperConstructor(CodeBlock.of("forVariable(%N)", variable))
         } else {
-            if (hasEntityFields) {
-                builder.callThisConstructor(model.asClassNameStatement(), CodeBlock.of("forVariable(%N)", variable), CodeBlock.of("INITS"))
-            } else {
-                builder.callSuperConstructor(model.asClassNameStatement(), CodeBlock.of("forVariable(%N)", variable))
-            }
+            builder.callSuperConstructor(model.asClassNameStatement(), CodeBlock.of("forVariable(%N)", variable))
         }
-        if (!hasEntityFields) {
-            builder.addCode(constructorContent(model))
-        }
+        builder.addCode(constructorContent(model))
         addFunction(builder.build())
     }
 }
