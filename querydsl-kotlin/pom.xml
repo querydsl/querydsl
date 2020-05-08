@@ -39,20 +39,6 @@
             <artifactId>kotlinpoet</artifactId>
             <version>1.5.0</version>
         </dependency>
-
-        <!-- provided -->
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-sql</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.faendir.querydsl</groupId>
-            <artifactId>querydsl-sql-codegen</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -84,6 +70,12 @@
             </plugin>
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <id>bintray-f43nd1r-maven</id>
+            <name>f43nd1r-maven</name>
+            <url>https://api.bintray.com/maven/f43nd1r/maven/querydsl-kotlin/;publish=1</url>
+        </repository>
+    </distributionManagement>
 
 </project>

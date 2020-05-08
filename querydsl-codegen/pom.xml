@@ -88,4 +88,12 @@
     </plugins>
   </build>
 
+  <distributionManagement>
+    <repository>
+      <id>bintray-f43nd1r-maven</id>
+      <name>f43nd1r-maven</name>
+      <url>https://api.bintray.com/maven/f43nd1r/maven/querydsl-codegen/;publish=1</url>
+    </repository>
+  </distributionManagement>
+
 </project>
