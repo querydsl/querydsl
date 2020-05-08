@@ -57,10 +57,11 @@ public class CodegenModule  extends AbstractModule {
     protected void configure() {
         bind(TypeMappings.class, JavaTypeMappings.class);
         bind(QueryTypeFactory.class, QueryTypeFactoryImpl.class);
-        bind(EntitySerializer.class);
-        bind(EmbeddableSerializer.class);
-        bind(ProjectionSerializer.class);
-        bind(SupertypeSerializer.class);
+        bind(EntitySerializer.class, DefaultEntitySerializer.class);
+        bind(EmbeddableSerializer.class, DefaultEmbeddableSerializer.class);
+        bind(ProjectionSerializer.class, DefaultProjectionSerializer.class);
+        bind(SupertypeSerializer.class, DefaultSupertypeSerializer.class);
+        bind(Filer.class, DefaultFiler.class);
 
         // configuration for QueryTypeFactory
         bind(PREFIX, "Q");

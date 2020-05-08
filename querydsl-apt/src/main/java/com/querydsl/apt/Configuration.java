@@ -114,4 +114,5 @@ public interface Configuration {
 
     Function<EntityType, String> getVariableNameFunction();
 
+    Filer getFiler();
 }

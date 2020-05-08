@@ -9,13 +9,13 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
+  <groupId>com.faendir.querydsl</groupId>
   <artifactId>querydsl-codegen</artifactId>
   <name>Querydsl - Codegen module</name>
   <description>codegen module for querydsl</description>
   <url>${project.homepage}</url>
   <packaging>jar</packaging>
-  
+
   <scm>
     <connection>${project.checkout}</connection>
     <developerConnection>${project.checkout}</developerConnection>
@@ -27,12 +27,12 @@
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
-    </dependency>  
+    </dependency>
     <dependency>
       <groupId>com.mysema.codegen</groupId>
       <artifactId>codegen</artifactId>
       <version>${codegen.version}</version>
-    </dependency>    
+    </dependency>
     
     <dependency>  
       <groupId>javax.inject</groupId>  
@@ -45,15 +45,15 @@
       <version>0.9.9</version>
     </dependency>
     
-    <!-- test -->    
+    <!-- test -->
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
-    </dependency>    
-            
+    </dependency>
+
   </dependencies>
   
   <build>

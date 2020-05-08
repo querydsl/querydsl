@@ -9,7 +9,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <groupId>com.querydsl</groupId>
+  <groupId>com.faendir.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <name>Querydsl - APT support</name>
   <description>APT based Source code generation for Querydsl</description>
@@ -24,7 +24,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.querydsl</groupId>
+      <groupId>com.faendir.querydsl</groupId>
       <artifactId>querydsl-codegen</artifactId>
       <version>${project.version}</version>
       <exclusions>

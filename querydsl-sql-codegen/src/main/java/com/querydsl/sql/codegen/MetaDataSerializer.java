@@ -43,7 +43,7 @@ import com.querydsl.sql.codegen.support.PrimaryKeyData;
  * @author tiwe
  *
  */
-public class MetaDataSerializer extends EntitySerializer {
+public class MetaDataSerializer extends DefaultEntitySerializer {
 
     private static final Map<Integer, String> typeConstants = Maps.newHashMap();
 

@@ -63,31 +63,31 @@ public class SerializerTest {
 
     @Test
     public void entitySerializer() throws Exception {
-        new EntitySerializer(typeMappings, Collections.<String>emptyList())
+        new DefaultEntitySerializer(typeMappings, Collections.<String>emptyList())
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
     public void entitySerializer2() throws Exception {
-        new EntitySerializer(typeMappings,Collections.<String>emptyList())
+        new DefaultEntitySerializer(typeMappings,Collections.<String>emptyList())
             .serialize(type, new SimpleSerializerConfig(true,true,true,true,""), new JavaWriter(writer));
     }
 
     @Test
     public void embeddableSerializer() throws Exception {
-        new EmbeddableSerializer(typeMappings,Collections.<String>emptyList())
+        new DefaultEmbeddableSerializer(typeMappings,Collections.<String>emptyList())
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
     public void supertypeSerializer() throws IOException {
-        new SupertypeSerializer(typeMappings,Collections.<String>emptyList())
+        new DefaultSupertypeSerializer(typeMappings,Collections.<String>emptyList())
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
     public void projectionSerializer() throws IOException {
-        new ProjectionSerializer(typeMappings)
+        new DefaultProjectionSerializer(typeMappings)
             .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 }

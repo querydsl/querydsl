@@ -558,4 +558,8 @@ public class DefaultConfiguration implements Configuration {
         return variableNameFunction;
     }
 
+    @Override
+    public Filer getFiler() {
+        return module.get(Filer.class);
+    }
 }

@@ -15,8 +15,8 @@ package com.querydsl.apt;
 
 import static com.querydsl.apt.APTOptions.*;
 
+import java.io.Closeable;
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
@@ -29,7 +29,6 @@ import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
-import javax.tools.JavaFileObject;
 
 import com.google.common.collect.Iterables;
 import com.mysema.codegen.JavaWriter;
@@ -598,15 +597,13 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 }
 
                 logInfo("Generating " + className + " for " + elements);
-                JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(className,
-                        elements.toArray(new Element[elements.size()]));
-                Writer writer = fileObject.openWriter();
+                Appendable writer = conf.getFiler().createFile(processingEnv, className, elements);
                 try {
                     SerializerConfig serializerConfig = conf.getSerializerConfig(model);
                     serializer.serialize(model, serializerConfig, new JavaWriter(writer));
                 } finally {
-                    if (writer != null) {
-                        writer.close();
+                    if (writer instanceof Closeable) {
+                        ((Closeable) writer).close();
                     }
                 }
 
