@@ -48,13 +48,13 @@ jobs:
         run: mvn --batch-mode install -am jacoco:report ${{ matrix.maven-args }}
 
       - name: Report coverage
-        if: ${{ github.event_name == 'push' && github.ref == 'master' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: mvn --batch-mode coveralls:report
 
       - name: Deploy snapshot 🚀
-        if: ${{ github.event_name == 'push' && github.ref == 'master' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
