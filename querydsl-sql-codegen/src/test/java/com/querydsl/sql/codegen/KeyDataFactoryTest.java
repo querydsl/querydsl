@@ -13,11 +13,13 @@
  */
 package com.querydsl.sql.codegen;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.Test;
@@ -43,11 +45,13 @@ public class KeyDataFactoryTest extends AbstractJDBCTest {
         statement.execute("create table employee("
                 + "id INT, "
                 + "superior_id int, "
+                + "superior_id2 int, "
                 + "survey_id int, "
                 + "survey_name varchar(30), "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
+                + "CONSTRAINT FK_superior2 FOREIGN KEY (superior_id) REFERENCES employee(id), "
+                + "CONSTRAINT FK_superior1 FOREIGN KEY (superior_id2) REFERENCES employee(id))");
 
         KeyDataFactory keyDataFactory = new KeyDataFactory(new DefaultNamingStrategy(), "Q","","test", false);
 
@@ -58,15 +62,19 @@ public class KeyDataFactoryTest extends AbstractJDBCTest {
         // primary key
         Map<String, PrimaryKeyData> primaryKeys = keyDataFactory.getPrimaryKeys(md, null, null, "EMPLOYEE");
         assertFalse(primaryKeys.isEmpty());
-        // inverse foreign keys
+        // inverse foreign keys sorted in abc
         Map<String, InverseForeignKeyData> exportedKeys = keyDataFactory.getExportedKeys(md, null, null, "EMPLOYEE");
-        assertFalse(exportedKeys.isEmpty());
-        assertTrue(exportedKeys.containsKey("FK_SUPERIOR"));
-        // foreign keys
+        assertEquals(2, exportedKeys.size());
+        Iterator<String> exportedKeysIterator = exportedKeys.keySet().iterator();
+        assertEquals("FK_SUPERIOR1", exportedKeysIterator.next());
+        assertEquals("FK_SUPERIOR2", exportedKeysIterator.next());
+        // foreign keys sorted in abc
         Map<String, ForeignKeyData> importedKeys = keyDataFactory.getImportedKeys(md, null, null, "EMPLOYEE");
-        assertFalse(importedKeys.isEmpty());
-        assertTrue(importedKeys.containsKey("FK_SUPERIOR"));
-        assertTrue(importedKeys.containsKey("FK_SURVEY"));
+        assertEquals(3, importedKeys.size());
+        Iterator<String> importedKeysIterator = importedKeys.keySet().iterator();
+        assertEquals("FK_SUPERIOR1", importedKeysIterator.next());
+        assertEquals("FK_SUPERIOR2", importedKeysIterator.next());
+        assertEquals("FK_SURVEY", importedKeysIterator.next());
 
         // SURVEY
 

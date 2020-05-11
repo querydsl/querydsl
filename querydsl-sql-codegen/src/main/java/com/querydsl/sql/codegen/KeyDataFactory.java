@@ -16,8 +16,8 @@ package com.querydsl.sql.codegen;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.annotation.Nullable;
 
@@ -72,7 +72,7 @@ public class KeyDataFactory {
     public Map<String, InverseForeignKeyData> getExportedKeys(DatabaseMetaData md,
             String catalog, String schema, String tableName) throws SQLException {
         ResultSet foreignKeys = md.getExportedKeys(catalog, schema, tableName);
-        Map<String,InverseForeignKeyData> inverseForeignKeyData = new HashMap<String,InverseForeignKeyData>();
+        Map<String,InverseForeignKeyData> inverseForeignKeyData = new TreeMap<String,InverseForeignKeyData>();
         try {
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
@@ -101,7 +101,7 @@ public class KeyDataFactory {
     public Map<String, ForeignKeyData> getImportedKeys(DatabaseMetaData md,
             String catalog, String schema, String tableName) throws SQLException {
         ResultSet foreignKeys = md.getImportedKeys(catalog, schema, tableName);
-        Map<String,ForeignKeyData> foreignKeyData = new HashMap<String,ForeignKeyData>();
+        Map<String,ForeignKeyData> foreignKeyData = new TreeMap<String,ForeignKeyData>();
         try {
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
@@ -130,7 +130,7 @@ public class KeyDataFactory {
     public Map<String, PrimaryKeyData> getPrimaryKeys(DatabaseMetaData md,
             String catalog, String schema, String tableName) throws SQLException {
         ResultSet primaryKeys = md.getPrimaryKeys(catalog, schema, tableName);
-        Map<String,PrimaryKeyData> primaryKeyData = new HashMap<String,PrimaryKeyData>();
+        Map<String,PrimaryKeyData> primaryKeyData = new TreeMap<String,PrimaryKeyData>();
         try {
             while (primaryKeys.next()) {
                 String name = primaryKeys.getString(PK_NAME);
