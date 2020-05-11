@@ -100,9 +100,10 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     private Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
         JPQLSerializer serializer = serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstantToLabel());
+        logQuery(queryString, serializer.getConstantToAllLabels());
         Query query = session.createQuery(queryString);
-        HibernateUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
+        HibernateUtil.setConstants(query, serializer.getConstantToNamedLabel(), serializer.getConstantToNumberedLabel(),
+                getMetadata().getParams());
         if (fetchSize > 0) {
             query.setFetchSize(fetchSize);
         }

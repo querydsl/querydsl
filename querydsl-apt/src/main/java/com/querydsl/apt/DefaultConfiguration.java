@@ -20,6 +20,7 @@ import java.util.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
@@ -47,7 +48,7 @@ public class DefaultConfiguration implements Configuration {
 
     private boolean unknownAsEmbedded;
 
-    private final CodegenModule module = new CodegenModule();
+    private final CodegenModule module;
 
     private final SerializerConfig defaultSerializerConfig;
 
@@ -78,6 +79,22 @@ public class DefaultConfiguration implements Configuration {
     private Function<EntityType, String> variableNameFunction;
 
     public DefaultConfiguration(
+            ProcessingEnvironment processingEnvironment,
+            RoundEnvironment roundEnv,
+            Collection<String> keywords,
+            @Nullable Class<? extends Annotation> entitiesAnn,
+            Class<? extends Annotation> entityAnn,
+            @Nullable Class<? extends Annotation> superTypeAnn,
+            @Nullable Class<? extends Annotation> embeddableAnn,
+            @Nullable Class<? extends Annotation> embeddedAnn,
+            @Nullable Class<? extends Annotation> skipAnn
+            ) {
+        this(processingEnvironment, roundEnv, processingEnvironment.getOptions(), keywords, entitiesAnn, entityAnn, superTypeAnn, embeddableAnn,
+             embeddedAnn, skipAnn, new CodegenModule());
+    }
+
+    @Deprecated
+    public DefaultConfiguration(
             RoundEnvironment roundEnv,
             Map<String, String> options,
             Collection<String> keywords,
@@ -86,11 +103,46 @@ public class DefaultConfiguration implements Configuration {
             @Nullable Class<? extends Annotation> superTypeAnn,
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> embeddedAnn,
-            @Nullable Class<? extends Annotation> skipAnn) {
+            @Nullable Class<? extends Annotation> skipAnn
+    ) {
+        this(null, roundEnv, options, keywords, entitiesAnn, entityAnn, superTypeAnn, embeddableAnn,
+                embeddedAnn, skipAnn, new CodegenModule());
+    }
+
+    @Deprecated
+    public DefaultConfiguration(
+            ProcessingEnvironment processingEnvironment,
+            RoundEnvironment roundEnv,
+            Collection<String> keywords,
+            @Nullable Class<? extends Annotation> entitiesAnn,
+            Class<? extends Annotation> entityAnn,
+            @Nullable Class<? extends Annotation> superTypeAnn,
+            @Nullable Class<? extends Annotation> embeddableAnn,
+            @Nullable Class<? extends Annotation> embeddedAnn,
+            @Nullable Class<? extends Annotation> skipAnn,
+            CodegenModule codegenModule) {
+        this(processingEnvironment, roundEnv, processingEnvironment.getOptions(), keywords, entitiesAnn, entityAnn, superTypeAnn, embeddableAnn,
+                embeddedAnn, skipAnn, codegenModule);
+    }
+
+    public DefaultConfiguration(
+            ProcessingEnvironment processingEnvironment,
+            RoundEnvironment roundEnv,
+            Map<String, String> options,
+            Collection<String> keywords,
+            @Nullable Class<? extends Annotation> entitiesAnn,
+            Class<? extends Annotation> entityAnn,
+            @Nullable Class<? extends Annotation> superTypeAnn,
+            @Nullable Class<? extends Annotation> embeddableAnn,
+            @Nullable Class<? extends Annotation> embeddedAnn,
+            @Nullable Class<? extends Annotation> skipAnn,
+            CodegenModule codegenModule) {
         this.excludedClasses = new HashSet<String>();
         this.excludedPackages = new HashSet<String>();
         this.includedClasses = new HashSet<String>();
         this.includedPackages = new HashSet<String>();
+        module = codegenModule;
+        module.bind(ProcessingEnvironment.class, processingEnvironment);
         module.bind(RoundEnvironment.class, roundEnv);
         module.bind(CodegenModule.KEYWORDS, keywords);
         this.entitiesAnn = entitiesAnn;
@@ -211,6 +263,12 @@ public class DefaultConfiguration implements Configuration {
             SpatialSupport.addSupport(module);
         } catch (Exception e) {
             // do nothing
+        }
+
+        ServiceLoader<Extension> loader = ServiceLoader.load(Extension.class, Extension.class.getClassLoader());
+
+        for (Extension extension : loader) {
+            extension.addSupport(module);
         }
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,

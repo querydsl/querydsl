@@ -5,7 +5,7 @@ Querydsl is a framework which enables the construction of type-safe SQL-like que
 Instead of writing queries as inline strings or externalizing them into XML files they are constructed via a fluent API.
 
 [![Build Status](https://travis-ci.org/querydsl/querydsl.svg?branch=master)](https://travis-ci.org/querydsl/querydsl)
-[![Coverage Status](https://coveralls.io/repos/querydsl/querydsl/badge.svg?branch=master&service=github)](https://coveralls.io/github/querydsl/querydsl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/querydsl/querydsl/badge.svg?branch=master)](https://coveralls.io/github/querydsl/querydsl?branch=master)
 [![Stackoverflow](https://img.shields.io/badge/StackOverflow-querydsl-yellow.svg)](https://stackoverflow.com/questions/tagged/querydsl)
 
 **Getting started**
@@ -76,10 +76,6 @@ If you are unsure about the details of a contribution, ask on the Querydsl Googl
 [librarian-puppet]: http://librarian-puppet.com/
 
 **Continuous integration**
-
-Querydsl uses Cloudbees for Jenkins based CI
-
-[![CloudBees](http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png)](https://querydsl.ci.cloudbees.com)
 
 As well as Travis CI for pull request validation
 

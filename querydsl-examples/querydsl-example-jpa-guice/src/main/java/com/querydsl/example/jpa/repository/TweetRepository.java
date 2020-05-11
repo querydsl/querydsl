@@ -23,4 +23,8 @@ public class TweetRepository extends AbstractRepository<Tweet> {
     public List<Tweet> findAll(Predicate expr) {
         return selectFrom(tweet).where(expr).fetch();
     }
+
+    public List<Tweet> findAllWithHibernateQuery(Predicate expr) {
+        return selectFromHibernateQuery(tweet).where(expr).fetch();
+    }
 }

@@ -142,11 +142,6 @@ public class TeradataDialect extends Dialect {
     }
 
     @Override
-    public boolean supportsIdentityColumns() {
-        return false;
-    }
-
-    @Override
     public boolean supportsSequences() {
         return false;
     }

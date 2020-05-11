@@ -34,7 +34,7 @@ import com.querydsl.core.annotations.QueryExclude;
  * @author tiwe
  *
  */
-final class ExtendedTypeFactory {
+public class ExtendedTypeFactory {
 
     private final Map<List<String>, Type> typeCache = new HashMap<List<String>, Type>();
 
@@ -276,7 +276,7 @@ final class ExtendedTypeFactory {
         return env.getTypeUtils().erasure(env.getElementUtils().getTypeElement(clazz.getName()).asType());
     }
 
-    private Type createType(TypeElement typeElement, TypeCategory category,
+    protected Type createType(TypeElement typeElement, TypeCategory category,
             List<? extends TypeMirror> typeArgs, boolean deep) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
@@ -354,7 +354,7 @@ final class ExtendedTypeFactory {
 
         } else if (typeCategory == TypeCategory.SIMPLE) {
             for (Class<? extends Annotation> entityAnn : entityAnnotations) {
-                if (typeElement.getAnnotation(entityAnn) != null) {
+                if (isSimpleTypeEntity(typeElement, entityAnn)) {
                     typeCategory = TypeCategory.ENTITY;
                 }
             }
@@ -401,7 +401,11 @@ final class ExtendedTypeFactory {
         return type;
     }
 
-    private Type createMapType(Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+    public boolean isSimpleTypeEntity(TypeElement typeElement, Class<? extends Annotation> entityAnn) {
+        return typeElement.getAnnotation(entityAnn) != null;
+    }
+
+    protected Type createMapType(Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()) {
             return new SimpleType(Types.MAP, defaultType, defaultType);
         }

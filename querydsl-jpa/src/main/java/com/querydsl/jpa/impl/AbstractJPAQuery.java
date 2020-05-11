@@ -94,12 +94,12 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         return createQuery(getMetadata().getModifiers(), false);
     }
 
-    private Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
+    protected Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
         JPQLSerializer serializer = serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstantToLabel());
+        logQuery(queryString, serializer.getConstantToAllLabels());
         Query query = entityManager.createQuery(queryString);
-        JPAUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
+        JPAUtil.setConstants(query, serializer.getConstantToAllLabels(), getMetadata().getParams());
         if (modifiers != null && modifiers.isRestricting()) {
             Integer limit = modifiers.getLimitAsInteger();
             Integer offset = modifiers.getOffsetAsInteger();

@@ -137,7 +137,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
 
-        logQuery(serializer.toString(), serializer.getConstantToLabel());
+        logQuery(serializer.toString(), serializer.getConstantToAllLabels());
 
         // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
