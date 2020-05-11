@@ -20,10 +20,10 @@ import org.geolatte.geom.*;
 import org.geolatte.geom.crs.CrsId;
 
 import com.google.common.collect.Lists;
-import com.vividsolutions.jts.io.ByteArrayInStream;
-import com.vividsolutions.jts.io.ByteOrderDataInStream;
-import com.vividsolutions.jts.io.ByteOrderValues;
-import com.vividsolutions.jts.io.InStream;
+import org.locationtech.jts.io.ByteArrayInStream;
+import org.locationtech.jts.io.ByteOrderDataInStream;
+import org.locationtech.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.InStream;
 
 class SQLServerGeometryReader {
 

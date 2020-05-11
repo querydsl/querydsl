@@ -58,7 +58,7 @@ final class SpatialSupport {
         additions.put("Polygon", "JTSPolygonPath");
         for (Map.Entry<String, String> entry : additions.entrySet()) {
             typeMappings.register(
-                    new SimpleType("com.vividsolutions.jts.geom." + entry.getKey()),
+                    new SimpleType("org.locationtech.jts.geom." + entry.getKey()),
                     new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
         }
     }

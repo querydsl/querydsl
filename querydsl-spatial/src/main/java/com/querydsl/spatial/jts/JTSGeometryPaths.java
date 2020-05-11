@@ -13,7 +13,7 @@
  */
 package com.querydsl.spatial.jts;
 
-import com.vividsolutions.jts.geom.*;
+import org.locationtech.jts.geom.*;
 
 /**
  * {@code JTSGeometryPaths} provides factory methods for {@link JTSGeometryExpression} creation

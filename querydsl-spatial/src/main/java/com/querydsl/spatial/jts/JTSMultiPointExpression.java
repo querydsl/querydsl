@@ -14,7 +14,7 @@
 package com.querydsl.spatial.jts;
 
 import com.querydsl.core.types.Expression;
-import com.vividsolutions.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPoint;
 
 /**
  * A MultiPoint is a 0-dimensional GeometryCollection. The elements of a MultiPoint are restricted to Points. The

@@ -14,7 +14,7 @@
 package com.querydsl.spatial.jts;
 
 import com.querydsl.core.types.Expression;
-import com.vividsolutions.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.MultiPolygon;
 
 /**
  * A MultiPolygon is a MultiSurface whose elements are Polygons.

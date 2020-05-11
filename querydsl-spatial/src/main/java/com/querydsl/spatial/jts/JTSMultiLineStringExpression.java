@@ -14,7 +14,7 @@
 package com.querydsl.spatial.jts;
 
 import com.querydsl.core.types.Expression;
-import com.vividsolutions.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * A MultiLineString is a MultiCurve whose elements are LineStrings.

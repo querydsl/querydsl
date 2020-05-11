@@ -16,7 +16,7 @@ package com.querydsl.spatial.jts;
 import java.lang.reflect.AnnotatedElement;
 
 import com.querydsl.core.types.*;
-import com.vividsolutions.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPoint;
 
 /**
  * {@code JTSMultiPointPath} extends {@link JTSMultiPointExpression} to implement the

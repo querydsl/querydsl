@@ -17,7 +17,7 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * {@code JTSLineStringOperation} extends {@link JTSLineStringExpression} to implement the
