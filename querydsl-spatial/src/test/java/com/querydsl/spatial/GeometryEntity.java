@@ -24,6 +24,4 @@ public class GeometryEntity {
     Point point;
 
     Polygon polygon;
-
-    PolyHedralSurface polyHedralSurface;
 }

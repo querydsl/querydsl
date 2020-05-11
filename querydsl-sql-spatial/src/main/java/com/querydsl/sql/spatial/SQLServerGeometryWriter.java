@@ -252,17 +252,4 @@ class SQLServerGeometryWriter {
         }
     }
 
-    public void visit(PolyHedralSurface surface, int parent) {
-        Shape shape = new Shape();
-        shape.type = -1; // TODO
-        shape.figureOffset = figures.size();
-        shape.parentOffset = parent;
-        shapes.add(shape);
-
-        parent = shapes.size() - 1;
-        for (int i = 0; i < surface.getNumPatches(); i++) {
-            visit(surface.getPatchN(i), parent);
-        }
-    }
-
 }

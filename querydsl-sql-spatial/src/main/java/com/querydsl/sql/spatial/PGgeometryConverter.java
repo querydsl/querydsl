@@ -31,8 +31,6 @@ final class PGgeometryConverter {
             return convert((MultiLineString) geometry);
         } else if (geometry instanceof Polygon) {
             return convert((Polygon) geometry);
-        } else if (geometry instanceof PolyHedralSurface) {
-            return convert((PolyHedralSurface) geometry);
         } else if (geometry instanceof MultiPoint) {
             return convert((MultiPoint) geometry);
         } else if (geometry instanceof MultiPolygon) {
@@ -106,10 +104,6 @@ final class PGgeometryConverter {
         org.postgis.Polygon pgPolygon = new org.postgis.Polygon(rings);
         pgPolygon.setSrid(polygon.getSRID());
         return pgPolygon;
-    }
-
-    private static org.postgis.Polygon convert(PolyHedralSurface polyHedralSurface) {
-        throw new UnsupportedOperationException();
     }
 
     private static org.postgis.MultiPoint convert(MultiPoint multiPoint) {

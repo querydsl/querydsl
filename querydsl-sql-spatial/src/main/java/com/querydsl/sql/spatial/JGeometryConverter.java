@@ -34,7 +34,6 @@ final class JGeometryConverter {
         case LINE_STRING: return convert((LineString) geometry);
         case LINEAR_RING: return convert((LinearRing) geometry);
         case POLYGON: return convert((Polygon) geometry);
-        case POLYHEDRAL_SURFACE: return convert((PolyHedralSurface) geometry);
 //        case MULTI_SURFACE:
         case MULTI_POINT: return convert((MultiPoint) geometry);
 //        case TIN
@@ -94,10 +93,6 @@ final class JGeometryConverter {
         }
         int gtype = dim * 1000 + (geometry.isMeasured() ? dim : 0) * 100 + GTYPE_POLYGON;
         return new JGeometry(gtype, srid, elemInfo, points);
-    }
-
-    private static JGeometry convert(PolyHedralSurface geometry) {
-        throw new UnsupportedOperationException();
     }
 
     private static JGeometry convert(LineString geometry) {

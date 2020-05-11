@@ -63,7 +63,6 @@ public final class SpatialSupport {
         mappings.put(MultiPolygon.class, MultiPolygonPath.class);
         mappings.put(Point.class, PointPath.class);
         mappings.put(Polygon.class, PolygonPath.class);
-        mappings.put(PolyHedralSurface.class, PolyhedralSurfacePath.class);
         for (Map.Entry<Class<?>, Class<?>> entry : mappings.entrySet()) {
             Type type = new ClassType(entry.getKey());
             typeMappings.register(type, new ClassType(entry.getValue(), type));
