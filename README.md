@@ -74,9 +74,3 @@ If you are unsure about the details of a contribution, ask on the Querydsl Googl
 [Puppet]: http://puppetlabs.com/
 [vagrant-vbguest]: https://github.com/dotless-de/vagrant-vbguest
 [librarian-puppet]: http://librarian-puppet.com/
-
-**Continuous integration**
-
-As well as Travis CI for pull request validation
-
-[![Build Status](https://travis-ci.org/querydsl/querydsl.svg?branch=master)](https://travis-ci.org/querydsl/querydsl)
