@@ -43,7 +43,7 @@
     <db2.version>11.5.0.0</db2.version>
     <derby.version>10.11.1.1</derby.version>
     <hsqldb.version>2.3.2</hsqldb.version>
-    <h2.version>1.4.186</h2.version>
+    <h2.version>1.4.200</h2.version>
     <postgresql.version>42.2.18</postgresql.version>
     <oracle.version>11.1.0.7.0</oracle.version>
     <mysql.version>5.1.30</mysql.version>
