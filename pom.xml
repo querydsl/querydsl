@@ -66,6 +66,7 @@
     <surefire.version>2.18</surefire.version>
     <animal-sniffer.version>1.18</animal-sniffer.version>
     <jts.version>1.16.1</jts.version>
+    <h2gis.version>1.5.0</h2gis.version>
 
     <jdo.version>3.0.1</jdo.version>
     <morphia.version>1.3.2</morphia.version>
