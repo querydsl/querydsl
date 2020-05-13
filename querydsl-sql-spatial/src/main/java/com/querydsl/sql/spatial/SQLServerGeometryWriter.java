@@ -61,16 +61,17 @@ class SQLServerGeometryWriter {
 
         if (geometry instanceof Point) {
             int capacity = prefixSize + 16 * numPoints;
-            if (geometry.is3D()) {
+            if (geometry.getPositions().getPositionFactory().hasZComponent()) {
                 capacity += 8 * numPoints;
             }
-            if (geometry.isMeasured()) {
+            if (geometry.getPositions().getPositionFactory().hasMComponent()) {
                 capacity += 8 * numPoints;
             }
             return capacity;
         }
 
-        int pointSize = 16 + (geometry.is3D() ? 8 : 0) + (geometry.isMeasured() ? 8 : 0);
+        int pointSize = 16 + (geometry.getPositions().getPositionFactory().hasZComponent() ? 8 : 0)
+                + (geometry.getPositions().getPositionFactory().hasMComponent() ? 8 : 0);
         int size = prefixSize + 3 * 4; // prefix + 3 ints for points, shapes and
                                        // figures
         size += numPoints * pointSize;
@@ -88,8 +89,8 @@ class SQLServerGeometryWriter {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         buffer.putInt(geometry.getSRID());
         buffer.put((byte) 1);
-        buffer.put((byte) ((geometry.is3D() ? 1 : 0)
-                 + (geometry.isMeasured() ? 2 : 0)
+        buffer.put((byte) ((geometry.getPositions().getPositionFactory().hasZComponent() ? 1 : 0)
+                 + (geometry.getPositions().getPositionFactory().hasMComponent() ? 2 : 0)
                  + 4 // is valid
                  + (singlePoint ? 8 : 0)
                  + 0)); // TODO
@@ -98,17 +99,19 @@ class SQLServerGeometryWriter {
             buffer.putInt(points.size());
         }
         for (Point point : points) {
-            buffer.putDouble(point.getX());
-            buffer.putDouble(point.getY());
+            buffer.putDouble(point.getPosition().getCoordinate(0));
+            buffer.putDouble(point.getPosition().getCoordinate(1));
         }
-        if (geometry.is3D()) {
+        if (geometry.getPositions().getPositionFactory().hasZComponent()) {
             for (Point point : points) {
-                buffer.putDouble(point.getZ());
+                buffer.putDouble(point.getPosition().getCoordinate(2));
             }
         }
-        if (geometry.isMeasured()) {
+        if (geometry.getPositions().getPositionFactory().hasMComponent()) {
+            final int mComponentIndex = geometry.getPositions().getPositionFactory().getMComponentIndex();
+
             for (Point point : points) {
-                buffer.putDouble(point.getM());
+                buffer.putDouble(point.getPosition().getCoordinate(mComponentIndex));
             }
         }
         if (!singlePoint) {
@@ -131,11 +134,11 @@ class SQLServerGeometryWriter {
         switch (geometry.getGeometryType()) {
         case POINT: visit((Point) geometry, parent); break;
         case POLYGON: visit((Polygon) geometry, parent); break;
-        case LINE_STRING: visit((LineString) geometry, parent); break;
-        case MULTI_POINT: visit((MultiPoint) geometry, parent); break;
-        case MULTI_LINE_STRING: visit((MultiLineString) geometry, parent); break;
-        case MULTI_POLYGON: visit((MultiPolygon) geometry, parent); break;
-        case GEOMETRY_COLLECTION: visit((GeometryCollection) geometry, parent); break;
+        case LINESTRING: visit((LineString) geometry, parent); break;
+        case MULTIPOINT: visit((MultiPoint) geometry, parent); break;
+        case MULTILINESTRING: visit((MultiLineString) geometry, parent); break;
+        case MULTIPOLYGON: visit((MultiPolygon) geometry, parent); break;
+        case GEOMETRYCOLLECTION: visit((GeometryCollection) geometry, parent); break;
         default: throw new IllegalArgumentException(geometry.toString());
         }
     }
@@ -167,8 +170,9 @@ class SQLServerGeometryWriter {
         figure.pointOffset = points.size();
         figures.add(figure);
 
-        for (Point point : lineString.getPoints()) {
-            points.add(point);
+        for (int i = 0; i < lineString.getPositions().size(); i++) {
+            final Position pos = lineString.getPositions().getPositionN(i);
+            points.add(new Point(pos, lineString.getCoordinateReferenceSystem()));
         }
     }
 
@@ -184,8 +188,11 @@ class SQLServerGeometryWriter {
         figure.attributes = 2;
         figure.pointOffset = points.size();
         figures.add(figure);
-        for (Point point : polygon.getExteriorRing().getPoints()) {
-            points.add(point);
+
+        final PositionSequence exteriorPositions = polygon.getExteriorRing().getPositions();
+
+        for (int i = 0; i < exteriorPositions.size(); i++) {
+            points.add(new Point(exteriorPositions.getPositionN(i), polygon.getCoordinateReferenceSystem()));
         }
 
         // interior
@@ -194,8 +201,10 @@ class SQLServerGeometryWriter {
             figure.attributes = 0;
             figure.pointOffset = points.size();
             figures.add(figure);
-            for (Point point : polygon.getInteriorRingN(i).getPoints()) {
-                points.add(point);
+            final PositionSequence interiorPositions = polygon.getInteriorRingN(i).getPositions();
+
+            for (int j = 0; j < interiorPositions.size(); j++) {
+                points.add(new Point(interiorPositions.getPositionN(j), polygon.getCoordinateReferenceSystem()));
             }
         }
     }

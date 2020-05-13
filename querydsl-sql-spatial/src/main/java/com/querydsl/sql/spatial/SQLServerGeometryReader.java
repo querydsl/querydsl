@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.geolatte.geom.*;
-import org.geolatte.geom.crs.CrsId;
+import org.geolatte.geom.crs.CoordinateReferenceSystem;
+import org.geolatte.geom.crs.CoordinateReferenceSystems;
+import org.geolatte.geom.crs.CrsRegistry;
 
 import com.google.common.collect.Lists;
 import org.locationtech.jts.io.ByteArrayInStream;
@@ -40,12 +42,12 @@ class SQLServerGeometryReader {
 
     private static final GeometryType[] TYPES = new GeometryType[]{
         GeometryType.POINT,
-        GeometryType.LINE_STRING,
+        GeometryType.LINESTRING,
         GeometryType.POLYGON,
-        GeometryType.MULTI_POINT,
-        GeometryType.MULTI_LINE_STRING,
-        GeometryType.MULTI_POLYGON,
-        GeometryType.GEOMETRY_COLLECTION,
+        GeometryType.MULTIPOINT,
+        GeometryType.MULTILINESTRING,
+        GeometryType.MULTIPOLYGON,
+        GeometryType.GEOMETRYCOLLECTION,
         // TODO CircularString
         // TODO CompoundCurve
         // TODO CurvePolygon
@@ -56,8 +58,6 @@ class SQLServerGeometryReader {
 
     private boolean hasZ, hasM, singlePoint, singleLine;
 
-    private DimensionalFlag dimensionalFlag;
-
     private double[][] points;
 
     private double[] zValues, mValues;
@@ -66,7 +66,7 @@ class SQLServerGeometryReader {
 
     private Shape[] shapes;
 
-    private CrsId crsId;
+    private CoordinateReferenceSystem crs;
 
     public Geometry read(byte[] bytes) throws IOException {
         return read(new ByteArrayInStream(bytes));
@@ -89,20 +89,6 @@ class SQLServerGeometryReader {
         } else if (!singlePoint) {
             numberOfPoints = dis.readInt();
         }
-        //dimensionalFlag = DimensionalFlag.XY;
-        dimensionalFlag = DimensionalFlag.d2D;
-        if (hasM) {
-            if (hasZ) {
-                //dimensionalFlag = DimensionalFlag.XYZM;
-                dimensionalFlag = DimensionalFlag.d3DM;
-            } else {
-                //dimensionalFlag = DimensionalFlag.XYM;
-                dimensionalFlag = DimensionalFlag.d2DM;
-            }
-        } else if (hasZ) {
-            //dimensionalFlag = DimensionalFlag.XYZ;
-            dimensionalFlag = DimensionalFlag.d3D;
-        }
 
         // points
         points = readPoints(dis, numberOfPoints);
@@ -113,13 +99,26 @@ class SQLServerGeometryReader {
             mValues = readDoubles(dis, numberOfPoints);
         }
 
-        crsId = CrsId.valueOf(srid);
+        if (CrsRegistry.hasCoordinateReferenceSystemForEPSG(srid)) {
+            crs = CrsRegistry.getCoordinateReferenceSystemForEPSG(srid, null);
+        } else if (hasM) {
+            if (hasZ) {
+                crs = CoordinateReferenceSystems.PROJECTED_3DM_METER;
+            } else {
+                crs = CoordinateReferenceSystems.PROJECTED_2DM_METER;
+            }
+        } else if (hasZ) {
+            crs = CoordinateReferenceSystems.PROJECTED_3D_METER;
+        } else {
+            crs = CoordinateReferenceSystems.PROJECTED_2D_METER;
+        }
+
         if (singlePoint) {
             return createPoint(0);
 
         } else if (singleLine) {
-            PointSequence points = createPoints(0, 2);
-            return new LineString(points);
+            PositionSequence points = createPoints(0, 2);
+            return new LineString(points, crs);
 
         } else {
             // figures
@@ -135,12 +134,12 @@ class SQLServerGeometryReader {
     private Geometry decode(int shapeIdx) {
         switch (shapes[shapeIdx].type) {
         case POINT: return decodePoint(shapeIdx);
-        case LINE_STRING: return decodeLineString(shapeIdx);
+        case LINESTRING: return decodeLineString(shapeIdx);
         case POLYGON: return decodePolygon(shapeIdx);
-        case MULTI_POINT: return decodeMultiPoint(shapeIdx);
-        case MULTI_LINE_STRING: return decodeMultiLineString(shapeIdx);
-        case MULTI_POLYGON: return decodeMultiPolygon(shapeIdx);
-        case GEOMETRY_COLLECTION: return decodeGeometryCollection(shapeIdx);
+        case MULTIPOINT: return decodeMultiPoint(shapeIdx);
+        case MULTILINESTRING: return decodeMultiLineString(shapeIdx);
+        case MULTIPOLYGON: return decodeMultiPolygon(shapeIdx);
+        case GEOMETRYCOLLECTION: return decodeGeometryCollection(shapeIdx);
         default: throw new IllegalArgumentException(String.valueOf(shapeIdx));
         }
     }
@@ -189,7 +188,7 @@ class SQLServerGeometryReader {
         Shape shape = shapes[shapeIdx];
         int figureOffset = shape.figureOffset;
         if (figureOffset <= -1) {
-            return Polygon.createEmpty();
+            return Geometries.mkEmptyPolygon(crs);
         }
         int figureStopIdx = figures.length - 1;
         if (shapeIdx < (shapes.length - 1)) {
@@ -197,14 +196,14 @@ class SQLServerGeometryReader {
         }
         List<LinearRing> linearRings = Lists.newArrayList();
         for (int i = figureOffset; i <= figureStopIdx; i++) {
-            linearRings.add(new LinearRing(createPoints(i)));
+            linearRings.add(new LinearRing(createPoints(i), crs));
         }
         return new Polygon(linearRings.toArray(new LinearRing[0]));
     }
 
     private LineString decodeLineString(int shapeIdx) {
         Shape shape = shapes[shapeIdx];
-        return new LineString(createPoints(shape.figureOffset));
+        return new LineString(createPoints(shape.figureOffset), crs);
     }
 
     private Point decodePoint(int shapeIdx) {
@@ -213,30 +212,36 @@ class SQLServerGeometryReader {
     }
 
     private Point createPoint(int idx) {
+        return new Point(createPosition(idx), crs);
+    }
+
+    private Position createPosition(int idx) {
         double x = points[idx][0];
         double y = points[idx][1];
         if (hasM) {
             if (hasZ) {
-                return Points.create3DM(x, y, zValues[idx], mValues[idx], crsId);
+                return new C3DM(x, y, zValues[idx], mValues[idx]);
             } else {
-                return Points.create2DM(x, y, mValues[idx], crsId);
+                return new C2DM(x, y, mValues[idx]);
             }
         } else if (hasZ) {
-            return Points.create3D(x, y, zValues[idx], crsId);
+            return new C3D(x, y, zValues[idx]);
         } else {
-            return Points.create2D(x, y, crsId);
+            return new C2D(x, y);
         }
     }
 
-    private PointSequence createPoints(int idx1, int idx2) {
-        PointSequenceBuilder builder = PointSequenceBuilders.fixedSized(idx2 - idx1, dimensionalFlag, crsId);
+    private PositionSequence createPoints(int idx1, int idx2) {
+        final PositionSequenceBuilder builder =
+                PositionSequenceBuilders.fixedSized(idx2 - idx1, crs.getPositionClass());
+
         for (int i = idx1; i < idx2; i++) {
-            builder.add(createPoint(i));
+            builder.add(createPosition(i));
         }
-        return builder.toPointSequence();
+        return builder.toPositionSequence();
     }
 
-    private PointSequence createPoints(int figureIdx) {
+    private PositionSequence createPoints(int figureIdx) {
         int idx1 = figures[figureIdx].pointOffset;
         int idx2 = points.length;
         if (figureIdx < (figures.length - 1)) {

@@ -31,7 +31,7 @@
     <dependency>
       <groupId>org.geolatte</groupId>
       <artifactId>geolatte-geom</artifactId>
-      <version>0.13</version>
+      <version>${geolatte.version}</version>
     </dependency>
 
     <!--test -->

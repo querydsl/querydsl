@@ -88,8 +88,8 @@ public class SpatialBase extends AbstractBaseTest {
         for (Tuple row : results) {
             if (!(row.get(shapes.geometry) instanceof MultiPoint)) {
                 assertEquals(
-                        normalize(row.get(shapes.geometry).asText()),
-                        normalize(row.get(shapes.geometry.asText())));
+                        normalize(Wkt.toWkt(row.get(shapes.geometry))),
+                        normalize(Wkt.toWkt(row.get(shapes.geometry))));
             }
         }
     }
@@ -101,8 +101,8 @@ public class SpatialBase extends AbstractBaseTest {
         List<Tuple> results = withPoints().select(point, point.x(), point.y()).fetch();
         assertFalse(results.isEmpty());
         for (Tuple row : results) {
-            assertEquals(Double.valueOf(row.get(point).getX()), row.get(point.x()));
-            assertEquals(Double.valueOf(row.get(point).getY()), row.get(point.y()));
+            assertEquals(Double.valueOf(row.get(point).getPosition().getCoordinate(0)), row.get(point.x()));
+            assertEquals(Double.valueOf(row.get(point).getPosition().getCoordinate(1)), row.get(point.y()));
         }
     }
 
@@ -119,7 +119,12 @@ public class SpatialBase extends AbstractBaseTest {
             Point point1 = tuple.get(shapes1.geometry.asPoint());
             Point point2 = tuple.get(shapes2.geometry.asPoint());
             Double distance = tuple.get(shapes1.geometry.distance(shapes2.geometry));
-            assertEquals(point1.distance(point2), distance, 0.0001);
+            final double p1x = point1.getPosition().getCoordinate(0);
+            final double p1y = point1.getPosition().getCoordinate(1);
+            final double p2x = point2.getPosition().getCoordinate(0);
+            final double p2y = point2.getPosition().getCoordinate(1);
+            final double distanceExpected = Math.sqrt(Math.pow(p1x - p2x, 2) + Math.pow(p1y - p2y, 2));
+            assertEquals(distanceExpected, distance, 0.0001);
         }
     }
 

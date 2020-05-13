@@ -14,7 +14,9 @@
 package com.querydsl.sql.spatial;
 
 import org.geolatte.geom.*;
-import org.geolatte.geom.crs.CrsId;
+import org.geolatte.geom.crs.CoordinateReferenceSystem;
+import org.geolatte.geom.crs.CoordinateReferenceSystems;
+import org.geolatte.geom.crs.CrsRegistry;
 
 final class PGgeometryConverter {
 
@@ -43,26 +45,48 @@ final class PGgeometryConverter {
     }
 
     private static org.postgis.Point convert(Point point) {
+        return convert(point.getPosition(), point.getSRID());
+    }
+
+    private static org.postgis.Point convert(Position position, int srid) {
         org.postgis.Point pgPoint = new org.postgis.Point();
-        pgPoint.srid = point.getSRID();
-        pgPoint.dimension = point.is3D() ? 3 : 2;
-        pgPoint.haveMeasure = false;
-        pgPoint.x = point.getX();
-        pgPoint.y = point.getY();
-        if (point.is3D()) {
-            pgPoint.z = point.getZ();
+        pgPoint.srid = srid;
+
+        if (position instanceof C2D) {
+            pgPoint.x = ((C2D) position).getX();
+            pgPoint.y = ((C2D) position).getY();
+
+            if (position instanceof C3D) {
+                pgPoint.z = ((C3D) position).getZ();
+                pgPoint.dimension = 3;
+            } else {
+                pgPoint.dimension = 2;
+            }
+
+        } else if (position instanceof G2D) {
+            pgPoint.x = ((G2D) position).getLon();
+            pgPoint.y = ((G2D) position).getLat();
+
+            if (position instanceof G3D) {
+                pgPoint.z = ((G3D) position).getHeight();
+                pgPoint.dimension = 3;
+            } else {
+                pgPoint.dimension = 2;
+            }
         }
-        if (point.isMeasured()) {
-            pgPoint.m = point.getM();
+
+        if (position instanceof Measured) {
+            pgPoint.m = ((Measured) position).getM();
             pgPoint.haveMeasure = true;
         }
+
         return pgPoint;
     }
 
     private static org.postgis.Point[] convertPoints(Geometry geometry) {
-        org.postgis.Point[] pgPoints = new org.postgis.Point[geometry.getNumPoints()];
+        org.postgis.Point[] pgPoints = new org.postgis.Point[geometry.getNumPositions()];
         for (int i = 0; i < pgPoints.length; i++) {
-            pgPoints[i] = convert(geometry.getPointN(i));
+            pgPoints[i] = convert(geometry.getPositionN(i), geometry.getSRID());
         }
         return pgPoints;
     }
@@ -70,7 +94,7 @@ final class PGgeometryConverter {
     private static org.postgis.LineString convert(LineString lineString) {
         org.postgis.Point[] pgPoints = convertPoints(lineString);
         org.postgis.LineString pgLineString = new org.postgis.LineString(pgPoints);
-        pgLineString.haveMeasure = lineString.isMeasured();
+        pgLineString.haveMeasure = lineString.getPositions().getPositionFactory().hasMComponent();
         pgLineString.setSrid(lineString.getSRID());
         return pgLineString;
     }
@@ -78,7 +102,7 @@ final class PGgeometryConverter {
     private static org.postgis.LinearRing convert(LinearRing linearRing) {
         org.postgis.Point[] pgPoints = convertPoints(linearRing);
         org.postgis.LinearRing pgLinearRing = new org.postgis.LinearRing(pgPoints);
-        pgLinearRing.haveMeasure = linearRing.isMeasured();
+        pgLinearRing.haveMeasure = linearRing.getPositions().getPositionFactory().hasMComponent();
         pgLinearRing.setSrid(linearRing.getSRID());
         return pgLinearRing;
     }
@@ -86,10 +110,10 @@ final class PGgeometryConverter {
     private static org.postgis.MultiLineString convert(MultiLineString multiLineString) {
         org.postgis.LineString[] pgLineStrings = new org.postgis.LineString[multiLineString.getNumGeometries()];
         for (int i = 0; i < pgLineStrings.length; i++) {
-            pgLineStrings[i] = convert(multiLineString.getGeometryN(i));
+            pgLineStrings[i] = convert((LineString) multiLineString.getGeometryN(i));
         }
         org.postgis.MultiLineString pgMultiLineString = new org.postgis.MultiLineString(pgLineStrings);
-        pgMultiLineString.haveMeasure = multiLineString.isMeasured();
+        pgMultiLineString.haveMeasure = multiLineString.getPositions().getPositionFactory().hasMComponent();
         pgMultiLineString.setSrid(multiLineString.getSRID());
         return pgMultiLineString;
     }
@@ -116,7 +140,7 @@ final class PGgeometryConverter {
     private static org.postgis.MultiPolygon convert(MultiPolygon multiPolygon) {
         org.postgis.Polygon[] pgPolygons = new org.postgis.Polygon[multiPolygon.getNumGeometries()];
         for (int i = 0; i < pgPolygons.length; i++) {
-            pgPolygons[i] = convert(multiPolygon.getGeometryN(i));
+            pgPolygons[i] = convert((Polygon) multiPolygon.getGeometryN(i));
         }
         org.postgis.MultiPolygon pgMultiPolygon = new org.postgis.MultiPolygon(pgPolygons);
         pgMultiPolygon.setSrid(multiPolygon.getSRID());
@@ -157,9 +181,29 @@ final class PGgeometryConverter {
         throw new IllegalArgumentException(geometry.toString());
     }
 
+    private static CoordinateReferenceSystem<?> getCrs(org.postgis.Geometry geom) {
+        if (CrsRegistry.hasCoordinateReferenceSystemForEPSG(geom.getSrid())) {
+            return CrsRegistry.getCoordinateReferenceSystemForEPSG(geom.getSrid(), null);
+        }
+
+        if (geom.dimension == 3) {
+            return geom.haveMeasure
+                    ? CoordinateReferenceSystems.PROJECTED_3DM_METER : CoordinateReferenceSystems.PROJECTED_3D_METER;
+        }
+
+        return geom.haveMeasure
+                ? CoordinateReferenceSystems.PROJECTED_2DM_METER : CoordinateReferenceSystems.PROJECTED_2D_METER;
+    }
+
     private static Point convert(org.postgis.Point geometry) {
+        final CoordinateReferenceSystem<?> crs = getCrs(geometry);
+        final Position pos = toPosition(geometry, crs.getPositionClass());
+
+        return new Point(pos, crs);
+    }
+
+    private static <P extends Position> P toPosition(org.postgis.Point geometry, Class<P> pClass) {
         int d = geometry.dimension;
-        CrsId crs = CrsId.valueOf(geometry.srid);
         double[] point = new double[d + (geometry.haveMeasure ? 1 : 0)];
         int offset = 0;
         point[offset++] = geometry.x;
@@ -170,22 +214,17 @@ final class PGgeometryConverter {
         if (geometry.haveMeasure) {
             point[offset++] = geometry.m;
         }
-        DimensionalFlag flag = DimensionalFlag.valueOf(d == 3, geometry.haveMeasure);
-        return new Point(PointCollectionFactory.create(point, flag, crs));
+
+        return Positions.mkPosition(pClass, point);
     }
 
-    private static PointSequence convertPoints(org.postgis.Point[] points) {
-        if (points.length == 0) {
-            return PointCollectionFactory.createEmpty();
-        }
-        org.postgis.Point first = points[0];
-        CrsId crs = CrsId.valueOf(first.srid);
-        DimensionalFlag flag = DimensionalFlag.valueOf(first.dimension == 3, first.haveMeasure);
-        PointSequenceBuilder pointSequence = PointSequenceBuilders.variableSized(flag, crs);
+    private static PositionSequence convertPoints(org.postgis.Point[] points) {
+        Class<? extends Position> pClass = getCrs(points[0]).getPositionClass();
+        PositionSequenceBuilder pointSequence = PositionSequenceBuilders.fixedSized(points.length, pClass);
         for (int i = 0; i < points.length; i++) {
-            pointSequence.add(convert(points[i]));
+            pointSequence.add(toPosition(points[i], pClass));
         }
-        return pointSequence.toPointSequence();
+        return pointSequence.toPositionSequence();
     }
 
     private static GeometryCollection convert(org.postgis.GeometryCollection geometry) {
@@ -229,14 +268,19 @@ final class PGgeometryConverter {
     }
 
     private static LinearRing convert(org.postgis.LinearRing geometry) {
-        PointSequence points = convertPoints(geometry.getPoints());
-        return new LinearRing(points);
+        if (geometry.isEmpty()) {
+            return new LinearRing(getCrs(geometry));
+        }
+        return new LinearRing(convertPoints(geometry.getPoints()), getCrs(geometry));
     }
 
 
     private static LineString convert(org.postgis.LineString geometry) {
-        PointSequence points = convertPoints(geometry.getPoints());
-        return new LineString(points);
+        if (geometry.isEmpty()) {
+            return new LineString(getCrs(geometry));
+        }
+        PositionSequence points = convertPoints(geometry.getPoints());
+        return new LineString(points, getCrs(geometry));
     }
 
     private PGgeometryConverter() { }
