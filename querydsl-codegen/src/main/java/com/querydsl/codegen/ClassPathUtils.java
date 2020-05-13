@@ -21,6 +21,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
 /**
  * {@code ClassPathUtils} provides classpath scanning functionality
@@ -53,6 +54,7 @@ public final class ClassPathUtils {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .addUrls(ClasspathHelper.forPackage(pkg, classLoader))
                 .addClassLoader(classLoader)
+                .filterInputsBy(new FilterBuilder().includePackage(pkg))
                 .setScanners(new SubTypesScanner(false)));
         Set<Class<?>> classes = new HashSet<Class<?>>();
         for (String typeNames : reflections.getStore().get(SubTypesScanner.class.getSimpleName()).values()) {
