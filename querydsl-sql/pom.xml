@@ -56,9 +56,15 @@
       <groupId>org.apache.servicemix.bundles</groupId>
       <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
       <version>1_2</version>
-    </dependency>    
+    </dependency>
 
     <!-- test -->
+    <dependency>
+      <groupId>com.ibm.db2</groupId>
+      <artifactId>jcc</artifactId>
+      <version>${db2.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
@@ -307,16 +313,6 @@
           <artifactId>teradata-config</artifactId>
           <version>${teradata.version}</version>
           <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>db2</id>
-      <dependencies>
-        <dependency>
-          <groupId>com.ibm.db2</groupId>
-          <artifactId>db2-jdbc</artifactId>
-          <version>1.0</version>
         </dependency>
       </dependencies>
     </profile>

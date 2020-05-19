@@ -40,6 +40,7 @@
     <argLine>-Xms256m -Xmx512m</argLine>
 
     <!-- SQL deps -->
+    <db2.version>11.5.0.0</db2.version>
     <derby.version>10.11.1.1</derby.version>
     <hsqldb.version>2.3.2</hsqldb.version>
     <h2.version>1.4.186</h2.version>
@@ -694,7 +695,6 @@
           com.querydsl.core.testutil.Performance,
           com.querydsl.core.testutil.ReportingOnly,
 
-          com.querydsl.core.testutil.DB2,
           com.querydsl.core.testutil.SQLServer,
           com.querydsl.core.testutil.Teradata,
           com.querydsl.core.testutil.Oracle,
