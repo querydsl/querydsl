@@ -129,7 +129,7 @@ public class UpdateBase extends AbstractBaseTest {
 
     @Test
     @SkipForQuoted
-    @ExcludeIn({DERBY})
+    @ExcludeIn({DB2, DERBY})
     public void setNullEmptyRootPath() {
         StringPath name = Expressions.stringPath("name");
         long count = query().from(survey).fetchCount();
