@@ -138,10 +138,10 @@ public final class Connections {
     private static Connection getSQLServer() throws ClassNotFoundException, SQLException {
         Class.forName("net.sourceforge.jtds.jdbc.Driver");
         Properties props = new Properties();
-        props.put("user", "querydsl");
-        props.put("password", "querydsl");
+        props.put("user", "sa");
+        props.put("password", "Password1!");
         props.put("sendTimeAsDatetime", "false");
-        String url = "jdbc:jtds:sqlserver://localhost:1433/querydsl";
+        String url = "jdbc:jtds:sqlserver://localhost:1433/tempdb";
 //        return DriverManager.getConnection(url, "querydsl", "querydsl");
         return DriverManager.getConnection(url, props);
     }

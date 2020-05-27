@@ -27,4 +27,8 @@ public class ExportMSSQLTest extends ExportBaseTest {
         Connections.initSQLServer();
     }
 
+    @Override
+    protected String getSchemaPattern() {
+        return "sys";
+    }
 }
