@@ -48,16 +48,16 @@ services:
       - "50000:50000"
     environment:
       - DB2INST1_PASSWORD=a3sd!fDj
+      - DB2INSTANCE=db2inst1
       - DBNAME=sample
       - LICENSE=accept
       - ARCHIVE_LOGS=false
       - AUTOCONFIG=false
     healthcheck:
-      test: ["CMD", "su", "-", "$${DB2INSTANCE}", "-c", "/opt/ibm/db2/V11.5/bin/db2 CONNECT TO sample"]
-      interval: 30s
-      timeout: 40s
-      retries: 10
-      start_period: 40s
+      test: ["CMD", "/opt/ibm/db2/V11.5/bin/db2", "CONNECT", "TO", "sample"]
+      interval: 5s
+      timeout: 180s
+      start_period: 60s
 
   firebird:
     image: jacobalberty/firebird:2.5.6-ss
