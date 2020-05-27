@@ -65,8 +65,8 @@ services:
     healthcheck:
       test: /opt/ibm/db2/V11.5/bin/db2 CONNECT TO $$DBNAME
       interval: 5s
-      timeout: 180s
-      start_period: 180s
+      timeout: 240s
+      start_period: 240s
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
@@ -79,8 +79,8 @@ services:
     healthcheck:
       test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -Q "SELECT 1" || exit 1
       interval: 5s
-      timeout: 30s
-      start_period: 30s
+      timeout: 60s
+      start_period: 60s
 
   firebird:
     image: jacobalberty/firebird:2.5.6-ss
