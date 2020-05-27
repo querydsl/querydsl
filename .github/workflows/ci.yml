@@ -12,18 +12,27 @@ on:
       - '*'
     paths-ignore:
       - README.md
+env:
+  MAVEN_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
 jobs:
   build:
-    env:
-      MAVEN_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
     strategy:
       matrix:
-        maven-args:
-          - --activate-profiles all,travis,examples --projects !querydsl-scala
-          - --activate-profiles jpa,hibernate5,travis,examples --projects !querydsl-jpa-codegen
-          - --activate-profiles all,travis --projects querydsl-scala --resume-from querydsl-scala
+        target: [test-without-scala, test-hibernate-5, test-scala]
+        include:
+          - target: test-without-scala
+            containers: db2 mysql postgresql mongo
+            maven-args: --activate-profiles all,travis,examples --projects !querydsl-scala
+
+          - target: test-scala
+            containers: null
+            maven-args: --activate-profiles all,travis --projects querydsl-scala --resume-from querydsl-scala
+
+          - target: test-hibernate-5
+            containers: db2 mysql postgresql mongo
+            maven-args: --activate-profiles jpa,hibernate5,travis,examples --projects !querydsl-jpa-codegen
 
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +45,8 @@ jobs:
           java-version: 1.8
 
       - name: Start test databases
-        run: docker-compose --file travis/docker-compose.yml up --detach db2 mysql postgresql mongo
+        if: ${{ matrix.containers }}
+        run: docker-compose --file travis/docker-compose.yml up --detach ${{ matrix.containers }}
 
       - name: Initialize cache
         uses: actions/cache@v1
