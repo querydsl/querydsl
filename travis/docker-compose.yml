@@ -1,5 +1,12 @@
 version: "2.4"
 services:
+  # Provides an easy way to ensure slow-starting databases are ready when the tests run
+  block-until-healthy:
+    image: alpine:latest
+    depends_on:
+      db2:
+        condition: service_healthy
+
   mysql:
     image: mysql:5.6.38
     ports:
@@ -57,7 +64,7 @@ services:
       test: ["CMD", "/opt/ibm/db2/V11.5/bin/db2", "CONNECT", "TO", "sample"]
       interval: 5s
       timeout: 180s
-      start_period: 60s
+      start_period: 180s
 
   firebird:
     image: jacobalberty/firebird:2.5.6-ss

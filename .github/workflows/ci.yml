@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        target: [test-without-scala, test-hibernate-5, test-scala]
+        target: [test-without-scala, test-scala, test-hibernate-5]
         include:
           - target: test-without-scala
             containers: db2 mysql postgresql mongo
@@ -46,7 +46,7 @@ jobs:
 
       - name: Start test databases
         if: ${{ matrix.containers }}
-        run: docker-compose --file travis/docker-compose.yml up --detach ${{ matrix.containers }}
+        run: cd travis/ && docker-compose up --detach ${{ matrix.containers }} && time docker-compose up block-until-healthy
 
       - name: Initialize cache
         uses: actions/cache@v1
