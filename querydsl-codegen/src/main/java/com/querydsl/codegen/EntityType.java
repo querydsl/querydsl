@@ -34,7 +34,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     private final Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
 
-    private final Set<Constructor> constructors = new HashSet<Constructor>();
+    private final Set<Constructor> constructors = new LinkedHashSet<Constructor>();
 
     private int escapeSuffix = 1;
 
