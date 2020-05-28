@@ -116,6 +116,11 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
     }
 
     @Override
+    public HibernateInsertClause insert(EntityPath<?> path) {
+        return new HibernateInsertClause(session.get(), path, templates);
+    }
+
+    @Override
     public HibernateQuery<?> query() {
         return new HibernateQuery<Void>(session.get(), templates);
     }

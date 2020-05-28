@@ -60,4 +60,9 @@ public class HibernateQueryFactoryTest {
         assertNotNull(queryFactory.update(QAnimal.animal));
     }
 
+    @Test
+    public void insert() {
+        assertNotNull(queryFactory.insert(QAnimal.animal));
+    }
+
 }

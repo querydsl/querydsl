@@ -131,6 +131,15 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     }
 
     @Override
+    public JPAInsertClause insert(EntityPath<?> path) {
+        if (templates != null) {
+            return new JPAInsertClause(entityManager.get(), path, templates);
+        } else {
+            return new JPAInsertClause(entityManager.get(), path);
+        }
+    }
+
+    @Override
     public JPAQuery<?> query() {
         if (templates != null) {
             return new JPAQuery<Void>(entityManager.get(), templates);

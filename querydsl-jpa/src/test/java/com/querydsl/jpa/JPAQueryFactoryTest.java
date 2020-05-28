@@ -29,6 +29,7 @@ import org.junit.Test;
 import com.google.common.collect.Maps;
 import com.querydsl.jpa.domain.QAnimal;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.sql.SQLExpressions;
 
 public class JPAQueryFactoryTest {
 
@@ -133,6 +134,35 @@ public class JPAQueryFactoryTest {
         assertNotNull(queryFactory3.update(QAnimal.animal));
 
         EasyMock.verify(mock, factoryMock);
+    }
+
+    @Test
+    public void insert() {
+        assertNotNull(queryFactory.insert(QAnimal.animal));
+    }
+
+    @Test
+    public void insert2() {
+        queryFactory2.insert(QAnimal.animal)
+        .set(QAnimal.animal.birthdate, new Date());
+    }
+
+    @Test
+    public void insert3() {
+        EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
+        EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
+        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.replay(mock, factoryMock);
+
+        assertNotNull(queryFactory3.insert(QAnimal.animal));
+
+        EasyMock.verify(mock, factoryMock);
+    }
+
+    @Test
+    public void insert4() {
+        queryFactory.insert(QAnimal.animal).columns(QAnimal.animal.id, QAnimal.animal.birthdate)
+        .select(SQLExpressions.select(QAnimal.animal.id, QAnimal.animal.birthdate).from(QAnimal.animal));
     }
 
 }

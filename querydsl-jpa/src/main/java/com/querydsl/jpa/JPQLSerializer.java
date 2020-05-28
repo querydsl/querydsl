@@ -69,6 +69,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final String UPDATE = "update ";
 
+    private static final String INSERT = "insert into ";
+
+    private static final String VALUES = "\nvalues ";
+
     private static final String WHERE = "\nwhere ";
 
     private static final String WITH = " with ";
@@ -255,6 +259,49 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         handleJoinTarget(md.getJoins().get(0));
         if (md.getWhere() != null) {
             append(WHERE).handle(md.getWhere());
+        }
+    }
+
+    public void serializeForInsert(QueryMetadata md, List<Path<?>> columns, List<Object> values, SubQueryExpression<?> query, Map<Path<?>, Expression<?>> inserts) {
+        append(INSERT);
+        handleJoinTarget(md.getJoins().get(0));
+        append(" (");
+        boolean first = true;
+        for (Path<?> path : columns) {
+            if (!first) {
+                append(", ");
+            }
+            handle(path);
+            first = false;
+        }
+        append(")\n");
+
+        if (values != null && values.size() > 0) {
+            append(VALUES);
+            append(" (");
+            first = true;
+            for (Object value : values) {
+                if (!first) {
+                    append(", ");
+                }
+                handle(value);
+                first = false;
+            }
+        }
+
+        if (inserts != null && inserts.entrySet().size() > 0) {
+            first = true;
+            for (Map.Entry<Path<?>, Expression<?>> entry : inserts.entrySet()) {
+                if (!first) {
+                    append(", ");
+                }
+                handle(entry.getKey());
+                append(" = ");
+                handle(entry.getValue());
+                first = false;
+            }
+        } else {
+            serialize(query.getMetadata(), false, null);
         }
     }
 
