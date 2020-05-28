@@ -32,7 +32,7 @@ services:
       - POSTGRES_DB=querydsl
 
   oracle:
-    image: wnameless/oracle-xe-11g:16.04
+    image: wnameless/oracle-xe-11g-r2:latest
     ports:
       - "1521:1521"
 
