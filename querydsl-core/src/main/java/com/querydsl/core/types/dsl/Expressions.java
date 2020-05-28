@@ -15,11 +15,30 @@
 package com.querydsl.core.types.dsl;
 
 import java.sql.Time;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.CollectionExpression;
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.NullExpression;
+import com.querydsl.core.types.OperationImpl;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.core.types.PredicateOperation;
+import com.querydsl.core.types.PredicateTemplate;
+import com.querydsl.core.types.Template;
+import com.querydsl.core.types.TemplateExpressionImpl;
+import com.querydsl.core.types.TemplateFactory;
+import com.querydsl.core.types.Visitor;
 
 /**
  * Factory class for {@link Expression} creation.
@@ -1670,7 +1689,7 @@ public final class Expressions {
      * @return null expression
      */
     public static <T> NullExpression<T> nullExpression(Class<T> type) {
-        return nullExpression();
+        return new NullExpression<T>(type);
     }
 
     /**
