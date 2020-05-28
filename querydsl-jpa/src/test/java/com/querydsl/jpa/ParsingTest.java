@@ -48,6 +48,7 @@ public class ParsingTest extends AbstractQueryTest {
     }
 
     @Test
+    @ExcludeIn(SQLSERVER)
     public void beforeAndAfter() throws RecognitionException, TokenStreamException {
         ComparableExpression<java.util.Date> ed = catalog.effectiveDate;
         query()

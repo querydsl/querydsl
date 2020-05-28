@@ -1177,7 +1177,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(FIREBIRD) // FIXME
+    @ExcludeIn({FIREBIRD, SQLSERVER}) // FIXME
     public void math2() {
         math(Expressions.constant(0.5));
     }
@@ -2119,7 +2119,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DB2, DERBY})
+    @ExcludeIn({DB2, DERBY, SQLSERVER})
     public void groupConcat() {
         List<String> expected = ImmutableList.of("Mike,Mary", "Joe,Peter,Steve,Jim", "Jennifer,Helen,Daisy,Barbara");
         if (Connections.getTarget() == POSTGRESQL) {
@@ -2133,7 +2133,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({DB2, DERBY})
+    @ExcludeIn({DB2, DERBY, SQLSERVER})
     public void groupConcat2() {
         List<String> expected = ImmutableList.of("Mike-Mary", "Joe-Peter-Steve-Jim", "Jennifer-Helen-Daisy-Barbara");
         if (Connections.getTarget() == POSTGRESQL) {

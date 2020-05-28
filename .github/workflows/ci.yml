@@ -23,7 +23,7 @@ jobs:
         target: [test-without-scala, test-scala, test-hibernate-5]
         include:
           - target: test-without-scala
-            containers: db2 mysql postgresql mongo
+            containers: db2 mysql postgresql mongo sqlserver
             maven-args: --activate-profiles all,travis,examples --projects !querydsl-scala
 
           - target: test-scala
@@ -31,7 +31,7 @@ jobs:
             maven-args: --activate-profiles all,travis --projects querydsl-scala --resume-from querydsl-scala
 
           - target: test-hibernate-5
-            containers: db2 mysql postgresql mongo
+            containers: db2 mysql postgresql mongo sqlserver
             maven-args: --activate-profiles jpa,hibernate5,travis,examples --projects !querydsl-jpa-codegen
 
     runs-on: ubuntu-latest
@@ -46,7 +46,11 @@ jobs:
 
       - name: Start test databases
         if: ${{ matrix.containers }}
-        run: cd travis/ && docker-compose up --detach ${{ matrix.containers }} && time docker-compose up block-until-healthy
+        run: |
+          cd travis/ &&\
+          docker-compose up --detach ${{ matrix.containers }} &&\
+          docker ps &&\
+          time docker-compose up block-until-healthy
 
       - name: Initialize cache
         uses: actions/cache@v1

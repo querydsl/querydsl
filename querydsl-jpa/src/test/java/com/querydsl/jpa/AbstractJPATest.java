@@ -605,6 +605,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink
+    @ExcludeIn(SQLSERVER)
     public void distinct_orderBy() {
         QCat cat = QCat.cat;
         List<Tuple> result = query().select(cat.id, cat.mate.id)
@@ -1514,7 +1515,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoBatooJPA
-    @ExcludeIn(ORACLE)
+    @ExcludeIn({ORACLE, SQLSERVER})
     public void substring2() {
         QCompany company = QCompany.company;
         StringExpression name = company.name;
@@ -1678,6 +1679,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoEclipseLink @NoOpenJPA @NoBatooJPA
+    @ExcludeIn(SQLSERVER)
     public void test() {
         Cat kitten = savedCats.get(0);
         Cat noKitten = savedCats.get(savedCats.size() - 1);
