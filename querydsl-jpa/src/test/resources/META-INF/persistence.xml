@@ -285,8 +285,8 @@
             <property name="hibernate.dialect" value="com.querydsl.jpa.support.QOracle10gDialect" />
             <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
             <property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:xe" />
-            <property name="hibernate.connection.username" value="system" />
-            <property name="hibernate.connection.password" value="oracle" />
+            <property name="hibernate.connection.username" value="querydsl" />
+            <property name="hibernate.connection.password" value="querydsl" />
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
             <property name="hibernate.hbm2ddl.auto" value="update" />

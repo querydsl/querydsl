@@ -126,7 +126,7 @@ public final class Connections {
     private static Connection getOracle() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        return DriverManager.getConnection(url, "system", "oracle");
+        return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
 
     private static Connection getPostgreSQL() throws ClassNotFoundException, SQLException {

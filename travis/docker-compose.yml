@@ -32,9 +32,11 @@ services:
       - POSTGRES_DB=querydsl
 
   oracle:
-    image: wnameless/oracle-xe-11g:16.04
+    image: wnameless/oracle-xe-11g-r2:latest
     ports:
       - "1521:1521"
+    volumes:
+    - "../devops/sql-snippets/oracle.sql:/docker-entrypoint-initdb.d/oracle.sql"
 
   cubrid:
     image: lighthopper/cubrid:9.2.26.0004
