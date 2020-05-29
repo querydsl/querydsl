@@ -13,15 +13,21 @@
  */
 package com.querydsl.sql.codegen;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.*;
 import java.util.Set;
 
 import javax.tools.JavaCompiler;
+import javax.validation.constraints.NotNull;
 
+import com.querydsl.core.util.ReflectionUtils;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
@@ -112,7 +118,6 @@ public class MetaDataExporterTest {
                     + "m_product_bom_id int, "
                     + "m_productbom_id int, "
                     + "constraint product_bom foreign key (m_productbom_id) references product(id))");
-
         } finally {
             stmt.close();
         }
@@ -162,6 +167,59 @@ public class MetaDataExporterTest {
 
         assertTrue(new File(folder.getRoot(), "test/QDateTest.java").exists());
         assertTrue(new File(folder.getRoot(), "test2/DateTest.java").exists());
+    }
+
+
+    @Test
+    public void validation_annotations_are_not_added_to_columns_with_default_values() throws SQLException, ClassNotFoundException, MalformedURLException {
+        Statement stmt = connection.createStatement();
+        stmt.execute("CREATE TABLE table ("
+                + "id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,"
+                + "name VARCHAR(255) NOT NULL DEFAULT 'some default')");
+
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setNamePrefix("Q");
+        exporter.setPackageName("test");
+        exporter.setTableNamePattern("TABLE");
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.setBeanSerializer(new BeanSerializer());
+        exporter.setValidationAnnotations(true);
+        exporter.export(metadata);
+
+        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] {folder.getRoot().toURI().toURL()});
+        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Table.java");
+        Class<?> cls = Class.forName("test.Table", true, classLoader);
+        assertThat(ReflectionUtils.getAnnotatedElement(cls, "id", Integer.class).getAnnotation(NotNull.class), is(nullValue()));
+        assertThat(ReflectionUtils.getAnnotatedElement(cls, "name", String.class).getAnnotation(NotNull.class), is(nullValue()));
+
+        stmt.execute("DROP TABLE table");
+    }
+
+    @Test
+    public void validation_annotations_are_added_to_columns_without_default_values() throws SQLException, ClassNotFoundException, MalformedURLException {
+        Statement stmt = connection.createStatement();
+        stmt.execute("CREATE TABLE table ("
+                + "id VARCHAR(10) PRIMARY KEY NOT NULL,"
+                + "name VARCHAR(255) NOT NULL)");
+
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setNamePrefix("Q");
+        exporter.setPackageName("test");
+        exporter.setTableNamePattern("TABLE");
+        exporter.setTargetFolder(folder.getRoot());
+        exporter.setBeanSerializer(new BeanSerializer());
+        exporter.setValidationAnnotations(true);
+        exporter.export(metadata);
+
+        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] {folder.getRoot().toURI().toURL()});
+        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Table.java");
+        Class<?> cls = Class.forName("test.Table", true, classLoader);
+        assertThat(ReflectionUtils.getAnnotatedElement(cls, "id", Integer.class).getAnnotation(NotNull.class), is(notNullValue()));
+        assertThat(ReflectionUtils.getAnnotatedElement(cls, "name", String.class).getAnnotation(NotNull.class), is(notNullValue()));
+
+        stmt.execute("DROP TABLE table");
     }
 
     @Test
