@@ -592,14 +592,6 @@
     </profile>
 
     <profile>
-      <id>hibernate5</id>
-      <properties>
-        <hibernate.version>5.4.8.Final</hibernate.version>
-        <hibernate.validator.version>6.0.18.Final</hibernate.validator.version>
-      </properties>
-    </profile>
-
-    <profile>
       <id>jdo</id>
       <modules>
         <module>querydsl-core</module>
