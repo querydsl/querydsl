@@ -917,7 +917,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void GroupBy_Having_Count2() {
-        Predicate having = cat.id.count().eq(1l);
+        Predicate having = cat.id.count().eq(1L);
         List<Integer> ids = query().from(cat).groupBy(cat.id).having(having).select(cat.id).fetch();
         long count = query().from(cat).groupBy(cat.id).having(having).fetchCount();
         QueryResults<Integer> results = query().from(cat).groupBy(cat.id).having(having)
