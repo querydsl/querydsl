@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        target: [test-without-scala, test-scala, test-hibernate-5]
+        target: [test-without-scala, test-scala]
         include:
           - target: test-without-scala
             containers: db2 mysql postgresql mongo sqlserver oracle
@@ -29,10 +29,6 @@ jobs:
           - target: test-scala
             containers: null
             maven-args: --activate-profiles all,travis --projects querydsl-scala --resume-from querydsl-scala
-
-          - target: test-hibernate-5
-            containers: db2 mysql postgresql mongo sqlserver oracle
-            maven-args: --activate-profiles jpa,hibernate5,travis,examples --projects !querydsl-jpa-codegen
 
     runs-on: ubuntu-latest
     steps:
