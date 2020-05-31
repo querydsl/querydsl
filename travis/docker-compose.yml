@@ -40,6 +40,7 @@ services:
 
   cubrid:
     image: lighthopper/cubrid:9.2.26.0004
+    command: "./create-start-demodb.sh"
     ports:
       - "33000:33000"
       - "30000:30000"
