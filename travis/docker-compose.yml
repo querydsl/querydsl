@@ -93,7 +93,7 @@ services:
       start_period: 60s
 
   firebird:
-    image: jacobalberty/firebird:2.5.6-ss
+    image: jacobalberty/firebird:2.5.9-ss
     ports:
       - "3050:3050"
     environment:

@@ -24,7 +24,7 @@ jobs:
         target: [test-without-scala, test-scala]
         include:
           - target: test-without-scala
-            containers: db2 mysql postgresql mongo sqlserver oracle cubrid
+            containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
             maven-args: --activate-profiles all,travis,examples --projects !querydsl-scala
 
           - target: test-scala
@@ -46,8 +46,8 @@ jobs:
         run: |
           cd travis/ &&\
           docker-compose up --detach ${{ matrix.containers }} &&\
-          docker ps &&\
-          time docker-compose up block-until-healthy
+          time docker-compose up block-until-healthy &&\
+          docker ps
 
       - name: Initialize cache
         uses: actions/cache@v1
