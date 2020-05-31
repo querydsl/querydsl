@@ -533,7 +533,7 @@ public class SelectBase extends AbstractBaseTest {
         DateTimeExpression<java.util.Date> dt = Expressions.currentTimestamp();
 
         add(exprs, SQLExpressions.addYears(dt, 1));
-        add(exprs, SQLExpressions.addMonths(dt, 1));
+        add(exprs, SQLExpressions.addMonths(dt, 1), ORACLE);
         add(exprs, SQLExpressions.addDays(dt, 1));
         add(exprs, SQLExpressions.addHours(dt, 1), TERADATA);
         add(exprs, SQLExpressions.addMinutes(dt, 1), TERADATA);

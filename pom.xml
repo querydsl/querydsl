@@ -687,9 +687,7 @@
           com.querydsl.core.testutil.Performance,
           com.querydsl.core.testutil.ReportingOnly,
 
-          com.querydsl.core.testutil.Teradata,
-          com.querydsl.core.testutil.CUBRID,
-          com.querydsl.core.testutil.Firebird
+          com.querydsl.core.testutil.Teradata
         </excludedGroups>
       </properties>
       <build>

@@ -4,6 +4,8 @@ services:
   block-until-healthy:
     image: alpine:latest
     depends_on:
+      cubrid:
+        condition: service_healthy
       db2:
         condition: service_healthy
       sqlserver:
@@ -40,12 +42,18 @@ services:
 
   cubrid:
     image: lighthopper/cubrid:9.2.26.0004
+    command: "./create-start-demodb.sh"
     ports:
       - "33000:33000"
       - "30000:30000"
       - "8001:8001"
       - "8002:8002"
       - "1523:1523"
+    healthcheck:
+      test: csql demodb -c "SELECT 1"
+      interval: 5s
+      timeout: 60s
+      start_period: 60s
 
   mongo:
     image: mongo:3.6.1
@@ -85,7 +93,7 @@ services:
       start_period: 60s
 
   firebird:
-    image: jacobalberty/firebird:2.5.6-ss
+    image: jacobalberty/firebird:2.5.9-ss
     ports:
       - "3050:3050"
     environment:
