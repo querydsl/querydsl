@@ -75,9 +75,42 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         this.entityManager = em;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated {@code fetchCount} requires a count query to be computed. In {@code querydsl-sql}, this is done
+     * by wrapping the query in a subquery, like so: {@code SELECT COUNT(*) FROM (&lt;original query&gt;)}. Unfortunately,
+     * JPQL - the query language of JPA - does not allow queries to project from subqueries. As a result there isn't a
+     * universal way to express count queries in JPQL. Historically QueryDSL attempts at producing a modified query
+     * to compute the number of results instead.
+     *
+     * However, this approach only works for simple queries. Specifically
+     * queries with multiple group by clauses and queries with a having clause turn out to be problematic. This is because
+     * {@code COUNT(DISTINCT a, b, c)}, while valid SQL in most dialects, is not valid JPQL. Furthermore, a having
+     * clause may refer select elements or aggregate functions and therefore cannot be emulated by moving the predicate
+     * to the where clause instead.
+     *
+     * In order to support {@code fetchCount} for queries with multiple group by elements or a having clause, we
+     * generate the count in memory instead. This means that the method simply falls back to returning the size of
+     * {@link #fetch()}. For large result sets this may come at a severe performance penalty.
+     *
+     * For very specific domain models where {@link #fetchCount()} has to be used in conjunction with complex queries
+     * containing multiple group by elements and/or a having clause, we recommend using the
+     * <a href="https://persistence.blazebit.com/documentation/1.5/core/manual/en_US/index.html#querydsl-integration">Blaze-Persistence</a>
+     * integration for QueryDSL. Among other advanced query features, Blaze-Persistence makes it possible to select
+     * from subqueries in JPQL. As a result the {@code BlazeJPAQuery} provided with the integration, implements
+     * {@code fetchCount} properly and always executes a proper count query.
+     */
     @Override
+    @Deprecated
     public long fetchCount() {
         try {
+            if (getMetadata().getGroupBy().size() > 1 || getMetadata().getHaving() != null) {
+                logger.warn("Fetchable#fetchCount() was computed in memory! See the Javadoc for AbstractJPAQuery#fetchCount for more details.");
+                Query query = createQuery(null, false);
+                return query.getResultList().size();
+            }
+
             Query query = createQuery(null, true);
             return (Long) query.getSingleResult();
         } finally {
@@ -215,13 +248,53 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated {@code fetchResults} requires a count query to be computed. In {@code querydsl-sql}, this is done
+     * by wrapping the query in a subquery, like so: {@code SELECT COUNT(*) FROM (&lt;original query&gt;)}. Unfortunately,
+     * JPQL - the query language of JPA - does not allow queries to project from subqueries. As a result there isn't a
+     * universal way to express count queries in JPQL. Historically QueryDSL attempts at producing a modified query
+     * to compute the number of results instead.
+     *
+     * However, this approach only works for simple queries. Specifically
+     * queries with multiple group by clauses and queries with a having clause turn out to be problematic. This is because
+     * {@code COUNT(DISTINCT a, b, c)}, while valid SQL in most dialects, is not valid JPQL. Furthermore, a having
+     * clause may refer select elements or aggregate functions and therefore cannot be emulated by moving the predicate
+     * to the where clause instead.
+     *
+     * In order to support {@code fetchResults} for queries with multiple group by elements or a having clause, we
+     * generate the count in memory instead. This means that the method simply falls back to returning the size of
+     * {@link #fetch()}. For large result sets this may come at a severe performance penalty.
+     *
+     * For very specific domain models where {@link #fetchResults()} has to be used in conjunction with complex queries
+     * containing multiple group by elements and/or a having clause, we recommend using the
+     * <a href="https://persistence.blazebit.com/documentation/1.5/core/manual/en_US/index.html#querydsl-integration">Blaze-Persistence</a>
+     * integration for QueryDSL. Among other advanced query features, Blaze-Persistence makes it possible to select
+     * from subqueries in JPQL. As a result the {@code BlazeJPAQuery} provided with the integration, implements
+     * {@code fetchResults} properly and always executes a proper count query.
+     *
+     * Mind that for any scenario where the count is not strictly needed separately, we recommend to use {@link #fetch()}
+     * instead.
+     */
     @Override
+    @Deprecated
     public QueryResults<T> fetchResults() {
         try {
+            QueryModifiers modifiers = getMetadata().getModifiers();
+            if (getMetadata().getGroupBy().size() > 1 || getMetadata().getHaving() != null) {
+                logger.warn("Fetchable#fetchResults() was computed in memory! See the Javadoc for AbstractJPAQuery#fetchResults for more details.");
+                Query query = createQuery(null, false);
+                @SuppressWarnings("unchecked")
+                List<T> resultList = query.getResultList();
+                int offset = modifiers.getOffsetAsInteger() == null ? 0 : modifiers.getOffsetAsInteger();
+                int limit = modifiers.getLimitAsInteger() == null ? resultList.size() : modifiers.getLimitAsInteger();
+                return new QueryResults<T>(resultList.subList(offset, Math.min(resultList.size(), offset + limit)), modifiers, resultList.size());
+            }
+
             Query countQuery = createQuery(null, true);
             long total = (Long) countQuery.getSingleResult();
             if (total > 0) {
-                QueryModifiers modifiers = getMetadata().getModifiers();
                 Query query = createQuery(modifiers, false);
                 @SuppressWarnings("unchecked")
                 List<T> list = (List<T>) getResultList(query);
