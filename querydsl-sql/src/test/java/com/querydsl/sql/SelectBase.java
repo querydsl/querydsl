@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -569,6 +570,11 @@ public class SelectBase extends AbstractBaseTest {
             int diff2 = query.select(SQLExpressions.datediff(dp, employee.datefield, date)).fetchFirst();
             int diff3 = query2.select(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield)).fetchFirst();
             assertEquals(diff1, -diff2);
+        }
+
+        Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
+        for (DatePart dp : dps) {
+            query.select(SQLExpressions.datediff(dp, Expressions.currentTimestamp(), timestamp)).fetchOne();
         }
     }
 
