@@ -28,8 +28,9 @@ import com.querydsl.core.types.Ops;
  * HQLTemplates extends {@link JPQLTemplates} with Hibernate specific extensions
  *
  * @author tiwe
- *
+ * @deprecated Most likely you want to use {@link Hibernate5Templates} instead
  */
+@Deprecated
 public class HQLTemplates extends JPQLTemplates {
 
     private static final QueryHandler QUERY_HANDLER;
@@ -86,16 +87,22 @@ public class HQLTemplates extends JPQLTemplates {
 
     @Override
     public boolean wrapElements(Operator operator) {
+        // For example: JPaIntegration.docoExamples98_12
         return wrapElements.contains(operator);
     }
 
     @Override
     public String getTypeForCast(Class<?> cl) {
-        return typeNames.get(cl);
+        String typeName = typeNames.get(cl);
+        if (typeName == null) {
+            return super.getTypeForCast(cl);
+        }
+        return typeName;
     }
 
     @Override
     public String getExistsProjection() {
+        // TODO Required / supported just for Hibernate?
         return "1";
     }
 

@@ -29,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 
+import com.querydsl.core.Tuple;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -252,10 +253,10 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @NoEclipseLink
     @NoBatooJPA
     public void createQuery() {
-        List<Object[]> rows = query().from(cat)
+        List<Tuple> rows = query().from(cat)
                 .select(cat.id, cat.name).createQuery().getResultList();
-        for (Object[] row : rows) {
-            assertEquals(2, row.length);
+        for (Tuple row : rows) {
+            assertEquals(2, row.size());
         }
     }
 
@@ -264,10 +265,10 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @NoEclipseLink
     @NoBatooJPA
     public void createQuery2() {
-        List<Object[]> rows = query().from(cat)
+        List<Tuple> rows = query().from(cat)
                 .select(cat.id, cat.name).createQuery().getResultList();
-        for (Object[] row : rows) {
-            assertEquals(2, row.length);
+        for (Tuple row : rows) {
+            assertEquals(2, row.size());
         }
     }
 
