@@ -688,7 +688,6 @@
           com.querydsl.core.testutil.ReportingOnly,
 
           com.querydsl.core.testutil.Teradata,
-          com.querydsl.core.testutil.CUBRID,
           com.querydsl.core.testutil.Firebird
         </excludedGroups>
       </properties>
