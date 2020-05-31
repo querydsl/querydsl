@@ -4,6 +4,8 @@ services:
   block-until-healthy:
     image: alpine:latest
     depends_on:
+      cubrid:
+        condition: service_healthy
       db2:
         condition: service_healthy
       sqlserver:
@@ -47,6 +49,11 @@ services:
       - "8001:8001"
       - "8002:8002"
       - "1523:1523"
+    healthcheck:
+      test: csql demodb -c "SELECT 1"
+      interval: 5s
+      timeout: 60s
+      start_period: 60s
 
   mongo:
     image: mongo:3.6.1
