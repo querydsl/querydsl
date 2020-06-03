@@ -21,15 +21,11 @@ jobs:
 
     strategy:
       matrix:
-        target: [test-without-scala, test-scala]
+        target: [test]
         include:
-          - target: test-without-scala
+          - target: test
             containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
-            maven-args: --activate-profiles all,travis,examples --projects !querydsl-scala
-
-          - target: test-scala
-            containers: null
-            maven-args: --activate-profiles all,travis --projects querydsl-scala --resume-from querydsl-scala
+            maven-args: --activate-profiles all,travis,examples
 
     runs-on: ubuntu-latest
     steps:
