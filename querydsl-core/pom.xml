@@ -37,7 +37,13 @@
       <groupId>com.mysema.commons</groupId>
       <artifactId>mysema-commons-lang</artifactId>
       <version>${mysema.lang.version}</version>
-    </dependency>     
+    </dependency>
+
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>${reactor-core.version}</version>
+    </dependency>
     
     <!-- alias dependencies -->
     <dependency>

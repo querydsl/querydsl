@@ -52,6 +52,7 @@
     <sqlite.version>3.7.2</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
     <firebird.version>2.2.5</firebird.version>
+    <reactor-core.version>3.3.5.RELEASE</reactor-core.version>
 
     <!-- JPA deps -->
     <hibernate.version>5.4.8.Final</hibernate.version>
@@ -545,6 +546,7 @@
         <module>querydsl-sql-spatial</module>
         <module>querydsl-sql-codegen</module>
         <module>querydsl-sql-spring</module>
+        <module>querydsl-r2dbc</module>
         <module>querydsl-maven-plugin</module>
         <module>querydsl-jpa</module>
         <module>querydsl-jpa-codegen</module>
@@ -639,6 +641,7 @@
         <module>querydsl-sql-spatial</module>
         <module>querydsl-sql-codegen</module>
         <module>querydsl-sql-spring</module>
+        <module>querydsl-r2dbc</module>
         <module>querydsl-maven-plugin</module>
       </modules>
     </profile>

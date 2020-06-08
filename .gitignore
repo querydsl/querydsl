@@ -19,3 +19,5 @@ derby.log
 /devops/*.rpm.zip
 /devops/**/*.semaphore
 /devops/test-connection/.lein-repl-history
+
+.java-version
