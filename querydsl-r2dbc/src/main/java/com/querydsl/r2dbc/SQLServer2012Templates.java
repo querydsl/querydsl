@@ -21,6 +21,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.RelationalPath;
+import com.querydsl.sql.SQLOps;
 
 import java.util.Map;
 import java.util.Set;

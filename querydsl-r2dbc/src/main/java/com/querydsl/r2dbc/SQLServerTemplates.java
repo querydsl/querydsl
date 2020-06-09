@@ -22,6 +22,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.SQLOps;
 
 import java.sql.Types;
 import java.util.Set;

@@ -19,12 +19,11 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.RelationalFunctionCall;
-import com.querydsl.sql.SQLExpressions;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class RelationalFunctionCallTest {
+public class R2DBCRelationalFunctionCallTest {
 
     private static Expression[] serializeCollection(String... tokens) {
         Expression[] rv = new Expression[tokens.length];
@@ -46,25 +45,25 @@ public class RelationalFunctionCallTest {
 
     }
 
-//    TODO: move SQLExpressions to R2DBC Expressions
+//    TODO: move R2DBCExpressions to R2DBC Expressions
 //    @Test
 //    public void validation() {
 //        QSurvey survey = QSurvey.survey;
 //        TokenizeFunction func = new TokenizeFunction("func", "a", "b");
-//        R2DBCQuery<?> sub = SQLExpressions.selectOne().from(func.as(func.alias)).where(survey.name.like(func.token));
+//        R2DBCQuery<?> sub = R2DBCExpressions.selectOne().from(func.as(func.alias)).where(survey.name.like(func.token));
 //        System.out.println(sub);
 //    }
 
     @Test
     public void noArgs() {
-        RelationalFunctionCall<String> functionCall = SQLExpressions.relationalFunctionCall(String.class, "getElements");
+        R2DBCRelationalFunctionCall<String> functionCall = R2DBCExpressions.relationalFunctionCall(String.class, "getElements");
         assertEquals("getElements()", functionCall.getTemplate().toString());
     }
 
     @Test
     public void twoArgs() {
         StringPath str = Expressions.stringPath("str");
-        RelationalFunctionCall<String> functionCall = SQLExpressions.relationalFunctionCall(String.class, "getElements", "a", str);
+        R2DBCRelationalFunctionCall<String> functionCall = R2DBCExpressions.relationalFunctionCall(String.class, "getElements", "a", str);
         assertEquals("getElements({0}, {1})", functionCall.getTemplate().toString());
         assertEquals("a", functionCall.getArg(0));
         assertEquals(str, functionCall.getArg(1));

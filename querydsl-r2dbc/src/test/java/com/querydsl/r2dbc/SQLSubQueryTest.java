@@ -19,7 +19,6 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.r2dbc.domain.QSurvey;
-import com.querydsl.sql.SQLExpressions;
 import org.junit.Test;
 
 import java.util.List;
@@ -53,7 +52,7 @@ public class SQLSubQueryTest {
     @SuppressWarnings("unchecked")
     @Test
     public void list() {
-        SubQueryExpression<?> subQuery = SQLExpressions.select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
+        SubQueryExpression<?> subQuery = R2DBCExpressions.select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
         List<? extends Expression<?>> exprs = ((FactoryExpression) subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
         assertEquals(ConstantImpl.create("XXX"), exprs.get(1));
@@ -63,7 +62,7 @@ public class SQLSubQueryTest {
     @Test
     public void list_entity() {
         QEmployee employee2 = new QEmployee("employee2");
-        Expression<?> expr = SQLExpressions.select(employee, employee2.id).from(employee)
+        Expression<?> expr = R2DBCExpressions.select(employee, employee2.id).from(employee)
                 .innerJoin(employee.superiorIdKey, employee2);
 
         SQLSerializer serializer = new SQLSerializer(new Configuration(SQLTemplates.DEFAULT));
@@ -77,30 +76,30 @@ public class SQLSubQueryTest {
 
     @Test
     public void in() {
-        SubQueryExpression<Integer> ints = SQLExpressions.select(employee.id).from(employee);
+        SubQueryExpression<Integer> ints = R2DBCExpressions.select(employee.id).from(employee);
         QEmployee.employee.id.in(ints);
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void in_union() {
-        SubQueryExpression<Integer> ints1 = SQLExpressions.select(employee.id).from(employee);
-        SubQueryExpression<Integer> ints2 = SQLExpressions.select(employee.id).from(employee);
-        QEmployee.employee.id.in(SQLExpressions.union(ints1, ints2));
+        SubQueryExpression<Integer> ints1 = R2DBCExpressions.select(employee.id).from(employee);
+        SubQueryExpression<Integer> ints2 = R2DBCExpressions.select(employee.id).from(employee);
+        QEmployee.employee.id.in(R2DBCExpressions.union(ints1, ints2));
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void in_union2() {
-        SubQueryExpression<Integer> ints1 = SQLExpressions.select(employee.id).from(employee);
-        SubQueryExpression<Integer> ints2 = SQLExpressions.select(employee.id).from(employee);
-        QEmployee.employee.id.in(SQLExpressions.union(ints1, ints2));
+        SubQueryExpression<Integer> ints1 = R2DBCExpressions.select(employee.id).from(employee);
+        SubQueryExpression<Integer> ints2 = R2DBCExpressions.select(employee.id).from(employee);
+        QEmployee.employee.id.in(R2DBCExpressions.union(ints1, ints2));
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void unique() {
-        SubQueryExpression<?> subQuery = SQLExpressions.select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
+        SubQueryExpression<?> subQuery = R2DBCExpressions.select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
         List<? extends Expression<?>> exprs = ((FactoryExpression) subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
         assertEquals(ConstantImpl.create("XXX"), exprs.get(1));
@@ -113,7 +112,7 @@ public class SQLSubQueryTest {
         QSurvey survey = new QSurvey("survey");
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");
-        SubQueryExpression<?> subQuery = SQLExpressions.select(survey.id, emp2.firstname).from(survey)
+        SubQueryExpression<?> subQuery = R2DBCExpressions.select(survey.id, emp2.firstname).from(survey)
                 .innerJoin(emp1)
                 .on(survey.id.eq(emp1.id))
                 .innerJoin(emp2)
@@ -134,24 +133,24 @@ public class SQLSubQueryTest {
         // order by operator_total_permits asc
         // limit 10
 
-        Expression<?> e = SQLExpressions.select(survey.name, Wildcard.count.as(operatorTotalPermits)).from(survey)
+        Expression<?> e = R2DBCExpressions.select(survey.name, Wildcard.count.as(operatorTotalPermits)).from(survey)
                 .where(survey.name.goe("A"))
                 .groupBy(survey.name)
                 .orderBy(operatorTotalPermits.asc())
                 .limit(10)
                 .as("top");
 
-        SQLExpressions.select(Wildcard.all).from(e);
+        R2DBCExpressions.select(Wildcard.all).from(e);
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void union1() {
         QSurvey survey = QSurvey.survey;
-        SubQueryExpression<Integer> q1 = SQLExpressions.select(survey.id).from(survey);
-        SubQueryExpression<Integer> q2 = SQLExpressions.select(survey.id).from(survey);
-        SQLExpressions.union(q1, q2);
-        SQLExpressions.union(q1);
+        SubQueryExpression<Integer> q1 = R2DBCExpressions.select(survey.id).from(survey);
+        SubQueryExpression<Integer> q2 = R2DBCExpressions.select(survey.id).from(survey);
+        R2DBCExpressions.union(q1, q2);
+        R2DBCExpressions.union(q1);
     }
 
     @SuppressWarnings("unchecked")
@@ -162,10 +161,10 @@ public class SQLSubQueryTest {
         QSurvey survey3 = new QSurvey("survey3");
 
         R2DBCQuery<Void> query = new R2DBCQuery<Void>();
-        query.with(survey1, SQLExpressions.select(survey1.all()).from(survey1));
+        query.with(survey1, R2DBCExpressions.select(survey1.all()).from(survey1));
         query.union(
-                SQLExpressions.select(survey2.all()).from(survey2),
-                SQLExpressions.select(survey3.all()).from(survey3));
+                R2DBCExpressions.select(survey2.all()).from(survey2),
+                R2DBCExpressions.select(survey3.all()).from(survey3));
 
         assertEquals("with survey1 as (select survey1.NAME, survey1.NAME2, survey1.ID\n" +
                 "from SURVEY survey1)\n" +

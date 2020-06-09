@@ -21,7 +21,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.r2dbc.dml.R2DBCDeleteClause;
 import com.querydsl.r2dbc.dml.R2DBCUpdateClause;
-import com.querydsl.sql.SQLExpressions;
+import com.querydsl.sql.SQLOps;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -50,9 +50,9 @@ public class SQLServer2012TemplatesTest extends AbstractSQLTemplatesTest {
         NumberExpression<Integer> three = Expressions.THREE;
         Path<Integer> col1 = Expressions.path(Integer.class, "col1");
         Union union = query.union(
-                SQLExpressions.select(one.as(col1)),
-                SQLExpressions.select(two),
-                SQLExpressions.select(three));
+                R2DBCExpressions.select(one.as(col1)),
+                R2DBCExpressions.select(two),
+                R2DBCExpressions.select(three));
         assertEquals(
                 "(select 1 as col1)\n" +
                         "union\n" +

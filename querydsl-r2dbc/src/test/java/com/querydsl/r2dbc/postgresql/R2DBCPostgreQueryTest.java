@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class R2DBCPostgreSqlQueryTest {
+public class R2DBCPostgreQueryTest {
 
     private R2DBCPostgreQuery<?> query;
 

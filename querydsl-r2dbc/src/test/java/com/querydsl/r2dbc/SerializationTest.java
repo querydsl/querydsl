@@ -22,8 +22,6 @@ import com.querydsl.r2dbc.dml.R2DBCInsertClause;
 import com.querydsl.r2dbc.dml.R2DBCUpdateClause;
 import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.r2dbc.domain.QSurvey;
-import com.querydsl.sql.RelationalFunctionCall;
-import com.querydsl.sql.SQLExpressions;
 import io.r2dbc.spi.Connection;
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -94,7 +92,7 @@ public class SerializationTest {
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");
         R2DBCDeleteClause delete = new R2DBCDeleteClause(connection, SQLTemplates.DEFAULT, survey1);
-        delete.where(survey1.name.eq("XXX"), SQLExpressions.selectOne().from(employee).where(survey1.id.eq(employee.id)).exists());
+        delete.where(survey1.name.eq("XXX"), R2DBCExpressions.selectOne().from(employee).where(survey1.id.eq(employee.id)).exists());
         assertEquals("delete from SURVEY\n" +
                 "where SURVEY.NAME = ? and exists (select 1\n" +
                 "from EMPLOYEE e\n" +
@@ -103,7 +101,7 @@ public class SerializationTest {
 
     @Test
     public void nextval() {
-        SubQueryExpression<?> sq = SQLExpressions.select(SQLExpressions.nextval("myseq")).from(QSurvey.survey);
+        SubQueryExpression<?> sq = R2DBCExpressions.select(R2DBCExpressions.nextval("myseq")).from(QSurvey.survey);
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.serialize(sq.getMetadata(), false);
         assertEquals("select nextval('myseq')\nfrom SURVEY SURVEY", serializer.toString());
@@ -111,9 +109,9 @@ public class SerializationTest {
 
     @Test
     public void functionCall() {
-        RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
+        R2DBCRelationalFunctionCall<String> func = R2DBCExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
-        SubQueryExpression<?> expr = SQLExpressions.select(survey.name).from(survey)
+        SubQueryExpression<?> expr = R2DBCExpressions.select(survey.name).from(survey)
                 .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not());
 
         SQLSerializer serializer = new SQLSerializer(new Configuration(new SQLServerTemplates()));
@@ -127,7 +125,7 @@ public class SerializationTest {
 
     @Test
     public void functionCall2() {
-        RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
+        R2DBCRelationalFunctionCall<String> func = R2DBCExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
         PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
         R2DBCQuery<?> q = new R2DBCQuery<Void>(SQLServerTemplates.DEFAULT);
         q.from(survey)
@@ -138,24 +136,11 @@ public class SerializationTest {
                 "on not (SURVEY.NAME like tokFunc.prop escape '\\')", q.toString());
     }
 
-    @Test
-    public void functionCall3() {
-        RelationalFunctionCall<String> func = SQLExpressions.relationalFunctionCall(String.class, "TableValuedFunction", "parameter");
-        PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
-        R2DBCQuery<?> q = new R2DBCQuery<Void>(HSQLDBTemplates.DEFAULT);
-        q.from(survey)
-                .join(func, funcAlias).on(survey.name.like(funcAlias.getString("prop")).not());
-
-        assertEquals("from SURVEY SURVEY\n" +
-                "join table(TableValuedFunction(?)) as tokFunc\n" +
-                "on not (SURVEY.NAME like tokFunc.prop escape '\\')", q.toString());
-    }
-
     @SuppressWarnings("unchecked")
     @Test
     public void union1() {
-        Expression<?> q = SQLExpressions.union(SQLExpressions.select(survey.all()).from(survey),
-                SQLExpressions.select(survey.all()).from(survey));
+        Expression<?> q = R2DBCExpressions.union(R2DBCExpressions.select(survey.all()).from(survey),
+                R2DBCExpressions.select(survey.all()).from(survey));
 
         assertEquals("(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
                 "from SURVEY SURVEY)\n" +
@@ -168,8 +153,8 @@ public class SerializationTest {
     @SuppressWarnings("unchecked")
     @Test
     public void union1_groupBy() {
-        Expression<?> q = SQLExpressions.union(SQLExpressions.select(survey.all()).from(survey),
-                SQLExpressions.select(survey.all()).from(survey))
+        Expression<?> q = R2DBCExpressions.union(R2DBCExpressions.select(survey.all()).from(survey),
+                R2DBCExpressions.select(survey.all()).from(survey))
                 .groupBy(survey.id);
 
         assertEquals("(select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
@@ -185,8 +170,8 @@ public class SerializationTest {
     @Test
     public void union2() {
         Expression<?> q = new R2DBCQuery<Void>().union(survey,
-                SQLExpressions.select(survey.all()).from(survey),
-                SQLExpressions.select(survey.all()).from(survey));
+                R2DBCExpressions.select(survey.all()).from(survey),
+                R2DBCExpressions.select(survey.all()).from(survey));
 
         assertEquals("from ((select SURVEY.NAME, SURVEY.NAME2, SURVEY.ID\n" +
                 "from SURVEY SURVEY)\n" +
@@ -201,7 +186,7 @@ public class SerializationTest {
         QSurvey survey2 = new QSurvey("survey2");
         R2DBCQuery<?> q = new R2DBCQuery<Void>();
         q.with(survey, survey.id, survey.name).as(
-                SQLExpressions.select(survey2.id, survey2.name).from(survey2));
+                R2DBCExpressions.select(survey2.id, survey2.name).from(survey2));
 
         assertEquals("with SURVEY (ID, NAME) as (select survey2.ID, survey2.NAME\n" +
                 "from SURVEY survey2)\n\n" +
@@ -213,7 +198,7 @@ public class SerializationTest {
         QSurvey s = new QSurvey("s");
         R2DBCQuery<?> q = new R2DBCQuery<Void>();
         q.with(s, s.id, s.name).as(
-                SQLExpressions.select(survey.id, survey.name).from(survey))
+                R2DBCExpressions.select(survey.id, survey.name).from(survey))
                 .select(s.id, s.name, survey.id, survey.name).from(s, survey);
 
         assertEquals("with s (ID, NAME) as (select SURVEY.ID, SURVEY.NAME\n" +
@@ -228,7 +213,7 @@ public class SerializationTest {
         QSurvey survey2 = new QSurvey("survey2");
         R2DBCQuery<?> q = new R2DBCQuery<Void>();
         q.with(survey, survey.get(survey2.id), survey.get(survey2.name)).as(
-                SQLExpressions.select(survey2.id, survey2.name).from(survey2));
+                R2DBCExpressions.select(survey2.id, survey2.name).from(survey2));
 
         assertEquals("with SURVEY (ID, NAME) as (select survey2.ID, survey2.NAME\n" +
                 "from SURVEY survey2)\n\n" +
@@ -240,7 +225,7 @@ public class SerializationTest {
         QSurvey survey2 = new QSurvey("survey2");
         R2DBCQuery<?> q = new R2DBCQuery<Void>();
         q.with(survey, survey.id, survey.name).as(
-                SQLExpressions.select(survey2.id, survey2.name).from(survey2));
+                R2DBCExpressions.select(survey2.id, survey2.name).from(survey2));
 
         assertEquals("with SURVEY (ID, NAME) as (select survey2.ID, survey2.NAME\n" +
                 "from SURVEY survey2)\n\n" +
@@ -252,7 +237,7 @@ public class SerializationTest {
         QSurvey survey2 = new QSurvey("survey2");
         R2DBCQuery<?> q = new R2DBCQuery<Void>();
         q.with(survey, new Path<?>[]{survey.id}).as(
-                SQLExpressions.select(survey2.id).from(survey2));
+                R2DBCExpressions.select(survey2.id).from(survey2));
 
         assertEquals("with SURVEY (ID) as (select survey2.ID\n" +
                 "from SURVEY survey2)\n\n" +

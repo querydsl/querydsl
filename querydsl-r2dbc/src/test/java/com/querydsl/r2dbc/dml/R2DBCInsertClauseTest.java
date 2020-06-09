@@ -16,7 +16,7 @@ public class R2DBCInsertClauseTest {
         QEmployee emp1 = new QEmployee("emp1");
         R2DBCInsertClause insert = new R2DBCInsertClause(null, SQLTemplates.DEFAULT, emp1);
         insert.set(emp1.id, 1);
-        insert.execute();
+        insert.execute().block();
     }
 
     @Test

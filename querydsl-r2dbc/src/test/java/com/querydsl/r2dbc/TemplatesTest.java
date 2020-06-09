@@ -20,11 +20,8 @@ public class TemplatesTest extends TemplatesTestBase {
 
     @Test
     public void test() {
-        new DerbyTemplates();
         new H2Templates();
-        new HSQLDBTemplates();
         new MySQLTemplates();
-        new OracleTemplates();
         new PostgreSQLTemplates();
         new SQLTemplates("\"", '\\', false);
         new SQLServerTemplates();

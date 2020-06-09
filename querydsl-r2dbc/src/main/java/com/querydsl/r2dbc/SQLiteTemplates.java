@@ -16,6 +16,7 @@ package com.querydsl.r2dbc;
 import com.querydsl.core.types.Ops;
 import com.querydsl.r2dbc.types.BigDecimalAsDoubleType;
 import com.querydsl.r2dbc.types.BigIntegerAsLongType;
+import com.querydsl.sql.SQLOps;
 
 import java.sql.Types;
 import java.text.ParseException;

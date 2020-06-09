@@ -16,6 +16,7 @@ package com.querydsl.r2dbc;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.sql.SQLOps;
 import org.junit.Test;
 
 import java.sql.Date;
@@ -43,7 +44,7 @@ public class SQLTemplatesTest {
         Template template = TemplateFactory.DEFAULT.create("fetch first {0s} rows only");
         assertTrue(template.getElements().get(1) instanceof Template.AsString);
 
-        SQLSerializer serializer = new SQLSerializer(new Configuration(new DerbyTemplates()));
+        SQLSerializer serializer = new SQLSerializer(new Configuration(new H2Templates()));
         serializer.handle(Expressions.template(Object.class, template, ConstantImpl.create(5)));
         assertEquals("fetch first 5 rows only", serializer.toString());
     }
@@ -61,9 +62,9 @@ public class SQLTemplatesTest {
     public void asLiteral_jodaTime() {
         SQLTemplates templates = SQLTemplates.DEFAULT;
         Configuration conf = new Configuration(templates);
-        assertMatches(DATE, conf.asLiteral(LocalDate.of(0, 0, 0)));
-        assertMatches(TIME, conf.asLiteral(LocalTime.of(0, 0, 0)));
-        assertMatches(DATETIME, conf.asLiteral(LocalDateTime.of(0, 0, 0, 0, 0, 0)));
+        assertMatches(DATE, conf.asLiteral(LocalDate.of(0, 1, 1)));
+        assertMatches(TIME, conf.asLiteral(LocalTime.of(0, 1, 0)));
+        assertMatches(DATETIME, conf.asLiteral(LocalDateTime.of(0, 1, 1, 0, 0, 0)));
     }
 
     @Test

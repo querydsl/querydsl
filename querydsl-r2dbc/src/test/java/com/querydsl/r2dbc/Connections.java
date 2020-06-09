@@ -86,7 +86,7 @@ public final class Connections {
     }
 
     public static R2DBCConnectionProvider getH2() {
-        String url = "r2dbc:h2:sa@./target/h2-test;LOCK_MODE=0";
+        String url = "r2dbc:h2:mem:///h2-test;LOCK_MODE=0";
         return getR2DBCConnectionProvider(url);
     }
 
@@ -180,15 +180,16 @@ public final class Connections {
         SQLTemplates templates = new H2Templates();
         R2DBCConnectionProvider c = getH2();
         Connection connection = c.getConnection().block();
+        connHolder.set(connection);
 
         if (h2Inited) {
             return;
         }
 
         Flux<Void> setup = Flux.concat(
-                execute(connection, "DROP ALIAS IF EXISTS InitGeoDB").then(),
-                execute(connection, "CREATE ALIAS InitGeoDB for \"geodb.GeoDB.InitGeoDB\"").then(),
-                execute(connection, "CALL InitGeoDB()").then(),
+//                execute(connection, "DROP ALIAS IF EXISTS InitGeoDB").then(),
+//                execute(connection, "CREATE ALIAS InitGeoDB for \"geodb.GeoDB.InitGeoDB\"").then(),
+//                execute(connection, "CALL InitGeoDB()").then(),
                 dropTable(templates, "SHAPES").then(),
                 execute(connection, "create table SHAPES (ID int not null primary key, GEOMETRY blob)").then(),
                 execute(connection, "drop table QTEST if exists").then(),
@@ -239,6 +240,7 @@ public final class Connections {
 //        SQLTemplates templates = new MySQLTemplates();
         R2DBCConnectionProvider c = getMySQL();
         Connection connection = c.getConnection().block();
+        connHolder.set(connection);
 
         if (mysqlInited) {
             return;
@@ -299,6 +301,7 @@ public final class Connections {
         // NOTE : unquoted identifiers are converted to lower case in PostgreSQL
         R2DBCConnectionProvider c = getPostgreSQL();
         Connection connection = c.getConnection().block();
+        connHolder.set(connection);
 
         if (postgresqlInited) {
             return;
@@ -361,6 +364,7 @@ public final class Connections {
         SQLTemplates templates = new SQLServerTemplates();
         R2DBCConnectionProvider c = getSQLServer();
         Connection connection = c.getConnection().block();
+        connHolder.set(connection);
 
         if (sqlServerInited) {
             return;
@@ -414,13 +418,13 @@ public final class Connections {
         statement.bind(2, firstName);
         statement.bind(3, lastName);
         statement.bind(4, salary);
-        statement.bind(5, Constants.date);
-        statement.bind(6, Constants.time);
-//        if (superiorId <= 0) {
-//            statement.bindNull(7, Types.INTEGER);
-//        } else {
-        statement.bindNull(7, Integer.class);
-//        }
+        statement.bind(5, Constants.localDate);
+        statement.bind(6, Constants.localTime);
+        if (superiorId <= 0) {
+            statement.bindNull(7, Integer.class);
+        } else {
+            statement.bind(7, superiorId);
+        }
 
         return Mono.from(statement.execute()).then();
     }

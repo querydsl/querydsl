@@ -17,6 +17,7 @@ import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.r2dbc.domain.QSurvey;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 
 public final class Constants {
@@ -28,6 +29,10 @@ public final class Constants {
 
     public static final java.sql.Time time;
 
+    public static final LocalDate localDate;
+
+    public static final LocalTime localTime;
+
     public static final QEmployee employee = new QEmployee("e");
 
     public static final QEmployee employee2 = new QEmployee("e2");
@@ -37,13 +42,14 @@ public final class Constants {
     public static final QSurvey survey2 = new QSurvey("s2");
 
     static {
-        LocalDate localDate = LocalDate.of(2000, 2, 10);
+        localDate = LocalDate.of(2000, 2, 10);
         date = java.sql.Date.valueOf(localDate);
 
         Calendar cal = Calendar.getInstance();
         cal.set(1970, 0, 1, 3, 4);
         cal.set(Calendar.SECOND, 30);
         cal.set(Calendar.MILLISECOND, 0);
+        localTime = LocalTime.ofNanoOfDay(cal.getTimeInMillis());
         time = new java.sql.Time(cal.getTimeInMillis());
     }
 }

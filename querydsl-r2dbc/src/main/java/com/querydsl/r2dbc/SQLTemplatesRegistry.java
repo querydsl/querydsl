@@ -43,20 +43,10 @@ public class SQLTemplatesRegistry {
      */
     public SQLTemplates.Builder getBuilder(DatabaseMetaData md) throws SQLException {
         String name = md.getDatabaseProductName().toLowerCase();
-        if (name.equals("cubrid")) {
-            return CUBRIDTemplates.builder();
-        } else if (name.equals("apache derby")) {
-            return DerbyTemplates.builder();
-        } else if (name.startsWith("firebird")) {
-            return FirebirdTemplates.builder();
-        } else if (name.equals("h2")) {
+        if (name.equals("h2")) {
             return H2Templates.builder();
-        } else if (name.equals("hsql")) {
-            return HSQLDBTemplates.builder();
         } else if (name.equals("mysql")) {
             return MySQLTemplates.builder();
-        } else if (name.equals("oracle")) {
-            return OracleTemplates.builder();
         } else if (name.equals("postgresql")) {
             return PostgreSQLTemplates.builder();
         } else if (name.equals("sqlite")) {

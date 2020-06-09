@@ -26,7 +26,6 @@ import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.r2dbc.domain.QEmployeeNoPK;
 import com.querydsl.r2dbc.domain.QSurvey;
 import com.querydsl.sql.DatePart;
-import com.querydsl.sql.SQLExpressions;
 import io.r2dbc.spi.Connection;
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -36,7 +35,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
-import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -85,7 +83,7 @@ public class SQLSerializerTest {
         Path<Object> userPath = Expressions.path(Object.class, "user");
         NumberPath<Long> idPath = Expressions.numberPath(Long.class, userPath, "id");
         StringPath usernamePath = Expressions.stringPath(userPath, "username");
-        Expression<?> sq = select(idPath, usernamePath)
+        Expression<?> sq = R2DBCExpressions.select(idPath, usernamePath)
                 .from(userPath).where(idPath.eq(1L));
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
@@ -101,7 +99,7 @@ public class SQLSerializerTest {
         PathBuilder<Object> userPath = new PathBuilder<Object>(Object.class, "user");
         NumberPath<Long> idPath = userPath.getNumber("id", Long.class);
         StringPath usernamePath = userPath.getString("username");
-        Expression<?> sq = select(idPath, usernamePath)
+        Expression<?> sq = R2DBCExpressions.select(idPath, usernamePath)
                 .from(userPath).where(idPath.eq(1L));
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
@@ -200,7 +198,7 @@ public class SQLSerializerTest {
     public void some() {
         //select some((e.FIRSTNAME is not null)) from EMPLOYEE
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
-        serializer.handle(SQLExpressions.any(employee.firstname.isNotNull()));
+        serializer.handle(R2DBCExpressions.any(employee.firstname.isNotNull()));
         assertEquals("some(EMPLOYEE.FIRSTNAME is not null)", serializer.toString());
     }
 
@@ -224,27 +222,11 @@ public class SQLSerializerTest {
     @Test
     public void join_to_function_with_alias() {
         R2DBCQuery<?> query = query();
-        query.from(survey).join(SQLExpressions.relationalFunctionCall(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
+        query.from(survey).join(R2DBCExpressions.relationalFunctionCall(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin functionCall() as fc\nwhere SURVEY.NAME is not null", query.toString());
     }
 
-    @Test
-    public void join_to_function_in_derby() {
-        R2DBCQuery<?> query = new R2DBCQuery<Void>(DerbyTemplates.DEFAULT);
-        query.from(survey).join(SQLExpressions.relationalFunctionCall(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
-        query.where(survey.name.isNotNull());
-        assertEquals("from SURVEY SURVEY\njoin table(functionCall()) as fc\nwhere SURVEY.NAME is not null", query.toString());
-    }
-
-    @Test
-    public void crossJoin() {
-        SQLTemplates templates = new DerbyTemplates();
-        templates.setCrossJoin(" cross join ");
-        R2DBCQuery<?> query = new R2DBCQuery<Void>(templates);
-        query.from(survey, employee);
-        assertEquals("from SURVEY SURVEY cross join EMPLOYEE EMPLOYEE", query.toString());
-    }
 
     @Test
     public void keyword_after_dot() {
@@ -263,51 +245,19 @@ public class SQLSerializerTest {
     }
 
     @Test
-    public void override() {
-        Configuration conf = new Configuration(new DerbyTemplates());
-        conf.registerTableOverride("SURVEY", "surveys");
-
-        R2DBCQuery<?> query = new R2DBCQuery<Void>(conf);
-        query.from(survey);
-        assertEquals("from surveys SURVEY", query.toString());
-    }
-
-    @Test
-    public void columnOverrides() {
-        Configuration conf = new Configuration(new DerbyTemplates());
-        conf.registerColumnOverride("SURVEY", "NAME", "LABEL");
-
-        R2DBCQuery<?> query = new R2DBCQuery<Void>(conf);
-        query.from(survey).where(survey.name.isNull());
-        assertEquals("from SURVEY SURVEY\n" +
-                "where SURVEY.LABEL is null", query.toString());
-    }
-
-    @Test
-    public void columnOverrides2() {
-        Configuration conf = new Configuration(new DerbyTemplates());
-        conf.registerColumnOverride("PUBLIC", "SURVEY", "NAME", "LABEL");
-
-        R2DBCQuery<?> query = new R2DBCQuery<Void>(conf);
-        query.from(survey).where(survey.name.isNull());
-        assertEquals("from SURVEY SURVEY\n" +
-                "where SURVEY.LABEL is null", query.toString());
-    }
-
-    @Test
     public void complex_subQuery() {
         // create sub queries
         List<SubQueryExpression<Tuple>> sq = new ArrayList<SubQueryExpression<Tuple>>();
         String[] strs = new String[]{"a", "b", "c"};
         for (String str : strs) {
             Expression<Boolean> alias = Expressions.cases().when(survey.name.eq(str)).then(true).otherwise(false);
-            sq.add(select(survey.name, alias).from(survey).distinct());
+            sq.add(R2DBCExpressions.select(survey.name, alias).from(survey).distinct());
         }
 
         // master query
         PathBuilder<Tuple> subAlias = new PathBuilder<Tuple>(Tuple.class, "sub");
-        SubQueryExpression<?> master = SQLExpressions.selectOne()
-                .from(SQLExpressions.union(sq).as(subAlias))
+        SubQueryExpression<?> master = R2DBCExpressions.selectOne()
+                .from(R2DBCExpressions.union(sq).as(subAlias))
                 .groupBy(subAlias.get("prop1"));
 
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
@@ -331,7 +281,7 @@ public class SQLSerializerTest {
 
     @Test
     public void list_in_query() {
-        Expression<?> expr = Expressions.list(survey.id, survey.name).in(select(survey.id, survey.name).from(survey));
+        Expression<?> expr = Expressions.list(survey.id, survey.name).in(R2DBCExpressions.select(survey.id, survey.name).from(survey));
 
         String str = new SQLSerializer(Configuration.DEFAULT).handle(expr).toString();
         assertEquals("(SURVEY.ID, SURVEY.NAME) in (select SURVEY.ID, SURVEY.NAME\nfrom SURVEY SURVEY)", str);
@@ -351,9 +301,9 @@ public class SQLSerializerTest {
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
         R2DBCQuery<?> query = new R2DBCQuery<Void>(SQLTemplates.DEFAULT);
         query.withRecursive(sub,
-                SQLExpressions.unionAll(
-                        select(e.id, e.firstname, e.superiorId).from(e).where(e.firstname.eq("Mike")),
-                        select(e.id, e.firstname, e.superiorId).from(e, sub).where(e.superiorId.eq(sub.get(e.id)))))
+                R2DBCExpressions.unionAll(
+                        R2DBCExpressions.select(e.id, e.firstname, e.superiorId).from(e).where(e.firstname.eq("Mike")),
+                        R2DBCExpressions.select(e.id, e.firstname, e.superiorId).from(e, sub).where(e.superiorId.eq(sub.get(e.id)))))
                 .from(sub);
 
         QueryMetadata md = query.getMetadata();
@@ -386,9 +336,9 @@ public class SQLSerializerTest {
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
         R2DBCQuery<?> query = new R2DBCQuery<Void>(SQLTemplates.DEFAULT);
         query.withRecursive(sub, sub.get(e.id), sub.get(e.firstname), sub.get(e.superiorId)).as(
-                SQLExpressions.unionAll(
-                        select(e.id, e.firstname, e.superiorId).from(e).where(e.firstname.eq("Mike")),
-                        select(e.id, e.firstname, e.superiorId).from(e, sub).where(e.superiorId.eq(sub.get(e.id)))))
+                R2DBCExpressions.unionAll(
+                        R2DBCExpressions.select(e.id, e.firstname, e.superiorId).from(e).where(e.firstname.eq("Mike")),
+                        R2DBCExpressions.select(e.id, e.firstname, e.superiorId).from(e, sub).where(e.superiorId.eq(sub.get(e.id)))))
                 .from(sub);
 
         QueryMetadata md = query.getMetadata();
@@ -413,7 +363,7 @@ public class SQLSerializerTest {
         serializer.setUseLiterals(true);
 
         int offset = TimeZone.getDefault().getRawOffset();
-        Expression<?> expr = SQLExpressions.datediff(DatePart.year, employee.datefield, new java.sql.Date(-offset));
+        Expression<?> expr = R2DBCExpressions.datediff(DatePart.year, employee.datefield, new java.sql.Date(-offset));
         serializer.handle(expr);
         assertEquals("datediff('year',EMPLOYEE.DATEFIELD,(date '1970-01-01'))", serializer.toString());
     }
@@ -421,7 +371,7 @@ public class SQLSerializerTest {
     @Test
     public void select_normalization() {
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
-        serializer.visit(select(
+        serializer.visit(R2DBCExpressions.select(
                 Expressions.stringPath("id"), Expressions.stringPath("ID")), null);
         assertEquals("(select id, ID as col__ID1\n" +
                 "from dual)", serializer.toString());
@@ -438,18 +388,6 @@ public class SQLSerializerTest {
 
         assertEquals("delete from PUBLIC.EMPLOYEE\n" +
                 "where EMPLOYEE.ID > ?", delete.toString());
-    }
-
-    @Test
-    public void schemaInWhere() {
-        Configuration derbyWithPrintSchema = new Configuration(DerbyTemplates.builder().printSchema().build());
-
-        QEmployee e = QEmployee.employee;
-        R2DBCDeleteClause delete = new R2DBCDeleteClause(EasyMock.createNiceMock(Connection.class), derbyWithPrintSchema, e);
-        delete.where(e.id.gt(100));
-
-        assertEquals("delete from \"PUBLIC\".EMPLOYEE\n" +
-                "where \"PUBLIC\".EMPLOYEE.ID > ?", delete.toString());
     }
 
     private R2DBCQuery<?> query() {

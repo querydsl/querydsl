@@ -70,6 +70,12 @@
             <version>2.9.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>io.projectreactor</groupId>

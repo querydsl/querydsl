@@ -290,7 +290,7 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
 
     protected <T> Flux<T> executeStatementWithKeys(Statement stmt, Class<T> type, @Nullable Path<T> path) {
         return Flux.from(stmt.execute())
-                .flatMap(result -> Mono.from(configuration.get(result, path, 1, type)));
+                .flatMap(result -> configuration.get(result, path, 1, type));
     }
 
     private Mono<Long> executeStatement(Statement stmt) {

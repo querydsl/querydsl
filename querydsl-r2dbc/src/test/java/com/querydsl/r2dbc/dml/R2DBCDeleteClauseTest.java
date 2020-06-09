@@ -16,7 +16,7 @@ public class R2DBCDeleteClauseTest {
         QEmployee emp1 = new QEmployee("emp1");
         R2DBCDeleteClause delete = new R2DBCDeleteClause(null, SQLTemplates.DEFAULT, emp1);
         delete.where(emp1.id.eq(1));
-        delete.execute();
+        delete.execute().block();
     }
 
     @Test(expected = IllegalArgumentException.class)

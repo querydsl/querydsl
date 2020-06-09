@@ -14,10 +14,10 @@
 package com.querydsl.r2dbc.mysql;
 
 import com.querydsl.r2dbc.R2DBCConnectionProvider;
+import com.querydsl.r2dbc.R2DBCExpressions;
 import com.querydsl.r2dbc.SQLTemplates;
 import com.querydsl.r2dbc.dml.R2DBCInsertClause;
 import com.querydsl.r2dbc.domain.QSurvey;
-import com.querydsl.sql.SQLExpressions;
 import io.r2dbc.spi.Connection;
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -78,8 +78,8 @@ public class R2DBCMySQLQueryFactoryTest {
     @Test
     public void insertOnDuplicateKeyUpdate_multiple() {
         R2DBCInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
-                SQLExpressions.set(QSurvey.survey.id, 2),
-                SQLExpressions.set(QSurvey.survey.name, "B"));
+                R2DBCExpressions.set(QSurvey.survey.id, 2),
+                R2DBCExpressions.set(QSurvey.survey.name, "B"));
         assertEquals("insert into SURVEY\n" +
                 "values () on duplicate key update SURVEY.ID = ?, SURVEY.NAME = ?", clause.toString());
     }
@@ -87,7 +87,7 @@ public class R2DBCMySQLQueryFactoryTest {
     @Test
     public void insertOnDuplicateKeyUpdate_values() {
         R2DBCInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
-                SQLExpressions.set(QSurvey.survey.name, QSurvey.survey.name));
+                R2DBCExpressions.set(QSurvey.survey.name, QSurvey.survey.name));
         assertEquals("insert into SURVEY\n" +
                 "values () on duplicate key update SURVEY.NAME = values(SURVEY.NAME)", clause.toString());
     }
@@ -95,7 +95,7 @@ public class R2DBCMySQLQueryFactoryTest {
     @Test
     public void insertOnDuplicateKeyUpdate_null() {
         R2DBCInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
-                SQLExpressions.set(QSurvey.survey.name, (String) null));
+                R2DBCExpressions.set(QSurvey.survey.name, (String) null));
         assertEquals("insert into SURVEY\n" +
                 "values () on duplicate key update SURVEY.NAME = null", clause.toString());
     }

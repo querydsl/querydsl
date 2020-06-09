@@ -27,7 +27,6 @@ import com.querydsl.r2dbc.dml.Mapper;
 import com.querydsl.r2dbc.dml.R2DBCInsertClause;
 import com.querydsl.r2dbc.domain.*;
 import com.querydsl.sql.ColumnMetadata;
-import com.querydsl.sql.SQLExpressions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -96,7 +95,7 @@ public class InsertBase extends AbstractBaseTest {
         QEmployee emp2 = new QEmployee("emp2");
         R2DBCInsertClause insert = insert(survey);
         insert.columns(survey.id, survey.name);
-        insert.select(SQLExpressions.select(survey.id, emp2.firstname).from(survey)
+        insert.select(R2DBCExpressions.select(survey.id, emp2.firstname).from(survey)
                 .innerJoin(emp1)
                 .on(survey.id.eq(emp1.id))
                 .innerJoin(emp2)

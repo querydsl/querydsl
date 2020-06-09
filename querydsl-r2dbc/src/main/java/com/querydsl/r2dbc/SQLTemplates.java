@@ -24,6 +24,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.r2dbc.dml.R2DBCInsertBatch;
 import com.querydsl.r2dbc.types.Type;
 import com.querydsl.sql.RelationalPath;
+import com.querydsl.sql.SQLOps;
 import com.querydsl.sql.SchemaAndTable;
 
 import java.lang.reflect.Field;

@@ -28,7 +28,7 @@ public class DropTableClause {
 
     @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     public Mono<Void> execute() {
-        Statement statement = connection.createStatement("DROP TABLE " + table);
+        Statement statement = connection.createStatement("DROP TABLE IF EXISTS " + table);
         return Mono.from(statement.execute()).then();
     }
 

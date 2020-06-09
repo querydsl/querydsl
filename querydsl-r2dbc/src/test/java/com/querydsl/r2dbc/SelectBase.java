@@ -236,13 +236,13 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DB2, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void boolean_all() {
-        assertTrue(query().from(employee).select(SQLExpressions.all(employee.firstname.isNotNull())).fetchOne().block());
+        assertTrue(query().from(employee).select(R2DBCExpressions.all(employee.firstname.isNotNull())).fetchOne().block());
     }
 
     @Test
     @ExcludeIn({ORACLE, CUBRID, FIREBIRD, DB2, DERBY, SQLSERVER, SQLITE, TERADATA})
     public void boolean_any() {
-        assertTrue(query().from(employee).select(SQLExpressions.any(employee.firstname.isNotNull())).fetchOne().block());
+        assertTrue(query().from(employee).select(R2DBCExpressions.any(employee.firstname.isNotNull())).fetchOne().block());
     }
 
     @Test
@@ -513,9 +513,9 @@ public class SelectBase extends AbstractBaseTest {
     public void date_add() {
         R2DBCQuery<?> query = query().from(employee);
         Date date1 = query.select(employee.datefield).fetchFirst().block();
-        Date date2 = query.select(SQLExpressions.addYears(employee.datefield, 1)).fetchFirst().block();
-        Date date3 = query.select(SQLExpressions.addMonths(employee.datefield, 1)).fetchFirst().block();
-        Date date4 = query.select(SQLExpressions.addDays(employee.datefield, 1)).fetchFirst().block();
+        Date date2 = query.select(R2DBCExpressions.addYears(employee.datefield, 1)).fetchFirst().block();
+        Date date3 = query.select(R2DBCExpressions.addMonths(employee.datefield, 1)).fetchFirst().block();
+        Date date4 = query.select(R2DBCExpressions.addDays(employee.datefield, 1)).fetchFirst().block();
 
         assertTrue(date2.getTime() > date1.getTime());
         assertTrue(date3.getTime() > date1.getTime());
@@ -528,12 +528,12 @@ public class SelectBase extends AbstractBaseTest {
         List<Expression<?>> exprs = Lists.newArrayList();
         DateTimeExpression<java.util.Date> dt = Expressions.currentTimestamp();
 
-        add(exprs, SQLExpressions.addYears(dt, 1));
-        add(exprs, SQLExpressions.addMonths(dt, 1), ORACLE);
-        add(exprs, SQLExpressions.addDays(dt, 1));
-        add(exprs, SQLExpressions.addHours(dt, 1), TERADATA);
-        add(exprs, SQLExpressions.addMinutes(dt, 1), TERADATA);
-        add(exprs, SQLExpressions.addSeconds(dt, 1), TERADATA);
+        add(exprs, R2DBCExpressions.addYears(dt, 1));
+        add(exprs, R2DBCExpressions.addMonths(dt, 1), ORACLE);
+        add(exprs, R2DBCExpressions.addDays(dt, 1));
+        add(exprs, R2DBCExpressions.addHours(dt, 1), TERADATA);
+        add(exprs, R2DBCExpressions.addMinutes(dt, 1), TERADATA);
+        add(exprs, R2DBCExpressions.addSeconds(dt, 1), TERADATA);
 
         for (Expression<?> expr : exprs) {
             assertNotNull(firstResult(expr));
@@ -561,15 +561,15 @@ public class SelectBase extends AbstractBaseTest {
         Date date = new Date(localDate.atStartOfDay().getNano());
 
         for (DatePart dp : dps) {
-            int diff1 = query.select(SQLExpressions.datediff(dp, date, employee.datefield)).fetchFirst().block();
-            int diff2 = query.select(SQLExpressions.datediff(dp, employee.datefield, date)).fetchFirst().block();
-            int diff3 = query2.select(SQLExpressions.datediff(dp, employee.datefield, employee2.datefield)).fetchFirst().block();
+            int diff1 = query.select(R2DBCExpressions.datediff(dp, date, employee.datefield)).fetchFirst().block();
+            int diff2 = query.select(R2DBCExpressions.datediff(dp, employee.datefield, date)).fetchFirst().block();
+            int diff3 = query2.select(R2DBCExpressions.datediff(dp, employee.datefield, employee2.datefield)).fetchFirst().block();
             assertEquals(diff1, -diff2);
         }
 
         Timestamp timestamp = new Timestamp(new java.util.Date().getTime());
         for (DatePart dp : dps) {
-            query.select(SQLExpressions.datediff(dp, Expressions.currentTimestamp(), timestamp)).fetchOne().block();
+            query.select(R2DBCExpressions.datediff(dp, Expressions.currentTimestamp(), timestamp)).fetchOne().block();
         }
     }
 
@@ -583,13 +583,13 @@ public class SelectBase extends AbstractBaseTest {
         LocalDate localDate = LocalDate.of(1970, 1, 10);
         Date date = new Date(localDate.atStartOfDay().getNano());
 
-        int years = query.select(SQLExpressions.datediff(DatePart.year, date, employee.datefield)).fetchFirst().block();
-        int months = query.select(SQLExpressions.datediff(DatePart.month, date, employee.datefield)).fetchFirst().block();
+        int years = query.select(R2DBCExpressions.datediff(DatePart.year, date, employee.datefield)).fetchFirst().block();
+        int months = query.select(R2DBCExpressions.datediff(DatePart.month, date, employee.datefield)).fetchFirst().block();
         // weeks
-        int days = query.select(SQLExpressions.datediff(DatePart.day, date, employee.datefield)).fetchFirst().block();
-        int hours = query.select(SQLExpressions.datediff(DatePart.hour, date, employee.datefield)).fetchFirst().block();
-        int minutes = query.select(SQLExpressions.datediff(DatePart.minute, date, employee.datefield)).fetchFirst().block();
-        int seconds = query.select(SQLExpressions.datediff(DatePart.second, date, employee.datefield)).fetchFirst().block();
+        int days = query.select(R2DBCExpressions.datediff(DatePart.day, date, employee.datefield)).fetchFirst().block();
+        int hours = query.select(R2DBCExpressions.datediff(DatePart.hour, date, employee.datefield)).fetchFirst().block();
+        int minutes = query.select(R2DBCExpressions.datediff(DatePart.minute, date, employee.datefield)).fetchFirst().block();
+        int seconds = query.select(R2DBCExpressions.datediff(DatePart.second, date, employee.datefield)).fetchFirst().block();
 
         assertEquals(949363200, seconds);
         assertEquals(15822720, minutes);
@@ -614,7 +614,7 @@ public class SelectBase extends AbstractBaseTest {
         add(dps, DatePart.second);
 
         for (DatePart dp : dps) {
-            firstResult(SQLExpressions.datetrunc(dp, expr));
+            firstResult(R2DBCExpressions.datetrunc(dp, expr));
         }
     }
 
@@ -625,19 +625,19 @@ public class SelectBase extends AbstractBaseTest {
 
         Tuple tuple = firstResult(
                 expr,
-                SQLExpressions.datetrunc(DatePart.year, expr),
-                SQLExpressions.datetrunc(DatePart.month, expr),
-                SQLExpressions.datetrunc(DatePart.day, expr),
-                SQLExpressions.datetrunc(DatePart.hour, expr),
-                SQLExpressions.datetrunc(DatePart.minute, expr),
-                SQLExpressions.datetrunc(DatePart.second, expr));
+                R2DBCExpressions.datetrunc(DatePart.year, expr),
+                R2DBCExpressions.datetrunc(DatePart.month, expr),
+                R2DBCExpressions.datetrunc(DatePart.day, expr),
+                R2DBCExpressions.datetrunc(DatePart.hour, expr),
+                R2DBCExpressions.datetrunc(DatePart.minute, expr),
+                R2DBCExpressions.datetrunc(DatePart.second, expr));
         LocalDateTime date = tuple.get(expr);
-        LocalDateTime toYear = tuple.get(SQLExpressions.datetrunc(DatePart.year, expr));
-        LocalDateTime toMonth = tuple.get(SQLExpressions.datetrunc(DatePart.month, expr));
-        LocalDateTime toDay = tuple.get(SQLExpressions.datetrunc(DatePart.day, expr));
-        LocalDateTime toHour = tuple.get(SQLExpressions.datetrunc(DatePart.hour, expr));
-        LocalDateTime toMinute = tuple.get(SQLExpressions.datetrunc(DatePart.minute, expr));
-        LocalDateTime toSecond = tuple.get(SQLExpressions.datetrunc(DatePart.second, expr));
+        LocalDateTime toYear = tuple.get(R2DBCExpressions.datetrunc(DatePart.year, expr));
+        LocalDateTime toMonth = tuple.get(R2DBCExpressions.datetrunc(DatePart.month, expr));
+        LocalDateTime toDay = tuple.get(R2DBCExpressions.datetrunc(DatePart.day, expr));
+        LocalDateTime toHour = tuple.get(R2DBCExpressions.datetrunc(DatePart.hour, expr));
+        LocalDateTime toMinute = tuple.get(R2DBCExpressions.datetrunc(DatePart.minute, expr));
+        LocalDateTime toSecond = tuple.get(R2DBCExpressions.datetrunc(DatePart.second, expr));
 
         // year
         assertEquals(date.getYear(), toYear.getYear());
@@ -699,7 +699,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void dateTime_to_date() {
-        firstResult(SQLExpressions.date(DateTimeExpression.currentTimestamp()));
+        firstResult(R2DBCExpressions.date(DateTimeExpression.currentTimestamp()));
     }
 
     private double degrees(double x) {
@@ -1649,28 +1649,28 @@ public class SelectBase extends AbstractBaseTest {
     @ExcludeIn(SQLITE)
     public void string_left() {
         assertEquals("John", query().from(employee).where(employee.lastname.eq("Johnson"))
-                .select(SQLExpressions.left(employee.lastname, 4)).fetchFirst().block());
+                .select(R2DBCExpressions.left(employee.lastname, 4)).fetchFirst().block());
     }
 
     @Test
     @ExcludeIn({DERBY, SQLITE})
     public void string_right() {
         assertEquals("son", query().from(employee).where(employee.lastname.eq("Johnson"))
-                .select(SQLExpressions.right(employee.lastname, 3)).fetchFirst().block());
+                .select(R2DBCExpressions.right(employee.lastname, 3)).fetchFirst().block());
     }
 
     @Test
     @ExcludeIn({DERBY, SQLITE})
     public void string_left_Right() {
         assertEquals("hn", query().from(employee).where(employee.lastname.eq("Johnson"))
-                .select(SQLExpressions.right(SQLExpressions.left(employee.lastname, 4), 2)).fetchFirst().block());
+                .select(R2DBCExpressions.right(R2DBCExpressions.left(employee.lastname, 4), 2)).fetchFirst().block());
     }
 
     @Test
     @ExcludeIn({DERBY, SQLITE})
     public void string_right_Left() {
         assertEquals("ns", query().from(employee).where(employee.lastname.eq("Johnson"))
-                .select(SQLExpressions.left(SQLExpressions.right(employee.lastname, 4), 2)).fetchFirst().block());
+                .select(R2DBCExpressions.left(R2DBCExpressions.right(employee.lastname, 4), 2)).fetchFirst().block());
     }
 
     @Test
@@ -1940,11 +1940,11 @@ public class SelectBase extends AbstractBaseTest {
         NumberPath<Integer> path = survey.id;
 
         // two args
-        add(exprs, SQLExpressions.cumeDist(2, 3));
-        add(exprs, SQLExpressions.denseRank(4, 5));
-        add(exprs, SQLExpressions.listagg(path, ","));
-        add(exprs, SQLExpressions.percentRank(6, 7));
-        add(exprs, SQLExpressions.rank(8, 9));
+        add(exprs, R2DBCExpressions.cumeDist(2, 3));
+        add(exprs, R2DBCExpressions.denseRank(4, 5));
+        add(exprs, R2DBCExpressions.listagg(path, ","));
+        add(exprs, R2DBCExpressions.percentRank(6, 7));
+        add(exprs, R2DBCExpressions.rank(8, 9));
 
         for (WithinGroup<?> wg : exprs) {
             query().from(survey).select(wg.withinGroup().orderBy(survey.id, survey.id)).fetch().collectList().block();
@@ -1953,8 +1953,8 @@ public class SelectBase extends AbstractBaseTest {
 
         // one arg
         exprs.clear();
-        add(exprs, SQLExpressions.percentileCont(0.1));
-        add(exprs, SQLExpressions.percentileDisc(0.9));
+        add(exprs, R2DBCExpressions.percentileCont(0.1));
+        add(exprs, R2DBCExpressions.percentileDisc(0.9));
 
         for (WithinGroup<?> wg : exprs) {
             query().from(survey).select(wg.withinGroup().orderBy(survey.id)).fetch().collectList().block();
@@ -1993,7 +1993,7 @@ public class SelectBase extends AbstractBaseTest {
         }
         assertEquals(
                 expected,
-                query().select(SQLExpressions.groupConcat(employee.firstname))
+                query().select(R2DBCExpressions.groupConcat(employee.firstname))
                         .from(employee)
                         .groupBy(employee.superiorId).fetch().collectList().block());
     }
@@ -2007,7 +2007,7 @@ public class SelectBase extends AbstractBaseTest {
         }
         assertEquals(
                 expected,
-                query().select(SQLExpressions.groupConcat(employee.firstname, "-"))
+                query().select(R2DBCExpressions.groupConcat(employee.firstname, "-"))
                         .from(employee)
                         .groupBy(employee.superiorId).fetch().collectList().block());
     }

@@ -17,7 +17,6 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.r2dbc.domain.QSurvey;
-import com.querydsl.sql.SQLExpressions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,9 +62,9 @@ public abstract class AbstractSQLTemplatesTest {
         NumberExpression<Integer> three = Expressions.THREE;
         Path<Integer> col1 = Expressions.path(Integer.class, "col1");
         Union union = query.union(
-                SQLExpressions.select(one.as(col1)),
-                SQLExpressions.select(two),
-                SQLExpressions.select(three));
+                R2DBCExpressions.select(one.as(col1)),
+                R2DBCExpressions.select(two),
+                R2DBCExpressions.select(three));
 
         if (templates.getDummyTable() == null) {
             if (templates.isUnionsWrapped()) {

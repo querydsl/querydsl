@@ -34,8 +34,12 @@ public class CharacterType extends AbstractType<Character> {
 
     @Override
     public Character getValue(Row row, int startIndex) {
-        String val = row.get(startIndex, String.class);
-        return val == null ? null : val.charAt(0);
+        Object val = row.get(startIndex);
+        if (val instanceof Character) {
+            return (Character) val;
+        }
+
+        return val == null ? null : ((String) val).charAt(0);
     }
 
     @Override

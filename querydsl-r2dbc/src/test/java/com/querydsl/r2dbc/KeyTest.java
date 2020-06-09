@@ -15,7 +15,10 @@ package com.querydsl.r2dbc;
 
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.sql.*;
+import com.querydsl.sql.ColumnMetadata;
+import com.querydsl.sql.ForeignKey;
+import com.querydsl.sql.PrimaryKey;
+import com.querydsl.sql.RelationalPathBase;
 import org.junit.Test;
 
 @SuppressWarnings("serial")
@@ -98,10 +101,10 @@ public class KeyTest {
         QCompany company = new QCompany("company");
 
         // superiorId -> id
-        SQLExpressions.selectOne().from(user).innerJoin(user.superiorIdKey, user2);
+        R2DBCExpressions.selectOne().from(user).innerJoin(user.superiorIdKey, user2);
 
         // department -> id / company -> id
-        SQLExpressions.selectOne().from(user)
+        R2DBCExpressions.selectOne().from(user)
                 .innerJoin(user.departmentKey, department)
                 .innerJoin(department.companyKey, company);
     }

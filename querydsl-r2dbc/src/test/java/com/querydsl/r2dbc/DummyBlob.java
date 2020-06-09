@@ -13,76 +13,21 @@
  */
 package com.querydsl.r2dbc;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.sql.Blob;
+import io.r2dbc.spi.Blob;
+import org.reactivestreams.Publisher;
+
+import java.nio.ByteBuffer;
 
 public class DummyBlob implements Blob {
 
-    @Override
-    public void free() {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
-    public InputStream getBinaryStream() {
-        // TODO Auto-generated method stub
+    public Publisher<ByteBuffer> stream() {
         return null;
     }
 
     @Override
-    public InputStream getBinaryStream(long pos, long length) {
-        // TODO Auto-generated method stub
+    public Publisher<Void> discard() {
         return null;
     }
-
-    @Override
-    public byte[] getBytes(long pos, int length) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public long length() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public long position(byte[] pattern, long start) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public long position(Blob pattern, long start) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public OutputStream setBinaryStream(long pos) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public int setBytes(long pos, byte[] bytes) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int setBytes(long pos, byte[] bytes, int offset, int len) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public void truncate(long len) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

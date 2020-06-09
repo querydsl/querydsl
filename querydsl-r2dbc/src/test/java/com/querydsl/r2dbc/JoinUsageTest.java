@@ -14,7 +14,6 @@
 package com.querydsl.r2dbc;
 
 import com.querydsl.r2dbc.domain.QSurvey;
-import com.querydsl.sql.SQLExpressions;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class JoinUsageTest {
     @Ignore
     public void join_already_declared() {
         QSurvey survey = QSurvey.survey;
-        SQLExpressions.selectFrom(survey).fullJoin(survey);
+        R2DBCExpressions.selectFrom(survey).fullJoin(survey);
     }
 
 }

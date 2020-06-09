@@ -26,21 +26,21 @@ import reactor.core.publisher.Mono;
 /**
  * @author tiwe
  */
-public class ExtendedSQLQuery<T> extends AbstractR2DBCQuery<T, ExtendedSQLQuery<T>> {
+public class ExtendedR2DBCQuery<T> extends AbstractR2DBCQuery<T, ExtendedR2DBCQuery<T>> {
 
-    public ExtendedSQLQuery(SQLTemplates templates) {
+    public ExtendedR2DBCQuery(SQLTemplates templates) {
         super((Connection) null, new Configuration(templates), new DefaultQueryMetadata());
     }
 
-    public ExtendedSQLQuery(Connection conn, SQLTemplates templates) {
+    public ExtendedR2DBCQuery(Connection conn, SQLTemplates templates) {
         super(conn, new Configuration(templates), new DefaultQueryMetadata());
     }
 
-    public ExtendedSQLQuery(Connection conn, Configuration configuration) {
+    public ExtendedR2DBCQuery(Connection conn, Configuration configuration) {
         super(conn, configuration, new DefaultQueryMetadata());
     }
 
-    public ExtendedSQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
+    public ExtendedR2DBCQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
     }
 
@@ -57,25 +57,25 @@ public class ExtendedSQLQuery<T> extends AbstractR2DBCQuery<T, ExtendedSQLQuery<
     }
 
     @Override
-    public ExtendedSQLQuery<T> clone(Connection connection) {
-        ExtendedSQLQuery<T> query = new ExtendedSQLQuery<T>(connection, getConfiguration(), getMetadata().clone());
+    public ExtendedR2DBCQuery<T> clone(Connection connection) {
+        ExtendedR2DBCQuery<T> query = new ExtendedR2DBCQuery<T>(connection, getConfiguration(), getMetadata().clone());
         query.clone(this);
         return query;
     }
 
     @Override
-    public <U> ExtendedSQLQuery<U> select(Expression<U> expr) {
+    public <U> ExtendedR2DBCQuery<U> select(Expression<U> expr) {
         queryMixin.setProjection(expr);
         @SuppressWarnings("unchecked") // This is the new type
-                ExtendedSQLQuery<U> newType = (ExtendedSQLQuery<U>) this;
+                ExtendedR2DBCQuery<U> newType = (ExtendedR2DBCQuery<U>) this;
         return newType;
     }
 
     @Override
-    public ExtendedSQLQuery<Tuple> select(Expression<?>... exprs) {
+    public ExtendedR2DBCQuery<Tuple> select(Expression<?>... exprs) {
         queryMixin.setProjection(exprs);
         @SuppressWarnings("unchecked") // This is the new type
-                ExtendedSQLQuery<Tuple> newType = (ExtendedSQLQuery<Tuple>) this;
+                ExtendedR2DBCQuery<Tuple> newType = (ExtendedR2DBCQuery<Tuple>) this;
         return newType;
     }
 

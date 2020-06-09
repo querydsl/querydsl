@@ -2,9 +2,9 @@ package com.querydsl.r2dbc.dml;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.r2dbc.KeyAccessorsTest.QEmployee;
+import com.querydsl.r2dbc.R2DBCExpressions;
 import com.querydsl.r2dbc.SQLTemplates;
 import com.querydsl.sql.SQLBindings;
-import com.querydsl.sql.SQLExpressions;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +36,7 @@ public class R2DBCUpdateClauseTest {
         QEmployee emp2 = new QEmployee("emp2");
         R2DBCUpdateClause update = new R2DBCUpdateClause(null, SQLTemplates.DEFAULT, emp1);
         update.set(emp1.id, 1)
-                .where(emp1.id.eq(SQLExpressions.select(emp2.id).from(emp2)
+                .where(emp1.id.eq(R2DBCExpressions.select(emp2.id).from(emp2)
                         .where(emp2.superiorId.isNotNull())));
 
         SQLBindings sql = update.getSQL().get(0);
@@ -52,7 +52,7 @@ public class R2DBCUpdateClauseTest {
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");
         R2DBCUpdateClause update = new R2DBCUpdateClause(null, SQLTemplates.DEFAULT, emp1);
-        update.set(emp1.id, SQLExpressions.select(emp2.id).from(emp2)
+        update.set(emp1.id, R2DBCExpressions.select(emp2.id).from(emp2)
                 .where(emp2.superiorId.isNotNull()));
 
         SQLBindings sql = update.getSQL().get(0);
@@ -67,7 +67,7 @@ public class R2DBCUpdateClauseTest {
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");
         R2DBCUpdateClause update = new R2DBCUpdateClause(null, SQLTemplates.DEFAULT, emp1);
-        update.set(emp1.superiorId, SQLExpressions.select(emp2.id).from(emp2)
+        update.set(emp1.superiorId, R2DBCExpressions.select(emp2.id).from(emp2)
                 .where(emp2.id.eq(emp1.id)));
 
         SQLBindings sql = update.getSQL().get(0);

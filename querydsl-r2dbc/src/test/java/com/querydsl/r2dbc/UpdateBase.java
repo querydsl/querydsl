@@ -22,7 +22,6 @@ import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.r2dbc.dml.R2DBCUpdateClause;
 import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.r2dbc.domain.QSurvey;
-import com.querydsl.sql.SQLExpressions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -164,7 +163,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
         R2DBCUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
-        update.where(SQLExpressions.selectOne().from(employee).where(survey1.id.eq(employee.id)).exists());
+        update.where(R2DBCExpressions.selectOne().from(employee).where(survey1.id.eq(employee.id)).exists());
         assertEquals(1, update.execute());
     }
 
@@ -189,7 +188,7 @@ public class UpdateBase extends AbstractBaseTest {
         QEmployee employee = new QEmployee("e");
         R2DBCUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
-        update.where(SQLExpressions.selectOne().from(employee).where(survey1.name.eq(employee.lastname)).exists());
+        update.where(R2DBCExpressions.selectOne().from(employee).where(survey1.name.eq(employee.lastname)).exists());
         assertEquals(0, update.execute());
     }
 

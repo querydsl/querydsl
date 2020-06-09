@@ -7,8 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.r2dbc.domain.Employee;
 import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.sql.ForeignKey;
-import com.querydsl.sql.SQLExpressions;
-import com.querydsl.sql.SQLQuery;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -101,7 +99,7 @@ public class SubqueriesBase extends AbstractBaseTest {
     @ExcludeIn({MYSQL, POSTGRESQL, DERBY, SQLSERVER, TERADATA})
     public void subQuery_params() {
         Param<String> aParam = new Param<String>(String.class, "param");
-        SQLQuery<?> subQuery = SQLExpressions.select(Wildcard.all).from(employee).where(employee.firstname.eq(aParam));
+        R2DBCQuery<?> subQuery = R2DBCExpressions.select(Wildcard.all).from(employee).where(employee.firstname.eq(aParam));
         subQuery.set(aParam, "Mike");
 
         assertEquals(1, (long) query().from(subQuery).fetchCount().block());
@@ -164,7 +162,7 @@ public class SubqueriesBase extends AbstractBaseTest {
                 this.query()
                         .from(employee)
                         .where(
-                                SQLExpressions
+                                R2DBCExpressions
                                         .select(employee.firstname)
                                         .from(employee)
                                         .orderBy(employee.salary.asc())
@@ -189,7 +187,7 @@ public class SubqueriesBase extends AbstractBaseTest {
                 this.query()
                         .from(employee)
                         .where(
-                                SQLExpressions
+                                R2DBCExpressions
                                         .select(employee.firstname)
                                         .from(employee)
                                         .orderBy(employee.salary.asc())

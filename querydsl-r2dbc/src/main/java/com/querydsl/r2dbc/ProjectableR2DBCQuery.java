@@ -177,7 +177,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
     }
 
     @Override
-    public <E> Q fullJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+    public <E> Q fullJoin(R2DBCRelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -202,7 +202,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
     }
 
     @Override
-    public <E> Q innerJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+    public <E> Q innerJoin(R2DBCRelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -227,7 +227,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
     }
 
     @Override
-    public <E> Q join(RelationalFunctionCall<E> target, Path<E> alias) {
+    public <E> Q join(R2DBCRelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -252,7 +252,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
     }
 
     @Override
-    public <E> Q leftJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+    public <E> Q leftJoin(R2DBCRelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
@@ -277,7 +277,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
     }
 
     @Override
-    public <E> Q rightJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+    public <E> Q rightJoin(R2DBCRelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 

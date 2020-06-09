@@ -19,6 +19,7 @@ import com.querydsl.r2dbc.QGeneratedKeysEntity;
 import com.querydsl.r2dbc.dml.R2DBCInsertClause;
 import io.r2dbc.spi.Connection;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
@@ -37,6 +38,7 @@ public class GeneratedKeysH2Test {
     }
 
     @Test
+    @Ignore("currently not supported")
     public void test() {
         Mono.from(conn.createStatement("drop table GENERATED_KEYS if exists").execute()).block();
         Mono.from(conn.createStatement("create table GENERATED_KEYS(" +

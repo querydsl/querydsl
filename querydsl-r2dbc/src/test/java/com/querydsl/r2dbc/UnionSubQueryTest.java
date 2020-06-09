@@ -18,7 +18,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.SimplePath;
-import com.querydsl.sql.SQLExpressions;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -39,9 +38,9 @@ public class UnionSubQueryTest {
     @Test
     public void in_union() {
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
-        Expression<?> expr = intPath.in(SQLExpressions.union(
-                SQLExpressions.select(one),
-                SQLExpressions.select(two)));
+        Expression<?> expr = intPath.in(R2DBCExpressions.union(
+                R2DBCExpressions.select(one),
+                R2DBCExpressions.select(two)));
 
         serializer.handle(expr);
         assertEquals(
@@ -54,10 +53,10 @@ public class UnionSubQueryTest {
     @Test
     public void union_subQuery() {
         SimplePath<Integer> col1 = Expressions.path(Integer.class, "col1");
-        Expression<?> union = SQLExpressions.union(
-                SQLExpressions.select(one.as(col1)),
-                SQLExpressions.select(two),
-                SQLExpressions.select(three));
+        Expression<?> union = R2DBCExpressions.union(
+                R2DBCExpressions.select(one.as(col1)),
+                R2DBCExpressions.select(two),
+                R2DBCExpressions.select(three));
 
         serializer.handle(union);
         assertEquals(
@@ -72,10 +71,10 @@ public class UnionSubQueryTest {
     @Test
     public void unionAll_subQuery() {
         SimplePath<Integer> col1 = Expressions.path(Integer.class, "col1");
-        Expression<?> union = SQLExpressions.unionAll(
-                SQLExpressions.select(one.as(col1)),
-                SQLExpressions.select(two),
-                SQLExpressions.select(three));
+        Expression<?> union = R2DBCExpressions.unionAll(
+                R2DBCExpressions.select(one.as(col1)),
+                R2DBCExpressions.select(two),
+                R2DBCExpressions.select(three));
 
         serializer.handle(union);
         assertEquals(

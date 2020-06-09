@@ -119,9 +119,9 @@ public abstract class AbstractBaseTest {
         return sqlDeleteClause;
     }
 
-    protected ExtendedSQLQuery<?> extQuery() {
-        ExtendedSQLQuery<?> extendedSQLQuery = new ExtendedSQLQuery<Void>(connection, configuration);
-        return extendedSQLQuery;
+    protected ExtendedR2DBCQuery<?> extQuery() {
+        ExtendedR2DBCQuery<?> extendedR2DBCQuery = new ExtendedR2DBCQuery<Void>(connection, configuration);
+        return extendedR2DBCQuery;
     }
 
     protected R2DBCQuery<?> query() {

@@ -18,7 +18,6 @@ import com.querydsl.core.Query;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
 import com.querydsl.sql.ForeignKey;
-import com.querydsl.sql.RelationalFunctionCall;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.WithBuilder;
 
@@ -119,7 +118,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
      * @param alias alias
      * @return the current object
      */
-    <E> Q fullJoin(RelationalFunctionCall<E> o, Path<E> alias);
+    <E> Q fullJoin(R2DBCRelationalFunctionCall<E> o, Path<E> alias);
 
     /**
      * Adds a full join to the given target
@@ -166,7 +165,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
      * @param alias alias
      * @return the current object
      */
-    <E> Q innerJoin(RelationalFunctionCall<E> o, Path<E> alias);
+    <E> Q innerJoin(R2DBCRelationalFunctionCall<E> o, Path<E> alias);
 
     /**
      * Adds an inner join to the given target
@@ -213,7 +212,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
      * @param alias alias
      * @return the current object
      */
-    <E> Q join(RelationalFunctionCall<E> o, Path<E> alias);
+    <E> Q join(R2DBCRelationalFunctionCall<E> o, Path<E> alias);
 
     /**
      * Adds a join to the given target
@@ -260,7 +259,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
      * @param alias alias
      * @return the current object
      */
-    <E> Q leftJoin(RelationalFunctionCall<E> o, Path<E> alias);
+    <E> Q leftJoin(R2DBCRelationalFunctionCall<E> o, Path<E> alias);
 
     /**
      * Adds a left join to the given target
@@ -315,7 +314,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
      * @param alias alias
      * @return the current object
      */
-    <E> Q rightJoin(RelationalFunctionCall<E> o, Path<E> alias);
+    <E> Q rightJoin(R2DBCRelationalFunctionCall<E> o, Path<E> alias);
 
     /**
      * Adds a right join to the given target

@@ -8,7 +8,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.sql.SQLExpressions;
 import com.querydsl.sql.WindowOver;
 import org.junit.Test;
 
@@ -28,31 +27,31 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         NumberPath<?> path2 = survey.id;
 
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
-        add(exprs, SQLExpressions.avg(path));
-        add(exprs, SQLExpressions.count(path));
-        add(exprs, SQLExpressions.corr(path, path2));
-        add(exprs, SQLExpressions.covarPop(path, path2), DB2);
-        add(exprs, SQLExpressions.covarSamp(path, path2), DB2);
-        add(exprs, SQLExpressions.cumeDist(), DB2, TERADATA);
-        add(exprs, SQLExpressions.denseRank(), TERADATA);
-        add(exprs, SQLExpressions.firstValue(path), TERADATA);
-        add(exprs, SQLExpressions.lag(path), TERADATA);
-        add(exprs, SQLExpressions.lastValue(path), TERADATA);
-        add(exprs, SQLExpressions.lead(path), TERADATA);
-        add(exprs, SQLExpressions.max(path));
-        add(exprs, SQLExpressions.min(path));
-        add(exprs, SQLExpressions.nthValue(path, 2), DB2, TERADATA);
-        add(exprs, SQLExpressions.ntile(3), DB2, TERADATA);
-        add(exprs, SQLExpressions.percentRank(), DB2);
-        add(exprs, SQLExpressions.rank());
-        add(exprs, SQLExpressions.rowNumber());
-        add(exprs, SQLExpressions.stddev(path), TERADATA);
-        add(exprs, SQLExpressions.stddevPop(path), DB2, TERADATA);
-        add(exprs, SQLExpressions.stddevSamp(path), DB2, TERADATA);
-        add(exprs, SQLExpressions.sum(path));
-        add(exprs, SQLExpressions.variance(path), TERADATA);
-        add(exprs, SQLExpressions.varPop(path), DB2, TERADATA);
-        add(exprs, SQLExpressions.varSamp(path), DB2, TERADATA);
+        add(exprs, R2DBCExpressions.avg(path));
+        add(exprs, R2DBCExpressions.count(path));
+        add(exprs, R2DBCExpressions.corr(path, path2));
+        add(exprs, R2DBCExpressions.covarPop(path, path2), DB2);
+        add(exprs, R2DBCExpressions.covarSamp(path, path2), DB2);
+        add(exprs, R2DBCExpressions.cumeDist(), DB2, TERADATA);
+        add(exprs, R2DBCExpressions.denseRank(), TERADATA);
+        add(exprs, R2DBCExpressions.firstValue(path), TERADATA);
+        add(exprs, R2DBCExpressions.lag(path), TERADATA);
+        add(exprs, R2DBCExpressions.lastValue(path), TERADATA);
+        add(exprs, R2DBCExpressions.lead(path), TERADATA);
+        add(exprs, R2DBCExpressions.max(path));
+        add(exprs, R2DBCExpressions.min(path));
+        add(exprs, R2DBCExpressions.nthValue(path, 2), DB2, TERADATA);
+        add(exprs, R2DBCExpressions.ntile(3), DB2, TERADATA);
+        add(exprs, R2DBCExpressions.percentRank(), DB2);
+        add(exprs, R2DBCExpressions.rank());
+        add(exprs, R2DBCExpressions.rowNumber());
+        add(exprs, R2DBCExpressions.stddev(path), TERADATA);
+        add(exprs, R2DBCExpressions.stddevPop(path), DB2, TERADATA);
+        add(exprs, R2DBCExpressions.stddevSamp(path), DB2, TERADATA);
+        add(exprs, R2DBCExpressions.sum(path));
+        add(exprs, R2DBCExpressions.variance(path), TERADATA);
+        add(exprs, R2DBCExpressions.varPop(path), DB2, TERADATA);
+        add(exprs, R2DBCExpressions.varSamp(path), DB2, TERADATA);
 
         for (WindowOver<?> wo : exprs) {
             query().from(survey).select(wo.over().partitionBy(survey.name).orderBy(survey.id)).fetch().collectList().block();
@@ -61,7 +60,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     public void windowFunctions_manual_paging() {
-        Expression<Long> rowNumber = SQLExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as("rn");
+        Expression<Long> rowNumber = R2DBCExpressions.rowNumber().over().orderBy(employee.lastname.asc()).as("rn");
         Expression<Object[]> all = Wildcard.all;
 
         // simple
@@ -103,12 +102,12 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
 
-        add(exprs, SQLExpressions.avg(path));
-        add(exprs, SQLExpressions.count(path));
-        add(exprs, SQLExpressions.max(path));
-        add(exprs, SQLExpressions.min(path));
-        add(exprs, SQLExpressions.stddev(path));
-        add(exprs, SQLExpressions.variance(path));
+        add(exprs, R2DBCExpressions.avg(path));
+        add(exprs, R2DBCExpressions.count(path));
+        add(exprs, R2DBCExpressions.max(path));
+        add(exprs, R2DBCExpressions.min(path));
+        add(exprs, R2DBCExpressions.stddev(path));
+        add(exprs, R2DBCExpressions.variance(path));
 
         for (WindowOver<?> wo : exprs) {
             query().from(survey).select(wo.keepFirst().orderBy(survey.id)).fetch().collectList().block();
@@ -122,14 +121,14 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         NumberPath<Integer> path = survey.id;
         NumberPath<?> path2 = survey.id;
 
-        add(exprs, SQLExpressions.regrSlope(path, path2), SQLSERVER);
-        add(exprs, SQLExpressions.regrIntercept(path, path2));
-        add(exprs, SQLExpressions.regrCount(path, path2));
-        add(exprs, SQLExpressions.regrR2(path, path2));
-        add(exprs, SQLExpressions.regrAvgx(path, path2));
-        add(exprs, SQLExpressions.regrSxx(path, path2));
-        add(exprs, SQLExpressions.regrSyy(path, path2));
-        add(exprs, SQLExpressions.regrSxy(path, path2));
+        add(exprs, R2DBCExpressions.regrSlope(path, path2), SQLSERVER);
+        add(exprs, R2DBCExpressions.regrIntercept(path, path2));
+        add(exprs, R2DBCExpressions.regrCount(path, path2));
+        add(exprs, R2DBCExpressions.regrR2(path, path2));
+        add(exprs, R2DBCExpressions.regrAvgx(path, path2));
+        add(exprs, R2DBCExpressions.regrSxx(path, path2));
+        add(exprs, R2DBCExpressions.regrSyy(path, path2));
+        add(exprs, R2DBCExpressions.regrSxy(path, path2));
 
         for (WindowOver<?> wo : exprs) {
             query().from(survey).select(wo.over().partitionBy(survey.name).orderBy(survey.id)).fetch().collectList().block();
@@ -141,9 +140,9 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
     public void windowFunctions_oracle() {
         List<WindowOver<?>> exprs = new ArrayList<WindowOver<?>>();
         NumberPath<Integer> path = survey.id;
-        add(exprs, SQLExpressions.countDistinct(path));
-        add(exprs, SQLExpressions.ratioToReport(path));
-        add(exprs, SQLExpressions.stddevDistinct(path));
+        add(exprs, R2DBCExpressions.countDistinct(path));
+        add(exprs, R2DBCExpressions.ratioToReport(path));
+        add(exprs, R2DBCExpressions.stddevDistinct(path));
 
         for (WindowOver<?> wo : exprs) {
             query().from(survey).select(wo.over().partitionBy(survey.name)).fetch().collectList().block();
@@ -157,7 +156,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
         query().from(employee).select(
                 employee.id,
-                SQLExpressions.sum(employee.salary).over()).fetch().collectList().block();
+                R2DBCExpressions.sum(employee.salary).over()).fetch().collectList().block();
     }
 
     @Test
@@ -169,7 +168,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
         query().from(employee).select(
                 employee.id,
                 employee.superiorId,
-                SQLExpressions.sum(employee.salary).over()
+                R2DBCExpressions.sum(employee.salary).over()
                         .partitionBy(employee.superiorId)).fetch().collectList().block();
     }
 
@@ -182,7 +181,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
         query().from(employee).select(
                 employee.id,
-                SQLExpressions.sum(employee.salary).over()
+                R2DBCExpressions.sum(employee.salary).over()
                         .partitionBy(employee.superiorId)
                         .orderBy(employee.datefield)).fetch().collectList().block();
     }
@@ -198,7 +197,7 @@ public class SelectWindowFunctionsBase extends AbstractBaseTest {
 
         query().from(employee).select(
                 employee.id,
-                SQLExpressions.sum(employee.salary).over()
+                R2DBCExpressions.sum(employee.salary).over()
                         .partitionBy(employee.superiorId)
                         .orderBy(employee.datefield)
                         .rows().between().unboundedPreceding().currentRow()).fetch().collectList().block();

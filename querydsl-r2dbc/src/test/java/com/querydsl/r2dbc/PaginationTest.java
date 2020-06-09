@@ -23,12 +23,8 @@ public class PaginationTest {
     @Test
     public void test() {
         List<SQLTemplates> list = Lists.newArrayList();
-        list.add(new CUBRIDTemplates());
-        list.add(new DerbyTemplates());
         list.add(new H2Templates());
-        list.add(new HSQLDBTemplates());
         list.add(new MySQLTemplates());
-        list.add(new OracleTemplates());  // inner query
         list.add(new PostgreSQLTemplates());
         list.add(new SQLiteTemplates());
         list.add(new SQLServerTemplates());
