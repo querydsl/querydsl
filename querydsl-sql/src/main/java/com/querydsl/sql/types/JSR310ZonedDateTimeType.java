@@ -1,12 +1,15 @@
 package com.querydsl.sql.types;
 
-import java.sql.*;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 import javax.annotation.Nullable;
-
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 /**
  * JSR310ZonedDateTimeType maps {@linkplain java.time.ZonedDateTime}
@@ -43,6 +46,6 @@ public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDat
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, ZonedDateTime value) throws SQLException {
-        st.setTimestamp(startIndex, new Timestamp(value.toInstant().toEpochMilli()), utc());
+        st.setTimestamp(startIndex, Timestamp.from(value.toInstant()), utc());
     }
 }
