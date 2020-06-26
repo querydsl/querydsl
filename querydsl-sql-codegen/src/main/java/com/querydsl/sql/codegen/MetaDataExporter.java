@@ -73,7 +73,7 @@ public class MetaDataExporter {
     private String beanPackageName;
 
     @Nullable
-    private String schemaPattern, tableNamePattern;
+    private String schemaPattern, tableNamePattern, catalogPattern;
 
     @Nullable
     private Serializer beanSerializer;
@@ -235,26 +235,40 @@ public class MetaDataExporter {
             typesArray = types.toArray(new String[types.size()]);
         }
 
-        List<String> schemas = Arrays.asList(schemaPattern);
-        if (schemaPattern != null && schemaPattern.contains(",")) {
-            schemas = ImmutableList.copyOf(schemaPattern.split(","));
-        }
-        List<String> tables = Arrays.asList(tableNamePattern);
-        if (tableNamePattern != null && tableNamePattern.contains(",")) {
-            tables = ImmutableList.copyOf(tableNamePattern.split(","));
-        }
+        List<String> catalogs = patternAsList(catalogPattern);
+        List<String> schemas = patternAsList(schemaPattern);
+        List<String> tables = patternAsList(tableNamePattern);
 
-        for (String schema : schemas) {
-            schema = schema != null ? schema.trim() : null;
-            for (String table : tables) {
-                table = table != null ? table.trim() : null;
-                handleTables(md, schema, table, typesArray);
+        for (String catalog : catalogs) {
+            catalog = trimIfNonNull(catalog);
+            for (String schema : schemas) {
+                schema = trimIfNonNull(schema);
+                for (String table : tables) {
+                    table = trimIfNonNull(table);
+                    handleTables(md, catalog, schema, table, typesArray);
+                }
             }
         }
     }
 
-    private void handleTables(DatabaseMetaData md, String schemaPattern, String tablePattern, String[] types) throws SQLException {
-        ResultSet tables = md.getTables(null, schemaPattern, tablePattern, types);
+    private String trimIfNonNull(String input) {
+        return input != null ? input.trim() : null;
+    }
+
+    /**
+     * Splits the input on ',' if non-null and a ',' is present.
+     * Returns a singletonList of null if null
+     */
+    private List<String> patternAsList(@Nullable String input) {
+        if (input != null && input.contains(",")) {
+            return ImmutableList.copyOf(input.split(","));
+        } else {
+            return Collections.singletonList(input);
+        }
+    }
+
+    private void handleTables(DatabaseMetaData md, String catalogPattern, String schemaPattern, String tablePattern, String[] types) throws SQLException {
+        ResultSet tables = md.getTables(catalogPattern, schemaPattern, tablePattern, types);
         try {
             while (tables.next()) {
                 handleTable(md, tables);
@@ -463,6 +477,16 @@ public class MetaDataExporter {
      */
     public void setSchemaPattern(@Nullable String schemaPattern) {
         this.schemaPattern = schemaPattern;
+    }
+
+    /**
+     * a catalog name; must match the catalog name as it
+     *      is stored in the database; "" retrieves those without a catalog;
+     *      <code>null</code> means that the catalog name should not be used to narrow
+     *      the search
+     */
+    public void setCatalogPattern(@Nullable String catalogPattern) {
+        this.catalogPattern = catalogPattern;
     }
 
     /**

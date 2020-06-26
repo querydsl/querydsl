@@ -138,6 +138,14 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
     private String schemaPattern;
 
     /**
+     * a catalog name; must match the catalog name as it
+     *      is stored in the database; "" retrieves those without a catalog;
+     *      <code>null</code> means that the catalog name should not be used to narrow
+     *      the search
+     */
+    private String catalogPattern;
+
+    /**
      * tableNamePattern a table name pattern; must match the
     *        table name as it is stored in the database (default: null)
      *
@@ -422,6 +430,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             exporter.setInnerClassesForKeys(innerClassesForKeys);
             exporter.setTargetFolder(new File(targetFolder));
             exporter.setNamingStrategy(namingStrategy);
+            exporter.setCatalogPattern(catalogPattern);
             exporter.setSchemaPattern(schemaPattern);
             exporter.setTableNamePattern(tableNamePattern);
             exporter.setColumnAnnotations(columnAnnotations);
@@ -607,6 +616,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
 
     public void setBeanPackageName(String beanPackageName) {
         this.beanPackageName = beanPackageName;
+    }
+
+    public void setCatalogPattern(String catalogPattern) {
+        this.catalogPattern = catalogPattern;
     }
 
     public void setSchemaPattern(String schemaPattern) {
