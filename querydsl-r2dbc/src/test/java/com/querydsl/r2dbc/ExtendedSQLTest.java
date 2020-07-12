@@ -11,7 +11,7 @@ import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPathBase;
 import org.junit.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
@@ -52,7 +52,7 @@ public class ExtendedSQLTest {
 
         public final StringPath language = createString("language");
 
-        public final DatePath<Date> published = createDate("published", Date.class);
+        public final DatePath<LocalDate> published = createDate("published", LocalDate.class);
 
         public QBook(String variable) {
             super(QBook.class, PathMetadataFactory.forVariable(variable), "", "BOOK");
@@ -87,7 +87,7 @@ public class ExtendedSQLTest {
         R2DBCMySQLQuery<?> query = new R2DBCMySQLQuery<Void>(null);
         query.from(author)
                 .join(book).on(author.id.eq(book.authorId))
-                .where(book.language.eq("DE"), book.published.eq(new Date()))
+                .where(book.language.eq("DE"), book.published.eq(LocalDate.now()))
                 .groupBy(author.firstName, author.lastName)
                 .having(Wildcard.count.gt(5))
                 .orderBy(author.lastName.asc())

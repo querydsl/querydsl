@@ -23,7 +23,11 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.ValidatingVisitor;
 import com.querydsl.r2dbc.Configuration;
 import com.querydsl.r2dbc.R2DBCConnectionProvider;
+import com.querydsl.r2dbc.R2dbcUtils;
 import com.querydsl.r2dbc.SQLSerializer;
+import com.querydsl.r2dbc.binding.BindMarkers;
+import com.querydsl.r2dbc.binding.BindTarget;
+import com.querydsl.r2dbc.binding.StatementWrapper;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLBindings;
 import io.r2dbc.spi.Connection;
@@ -41,7 +45,7 @@ import java.util.List;
  * Provides a base class for dialect-specific DELETE clauses.
  *
  * @param <C> The type extending this class.
- * @author tiwe
+ * @author mc_fish
  */
 public abstract class AbstractR2DBCDeleteClause<C extends AbstractR2DBCDeleteClause<C>> extends AbstractR2DBCClause<C> implements ReactiveDeleteClause<C> {
 
@@ -124,27 +128,31 @@ public abstract class AbstractR2DBCDeleteClause<C extends AbstractR2DBCDeleteCla
     }
 
     private Statement prepareStatementAndSetParameters(Connection connection, SQLSerializer serializer) {
-        String queryString = serializer.toString();
-        //queryString = R2dbcUtils.replaceBindingArguments(queryString);
-        Statement stmt = connection.createStatement(queryString);
+        List<Object> constants = serializer.getConstants();
+        String originalSql = serializer.toString();
+        queryString = R2dbcUtils.replaceBindingArguments(configuration.getBindMarkerFactory().create(), constants, originalSql);
+
+        logQuery(logger, queryString, serializer.getConstants());
+        Statement statement = connection.createStatement(queryString);
+        BindTarget bindTarget = new StatementWrapper(statement);
+
         if (batches.isEmpty()) {
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams(), 0);
+            setParameters(bindTarget, configuration.getBindMarkerFactory().create(), serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
-            int offset = 0;
             for (QueryMetadata batch : batches) {
                 if (useLiterals) {
                     throw new UnsupportedOperationException("Batch deletes are not supported with literals");
                 }
-                setBatchParameters(stmt, batch, offset);
+                setBatchParameters(bindTarget, configuration.getBindMarkerFactory().create(), batch);
             }
         }
-        return stmt;
+        return statement;
     }
 
-    private <T> void setBatchParameters(Statement stmt, QueryMetadata batch, int offset) {
+    private <T> void setBatchParameters(BindTarget bindTarget, BindMarkers bindMarkers, QueryMetadata batch) {
         SQLSerializer helperSerializer = createSerializerAndSerialize(batch);
         helperSerializer.serializeDelete(batch, entity);
-        setParameters(stmt, helperSerializer.getConstants(), helperSerializer.getConstantPaths(), metadata.getParams(), offset);
+        setParameters(bindTarget, bindMarkers, helperSerializer.getConstants(), helperSerializer.getConstantPaths(), metadata.getParams());
     }
 
     private SQLSerializer createSerializerAndSerialize(QueryMetadata batch) {

@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * {@code SQLUpdateBatch} defines the state of an SQL UPDATE batch item
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCUpdateBatch {
 

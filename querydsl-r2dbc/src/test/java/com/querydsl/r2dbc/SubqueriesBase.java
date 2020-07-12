@@ -18,7 +18,7 @@ import static com.querydsl.r2dbc.Constants.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class SubqueriesBase extends AbstractBaseTest {
+public abstract class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER})

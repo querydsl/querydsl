@@ -22,7 +22,7 @@ import static com.querydsl.r2dbc.Constants.survey;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class LikeEscapeBase extends AbstractBaseTest {
+public abstract class LikeEscapeBase extends AbstractBaseTest {
 
     @Before
     public void setUp() {

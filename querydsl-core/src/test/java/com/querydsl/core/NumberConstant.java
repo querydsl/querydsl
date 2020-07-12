@@ -28,7 +28,7 @@ import com.querydsl.core.util.MathUtils;
  *
  * @param <D>
  */
-final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpression<D> implements Constant<D> {
+public final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpression<D> implements Constant<D> {
 
     private static final long serialVersionUID = 2958824808974260439L;
 

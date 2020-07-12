@@ -18,9 +18,9 @@ import java.sql.Types;
 /**
  * {@code IntegerType} maps Integer to Integer on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class IntegerType extends AbstractType<Integer> {
+public class IntegerType extends AbstractType<Integer, Number> {
 
     public IntegerType() {
         super(Types.INTEGER);
@@ -33,6 +33,16 @@ public class IntegerType extends AbstractType<Integer> {
     @Override
     public Class<Integer> getReturnedClass() {
         return Integer.class;
+    }
+
+    @Override
+    public Class<Number> getDatabaseClass() {
+        return Number.class;
+    }
+
+    @Override
+    protected Integer fromDbValue(Number value) {
+        return value.intValue();
     }
 
 }

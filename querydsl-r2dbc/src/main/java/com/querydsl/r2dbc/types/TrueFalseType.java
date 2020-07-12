@@ -21,9 +21,9 @@ import java.sql.Types;
 /**
  * {@code TrueFalseType} maps Boolean to 'T'/'F' on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class TrueFalseType extends AbstractType<Boolean> {
+public class TrueFalseType extends AbstractType<Boolean, String> {
 
     public TrueFalseType() {
         super(Types.VARCHAR);
@@ -46,7 +46,13 @@ public class TrueFalseType extends AbstractType<Boolean> {
     }
 
     @Override
-    protected Object toDbValue(Boolean value) {
+    protected String toDbValue(Boolean value) {
         return value ? "T" : "F";
     }
+
+    @Override
+    public Class<String> getDatabaseClass() {
+        return String.class;
+    }
+
 }

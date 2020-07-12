@@ -31,7 +31,7 @@ import com.querydsl.sql.dml.SQLDeleteClause;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
 
-public class DeleteBase extends AbstractBaseTest {
+public abstract class DeleteBase extends AbstractBaseTest {
 
     private void reset() throws SQLException {
         delete(survey).where(survey.name.isNotNull()).execute();

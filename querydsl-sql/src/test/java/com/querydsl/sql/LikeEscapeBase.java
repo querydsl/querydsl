@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import com.querydsl.sql.dml.SQLInsertClause;
 
-public class LikeEscapeBase extends AbstractBaseTest {
+public abstract class LikeEscapeBase extends AbstractBaseTest {
 
     @Before
     public void setUp() throws SQLException {

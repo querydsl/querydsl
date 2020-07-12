@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 /**
  * DropTableClause defines a DROP TABLE clause
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class DropTableClause {
 

@@ -35,7 +35,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.dml.SQLMergeClause;
 import com.querydsl.sql.domain.QSurvey;
 
-public class MergeBase extends AbstractBaseTest {
+public abstract class MergeBase extends AbstractBaseTest {
 
     private void reset() throws SQLException {
         delete(survey).execute();

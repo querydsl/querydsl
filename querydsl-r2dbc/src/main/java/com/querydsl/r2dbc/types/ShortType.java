@@ -18,9 +18,9 @@ import java.sql.Types;
 /**
  * {@code ShortType} maps Short to Short on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class ShortType extends AbstractType<Short> {
+public class ShortType extends AbstractType<Short, Number> {
 
     public ShortType() {
         super(Types.SMALLINT);
@@ -33,6 +33,16 @@ public class ShortType extends AbstractType<Short> {
     @Override
     public Class<Short> getReturnedClass() {
         return Short.class;
+    }
+
+    @Override
+    public Class<Number> getDatabaseClass() {
+        return Number.class;
+    }
+
+    @Override
+    protected Short fromDbValue(Number value) {
+        return value.shortValue();
     }
 
 }

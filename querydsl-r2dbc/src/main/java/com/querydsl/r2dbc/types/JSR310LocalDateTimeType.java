@@ -1,19 +1,16 @@
 package com.querydsl.r2dbc.types;
 
-import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
-import javax.annotation.Nullable;
-import java.sql.Timestamp;
 import java.sql.Types;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
+import java.time.temporal.Temporal;
 
 /**
  * JSR310LocalDateTimeType maps {@linkplain LocalDateTime}
- * to {@linkplain Timestamp} on the JDBC level
+ * to {@linkplain LocalDateTime} on the R2DBC level
  */
 @IgnoreJRERequirement //conditionally included
 public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDateTime> {
@@ -36,30 +33,33 @@ public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDat
         return LocalDateTime.class;
     }
 
-    @Nullable
     @Override
-    public LocalDateTime getValue(Row row, int startIndex) {
+    public void setValue(BindMarker bindMarker, BindTarget bindTarget, LocalDateTime value) {
         try {
-            return super.getValue(row, startIndex);
+            super.setValue(bindMarker, bindTarget, value);
         } catch (Exception e) {
-            Timestamp val = row.get(startIndex, Timestamp.class);
-            return val != null ? LocalDateTime.ofInstant(val.toInstant(), ZoneOffset.UTC) : null;
+            Instant i = value.toInstant(ZoneOffset.UTC);
+
+            bindMarker.bind(bindTarget, i);
         }
     }
 
     @Override
-    public void setValue(Statement st, int startIndex, LocalDateTime value) {
-        try {
-            super.setValue(st, startIndex, value);
-        } catch (Exception e) {
-            if (value == null) {
-                st.bindNull(startIndex, getReturnedClass());
-            } else {
-                Instant i = value.toInstant(ZoneOffset.UTC);
-
-                st.bind(startIndex, new Timestamp(i.toEpochMilli()));
-            }
+    protected LocalDateTime fromDbValue(Temporal value) {
+        if (OffsetDateTime.class.isAssignableFrom(value.getClass())) {
+            return ((OffsetDateTime) value).toLocalDateTime();
         }
+        if (ZonedDateTime.class.isAssignableFrom(value.getClass())) {
+            return ((ZonedDateTime) value).toLocalDateTime();
+        }
+        if (LocalDate.class.isAssignableFrom(value.getClass())) {
+            return ((LocalDate) value).atStartOfDay();
+        }
+        if (Instant.class.isAssignableFrom(value.getClass())) {
+            return LocalDateTime.ofInstant((Instant) value, ZoneOffset.UTC);
+        }
+
+        return (LocalDateTime) value;
     }
 
 }

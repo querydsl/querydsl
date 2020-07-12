@@ -22,7 +22,7 @@ import static com.querydsl.core.Target.*;
 import static com.querydsl.r2dbc.Constants.employee;
 import static org.junit.Assert.*;
 
-public class UnionBase extends AbstractBaseTest {
+public abstract class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test
@@ -42,9 +42,12 @@ public class UnionBase extends AbstractBaseTest {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max().as("ID"));
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min().as("ID"));
         assertEquals(
-                ImmutableList.of(query().select(employee.id.min()).from(employee).fetchFirst(),
-                        query().select(employee.id.max()).from(employee).fetchFirst()),
-                query().union(sq1, sq2).orderBy(employee.id.asc()).fetch().collectList().block());
+                ImmutableList.of(
+                        query().select(employee.id.min()).from(employee).fetchFirst().block(),
+                        query().select(employee.id.max()).from(employee).fetchFirst().block()
+                ),
+                query().union(sq1, sq2).orderBy(employee.id.asc()).fetch().collectList().block()
+        );
     }
 
     @Test
@@ -54,7 +57,7 @@ public class UnionBase extends AbstractBaseTest {
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min());
         assertEquals(
                 query().union(sq1, sq2).fetch().collectList().block(),
-                query().union(sq1, sq2).list());
+                query().union(sq1, sq2).list().collectList().block());
     }
 
     @Test

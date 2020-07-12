@@ -18,9 +18,9 @@ import java.sql.Types;
 /**
  * {@code StringType} maps String to String on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class StringType extends AbstractType<String> {
+public class StringType extends AbstractType<String, String> {
 
     public StringType() {
         super(Types.VARCHAR);

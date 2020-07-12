@@ -45,7 +45,7 @@ import com.querydsl.sql.dml.Mapper;
 import com.querydsl.sql.dml.SQLInsertClause;
 import com.querydsl.sql.domain.*;
 
-public class InsertBase extends AbstractBaseTest {
+public abstract class InsertBase extends AbstractBaseTest {
 
     private void reset() throws SQLException {
         delete(survey).execute();

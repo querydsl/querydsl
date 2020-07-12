@@ -32,7 +32,7 @@ import com.querydsl.sql.RelationalPath;
  * @param <D> delete clause type
  * @param <U> update clause type
  * @param <I> insert clause type
- * @author tiwe
+ * @author mc_fish
  */
 public interface R2DBCCommonQueryFactory<Q extends R2DBCCommonQuery<?>, // extends AbstractSQLQuery<?>
         D extends R2DBCDeleteClause,

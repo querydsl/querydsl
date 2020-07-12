@@ -13,14 +13,15 @@
  */
 package com.querydsl.r2dbc.types;
 
+import java.math.BigInteger;
 import java.sql.Types;
 
 /**
  * {@code ByteType} maps Byte to Byte on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class ByteType extends AbstractType<Byte> {
+public class ByteType extends AbstractType<Byte, Object> {
 
     public ByteType() {
         super(Types.TINYINT);
@@ -33,6 +34,29 @@ public class ByteType extends AbstractType<Byte> {
     @Override
     public Class<Byte> getReturnedClass() {
         return Byte.class;
+    }
+
+    @Override
+    public Class<Object> getDatabaseClass() {
+        return Object.class;
+    }
+
+    @Override
+    protected Byte fromDbValue(Object value) {
+        if (Boolean.class.isAssignableFrom(value.getClass())) {
+            return (Boolean) value ? (byte) 1 : (byte) 0;
+        }
+        if (Integer.class.isAssignableFrom(value.getClass())) {
+            return (Integer) value == 1 ? (byte) 1 : (byte) 0;
+        }
+        if (Long.class.isAssignableFrom(value.getClass())) {
+            return (Long) value == 1 ? (byte) 1 : (byte) 0;
+        }
+        if (BigInteger.class.isAssignableFrom(value.getClass())) {
+            return ((BigInteger) value).longValue() == 1 ? (byte) 1 : (byte) 0;
+        }
+
+        return (Byte) value;
     }
 
 }

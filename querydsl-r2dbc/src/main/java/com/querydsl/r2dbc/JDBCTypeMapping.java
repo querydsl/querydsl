@@ -16,11 +16,11 @@ package com.querydsl.r2dbc;
 import com.google.common.collect.ImmutableSet;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.sql.types.Null;
+import io.r2dbc.spi.Blob;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Blob;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -31,7 +31,7 @@ import java.util.Set;
 /**
  * {@code JDBCTypeMapping} defines a mapping from JDBC types to Java classes.
  *
- * @author tiwe
+ * @author mc_fish
  */
 final class JDBCTypeMapping {
 

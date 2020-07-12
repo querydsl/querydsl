@@ -1,10 +1,11 @@
 package com.querydsl.core.support;
 
 
-import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.ReactiveFetchable;
-import com.querydsl.core.ResultTransformer;
+import com.querydsl.core.ReactiveFetchableQuery;
+import com.querydsl.core.ReactiveResultTransformer;
 import com.querydsl.core.types.SubQueryExpression;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
 
 /**
@@ -23,7 +24,7 @@ public abstract class ReactiveFetchableQueryBase<T, Q extends ReactiveFetchableQ
 
     @Override
     public final Mono<T> fetchFirst() {
-        return limit(1).fetchOne();
+        return fetch().take(1).singleOrEmpty();
     }
 
     @Override
@@ -31,8 +32,8 @@ public abstract class ReactiveFetchableQueryBase<T, Q extends ReactiveFetchableQ
         return fetch().singleOrEmpty();
     }
 
-    public <T> T transform(ResultTransformer<T> transformer) {
-        return transformer.transform((FetchableQuery<?, ?>) this);
+    public <T> Publisher<T> transform(ReactiveResultTransformer<T> transformer) {
+        return transformer.transform((ReactiveFetchableQuery<?, ?>) this);
     }
 
     @Override

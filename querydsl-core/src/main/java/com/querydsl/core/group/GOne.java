@@ -15,7 +15,12 @@ package com.querydsl.core.group;
 
 import com.querydsl.core.types.Expression;
 
-class GOne<T> extends AbstractGroupExpression<T, T> {
+/**
+ * GOne
+ *
+ * @param <T> t
+ */
+public class GOne<T> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3518868612387641383L;
 
@@ -25,8 +30,8 @@ class GOne<T> extends AbstractGroupExpression<T, T> {
     }
 
     @Override
-    public GroupCollector<T,T> createGroupCollector() {
-        return new GroupCollector<T,T>() {
+    public GroupCollector<T, T> createGroupCollector() {
+        return new GroupCollector<T, T>() {
             private boolean first = true;
 
             private T val;

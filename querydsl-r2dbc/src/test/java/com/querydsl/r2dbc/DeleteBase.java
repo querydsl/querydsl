@@ -22,17 +22,18 @@ import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.r2dbc.domain.QSurvey;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.querydsl.core.Target.*;
 import static com.querydsl.r2dbc.Constants.survey;
 import static org.junit.Assert.assertEquals;
 
-public class DeleteBase extends AbstractBaseTest {
+public abstract class DeleteBase extends AbstractBaseTest {
 
     private void reset() {
-        delete(survey).where(survey.name.isNotNull()).execute();
-        insert(survey).values(1, "Hello World", "Hello").execute();
+        delete(survey).where(survey.name.isNotNull()).execute().block();
+        insert(survey).values(1, "Hello World", "Hello").execute().block();
     }
 
     @Before
@@ -46,6 +47,7 @@ public class DeleteBase extends AbstractBaseTest {
     }
 
     @Test
+    @Ignore("not supported")
     public void batch() {
         insert(survey).values(2, "A", "B").execute();
         insert(survey).values(3, "B", "C").execute();
@@ -55,11 +57,12 @@ public class DeleteBase extends AbstractBaseTest {
         assertEquals(1, delete.getBatchCount());
         delete.where(survey.name.eq("B")).addBatch();
         assertEquals(2, delete.getBatchCount());
-        assertEquals(2, delete.execute());
+        assertEquals(2, (long) delete.execute().block());
     }
 
     @Test
     @ExcludeIn({CUBRID, SQLITE})
+    @Ignore("not supported")
     public void batch_templates() {
         insert(survey).values(2, "A", "B").execute();
         insert(survey).values(3, "B", "C").execute();
@@ -67,25 +70,25 @@ public class DeleteBase extends AbstractBaseTest {
         R2DBCDeleteClause delete = delete(survey);
         delete.where(survey.name.eq(Expressions.stringTemplate("'A'"))).addBatch();
         delete.where(survey.name.eq(Expressions.stringTemplate("'B'"))).addBatch();
-        assertEquals(2, delete.execute());
+        assertEquals(2, (long) delete.execute().block());
     }
 
     @Test
     @ExcludeIn(MYSQL)
     public void delete() {
         Long count = query().from(survey).fetchCount().block();
-        assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
-        assertEquals(count, delete(survey).execute());
+        assertEquals(0, (long) delete(survey).where(survey.name.eq("XXX")).execute().block());
+        assertEquals(count, delete(survey).execute().block());
     }
 
     @Test
     @IncludeIn({CUBRID, H2, MYSQL, ORACLE, SQLSERVER})
     public void delete_limit() {
-        insert(survey).values(2, "A", "B").execute();
-        insert(survey).values(3, "B", "C").execute();
-        insert(survey).values(4, "D", "E").execute();
+        insert(survey).values(2, "A", "B").execute().block();
+        insert(survey).values(3, "B", "C").execute().block();
+        insert(survey).values(4, "D", "E").execute().block();
 
-        assertEquals(2, delete(survey).limit(2).execute());
+        assertEquals(2, (long) delete(survey).limit(2).execute().block());
     }
 
     @Test
@@ -95,7 +98,7 @@ public class DeleteBase extends AbstractBaseTest {
         R2DBCDeleteClause delete = delete(survey1);
         delete.where(survey1.name.eq("XXX"),
                 query().from(employee).where(survey1.id.eq(employee.id)).exists());
-        assertEquals(0, delete.execute());
+        assertEquals(0, (long) delete.execute().block());
     }
 
     @Test
@@ -109,7 +112,7 @@ public class DeleteBase extends AbstractBaseTest {
 
         R2DBCDeleteClause delete = delete(survey1);
         delete.where(survey1.name.eq("XXX"), sq.exists());
-        assertEquals(0, delete.execute());
+        assertEquals(0, (long) delete.execute().block());
     }
 
     @Test
@@ -119,17 +122,18 @@ public class DeleteBase extends AbstractBaseTest {
         R2DBCDeleteClause delete = delete(survey1);
         delete.where(survey1.name.eq("XXX"),
                 query().from(employee).where(survey1.name.eq(employee.lastname)).exists());
-        assertEquals(0, delete.execute());
+        assertEquals(0, (long) delete.execute().block());
     }
 
 
     @Test
     @ExcludeIn({CUBRID, SQLITE})
+    @Ignore("not supported")
     public void delete_with_tempateExpression_in_batch() {
-        assertEquals(1, delete(survey)
+        assertEquals(1, (long) delete(survey)
                 .where(survey.name.eq(Expressions.stringTemplate("'Hello World'")))
                 .addBatch()
-                .execute());
+                .execute().block());
     }
 
 

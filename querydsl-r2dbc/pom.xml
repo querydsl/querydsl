@@ -19,7 +19,6 @@
     <properties>
         <java.version>1.8</java.version>
         <bridge-method.version>1.13</bridge-method.version>
-        <r2dbc-spi.version>0.8.2.RELEASE</r2dbc-spi.version>
         <reactor.version>3.3.5.RELEASE</reactor.version>
     </properties>
 
@@ -53,7 +52,6 @@
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-spi</artifactId>
-            <version>${r2dbc-spi.version}</version>
         </dependency>
 
         <dependency>
@@ -87,29 +85,36 @@
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
-            <version>0.8.4.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-mssql</artifactId>
-            <version>0.8.3.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>dev.miku</groupId>
             <artifactId>r2dbc-mysql</artifactId>
-            <version>0.8.1.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-postgresql</artifactId>
-            <version>0.8.3.RELEASE</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.r2dbc</groupId>
+                <artifactId>r2dbc-bom</artifactId>
+                <version>Arabba-SR5</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

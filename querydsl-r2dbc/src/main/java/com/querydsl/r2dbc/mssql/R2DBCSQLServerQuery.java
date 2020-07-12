@@ -29,7 +29,7 @@ import io.r2dbc.spi.Connection;
  * If you need to subtype this, use the base class instead.
  *
  * @param <T> result type
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCSQLServerQuery<T> extends AbstractR2DBCSQLServerQuery<T, R2DBCSQLServerQuery<T>> {
 

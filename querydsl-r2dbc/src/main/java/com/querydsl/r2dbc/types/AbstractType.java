@@ -13,16 +13,18 @@
  */
 package com.querydsl.r2dbc.types;
 
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
 
 /**
  * Common abstract superclass for Type implementations
  *
- * @param <T>
- * @author tiwe
+ * @param <IN>
+ * @param <OUT>
+ * @author mc_fish
  */
-public abstract class AbstractType<T> implements Type<T> {
+public abstract class AbstractType<IN, OUT> implements Type<IN, OUT> {
 
     private final int type;
 
@@ -36,26 +38,36 @@ public abstract class AbstractType<T> implements Type<T> {
     }
 
     @Override
-    public String getLiteral(T value) {
+    public String getLiteral(IN value) {
         return value.toString();
     }
 
     @Override
-    public T getValue(Row row, int startIndex) {
-        return row.get(startIndex, getReturnedClass());
+    public IN getValue(Row row, int startIndex) {
+        OUT value = row.get(startIndex, getDatabaseClass());
+        if (value == null) {
+            return null;
+        }
+
+        return fromDbValue(value);
     }
 
     @Override
-    public void setValue(Statement st, int startIndex, T value) {
-        if (value == null) {
-            st.bindNull(startIndex, getReturnedClass());
-        } else {
-            st.bind(startIndex, toDbValue(value));
-        }
+    public void setValue(BindMarker bindMarker, BindTarget bindTarget, IN value) {
+        bindMarker.bind(bindTarget, toDbValue(value));
     }
 
-    protected Object toDbValue(T value) {
-        return value;
+    @Override
+    public Class<OUT> getDatabaseClass() {
+        return (Class<OUT>) getReturnedClass();
+    }
+
+    protected OUT toDbValue(IN value) {
+        return (OUT) value;
+    }
+
+    protected IN fromDbValue(OUT value) {
+        return (IN) value;
     }
 
 }

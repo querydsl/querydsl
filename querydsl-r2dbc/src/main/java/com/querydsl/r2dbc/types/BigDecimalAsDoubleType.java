@@ -13,8 +13,9 @@
  */
 package com.querydsl.r2dbc.types;
 
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
 
 import java.math.BigDecimal;
 import java.sql.Types;
@@ -22,9 +23,9 @@ import java.sql.Types;
 /**
  * {@code BigDecimalAsDoubleType} maps BigDecimal to Double on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class BigDecimalAsDoubleType extends AbstractType<BigDecimal> {
+public class BigDecimalAsDoubleType extends AbstractType<BigDecimal, BigDecimal> {
 
     public static final BigDecimalAsDoubleType DEFAULT = new BigDecimalAsDoubleType();
 
@@ -48,12 +49,8 @@ public class BigDecimalAsDoubleType extends AbstractType<BigDecimal> {
     }
 
     @Override
-    public void setValue(Statement st, int startIndex, BigDecimal value) {
-        if (value == null) {
-            st.bindNull(startIndex, Double.class);
-        } else {
-            st.bind(startIndex, value.doubleValue());
-        }
+    public void setValue(BindMarker bindMarker, BindTarget bindTarget, BigDecimal value) {
+        bindMarker.bind(bindTarget, value.doubleValue());
     }
 
 }

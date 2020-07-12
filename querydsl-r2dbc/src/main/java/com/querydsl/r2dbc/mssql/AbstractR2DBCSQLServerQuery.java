@@ -26,7 +26,7 @@ import io.r2dbc.spi.Connection;
  *
  * @param <T> result type
  * @param <C> the concrete subtype
- * @author tiwe
+ * @author mc_fish
  */
 public abstract class AbstractR2DBCSQLServerQuery<T, C extends AbstractR2DBCSQLServerQuery<T, C>> extends AbstractR2DBCQuery<T, C> {
     public AbstractR2DBCSQLServerQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {

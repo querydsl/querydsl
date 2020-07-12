@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  *
  * @param <T> result type
  * @param <Q> concrete query type
- * @author tiwe
+ * @author mc_fish
  */
 public class UnionImpl<T, Q extends ProjectableR2DBCQuery<T, Q> & Query<Q>> implements Union<T> {
 

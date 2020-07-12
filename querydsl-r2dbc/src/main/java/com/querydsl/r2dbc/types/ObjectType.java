@@ -18,9 +18,9 @@ import java.sql.Types;
 /**
  * {@code ObjectType} maps Object to Object on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class ObjectType extends AbstractType<Object> {
+public class ObjectType extends AbstractType<Object, Object> {
 
     public ObjectType() {
         super(Types.OTHER);

@@ -16,7 +16,7 @@ package com.querydsl.r2dbc.mssql;
 /**
  * Table hints constants for SQLServerQuery
  *
- * @author tiwe
+ * @author mc_fish
  */
 public enum SQLServerTableHints {
     NOEXPAND,

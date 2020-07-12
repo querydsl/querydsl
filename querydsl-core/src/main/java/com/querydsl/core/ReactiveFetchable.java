@@ -13,7 +13,6 @@ public interface ReactiveFetchable<T> {
 
     /**
      * Get the projection as a typed Flux.
-     * Consuming the result produces {@link NullPointerException} if a value is null.
      *
      * @return result
      */
@@ -21,7 +20,6 @@ public interface ReactiveFetchable<T> {
 
     /**
      * Get the first result of the projection.
-     * Consuming the result produces {@link NullPointerException} if the value is null.
      *
      * @return first result
      */
@@ -29,8 +27,6 @@ public interface ReactiveFetchable<T> {
 
     /**
      * Get the projection as a unique result.
-     * Consuming the result produces {@link NullPointerException} if the value is null.
-     * Consuming the result produces {@link IndexOutOfBoundsException} if there is more than one matching result
      *
      * @return first result
      */

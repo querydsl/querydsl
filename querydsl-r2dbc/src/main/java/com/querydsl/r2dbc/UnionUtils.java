@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * UnionUtils provides static utility methods for Union handling
  *
- * @author tiwe
+ * @author mc_fish
  */
 final class UnionUtils {
 

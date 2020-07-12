@@ -24,7 +24,7 @@ import io.r2dbc.spi.Connection;
  * SQLInsertClause defines an INSERT INTO clause
  * If you need to subtype this, use {@link AbstractR2DBCInsertClause} instead.
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCInsertClause extends AbstractR2DBCInsertClause<R2DBCInsertClause> {
     public R2DBCInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {

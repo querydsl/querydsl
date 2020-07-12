@@ -30,7 +30,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class KeywordQuotingBase extends AbstractBaseTest {
+public abstract class KeywordQuotingBase extends AbstractBaseTest {
 
     private static class Quoting extends RelationalPathBase<Quoting> {
 
@@ -62,16 +62,18 @@ public class KeywordQuotingBase extends AbstractBaseTest {
         new CreateTableClause(connection, configuration, "quoting")
                 .column("from", String.class).size(30)
                 .column("all", Boolean.class)
-                .execute();
+                .execute()
+                .block();
         execute(insert(quoting)
                 .columns(quoting.from, quoting.all)
-                .values("from", true));
+                .values("from", true))
+                .block();
     }
 
     @After
     public void tearDown() throws Exception {
         new DropTableClause(connection, configuration, "quoting")
-                .execute();
+                .execute().block();
     }
 
     @Test
@@ -80,7 +82,7 @@ public class KeywordQuotingBase extends AbstractBaseTest {
         assertEquals("from", query().from(quoting.as(from))
                 .where(from.from.eq("from")
                         .and(from.all.isNotNull()))
-                .select(from.from).fetchFirst());
+                .select(from.from).fetchFirst().block());
     }
 
 }

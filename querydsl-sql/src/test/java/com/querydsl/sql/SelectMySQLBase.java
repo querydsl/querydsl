@@ -9,7 +9,7 @@ import com.querydsl.core.testutil.IncludeIn;
 import com.querydsl.sql.mysql.MySQLQuery;
 
 
-public class SelectMySQLBase extends AbstractBaseTest {
+public abstract class SelectMySQLBase extends AbstractBaseTest {
 
     protected MySQLQuery<?> mysqlQuery() {
         return new MySQLQuery<Void>(connection, configuration);

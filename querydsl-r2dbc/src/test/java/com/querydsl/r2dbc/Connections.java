@@ -15,19 +15,27 @@ package com.querydsl.r2dbc;
 
 import com.google.common.collect.Maps;
 import com.querydsl.core.Target;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.r2dbc.binding.BindMarkers;
+import com.querydsl.r2dbc.binding.BindTarget;
+import com.querydsl.r2dbc.binding.StatementWrapper;
 import com.querydsl.r2dbc.ddl.CreateTableClause;
 import com.querydsl.r2dbc.ddl.DropTableClause;
+import com.querydsl.r2dbc.domain.QEmployee;
 import io.r2dbc.spi.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.sql.Time;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
- * @author tiwe
+ * @author mc_fish
  */
 public final class Connections {
 
@@ -59,7 +67,7 @@ public final class Connections {
 
     private static final String INSERT_INTO_TEST_VALUES = "insert into TEST values(?)";
 
-    private static boolean sqlServerInited, h2Inited, mysqlInited, postgresqlInited, sqliteInited;
+    private static boolean sqlServerInited, h2Inited, mysqlInited, postgresqlInited;
 
     public static R2DBCConnectionProvider getR2DBCConnectionProvider(String url) {
         return () -> Mono.from(getConnectionProvider(url).create());
@@ -86,7 +94,7 @@ public final class Connections {
     }
 
     public static R2DBCConnectionProvider getH2() {
-        String url = "r2dbc:h2:mem:///h2-test;LOCK_MODE=0";
+        String url = "r2dbc:h2:file://././target/h2-test;LOCK_MODE=0";
         return getR2DBCConnectionProvider(url);
     }
 
@@ -127,9 +135,9 @@ public final class Connections {
                 .column("ID", Integer.class).notNull()
                 .column("FIRSTNAME", String.class).size(50)
                 .column("LASTNAME", String.class).size(50)
-                .column("SALARY", Double.class)
-                .column("DATEFIELD", Date.class)
-                .column("TIMEFIELD", Time.class)
+                .column("SALARY", BigDecimal.class)
+                .column("DATEFIELD", LocalDate.class)
+                .column("TIMEFIELD", LocalTime.class)
                 .column("SUPERIOR_ID", Integer.class)
                 .primaryKey("PK_EMPLOYEE", "ID")
                 .foreignKey("FK_SUPERIOR", "SUPERIOR_ID").references("EMPLOYEE", "ID")
@@ -188,7 +196,7 @@ public final class Connections {
 
         Flux<Void> setup = Flux.concat(
 //                execute(connection, "DROP ALIAS IF EXISTS InitGeoDB").then(),
-//                execute(connection, "CREATE ALIAS InitGeoDB for \"geodb.GeoDB.InitGeoDB\"").then(),
+//                execute(connection, "CREATE ALIAS InitGeoDB for geodb.GeoDB.InitGeoDB").then(),
 //                execute(connection, "CALL InitGeoDB()").then(),
                 dropTable(templates, "SHAPES").then(),
                 execute(connection, "create table SHAPES (ID int not null primary key, GEOMETRY blob)").then(),
@@ -199,9 +207,10 @@ public final class Connections {
                 execute(connection, "drop table SURVEY if exists").then(),
                 execute(connection, CREATE_TABLE_SURVEY).then(),
                 execute(connection, "insert into SURVEY values (1, 'Hello World', 'Hello');").then(),
-                execute(connection, "alter table SURVEY alter column id int auto_increment").then(),
+//                execute(connection, "alter table SURVEY alter column id int auto_increment").then(),
                 execute(connection, "drop table TEST if exists").then(),
                 execute(connection, CREATE_TABLE_TEST).then(),
+                dropTable(templates, "EMPLOYEE").then(),
                 createEmployeeTable(templates).then(),
                 addEmployees(connection, INSERT_INTO_EMPLOYEE).then(),
                 execute(connection, "alter table EMPLOYEE alter column id int auto_increment").then(),
@@ -215,14 +224,20 @@ public final class Connections {
                 execute(connection, "create table XML_TEST(COL varchar(128))").then()
         );
 
-        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
-            setup = setup.concatWith(execute(connection, "insert into SHAPES values(" + entry.getKey()
-                    + ", ST_GeomFromText('" + entry.getValue() + "', 4326))").then());
-        }
+//        for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
+//            setup = setup.concatWith(execute(connection, "insert into SHAPES values(" + entry.getKey()
+//                    + ", ST_GeomFromText('" + entry.getValue() + "', 4326))").then());
+//        }
 
-        Statement pstmt = connection.createStatement(INSERT_INTO_TEST_VALUES);
+        List<Object> constants = Arrays.asList(0);
+        String sql = R2dbcUtils.replaceBindingArguments(getConfiguration().getBindMarkerFactory().create(), constants, quote(INSERT_INTO_TEST_VALUES, "TEST"));
+        Statement pstmt = connection.createStatement(sql);
+
+        BindTarget bindTarget = new StatementWrapper(pstmt);
+
         for (int i = 0; i < TEST_ROW_COUNT; i++) {
-            pstmt.bind(1, "name" + i);
+            BindMarkers bindMarkers = getConfiguration().getBindMarkerFactory().create();
+            getConfiguration().set(bindMarkers.next(), bindTarget, Expressions.stringPath("name"), "name" + i);
             pstmt.add();
         }
 
@@ -280,9 +295,15 @@ public final class Connections {
                     + ", GeomFromText('" + entry.getValue() + "'))").then());
         }
 
-        Statement pstmt = connection.createStatement(INSERT_INTO_TEST_VALUES);
+        List<Object> constants = Arrays.asList(0);
+        String sql = R2dbcUtils.replaceBindingArguments(getConfiguration().getBindMarkerFactory().create(), constants, INSERT_INTO_TEST_VALUES);
+        Statement pstmt = connection.createStatement(sql);
+
+        BindTarget bindTarget = new StatementWrapper(pstmt);
+
         for (int i = 0; i < TEST_ROW_COUNT; i++) {
-            pstmt.bind(1, "name" + i);
+            BindMarkers bindMarkers = getConfiguration().getBindMarkerFactory().create();
+            getConfiguration().set(bindMarkers.next(), bindTarget, Expressions.stringPath("name"), "name" + i);
             pstmt.add();
         }
 
@@ -308,7 +329,7 @@ public final class Connections {
         }
 
         Flux<Void> setup = Flux.concat(
-                execute(connection, "drop table if exists SHAPES").then(),
+                dropTable(templates, "SHAPES").then(),
                 execute(connection, "create table \"SHAPES\" (\"ID\" int not null primary key)").then(),
                 execute(connection, "select AddGeometryColumn('SHAPES', 'GEOMETRY', -1, 'GEOMETRY', 2)").then(),
                 dropType(connection, "u_country").then(),
@@ -344,9 +365,15 @@ public final class Connections {
                     + ", '" + entry.getValue() + "')").then());
         }
 
-        Statement pstmt = connection.createStatement(quote(INSERT_INTO_TEST_VALUES, "TEST"));
+        List<Object> constants = Arrays.asList(0);
+        String sql = R2dbcUtils.replaceBindingArguments(getConfiguration().getBindMarkerFactory().create(), constants, quote(INSERT_INTO_TEST_VALUES, "TEST"));
+        Statement pstmt = connection.createStatement(sql);
+
+        BindTarget bindTarget = new StatementWrapper(pstmt);
+
         for (int i = 0; i < TEST_ROW_COUNT; i++) {
-            pstmt.bind(1, "name" + i);
+            BindMarkers bindMarkers = getConfiguration().getBindMarkerFactory().create();
+            getConfiguration().set(bindMarkers.next(), bindTarget, Expressions.stringPath("name"), "name" + i);
             pstmt.add();
         }
 
@@ -370,7 +397,6 @@ public final class Connections {
             return;
         }
 
-
         Flux<Void> setup = Flux.concat(
                 dropTable(templates, "SHAPES").then(),
                 execute(connection, "create table SHAPES (ID int not null primary key, GEOMETRY geometry)").then(),
@@ -387,7 +413,7 @@ public final class Connections {
                 dropTable(templates, "DATE_TEST").then(),
                 execute(connection, CREATE_TABLE_DATETEST).then(),
                 dropTable(templates, "NUMBER_TEST").then(),
-                execute(connection, "create table \"NUMBER_TEST\"(\"COL1\" boolean)").then()
+                execute(connection, "create table NUMBER_TEST(COL1 tinyint)").then()
         );
 
         for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
@@ -395,9 +421,15 @@ public final class Connections {
                     + ", geometry::STGeomFromText('" + entry.getValue() + "', 0))").then());
         }
 
-        Statement pstmt = connection.createStatement(INSERT_INTO_TEST_VALUES);
+        List<Object> constants = Arrays.asList(0);
+        String sql = R2dbcUtils.replaceBindingArguments(getConfiguration().getBindMarkerFactory().create(), constants, quote(INSERT_INTO_TEST_VALUES, "TEST"));
+        Statement pstmt = connection.createStatement(sql);
+
+        BindTarget bindTarget = new StatementWrapper(pstmt);
+
         for (int i = 0; i < TEST_ROW_COUNT; i++) {
-            pstmt.bind(1, "name" + i);
+            BindMarkers bindMarkers = getConfiguration().getBindMarkerFactory().create();
+            getConfiguration().set(bindMarkers.next(), bindTarget, Expressions.stringPath("name"), "name" + i);
             pstmt.add();
         }
 
@@ -410,20 +442,27 @@ public final class Connections {
         sqlServerInited = true;
     }
 
-    static Mono<Void> addEmployee(Connection connection, String sql, int id, String firstName, String lastName,
+    static Mono<Void> addEmployee(Connection connection, String originalSql, int id, String firstName, String lastName,
                                   double salary, int superiorId) {
-        Statement statement = connection.createStatement(sql);
+        Configuration configuration = configurationHolder.get();
 
-        statement.bind(1, id);
-        statement.bind(2, firstName);
-        statement.bind(3, lastName);
-        statement.bind(4, salary);
-        statement.bind(5, Constants.localDate);
-        statement.bind(6, Constants.localTime);
+        List<Object> constants = Arrays.asList(0, 1, 2, 3, 4, 5, 6);
+        String sql = R2dbcUtils.replaceBindingArguments(configuration.getBindMarkerFactory().create(), constants, originalSql);
+
+        Statement statement = connection.createStatement(sql);
+        BindTarget bindTarget = new StatementWrapper(statement);
+        BindMarkers bindMarkers = configuration.getBindMarkerFactory().create();
+
+        configuration.set(bindMarkers.next(), bindTarget, QEmployee.employee.id, id);
+        configuration.set(bindMarkers.next(), bindTarget, QEmployee.employee.firstname, firstName);
+        configuration.set(bindMarkers.next(), bindTarget, QEmployee.employee.lastname, lastName);
+        configuration.set(bindMarkers.next(), bindTarget, QEmployee.employee.salary, salary);
+        configuration.set(bindMarkers.next(), bindTarget, QEmployee.employee.datefield, Constants.localDate);
+        configuration.set(bindMarkers.next(), bindTarget, QEmployee.employee.timefield, Constants.localTime);
         if (superiorId <= 0) {
-            statement.bindNull(7, Integer.class);
+            configuration.set(bindMarkers.next(), bindTarget, QEmployee.employee.superiorId, null);
         } else {
-            statement.bind(7, superiorId);
+            configuration.set(bindMarkers.next(), bindTarget, QEmployee.employee.superiorId, superiorId);
         }
 
         return Mono.from(statement.execute()).then();
@@ -451,7 +490,7 @@ public final class Connections {
     private static String quote(String sql, String... identifiers) {
         String rv = sql;
         for (String id : identifiers) {
-            rv = rv.replace(id, "\"" + id + "\"");
+            rv = rv.replace(id, "" + id + "");
         }
         return rv;
     }

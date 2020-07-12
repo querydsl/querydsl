@@ -25,13 +25,13 @@ import java.util.Set;
 /**
  * {@code JavaTypeMapping} provides a mapping from Class to Type instances
  *
- * @author tiwe
+ * @author mc_fish
  */
 class JavaTypeMapping {
 
-    private static final Type<Object> DEFAULT = new ObjectType();
+    private static final Type<Object, Object> DEFAULT = new ObjectType();
 
-    private static final Map<Class<?>, Type<?>> defaultTypes = new HashMap<Class<?>, Type<?>>();
+    private static final Map<Class<?>, Type<?, ?>> defaultTypes = new HashMap<>();
 
     static {
         registerDefault(new BigIntegerType());
@@ -49,6 +49,7 @@ class JavaTypeMapping {
         registerDefault(new IntegerType());
         registerDefault(new LocaleType());
         registerDefault(new LongType());
+        registerDefault(new NullType());
         registerDefault(new ObjectType());
         registerDefault(new ShortType());
         registerDefault(new StringType());
@@ -61,13 +62,13 @@ class JavaTypeMapping {
         // initialize java time api (JSR 310) converters only if java 8 is available
         try {
             Class.forName("java.time.Instant");
-            registerDefault((Type<?>) Class.forName("com.querydsl.r2dbc.types.JSR310InstantType").newInstance());
-            registerDefault((Type<?>) Class.forName("com.querydsl.r2dbc.types.JSR310LocalDateTimeType").newInstance());
-            registerDefault((Type<?>) Class.forName("com.querydsl.r2dbc.types.JSR310LocalDateType").newInstance());
-            registerDefault((Type<?>) Class.forName("com.querydsl.r2dbc.types.JSR310LocalTimeType").newInstance());
-            registerDefault((Type<?>) Class.forName("com.querydsl.r2dbc.types.JSR310OffsetDateTimeType").newInstance());
-            registerDefault((Type<?>) Class.forName("com.querydsl.r2dbc.types.JSR310OffsetTimeType").newInstance());
-            registerDefault((Type<?>) Class.forName("com.querydsl.r2dbc.types.JSR310ZonedDateTimeType").newInstance());
+            registerDefault((Type<?, ?>) Class.forName("com.querydsl.r2dbc.types.JSR310InstantType").newInstance());
+            registerDefault((Type<?, ?>) Class.forName("com.querydsl.r2dbc.types.JSR310LocalDateTimeType").newInstance());
+            registerDefault((Type<?, ?>) Class.forName("com.querydsl.r2dbc.types.JSR310LocalDateType").newInstance());
+            registerDefault((Type<?, ?>) Class.forName("com.querydsl.r2dbc.types.JSR310LocalTimeType").newInstance());
+            registerDefault((Type<?, ?>) Class.forName("com.querydsl.r2dbc.types.JSR310OffsetDateTimeType").newInstance());
+            registerDefault((Type<?, ?>) Class.forName("com.querydsl.r2dbc.types.JSR310OffsetTimeType").newInstance());
+            registerDefault((Type<?, ?>) Class.forName("com.querydsl.r2dbc.types.JSR310ZonedDateTimeType").newInstance());
         } catch (ClassNotFoundException e) {
             // converters for JSR 310 are not loaded
         } catch (InstantiationException e) {
@@ -77,7 +78,7 @@ class JavaTypeMapping {
         }
     }
 
-    private static void registerDefault(Type<?> type) {
+    private static void registerDefault(Type<?, ?> type) {
         defaultTypes.put(type.getReturnedClass(), type);
         Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
         if (primitive != null) {
@@ -85,15 +86,15 @@ class JavaTypeMapping {
         }
     }
 
-    private final Map<Class<?>, Type<?>> typeByClass = new HashMap<Class<?>, Type<?>>();
+    private final Map<Class<?>, Type<?, ?>> typeByClass = new HashMap<Class<?>, Type<?, ?>>();
 
-    private final Map<Class<?>, Type<?>> resolvedTypesByClass = new HashMap<Class<?>, Type<?>>();
+    private final Map<Class<?>, Type<?, ?>> resolvedTypesByClass = new HashMap<Class<?>, Type<?, ?>>();
 
-    private final Map<String, Map<String, Type<?>>> typeByColumn = new HashMap<String, Map<String, Type<?>>>();
+    private final Map<String, Map<String, Type<?, ?>>> typeByColumn = new HashMap<String, Map<String, Type<?, ?>>>();
 
     @Nullable
-    public Type<?> getType(String table, String column) {
-        Map<String, Type<?>> columns = typeByColumn.get(table);
+    public Type<?, ?> getType(String table, String column) {
+        Map<String, Type<?, ?>> columns = typeByColumn.get(table);
         if (columns != null) {
             return columns.get(column);
         } else {
@@ -102,8 +103,8 @@ class JavaTypeMapping {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Type<T> getType(Class<T> clazz) {
-        Type<?> resolvedType = resolvedTypesByClass.get(clazz);
+    public <T> Type<T, ?> getType(Class<T> clazz) {
+        Type<?, ?> resolvedType = resolvedTypesByClass.get(clazz);
         if (resolvedType == null) {
             resolvedType = findType(clazz);
             if (resolvedType != null) {
@@ -112,11 +113,11 @@ class JavaTypeMapping {
                 return (Type) DEFAULT;
             }
         }
-        return (Type<T>) resolvedType;
+        return (Type<T, ?>) resolvedType;
     }
 
     @Nullable
-    private Type<?> findType(Class<?> clazz) {
+    private Type<?, ?> findType(Class<?> clazz) {
         //Look for a registered type in the class hierarchy
         Class<?> cl = clazz;
         do {
@@ -140,7 +141,7 @@ class JavaTypeMapping {
         return null;
     }
 
-    public void register(Type<?> type) {
+    public void register(Type<?, ?> type) {
         typeByClass.put(type.getReturnedClass(), type);
         Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
         if (primitive != null) {
@@ -150,10 +151,10 @@ class JavaTypeMapping {
         resolvedTypesByClass.clear();
     }
 
-    public void setType(String table, String column, Type<?> type) {
-        Map<String, Type<?>> columns = typeByColumn.get(table);
+    public void setType(String table, String column, Type<?, ?> type) {
+        Map<String, Type<?, ?>> columns = typeByColumn.get(table);
         if (columns == null) {
-            columns = new HashMap<String, Type<?>>();
+            columns = new HashMap<String, Type<?, ?>>();
             typeByColumn.put(table, columns);
         }
         columns.put(column, type);

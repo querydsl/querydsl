@@ -20,7 +20,7 @@ import java.sql.Types;
 /**
  * {@code H2Templates} is an SQL dialect for H2
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class H2Templates extends SQLTemplates {
 
@@ -45,7 +45,7 @@ public class H2Templates extends SQLTemplates {
     }
 
     public H2Templates(char escape, boolean quote) {
-        super(Keywords.H2, "\"", escape, quote, false);
+        super(Keywords.H2, "\"", escape, quote, false, ANONYMOUS);
         setNativeMerge(true);
         setMaxLimit(2 ^ 31);
         setLimitRequired(true);

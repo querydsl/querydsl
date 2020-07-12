@@ -15,7 +15,12 @@ package com.querydsl.core.group;
 
 import com.querydsl.core.types.Expression;
 
-class GMax<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T> {
+/**
+ * GMax
+ *
+ * @param <T> t
+ */
+public class GMax<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3815394663181131511L;
 
@@ -25,8 +30,8 @@ class GMax<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T
     }
 
     @Override
-    public GroupCollector<T,T> createGroupCollector() {
-        return new GroupCollector<T,T>() {
+    public GroupCollector<T, T> createGroupCollector() {
+        return new GroupCollector<T, T>() {
             private T max;
 
             @Override
@@ -37,6 +42,7 @@ class GMax<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T
                     max = o;
                 }
             }
+
             @Override
             public T get() {
                 return max;

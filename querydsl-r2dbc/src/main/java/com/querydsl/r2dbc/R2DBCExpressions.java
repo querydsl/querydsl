@@ -17,7 +17,6 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.*;
-import com.querydsl.sql.SQLOps;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -26,8 +25,7 @@ import java.util.Map;
 /**
  * Common SQL expressions
  *
- * @author tiwe
- *
+ * @author mc_fish
  */
 @SuppressWarnings("rawtypes")
 public final class R2DBCExpressions {
@@ -106,7 +104,7 @@ public final class R2DBCExpressions {
      * Create an assignment expression
      *
      * @param target target expression
-     * @param value value to be set
+     * @param value  value to be set
      * @param <T>
      * @return target = value
      */
@@ -124,7 +122,7 @@ public final class R2DBCExpressions {
      * Create an assignment expression
      *
      * @param target target expression
-     * @param value value to be set
+     * @param value  value to be set
      * @param <T>
      * @return target = value
      */
@@ -213,7 +211,7 @@ public final class R2DBCExpressions {
     /**
      * Create a new UNION clause
      *
-     * @param sq subqueries
+     * @param sq  subqueries
      * @param <T>
      * @return union
      */
@@ -224,7 +222,7 @@ public final class R2DBCExpressions {
     /**
      * Create a new UNION clause
      *
-     * @param sq subqueries
+     * @param sq  subqueries
      * @param <T>
      * @return union
      */
@@ -235,7 +233,7 @@ public final class R2DBCExpressions {
     /**
      * Create a new UNION ALL clause
      *
-     * @param sq subqueries
+     * @param sq  subqueries
      * @param <T>
      * @return union
      */
@@ -246,7 +244,7 @@ public final class R2DBCExpressions {
     /**
      * Create a new UNION ALL clause
      *
-     * @param sq subqueries
+     * @param sq  subqueries
      * @param <T>
      * @return union
      */
@@ -271,9 +269,9 @@ public final class R2DBCExpressions {
     /**
      * Create a new RelationalFunctionCall for the given function and arguments
      *
-     * @param type type
+     * @param type     type
      * @param function function name
-     * @param args arguments
+     * @param args     arguments
      * @param <T>
      * @return relational function call
      */
@@ -298,7 +296,7 @@ public final class R2DBCExpressions {
      *
      * <p>Returns the next value from the given sequence</p>
      *
-     * @param type type of call
+     * @param type     type of call
      * @param sequence sequence name
      * @return nextval(sequence)
      */
@@ -319,7 +317,7 @@ public final class R2DBCExpressions {
     /**
      * Convert timestamp to date
      *
-     * @param type type
+     * @param type     type
      * @param dateTime timestamp
      * @return date
      */
@@ -330,8 +328,8 @@ public final class R2DBCExpressions {
     /**
      * Create a dateadd(unit, date, amount) expression
      *
-     * @param unit date part
-     * @param date date
+     * @param unit   date part
+     * @param date   date
      * @param amount amount
      * @return converted date
      */
@@ -342,8 +340,8 @@ public final class R2DBCExpressions {
     /**
      * Create a dateadd(unit, date, amount) expression
      *
-     * @param unit date part
-     * @param date date
+     * @param unit   date part
+     * @param date   date
      * @param amount amount
      * @return converted date
      */
@@ -354,78 +352,78 @@ public final class R2DBCExpressions {
     /**
      * Get a datediff(unit, start, end) expression
      *
-     * @param unit date part
+     * @param unit  date part
      * @param start start
-     * @param end end
+     * @param end   end
      * @return difference in units
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
-            DateExpression<D> start, DateExpression<D> end) {
+                                                                            DateExpression<D> start, DateExpression<D> end) {
         return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
     }
 
     /**
      * Get a datediff(unit, start, end) expression
      *
-     * @param unit date part
+     * @param unit  date part
      * @param start start
-     * @param end end
+     * @param end   end
      * @return difference in units
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
-            D start, DateExpression<D> end) {
+                                                                            D start, DateExpression<D> end) {
         return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), ConstantImpl.create(start), end);
     }
 
     /**
      * Get a datediff(unit, start, end) expression
      *
-     * @param unit date part
+     * @param unit  date part
      * @param start start
-     * @param end end
+     * @param end   end
      * @return difference in units
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
-            DateExpression<D> start, D end) {
+                                                                            DateExpression<D> start, D end) {
         return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), start, ConstantImpl.create(end));
     }
 
     /**
      * Get a datediff(unit, start, end) expression
      *
-     * @param unit date part
+     * @param unit  date part
      * @param start start
-     * @param end end
+     * @param end   end
      * @return difference in units
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
-            DateTimeExpression<D> start, DateTimeExpression<D> end) {
+                                                                            DateTimeExpression<D> start, DateTimeExpression<D> end) {
         return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), start, end);
     }
 
     /**
      * Get a datediff(unit, start, end) expression
      *
-     * @param unit date part
+     * @param unit  date part
      * @param start start
-     * @param end end
+     * @param end   end
      * @return difference in units
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
-            D start, DateTimeExpression<D> end) {
+                                                                            D start, DateTimeExpression<D> end) {
         return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), ConstantImpl.create(start), end);
     }
 
     /**
      * Get a datediff(unit, start, end) expression
      *
-     * @param unit date part
+     * @param unit  date part
      * @param start start
-     * @param end end
+     * @param end   end
      * @return difference in units
      */
     public static <D extends Comparable> NumberExpression<Integer> datediff(DatePart unit,
-            DateTimeExpression<D> start, D end) {
+                                                                            DateTimeExpression<D> start, D end) {
         return Expressions.numberOperation(Integer.class, DATE_DIFF_OPS.get(unit), start, ConstantImpl.create(end));
     }
 
@@ -452,7 +450,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of years to the date
      *
-     * @param date datetime
+     * @param date  datetime
      * @param years years to add
      * @return converted datetime
      */
@@ -463,7 +461,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of months to the date
      *
-     * @param date datetime
+     * @param date   datetime
      * @param months months to add
      * @return converted datetime
      */
@@ -474,7 +472,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of weeks to the date
      *
-     * @param date datetime
+     * @param date  datetime
      * @param weeks weeks to add
      * @return converted date
      */
@@ -496,7 +494,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of hours to the date
      *
-     * @param date datetime
+     * @param date  datetime
      * @param hours hours to add
      * @return converted datetime
      */
@@ -507,7 +505,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of minutes to the date
      *
-     * @param date datetime
+     * @param date    datetime
      * @param minutes minutes to add
      * @return converted datetime
      */
@@ -518,7 +516,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of seconds to the date
      *
-     * @param date datetime
+     * @param date    datetime
      * @param seconds seconds to add
      * @return converted datetime
      */
@@ -529,7 +527,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of years to the date
      *
-     * @param date date
+     * @param date  date
      * @param years years to add
      * @return converted date
      */
@@ -540,7 +538,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of months to the date
      *
-     * @param date date
+     * @param date   date
      * @param months months to add
      * @return converted date
      */
@@ -551,7 +549,7 @@ public final class R2DBCExpressions {
     /**
      * Add the given amount of weeks to the date
      *
-     * @param date date
+     * @param date  date
      * @param weeks weeks to add
      * @return converted date
      */
@@ -663,7 +661,7 @@ public final class R2DBCExpressions {
      * LISTAGG orders data within each group specified in the ORDER BY clause and then concatenates
      * the values of the measure column.
      *
-     * @param expr measure column
+     * @param expr      measure column
      * @param delimiter delimiter
      * @return listagg(expr, delimiter)
      */
@@ -676,7 +674,7 @@ public final class R2DBCExpressions {
      * The returned value has the data type of the expr.
      *
      * @param expr measure expression
-     * @param n one based row index
+     * @param n    one based row index
      * @return nth_value(expr, n)
      */
     public static <T> WindowOver<T> nthValue(Expression<T> expr, Number n) {
@@ -688,7 +686,7 @@ public final class R2DBCExpressions {
      * The returned value has the data type of the expr
      *
      * @param expr measure expression
-     * @param n one based row index
+     * @param n    one based row index
      * @return nth_value(expr, n)
      */
     public static <T> WindowOver<T> nthValue(Expression<T> expr, Expression<? extends Number> n) {
@@ -1239,7 +1237,7 @@ public final class R2DBCExpressions {
     /**
      * Get a group_concat(expr, separator) expression
      *
-     * @param expr expression to be aggregated
+     * @param expr      expression to be aggregated
      * @param separator separator string
      * @return group_concat(expr, separator)
      */
@@ -1247,6 +1245,55 @@ public final class R2DBCExpressions {
         return Expressions.stringOperation(SQLOps.GROUP_CONCAT2, expr, Expressions.constant(separator));
     }
 
-    private R2DBCExpressions() { }
+    /**
+     * Create a new Operation expression
+     *
+     * @param type     type of expression
+     * @param operator operator
+     * @param args     operation arguments
+     * @return operation expression
+     */
+    public static <T extends Comparable<?>> LocalDateOperation<T> localDateOperation(
+            Class<? extends T> type,
+            Operator operator,
+            Expression<?>... args
+    ) {
+        return new LocalDateOperation<T>(type, operator, args);
+    }
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param type     type of expression
+     * @param operator operator
+     * @param args     operation arguments
+     * @return operation expression
+     */
+    public static <T extends Comparable<?>> LocalDateTimeOperation<T> localDateTimeOperation(
+            Class<? extends T> type,
+            Operator operator,
+            Expression<?>... args
+    ) {
+        return new LocalDateTimeOperation<T>(type, operator, args);
+    }
+
+    /**
+     * Create a new Operation expression
+     *
+     * @param type     type of expression
+     * @param operator operator
+     * @param args     operation arguments
+     * @return operation expression
+     */
+    public static <T extends Comparable<?>> LocalTimeOperation<T> localTimeOperation(
+            Class<? extends T> type,
+            Operator operator,
+            Expression<?>... args
+    ) {
+        return new LocalTimeOperation<T>(type, operator, args);
+    }
+
+    private R2DBCExpressions() {
+    }
 
 }

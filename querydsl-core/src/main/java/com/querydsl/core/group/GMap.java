@@ -13,21 +13,28 @@
  */
 package com.querydsl.core.group;
 
-import java.util.*;
-
 import com.mysema.commons.lang.Pair;
 
-abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pair<K, V>, M> {
+import java.util.*;
+
+/**
+ * GMap
+ *
+ * @param <K> k
+ * @param <V> v
+ * @param <M> m
+ */
+public abstract class GMap<K, V, M extends Map<K, V>> extends AbstractGroupExpression<Pair<K, V>, M> {
 
     private static final long serialVersionUID = 7106389414200843920L;
 
-    public GMap(QPair<K,V> qpair) {
+    public GMap(QPair<K, V> qpair) {
         super(Map.class, qpair);
     }
 
     protected abstract M createMap();
 
-    public static <T, U> GMap<T, U, Map<T,U>> createLinked(QPair<T, U> expr) {
+    public static <T, U> GMap<T, U, Map<T, U>> createLinked(QPair<T, U> expr) {
         return new GMap<T, U, Map<T, U>>(expr) {
             @Override
             protected Map<T, U> createMap() {
@@ -55,13 +62,13 @@ abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pa
     }
 
     @Override
-    public GroupCollector<Pair<K,V>, M> createGroupCollector() {
-        return new GroupCollector<Pair<K,V>, M>() {
+    public GroupCollector<Pair<K, V>, M> createGroupCollector() {
+        return new GroupCollector<Pair<K, V>, M>() {
 
             private final M map = createMap();
 
             @Override
-            public void add(Pair<K,V> pair) {
+            public void add(Pair<K, V> pair) {
                 map.put(pair.getFirst(), pair.getSecond());
             }
 
@@ -73,7 +80,16 @@ abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pa
         };
     }
 
-    static class Mixin<K, V, T, U, R extends Map<? super T, ? super U>> extends AbstractGroupExpression<Pair<K, V>, R> {
+    /**
+     * Mixin
+     *
+     * @param <K> k
+     * @param <V> v
+     * @param <T> t
+     * @param <U> u
+     * @param <R> r
+     */
+    public static class Mixin<K, V, T, U, R extends Map<? super T, ? super U>> extends AbstractGroupExpression<Pair<K, V>, R> {
 
         private static final long serialVersionUID = 1939989270493531116L;
 
@@ -126,7 +142,7 @@ abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pa
         private final GroupExpression<K, T> keyExpression;
         private final GroupExpression<V, U> valueExpression;
 
-        @SuppressWarnings({ "rawtypes", "unchecked" })
+        @SuppressWarnings({"rawtypes", "unchecked"})
         public Mixin(GroupExpression<K, T> keyExpression, GroupExpression<V, U> valueExpression, AbstractGroupExpression<Pair<T, U>, R> mixin) {
             super((Class) mixin.getType(), QPair.create(keyExpression.getExpression(), valueExpression.getExpression()));
             this.keyExpression = keyExpression;

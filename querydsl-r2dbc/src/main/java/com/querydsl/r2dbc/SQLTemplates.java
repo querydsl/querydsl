@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
+import com.querydsl.r2dbc.binding.BindMarkersFactory;
 import com.querydsl.r2dbc.dml.R2DBCInsertBatch;
 import com.querydsl.r2dbc.types.Type;
 import com.querydsl.sql.RelationalPath;
@@ -40,9 +41,10 @@ import static com.google.common.base.CharMatcher.inRange;
  * {@code SQLTemplates} extends {@link Templates} to provides SQL specific extensions
  * and acts as database specific Dialect for Querydsl SQL
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class SQLTemplates extends Templates {
+
 
     protected static final Expression<?> FOR_SHARE = ExpressionUtils.operation(
             Object.class, SQLOps.FOR_SHARE, ImmutableList.of());
@@ -57,8 +59,12 @@ public class SQLTemplates extends Templates {
 
     public static final Expression<?> RECURSIVE = ExpressionUtils.template(Object.class, "");
 
+    public static final BindMarkersFactory ANONYMOUS = BindMarkersFactory.anonymous("?");
+    public static final BindMarkersFactory INDEXED = BindMarkersFactory.indexed("$", 1);
+    public static final BindMarkersFactory NAMED = BindMarkersFactory.named("@", "P", 32);
+
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
-    public static final SQLTemplates DEFAULT = new SQLTemplates("\"", '\\', false);
+    public static final SQLTemplates DEFAULT = new SQLTemplates("\"", '\\', false, ANONYMOUS);
 
     protected static final Set<? extends Operator> OTHER_LIKE_CASES
             = Sets.immutableEnumSet(Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
@@ -75,14 +81,16 @@ public class SQLTemplates extends Templates {
 
     private final Set<String> reservedWords;
 
+    private final BindMarkersFactory bindMarkerFactory;
+
     /**
      * Fluent builder for {@code SQLTemplates} instances     *
      */
     public abstract static class Builder {
 
         protected boolean printSchema, quote, newLineToSingleSpace;
-
         protected char escape = '\\';
+        protected BindMarkersFactory bindMarkerFactory = ANONYMOUS;
 
         public Builder printSchema() {
             printSchema = true;
@@ -99,6 +107,11 @@ public class SQLTemplates extends Templates {
             return this;
         }
 
+        public Builder bindMarkerFactory(BindMarkersFactory bindMarkerFactory) {
+            this.bindMarkerFactory = bindMarkerFactory;
+            return this;
+        }
+
         public Builder escape(char ch) {
             escape = ch;
             return this;
@@ -111,6 +124,7 @@ public class SQLTemplates extends Templates {
             if (newLineToSingleSpace) {
                 templates.newLineToSingleSpace();
             }
+//            templates.setBindMarkerFactory(bindMarkerFactory)
             templates.setPrintSchema(printSchema);
             return templates;
         }
@@ -123,7 +137,7 @@ public class SQLTemplates extends Templates {
 
     private final Map<SchemaAndTable, SchemaAndTable> tableOverrides = Maps.newHashMap();
 
-    private final List<Type<?>> customTypes = Lists.newArrayList();
+    private final List<Type<?, ?>> customTypes = Lists.newArrayList();
 
     private final String quoteStr;
 
@@ -177,7 +191,7 @@ public class SQLTemplates extends Templates {
 
     private String rightJoin = "\nright join ";
 
-    private String limitTemplate = "\nlimit {0}";
+    private final String limitTemplate = "\nlimit {0}";
 
     private String mergeInto = "merge into ";
 
@@ -254,20 +268,21 @@ public class SQLTemplates extends Templates {
     private QueryFlag noWaitFlag = new QueryFlag(Position.END, NO_WAIT);
 
     @Deprecated
-    protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
-        this(Keywords.DEFAULT, quoteStr, escape, useQuotes, false);
+    protected SQLTemplates(String quoteStr, char escape, boolean useQuotes, BindMarkersFactory bindMarkerFactory) {
+        this(Keywords.DEFAULT, quoteStr, escape, useQuotes, false, bindMarkerFactory);
     }
 
-    protected SQLTemplates(Set<String> reservedKeywords, String quoteStr, char escape, boolean useQuotes) {
-        this(reservedKeywords, quoteStr, escape, useQuotes, false);
+    protected SQLTemplates(Set<String> reservedKeywords, String quoteStr, char escape, boolean useQuotes, BindMarkersFactory bindMarkerFactory) {
+        this(reservedKeywords, quoteStr, escape, useQuotes, false, bindMarkerFactory);
     }
 
-    protected SQLTemplates(Set<String> reservedKeywords, String quoteStr, char escape, boolean useQuotes, boolean requiresSchemaInWhere) {
+    protected SQLTemplates(Set<String> reservedKeywords, String quoteStr, char escape, boolean useQuotes, boolean requiresSchemaInWhere, BindMarkersFactory bindMarkerFactory) {
         super(escape);
         this.reservedWords = reservedKeywords;
         this.quoteStr = quoteStr;
         this.useQuotes = useQuotes;
         this.requiresSchemaInWhere = requiresSchemaInWhere;
+        this.bindMarkerFactory = bindMarkerFactory;
 
         add(SQLOps.ALL, "{0}.*");
 
@@ -517,7 +532,7 @@ public class SQLTemplates extends Templates {
         tableOverrides.put(from, to);
     }
 
-    public final List<Type<?>> getCustomTypes() {
+    public final List<Type<?, ?>> getCustomTypes() {
         return customTypes;
     }
 
@@ -986,7 +1001,7 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    protected void addCustomType(Type<?> type) {
+    protected void addCustomType(Type<?, ?> type) {
         customTypes.add(type);
     }
 
@@ -1228,6 +1243,10 @@ public class SQLTemplates extends Templates {
 
     protected void setNoWaitFlag(QueryFlag flag) {
         noWaitFlag = flag;
+    }
+
+    public BindMarkersFactory getBindMarkerFactory() {
+        return bindMarkerFactory;
     }
 
 }

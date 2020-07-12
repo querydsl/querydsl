@@ -47,7 +47,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.domain.*;
 
-public class SelectBase extends AbstractBaseTest {
+public abstract class SelectBase extends AbstractBaseTest {
 
     private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
 

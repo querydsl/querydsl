@@ -26,7 +26,7 @@ import io.r2dbc.spi.Connection;
  * <p>REPLACE works exactly like INSERT, except that if an old row in the table has the same value
  * as a new row for a PRIMARY KEY or a UNIQUE index, the old row is deleted before the new row is inserted.</p>
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCMyReplaceClause extends R2DBCInsertClause {
 

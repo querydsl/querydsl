@@ -1,16 +1,14 @@
 package com.querydsl.r2dbc.types;
 
-import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
-import javax.annotation.Nullable;
 import java.sql.Date;
 import java.sql.Types;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.temporal.Temporal;
 
 /**
  * JSR310LocalDateType maps {@linkplain LocalDate}
@@ -37,30 +35,21 @@ public class JSR310LocalDateType extends AbstractJSR310DateTimeType<LocalDate> {
         return LocalDate.class;
     }
 
-    @Nullable
     @Override
-    public LocalDate getValue(Row row, int startIndex) {
+    public void setValue(BindMarker bindMarker, BindTarget bindTarget, LocalDate value) {
         try {
-            return super.getValue(row, startIndex);
+            super.setValue(bindMarker, bindTarget, value);
         } catch (Exception e) {
-            Date val = row.get(startIndex, Date.class);
-            return val != null ? LocalDateTime.ofInstant(Instant.ofEpochMilli(val.getTime()),
-                    ZoneOffset.UTC).toLocalDate() : null;
+            bindMarker.bind(bindTarget, value);
         }
     }
 
     @Override
-    public void setValue(Statement st, int startIndex, LocalDate value) {
-        try {
-            super.setValue(st, startIndex, value);
-        } catch (Exception e) {
-            if (value == null) {
-                st.bindNull(startIndex, getReturnedClass());
-            } else {
-                Instant i = value.atStartOfDay(ZoneOffset.UTC).toInstant();
-                st.bind(startIndex, new Date(i.toEpochMilli()));
-            }
+    protected LocalDate fromDbValue(Temporal value) {
+        if (LocalDateTime.class.isAssignableFrom(value.getClass())) {
+            return ((LocalDateTime) value).toLocalDate();
         }
-    }
 
+        return super.fromDbValue(value);
+    }
 }

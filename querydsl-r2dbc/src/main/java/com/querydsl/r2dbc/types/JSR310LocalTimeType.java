@@ -1,14 +1,15 @@
 package com.querydsl.r2dbc.types;
 
-import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
-import javax.annotation.Nullable;
 import java.sql.Time;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
+import java.time.temporal.Temporal;
 
 /**
  * JSR310LocalTimeType maps {@linkplain LocalTime}
@@ -35,28 +36,22 @@ public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
         return LocalTime.class;
     }
 
-    @Nullable
     @Override
-    public LocalTime getValue(Row row, int startIndex) {
+    public void setValue(BindMarker bindMarker, BindTarget bindTarget, LocalTime value) {
         try {
-            return super.getValue(row, startIndex);
+            super.setValue(bindMarker, bindTarget, value);
         } catch (Exception e) {
-            Time val = row.get(startIndex, Time.class);
-            return val != null ? LocalTime.ofNanoOfDay(val.getTime() * 1000000) : null;
+            bindMarker.bind(bindTarget, new Time(value.get(ChronoField.MILLI_OF_DAY)));
         }
     }
 
     @Override
-    public void setValue(Statement st, int startIndex, LocalTime value) {
-        try {
-            super.setValue(st, startIndex, value);
-        } catch (Exception e) {
-            if (value == null) {
-                st.bindNull(startIndex, getReturnedClass());
-            } else {
-                st.bind(startIndex, new Time(value.get(ChronoField.MILLI_OF_DAY)));
-            }
+    protected LocalTime fromDbValue(Temporal value) {
+        if (LocalDateTime.class.isAssignableFrom(value.getClass())) {
+            return ((LocalDateTime) value).toLocalTime();
         }
+
+        return super.fromDbValue(value);
     }
 
 }

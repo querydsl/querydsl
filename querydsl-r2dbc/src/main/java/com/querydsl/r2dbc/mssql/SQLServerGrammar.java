@@ -17,7 +17,7 @@ package com.querydsl.r2dbc.mssql;
 /**
  * Convenience functions and constants for SQL Server usage
  *
- * @author tiwe
+ * @author mc_fish
  */
 final class SQLServerGrammar {
 

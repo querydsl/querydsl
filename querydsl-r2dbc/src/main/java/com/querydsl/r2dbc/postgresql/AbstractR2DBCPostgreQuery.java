@@ -32,7 +32,7 @@ import io.r2dbc.spi.Connection;
  *
  * @param <T> result type
  * @param <C> the concrete subtype
- * @author tiwe
+ * @author mc_fish
  * @see R2DBCQuery
  */
 public abstract class AbstractR2DBCPostgreQuery<T, C extends AbstractR2DBCPostgreQuery<T, C>> extends AbstractR2DBCQuery<T, C> {

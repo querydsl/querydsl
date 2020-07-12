@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
 /**
  * {@code LocaleType} maps Locale to String on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class LocaleType extends AbstractType<Locale> {
+public class LocaleType extends AbstractType<Locale, String> {
 
     private static final Pattern LOCALE = Pattern.compile("[_#-]+");
 
@@ -63,8 +63,13 @@ public class LocaleType extends AbstractType<Locale> {
     }
 
     @Override
-    protected Object toDbValue(Locale value) {
+    protected String toDbValue(Locale value) {
         return value.toString();
+    }
+
+    @Override
+    public Class<String> getDatabaseClass() {
+        return String.class;
     }
 
 }

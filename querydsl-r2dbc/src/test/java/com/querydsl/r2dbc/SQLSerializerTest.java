@@ -379,7 +379,7 @@ public class SQLSerializerTest {
 
     @Test
     public void noSchemaInWhere() {
-        Configuration defaultWithPrintSchema = new Configuration(new SQLTemplates(Keywords.DEFAULT, "\"", '\\', false, false));
+        Configuration defaultWithPrintSchema = new Configuration(new SQLTemplates(Keywords.DEFAULT, "\"", '\\', false, false, SQLTemplates.ANONYMOUS));
         defaultWithPrintSchema.getTemplates().setPrintSchema(true);
 
         QEmployee e = QEmployee.employee;

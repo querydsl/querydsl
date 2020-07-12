@@ -18,9 +18,9 @@ import java.sql.Types;
 /**
  * {@code LongType} maps Long to Long on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class LongType extends AbstractType<Long> {
+public class LongType extends AbstractType<Long, Number> {
 
     public LongType() {
         super(Types.BIGINT);
@@ -33,6 +33,16 @@ public class LongType extends AbstractType<Long> {
     @Override
     public Class<Long> getReturnedClass() {
         return Long.class;
+    }
+
+    @Override
+    public Class<Number> getDatabaseClass() {
+        return Number.class;
+    }
+
+    @Override
+    protected Long fromDbValue(Number value) {
+        return value.longValue();
     }
 
 }

@@ -22,8 +22,6 @@ import com.querydsl.core.support.ReactiveFetchableSubQueryBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.sql.SQLBindings;
-import com.querydsl.sql.SQLOps;
 import com.querydsl.sql.*;
 import reactor.core.publisher.Mono;
 
@@ -348,7 +346,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
      */
     @SuppressWarnings("unchecked")
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return (Q) from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
+        return (Q)  from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
     }
 
     /**

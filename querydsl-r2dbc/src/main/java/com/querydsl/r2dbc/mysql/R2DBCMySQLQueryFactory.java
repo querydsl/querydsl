@@ -25,7 +25,7 @@ import com.querydsl.sql.RelationalPath;
 /**
  * MySQL specific implementation of SQLQueryFactory
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCMySQLQueryFactory extends AbstractR2DBCQueryFactory<R2DBCMySQLQuery<?>> {
 

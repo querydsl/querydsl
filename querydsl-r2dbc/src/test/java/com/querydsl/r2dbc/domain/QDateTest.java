@@ -6,7 +6,7 @@ import com.querydsl.core.types.dsl.DatePath;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPathBase;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class QDateTest extends RelationalPathBase<QDateTest> {
 
@@ -14,7 +14,7 @@ public class QDateTest extends RelationalPathBase<QDateTest> {
 
     public static final QDateTest qDateTest = new QDateTest("DATE_TEST");
 
-    public final DatePath<Date> dateTest = createDate("dateTest", Date.class);
+    public final DatePath<LocalDateTime> dateTest = createDate("dateTest", LocalDateTime.class);
 
     public QDateTest(String path) {
         super(QDateTest.class, PathMetadataFactory.forVariable(path), "PUBLIC", "DATE_TEST");

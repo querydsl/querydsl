@@ -28,7 +28,7 @@ import java.sql.Types;
  *
  * <p>tested with MySQL CE 5.1 and 5.5</p>
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class MySQLTemplates extends SQLTemplates {
 
@@ -56,7 +56,7 @@ public class MySQLTemplates extends SQLTemplates {
     }
 
     public MySQLTemplates(char escape, boolean quote) {
-        super(Keywords.MYSQL, "`", escape, quote, false);
+        super(Keywords.MYSQL, "`", escape, quote, false, ANONYMOUS);
         setArraysSupported(false);
         setParameterMetadataAvailable(false);
         setLimitRequired(true);

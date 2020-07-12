@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.querydsl.core.testutil.IncludeIn;
 import com.querydsl.sql.teradata.SetQueryBandClause;
 
-public class SelectTeradataBase extends AbstractBaseTest {
+public abstract class SelectTeradataBase extends AbstractBaseTest {
 
     protected SetQueryBandClause setQueryBand() {
         return new SetQueryBandClause(connection, configuration);

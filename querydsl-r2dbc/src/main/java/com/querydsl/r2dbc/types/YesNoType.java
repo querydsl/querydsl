@@ -21,9 +21,9 @@ import java.sql.Types;
 /**
  * {@code YesNoType} maps Boolean to 'Y'/'N' on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class YesNoType extends AbstractType<Boolean> {
+public class YesNoType extends AbstractType<Boolean, String> {
 
     public YesNoType() {
         super(Types.VARCHAR);
@@ -46,8 +46,13 @@ public class YesNoType extends AbstractType<Boolean> {
     }
 
     @Override
-    protected Object toDbValue(Boolean value) {
+    protected String toDbValue(Boolean value) {
         return value ? "Y" : "N";
+    }
+
+    @Override
+    public Class<String> getDatabaseClass() {
+        return String.class;
     }
 
 }

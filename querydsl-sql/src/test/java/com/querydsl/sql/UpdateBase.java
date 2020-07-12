@@ -36,7 +36,7 @@ import com.querydsl.sql.dml.SQLUpdateClause;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.domain.QSurvey;
 
-public class UpdateBase extends AbstractBaseTest {
+public abstract class UpdateBase extends AbstractBaseTest {
 
     protected void reset() throws SQLException {
         delete(survey).execute();

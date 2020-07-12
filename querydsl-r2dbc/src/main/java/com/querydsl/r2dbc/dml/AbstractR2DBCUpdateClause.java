@@ -25,7 +25,11 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.r2dbc.Configuration;
 import com.querydsl.r2dbc.R2DBCConnectionProvider;
+import com.querydsl.r2dbc.R2dbcUtils;
 import com.querydsl.r2dbc.SQLSerializer;
+import com.querydsl.r2dbc.binding.BindMarkers;
+import com.querydsl.r2dbc.binding.BindTarget;
+import com.querydsl.r2dbc.binding.StatementWrapper;
 import com.querydsl.r2dbc.types.Null;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLBindings;
@@ -44,7 +48,7 @@ import java.util.stream.Collectors;
  * Provides a base class for dialect-specific UPDATE clauses.
  *
  * @param <C> The type extending this class.
- * @author tiwe
+ * @author mc_fish
  */
 public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateClause<C>> extends AbstractR2DBCClause<C> implements ReactiveUpdateClause<C> {
 
@@ -319,29 +323,35 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
     }
 
     private Statement prepareStatementAndSetParameters(Connection connection, SQLSerializer serializer) {
-        String queryString = serializer.toString();
-        //queryString = R2dbcUtils.replaceBindingArguments(queryString);
-        Statement stmt = connection.createStatement(queryString);
+        String originalSql = serializer.toString();
+        List<Object> constants = serializer.getConstants();
+        queryString = R2dbcUtils.replaceBindingArguments(configuration.getBindMarkerFactory().create(), constants, originalSql);
+
+        logQuery(logger, queryString, serializer.getConstants());
+
+        Statement statement = connection.createStatement(queryString);
+        BindTarget bindTarget = new StatementWrapper(statement);
+
         if (batches.isEmpty()) {
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams(), 0);
+            setParameters(bindTarget, configuration.getBindMarkerFactory().create(), serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams());
         } else {
-            int offset = 0;
             for (R2DBCUpdateBatch batch : batches) {
-                setBatchParameters(stmt, batch, offset);
+                setBatchParameters(bindTarget, configuration.getBindMarkerFactory().create(), batch);
                 if (useLiterals) {
-                    connection.createBatch().add(stmt.toString());
+                    //TODO check this
+                    connection.createBatch().add(serializer.toString());
                 } else {
-                    stmt.add();
+                    statement.add();
                 }
             }
         }
-        return stmt;
+        return statement;
     }
 
-    private <T> void setBatchParameters(Statement stmt, R2DBCUpdateBatch batch, int offset) {
+    private <T> void setBatchParameters(BindTarget bindTarget, BindMarkers bindMarkers, R2DBCUpdateBatch batch) {
         SQLSerializer helperSerializer = createSerializer(true);
         helperSerializer.serializeUpdate(batch.getMetadata(), entity, batch.getUpdates());
-        setParameters(stmt, helperSerializer.getConstants(), helperSerializer.getConstantPaths(), batch.getMetadata().getParams(), offset);
+        setParameters(bindTarget, bindMarkers, helperSerializer.getConstants(), helperSerializer.getConstantPaths(), batch.getMetadata().getParams());
     }
 
 }

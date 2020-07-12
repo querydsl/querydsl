@@ -26,6 +26,7 @@ services:
     image: mdillon/postgis:9.3-alpine
     ports:
       - "5433:5432"
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
     volumes:
       - ./postgresql.sql:/docker-entrypoint-initdb.d/postgresql.sql
     environment:

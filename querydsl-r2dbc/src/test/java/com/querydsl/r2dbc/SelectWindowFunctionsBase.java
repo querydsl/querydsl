@@ -18,7 +18,7 @@ import java.util.List;
 import static com.querydsl.core.Target.*;
 import static com.querydsl.r2dbc.Constants.*;
 
-public class SelectWindowFunctionsBase extends AbstractBaseTest {
+public abstract class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(SQLSERVER) // FIXME

@@ -23,7 +23,7 @@ import io.r2dbc.spi.Connection;
  * {@code SQLDeleteClause} defines a DELETE clause.
  * If you need to subtype this, use {@link AbstractR2DBCDeleteClause} instead.
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCDeleteClause extends AbstractR2DBCDeleteClause<R2DBCDeleteClause> {
     public R2DBCDeleteClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {

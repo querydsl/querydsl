@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * {@code SQLServer2005Templates} is an SQL dialect for Microsoft SQL Server 2005
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class SQLServer2005Templates extends SQLServerTemplates {
 

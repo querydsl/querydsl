@@ -22,9 +22,9 @@ import java.util.Currency;
 /**
  * {@code CurrencyType} maps Currency to String on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class CurrencyType extends AbstractType<Currency> {
+public class CurrencyType extends AbstractType<Currency, String> {
 
     public CurrencyType() {
         super(Types.VARCHAR);
@@ -47,8 +47,13 @@ public class CurrencyType extends AbstractType<Currency> {
     }
 
     @Override
-    protected Object toDbValue(Currency value) {
+    protected String toDbValue(Currency value) {
         return value.getCurrencyCode();
+    }
+
+    @Override
+    public Class<String> getDatabaseClass() {
+        return String.class;
     }
 
 }

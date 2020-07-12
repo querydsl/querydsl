@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Common interface for ForeignKeyData and InverseForeignKeyData
  *
- * @author tiwe
+ * @author mc_fish
  */
 public interface KeyData {
 

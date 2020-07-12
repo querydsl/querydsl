@@ -13,8 +13,9 @@
  */
 package com.querydsl.r2dbc.types;
 
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
 
 /**
  * Defines the de/serialization of a typed Java object from a Result or to a Statement
@@ -22,10 +23,11 @@ import io.r2dbc.spi.Statement;
  * <p>getValue(Result, int) is used for extraction and setValue(Statement, int, T) is
  * used for population</p>
  *
- * @param <T>
- * @author tiwe
+ * @param <IN>
+ * @param <OUT>
+ * @author mc_fish
  */
-public interface Type<T> {
+public interface Type<IN, OUT> {
 
     /**
      * Get the SQL supported SQL types
@@ -39,7 +41,14 @@ public interface Type<T> {
      *
      * @return returned class
      */
-    Class<T> getReturnedClass();
+    Class<IN> getReturnedClass();
+
+    /**
+     * Get the database type
+     *
+     * @return database class
+     */
+    Class<OUT> getDatabaseClass();
 
     /**
      * Get the literal representation
@@ -47,7 +56,7 @@ public interface Type<T> {
      * @param value value
      * @return literal representation
      */
-    String getLiteral(T value);
+    String getLiteral(IN value);
 
     /**
      * Get the object from the result set
@@ -56,15 +65,15 @@ public interface Type<T> {
      * @param startIndex column index in result set
      * @return value
      */
-    T getValue(Row row, int startIndex);
+    IN getValue(Row row, int startIndex);
 
     /**
      * Set the object to the statement
      *
-     * @param st         statement
-     * @param startIndex column index in statement
+     * @param bindMarker column index in statement
+     * @param bindTarget bindTarget
      * @param value      value to be set
      */
-    void setValue(Statement st, int startIndex, T value);
+    void setValue(BindMarker bindMarker, BindTarget bindTarget, IN value);
 
 }

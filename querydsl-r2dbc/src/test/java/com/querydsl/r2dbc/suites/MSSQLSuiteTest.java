@@ -43,8 +43,8 @@ public class MSSQLSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initSQLServer();
         Connections.initConfiguration(SQLServer2008Templates.builder().newLineToSingleSpace().build());
+        Connections.initSQLServer();
     }
 
 }

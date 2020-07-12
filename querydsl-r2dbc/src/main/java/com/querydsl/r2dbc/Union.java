@@ -21,7 +21,7 @@ import reactor.core.publisher.Flux;
  * {@code Union} defines an interface for Union queries
  *
  * @param <RT> return type of projection
- * @author tiwe
+ * @author mc_fish
  */
 public interface Union<RT> extends SubQueryExpression<RT>, ReactiveFetchable<RT> {
 

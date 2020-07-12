@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * CreateTableClause defines a CREATE TABLE clause
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class CreateTableClause {
 
@@ -207,6 +207,7 @@ public class CreateTableClause {
                     Statement stmt = connection.createStatement(sql);
                     return Mono.from(stmt.execute());
                 })
+                .collectList()
                 .then();
     }
 

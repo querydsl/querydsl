@@ -24,7 +24,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.sql.domain.Employee;
 import com.querydsl.sql.domain.QEmployee;
 
-public class UnionBase extends AbstractBaseTest {
+public abstract class UnionBase extends AbstractBaseTest {
 
     @SuppressWarnings("unchecked")
     @Test

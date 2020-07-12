@@ -13,12 +13,17 @@
  */
 package com.querydsl.core.group;
 
-import java.math.BigDecimal;
-
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.util.MathUtils;
 
-class GSum<T extends Number> extends AbstractGroupExpression<T, T> {
+import java.math.BigDecimal;
+
+/**
+ * GSum
+ *
+ * @param <T> t
+ */
+public class GSum<T extends Number> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3518868612387641383L;
 

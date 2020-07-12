@@ -23,17 +23,19 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.ReactiveInsertClause;
 import com.querydsl.core.types.*;
 import com.querydsl.r2dbc.*;
+import com.querydsl.r2dbc.binding.BindTarget;
+import com.querydsl.r2dbc.binding.StatementWrapper;
 import com.querydsl.r2dbc.types.Null;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLBindings;
-import io.r2dbc.spi.Connection;
-import io.r2dbc.spi.Statement;
+import io.r2dbc.spi.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,7 +44,7 @@ import java.util.stream.Collectors;
  * Provides a base class for dialect-specific INSERT clauses.
  *
  * @param <C> The type extending this class.
- * @author tiwe
+ * @author mc_fish
  */
 public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertClause<C>> extends AbstractR2DBCClause<C> implements ReactiveInsertClause<C> {
 
@@ -219,6 +221,11 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
     }
 
     protected Statement createStatement(Connection connection, boolean withKeys) {
+        if (subQueryBuilder != null) {
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
+            values.clear();
+        }
+
         SQLSerializer serializer = createSerializerAndSerialize(null);
         return prepareStatementAndSetParameters(connection, serializer, withKeys);
     }
@@ -235,47 +242,54 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
                     SQLSerializer serializer = createSerializerAndSerialize(batch);
                     Statement statement = prepareStatementAndSetParameters(connection, serializer, withKeys);
 
-                    if (useLiterals) {
-                        return statement.add();
-                    }
-
-                    return statement;
+                    return statement.add();
                 })
                 .collect(Collectors.toList());
     }
 
-    protected Statement prepareStatementAndSetParameters(Connection connection, SQLSerializer serializer, boolean withKeys) {
-        String queryString = serializer.toString();
-        //queryString = R2dbcUtils.replaceBindingArguments(queryString);
-        Statement stmt = connection.createStatement(queryString);
-        if (batches.isEmpty()) {
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), metadata.getParams(), 0);
-        } else {
-            int offset = 0;
-            for (R2DBCInsertBatch batch : batches) {
-                setBatchParameters(stmt, batch, offset);
-                if (useLiterals) {
-                    connection.createBatch().add(stmt.toString());
-                }
-                if (!batchToBulk) {
-                    stmt.add();
-                } else {
-                    offset++;
-                }
-            }
+    private Batch createBatches(Connection connection, boolean withKeys) {
+        if (subQueryBuilder != null) {
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
+            values.clear();
         }
+
+        Batch r2dbcBatch = connection.createBatch();
+        batches.forEach(batch -> {
+            SQLSerializer serializer = createSerializerAndSerialize(batch);
+            Statement statement = prepareStatementAndSetParameters(connection, serializer, withKeys);
+
+//            r2dbcBatch.add(statement.toString());
+            r2dbcBatch.add(serializer.toString());
+        });
+
+        return r2dbcBatch;
+    }
+
+    protected Statement prepareStatementAndSetParameters(Connection connection, SQLSerializer serializer, boolean withKeys) {
+        List<Object> constants = serializer.getConstants();
+        String originalSql = serializer.toString();
+        queryString = R2dbcUtils.replaceBindingArguments(configuration.getBindMarkerFactory().create(), constants, originalSql);
+
+        logQuery(logger, queryString, constants);
+
+        Statement statement = connection.createStatement(queryString);
+        BindTarget bindTarget = new StatementWrapper(statement);
+
         if (withKeys) {
             if (entity.getPrimaryKey() != null) {
                 String[] target = new String[entity.getPrimaryKey().getLocalColumns().size()];
                 for (int i = 0; i < target.length; i++) {
                     Path<?> path = entity.getPrimaryKey().getLocalColumns().get(i);
                     String column = ColumnMetadata.getName(path);
-                    target[i] = configuration.getTemplates().quoteIdentifier(column);
+                    target[i] = column;
                 }
-                stmt.returnGeneratedValues(target);
+                statement.returnGeneratedValues(target);
             }
         }
-        return stmt;
+
+        setParameters(bindTarget, configuration.getBindMarkerFactory().create(), constants, serializer.getConstantPaths(), metadata.getParams());
+
+        return statement;
     }
 
     /**
@@ -284,25 +298,38 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
      * @return result set with generated keys
      */
     protected <T> Mono<T> executeStatementWithKey(Statement stmt, Class<T> type, @Nullable Path<T> path) {
-        return Mono.from(stmt.execute())
-                .flatMap(result -> Mono.from(configuration.get(result, path, 1, type)));
+        RowMapper<T> mapper = (row, metadata) -> Objects.requireNonNull(row.get(0, type), "Null key result");
+        return Mono
+                .from(stmt.execute())
+                .flatMap(result -> Mono.from(result.map(mapper::map)));
     }
 
     protected <T> Flux<T> executeStatementWithKeys(Statement stmt, Class<T> type, @Nullable Path<T> path) {
-        return Flux.from(stmt.execute())
-                .flatMap(result -> configuration.get(result, path, 1, type));
+        RowMapper<T> mapper = (row, metadata) -> Objects.requireNonNull(row.get(0, type), "Null key result");
+        return Flux
+                .from(stmt.execute())
+                .flatMap(result -> result.map(mapper::map));
     }
 
     private Mono<Long> executeStatement(Statement stmt) {
-        return Mono.from(stmt.execute())
+        return Mono
+                .from(stmt.execute())
                 .flatMap(result -> Mono.from(result.getRowsUpdated()))
                 .map(Long::valueOf);
     }
 
-    private Flux<Long> executeStatements(Statement stmt) {
-        return Flux.from(stmt.execute())
+    private Mono<Long> executeStatements(Statement stmt) {
+        return Flux
+                .from(stmt.execute())
                 .flatMap(result -> Mono.from(result.getRowsUpdated()))
-                .map(Long::valueOf);
+                .reduce(0L, Long::sum);
+    }
+
+    private Mono<Long> executeBatches(Batch batch) {
+        return Flux
+                .from(batch.execute())
+                .flatMap(result -> Mono.from(result.getRowsUpdated()))
+                .reduce(0L, Long::sum);
     }
 
     @Override
@@ -312,6 +339,12 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
                 return getConnection()
                         .map(connection -> createStatement(connection, false))
                         .flatMap(this::executeStatement);
+            }
+
+            if (useLiterals) {
+                return getConnection()
+                        .map(connection -> createBatches(connection, false))
+                        .flatMap(this::executeBatches);
             }
 
             return getConnection()
@@ -460,13 +493,19 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
         return batches.size();
     }
 
-    private <T> void setBatchParameters(Statement stmt, R2DBCInsertBatch batch, int offset) {
-        Map<ParamExpression<?>, Object> params = new HashMap<>();
-        List<Object> constants = batch.getValues()
-                .stream()
-                .map(c -> ((Constant<T>) c).getConstant()) // TODO: support expressions
-                .collect(Collectors.toList());
-        setParameters(stmt, constants, batch.getColumns(), params, offset);
+//    private <T> void setBatchParameters(Statement stmt, R2DBCInsertBatch batch, int offset) {
+//        List<Object> constants = batch
+//                .getValues()
+//                .stream()
+//                .map(c -> ((Constant<T>) c).getConstant()) // TODO: support expressions
+//                .collect(Collectors.toList());
+//        setParameters(stmt, constants, batch.getColumns(), metadata.getParams());
+//    }
+
+    @FunctionalInterface
+    private interface RowMapper<T> {
+        @Nonnull
+        T map(Row row, RowMetadata metadata);
     }
 
 }

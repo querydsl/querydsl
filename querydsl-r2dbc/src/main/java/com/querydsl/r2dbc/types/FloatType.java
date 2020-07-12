@@ -18,9 +18,9 @@ import java.sql.Types;
 /**
  * {@code FloatType} maps Float to Float on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class FloatType extends AbstractType<Float> {
+public class FloatType extends AbstractType<Float, Number> {
 
     public FloatType() {
         super(Types.FLOAT);
@@ -33,6 +33,16 @@ public class FloatType extends AbstractType<Float> {
     @Override
     public Class<Float> getReturnedClass() {
         return Float.class;
+    }
+
+    @Override
+    public Class<Number> getDatabaseClass() {
+        return Number.class;
+    }
+
+    @Override
+    protected Float fromDbValue(Number value) {
+        return value.floatValue();
     }
 
 }

@@ -29,7 +29,7 @@ import java.util.Map;
  * Given bean doesn't need to have @Column metadata, but the fields need to have the same
  * name as in the given relational path.
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class DefaultMapper extends AbstractMapper<Object> {
 

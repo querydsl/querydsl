@@ -14,6 +14,9 @@
 package com.querydsl.r2dbc;
 
 import com.querydsl.core.alias.Gender;
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
+import com.querydsl.r2dbc.binding.StatementWrapper;
 import com.querydsl.r2dbc.domain.QSurvey;
 import com.querydsl.r2dbc.types.*;
 import com.querydsl.sql.SchemaAndTable;
@@ -59,7 +62,9 @@ public class ConfigurationTest {
 //        configuration.register(new UntypedNullType());
         configuration.register("SURVEY", "NAME", new EncryptedString());
         Statement stmt = EasyMock.createNiceMock(Statement.class);
-        configuration.set(stmt, QSurvey.survey.name, 0, Null.DEFAULT);
+        BindTarget bindTarget = new StatementWrapper(stmt);
+        BindMarker bindMarker = SQLTemplates.ANONYMOUS.create().next();
+        configuration.set(bindMarker, bindTarget, QSurvey.survey.name, Null.DEFAULT);
     }
 
     @Test

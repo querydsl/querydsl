@@ -13,8 +13,6 @@
  */
 package com.querydsl.r2dbc.support;
 
-import static com.google.common.base.StandardSystemProperty.JAVA_SPECIFICATION_VERSION;
-
 /**
  * A {@code SQLExceptionWrapper} is used to accommodate for
  * Java™ 7's suppressed exceptions.
@@ -26,18 +24,12 @@ import static com.google.common.base.StandardSystemProperty.JAVA_SPECIFICATION_V
  *
  * @author Shredder121
  */
-public abstract class R2DBCExceptionWrapper {
+public abstract class AbstractR2DBCExceptionWrapper {
 
-    public static final R2DBCExceptionWrapper INSTANCE;
+    public static final AbstractR2DBCExceptionWrapper INSTANCE;
 
     static {
-        double javaVersion
-                = Double.parseDouble(JAVA_SPECIFICATION_VERSION.value());
-        if (javaVersion > 1.6) {
-            INSTANCE = new JavaSE7SQLExceptionWrapper();
-        } else {
-            INSTANCE = new JavaSE6SQLExceptionWrapper();
-        }
+        INSTANCE = new R2DBCSQLExceptionWrapper();
     }
 
     public abstract RuntimeException wrap(Throwable exception);

@@ -19,9 +19,9 @@ import java.sql.Types;
 /**
  * {@code InputStreamType} maps InputStream to InputStream on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class InputStreamType extends AbstractType<InputStream> {
+public class InputStreamType extends AbstractType<InputStream, InputStream> {
 
     public InputStreamType() {
         super(Types.BLOB);

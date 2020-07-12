@@ -13,13 +13,18 @@
  */
 package com.querydsl.core.group;
 
-import java.math.BigDecimal;
-
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.util.MathUtils;
 
+import java.math.BigDecimal;
+
+/**
+ * GAvg
+ *
+ * @param <T> t
+ */
 @SuppressWarnings("unchecked")
-class GAvg<T extends Number> extends AbstractGroupExpression<T, T> {
+public class GAvg<T extends Number> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3518868612387641383L;
 

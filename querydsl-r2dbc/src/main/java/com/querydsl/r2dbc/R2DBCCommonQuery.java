@@ -25,7 +25,7 @@ import com.querydsl.sql.WithBuilder;
  * {@code SQLCommonQuery} is a common interface for SQLQuery and SQLSubQuery
  *
  * @param <Q> concrete type
- * @author tiwe
+ * @author mc_fish
  */
 public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q> {
 
@@ -103,7 +103,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a full join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     full join target
      * @param alias alias
      * @return the current object
@@ -113,7 +113,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a full join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     full join target
      * @param alias alias
      * @return the current object
@@ -123,7 +123,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a full join to the given target
      *
-     * @param <E>
+     * @param <E>    E
      * @param key    foreign key for join
      * @param entity join target
      * @return the current object
@@ -142,7 +142,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds an inner join to the given target
      *
-     * @param o
+     * @param o path
      * @return the current object
      */
     Q innerJoin(EntityPath<?> o);
@@ -150,7 +150,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds an inner join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     inner join target
      * @param alias alias
      * @return the current object
@@ -160,7 +160,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a inner join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     relational function call
      * @param alias alias
      * @return the current object
@@ -170,7 +170,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds an inner join to the given target
      *
-     * @param <E>
+     * @param <E>     E
      * @param foreign foreign key to use for join
      * @param entity  join target
      * @return the current object
@@ -197,7 +197,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     join target
      * @param alias alias
      * @return the current object
@@ -207,7 +207,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     join target
      * @param alias alias
      * @return the current object
@@ -217,7 +217,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a join to the given target
      *
-     * @param <E>
+     * @param <E>     E
      * @param foreign foreign key to use for join
      * @param entity  join target
      * @return the current object
@@ -244,7 +244,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a left join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     left join target
      * @param alias alias
      * @return the current object
@@ -254,7 +254,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a left join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     relational function call
      * @param alias alias
      * @return the current object
@@ -264,7 +264,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a left join to the given target
      *
-     * @param <E>
+     * @param <E>     E
      * @param foreign foreign key to use for join
      * @param entity  join target
      * @return the current object
@@ -299,7 +299,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a right join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     right join target
      * @param alias alias
      * @return the current object
@@ -309,7 +309,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a full join to the given target
      *
-     * @param <E>
+     * @param <E>   E
      * @param o     relational function call
      * @param alias alias
      * @return the current object
@@ -319,7 +319,7 @@ public interface R2DBCCommonQuery<Q extends R2DBCCommonQuery<Q>> extends Query<Q
     /**
      * Adds a right join to the given target
      *
-     * @param <E>
+     * @param <E>     E
      * @param foreign foreign key to use for join
      * @param entity  join target
      * @return the current object

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author tiwe
+ * @author mc_fish
  */
 public class ForeignKeyData implements KeyData {
 

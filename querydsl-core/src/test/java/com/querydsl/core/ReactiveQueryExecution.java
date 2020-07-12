@@ -161,7 +161,7 @@ public abstract class ReactiveQueryExecution {
     private int runProjection(Expression<?> pr) {
         ReactiveFetchable<?> p = createQuery();
 
-        ((FetchableQuery) p).select(pr);
+        ((ReactiveFetchableQuery) p).select(pr);
         return p.fetch().collectList().block().size();
     }
 
@@ -169,7 +169,7 @@ public abstract class ReactiveQueryExecution {
         ReactiveFetchable<?> p = createQuery();
 
         ((QueryBase) p).distinct();
-        ((FetchableQuery) p).select(pr);
+        ((ReactiveFetchableQuery) p).select(pr);
         return p.fetch().collectList().block().size();
     }
 

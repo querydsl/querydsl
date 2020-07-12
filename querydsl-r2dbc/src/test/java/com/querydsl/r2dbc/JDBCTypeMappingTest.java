@@ -14,12 +14,12 @@
 package com.querydsl.r2dbc;
 
 import com.querydsl.core.testutil.ReportingOnly;
+import io.r2dbc.spi.Blob;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Blob;
 import java.sql.Types;
 
 import static org.junit.Assert.assertEquals;

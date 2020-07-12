@@ -20,9 +20,9 @@ import java.sql.Types;
 /**
  * {@code CharacterType} maps Character to Character on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class CharacterType extends AbstractType<Character> {
+public class CharacterType extends AbstractType<Character, String> {
 
     public CharacterType() {
         super(Types.CHAR);
@@ -45,6 +45,21 @@ public class CharacterType extends AbstractType<Character> {
     @Override
     public Class<Character> getReturnedClass() {
         return Character.class;
+    }
+
+    @Override
+    public Class<String> getDatabaseClass() {
+        return String.class;
+    }
+
+    @Override
+    protected Character fromDbValue(String value) {
+        return value.charAt(0);
+    }
+
+    @Override
+    protected String toDbValue(Character value) {
+        return value.toString();
     }
 
 }

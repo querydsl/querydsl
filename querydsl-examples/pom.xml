@@ -24,6 +24,8 @@
     <module>querydsl-example-sql-spring</module>
     <module>querydsl-example-sql-guice</module>
     <module>querydsl-example-jpa-guice</module>
+    <module>querydsl-example-r2dbc-sql-codegen</module>
+    <module>querydsl-example-r2dbc-apt-codegen</module>
   </modules>
 
   <build>

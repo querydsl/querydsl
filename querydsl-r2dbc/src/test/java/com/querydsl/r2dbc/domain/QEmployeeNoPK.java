@@ -41,9 +41,9 @@ public class QEmployeeNoPK extends RelationalPathBase<Employee> {
 
     public final NumberPath<BigDecimal> salary = createNumber("salary", BigDecimal.class);
 
-    public final DatePath<java.sql.Date> datefield = createDate("datefield", java.sql.Date.class);
+    public final DatePath<java.time.LocalDate> datefield = createDate("datefield", java.time.LocalDate.class);
 
-    public final TimePath<java.sql.Time> timefield = createTime("timefield", java.sql.Time.class);
+    public final TimePath<java.time.LocalTime> timefield = createTime("timefield", java.time.LocalTime.class);
 
     public final NumberPath<Integer> superiorId = createNumber("superiorId", Integer.class);
 

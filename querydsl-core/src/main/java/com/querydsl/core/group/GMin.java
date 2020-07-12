@@ -15,7 +15,12 @@ package com.querydsl.core.group;
 
 import com.querydsl.core.types.Expression;
 
-class GMin<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T> {
+/**
+ * GMin
+ *
+ * @param <T> t
+ */
+public class GMin<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 8312168556148122576L;
 
@@ -25,8 +30,8 @@ class GMin<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T
     }
 
     @Override
-    public GroupCollector<T,T> createGroupCollector() {
-        return new GroupCollector<T,T>() {
+    public GroupCollector<T, T> createGroupCollector() {
+        return new GroupCollector<T, T>() {
             private T min;
 
             @Override
@@ -37,6 +42,7 @@ class GMin<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T
                     min = o;
                 }
             }
+
             @Override
             public T get() {
                 return min;

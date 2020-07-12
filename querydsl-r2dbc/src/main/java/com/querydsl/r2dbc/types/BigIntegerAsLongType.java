@@ -13,8 +13,9 @@
  */
 package com.querydsl.r2dbc.types;
 
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
 
 import java.math.BigInteger;
 import java.sql.Types;
@@ -22,9 +23,9 @@ import java.sql.Types;
 /**
  * {@code BigIntegerType} maps BigInteger to Long on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class BigIntegerAsLongType extends AbstractType<BigInteger> {
+public class BigIntegerAsLongType extends AbstractType<BigInteger, BigInteger> {
 
     public static final BigIntegerAsLongType DEFAULT = new BigIntegerAsLongType();
 
@@ -48,12 +49,8 @@ public class BigIntegerAsLongType extends AbstractType<BigInteger> {
     }
 
     @Override
-    public void setValue(Statement st, int startIndex, BigInteger value) {
-        if (value == null) {
-            st.bindNull(startIndex, Integer.class);
-        } else {
-            st.bind(startIndex, value.longValue());
-        }
+    public void setValue(BindMarker bindMarker, BindTarget bindTarget, BigInteger value) {
+        bindMarker.bind(bindTarget, value.longValue());
     }
 
 }

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * {@code SQLInsertBatch} defines the state of an SQL INSERT batch item
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCInsertBatch {
 

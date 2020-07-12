@@ -19,9 +19,9 @@ import java.sql.Types;
 /**
  * {@code BigIntegerType} maps BigInteger to BigDecimal on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class BigIntegerType extends AbstractType<BigInteger> {
+public class BigIntegerType extends AbstractType<BigInteger, BigInteger> {
 
     public BigIntegerType() {
         super(Types.NUMERIC);

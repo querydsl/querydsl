@@ -1,16 +1,13 @@
 package com.querydsl.r2dbc.types;
 
-import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
-import javax.annotation.Nullable;
 import java.sql.Time;
 import java.sql.Types;
-import java.time.Instant;
-import java.time.OffsetTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoField;
+import java.time.*;
+import java.time.temporal.Temporal;
 
 /**
  * JSR310OffsetTimeType maps {@linkplain OffsetTime}
@@ -37,29 +34,32 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
         return OffsetTime.class;
     }
 
-    @Nullable
     @Override
-    public OffsetTime getValue(Row row, int startIndex) {
+    public void setValue(BindMarker bindMarker, BindTarget bindTarget, OffsetTime value) {
         try {
-            return super.getValue(row, startIndex);
+            super.setValue(bindMarker, bindTarget, value);
         } catch (Exception e) {
-            Time val = row.get(startIndex, Time.class);
-            return val != null ? OffsetTime.ofInstant(Instant.ofEpochMilli(val.getTime()), ZoneOffset.UTC) : null;
+            bindMarker.bind(bindTarget, value);
         }
     }
 
     @Override
-    public void setValue(Statement st, int startIndex, OffsetTime value) {
-        try {
-            super.setValue(st, startIndex, value);
-        } catch (Exception e) {
-            if (value == null) {
-                st.bindNull(startIndex, getReturnedClass());
-            } else {
-                OffsetTime normalized = value.withOffsetSameInstant(ZoneOffset.UTC);
-                st.bind(startIndex, new Time(normalized.get(ChronoField.MILLI_OF_DAY)));
-            }
-        }
+    protected Temporal toDbValue(OffsetTime value) {
+        return value.toLocalTime();
     }
 
+    @Override
+    protected OffsetTime fromDbValue(Temporal value) {
+        if (LocalDateTime.class.isAssignableFrom(value.getClass())) {
+            return ((LocalDateTime) value).toLocalTime().atOffset(ZoneOffset.UTC);
+        }
+        if (ZonedDateTime.class.isAssignableFrom(value.getClass())) {
+            return ((ZonedDateTime) value).toOffsetDateTime().toOffsetTime();
+        }
+        if (LocalTime.class.isAssignableFrom(value.getClass())) {
+            return ((LocalTime) value).atOffset(ZoneOffset.UTC);
+        }
+
+        return super.fromDbValue(value);
+    }
 }

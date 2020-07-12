@@ -8,7 +8,7 @@ import static com.querydsl.core.Target.MYSQL;
 import static com.querydsl.r2dbc.Constants.survey;
 
 
-public class SelectMySQLBase extends AbstractBaseTest {
+public abstract class SelectMySQLBase extends AbstractBaseTest {
 
     protected R2DBCMySQLQuery<?> myR2DBCQuery() {
         return new R2DBCMySQLQuery<Void>(connection, configuration);

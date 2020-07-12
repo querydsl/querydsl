@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * ForeignKeyBuilder is part of the fluent interface of CreateTableClause
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class ForeignKeyBuilder {
 

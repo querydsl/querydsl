@@ -21,7 +21,7 @@ import com.querydsl.sql.RelationalPath;
 /**
  * Factory class for query and DML clause creation
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCQueryFactory extends AbstractSQLQueryFactory<R2DBCQuery<?>> {
 

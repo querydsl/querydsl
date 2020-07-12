@@ -14,6 +14,10 @@
 package com.querydsl.r2dbc.types;
 
 import com.mysema.commons.lang.Pair;
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindMarkersFactory;
+import com.querydsl.r2dbc.binding.BindTarget;
+import com.querydsl.r2dbc.binding.StatementWrapper;
 import io.r2dbc.spi.Blob;
 import io.r2dbc.spi.Clob;
 import io.r2dbc.spi.Row;
@@ -96,7 +100,7 @@ public class TypeTest implements InvocationHandler {
 //        valueAndType.add(Pair.of(Calendar.getInstance(), new CalendarType()));
         valueAndType.add(Pair.of('c', new CharacterType()));
         valueAndType.add(Pair.of(Currency.getInstance("EUR"), new CurrencyType()));
-        valueAndType.add(Pair.of(new java.sql.Date(0), new DateType()));
+        valueAndType.add(Pair.of(new java.sql.Date(-3600000), new DateType()));
         valueAndType.add(Pair.of(1.0, new DoubleType()));
         valueAndType.add(Pair.of(1.0f, new FloatType()));
         valueAndType.add(Pair.of(1, new IntegerType()));
@@ -107,8 +111,8 @@ public class TypeTest implements InvocationHandler {
         valueAndType.add(Pair.of("", new StringType()));
         valueAndType.add(Pair.of(true, new TrueFalseType()));
         valueAndType.add(Pair.of(true, new YesNoType()));
-        valueAndType.add(Pair.of(new Timestamp(0), new TimestampType()));
-        valueAndType.add(Pair.of(new Time(0), new TimeType()));
+        valueAndType.add(Pair.of(new Timestamp(-3600000), new TimestampType()));
+        valueAndType.add(Pair.of(new Time(-3600000), new TimeType()));
         valueAndType.add(Pair.of(new URL("http://www.mysema.com"), new URLType()));
         valueAndType.add(Pair.of(new java.util.Date(), new UtilDateType()));
 
@@ -125,12 +129,15 @@ public class TypeTest implements InvocationHandler {
 
         valueAndType.add(Pair.of(UUID.randomUUID(), new UtilUUIDType()));
 //        valueAndType.add(Pair.of(UUID.randomUUID(), new UtilUUIDType(false)));
+        BindMarker bindMarker = BindMarkersFactory.anonymous("?").create().next();
 
         for (Pair pair : valueAndType) {
+            BindTarget bindTarget = new StatementWrapper(statement);
+
             value = null;
             Type type = (Type) pair.getSecond();
             assertNull(type.toString(), type.getValue(resultSet, 0));
-            type.setValue(statement, 0, pair.getFirst());
+            type.setValue(bindMarker, bindTarget, pair.getFirst());
             assertEquals(type.toString(), pair.getFirst(), type.getValue(resultSet, 0));
         }
     }

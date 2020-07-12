@@ -18,9 +18,9 @@ import java.sql.Types;
 /**
  * {@code BytesType} maps byte[] to byte[] on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class BytesType extends AbstractType<byte[]> {
+public class BytesType extends AbstractType<byte[], byte[]> {
 
     public BytesType() {
         super(Types.BLOB);

@@ -33,11 +33,11 @@ import static com.querydsl.core.Target.*;
 import static com.querydsl.r2dbc.Constants.survey;
 import static org.junit.Assert.assertEquals;
 
-public class UpdateBase extends AbstractBaseTest {
+public abstract class UpdateBase extends AbstractBaseTest {
 
     protected void reset() {
-        delete(survey).execute();
-        insert(survey).values(1, "Hello World", "Hello").execute();
+        delete(survey).execute().block();
+        insert(survey).values(1, "Hello World", "Hello").execute().block();
     }
 
     @Before
@@ -57,21 +57,21 @@ public class UpdateBase extends AbstractBaseTest {
         assertEquals(0, (long) query().from(survey).where(survey.name.eq("S")).fetchCount().block());
 
         // update call with 0 update count
-        assertEquals(0, update(survey).where(survey.name.eq("XXX")).set(survey.name, "S").execute());
+        assertEquals(0, (long) update(survey).where(survey.name.eq("XXX")).set(survey.name, "S").execute().block());
         assertEquals(0, (long) query().from(survey).where(survey.name.eq("S")).fetchCount().block());
 
         // update call with full update count
-        assertEquals(count, update(survey).set(survey.name, "S").execute());
+        assertEquals(count, (long) update(survey).set(survey.name, "S").execute().block());
         assertEquals(count, (long) query().from(survey).where(survey.name.eq("S")).fetchCount().block());
     }
 
     @Test
     @IncludeIn({CUBRID, H2, MYSQL, ORACLE, SQLSERVER})
     public void update_limit() {
-        assertEquals(1, insert(survey).values(2, "A", "B").execute());
-        assertEquals(1, insert(survey).values(3, "B", "C").execute());
+        assertEquals(1, (long) insert(survey).values(2, "A", "B").execute().block());
+        assertEquals(1, (long) insert(survey).values(3, "B", "C").execute().block());
 
-        assertEquals(2, update(survey).set(survey.name, "S").limit(2).execute());
+        assertEquals(2, (long) update(survey).set(survey.name, "S").limit(2).execute().block());
     }
 
     @Test
@@ -84,30 +84,30 @@ public class UpdateBase extends AbstractBaseTest {
         assertEquals(0, (long) query().from(survey).where(survey.name.eq("S")).fetchCount().block());
 
         // update call with 0 update count
-        assertEquals(0, update(survey).where(survey.name.eq("XXX")).set(paths, values).execute());
+        assertEquals(0, (long) update(survey).where(survey.name.eq("XXX")).set(paths, values).execute().block());
         assertEquals(0, (long) query().from(survey).where(survey.name.eq("S")).fetchCount().block());
 
         // update call with full update count
-        assertEquals(count, update(survey).set(paths, values).execute());
+        assertEquals(count, (long) update(survey).set(paths, values).execute().block());
         assertEquals(count, (long) query().from(survey).where(survey.name.eq("S")).fetchCount().block());
 
     }
 
     @Test
     public void update3() {
-        assertEquals(1, update(survey).set(survey.name, survey.name.append("X")).execute());
+        assertEquals(1, (long) update(survey).set(survey.name, survey.name.append("X")).execute().block());
     }
 
     @Test
     public void update4() {
-        assertEquals(1, insert(survey).values(2, "A", "B").execute());
-        assertEquals(1, update(survey).set(survey.name, "AA").where(survey.name.eq("A")).execute());
+        assertEquals(1, (long) insert(survey).values(2, "A", "B").execute().block());
+        assertEquals(1, (long) update(survey).set(survey.name, "AA").where(survey.name.eq("A")).execute().block());
     }
 
     @Test
     public void update5() {
-        assertEquals(1, insert(survey).values(3, "B", "C").execute());
-        assertEquals(1, update(survey).set(survey.name, "BB").where(survey.name.eq("B")).execute());
+        assertEquals(1, (long) insert(survey).values(3, "B", "C").execute().block());
+        assertEquals(1, (long) update(survey).set(survey.name, "BB").where(survey.name.eq("B")).execute().block());
     }
 
     @Test
@@ -115,13 +115,13 @@ public class UpdateBase extends AbstractBaseTest {
         List<Path<?>> paths = Collections.singletonList(survey.name);
         List<?> values = Collections.singletonList(null);
         long count = query().from(survey).fetchCount().block();
-        assertEquals(count, update(survey).set(paths, values).execute());
+        assertEquals(count, (long) update(survey).set(paths, values).execute().block());
     }
 
     @Test
     public void setNull2() {
         long count = query().from(survey).fetchCount().block();
-        assertEquals(count, update(survey).set(survey.name, (String) null).execute());
+        assertEquals(count, (long) update(survey).set(survey.name, (String) null).execute().block());
     }
 
     @Test
@@ -130,31 +130,31 @@ public class UpdateBase extends AbstractBaseTest {
     public void setNullEmptyRootPath() {
         StringPath name = Expressions.stringPath("name");
         long count = query().from(survey).fetchCount().block();
-        assertEquals(count, execute(update(survey).setNull(name)));
+        assertEquals(count, (long) execute(update(survey).setNull(name)).block());
     }
 
     @Test
     public void batch() {
-        assertEquals(1, insert(survey).values(2, "A", "B").execute());
-        assertEquals(1, insert(survey).values(3, "B", "C").execute());
+        assertEquals(1, (long) insert(survey).values(2, "A", "B").execute().block());
+        assertEquals(1, (long) insert(survey).values(3, "B", "C").execute().block());
 
         R2DBCUpdateClause update = update(survey);
         update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
         assertEquals(1, update.getBatchCount());
         update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
         assertEquals(2, update.getBatchCount());
-        assertEquals(2, update.execute());
+        assertEquals(2, (long) update.execute().block());
     }
 
     @Test
     public void batch_templates() {
-        assertEquals(1, insert(survey).values(2, "A", "B").execute());
-        assertEquals(1, insert(survey).values(3, "B", "C").execute());
+        assertEquals(1, (long) insert(survey).values(2, "A", "B").execute().block());
+        assertEquals(1, (long) insert(survey).values(3, "B", "C").execute().block());
 
         R2DBCUpdateClause update = update(survey);
         update.set(survey.name, "AA").where(survey.name.eq(Expressions.stringTemplate("'A'"))).addBatch();
         update.set(survey.name, "BB").where(survey.name.eq(Expressions.stringTemplate("'B'"))).addBatch();
-        assertEquals(2, update.execute());
+        assertEquals(2, (long) update.execute().block());
     }
 
     @Test
@@ -164,7 +164,7 @@ public class UpdateBase extends AbstractBaseTest {
         R2DBCUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(R2DBCExpressions.selectOne().from(employee).where(survey1.id.eq(employee.id)).exists());
-        assertEquals(1, update.execute());
+        assertEquals(1, (long) update.execute().block());
     }
 
     @Test
@@ -179,7 +179,7 @@ public class UpdateBase extends AbstractBaseTest {
         R2DBCUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(sq.exists());
-        assertEquals(0, update.execute());
+        assertEquals(0, (long) update.execute().block());
     }
 
     @Test
@@ -189,7 +189,7 @@ public class UpdateBase extends AbstractBaseTest {
         R2DBCUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(R2DBCExpressions.selectOne().from(employee).where(survey1.name.eq(employee.lastname)).exists());
-        assertEquals(0, update.execute());
+        assertEquals(0, (long) update.execute().block());
     }
 
     @Test
@@ -199,17 +199,17 @@ public class UpdateBase extends AbstractBaseTest {
         R2DBCUpdateClause update = update(survey1);
         update.set(survey1.name, "AA");
         update.where(query().from(employee).where(survey1.id.eq(employee.id)).notExists());
-        assertEquals(0, update.execute());
+        assertEquals(0, (long) update.execute().block());
     }
 
     @Test
     @ExcludeIn(TERADATA)
     public void update_with_templateExpression_in_batch() {
-        assertEquals(1, update(survey)
+        assertEquals(1L, (long) update(survey)
                 .set(survey.id, 3)
                 .set(survey.name, Expressions.stringTemplate("'Hello'"))
                 .addBatch()
-                .execute());
+                .execute().block());
     }
 
 }

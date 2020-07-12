@@ -21,9 +21,9 @@ import java.sql.Types;
 /**
  * {@code NumericBooleanType} maps Boolean to 1/0 (Integer) on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class NumericBooleanType extends AbstractType<Boolean> {
+public class NumericBooleanType extends AbstractType<Boolean, Integer> {
 
     public static final NumericBooleanType DEFAULT = new NumericBooleanType();
 
@@ -53,8 +53,13 @@ public class NumericBooleanType extends AbstractType<Boolean> {
     }
 
     @Override
-    protected Object toDbValue(Boolean value) {
+    protected Integer toDbValue(Boolean value) {
         return value ? 1 : 0;
+    }
+
+    @Override
+    public Class<Integer> getDatabaseClass() {
+        return Integer.class;
     }
 
 }

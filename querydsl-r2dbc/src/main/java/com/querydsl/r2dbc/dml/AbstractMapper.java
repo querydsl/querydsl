@@ -23,7 +23,7 @@ import java.util.Map;
  * Abstract base class for Mapper implementations
  *
  * @param <T>
- * @author tiwe
+ * @author mc_fish
  */
 public abstract class AbstractMapper<T> implements Mapper<T> {
 

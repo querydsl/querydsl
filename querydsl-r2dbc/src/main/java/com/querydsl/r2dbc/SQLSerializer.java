@@ -38,7 +38,7 @@ import java.util.*;
 /**
  * {@code SqlSerializer} serializes SQL clauses into SQL
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
 

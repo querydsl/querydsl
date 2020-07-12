@@ -19,7 +19,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
 
-public class TypesBase extends AbstractBaseTest {
+public abstract class TypesBase extends AbstractBaseTest {
 
     @Test
     public void create_tables() {

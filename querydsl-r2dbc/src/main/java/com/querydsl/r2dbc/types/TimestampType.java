@@ -15,13 +15,14 @@ package com.querydsl.r2dbc.types;
 
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDateTime;
 
 /**
  * {@code TimestampType} maps Timestamp to Timestamp on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class TimestampType extends AbstractDateTimeType<Timestamp> {
+public class TimestampType extends AbstractDateTimeType<Timestamp, LocalDateTime> {
 
     public TimestampType() {
         super(Types.TIMESTAMP);
@@ -39,6 +40,21 @@ public class TimestampType extends AbstractDateTimeType<Timestamp> {
     @Override
     public Class<Timestamp> getReturnedClass() {
         return Timestamp.class;
+    }
+
+    @Override
+    public Class<LocalDateTime> getDatabaseClass() {
+        return LocalDateTime.class;
+    }
+
+    @Override
+    protected LocalDateTime toDbValue(Timestamp value) {
+        return value.toLocalDateTime();
+    }
+
+    @Override
+    protected Timestamp fromDbValue(LocalDateTime value) {
+        return Timestamp.valueOf(value);
     }
 
 }

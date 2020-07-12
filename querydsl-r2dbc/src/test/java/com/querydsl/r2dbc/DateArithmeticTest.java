@@ -8,7 +8,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Category(ReportingOnly.class)
@@ -26,13 +26,12 @@ public class DateArithmeticTest {
         list.add(new H2Templates());
         list.add(new MySQLTemplates());
         list.add(new PostgreSQLTemplates());
-        list.add(new SQLiteTemplates());
         list.add(new SQLServerTemplates());
         list.add(new SQLServer2005Templates());
         list.add(new SQLServer2012Templates());
 
         List<Expression<?>> exprs = Lists.newArrayList();
-        DateTimePath<Date> path = Expressions.dateTimePath(Date.class, "date");
+        DateTimePath<LocalDateTime> path = Expressions.dateTimePath(LocalDateTime.class, "date");
         exprs.add(R2DBCExpressions.addYears(path, 2));
         exprs.add(R2DBCExpressions.addMonths(path, 2));
         exprs.add(R2DBCExpressions.addDays(path, 2));

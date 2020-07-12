@@ -20,9 +20,9 @@ import java.sql.Types;
 /**
  * {@code ClobType} maps Clob to Clob on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class ClobType extends AbstractType<Clob> {
+public class ClobType extends AbstractType<Clob, Clob> {
 
     public ClobType() {
         super(Types.CLOB);

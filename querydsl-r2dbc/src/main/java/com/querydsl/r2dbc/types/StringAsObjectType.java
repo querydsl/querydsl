@@ -22,9 +22,9 @@ import java.sql.Types;
 /**
  * {@code StringAsObjectType} maps String to String on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class StringAsObjectType extends AbstractType<CharSequence> {
+public class StringAsObjectType extends AbstractType<CharSequence, Clob> {
 
     public static final StringAsObjectType DEFAULT = new StringAsObjectType();
 
@@ -57,8 +57,13 @@ public class StringAsObjectType extends AbstractType<CharSequence> {
     }
 
     @Override
-    protected Object toDbValue(CharSequence value) {
+    protected Clob toDbValue(CharSequence value) {
         return Clob.from(Mono.just(value));
+    }
+
+    @Override
+    public Class<Clob> getDatabaseClass() {
+        return Clob.class;
     }
 
 }

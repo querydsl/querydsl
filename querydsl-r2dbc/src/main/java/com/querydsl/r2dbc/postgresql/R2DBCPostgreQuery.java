@@ -79,4 +79,5 @@ public class R2DBCPostgreQuery<T> extends AbstractR2DBCPostgreQuery<T, R2DBCPost
                 R2DBCPostgreQuery<Tuple> newType = (R2DBCPostgreQuery<Tuple>) this;
         return newType;
     }
+
 }

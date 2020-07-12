@@ -1,0 +1,88 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd"
+>
+  <id>full-deps</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <files>
+    <file>
+      <source>../LICENSE.txt</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+  </files>
+
+  <fileSets>
+    <fileSet>
+      <directory>target</directory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-javadoc.jar</exclude>
+        <exclude>*-tests.jar</exclude>
+        <exclude>*-one-jar.jar</exclude>
+        <exclude>*-sources.jar</exclude>
+      </excludes>
+      <outputDirectory>/lib/all</outputDirectory>
+    </fileSet>
+
+    <fileSet>
+      <directory>target</directory>
+      <includes>
+        <include>*-one-jar.jar</include>
+      </includes>
+      <outputDirectory>/lib/apt</outputDirectory>
+    </fileSet>
+
+    <fileSet>
+      <directory>target</directory>
+      <includes>
+        <include>*-sources.jar</include>
+      </includes>
+      <outputDirectory>/src</outputDirectory>
+    </fileSet>
+
+    <fileSet>
+      <directory>../querydsl-core/target</directory>
+      <includes>
+        <include>*-sources.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-test-sources.jar</exclude>
+      </excludes>
+      <outputDirectory>/src</outputDirectory>
+    </fileSet>
+    
+    <fileSet>
+      <directory>../querydsl-sql/target</directory>
+      <includes>
+        <include>*-sources.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-test-sources.jar</exclude>
+      </excludes>
+      <outputDirectory>/src</outputDirectory>
+    </fileSet>
+
+    <fileSet>
+      <directory>../querydsl-r2dbc/target</directory>
+      <includes>
+        <include>*-sources.jar</include>
+      </includes>
+      <excludes>
+        <exclude>*-test-sources.jar</exclude>
+      </excludes>
+      <outputDirectory>/src</outputDirectory>
+    </fileSet>
+
+  </fileSets>
+
+  <dependencySets>
+    <dependencySet>
+      <scope>compile</scope>
+      <outputDirectory>lib/all</outputDirectory>
+    </dependencySet>
+  </dependencySets>
+</assembly>

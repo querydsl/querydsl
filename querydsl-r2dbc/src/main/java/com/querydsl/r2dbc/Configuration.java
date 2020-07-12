@@ -13,8 +13,14 @@
  */
 package com.querydsl.r2dbc;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.Path;
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindMarkersFactory;
+import com.querydsl.r2dbc.binding.BindTarget;
+import com.querydsl.r2dbc.types.ArrayType;
 import com.querydsl.r2dbc.types.Null;
 import com.querydsl.r2dbc.types.Type;
 import com.querydsl.sql.ColumnMetadata;
@@ -23,9 +29,7 @@ import com.querydsl.sql.SchemaAndTable;
 import com.querydsl.sql.namemapping.ChainedNameMapping;
 import com.querydsl.sql.namemapping.NameMapping;
 import com.querydsl.sql.namemapping.PreConfiguredNameMapping;
-import io.r2dbc.spi.Result;
-import io.r2dbc.spi.Statement;
-import org.reactivestreams.Publisher;
+import io.r2dbc.spi.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +43,7 @@ import java.util.Map;
 /**
  * Configuration for SQLQuery instances
  *
- * @author tiwe
+ * @author mc_fish
  */
 public final class Configuration {
 
@@ -75,31 +79,30 @@ public final class Configuration {
     @SuppressWarnings("unchecked")
     public Configuration(SQLTemplates templates) {
         this.templates = templates;
-        for (Type<?> customType : templates.getCustomTypes()) {
+        for (Type<?, ?> customType : templates.getCustomTypes()) {
             javaTypeMapping.register(customType);
         }
         for (Map.Entry<SchemaAndTable, SchemaAndTable> entry : templates.getTableOverrides().entrySet()) {
             registerTableOverride(entry.getKey(), entry.getValue());
         }
 
-//        if (templates.isArraysSupported()) {
-//            // register array types
-//            List<Class<?>> classes = ImmutableList.of(String.class, Long.class, Integer.class, Short.class,
-//                    Byte.class, Boolean.class, java.sql.Date.class, java.sql.Timestamp.class,
-//                    java.sql.Time.class, Double.class, Float.class);
-//            for (Class<?> cl : classes) {
-//                int code = jdbcTypeMapping.get(cl);
-//                String name = templates.getTypeNameForCode(code);
-//                Class<?> arrType = Array.newInstance(cl, 0).getClass();
-//                javaTypeMapping.register(new ArrayType(arrType, name));
-//                if (Primitives.isWrapperType(cl) && !cl.equals(Byte.class)) {
-//                    cl = Primitives.unwrap(cl);
-//                    arrType = Array.newInstance(cl, 0).getClass();
-//                    javaTypeMapping.register(new ArrayType(arrType, name));
-//                }
-//            }
-//        }
-
+        if (templates.isArraysSupported()) {
+            // register array types
+            List<Class<?>> classes = ImmutableList.of(String.class, Long.class, Integer.class, Short.class,
+                    Byte.class, Boolean.class, java.sql.Date.class, java.sql.Timestamp.class,
+                    java.sql.Time.class, Double.class, Float.class);
+            for (Class<?> cl : classes) {
+                int code = jdbcTypeMapping.get(cl);
+                String name = templates.getTypeNameForCode(code);
+                Class<?> arrType = Array.newInstance(cl, 0).getClass();
+                javaTypeMapping.register(new ArrayType(arrType, name));
+                if (Primitives.isWrapperType(cl) && !cl.equals(Byte.class)) {
+                    cl = Primitives.unwrap(cl);
+                    arrType = Array.newInstance(cl, 0).getClass();
+                    javaTypeMapping.register(new ArrayType(arrType, name));
+                }
+            }
+        }
     }
 
     /**
@@ -139,7 +142,7 @@ public final class Configuration {
      */
     public Class<?> getJavaType(int sqlType, String typeName, int size, int digits, String tableName, String columnName) {
         // table.column mapped class
-        Type<?> type = javaTypeMapping.getType(tableName, columnName);
+        Type<?, ?> type = javaTypeMapping.getType(tableName, columnName);
         if (type != null) {
             return type.getReturnedClass();
         } else if (typeName != null && !typeName.isEmpty()) {
@@ -178,15 +181,15 @@ public final class Configuration {
     /**
      * Get the value at the given index from the result set
      *
-     * @param <T>    type to return
-     * @param result result set
-     * @param path   path
-     * @param i      one based index in result set row
-     * @param clazz  type
+     * @param <T>   type to return
+     * @param row   row
+     * @param path  path
+     * @param i     one based index in result set row
+     * @param clazz type
      * @return value
      */
-    public <T> Publisher<T> get(Result result, @Nullable Path<?> path, int i, Class<T> clazz) {
-        return result.map((row, rowMetadata) -> getType(path, clazz).getValue(row, i));
+    public <T> T get(Row row, @Nullable Path<?> path, int i, Class<T> clazz) {
+        return getType(path, clazz).getValue(row, i);
     }
 
     /**
@@ -233,44 +236,38 @@ public final class Configuration {
 
     /**
      * Set the value at the given index in the statement
-     *
-     * @param <T>   value
-     * @param stmt  statement
-     * @param path  path
-     * @param i     one based index in statement
-     * @param value value to bind
+     *  @param <T>        value
+     * @param bindMarker bindMarker
+     * @param bindTarget bindTarget
+     * @param path       path
+     * @param value      value to bind
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T> void set(Statement stmt, Path<?> path, int i, T value) {
+    public <T> void set(BindMarker bindMarker, BindTarget bindTarget, Path<?> path, T value) {
         if (value == null || value instanceof Null) {
-//            Integer sqlType = null;
-//            if (path != null) {
-//                ColumnMetadata columnMetadata = ColumnMetadata.getColumnMetadata(path);
-//                if (columnMetadata.hasJdbcType()) {
-//                    sqlType = columnMetadata.getJdbcType();
-//                }
-//            }
             if (path != null) {
-                stmt.bindNull(i, path.getType());
+                bindMarker.bindNull(bindTarget, path.getType());
             } else {
-                stmt.bindNull(i, null);
+                //dummy null value
+                bindMarker.bindNull(bindTarget, String.class);
             }
         } else {
-            getType(path, (Class) value.getClass()).setValue(stmt, i, value);
+            getType(path, (Class) value.getClass()).setValue(bindMarker, bindTarget, value);
         }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
+    private <T> Type<T, ?> getType(@Nullable Path<?> path, Class<T> clazz) {
         if (hasTableColumnTypes && path != null && !clazz.equals(Null.class)
                 && path.getMetadata().getParent() instanceof RelationalPath) {
             String table = ((RelationalPath) path.getMetadata().getParent()).getTableName();
             String column = ColumnMetadata.getName(path);
-            Type<T> type = (Type) javaTypeMapping.getType(table, column);
+            Type<T, ?> type = (Type) javaTypeMapping.getType(table, column);
             if (type != null) {
                 return type;
             }
         }
+
         return javaTypeMapping.getType(clazz);
     }
 
@@ -405,7 +402,7 @@ public final class Configuration {
      *
      * @param type type
      */
-    public void register(Type<?> type) {
+    public void register(Type<?, ?> type) {
         jdbcTypeMapping.register(type.getSQLTypes()[0], type.getReturnedClass());
         javaTypeMapping.register(type);
     }
@@ -466,7 +463,7 @@ public final class Configuration {
      * @param column column
      * @param type   type
      */
-    public void register(String table, String column, Type<?> type) {
+    public void register(String table, String column, Type<?, ?> type) {
         javaTypeMapping.setType(table, column, type);
         hasTableColumnTypes = true;
     }
@@ -530,6 +527,10 @@ public final class Configuration {
      */
     public void setTemplates(SQLTemplates templates) {
         this.templates = templates;
+    }
+
+    public BindMarkersFactory getBindMarkerFactory() {
+        return templates.getBindMarkerFactory();
     }
 
 }

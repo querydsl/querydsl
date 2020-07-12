@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
 
-public class TypesBase extends AbstractBaseTest {
+public abstract class TypesBase extends AbstractBaseTest {
 
     @Test
     public void create_tables() {

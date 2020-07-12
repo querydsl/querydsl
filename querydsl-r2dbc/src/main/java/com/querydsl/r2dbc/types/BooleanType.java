@@ -13,14 +13,16 @@
  */
 package com.querydsl.r2dbc.types;
 
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.sql.Types;
 
 /**
  * {@code BooleanType} maps Boolean to Boolean on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class BooleanType extends AbstractType<Boolean> {
+public class BooleanType extends AbstractType<Boolean, Object> {
 
     public BooleanType() {
         super(Types.BOOLEAN);
@@ -31,13 +33,40 @@ public class BooleanType extends AbstractType<Boolean> {
     }
 
     @Override
+    public String getLiteral(Boolean value) {
+        return value ? "1" : "0";
+    }
+
+    @Override
     public Class<Boolean> getReturnedClass() {
         return Boolean.class;
     }
 
     @Override
-    public String getLiteral(Boolean value) {
-        return value ? "1" : "0";
+    public Class<Object> getDatabaseClass() {
+        return Object.class;
+    }
+
+    @Override
+    protected Boolean fromDbValue(Object value) {
+        if (Byte.class.isAssignableFrom(value.getClass())) {
+            return (Byte) value == 1;
+        }
+        if (Integer.class.isAssignableFrom(value.getClass())) {
+            return (Integer) value == 1;
+        }
+        if (Long.class.isAssignableFrom(value.getClass())) {
+            return (Long) value == 1;
+        }
+        if (BigInteger.class.isAssignableFrom(value.getClass())) {
+            return ((BigInteger) value).longValue() == 1;
+        }
+        //mysql
+        if (ByteBuffer.class.isAssignableFrom(value.getClass())) {
+            return ((ByteBuffer) value).get() == 1;
+        }
+
+        return (Boolean) value;
     }
 
 }

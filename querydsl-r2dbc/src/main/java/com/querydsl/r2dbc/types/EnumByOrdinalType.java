@@ -21,9 +21,9 @@ import java.sql.Types;
  * {@code EnumByOrdinalType} maps Enum types to their Integer ordinals on the JDBC level
  *
  * @param <T>
- * @author tiwe
+ * @author mc_fish
  */
-public class EnumByOrdinalType<T extends Enum<T>> extends AbstractType<T> {
+public class EnumByOrdinalType<T extends Enum<T>> extends AbstractType<T, Integer> {
 
     private final Class<T> type;
 
@@ -48,8 +48,13 @@ public class EnumByOrdinalType<T extends Enum<T>> extends AbstractType<T> {
     }
 
     @Override
-    protected Object toDbValue(T value) {
+    protected Integer toDbValue(T value) {
         return value.ordinal();
+    }
+
+    @Override
+    public Class<Integer> getDatabaseClass() {
+        return Integer.class;
     }
 
 }

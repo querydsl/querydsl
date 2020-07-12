@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * {@code SQLServerTemplates} is an SQL dialect for Microsoft SQL Server
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class SQLServerTemplates extends SQLTemplates {
 
@@ -64,7 +64,7 @@ public class SQLServerTemplates extends SQLTemplates {
     }
 
     protected SQLServerTemplates(Set<String> keywords, char escape, boolean quote) {
-        super(keywords, "\"", escape, quote, false);
+        super(keywords, "\"", escape, quote, false, NAMED);
         setDummyTable("");
         setNullsFirst(null);
         setNullsLast(null);

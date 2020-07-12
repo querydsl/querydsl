@@ -16,7 +16,7 @@ import com.querydsl.core.testutil.IncludeIn;
 import com.querydsl.sql.domain.QEmployee;
 import com.querydsl.sql.oracle.OracleQuery;
 
-public class SelectOracleBase extends AbstractBaseTest {
+public abstract class SelectOracleBase extends AbstractBaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 

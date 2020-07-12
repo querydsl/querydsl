@@ -49,8 +49,6 @@ public class SQLTemplatesRegistry {
             return MySQLTemplates.builder();
         } else if (name.equals("postgresql")) {
             return PostgreSQLTemplates.builder();
-        } else if (name.equals("sqlite")) {
-            return SQLiteTemplates.builder();
         } else if (name.equals("microsoft sql server")) {
             switch (md.getDatabaseMajorVersion()) {
                 case 13:
@@ -68,7 +66,7 @@ public class SQLTemplatesRegistry {
             return new SQLTemplates.Builder() {
                 @Override
                 protected SQLTemplates build(char escape, boolean quote) {
-                    return new SQLTemplates(Keywords.DEFAULT, "\"", escape, quote, false);
+                    return new SQLTemplates(Keywords.DEFAULT, "\"", escape, quote, false, SQLTemplates.ANONYMOUS);
                 }
             };
         }

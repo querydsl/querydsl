@@ -13,17 +13,15 @@
  */
 package com.querydsl.r2dbc.types;
 
-import io.r2dbc.spi.Row;
-
 import java.sql.Types;
 import java.util.UUID;
 
 /**
  * {@code UtilUUIDType} maps UUID to String on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class UtilUUIDType extends AbstractType<UUID> {
+public class UtilUUIDType extends AbstractType<UUID, Object> {
 
     public UtilUUIDType() {
         this(Types.VARCHAR);
@@ -34,19 +32,27 @@ public class UtilUUIDType extends AbstractType<UUID> {
     }
 
     @Override
-    public UUID getValue(Row row, int startIndex) {
-        String val = row.get(startIndex, String.class);
-        return val != null ? UUID.fromString(val) : null;
-    }
-
-    @Override
     public Class<UUID> getReturnedClass() {
         return UUID.class;
     }
 
     @Override
-    protected Object toDbValue(UUID value) {
+    public Class<Object> getDatabaseClass() {
+        return Object.class;
+    }
+
+    @Override
+    protected String toDbValue(UUID value) {
         return value.toString();
+    }
+
+    @Override
+    protected UUID fromDbValue(Object value) {
+        if (String.class.isAssignableFrom(value.getClass())) {
+            return UUID.fromString((String) value);
+        }
+
+        return (UUID) value;
     }
 
 }

@@ -1,0 +1,15 @@
+<project name="testproject" default="codegen" basedir=".">
+
+  <taskdef name="codegen" classname="AntMetaDataExporter"/>
+
+  <target name="codegen">
+    <codegen
+      jdbcDriver="org.h2.Driver"
+      jdbcUser="sa"
+      jdbcUrl="jdbc:h2:./target/dbs/h2_AntMetaDataExporterTest"
+      packageName="test"
+      targetFolder="target/AntMetaDataExporterTest4">
+      <renameMapping fromSchema="PUBLIC" toSchema="PUB"/>
+    </codegen>
+  </target>
+</project>

@@ -22,7 +22,7 @@ import java.util.Map;
  * Create a Map of updates for a given domain object
  *
  * @param <T> object type
- * @author tiwe
+ * @author mc_fish
  */
 public interface Mapper<T> {
 

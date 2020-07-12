@@ -21,9 +21,9 @@ import java.sql.Types;
 /**
  * {@code BlobType} maps Blob to Blob on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class BlobType extends AbstractType<Blob> {
+public class BlobType extends AbstractType<Blob, Blob> {
 
     public BlobType() {
         super(Types.BLOB);

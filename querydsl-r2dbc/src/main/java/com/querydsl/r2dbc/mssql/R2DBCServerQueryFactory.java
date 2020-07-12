@@ -22,7 +22,7 @@ import com.querydsl.sql.RelationalPath;
 /**
  * SQL Server specific implementation of SQLQueryFactory
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCServerQueryFactory extends AbstractR2DBCQueryFactory<R2DBCSQLServerQuery<?>> {
 

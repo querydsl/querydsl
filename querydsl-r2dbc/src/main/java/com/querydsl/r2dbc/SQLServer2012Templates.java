@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * {@code SQLServer2012Templates} is an SQL dialect for Microsoft SQL Server 2012 and later
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class SQLServer2012Templates extends SQLServerTemplates {
 

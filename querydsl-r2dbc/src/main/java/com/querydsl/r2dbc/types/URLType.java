@@ -22,9 +22,9 @@ import java.sql.Types;
 /**
  * {@code URLType} maps URL to URL on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class URLType extends AbstractType<URL> {
+public class URLType extends AbstractType<URL, String> {
 
     public URLType() {
         super(Types.VARCHAR);
@@ -50,8 +50,13 @@ public class URLType extends AbstractType<URL> {
     }
 
     @Override
-    protected Object toDbValue(URL value) {
+    protected String toDbValue(URL value) {
         return value.toString();
+    }
+
+    @Override
+    public Class<String> getDatabaseClass() {
+        return String.class;
     }
 
 }

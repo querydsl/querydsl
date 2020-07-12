@@ -40,8 +40,8 @@ public class H2WithSchemaTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initH2();
         Connections.initConfiguration(H2Templates.builder().printSchema().newLineToSingleSpace().build());
+        Connections.initH2();
     }
 
 }

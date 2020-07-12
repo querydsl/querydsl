@@ -17,8 +17,6 @@ public final class SQLTemplatesRegistryDump {
         dump();
         Connections.initSQLServer();
         dump();
-        /*Connections.initTeradata();
-        dump();*/
     }
 
     private static void dump() {

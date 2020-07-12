@@ -1,14 +1,16 @@
 package com.querydsl.r2dbc.types;
 
-import io.r2dbc.spi.Row;
-import io.r2dbc.spi.Statement;
+import com.querydsl.r2dbc.binding.BindMarker;
+import com.querydsl.r2dbc.binding.BindTarget;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
-import javax.annotation.Nullable;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.Temporal;
 
 /**
  * JSR310OffsetDateTimeType maps {@linkplain OffsetDateTime}
@@ -36,27 +38,25 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
         return OffsetDateTime.class;
     }
 
-    @Nullable
     @Override
-    public OffsetDateTime getValue(Row row, int startIndex) {
+    public void setValue(BindMarker bindMarker, BindTarget bindTarget, OffsetDateTime value) {
         try {
-            return super.getValue(row, startIndex);
+            super.setValue(bindMarker, bindTarget, value);
         } catch (Exception e) {
-            Timestamp val = row.get(startIndex, Timestamp.class);
-            return val != null ? OffsetDateTime.ofInstant(val.toInstant(), ZoneOffset.UTC) : null;
+            bindMarker.bind(bindTarget, new Timestamp(value.toInstant().toEpochMilli()));
         }
     }
 
     @Override
-    public void setValue(Statement st, int startIndex, OffsetDateTime value) {
-        try {
-            super.setValue(st, startIndex, value);
-        } catch (Exception e) {
-            if (value == null) {
-                st.bindNull(startIndex, getReturnedClass());
-            } else {
-                st.bind(startIndex, new Timestamp(value.toInstant().toEpochMilli()));
-            }
+    protected OffsetDateTime fromDbValue(Temporal value) {
+        if (LocalDateTime.class.isAssignableFrom(value.getClass())) {
+            return ((LocalDateTime) value).atOffset(ZoneOffset.UTC);
         }
+        if (ZonedDateTime.class.isAssignableFrom(value.getClass())) {
+            return ((ZonedDateTime) value).toOffsetDateTime();
+        }
+
+        return (OffsetDateTime) value;
     }
+
 }

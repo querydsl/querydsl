@@ -1,4 +1,5 @@
 # source http://www.h2database.com/html/advanced.html
+ALL
 CROSS
 CURRENT_DATE
 CURRENT_TIME

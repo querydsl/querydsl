@@ -6,7 +6,7 @@
 package com.querydsl.r2dbc.ddl;
 
 /**
- * @author tiwe
+ * @author mc_fish
  */
 public class ColumnData {
 

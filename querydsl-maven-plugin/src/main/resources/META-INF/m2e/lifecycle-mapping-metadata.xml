@@ -9,6 +9,10 @@
           <goal>jpa-export</goal>
           <goal>export</goal>
           <goal>test-export</goal>
+          <goal>sql-export</goal>
+          <goal>sql-test-export</goal>
+          <goal>r2dbc-export</goal>
+          <goal>r2dbc-test-export</goal>
         </goals>
       </pluginExecutionFilter>
       <action>

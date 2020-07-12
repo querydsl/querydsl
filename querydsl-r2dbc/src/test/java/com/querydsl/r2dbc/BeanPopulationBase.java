@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @ExcludeIn({CUBRID, DB2, DERBY, ORACLE, SQLSERVER, POSTGRESQL, SQLITE, TERADATA})
-public class BeanPopulationBase extends AbstractBaseTest {
+public abstract class BeanPopulationBase extends AbstractBaseTest {
 
     private final QEmployee e = new QEmployee("e");
 
@@ -44,7 +44,7 @@ public class BeanPopulationBase extends AbstractBaseTest {
 
         // Update
         employee.setLastname("S");
-        assertEquals(1L, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
+        assertEquals(1L, (long) update(e).populate(employee).where(e.id.eq(employee.getId())).execute().block());
 
         // Query
         Employee smith = extQuery().from(e).where(e.lastname.eq("S"))
@@ -68,7 +68,7 @@ public class BeanPopulationBase extends AbstractBaseTest {
         assertEquals("S", other.getLastname());
 
         // Delete (no changes needed)
-        assertEquals(1L, delete(e).where(e.id.eq(employee.getId())).execute());
+        assertEquals(1L, (long) delete(e).where(e.id.eq(employee.getId())).execute().block());
     }
 
     @Test
@@ -82,14 +82,14 @@ public class BeanPopulationBase extends AbstractBaseTest {
 
         // Update
         employee.setLastname("S");
-        assertEquals(1L, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
+        assertEquals(1L, (long) update(e).populate(employee).where(e.id.eq(employee.getId())).execute().block());
 
         // Query
         Employee smith = query().from(e).where(e.lastname.eq("S")).limit(1).select(e).fetchFirst().block();
         assertEquals("John", smith.getFirstname());
 
         // Delete (no changes needed)
-        assertEquals(1L, delete(e).where(e.id.eq(employee.getId())).execute());
+        assertEquals(1L, (long) delete(e).where(e.id.eq(employee.getId())).execute().block());
     }
 
     @Test

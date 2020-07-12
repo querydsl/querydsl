@@ -19,7 +19,7 @@ import com.querydsl.core.types.ConstantImpl;
 /**
  * {@code Null} is a singleton value replacement for null
  *
- * @author tiwe
+ * @author mc_fish
  */
 public final class Null {
 

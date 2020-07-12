@@ -21,9 +21,9 @@ import java.sql.Types;
  * {@code EnumAsObjectType} maps Enum types to Object on the JDBC level
  *
  * @param <T>
- * @author tiwe
+ * @author mc_fish
  */
-public class EnumAsObjectType<T extends Enum<T>> extends AbstractType<T> {
+public class EnumAsObjectType<T extends Enum<T>> extends AbstractType<T, String> {
 
     private final Class<T> type;
 
@@ -48,8 +48,13 @@ public class EnumAsObjectType<T extends Enum<T>> extends AbstractType<T> {
     }
 
     @Override
-    protected Object toDbValue(T value) {
+    protected String toDbValue(T value) {
         return value.name();
+    }
+
+    @Override
+    public Class<String> getDatabaseClass() {
+        return String.class;
     }
 
 }

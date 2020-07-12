@@ -18,7 +18,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimplePath;
 import com.querydsl.core.types.dsl.Wildcard;
 
-public class SelectWindowFunctionsBase extends AbstractBaseTest {
+public abstract class SelectWindowFunctionsBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn(SQLSERVER) // FIXME

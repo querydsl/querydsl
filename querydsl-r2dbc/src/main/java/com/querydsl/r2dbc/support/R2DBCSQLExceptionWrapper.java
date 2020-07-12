@@ -18,12 +18,12 @@ import com.querydsl.core.QueryException;
 import java.sql.SQLException;
 
 /**
- * A {@link R2DBCExceptionWrapper} that adds the additional
+ * A {@link AbstractR2DBCExceptionWrapper} that adds the additional
  * {@code SQLException}s as suppressed exceptions.
  *
  * @author Shredder121
  */
-class JavaSE7SQLExceptionWrapper extends R2DBCExceptionWrapper {
+class R2DBCSQLExceptionWrapper extends AbstractR2DBCExceptionWrapper {
 
     @Override
     public RuntimeException wrap(Throwable exception) {

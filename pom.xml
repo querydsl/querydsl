@@ -271,38 +271,38 @@
     </pluginManagement>
     
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4</version>
-        <executions>
-          <execution>
-            <id>check</id>
-            <phase>verify</phase> 
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
-                  <excludes>
-                  </excludes>
-                  <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
-                  <dumpDetails>true</dumpDetails>
-                  <publicOnly>true</publicOnly>
-                </requireBackwardCompatibility>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.semver</groupId>
-            <artifactId>enforcer-rule</artifactId>
-            <version>0.9.27</version>
-          </dependency>
-        </dependencies>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-enforcer-plugin</artifactId>-->
+<!--        <version>1.4</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>check</id>-->
+<!--            <phase>verify</phase> -->
+<!--            <goals>-->
+<!--              <goal>enforce</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <rules>-->
+<!--                <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">-->
+<!--                  <excludes>-->
+<!--                  </excludes>-->
+<!--                  <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>-->
+<!--                  <dumpDetails>true</dumpDetails>-->
+<!--                  <publicOnly>true</publicOnly>-->
+<!--                </requireBackwardCompatibility>-->
+<!--              </rules>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--        <dependencies>-->
+<!--          <dependency>-->
+<!--            <groupId>org.semver</groupId>-->
+<!--            <artifactId>enforcer-rule</artifactId>-->
+<!--            <version>0.9.27</version>-->
+<!--          </dependency>-->
+<!--        </dependencies>-->
+<!--      </plugin>-->
       <plugin>       
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -547,6 +547,7 @@
         <module>querydsl-sql-codegen</module>
         <module>querydsl-sql-spring</module>
         <module>querydsl-r2dbc</module>
+        <module>querydsl-r2dbc-codegen</module>
         <module>querydsl-maven-plugin</module>
         <module>querydsl-jpa</module>
         <module>querydsl-jpa-codegen</module>

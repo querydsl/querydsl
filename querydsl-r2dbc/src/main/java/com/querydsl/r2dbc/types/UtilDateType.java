@@ -13,16 +13,17 @@
  */
 package com.querydsl.r2dbc.types;
 
-import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.*;
+import java.time.temporal.Temporal;
 import java.util.Date;
 
 /**
  * {@code UtilDateType} maps Date to Timestamp on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class UtilDateType extends AbstractDateTimeType<Date> {
+public class UtilDateType extends AbstractDateTimeType<Date, Temporal> {
 
     public UtilDateType() {
         super(Types.TIMESTAMP);
@@ -43,8 +44,29 @@ public class UtilDateType extends AbstractDateTimeType<Date> {
     }
 
     @Override
-    protected Object toDbValue(Date value) {
-        return new Timestamp(value.getTime());
+    public Class<Temporal> getDatabaseClass() {
+        return Temporal.class;
+    }
+
+    @Override
+    protected LocalDateTime toDbValue(Date value) {
+        return LocalDateTime.ofInstant(value.toInstant(), ZoneOffset.systemDefault());
+    }
+
+    @Override
+    protected Date fromDbValue(Temporal value) {
+        if (LocalDate.class.isAssignableFrom(value.getClass())) {
+            Instant instant = ((LocalDate) value).atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant();
+            return Date.from(instant);
+        }
+
+        if (LocalDateTime.class.isAssignableFrom(value.getClass())) {
+            Instant instant = ((LocalDateTime) value).atZone(ZoneId.systemDefault()).toInstant();
+            return Date.from(instant);
+        }
+
+        Instant instant = Instant.from(value);
+        return Date.from(instant);
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * {@code SQLExceptionTranslator} translate SQLExceptions to runtime exceptions
  *
- * @author tiwe
+ * @author mc_fish
  */
 public interface R2DBCExceptionTranslator {
 

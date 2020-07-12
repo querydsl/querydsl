@@ -31,7 +31,7 @@ import java.io.File;
  *
  * @param <T> result type
  * @param <C> the concrete subtype
- * @author tiwe
+ * @author mc_fish
  * @see R2DBCQuery
  */
 public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQuery<T, C>> extends AbstractR2DBCQuery<T, C> {

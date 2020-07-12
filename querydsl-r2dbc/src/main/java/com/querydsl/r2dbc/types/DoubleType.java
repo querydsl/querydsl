@@ -13,14 +13,15 @@
  */
 package com.querydsl.r2dbc.types;
 
+import java.math.BigDecimal;
 import java.sql.Types;
 
 /**
  * {@code DoubleType} maps Double to Double on the JDBC level
  *
- * @author tiwe
+ * @author mc_fish
  */
-public class DoubleType extends AbstractType<Double> {
+public class DoubleType extends AbstractType<Double, Number> {
 
     public DoubleType() {
         super(Types.DOUBLE);
@@ -33,6 +34,21 @@ public class DoubleType extends AbstractType<Double> {
     @Override
     public Class<Double> getReturnedClass() {
         return Double.class;
+    }
+
+    @Override
+    public Class<Number> getDatabaseClass() {
+        return Number.class;
+    }
+
+    protected Double fromDbValue(Number value) {
+        if (Integer.class.isAssignableFrom(value.getClass())) {
+            return value.doubleValue();
+        }
+        if (BigDecimal.class.isAssignableFrom(value.getClass())) {
+            return value.doubleValue();
+        }
+        return (Double) value;
     }
 
 }

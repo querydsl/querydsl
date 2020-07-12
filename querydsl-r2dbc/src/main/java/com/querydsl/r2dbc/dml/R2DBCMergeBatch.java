@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * {@code SQLMergeBatch} defines the state of an SQL MERGE batch item
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCMergeBatch {
 

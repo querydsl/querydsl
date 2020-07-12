@@ -73,6 +73,11 @@
             <artifactId>querydsl-sql-codegen</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-r2dbc-codegen</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>

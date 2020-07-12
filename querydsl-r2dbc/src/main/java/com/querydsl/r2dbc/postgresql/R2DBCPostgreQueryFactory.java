@@ -22,7 +22,7 @@ import com.querydsl.sql.RelationalPath;
 /**
  * PostgreSQL specific implementation of SQLQueryFactory
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCPostgreQueryFactory extends AbstractR2DBCQueryFactory<R2DBCPostgreQuery<?>> {
 

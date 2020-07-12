@@ -24,7 +24,7 @@ import io.r2dbc.spi.Connection;
  * interface
  *
  * @param <T>
- * @author tiwe
+ * @author mc_fish
  */
 public class R2DBCQuery<T> extends AbstractR2DBCQuery<T, R2DBCQuery<T>> {
 

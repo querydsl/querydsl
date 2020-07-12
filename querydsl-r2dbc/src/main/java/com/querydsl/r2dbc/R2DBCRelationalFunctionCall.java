@@ -21,9 +21,8 @@ import java.util.List;
 /**
  * Represents a table valued function call
  *
- * @author tiwe
- *
  * @param <T>
+ * @author mc_fish
  */
 public class R2DBCRelationalFunctionCall<T> extends SimpleExpression<T> implements TemplateExpression<T> {
 
@@ -51,7 +50,7 @@ public class R2DBCRelationalFunctionCall<T> extends SimpleExpression<T> implemen
     }
 
     @Override
-    public final <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
 

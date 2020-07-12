@@ -20,7 +20,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.domain.Employee;
 import com.querydsl.sql.domain.QEmployee;
 
-public class SubqueriesBase extends AbstractBaseTest {
+public abstract class SubqueriesBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, DERBY, FIREBIRD, H2, HSQLDB, SQLITE, SQLSERVER})

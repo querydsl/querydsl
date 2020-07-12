@@ -23,7 +23,6 @@ public class TemplatesTest extends TemplatesTestBase {
         new H2Templates();
         new MySQLTemplates();
         new PostgreSQLTemplates();
-        new SQLTemplates("\"", '\\', false);
         new SQLServerTemplates();
     }
 

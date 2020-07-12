@@ -14,7 +14,7 @@
 package com.querydsl.r2dbc;
 
 import com.querydsl.core.QueryException;
-import com.querydsl.r2dbc.support.R2DBCExceptionWrapper;
+import com.querydsl.r2dbc.support.AbstractR2DBCExceptionWrapper;
 import com.querydsl.sql.SQLExceptionTranslator;
 
 import java.sql.SQLException;
@@ -23,13 +23,13 @@ import java.util.List;
 /**
  * Default implementation of the {@link SQLExceptionTranslator} interface
  *
- * @author tiwe
+ * @author mc_fish
  */
 public final class DefaultR2DBCExceptionTranslator implements R2DBCExceptionTranslator {
 
     public static final R2DBCExceptionTranslator DEFAULT = new DefaultR2DBCExceptionTranslator();
 
-    private static final R2DBCExceptionWrapper WRAPPER = R2DBCExceptionWrapper.INSTANCE;
+    private static final AbstractR2DBCExceptionWrapper WRAPPER = AbstractR2DBCExceptionWrapper.INSTANCE;
 
     @Override
     public RuntimeException translate(Throwable e) {

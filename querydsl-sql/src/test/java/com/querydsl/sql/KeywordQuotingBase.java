@@ -29,7 +29,7 @@ import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
 
-public class KeywordQuotingBase extends AbstractBaseTest {
+public abstract class KeywordQuotingBase extends AbstractBaseTest {
 
     private static class Quoting extends RelationalPathBase<Quoting> {
 

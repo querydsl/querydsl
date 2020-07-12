@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * {@code SQLServer2008Templates} is an SQL dialect for Microsoft SQL Server 2008
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class SQLServer2008Templates extends SQLServer2005Templates {
 

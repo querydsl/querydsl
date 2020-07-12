@@ -21,10 +21,10 @@ import com.querydsl.core.types.Path;
 import com.querydsl.r2dbc.Configuration;
 import com.querydsl.r2dbc.R2DBCConnectionProvider;
 import com.querydsl.r2dbc.SQLSerializer;
+import com.querydsl.r2dbc.binding.BindMarkers;
+import com.querydsl.r2dbc.binding.BindTarget;
 import com.querydsl.sql.SQLBindings;
-import com.querydsl.sql.types.Null;
 import io.r2dbc.spi.Connection;
-import io.r2dbc.spi.Statement;
 import org.slf4j.Logger;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +39,7 @@ import static com.google.common.collect.Lists.newArrayList;
  * {@code AbstractSQLClause} is a superclass for SQL based DMLClause implementations
  *
  * @param <C> concrete subtype
- * @author tiwe
+ * @author mc_fish
  */
 public abstract class AbstractR2DBCClause<C extends AbstractR2DBCClause<C>> implements ReactiveDMLClause<C> {
 
@@ -117,18 +117,19 @@ public abstract class AbstractR2DBCClause<C extends AbstractR2DBCClause<C>> impl
     /**
      * Set the parameters to the given Statement
      *
-     * @param stmt          Statement to be populated
+     * @param bindTarget    wrapped statement to be populated
+     * @param bindMarkers   bind markers
      * @param objects       list of constants
      * @param constantPaths list of paths related to the constants
      * @param params        map of param to value for param resolving
-     * @param offset        offset in the batch
      */
-    protected void setParameters(Statement stmt, List<?> objects, List<Path<?>> constantPaths,
-                                 Map<ParamExpression<?>, ?> params, int offset) {
+    protected void setParameters(BindTarget bindTarget, BindMarkers bindMarkers, List<?> objects, List<Path<?>> constantPaths,
+                                 Map<ParamExpression<?>, ?> params) {
         if (objects.size() != constantPaths.size()) {
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, " +
                     "but got " + constantPaths.size());
         }
+
         for (int i = 0; i < objects.size(); i++) {
             Object o = objects.get(i);
             if (o instanceof ParamExpression) {
@@ -137,24 +138,15 @@ public abstract class AbstractR2DBCClause<C extends AbstractR2DBCClause<C>> impl
                 }
                 o = params.get(o);
             }
-            bind(stmt, constantPaths.get(i), (offset * objects.size()) + i, o);
-        }
-    }
 
-    private <T> void bind(Statement stmt, Path<?> path, int i, T value) {
-        if (value == null || value instanceof Null) {
-            if (path != null) {
-                stmt.bindNull(i, path.getType());
-            }
-        } else {
-            stmt.bind(i, value);
+            configuration.set(bindMarkers.next(), bindTarget, constantPaths.get(i), o);
         }
     }
 
     protected void logQuery(Logger logger, String queryString, Collection<Object> parameters) {
         if (logger.isDebugEnabled()) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            logger.debug(normalizedQuery);
+            logger.info(normalizedQuery);
         }
     }
 

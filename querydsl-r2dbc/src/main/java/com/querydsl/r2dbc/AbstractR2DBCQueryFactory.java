@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
  * {@code AbstractSQLQueryFactory} is the base class for {@link SQLCommonQueryFactory} implementations
  *
  * @param <Q> query type
- * @author tiwe
+ * @author mc_fish
  */
 public abstract class AbstractR2DBCQueryFactory<Q extends R2DBCCommonQuery<?>> implements R2DBCCommonQueryFactory<Q,
         R2DBCDeleteClause, R2DBCUpdateClause, R2DBCInsertClause> {

@@ -23,7 +23,7 @@ import java.sql.Types;
  *
  * <p>tested with PostgreSQL 8.4 and 9.1</p>
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class PostgreSQLTemplates extends SQLTemplates {
 
@@ -48,7 +48,7 @@ public class PostgreSQLTemplates extends SQLTemplates {
     }
 
     public PostgreSQLTemplates(char escape, boolean quote) {
-        super(Keywords.POSTGRESQL, "\"", escape, quote, false);
+        super(Keywords.POSTGRESQL, "\"", escape, quote, false, INDEXED);
         setDummyTable(null);
         setCountDistinctMultipleColumns(true);
         setCountViaAnalytics(true);

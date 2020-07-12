@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Creates the mapping via @Column annotated fields in the object. Field names don't have to match those in the RelationalPath.
  *
- * @author tiwe
+ * @author mc_fish
  */
 public class AnnotationMapper implements Mapper<Object> {
 
