@@ -33,6 +33,8 @@ import com.querydsl.core.types.TemplateExpression;
  */
 public abstract class TypeMappings {
 
+    private final Map<Type, Type> genericQueryTypes = new HashMap<Type, Type>();
+
     private final Map<String, Type> queryTypes = new HashMap<String, Type>();
 
     private final Map<TypeCategory, Type> exprTypes
@@ -57,7 +59,9 @@ public abstract class TypeMappings {
     }
 
     public Type getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend) {
-        if (queryTypes.containsKey(type.getFullName())) {
+        if (genericQueryTypes.containsKey(type)) {
+            return genericQueryTypes.get(type);
+        } else if (queryTypes.containsKey(type.getFullName())) {
             return queryTypes.get(type.getFullName());
         } else {
             return getQueryType(exprTypes, type, model, raw, rawParameters, extend);
@@ -69,7 +73,9 @@ public abstract class TypeMappings {
     }
 
     public Type getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend) {
-        if (queryTypes.containsKey(type.getFullName())) {
+        if (genericQueryTypes.containsKey(type)) {
+            return genericQueryTypes.get(type);
+        } else if (queryTypes.containsKey(type.getFullName())) {
             return queryTypes.get(type.getFullName());
         } else {
             return getQueryType(pathTypes, type, model, raw, rawParameters, extend);
@@ -121,9 +127,11 @@ public abstract class TypeMappings {
 
     public void register(Type type, Type queryType) {
         queryTypes.put(type.getFullName(), queryType);
+        genericQueryTypes.put(type, queryType);
     }
 
     public boolean isRegistered(Type type) {
         return queryTypes.containsKey(type.getFullName());
     }
+
 }

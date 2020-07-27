@@ -16,10 +16,14 @@ package com.querydsl.codegen;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.mysema.codegen.model.SimpleType;
 import org.junit.Test;
 
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
+
+import java.util.Collections;
+import java.util.List;
 
 public class TypeMappingsTest {
 
@@ -41,7 +45,23 @@ public class TypeMappingsTest {
         TypeMappings typeMappings = new JavaTypeMappings();
         typeMappings.register(new ClassType(Double[].class), new ClassType(Point.class));
         assertTrue(typeMappings.isRegistered(new ClassType(Double[].class)));
+    }
 
+    @Test
+    public void testGenericTypeRegistration() {
+        SimpleType rawListType = new SimpleType(List.class.getName());
+        SimpleType integerListType = new SimpleType(rawListType, Collections.<Type> singletonList(new SimpleType(Integer.class.getName())));
+        SimpleType longListType = new SimpleType(rawListType, Collections.<Type> singletonList(new SimpleType(Long.class.getName())));
+
+        SimpleType integerListTypeExpression = new SimpleType("integerListTypeExpression");
+        SimpleType longListTypeExpression = new SimpleType("longListTypeExpression");
+
+        TypeMappings typeMappings = new JavaTypeMappings();
+        typeMappings.register(integerListType, integerListTypeExpression);
+        typeMappings.register(longListType, longListTypeExpression);
+
+        assertEquals(integerListTypeExpression, typeMappings.getExprType(integerListType, null, false));
+        assertEquals(longListTypeExpression, typeMappings.getExprType(longListType, null, false));
     }
 
 }
