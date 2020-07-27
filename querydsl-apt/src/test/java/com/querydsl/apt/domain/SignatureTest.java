@@ -17,10 +17,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.Serializable;
 
+import com.querydsl.core.types.dsl.EntityPathBase;
 import org.junit.Test;
 
 import com.querydsl.core.annotations.QuerySupertype;
-import com.querydsl.core.types.dsl.ComparablePath;
 
 public class SignatureTest {
 
@@ -36,12 +36,12 @@ public class SignatureTest {
 
     @Test
     public void aPropertyChangeSupported() {
-        assertEquals(ComparablePath.class, QSignatureTest_APropertyChangeSupported.class.getSuperclass());
+        assertEquals(EntityPathBase.class, QSignatureTest_APropertyChangeSupported.class.getSuperclass());
     }
 
     @Test
     public void aValueObject() {
-        assertEquals(ComparablePath.class, QSignatureTest_AValueObject.class.getSuperclass());
+        assertEquals(EntityPathBase.class, QSignatureTest_AValueObject.class.getSuperclass());
     }
 
 }
