@@ -76,7 +76,8 @@ public class JPAQueryFactoryTest {
     public void query3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
-        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.expect(mock.unwrap(EasyMock.anyObject(Class.class))).andReturn(mock).atLeastOnce();
+
         EasyMock.replay(mock, factoryMock);
 
         queryFactory3.query().from(QAnimal.animal);
@@ -104,7 +105,7 @@ public class JPAQueryFactoryTest {
     public void delete3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
-        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.expect(mock.unwrap(EasyMock.anyObject(Class.class))).andReturn(mock).atLeastOnce();
         EasyMock.replay(mock, factoryMock);
 
         assertNotNull(queryFactory3.delete(QAnimal.animal));
@@ -128,7 +129,7 @@ public class JPAQueryFactoryTest {
     public void update3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
-        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.expect(mock.unwrap(EasyMock.anyObject(Class.class))).andReturn(mock).atLeastOnce();
         EasyMock.replay(mock, factoryMock);
 
         assertNotNull(queryFactory3.update(QAnimal.animal));
@@ -151,7 +152,7 @@ public class JPAQueryFactoryTest {
     public void insert3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
-        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.expect(mock.unwrap(EasyMock.anyObject(Class.class))).andReturn(mock).atLeastOnce();
         EasyMock.replay(mock, factoryMock);
 
         assertNotNull(queryFactory3.insert(QAnimal.animal));

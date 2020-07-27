@@ -15,6 +15,7 @@ package com.querydsl.jpa;
 
 import java.util.Iterator;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.hibernate.ScrollMode;
@@ -32,7 +33,7 @@ import com.querydsl.core.types.FactoryExpression;
  * @author tiwe
  *
  */
-class HibernateHandler implements QueryHandler {
+public class HibernateHandler implements QueryHandler {
 
     @Override
     public void addEntity(Query query, String alias, Class<?> type) {
@@ -52,15 +53,15 @@ class HibernateHandler implements QueryHandler {
     @SuppressWarnings("unchecked")
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
-        if (query instanceof NativeQuery) {
-            NativeQuery hQuery = (NativeQuery) query;
-            ScrollableResults results = hQuery.scroll(ScrollMode.FORWARD_ONLY);
+        try {
+            org.hibernate.query.Query unwrappedQuery = query.unwrap(org.hibernate.query.Query.class);
+            ScrollableResults results = unwrappedQuery.scroll(ScrollMode.FORWARD_ONLY);
             CloseableIterator<T> iterator = new ScrollableResultsIterator<T>(results);
             if (projection != null) {
                 iterator = new TransformingIterator<T>(iterator, projection);
             }
             return iterator;
-        } else {
+        } catch (PersistenceException e) {
             Iterator<T> iterator = query.getResultList().iterator();
             if (projection != null) {
                 return new TransformingIterator<T>(iterator, projection);
@@ -73,11 +74,11 @@ class HibernateHandler implements QueryHandler {
     @SuppressWarnings("deprecation")
     @Override
     public boolean transform(Query query, FactoryExpression<?> projection) {
-        if (query instanceof NativeQuery) {
+        try {
             ResultTransformer transformer = new FactoryExpressionTransformer(projection);
-            query.unwrap(NativeQuery.class).setResultTransformer(transformer);
+            query.unwrap(org.hibernate.query.Query.class).setResultTransformer(transformer);
             return true;
-        } else {
+        } catch (PersistenceException e) {
             return false;
         }
     }

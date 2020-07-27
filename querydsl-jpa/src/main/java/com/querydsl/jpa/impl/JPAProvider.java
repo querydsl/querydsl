@@ -18,7 +18,13 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import com.google.common.collect.Maps;
-import com.querydsl.jpa.*;
+import com.querydsl.jpa.BatooTemplates;
+import com.querydsl.jpa.DataNucleusTemplates;
+import com.querydsl.jpa.EclipseLinkTemplates;
+import com.querydsl.jpa.HQLTemplates;
+import com.querydsl.jpa.Hibernate5Templates;
+import com.querydsl.jpa.JPQLTemplates;
+import com.querydsl.jpa.OpenJPATemplates;
 
 /**
  * {@code JPAProvider} provides detection of the JPA provider based on the EntityManager instance
@@ -39,9 +45,23 @@ public final class JPAProvider {
     }
 
     static {
+        boolean hibernate5;
+
+        try {
+            String version = Class.forName("org.hibernate.Session").getPackage().getImplementationVersion();
+            String[] versionParts = version.split("\\.");
+            int major = Integer.parseInt(versionParts[0]);
+            hibernate5 = major >= 5;
+        } catch (ClassNotFoundException e) {
+            hibernate5 = false;
+        }
+
+        JPQLTemplates hibernateTemplates = hibernate5 ? Hibernate5Templates.DEFAULT : HQLTemplates.DEFAULT;
+
         addMapping("org.batoo.jpa.core.impl.manager.EntityManagerImpl", BatooTemplates.DEFAULT);
-        addMapping("org.hibernate.Session", HQLTemplates.DEFAULT);
-        addMapping("org.hibernate.ejb.HibernateEntityManager", HQLTemplates.DEFAULT);
+        addMapping("org.hibernate.Session", hibernateTemplates);
+        addMapping("org.hibernate.ejb.HibernateEntityManager", hibernateTemplates);
+        addMapping("org.hibernate.jpa.HibernateEntityManager", hibernateTemplates);
         addMapping("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT);
         addMapping("org.apache.openjpa.persistence.OpenJPAEntityManager", OpenJPATemplates.DEFAULT);
         addMapping("org.datanucleus.jpa.EntityManagerImpl", DataNucleusTemplates.DEFAULT);
@@ -51,15 +71,23 @@ public final class JPAProvider {
         templatesByName.put("batoo", BatooTemplates.DEFAULT);
         templatesByName.put("eclipselink", EclipseLinkTemplates.DEFAULT);
         templatesByName.put("hibernate", HQLTemplates.DEFAULT);
+        templatesByName.put("hibernate5", Hibernate5Templates.DEFAULT);
         templatesByName.put("openjpa", OpenJPATemplates.DEFAULT);
         templatesByName.put("datanucleus", DataNucleusTemplates.DEFAULT);
     }
 
     public static JPQLTemplates getTemplates(EntityManager em) {
-        // detect by delegate
         for (Map.Entry<Class<?>, JPQLTemplates> entry : mappings.entrySet()) {
-            if (entry.getKey().isAssignableFrom(em.getDelegate().getClass())) {
-                return entry.getValue();
+            Class<?> entityManagerClass = entry.getKey();
+            try {
+                if (entityManagerClass.isInstance(em.unwrap(entityManagerClass))) {
+                    return entry.getValue();
+                }
+            } catch (Exception e) { // The PersistenceException is wrapped in an InvocationException for EclipseLink
+                // detect by delegate
+                if (entityManagerClass.isAssignableFrom(em.getDelegate().getClass())) {
+                    return entry.getValue();
+                }
             }
         }
         // detect by properties
