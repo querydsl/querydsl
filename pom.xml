@@ -285,6 +285,8 @@
               <rules>
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
                   <excludes>
+                    <exclude>com/querydsl/jpa/Hibernate5Templates</exclude>
+                    <exclude>com/querydsl/jpa/HibernateHandler</exclude>
                   </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>

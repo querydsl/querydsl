@@ -28,9 +28,7 @@ import com.querydsl.core.types.Ops;
  * HQLTemplates extends {@link JPQLTemplates} with Hibernate specific extensions
  *
  * @author tiwe
- * @deprecated Most likely you want to use {@link Hibernate5Templates} instead
  */
-@Deprecated
 public class HQLTemplates extends JPQLTemplates {
 
     private static final QueryHandler QUERY_HANDLER;
