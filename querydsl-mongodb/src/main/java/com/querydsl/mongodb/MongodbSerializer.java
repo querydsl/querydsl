@@ -13,20 +13,20 @@
  */
 package com.querydsl.mongodb;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import org.bson.BSONObject;
-import org.bson.types.ObjectId;
-
 import com.google.common.collect.Sets;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.DBRef;
 import com.querydsl.core.types.*;
+import org.bson.BSONObject;
+import org.bson.types.ObjectId;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Serializes the given Querydsl query to a DBObject query for MongoDB
@@ -248,6 +248,12 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
         } else if (op == MongodbOps.NEAR) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$near", asDBValue(expr, 1)));
+
+        } else if (op == MongodbOps.GEO_WITHIN_BOX) {
+            return asDBObject(asDBKey(expr, 0), asDBObject(
+                    "$geoWithin",
+                    asDBObject("$box", Arrays.asList(asDBValue(expr, 1), asDBValue(expr, 2)))
+            ));
 
         } else if (op == MongodbOps.NEAR_SPHERE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$nearSphere", asDBValue(expr, 1)));
