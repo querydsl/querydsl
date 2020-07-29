@@ -14,6 +14,7 @@
 package com.querydsl.core.types.dsl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.lang.reflect.Method;
 import java.sql.Time;
@@ -36,7 +37,8 @@ public class ExpressionsTest {
     private static final BooleanExpression a = new BooleanPath("a"), b = new BooleanPath("b");
 
     private enum testEnum {
-        TEST;
+        TEST,
+        TEST_2
     }
 
     private TimeZone timeZone = null;
@@ -311,6 +313,12 @@ public class ExpressionsTest {
     }
 
     @Test
+    public void asBoolean_equals_works_for_returned_values() {
+        assertEquals(Expressions.asBoolean(true), Expressions.asBoolean(true));
+        assertNotEquals(Expressions.asBoolean(true), Expressions.asBoolean(false));
+    }
+
+    @Test
     public void asComparable_returns_a_corresponding_ComparableExpression_for_a_given_Expression() {
         assertEquals("1 = 1",
                 Expressions.asComparable(Expressions.constant(1L)).eq(Expressions.constant(1L)).toString());
@@ -319,6 +327,12 @@ public class ExpressionsTest {
     @Test
     public void asComparable_returns_a_corresponding_ComparableExpression_for_a_given_Constant() {
         assertEquals("1 = 1", Expressions.asComparable(1L).eq(1L).toString());
+    }
+
+    @Test
+    public void asComparable_equals_works_for_returned_values() {
+        assertEquals(Expressions.asComparable(1L), Expressions.asComparable(1L));
+        assertNotEquals(Expressions.asComparable(1L), Expressions.asComparable(2L));
     }
 
     @Test
@@ -333,6 +347,12 @@ public class ExpressionsTest {
     }
 
     @Test
+    public void asDate_equals_works_for_returned_values() {
+        assertEquals(Expressions.asDate(new Date(1L)).year(), Expressions.asDate(new Date(1L)).year());
+        assertNotEquals(Expressions.asDate(new Date(1L)).year(), Expressions.asDate(new Date(2L)).year());
+    }
+
+    @Test
     public void asDateTime_returns_a_corresponding_DateTimeExpression_for_a_given_Expression() {
         assertEquals("min(Thu Jan 01 00:00:00 UTC 1970)",
                 Expressions.asDateTime(Expressions.constant(new Date(1L))).min().toString());
@@ -341,6 +361,12 @@ public class ExpressionsTest {
     @Test
     public void asDateTime_returns_a_corresponding_DateTimeExpression_for_a_given_Constant() {
         assertEquals("min(Thu Jan 01 00:00:00 UTC 1970)", Expressions.asDateTime(new Date(1L)).min().toString());
+    }
+
+    @Test
+    public void asDateTime_equals_works_for_returned_values() {
+        assertEquals(Expressions.asDateTime(new Date(1L)).min(), Expressions.asDateTime(new Date(1L)).min());
+        assertNotEquals(Expressions.asDateTime(new Date(1L)).min(), Expressions.asDateTime(new Date(2L)).min());
     }
 
     @Test
@@ -355,6 +381,12 @@ public class ExpressionsTest {
     }
 
     @Test
+    public void asTime_equals_works_for_returned_values() {
+        assertEquals(Expressions.asTime(new Date(1L)).hour(), Expressions.asTime(new Date(1L)).hour());
+        assertNotEquals(Expressions.asTime(new Date(1L)).hour(), Expressions.asTime(new Date(2L)).hour());
+    }
+
+    @Test
     public void asEnum_returns_a_corresponding_EnumExpression_for_a_given_Expression() {
         assertEquals("ordinal(TEST)", Expressions.asEnum(Expressions.constant(testEnum.TEST)).ordinal().toString());
     }
@@ -362,6 +394,12 @@ public class ExpressionsTest {
     @Test
     public void asEnum_returns_a_corresponding_EnumExpression_for_a_given_Constant() {
         assertEquals("ordinal(TEST)", Expressions.asEnum(testEnum.TEST).ordinal().toString());
+    }
+
+    @Test
+    public void asEnum_equals_works_for_returned_values() {
+        assertEquals(Expressions.asEnum(testEnum.TEST), Expressions.asEnum(testEnum.TEST));
+        assertNotEquals(Expressions.asEnum(testEnum.TEST), Expressions.asEnum(testEnum.TEST_2));
     }
 
     @Test
@@ -375,6 +413,12 @@ public class ExpressionsTest {
     }
 
     @Test
+    public void asNumber_equals_works_for_returned_values() {
+        assertEquals(Expressions.asNumber(42L), Expressions.asNumber(42L));
+        assertNotEquals(Expressions.asNumber(42L), Expressions.asNumber(256L));
+    }
+
+    @Test
     public void asString_returns_a_corresponding_StringExpression_for_a_given_Expression() {
         assertEquals("left + right",
                 Expressions.asString(Expressions.constant("left")).append(Expressions.constant("right")).toString());
@@ -383,6 +427,12 @@ public class ExpressionsTest {
     @Test
     public void asString_returns_a_corresponding_StringExpression_for_a_given_Constant() {
         assertEquals("left + right", Expressions.asString("left").append(Expressions.constant("right")).toString());
+    }
+
+    @Test
+    public void asString_equals_works_for_returned_values() {
+        assertEquals(Expressions.asString("foo"), Expressions.asString("foo"));
+        assertNotEquals(Expressions.asString("foo"), Expressions.asString("bar"));
     }
 
 }
