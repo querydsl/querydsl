@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.regex.Pattern;
 
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.plugin.AbstractMojo;
@@ -431,7 +432,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             exporter.setTargetFolder(new File(targetFolder));
             exporter.setNamingStrategy(namingStrategy);
             exporter.setCatalogPattern(catalogPattern);
-            exporter.setSchemaPattern(schemaPattern);
+            exporter.setSchemaPattern(processBlankValues(schemaPattern));
             exporter.setTableNamePattern(tableNamePattern);
             exporter.setColumnAnnotations(columnAnnotations);
             exporter.setValidationAnnotations(validationAnnotations);
@@ -702,4 +703,14 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
         boolean setToBlank = value == null || value.equalsIgnoreCase("BLANK");
         return setToBlank ? "" : value;
     }
+
+    private static String processBlankValues(String value) {
+        if (value == null) {
+            return null;
+        }
+        return BLANK_VALUE_PATTERN.matcher(value).replaceAll(BLANK_VALUE_REPLACEMENT);
+    }
+
+    private static final Pattern BLANK_VALUE_PATTERN = Pattern.compile("(^|,)BLANK(,|$)", Pattern.CASE_INSENSITIVE);
+    private static final String BLANK_VALUE_REPLACEMENT = "$1$2";
 }
