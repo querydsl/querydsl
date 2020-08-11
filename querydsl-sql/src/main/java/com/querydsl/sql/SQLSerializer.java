@@ -651,6 +651,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         skipParent = false;
 
+        serialize(Position.BEFORE_FILTERS, metadata.getFlags());
         if (metadata.getWhere() != null) {
             serializeForWhere(metadata);
         }
