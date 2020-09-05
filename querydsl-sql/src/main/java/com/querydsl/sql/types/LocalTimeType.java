@@ -19,12 +19,13 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalTime;
 
 /**
- * {@code LocalTimeType} maps LocalTime to Time on the JDBC level
+ * {@code LocalTimeType} maps {@linkplain org.joda.time.LocalTime}
+ * to {@linkplain java.sql.Time} on the JDBC level
  *
  * @author tiwe
  *
  */
-public class LocalTimeType extends AbstractDateTimeType<LocalTime> {
+public class LocalTimeType extends AbstractJodaTimeDateTimeType<LocalTime> {
 
     public LocalTimeType() {
         super(Types.TIME);
