@@ -33,7 +33,7 @@ public class TimestampType extends AbstractDateTimeType<Timestamp> {
 
     @Override
     public String getLiteral(Timestamp value) {
-        return dateTimeFormatter.print(value.getTime());
+        return formatDateTime(value);
     }
 
     @Override

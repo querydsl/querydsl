@@ -37,7 +37,7 @@ public class UtilDateType extends AbstractDateTimeType<Date> {
 
     @Override
     public String getLiteral(Date value) {
-        return dateTimeFormatter.print(value.getTime());
+        return formatDateTime(value);
     }
 
     @Override

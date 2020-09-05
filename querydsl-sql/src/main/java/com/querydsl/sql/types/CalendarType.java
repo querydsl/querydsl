@@ -34,7 +34,7 @@ public class CalendarType extends AbstractDateTimeType<Calendar> {
 
     @Override
     public String getLiteral(Calendar value) {
-        return dateTimeFormatter.print(value.getTimeInMillis());
+        return formatDateTime(value.getTime());
     }
 
     @Override

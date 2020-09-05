@@ -14,9 +14,8 @@
 package com.querydsl.sql;
 
 import java.sql.Types;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import com.querydsl.core.types.Ops;
 import com.querydsl.sql.types.BigDecimalAsDoubleType;
@@ -30,11 +29,26 @@ import com.querydsl.sql.types.BigIntegerAsLongType;
  */
 public class SQLiteTemplates extends SQLTemplates {
 
-    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd");
+        }
+    };
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    private static final ThreadLocal<SimpleDateFormat> dateTimeFormatter = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }
+    };
 
-    private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
+    private static final ThreadLocal<SimpleDateFormat> timeFormatter = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("HH:mm:ss");
+        }
+    };
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLiteTemplates DEFAULT = new SQLiteTemplates();
@@ -114,18 +128,22 @@ public class SQLiteTemplates extends SQLTemplates {
 
     @Override
     public String serialize(String literal, int jdbcType) {
-        // XXX doesn't work with LocalDate, LocalDateTime and LocalTime
-        switch (jdbcType) {
-            case Types.TIMESTAMP:
-            case TIMESTAMP_WITH_TIMEZONE:
-                return String.valueOf(dateTimeFormatter.parseDateTime(literal).getMillis());
-            case Types.DATE:
-                return String.valueOf(dateFormatter.parseDateTime(literal).getMillis());
-            case Types.TIME:
-            case TIME_WITH_TIMEZONE:
-                return String.valueOf(timeFormatter.parseDateTime(literal).getMillis());
-            default:
-                return super.serialize(literal, jdbcType);
+        try {
+            // XXX doesn't work with LocalDate, LocalDateTime and LocalTime
+            switch (jdbcType) {
+                case Types.TIMESTAMP:
+                case TIMESTAMP_WITH_TIMEZONE:
+                    return String.valueOf(dateTimeFormatter.get().parse(literal).getTime());
+                case Types.DATE:
+                    return String.valueOf(dateFormatter.get().parse(literal).getTime());
+                case Types.TIME:
+                case TIME_WITH_TIMEZONE:
+                    return String.valueOf(timeFormatter.get().parse(literal).getTime());
+                default:
+                    return super.serialize(literal, jdbcType);
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 
