@@ -13,7 +13,7 @@
  */
 package com.querydsl.sql.spatial;
 
-import javax.annotation.Generated;
+import com.querydsl.core.annotations.Generated;
 
 /**
  * SpatialRefSys is a Querydsl bean type

@@ -2,8 +2,7 @@ package com.querydsl.core.domain.query;
 
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
-import javax.annotation.Generated;
-
+import com.querydsl.core.annotations.Generated;
 import com.querydsl.core.domain.CompanyGroupPK;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;

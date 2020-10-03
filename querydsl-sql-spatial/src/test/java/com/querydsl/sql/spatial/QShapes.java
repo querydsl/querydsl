@@ -2,10 +2,9 @@ package com.querydsl.sql.spatial;
 
 import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
-import javax.annotation.Generated;
-
 import org.geolatte.geom.Geometry;
 
+import com.querydsl.core.annotations.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.NumberPath;

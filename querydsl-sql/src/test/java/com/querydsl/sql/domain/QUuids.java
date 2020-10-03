@@ -5,8 +5,7 @@ import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 import java.sql.Types;
 import java.util.UUID;
 
-import javax.annotation.Generated;
-
+import com.querydsl.core.annotations.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.SimplePath;
