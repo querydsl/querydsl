@@ -156,40 +156,35 @@ public abstract class MongodbDocumentSerializer implements Visitor<Object, Void>
             return asDocument(asDBKey(expr, 0), asDocument("$ne", convert(path, constant)));
 
         } else if (op == Ops.STARTS_WITH) {
-            return asDocument(asDBKey(expr, 0),
-                    Pattern.compile("^" + regexValue(expr, 1)));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression("^" + regexValue(expr, 1)));
 
         } else if (op == Ops.STARTS_WITH_IC) {
-            return asDocument(asDBKey(expr, 0),
-                    Pattern.compile("^" + regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression("^" + regexValue(expr, 1), "i"));
 
         } else if (op == Ops.ENDS_WITH) {
-            return asDocument(asDBKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression(regexValue(expr, 1) + "$"));
 
         } else if (op == Ops.ENDS_WITH_IC) {
-            return asDocument(asDBKey(expr, 0),
-                    Pattern.compile(regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression(regexValue(expr, 1) + "$", "i"));
 
         } else if (op == Ops.EQ_IGNORE_CASE) {
-            return asDocument(asDBKey(expr, 0),
-                    Pattern.compile("^" + regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression("^" + regexValue(expr, 1) + "$", "i"));
 
         } else if (op == Ops.STRING_CONTAINS) {
-            return asDocument(asDBKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression(".*" + regexValue(expr, 1) + ".*"));
 
         } else if (op == Ops.STRING_CONTAINS_IC) {
-            return asDocument(asDBKey(expr, 0),
-                    Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression(".*" + regexValue(expr, 1) + ".*", "i"));
 
         } else if (op == Ops.MATCHES) {
-            return asDocument(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString()));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression(asDBValue(expr, 1).toString()));
 
         } else if (op == Ops.MATCHES_IC) {
-            return asDocument(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString(), Pattern.CASE_INSENSITIVE));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression(asDBValue(expr, 1).toString(), "i"));
 
         } else if (op == Ops.LIKE) {
             String regex = ExpressionUtils.likeToRegex((Expression) expr.getArg(1)).toString();
-            return asDocument(asDBKey(expr, 0), Pattern.compile(regex));
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression(regex));
 
         } else if (op == Ops.BETWEEN) {
             Document value = new Document("$gte", asDBValue(expr, 1));
@@ -285,7 +280,7 @@ public abstract class MongodbDocumentSerializer implements Visitor<Object, Void>
                 }
                 list.add(asDocument("$or", list2));
 
-            } else if (entry.getValue() instanceof Pattern) {
+            } else if (entry.getValue() instanceof Pattern || entry.getValue() instanceof BsonRegularExpression) {
                 list.add(asDocument(entry.getKey(), asDocument("$not", entry.getValue())));
 
             } else if (entry.getValue() instanceof Document) {
