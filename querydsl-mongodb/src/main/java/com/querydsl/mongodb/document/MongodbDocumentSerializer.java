@@ -17,17 +17,21 @@ package com.querydsl.mongodb.document;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import com.google.common.collect.Sets;
 import com.mongodb.DBRef;
 import com.querydsl.core.types.*;
 import com.querydsl.mongodb.MongodbOps;
+import org.bson.BsonJavaScript;
+import org.bson.BsonRegularExpression;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  * Serializes the given Querydsl query to a Document query for MongoDB.
@@ -107,18 +111,30 @@ public abstract class MongodbDocumentSerializer implements Visitor<Object, Void>
             return asDocument(asDBKey(expr, 0), "");
 
         } else if (op == Ops.AND) {
-            Map<Object, Object> lhs = (Map<Object, Object>) handle(expr.getArg(0));
-            Map<Object, Object> rhs = (Map<Object, Object>) handle(expr.getArg(1));
-            if (Sets.intersection(lhs.keySet(), rhs.keySet()).isEmpty()) {
-                lhs.putAll(rhs);
-                return lhs;
-            } else {
-                List<Object> list = new ArrayList<Object>(2);
-                list.add(handle(expr.getArg(0)));
-                list.add(handle(expr.getArg(1)));
-                return asDocument("$and", list);
+            Queue<Map<Object, Object>> pendingDocuments = collectConnectorArgs("$and", expr);
+            List<Map<Object, Object>> unmergeableDocuments = new ArrayList<Map<Object, Object>>();
+            List<Map<Object, Object>> generatedDocuments = new ArrayList<Map<Object, Object>>();
+
+            while (!pendingDocuments.isEmpty()) {
+
+                Map<Object, Object> lhs = pendingDocuments.poll();
+
+                for (Map<Object, Object> rhs : pendingDocuments) {
+                    Set<Object> lhs2 = new LinkedHashSet<Object>(lhs.keySet());
+                    lhs2.retainAll(rhs.keySet());
+                    if (lhs2.isEmpty()) {
+                        lhs.putAll(rhs);
+                    } else {
+                        unmergeableDocuments.add(rhs);
+                    }
+                }
+
+                generatedDocuments.add(lhs);
+                pendingDocuments = new LinkedList<Map<Object, Object>>(unmergeableDocuments);
+                unmergeableDocuments = new LinkedList<Map<Object, Object>>();
             }
 
+            return generatedDocuments.size() == 1 ? generatedDocuments.get(0) : asDocument("$and", generatedDocuments);
         } else if (op == Ops.NOT) {
             //Handle the not's child
             Operation<?> subOperation = (Operation<?>) expr.getArg(0);
@@ -132,10 +148,7 @@ public abstract class MongodbDocumentSerializer implements Visitor<Object, Void>
             }
 
         } else if (op == Ops.OR) {
-            List<Object> list = new ArrayList<Object>(2);
-            list.add(handle(expr.getArg(0)));
-            list.add(handle(expr.getArg(1)));
-            return asDocument("$or", list);
+            return asDocument("$or", collectConnectorArgs("$or", expr));
 
         } else if (op == Ops.NE) {
             Path<?> path = (Path<?>) expr.getArg(0);
@@ -362,5 +375,20 @@ public abstract class MongodbDocumentSerializer implements Visitor<Object, Void>
     @Override
     public Object visit(ParamExpression<?> expr, Void context) {
         throw new UnsupportedOperationException();
+    }
+
+    private Queue<Map<Object, Object>> collectConnectorArgs(String operator, Operation<?> operation) {
+
+        Queue<Map<Object, Object>> pendingDocuments = new LinkedList<Map<Object, Object>>();
+        for (Expression<?> exp : operation.getArgs()) {
+            Map<Object, Object> document = (Map<Object, Object>) handle(exp);
+            if (document.keySet().size() == 1 && document.containsKey(operator)) {
+                pendingDocuments
+                        .addAll((Collection<Map<Object, Object>>) document.get(operator));
+            } else {
+                pendingDocuments.add(document);
+            }
+        }
+        return pendingDocuments;
     }
 }
