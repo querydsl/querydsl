@@ -262,6 +262,8 @@ public abstract class MongodbDocumentSerializer implements Visitor<Object, Void>
 
         } else if (op == MongodbOps.ELEM_MATCH) {
             return asDocument(asDBKey(expr, 0), asDocument("$elemMatch", asDBValue(expr, 1)));
+        } else if (op == MongodbOps.NO_MATCH) {
+            return new Document("$where", new BsonJavaScript("function() { return false }"));
         }
 
         throw new UnsupportedOperationException("Illegal operation " + expr);
