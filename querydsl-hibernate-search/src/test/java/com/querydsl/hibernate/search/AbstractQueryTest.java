@@ -38,7 +38,7 @@ public abstract class AbstractQueryTest {
     @BeforeClass
     public static void setUpClass() throws IOException {
         FileUtils.delete(new File("target/derbydb"));
-        FileUtils.delete(new File("target/lucene"));
+        FileUtils.delete(new File("target/lucene3"));
         AnnotationConfiguration cfg = new AnnotationConfiguration();
         cfg.addAnnotatedClass(User.class);
         Properties props = new Properties();
