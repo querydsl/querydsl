@@ -260,16 +260,30 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
     }
 
-    public void serializeForInsert(QueryMetadata md, List<Path<?>> columns, List<Object> values, SubQueryExpression<?> query, Map<Path<?>, Expression<?>> inserts) {
+    private static String relativePathString(Expression<?> root, Path<?> path) {
+        StringBuilder pathString = new StringBuilder(path.getMetadata().getName().length());
+        while (path.getMetadata().getParent() != null && !path.equals(root)) {
+            if (pathString.length() > 0) {
+                pathString.insert(0, '.');
+            }
+            pathString.insert(0, path.getMetadata().getName());
+            path = path.getMetadata().getParent();
+        }
+        return pathString.toString();
+    }
+
+    public void serializeForInsert(QueryMetadata md, Collection<Path<?>> columns, List<Object> values, SubQueryExpression<?> query, Map<Path<?>, Expression<?>> inserts) {
         append(INSERT);
-        handleJoinTarget(md.getJoins().get(0));
+        final JoinExpression root = md.getJoins().get(0);
+        append(getEntityName(root.getTarget().getType()));
         append(" (");
         boolean first = true;
         for (Path<?> path : columns) {
             if (!first) {
                 append(", ");
             }
-            handle(path);
+
+            append(relativePathString(root.getTarget(), path));
             first = false;
         }
         append(")\n");
@@ -285,9 +299,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 handle(value);
                 first = false;
             }
-        }
-
-        if (inserts != null && inserts.entrySet().size() > 0) {
+            append(")");
+        } else if (inserts != null && inserts.entrySet().size() > 0) {
             first = true;
             for (Map.Entry<Path<?>, Expression<?>> entry : inserts.entrySet()) {
                 if (!first) {
