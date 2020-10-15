@@ -16,13 +16,13 @@ package com.querydsl.codegen;
 import java.io.IOException;
 import java.util.Set;
 
+import javax.annotation.Generated;
 import javax.inject.Inject;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
-import com.querydsl.core.annotations.Generated;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.NumberExpression;

@@ -4,7 +4,8 @@ import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import java.util.Arrays;
 
-import com.querydsl.core.annotations.Generated;
+import javax.annotation.Generated;
+
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.NumberPath;

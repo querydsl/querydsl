@@ -17,11 +17,12 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
+import javax.annotation.Generated;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
-import com.querydsl.core.annotations.Generated;
 import com.querydsl.core.util.BeanUtils;
 
 /**
