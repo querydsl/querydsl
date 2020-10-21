@@ -13,10 +13,9 @@
  */
 package com.querydsl.core.types.dsl;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
+
+import java.util.List;
 
 /**
  * {@code DslTemplate} defines custom simple expressions
@@ -31,7 +30,7 @@ public class DslTemplate<T> extends DslExpression<T> implements TemplateExpressi
 
     private final TemplateExpressionImpl<T> templateMixin;
 
-    protected DslTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
+    protected DslTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;
     }

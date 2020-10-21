@@ -13,10 +13,9 @@
  */
 package com.querydsl.core.types.dsl;
 
-import java.util.List;
-
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
+
+import java.util.List;
 
 /**
  * {@code DateTemplate} defines custom date expressions
@@ -36,7 +35,7 @@ public class DateTemplate<T extends Comparable<?>> extends DateExpression<T> imp
         this.templateMixin = mixin;
     }
 
-    protected DateTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
+    protected DateTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;
     }
