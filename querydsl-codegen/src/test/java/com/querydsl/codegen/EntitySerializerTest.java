@@ -13,6 +13,7 @@
  */
 package com.querydsl.codegen;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -26,7 +27,11 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.*;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.querydsl.core.annotations.PropertyType;
 
 public class EntitySerializerTest {
@@ -188,6 +193,31 @@ public class EntitySerializerTest {
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("return Entity.test(this);"));
         CompileUtils.assertCompiles("QEntity", writer.toString());
+    }
+
+    @Test
+    public void defaultGeneratedAnnotation() throws IOException {
+        EntityType entityType = new EntityType(new ClassType(Entity.class));
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
+
+        serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        String generatedSourceCode = writer.toString();
+        assertFalse(generatedSourceCode.contains("import javax.annotation.Generated;"));
+        assertTrue(generatedSourceCode.contains("@javax.annotation.Generated(\"com.querydsl.codegen.EntitySerializer\")\npublic class"));
+        CompileUtils.assertCompiles("QEntitySerializerTest_Entity", generatedSourceCode);
+    }
+
+    @Test
+    public void customGeneratedAnnotation() throws IOException {
+        String generatedAnnotation = com.querydsl.core.annotations.Generated.class.getName();
+        EntityType entityType = new EntityType(new ClassType(Entity.class));
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
+
+        new EntitySerializer(typeMappings, Collections.<String>emptySet(), generatedAnnotation).serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        String generatedSourceCode = writer.toString();
+        assertFalse(generatedSourceCode.contains("import " + generatedAnnotation + ";"));
+        assertTrue(generatedSourceCode.contains("@" + generatedAnnotation + "(\"com.querydsl.codegen.EntitySerializer\")\npublic class"));
+        CompileUtils.assertCompiles("QEntitySerializerTest_Entity", generatedSourceCode);
     }
 
 }

@@ -13,12 +13,20 @@
  */
 package com.querydsl.codegen;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Collections;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.naming.Name;
 
 import org.junit.Test;
 
@@ -45,6 +53,32 @@ public class ProjectionSerializerTest {
         assertTrue(writer.toString().contains("Expression<String> firstName"));
         assertTrue(writer.toString().contains("Expression<String> lastName"));
         assertTrue(writer.toString().contains("Expression<Integer> age"));
+    }
+
+    @Test
+    public void defaultGeneratedAnnotation() throws IOException {
+        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false,false);
+        EntityType type = new EntityType(typeModel);
+
+        Writer writer = new StringWriter();
+        ProjectionSerializer serializer = new ProjectionSerializer(new JavaTypeMappings());
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        String generatedSource = writer.toString();
+        assertFalse(generatedSource.contains("import javax.annotation.Generated"));
+        assertTrue(generatedSource.contains("@javax.annotation.Generated(\"com.querydsl.codegen.ProjectionSerializer\")\npublic class"));
+    }
+
+    @Test
+    public void customGeneratedAnnotation() throws IOException {
+        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false,false);
+        EntityType type = new EntityType(typeModel);
+
+        Writer writer = new StringWriter();
+        ProjectionSerializer serializer = new ProjectionSerializer(new JavaTypeMappings(), "some.Generated");
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        String generatedSource = writer.toString();
+        assertFalse(generatedSource.contains("import some.Generated"));
+        assertTrue(generatedSource.contains("@some.Generated(\"com.querydsl.codegen.ProjectionSerializer\")\npublic class"));
     }
 
 }

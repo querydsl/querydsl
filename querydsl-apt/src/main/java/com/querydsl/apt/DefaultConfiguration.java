@@ -255,7 +255,9 @@ public class DefaultConfiguration implements Configuration {
         } else {
             variableNameFunction = DefaultVariableNameFunction.INSTANCE;
         }
-        module.bind(CodegenModule.VARIABLE_NAME_FUNCTION_CLASS, variableNameFunction);
+
+        String generatedAnnotationClass = GeneratedAnnotationResolver.resolve(options.get(QUERYDSL_GENERATED_ANNOTATION_CLASS));
+        module.bind(CodegenModule.GENERATED_ANNOTATION_CLASS, generatedAnnotationClass);
 
         try {
             // register additional mappings if querydsl-spatial is on the classpath

@@ -16,13 +16,19 @@ package com.querydsl.codegen;
 import java.io.IOException;
 import java.util.Set;
 
-import javax.annotation.Generated;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
+import com.mysema.codegen.model.Types;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -35,6 +41,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  */
 public final class ProjectionSerializer implements Serializer {
 
+    private final String generatedAnnotationClass;
     private final TypeMappings typeMappings;
 
     /**
@@ -42,9 +49,23 @@ public final class ProjectionSerializer implements Serializer {
      *
      * @param typeMappings type mappings to be used
      */
-    @Inject
     public ProjectionSerializer(TypeMappings typeMappings) {
+        this(typeMappings, GeneratedAnnotationResolver.resolveDefault());
+    }
+
+    /**
+     * Create a new {@code ProjectionSerializer} instance
+     *
+     * @param typeMappings type mappings to be used
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    @Inject
+    public ProjectionSerializer(
+            TypeMappings typeMappings,
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) String generatedAnnotationClass) {
         this.typeMappings = typeMappings;
+        this.generatedAnnotationClass = generatedAnnotationClass;
     }
 
     protected void intro(EntityType model, CodeWriter writer) throws IOException {
@@ -58,7 +79,6 @@ public final class ProjectionSerializer implements Serializer {
 
         // imports
         writer.imports(NumberExpression.class.getPackage());
-        writer.imports(ConstructorExpression.class, Generated.class);
 
         Set<Integer> sizes = Sets.newHashSet();
         for (Constructor c : model.getConstructors()) {
@@ -71,7 +91,7 @@ public final class ProjectionSerializer implements Serializer {
         // javadoc
         writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);
 
-        writer.line("@Generated(\"", getClass().getName(), "\")");
+        writer.line("@" + generatedAnnotationClass + "(\"", getClass().getName(), "\")");
 
         // class header
 //        writer.suppressWarnings("serial");

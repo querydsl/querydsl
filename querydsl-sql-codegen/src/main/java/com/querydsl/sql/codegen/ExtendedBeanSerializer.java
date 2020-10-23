@@ -16,10 +16,14 @@ package com.querydsl.sql.codegen;
 import java.io.IOException;
 import java.util.*;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Types;
 import com.querydsl.codegen.BeanSerializer;
+import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.sql.Column;
@@ -37,6 +41,23 @@ import com.querydsl.sql.codegen.support.PrimaryKeyData;
 public class ExtendedBeanSerializer extends BeanSerializer {
 
     private static final Parameter o = new Parameter("o", Types.OBJECT);
+
+    public ExtendedBeanSerializer() {
+    }
+
+    /**
+     * Create a new ExtendedBeanSerializer with the given javadoc suffix and generatedAnnotationClass
+     *
+     * @param javadocSuffix suffix to be used after the simple name in class level javadoc
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    @Inject
+    public ExtendedBeanSerializer(
+            @Named(SQLCodegenModule.JAVADOC_SUFFIX) String javadocSuffix,
+            @Named(SQLCodegenModule.GENERATED_ANNOTATION_CLASS) String generatedAnnotationClass) {
+        super(javadocSuffix, generatedAnnotationClass);
+    }
 
     @SuppressWarnings("unchecked")
     @Override

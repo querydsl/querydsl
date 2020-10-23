@@ -799,4 +799,16 @@ public class MetaDataExporter {
         this.tableTypesToExport = tableTypesToExport;
     }
 
+    /**
+     * Set the fully qualified class name of the "generated" annotation added ot the generated sources
+     *
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on
+     *                                 the generated sources, or {@code null} (defaulting to {@code javax.annotation.Generated} or
+     *                                {@code javax.annotation.processing.Generated} depending on the java version).
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    public void setGeneratedAnnotationClass(@Nullable String generatedAnnotationClass) {
+        module.bind(CodegenModule.GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolve(generatedAnnotationClass));
+    }
+
 }

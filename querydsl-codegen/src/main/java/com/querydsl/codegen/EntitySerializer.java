@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -52,16 +51,34 @@ public class EntitySerializer implements Serializer {
 
     protected final Collection<String> keywords;
 
+    protected final String generatedAnnotationClass;
+
+    /**
+     * Create a new {@code EntitySerializer} instance
+     *
+     * @param mappings type mappings to be used
+     * @param keywords keywords to be used
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    @Inject
+    public EntitySerializer(
+            TypeMappings mappings,
+            @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) String generatedAnnotationClass) {
+        this.typeMappings = mappings;
+        this.keywords = keywords;
+        this.generatedAnnotationClass = generatedAnnotationClass;
+    }
+
     /**
      * Create a new {@code EntitySerializer} instance
      *
      * @param mappings type mappings to be used
      * @param keywords keywords to be used
      */
-    @Inject
-    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords) {
-        this.typeMappings = mappings;
-        this.keywords = keywords;
+    public EntitySerializer(TypeMappings mappings, Collection<String> keywords) {
+        this(mappings, keywords, GeneratedAnnotationResolver.resolveDefault());
     }
 
     private boolean superTypeHasEntityFields(EntityType model) {
@@ -310,7 +327,7 @@ public class EntitySerializer implements Serializer {
             writer.annotation(annotation);
         }
 
-        writer.line("@Generated(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass, "(\"", getClass().getName(), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));
@@ -420,7 +437,7 @@ public class EntitySerializer implements Serializer {
         writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
+        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class);
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
         }
