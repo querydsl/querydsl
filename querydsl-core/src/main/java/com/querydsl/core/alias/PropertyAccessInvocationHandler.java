@@ -22,8 +22,8 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
@@ -49,9 +49,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     private final AliasFactory aliasFactory;
 
-    private final Map<Object, Expression<?>> propToExpr = new HashMap<Object, Expression<?>>();
+    private final Map<Object, Expression<?>> propToExpr = new ConcurrentHashMap<>();
 
-    private final Map<Object, Object> propToObj = new HashMap<Object, Object>();
+    private final Map<Object, Object> propToObj = new ConcurrentHashMap<>();
 
     private final PathFactory pathFactory;
 
@@ -246,7 +246,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                 rv = null;
             }
         }
-        propToObj.put(propKey, rv);
+
+        if (rv == null) {
+            propToObj.remove(propKey);
+        } else {
+            propToObj.put(propKey, rv);
+        }
         propToExpr.put(propKey, path);
         return (T) rv;
     }
