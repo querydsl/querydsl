@@ -242,11 +242,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
                 }
             }
             return rv;
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             throw new ExpressionException(e.getMessage(), e);
         }
     }

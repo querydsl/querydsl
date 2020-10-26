@@ -153,7 +153,7 @@ public class MetaDataExporterAllTest {
 
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, System.out, System.err,
-                classes.toArray(new String[classes.size()]));
+                classes.toArray(new String[0]));
         if (compilationResult != 0) {
             Assert.fail("Compilation Failed for " + folder.getRoot().getPath());
         }

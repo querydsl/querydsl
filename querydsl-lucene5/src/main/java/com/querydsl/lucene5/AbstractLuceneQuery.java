@@ -96,9 +96,7 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
             TotalHitCountCollector collector = new TotalHitCountCollector();
             searcher.search(createQuery(), getFilter(), collector);
             return collector.getTotalHits();
-        } catch (IOException e) {
-            throw new QueryException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new QueryException(e);
         }
     }
@@ -208,9 +206,7 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
             if (limit == 0) {
                 return new EmptyCloseableIterator<T>();
             }
-        } catch (IOException e) {
-            throw new QueryException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new QueryException(e);
         }
         if (queryLimit != null && queryLimit < limit) {
@@ -359,9 +355,7 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
             } else {
                 return null;
             }
-        } catch (IOException e) {
-            throw new QueryException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new QueryException(e);
         }
     }

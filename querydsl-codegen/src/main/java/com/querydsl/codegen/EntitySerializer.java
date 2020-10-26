@@ -387,7 +387,7 @@ public class EntitySerializer implements Serializer {
             writer.append("}");
 
             for (Parameter p : c.getParameters()) {
-                writer.append(COMMA + p.getName());
+                writer.append(COMMA).append(p.getName());
             }
 
             // end
@@ -444,7 +444,7 @@ public class EntitySerializer implements Serializer {
         if (inits) {
             classes.add(PathInits.class);
         }
-        writer.imports(classes.toArray(new Class<?>[classes.size()]));
+        writer.imports(classes.toArray(new Class<?>[0]));
     }
 
     private Set<String> getUsedClassNames(EntityType model) {
@@ -490,7 +490,7 @@ public class EntitySerializer implements Serializer {
                 packages.add(delegate.getDelegateType().getPackageName());
             }
         }
-        writer.importPackages(packages.toArray(new String[packages.size()]));
+        writer.importPackages(packages.toArray(new String[0]));
     }
 
     protected void introInits(CodeWriter writer, EntityType model) throws IOException {
@@ -558,7 +558,7 @@ public class EntitySerializer implements Serializer {
 
     private void delegate(final EntityType model, Delegate delegate, SerializerConfig config,
             CodeWriter writer) throws IOException {
-        Parameter[] params = delegate.getParameters().toArray(new Parameter[delegate.getParameters().size()]);
+        Parameter[] params = delegate.getParameters().toArray(new Parameter[0]);
         writer.beginPublicMethod(delegate.getReturnType(), delegate.getName(), params);
 
         // body start
@@ -576,7 +576,7 @@ public class EntitySerializer implements Serializer {
             }
         }
         for (Parameter parameter : delegate.getParameters()) {
-            writer.append(COMMA + parameter.getName());
+            writer.append(COMMA).append(parameter.getName());
         }
         writer.append(");\n");
 
@@ -625,12 +625,12 @@ public class EntitySerializer implements Serializer {
         StringBuilder value = new StringBuilder();
         if (field.isInherited() && superType != null) {
             if (!superType.getEntityType().hasEntityFields()) {
-                value.append("_super." + field.getEscapedName());
+                value.append("_super.").append(field.getEscapedName());
             }
         } else {
-            value.append(factoryMethod + "(\"" + field.getName() + QUOTE);
+            value.append(factoryMethod).append("(\"").append(field.getName()).append(QUOTE);
             for (String arg : args) {
-                value.append(COMMA + arg);
+                value.append(COMMA).append(arg);
             }
             value.append(")");
         }

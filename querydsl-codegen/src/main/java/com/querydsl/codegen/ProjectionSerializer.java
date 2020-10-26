@@ -133,7 +133,7 @@ public final class ProjectionSerializer implements Serializer {
             writer.append("}");
 
             for (Parameter p : c.getParameters()) {
-                writer.append(", " + p.getName());
+                writer.append(", ").append(p.getName());
             }
 
             // end

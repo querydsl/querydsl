@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ public class SQLBindingsTest {
         query.from(survey).where(survey.name.eq("Bob")).select(survey.id);
         SQLBindings bindings = query.getSQL();
         assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ?", bindings.getSQL());
-        assertEquals(Arrays.asList("Bob"), bindings.getBindings());
+        assertEquals(Collections.singletonList("Bob"), bindings.getBindings());
     }
 
     @Test

@@ -436,16 +436,14 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             constants = serializer.getConstants();
 
             listeners.prePrepare(context);
-            final PreparedStatement stmt = getPreparedStatement(queryString);
-            try {
+            try (PreparedStatement stmt = getPreparedStatement(queryString)) {
                 setParameters(stmt, constants, serializer.getConstantPaths(), queryMixin.getMetadata().getParams());
                 context.addPreparedStatement(stmt);
                 listeners.prepared(context);
 
                 listeners.preExecute(context);
-                final ResultSet rs = stmt.executeQuery();
-                listeners.executed(context);
-                try {
+                try (ResultSet rs = stmt.executeQuery()) {
+                    listeners.executed(context);
                     lastCell = null;
                     final List<T> rv = new ArrayList<T>();
                     if (expr instanceof FactoryExpression) {
@@ -479,23 +477,13 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                         }
                     }
                     return rv;
-                } catch (IllegalAccessException e) {
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
                     onException(context, e);
                     throw new QueryException(e);
-                } catch (InvocationTargetException e) {
-                    onException(context,e);
-                    throw new QueryException(e);
-                } catch (InstantiationException e) {
-                    onException(context,e);
-                    throw new QueryException(e);
                 } catch (SQLException e) {
-                    onException(context,e);
+                    onException(context, e);
                     throw configuration.translate(queryString, constants, e);
-                } finally {
-                    rs.close();
                 }
-            } finally {
-                stmt.close();
             }
         } catch (SQLException e) {
             onException(context, e);

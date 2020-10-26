@@ -176,16 +176,16 @@ public class DefaultConfiguration implements Configuration {
         boolean createDefaultVariable = true;
 
         if (options.containsKey(QUERYDSL_ENTITY_ACCESSORS)) {
-            entityAccessors = Boolean.valueOf(options.get(QUERYDSL_ENTITY_ACCESSORS));
+            entityAccessors = Boolean.parseBoolean(options.get(QUERYDSL_ENTITY_ACCESSORS));
         }
         if (options.containsKey(QUERYDSL_LIST_ACCESSORS)) {
-            listAccessors = Boolean.valueOf(options.get(QUERYDSL_LIST_ACCESSORS));
+            listAccessors = Boolean.parseBoolean(options.get(QUERYDSL_LIST_ACCESSORS));
         }
         if (options.containsKey(QUERYDSL_MAP_ACCESSORS)) {
-            mapAccessors = Boolean.valueOf(options.get(QUERYDSL_MAP_ACCESSORS));
+            mapAccessors = Boolean.parseBoolean(options.get(QUERYDSL_MAP_ACCESSORS));
         }
         if (options.containsKey(QUERYDSL_CREATE_DEFAULT_VARIABLE)) {
-            createDefaultVariable = Boolean.valueOf(options.get(QUERYDSL_CREATE_DEFAULT_VARIABLE));
+            createDefaultVariable = Boolean.parseBoolean(options.get(QUERYDSL_CREATE_DEFAULT_VARIABLE));
         }
         if (options.containsKey(QUERYDSL_PACKAGE_SUFFIX)) {
             module.bind(CodegenModule.PACKAGE_SUFFIX, Strings.nullToEmpty(options.get(QUERYDSL_PACKAGE_SUFFIX)));
@@ -197,7 +197,7 @@ public class DefaultConfiguration implements Configuration {
             module.bind(CodegenModule.SUFFIX, Strings.nullToEmpty(options.get(QUERYDSL_SUFFIX)));
         }
         if (options.containsKey(QUERYDSL_UNKNOWN_AS_EMBEDDABLE)) {
-            unknownAsEmbedded = Boolean.valueOf(options.get(QUERYDSL_UNKNOWN_AS_EMBEDDABLE));
+            unknownAsEmbedded = Boolean.parseBoolean(options.get(QUERYDSL_UNKNOWN_AS_EMBEDDABLE));
         }
 
         if (options.containsKey(QUERYDSL_EXCLUDED_PACKAGES)) {
@@ -233,11 +233,11 @@ public class DefaultConfiguration implements Configuration {
         }
 
         if (options.containsKey(QUERYDSL_USE_FIELDS)) {
-            useFields = Boolean.valueOf(options.get(QUERYDSL_USE_FIELDS));
+            useFields = Boolean.parseBoolean(options.get(QUERYDSL_USE_FIELDS));
         }
 
         if (options.containsKey(QUERYDSL_USE_GETTERS)) {
-            useGetters = Boolean.valueOf(options.get(QUERYDSL_USE_GETTERS));
+            useGetters = Boolean.parseBoolean(options.get(QUERYDSL_USE_GETTERS));
         }
 
         if (options.containsKey(QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS)) {
@@ -363,10 +363,8 @@ public class DefaultConfiguration implements Configuration {
     public SerializerConfig getSerializerConfig(EntityType entityType) {
         if (typeToConfig.containsKey(entityType.getFullName())) {
             return typeToConfig.get(entityType.getFullName());
-        } else if (packageToConfig.containsKey(entityType.getPackageName())) {
-            return packageToConfig.get(entityType.getPackageName());
         } else {
-            return defaultSerializerConfig;
+            return packageToConfig.getOrDefault(entityType.getPackageName(), defaultSerializerConfig);
         }
     }
 

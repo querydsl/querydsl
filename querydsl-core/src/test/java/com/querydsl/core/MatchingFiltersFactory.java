@@ -70,8 +70,7 @@ public class MatchingFiltersFactory {
 
     public Collection<Predicate> date(DateExpression<java.sql.Date> expr,
             DateExpression<java.sql.Date> other) {
-        HashSet<Predicate> rv = new HashSet<Predicate>();
-        rv.addAll(comparable(expr, other));
+        HashSet<Predicate> rv = new HashSet<Predicate>(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
@@ -103,8 +102,7 @@ public class MatchingFiltersFactory {
 
     public Collection<Predicate> dateTime(DateTimeExpression<java.util.Date> expr,
             DateTimeExpression<java.util.Date> other) {
-        HashSet<Predicate> rv = new HashSet<Predicate>();
-        rv.addAll(comparable(expr, other));
+        HashSet<Predicate> rv = new HashSet<Predicate>(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
         rv.add(expr.second().eq(other.second()));
         rv.add(expr.minute().eq(other.minute()));
@@ -295,8 +293,7 @@ public class MatchingFiltersFactory {
 
     public Collection<Predicate> time(TimeExpression<java.sql.Time> expr,
             TimeExpression<java.sql.Time> other) {
-        HashSet<Predicate> rv = new HashSet<Predicate>();
-        rv.addAll(comparable(expr, other));
+        HashSet<Predicate> rv = new HashSet<Predicate>(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
         rv.add(expr.second().eq(other.second()));
         rv.add(expr.minute().eq(other.minute()));

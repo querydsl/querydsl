@@ -3,6 +3,7 @@ package com.querydsl.collections;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -14,7 +15,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat a = new Cat("a");
         a.setKittens(null);
 
-        assertEquals(0, CollQueryFactory.<Cat> from(cat, Arrays.<Cat> asList(a))
+        assertEquals(0, CollQueryFactory.<Cat> from(cat, Collections.<Cat>singletonList(a))
                 .where(cat.kittens.any().name.startsWith("a")).fetchCount());
     }
 

@@ -563,7 +563,7 @@ public class LuceneSerializer {
             }
         }
         Sort sort = new Sort();
-        sort.setSort(sorts.toArray(new SortField[sorts.size()]));
+        sort.setSort(sorts.toArray(new SortField[0]));
         return sort;
     }
 }

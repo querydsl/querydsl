@@ -62,9 +62,8 @@ public class MetaDataExporterTest {
     }
 
     static void createTables(Connection connection) throws SQLException {
-        Statement stmt = connection.createStatement();
 
-        try {
+        try (Statement stmt = connection.createStatement()) {
             // reserved words
             stmt.execute("create table reserved (id int, while int)");
 
@@ -119,8 +118,6 @@ public class MetaDataExporterTest {
                     + "m_product_bom_id int, "
                     + "m_productbom_id int, "
                     + "constraint product_bom foreign key (m_productbom_id) references product(id))");
-        } finally {
-            stmt.close();
         }
     }
 
@@ -455,7 +452,7 @@ public class MetaDataExporterTest {
 
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, System.out, System.err,
-                classes.toArray(new String[classes.size()]));
+                classes.toArray(new String[0]));
         if (compilationResult != 0) {
             Assert.fail("Compilation Failed for " + targetDir.getAbsolutePath());
         }

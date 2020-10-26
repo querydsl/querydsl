@@ -65,10 +65,10 @@ public class ExtendedBeanSerializer extends BeanSerializer {
                     columnEquals.append(" && ");
                     toString.append("+ \";\" + ");
                 } else {
-                    toString.append("\"" + model.getSimpleName() + "#\" + ");
+                    toString.append("\"").append(model.getSimpleName()).append("#\" + ");
                 }
-                anyColumnIsNull.append(propName + " == null");
-                columnEquals.append(propName + ".equals(obj." + propName + ")");
+                anyColumnIsNull.append(propName).append(" == null");
+                columnEquals.append(propName).append(".equals(obj.").append(propName).append(")");
                 toString.append(propName);
                 properties.add(propName);
             }

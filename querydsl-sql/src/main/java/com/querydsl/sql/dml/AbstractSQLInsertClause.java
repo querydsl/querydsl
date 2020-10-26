@@ -121,7 +121,7 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      */
     public C addBatch() {
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[0])).clone();
             values.clear();
         }
         batches.add(new SQLInsertBatch(columns, values, subQuery));
@@ -242,7 +242,7 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[0])).clone();
             values.clear();
         }
 
@@ -261,7 +261,7 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
         listeners.preRender(context);
 
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[0])).clone();
             values.clear();
         }
 

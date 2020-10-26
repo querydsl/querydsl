@@ -147,7 +147,7 @@ public class GroupByBuilder<K> {
     public <V> ResultTransformer<Map<K, V>> as(FactoryExpression<V> expression) {
         final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);
         List<Expression<?>> args = transformation.getArgs();
-        return new GroupByMap<K, V>(key, args.toArray(new Expression<?>[args.size()])) {
+        return new GroupByMap<K, V>(key, args.toArray(new Expression<?>[0])) {
 
             @Override
             protected Map<K, V> transform(Map<K, Group> groups) {
@@ -180,7 +180,7 @@ public class GroupByBuilder<K> {
     public <V> ResultTransformer<CloseableIterator<V>> iterate(FactoryExpression<V> expression) {
         final FactoryExpression<V> transformation = FactoryExpressionUtils.wrap(expression);
         List<Expression<?>> args = transformation.getArgs();
-        return new GroupByIterate<K, V>(key, args.toArray(new Expression<?>[args.size()])) {
+        return new GroupByIterate<K, V>(key, args.toArray(new Expression<?>[0])) {
             @Override
             protected V transform(Group group) {
                 // XXX Isn't group.toArray() suitable here?
@@ -202,7 +202,7 @@ public class GroupByBuilder<K> {
     public <V> ResultTransformer<List<V>> list(FactoryExpression<V> expression) {
         final FactoryExpression<V> transformation = FactoryExpressionUtils.wrap(expression);
         List<Expression<?>> args = transformation.getArgs();
-        return new GroupByList<K, V>(key, args.toArray(new Expression<?>[args.size()])) {
+        return new GroupByList<K, V>(key, args.toArray(new Expression<?>[0])) {
             @Override
             protected V transform(Group group) {
                 // XXX Isn't group.toArray() suitable here?

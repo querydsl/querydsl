@@ -94,7 +94,7 @@ public class GroovyBeanSerializer implements Serializer {
         if (model.hasMaps()) {
             importedClasses.add(Map.class.getName());
         }
-        writer.importClasses(importedClasses.toArray(new String[importedClasses.size()]));
+        writer.importClasses(importedClasses.toArray(new String[0]));
 
         // javadoc
         writer.javadoc(simpleName + javadocSuffix);

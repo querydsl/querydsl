@@ -123,9 +123,7 @@ public abstract class AbstractModule {
         if (constructor == null) {
             try {
                 constructor = implementation.getConstructor();
-            } catch (SecurityException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchMethodException e) {
+            } catch (SecurityException | NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -143,11 +141,7 @@ public abstract class AbstractModule {
             try {
                 return (T) constructor.newInstance(args);
                 // TODO : populate fields as well?!?
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
+            } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
 

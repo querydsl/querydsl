@@ -80,9 +80,7 @@ public final class ClassPathUtils {
             } else {
                 return Class.forName(className, true, classLoader);
             }
-        } catch (ClassNotFoundException e) {
-            return null;
-        } catch (NoClassDefFoundError e) {
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
             return null;
         }
     }

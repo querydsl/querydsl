@@ -78,7 +78,7 @@ public final class CollQueryFunctions {
         }
     };
 
-    private static final List<Object> nullList = Arrays.asList((Object) null);
+    private static final List<Object> nullList = Collections.singletonList((Object) null);
 
     public static boolean equals(Object o1, Object o2) {
         return Objects.equal(o1, o2);

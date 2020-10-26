@@ -16,6 +16,7 @@ package com.querydsl.core;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -78,7 +79,7 @@ public class DefaultQueryMetadataTest {
     public void getGroupBy() {
         metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addGroupBy(str);
-        assertEquals(Arrays.asList(str), metadata.getGroupBy());
+        assertEquals(Collections.singletonList(str), metadata.getGroupBy());
     }
 
     @Test
@@ -91,21 +92,21 @@ public class DefaultQueryMetadataTest {
     @Test
     public void getJoins() {
         metadata.addJoin(JoinType.DEFAULT, str);
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
     }
 
     @Test
     public void getJoins2() {
         metadata.addJoin(JoinType.DEFAULT, str);
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
     }
 
     @Test
     public void getJoins3() {
         metadata.addJoin(JoinType.DEFAULT, str);
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
         metadata.addJoinCondition(str.isNull());
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str, str.isNull(), ImmutableSet.<JoinFlag>of())),
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, str, str.isNull(), ImmutableSet.<JoinFlag>of())),
                 metadata.getJoins());
         metadata.addJoin(JoinType.DEFAULT, str2);
         assertEquals(Arrays.asList(

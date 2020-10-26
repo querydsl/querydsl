@@ -44,7 +44,7 @@ public class Annotations implements AnnotatedElement {
 
     @Override
     public Annotation[] getAnnotations() {
-        return annotations.values().toArray(new Annotation[annotations.values().size()]);
+        return annotations.values().toArray(new Annotation[0]);
     }
 
     @Override

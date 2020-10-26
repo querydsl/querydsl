@@ -224,7 +224,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         b.append(PARAMETERS);
         boolean first = true;
         final List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToAllLabels().entrySet());
-        Collections.sort(entries, comparator);
+        entries.sort(comparator);
         for (Map.Entry<Object, String> entry : entries) {
             if (!first) {
                 b.append(COMMA);

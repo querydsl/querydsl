@@ -182,11 +182,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
             @SuppressWarnings("unchecked")
             Pair<Integer, Pair<Integer, String>> pair = (Pair<Integer, Pair<Integer, String>>) array[1];
             Integer first = pair.getFirst();
-            Map<Integer, String> comments = posts.get(first);
-            if (comments == null) {
-                comments = new LinkedHashMap<Integer, String>();
-                posts.put(first, comments);
-            }
+            Map<Integer, String> comments = posts.computeIfAbsent(first, k -> new LinkedHashMap<Integer, String>());
             Pair<Integer, String> second = pair.getSecond();
             comments.put(second.getFirst(), second.getSecond());
         }

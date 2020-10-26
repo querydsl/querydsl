@@ -32,17 +32,11 @@ public class AntMetaDataExporterTest {
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        Connection conn = DriverManager.getConnection(url, "sa", "");
-        try {
-          Statement stmt = conn.createStatement();
-          try {
-              stmt.execute("drop table test if exists");
-              stmt.execute("create table test (id int)");
-          } finally {
-              stmt.close();
-          }
-        } finally {
-            conn.close();
+        try (Connection conn = DriverManager.getConnection(url, "sa", "")) {
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute("drop table test if exists");
+                stmt.execute("create table test (id int)");
+            }
         }
     }
 

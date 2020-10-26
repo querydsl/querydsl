@@ -67,20 +67,14 @@ public class QueryPerformanceTest {
             @Override
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {
-                    PreparedStatement stmt = conn.prepareStatement(QUERY);
-                    try {
+                    try (PreparedStatement stmt = conn.prepareStatement(QUERY)) {
                         stmt.setLong(1, i);
-                        ResultSet rs = stmt.executeQuery();
-                        try {
+                        try (ResultSet rs = stmt.executeQuery()) {
                             while (rs.next()) {
                                 rs.getString(1);
                             }
-                        } finally {
-                            rs.close();
                         }
 
-                    } finally {
-                        stmt.close();
                     }
                 }
             }
@@ -93,20 +87,14 @@ public class QueryPerformanceTest {
             @Override
             public void run(int times) throws Exception {
                 for (int i = 0; i < times; i++) {
-                    PreparedStatement stmt = conn.prepareStatement(QUERY);
-                    try {
+                    try (PreparedStatement stmt = conn.prepareStatement(QUERY)) {
                         stmt.setString(1, String.valueOf(i));
-                        ResultSet rs = stmt.executeQuery();
-                        try {
+                        try (ResultSet rs = stmt.executeQuery()) {
                             while (rs.next()) {
                                 rs.getString(1);
                             }
-                        } finally {
-                            rs.close();
                         }
 
-                    } finally {
-                        stmt.close();
                     }
                 }
             }
@@ -136,14 +124,11 @@ public class QueryPerformanceTest {
                 for (int i = 0; i < times; i++) {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
-                    CloseableIterator<String> it = query.from(companies)
-                            .where(companies.id.eq((long) i)).select(companies.name).iterate();
-                    try {
+                    try (CloseableIterator<String> it = query.from(companies)
+                            .where(companies.id.eq((long) i)).select(companies.name).iterate()) {
                         while (it.hasNext()) {
                             it.next();
                         }
-                    } finally {
-                        it.close();
                     }
                 }
             }
@@ -158,14 +143,11 @@ public class QueryPerformanceTest {
                 for (int i = 0; i < times; i++) {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
-                    ResultSet rs = query.select(companies.name).from(companies)
-                            .where(companies.id.eq((long) i)).getResults();
-                    try {
+                    try (ResultSet rs = query.select(companies.name).from(companies)
+                            .where(companies.id.eq((long) i)).getResults()) {
                         while (rs.next()) {
                             rs.getString(1);
                         }
-                    } finally {
-                        rs.close();
                     }
                 }
             }
@@ -225,15 +207,12 @@ public class QueryPerformanceTest {
                 for (int i = 0; i < times; i++) {
                     QCompanies companies = QCompanies.companies;
                     SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
-                    CloseableIterator<String> it = query.from(companies)
+                    try (CloseableIterator<String> it = query.from(companies)
                             .where(companies.name.eq(String.valueOf(i)))
-                            .select(companies.name).iterate();
-                    try {
+                            .select(companies.name).iterate()) {
                         while (it.hasNext()) {
                             it.next();
                         }
-                    } finally {
-                        it.close();
                     }
                 }
             }

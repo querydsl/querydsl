@@ -139,13 +139,7 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
                 args = transformer.apply(args);
             }
             return (T) constructor.newInstance(args);
-        } catch (SecurityException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (InvocationTargetException e) {
+        } catch (SecurityException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             throw new ExpressionException(e.getMessage(), e);
         }
     }

@@ -188,8 +188,8 @@ final class PGgeometryConverter {
         CrsId crs = CrsId.valueOf(first.srid);
         DimensionalFlag flag = DimensionalFlag.valueOf(first.dimension == 3, first.haveMeasure);
         PointSequenceBuilder pointSequence = PointSequenceBuilders.variableSized(flag, crs);
-        for (int i = 0; i < points.length; i++) {
-            pointSequence.add(convert(points[i]));
+        for (org.postgis.Point point : points) {
+            pointSequence.add(convert(point));
         }
         return pointSequence.toPointSequence();
     }

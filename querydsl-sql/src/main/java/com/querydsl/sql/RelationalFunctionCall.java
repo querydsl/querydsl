@@ -37,7 +37,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
             if (i > 0) {
                 builder.append(", ");
             }
-            builder.append("{" + i + "}");
+            builder.append("{").append(i).append("}");
         }
         builder.append(")");
         return TemplateFactory.DEFAULT.create(builder.toString());

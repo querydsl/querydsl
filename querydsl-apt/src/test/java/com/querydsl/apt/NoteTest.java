@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -48,14 +47,14 @@ public class NoteTest extends AbstractProcessorTest {
 
     @Test
     public void processEnabled() throws IOException {
-        aptOptions = Arrays.asList("-Aquerydsl.logInfo=true");
+        aptOptions = Collections.singletonList("-Aquerydsl.logInfo=true");
         process();
         assertFalse(isStdErrEmpty());
     }
 
     @Test
     public void processDisabled() throws IOException {
-        aptOptions = Arrays.asList("-Aquerydsl.logInfo=false");
+        aptOptions = Collections.singletonList("-Aquerydsl.logInfo=false");
         process();
         assertTrue(isStdErrEmpty());
     }

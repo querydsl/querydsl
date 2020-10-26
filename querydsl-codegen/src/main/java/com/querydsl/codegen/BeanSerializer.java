@@ -118,7 +118,7 @@ public class BeanSerializer implements Serializer {
         if (addToString && model.hasArrays()) {
             importedClasses.add(Arrays.class.getName());
         }
-        writer.importClasses(importedClasses.toArray(new String[importedClasses.size()]));
+        writer.importClasses(importedClasses.toArray(new String[0]));
 
         // javadoc
         writer.javadoc(simpleName + javadocSuffix);
@@ -135,7 +135,7 @@ public class BeanSerializer implements Serializer {
             if (printSupertype && model.getSuperType() != null) {
                 superType = model.getSuperType().getType();
             }
-            Type[] ifaces = interfaces.toArray(new Type[interfaces.size()]);
+            Type[] ifaces = interfaces.toArray(new Type[0]);
             writer.beginClass(model, superType, ifaces);
         } else if (printSupertype && model.getSuperType() != null) {
             writer.beginClass(model, model.getSuperType().getType());
@@ -207,9 +207,9 @@ public class BeanSerializer implements Serializer {
             } else {
                 builder.append("\"");
             }
-            builder.append(propertyName + " = \" + ");
+            builder.append(propertyName).append(" = \" + ");
             if (property.getType().getCategory() == TypeCategory.ARRAY) {
-                builder.append("Arrays.toString(" + propertyName + ")");
+                builder.append("Arrays.toString(").append(propertyName).append(")");
             } else {
                 builder.append(propertyName);
             }

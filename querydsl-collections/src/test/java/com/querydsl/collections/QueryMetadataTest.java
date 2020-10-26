@@ -15,7 +15,7 @@ package com.querydsl.collections;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -33,7 +33,7 @@ public class QueryMetadataTest extends AbstractQueryTest {
 
         CollQuery<?> query = new CollQuery<Void>(metadata);
         query.bind(cat, cats);
-        assertEquals(Arrays.asList(c3), query.select(cat).fetch());
+        assertEquals(Collections.singletonList(c3), query.select(cat).fetch());
     }
 
 }

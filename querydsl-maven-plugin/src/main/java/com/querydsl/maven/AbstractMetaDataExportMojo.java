@@ -543,21 +543,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
                     throw new MojoExecutionException("Missing password from server " + server);
                 }
             }
-            Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
-            try {
+            try (Connection conn = DriverManager.getConnection(jdbcUrl, user, password)) {
                 exporter.export(conn.getMetaData());
-            } finally {
-                if (conn != null) {
-                    conn.close();
-                }
             }
-        } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        } catch (SQLException e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        } catch (InstantiationException e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
 

@@ -88,7 +88,7 @@ public final class FactoryExpressionUtils {
         }
         if (usesFactoryExpressions) {
             return wrap(new ArrayConstructorExpression<Object>(
-                    projection.toArray(new Expression<?>[projection.size()])));
+                    projection.toArray(new Expression<?>[0])));
         } else {
             return null;
         }

@@ -74,7 +74,7 @@ public class WithinGroup<T> extends SimpleOperation<T> {
                 size++;
                 if (!orderBy.isEmpty()) {
                     builder.append(ORDER_BY);
-                    builder.append("{" + size + "}");
+                    builder.append("{").append(size).append("}");
                     args.add(ExpressionUtils.orderBy(orderBy));
                 }
                 builder.append(")");

@@ -261,15 +261,12 @@ public final class Connections {
         // test
         stmt.execute("drop table if exists \"TEST\"");
         stmt.execute("create table \"TEST\"(NAME varchar(255))");
-        PreparedStatement pstmt = c.prepareStatement("insert into \"TEST\" values(?)");
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement("insert into \"TEST\" values(?)")) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -329,15 +326,12 @@ public final class Connections {
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
         stmt.execute("create index test_name on test(name)");
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -394,15 +388,12 @@ public final class Connections {
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
         stmt.execute("create index test_name on test(name)");
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -487,15 +478,12 @@ public final class Connections {
         // test
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -589,15 +577,12 @@ public final class Connections {
         // test
         stmt.execute("drop table TEST if exists");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -659,15 +644,12 @@ public final class Connections {
         // test
         stmt.execute("drop table TEST if exists");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -723,15 +705,12 @@ public final class Connections {
         // test
         stmt.execute("drop table if exists TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -909,15 +888,12 @@ public final class Connections {
         dropTable(templates, "TEST");
         stmt.execute(quote(CREATE_TABLE_TEST,"TEST","NAME"));
         String sql = quote(INSERT_INTO_TEST_VALUES,"TEST");
-        PreparedStatement pstmt = c.prepareStatement(sql);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -972,15 +948,12 @@ public final class Connections {
         // test
         stmt.execute("drop table if exists TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -1043,15 +1016,12 @@ public final class Connections {
         // test
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -1110,15 +1080,12 @@ public final class Connections {
         // test
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee

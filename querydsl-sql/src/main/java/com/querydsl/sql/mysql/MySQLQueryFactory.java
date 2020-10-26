@@ -94,7 +94,7 @@ public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<?>> {
         SQLInsertClause insert = insert(entity);
         StringBuilder flag = new StringBuilder(" on duplicate key update ");
         for (int i = 0; i < clauses.length; i++) {
-            flag.append(i > 0 ? ", " : "").append("{" + i + "}");
+            flag.append(i > 0 ? ", " : "").append("{").append(i).append("}");
         }
         insert.addFlag(Position.END, ExpressionUtils.template(String.class, flag.toString(), clauses));
         return insert;

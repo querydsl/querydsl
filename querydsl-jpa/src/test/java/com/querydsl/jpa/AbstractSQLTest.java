@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -157,7 +158,7 @@ public abstract class AbstractSQLTest {
     @Test
     public void entityQueries7() {
         QCompany company = QCompany.company;
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(company).select(company.officialName).fetch());
     }
 
@@ -321,7 +322,7 @@ public abstract class AbstractSQLTest {
         assertEquals(12, rows.size());
         int nulls = 0;
         for (Tuple row : rows) {
-            System.err.println(Arrays.asList(row));
+            System.err.println(Collections.singletonList(row));
             if (row.get(1, Object.class) == null) {
                 nulls++;
             }

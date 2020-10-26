@@ -48,7 +48,7 @@ public class NumberConversionsTest {
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         QTuple qTuple = Projections.tuple(strPath, intPath);
         NumberConversions<Tuple> conversions = new NumberConversions<Tuple>(qTuple);
-        Tuple tuple = conversions.newInstance("a", Long.valueOf(3));
+        Tuple tuple = conversions.newInstance("a", 3L);
         assertEquals("a", tuple.get(strPath));
         assertEquals(Integer.valueOf(3), tuple.get(intPath));
     }

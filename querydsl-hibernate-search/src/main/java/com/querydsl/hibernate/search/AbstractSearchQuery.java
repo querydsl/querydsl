@@ -86,10 +86,10 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
             Integer limit = modifiers.getLimitAsInteger();
             Integer offset = modifiers.getOffsetAsInteger();
             if (limit != null) {
-                fullTextQuery.setMaxResults(limit.intValue());
+                fullTextQuery.setMaxResults(limit);
             }
             if (offset != null) {
-                fullTextQuery.setFirstResult(offset.intValue());
+                fullTextQuery.setFirstResult(offset);
             }
         }
         return fullTextQuery;
