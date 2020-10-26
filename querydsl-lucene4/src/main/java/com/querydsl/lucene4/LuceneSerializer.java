@@ -18,7 +18,7 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;

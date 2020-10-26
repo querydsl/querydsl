@@ -15,7 +15,7 @@ package com.querydsl.jpa;
 
 import java.util.NoSuchElementException;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.ScrollableResults;
 

@@ -2,7 +2,7 @@ package com.querydsl.sql.types;
 
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

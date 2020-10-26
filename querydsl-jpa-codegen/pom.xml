@@ -27,7 +27,13 @@
     <hibernate4.validator.version>4.3.0.Final</hibernate4.validator.version>
   </properties>
 
-  <dependencies>   
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>20.1.0</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>

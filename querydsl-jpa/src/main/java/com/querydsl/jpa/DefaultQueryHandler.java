@@ -15,7 +15,7 @@ package com.querydsl.jpa;
 
 import java.util.Iterator;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.persistence.Query;
 
 import com.mysema.commons.lang.CloseableIterator;

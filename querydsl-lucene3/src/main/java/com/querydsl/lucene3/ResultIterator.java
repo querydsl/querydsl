@@ -15,7 +15,7 @@ package com.querydsl.lucene3;
 
 import java.io.IOException;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;

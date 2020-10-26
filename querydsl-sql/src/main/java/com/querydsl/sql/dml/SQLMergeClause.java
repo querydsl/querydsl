@@ -16,7 +16,7 @@ package com.querydsl.sql.dml;
 import java.sql.*;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.inject.Provider;
 
 import org.slf4j.Logger;

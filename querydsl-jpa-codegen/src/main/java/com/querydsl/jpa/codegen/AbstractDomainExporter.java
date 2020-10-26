@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 

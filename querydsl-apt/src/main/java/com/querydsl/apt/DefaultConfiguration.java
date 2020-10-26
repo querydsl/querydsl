@@ -18,8 +18,8 @@ import static com.querydsl.apt.APTOptions.*;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
@@ -56,10 +56,10 @@ public class DefaultConfiguration implements Configuration {
 
     protected final Class<? extends Annotation> entityAnn;
 
-    @Nonnull
+    @NotNull
     private final Set<String> excludedPackages, excludedClasses;
 
-    @Nonnull
+    @NotNull
     private final Set<String> includedPackages, includedClasses;
 
     @Nullable
@@ -493,7 +493,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public boolean isExcludedPackage(@Nonnull String packageName) {
+    public boolean isExcludedPackage(@NotNull String packageName) {
         if (!includedPackages.isEmpty()) {
             boolean included = false;
             for (String includedPackage : includedPackages) {
@@ -517,7 +517,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public boolean isExcludedClass(@Nonnull String className) {
+    public boolean isExcludedClass(@NotNull String className) {
         if (!includedClasses.isEmpty() && !includedClasses.contains(className)) {
             return true;
         } else {

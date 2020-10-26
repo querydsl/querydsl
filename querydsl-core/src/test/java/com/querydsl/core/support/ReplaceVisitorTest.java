@@ -2,7 +2,7 @@ package com.querydsl.core.support;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.junit.Test;
 

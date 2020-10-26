@@ -16,7 +16,7 @@ package com.querydsl.apt;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;

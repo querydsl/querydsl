@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

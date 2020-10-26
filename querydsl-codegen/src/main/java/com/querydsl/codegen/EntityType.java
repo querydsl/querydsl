@@ -16,7 +16,7 @@ package com.querydsl.codegen;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.base.Function;
 import com.mysema.codegen.StringUtils;

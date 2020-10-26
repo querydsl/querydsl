@@ -15,7 +15,7 @@ package com.querydsl.sql;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.NonUniqueResultException;

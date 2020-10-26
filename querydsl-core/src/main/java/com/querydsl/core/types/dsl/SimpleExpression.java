@@ -15,7 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import java.util.Collection;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;

@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import java.lang.reflect.Array;
 import java.util.List;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.google.common.collect.ImmutableList;
 

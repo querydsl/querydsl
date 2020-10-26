@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.dml;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;

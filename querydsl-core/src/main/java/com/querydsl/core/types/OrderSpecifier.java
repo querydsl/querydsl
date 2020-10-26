@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 import java.io.Serializable;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 /**
  * {@code OrderSpecifier} represents an order-by-element in a Query instance

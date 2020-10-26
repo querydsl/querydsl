@@ -17,7 +17,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;

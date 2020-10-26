@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.querydsl.core.QueryMetadata;
 

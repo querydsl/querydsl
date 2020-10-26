@@ -15,7 +15,7 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.primitives.Primitives;
 

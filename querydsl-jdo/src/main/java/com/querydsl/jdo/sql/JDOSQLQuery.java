@@ -13,7 +13,7 @@
  */
 package com.querydsl.jdo.sql;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.jdo.PersistenceManager;
 
 import com.querydsl.core.DefaultQueryMetadata;

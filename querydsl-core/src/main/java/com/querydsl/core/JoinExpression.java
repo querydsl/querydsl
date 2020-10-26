@@ -16,8 +16,8 @@ package com.querydsl.core;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;

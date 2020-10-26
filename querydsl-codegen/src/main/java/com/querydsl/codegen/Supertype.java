@@ -13,7 +13,7 @@
  */
 package com.querydsl.codegen;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mysema.codegen.model.Type;
 

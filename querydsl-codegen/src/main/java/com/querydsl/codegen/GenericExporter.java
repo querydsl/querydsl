@@ -19,7 +19,7 @@ import java.lang.reflect.*;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
