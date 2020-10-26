@@ -4,7 +4,7 @@ import java.sql.*;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * JSR310LocalTimeType maps {@linkplain java.time.LocalTime}

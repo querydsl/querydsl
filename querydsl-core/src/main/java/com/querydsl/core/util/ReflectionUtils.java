@@ -16,7 +16,7 @@ package com.querydsl.core.util;
 import java.lang.reflect.*;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 
 /**

@@ -20,7 +20,7 @@ import java.sql.Types;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code LocaleType} maps Locale to String on the JDBC level

@@ -18,9 +18,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.util.CollectionUtils;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code QList} represents a projection of type List
@@ -32,6 +33,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
 
     private static final long serialVersionUID = -7545994090073480810L;
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     /**
@@ -78,6 +80,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

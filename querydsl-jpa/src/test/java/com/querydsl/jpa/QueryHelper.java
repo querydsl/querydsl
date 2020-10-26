@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.hql.internal.ast.HqlParser;
 import org.slf4j.Logger;

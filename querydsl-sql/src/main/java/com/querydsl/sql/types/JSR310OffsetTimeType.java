@@ -6,7 +6,7 @@ import java.time.OffsetTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * JSR310OffsetTimeType maps {@linkplain java.time.OffsetTime}

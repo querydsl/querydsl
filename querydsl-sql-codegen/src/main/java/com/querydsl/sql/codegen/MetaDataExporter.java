@@ -13,13 +13,6 @@
  */
 package com.querydsl.sql.codegen;
 
-import com.querydsl.codegen.utils.CodeWriter;
-import com.querydsl.codegen.utils.JavaWriter;
-import com.querydsl.codegen.utils.ScalaWriter;
-import com.querydsl.codegen.utils.model.ClassType;
-import com.querydsl.codegen.utils.model.SimpleType;
-import com.querydsl.codegen.utils.model.Type;
-import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
@@ -27,6 +20,13 @@ import com.querydsl.codegen.QueryTypeFactory;
 import com.querydsl.codegen.Serializer;
 import com.querydsl.codegen.SimpleSerializerConfig;
 import com.querydsl.codegen.TypeMappings;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.ScalaWriter;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.sql.ColumnImpl;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.Configuration;
@@ -38,10 +38,10 @@ import com.querydsl.sql.codegen.support.InverseForeignKeyData;
 import com.querydsl.sql.codegen.support.NotNullImpl;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
 import com.querydsl.sql.codegen.support.SizeImpl;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;

@@ -20,6 +20,13 @@ import com.querydsl.codegen.utils.model.Parameter;
 import com.querydsl.codegen.utils.model.Type;
 import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.utils.support.ClassUtils;
+import java.io.*;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
+import java.nio.charset.Charset;
+import java.util.*;
+
+import org.jetbrains.annotations.Nullable;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.PropertyType;
@@ -36,7 +43,6 @@ import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

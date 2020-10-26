@@ -16,7 +16,7 @@ package com.querydsl.sql.codegen.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.codegen.utils.model.Type;
 

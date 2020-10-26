@@ -16,10 +16,11 @@ package com.querydsl.core.types;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.querydsl.core.util.CollectionUtils;
 import com.querydsl.core.util.PrimitiveUtils;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code OperationImpl} is the default implementation of the {@link Operation} interface
@@ -33,6 +34,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     private static final long serialVersionUID = 4796432056083507588L;
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     private final Operator operator;
@@ -57,6 +59,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
     }
 
     @Override
+    @Unmodifiable
     public final List<Expression<?>> getArgs() {
         return args;
     }

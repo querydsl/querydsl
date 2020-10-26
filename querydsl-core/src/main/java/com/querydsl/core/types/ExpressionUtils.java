@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryException;

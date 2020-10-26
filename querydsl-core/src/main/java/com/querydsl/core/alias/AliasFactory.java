@@ -19,8 +19,8 @@ import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadataFactory;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;

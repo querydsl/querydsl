@@ -35,8 +35,8 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.util.PrimitiveUtils;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 import java.net.URLClassLoader;

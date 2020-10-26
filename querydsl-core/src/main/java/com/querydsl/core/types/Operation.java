@@ -13,6 +13,8 @@
  */
 package com.querydsl.core.types;
 
+import org.jetbrains.annotations.Unmodifiable;
+
 import java.util.List;
 
 /**
@@ -36,6 +38,7 @@ public interface Operation<T> extends Expression<T> {
      *
      * @return arguments
      */
+    @Unmodifiable
     List<Expression<?>> getArgs();
 
     /**

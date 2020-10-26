@@ -18,7 +18,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Annotations is a merging adapter for the {@link AnnotatedElement} interface

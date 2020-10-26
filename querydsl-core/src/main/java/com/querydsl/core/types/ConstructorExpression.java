@@ -13,7 +13,6 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
@@ -27,6 +26,8 @@ import java.util.function.Function;
 import static com.querydsl.core.util.ConstructorUtils.getConstructor;
 import static com.querydsl.core.util.ConstructorUtils.getConstructorParameters;
 import static com.querydsl.core.util.ConstructorUtils.getTransformers;
+import com.querydsl.core.annotations.Immutable;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code ConstructorExpression} represents a constructor invocation
@@ -60,6 +61,7 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
         return paramTypes;
     }
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     private final Class<?>[] parameterTypes;
@@ -127,6 +129,7 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
     }
 
     @Override
+    @Unmodifiable
     public final List<Expression<?>> getArgs() {
         return args;
     }

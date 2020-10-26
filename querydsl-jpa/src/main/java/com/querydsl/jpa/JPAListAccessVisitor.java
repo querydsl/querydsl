@@ -16,7 +16,7 @@ package com.querydsl.jpa;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;

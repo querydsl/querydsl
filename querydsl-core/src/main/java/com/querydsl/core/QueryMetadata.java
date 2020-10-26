@@ -18,12 +18,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Predicate;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code QueryMetadata} defines query metadata such as query sources, filtering
@@ -105,6 +106,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return group by
      */
+    @Unmodifiable
     List<Expression<?>> getGroupBy();
 
     /**
@@ -120,6 +122,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return joins
      */
+    @Unmodifiable
     List<JoinExpression> getJoins();
 
     /**
@@ -134,6 +137,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return order by
      */
+    @Unmodifiable
     List<OrderSpecifier<?>> getOrderBy();
 
     /**
@@ -149,6 +153,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return parameter bindings
      */
+    @Unmodifiable
     Map<ParamExpression<?>,Object> getParams();
 
     /**
@@ -257,6 +262,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return all used query flags
      */
+    @Unmodifiable
     Set<QueryFlag> getFlags();
 
     /**

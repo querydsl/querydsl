@@ -15,7 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import java.util.Map;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;

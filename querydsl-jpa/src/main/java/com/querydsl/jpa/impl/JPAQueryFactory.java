@@ -13,7 +13,7 @@
  */
 package com.querydsl.jpa.impl;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
 

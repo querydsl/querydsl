@@ -13,10 +13,6 @@
  */
 package com.querydsl.jpa.codegen;
 
-import com.querydsl.codegen.utils.CodeWriter;
-import com.querydsl.codegen.utils.JavaWriter;
-import com.querydsl.codegen.utils.model.Type;
-import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.EmbeddableSerializer;
 import com.querydsl.codegen.EntitySerializer;
@@ -30,6 +26,10 @@ import com.querydsl.codegen.Supertype;
 import com.querydsl.codegen.SupertypeSerializer;
 import com.querydsl.codegen.TypeFactory;
 import com.querydsl.codegen.TypeMappings;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.PropertyType;
@@ -37,10 +37,10 @@ import com.querydsl.core.annotations.QueryInit;
 import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.ReflectionUtils;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import java.io.File;

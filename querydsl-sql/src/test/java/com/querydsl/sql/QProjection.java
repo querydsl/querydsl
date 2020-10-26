@@ -21,11 +21,13 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionBase;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.core.types.Visitor;
+import org.jetbrains.annotations.Unmodifiable;
 
 public class QProjection extends ExpressionBase<Projection> implements FactoryExpression<Projection> {
 
     private static final long serialVersionUID = -7330905848558102164L;
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     public QProjection(Expression<?>... args) {
@@ -70,6 +72,7 @@ public class QProjection extends ExpressionBase<Projection> implements FactoryEx
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

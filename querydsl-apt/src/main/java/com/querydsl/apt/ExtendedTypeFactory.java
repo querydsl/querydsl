@@ -26,7 +26,7 @@ import com.querydsl.codegen.Supertype;
 import com.querydsl.codegen.TypeMappings;
 import com.querydsl.core.annotations.QueryExclude;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
