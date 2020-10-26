@@ -275,7 +275,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4</version>
+        <version>1.4.1</version>
         <executions>
           <execution>
             <id>check</id>
@@ -286,10 +286,6 @@
             <configuration>
               <rules>
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
-                  <excludes>
-                    <exclude>com/querydsl/jpa/Hibernate5Templates</exclude>
-                    <exclude>com/querydsl/jpa/HibernateHandler</exclude>
-                  </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>
@@ -302,7 +298,27 @@
           <dependency>
             <groupId>org.semver</groupId>
             <artifactId>enforcer-rule</artifactId>
-            <version>0.9.27</version>
+            <version>0.9.33</version>
+            <exclusions>
+              <exclusion>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+              </exclusion>
+              <exclusion>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm-commons</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+          <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>9.0</version>
           </dependency>
         </dependencies>
       </plugin>
