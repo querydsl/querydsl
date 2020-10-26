@@ -17,7 +17,6 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.sql.AbstractSQLQuery;
@@ -46,7 +45,6 @@ public abstract class AbstractSQLServerQuery<T, C extends AbstractSQLServerQuery
      * @param tableHints table hints
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLServerQuery.class, castRequired = true)
     public C tableHints(SQLServerTableHints... tableHints) {
         if (tableHints.length > 0) {
             String hints = SQLServerGrammar.tableHints(tableHints);

@@ -226,7 +226,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
 
     @Override
     public <U> Q from(CollectionExpression<?, U> path, Path<U> alias) {
-        return queryMixin.from(ExpressionUtils.as((Path) path, alias));
+        return (Q) queryMixin.from((Expression) ExpressionUtils.as((Path) path, alias));
     }
 
     public JDOQLTemplates getTemplates() {

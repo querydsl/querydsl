@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryFlag;
@@ -98,7 +97,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -111,7 +109,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -122,7 +119,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C addBatch() {
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
@@ -152,7 +148,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return (C) this;
@@ -469,7 +464,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C select(SubQueryExpression<?> sq) {
         subQuery = sq;
         for (Map.Entry<ParamExpression<?>, Object> entry : sq.getMetadata().getParams().entrySet()) {
@@ -479,7 +473,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public <T> C set(Path<T> path, T value) {
         columns.add(path);
         if (value instanceof Expression<?>) {
@@ -493,7 +486,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public <T> C set(Path<T> path, Expression<? extends T> expression) {
         columns.add(path);
         values.add(expression);
@@ -501,7 +493,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public <T> C setNull(Path<T> path) {
         columns.add(path);
         values.add(Null.CONSTANT);
@@ -509,7 +500,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C values(Object... v) {
         for (Object value : v) {
             if (value instanceof Expression<?>) {
@@ -541,7 +531,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      * @param bean bean to use for population
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
     }
@@ -555,7 +544,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      * @return the current object
      */
     @SuppressWarnings("rawtypes")
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public <T> C populate(T obj, Mapper<T> mapper) {
         Map<Path<?>, Object> values = mapper.createMap(entity, obj);
         for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {

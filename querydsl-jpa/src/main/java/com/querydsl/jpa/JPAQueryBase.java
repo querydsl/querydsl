@@ -85,7 +85,7 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
     @SuppressWarnings("unchecked")
     @Override
     public <P> Q from(CollectionExpression<?,P> target, Path<P> alias) {
-        return queryMixin.from(Expressions.as((Path) target, alias));
+        return (Q) queryMixin.from((Expression) Expressions.as((Path) target, alias));
     }
 
     @Override

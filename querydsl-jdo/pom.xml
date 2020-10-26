@@ -23,24 +23,17 @@
   </scm>
 
   <properties>   
-    <dn.version>3.2.0-release</dn.version>
-    <dn.plugin.version>3.2.0-release</dn.plugin.version>
+    <dn.version>5.2.4</dn.version>
+    <dn.plugin.version>5.2.1</dn.plugin.version>
   </properties>
 
   <dependencies>
-  
+
+
     <dependency>
-      <groupId>javax.jdo</groupId>
-      <artifactId>jdo-api</artifactId>
-      <version>${jdo.version}</version>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>javax.jdo</artifactId>
     </dependency>
-    <!-- 
-    <dependency>
-      <groupId>javax.jdo</groupId>
-      <artifactId>jdo2-api</artifactId>
-      <version>2.3-eb</version>
-   </dependency>
-     -->        
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>

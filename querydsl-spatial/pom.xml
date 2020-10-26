@@ -94,8 +94,4 @@
       </plugin>
     </plugins>
   </build>
-  
-  <properties>
-    <bridge-method.version>1.11</bridge-method.version>
-  </properties>
 </project>
