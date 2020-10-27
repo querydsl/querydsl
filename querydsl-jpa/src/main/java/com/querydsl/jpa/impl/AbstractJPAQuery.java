@@ -16,6 +16,7 @@ package com.querydsl.jpa.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -189,6 +190,16 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         try {
             Query query = createQuery();
             return queryHandler.iterate(query, projection);
+        } finally {
+            reset();
+        }
+    }
+
+    @Override
+    public Stream<T> stream() {
+        try {
+            Query query = createQuery();
+            return queryHandler.stream(query, projection);
         } finally {
             reset();
         }

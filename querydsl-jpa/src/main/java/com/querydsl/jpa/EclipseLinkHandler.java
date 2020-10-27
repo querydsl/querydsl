@@ -16,7 +16,9 @@ package com.querydsl.jpa;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
@@ -97,6 +99,15 @@ class EclipseLinkHandler implements QueryHandler {
         } else {
             return new IteratorAdapter<T>(iterator, closeable);
         }
+    }
+
+    @Override
+    public <T> Stream<T> stream(Query query, @Nullable FactoryExpression<?> projection) {
+        final Stream resultStream = query.getResultStream();
+        if (projection != null) {
+            return resultStream.map(element -> projection.newInstance((Object[]) (element.getClass().isArray() ? element : new Object[] { element })));
+        }
+        return resultStream;
     }
 
     @Override

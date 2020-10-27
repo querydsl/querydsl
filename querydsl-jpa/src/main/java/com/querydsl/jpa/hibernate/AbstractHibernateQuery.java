@@ -16,6 +16,7 @@ package com.querydsl.jpa.hibernate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
@@ -163,6 +164,16 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
             Query query = createQuery();
             ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
             return new ScrollableResultsIterator<T>(results);
+        } finally {
+            reset();
+        }
+    }
+
+    @Override
+    public Stream<T> stream() {
+        try {
+            Query query = createQuery();
+            return query.getResultStream();
         } finally {
             reset();
         }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -246,6 +247,17 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
         try {
             Query query = createQuery();
             return queryHandler.iterate(query, null);
+        } finally {
+            reset();
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Stream<T> stream() {
+        try {
+            Query query = createQuery();
+            return query.getResultStream();
         } finally {
             reset();
         }

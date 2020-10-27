@@ -14,6 +14,7 @@
 package com.querydsl.sql;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
@@ -63,6 +64,11 @@ public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  imple
     @Override
     public CloseableIterator<T> iterate() {
         return query.iterate();
+    }
+
+    @Override
+    public Stream<T> stream() {
+        return query.stream();
     }
 
     @Override
