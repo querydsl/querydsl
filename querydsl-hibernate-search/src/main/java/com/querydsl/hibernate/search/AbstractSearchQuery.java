@@ -14,6 +14,7 @@
 package com.querydsl.hibernate.search;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.hibernate.Session;
@@ -146,15 +147,15 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
     }
 
     @Override
-    public T fetchFirst() {
+    public Optional<T> fetchFirst() {
         return limit(1).fetchOne();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         try {
-            return (T) createQuery(false).uniqueResult();
+            return Optional.ofNullable((T) createQuery(false).uniqueResult());
         } catch (org.hibernate.NonUniqueResultException e) {
             throw new NonUniqueResultException(e);
         }

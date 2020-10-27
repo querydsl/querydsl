@@ -34,7 +34,7 @@ public class UnionBase extends AbstractBaseTest {
             .where(employee.id.in(
                 query().union(query().select(Expressions.ONE),
                               query().select(Expressions.TWO))))
-            .select(Expressions.ONE).fetchFirst() != null);
+            .select(Expressions.ONE).fetchFirst().isPresent());
     }
 
     @Test
@@ -44,8 +44,8 @@ public class UnionBase extends AbstractBaseTest {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max().as("ID"));
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min().as("ID"));
         assertEquals(
-                ImmutableList.of(query().select(employee.id.min()).from(employee).fetchFirst(),
-                                 query().select(employee.id.max()).from(employee).fetchFirst()),
+                ImmutableList.of(query().select(employee.id.min()).from(employee).fetchFirst().get(),
+                                 query().select(employee.id.max()).from(employee).fetchFirst().get()),
                 query().union(sq1, sq2).orderBy(employee.id.asc()).fetch());
     }
 

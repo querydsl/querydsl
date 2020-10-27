@@ -40,7 +40,7 @@ public class TweetRepository extends AbstractRepository {
 
     @Transactional
     public Tweet findById(Long id) {
-        return selectFrom(tweet).where(tweet.id.eq(id)).fetchOne();
+        return selectFrom(tweet).where(tweet.id.eq(id)).fetchOne().orElse(null);
     }
 
     @Transactional

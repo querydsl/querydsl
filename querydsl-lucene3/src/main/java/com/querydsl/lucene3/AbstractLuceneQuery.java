@@ -16,6 +16,7 @@ package com.querydsl.lucene3;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -284,12 +285,11 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
         return (Q) this;
     }
 
-    @Nullable
-    private T oneResult(boolean unique) {
+    private Optional<T> oneResult(boolean unique) {
         try {
             int maxDoc = maxDoc();
             if (maxDoc == 0) {
-                return null;
+                return Optional.empty();
             }
             final ScoreDoc[] scoreDocs = searcher.search(createQuery(), getFilter(), maxDoc).scoreDocs;
             int index = 0;
@@ -309,9 +309,9 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
                 } else {
                     document = searcher.doc(scoreDocs[index].doc);
                 }
-                return transformer.apply(document);
+                return Optional.ofNullable(transformer.apply(document));
             } else {
-                return null;
+                return Optional.empty();
             }
         } catch (IOException | IllegalArgumentException e) {
             throw new QueryException(e);
@@ -319,12 +319,12 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     }
 
     @Override
-    public T fetchFirst() {
+    public Optional<T> fetchFirst() {
         return oneResult(false);
     }
 
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         return oneResult(true);
     }
 

@@ -16,6 +16,7 @@ package com.querydsl.sql;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -150,7 +151,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     @Override
     public long fetchCount() {
         queryMixin.setProjection(Wildcard.countAsInt);
-        return ((Number) fetchOne()).longValue();
+        return ((Number) fetchOne().get()).longValue();
     }
 
     public Q from(Expression<?> arg) {
@@ -392,7 +393,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     }
 
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         if (getMetadata().getModifiers().getLimit() == null
             && !queryMixin.getMetadata().getProjection().toString().contains("count(")) {
             limit(2);

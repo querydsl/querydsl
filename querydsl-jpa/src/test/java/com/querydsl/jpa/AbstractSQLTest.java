@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -51,7 +50,7 @@ public abstract class AbstractSQLTest {
     @Test
     public void count_via_unique() {
         assertEquals(Long.valueOf(6), query().from(cat).where(cat.dtype.eq("C"))
-                .select(cat.id.count()).fetchFirst());
+                .select(cat.id.count()).fetchFirst().orElse(null));
     }
 
     @Test
@@ -108,7 +107,7 @@ public abstract class AbstractSQLTest {
     @Test
     public void entityQueries3() {
         QCat catEntity = new QCat("animal_");
-        assertEquals(0, query().from(catEntity).select(catEntity.toes.max()).fetchFirst().intValue());
+        assertEquals(0, query().from(catEntity).select(catEntity.toes.max()).fetchFirst().orElse(null).intValue());
     }
 
     @Test
@@ -243,13 +242,7 @@ public abstract class AbstractSQLTest {
     @Test
     @ExcludeIn(Target.HSQLDB)
     public void no_from() {
-        assertNotNull(query().select(DateExpression.currentDate()).fetchFirst());
-    }
-
-    @Test
-    public void null_as_uniqueResult() {
-        assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
-                .select(cat.name).fetchOne());
+        assertNotNull(query().select(DateExpression.currentDate()).fetchFirst().orElse(null));
     }
 
     private void print(Iterable<Tuple> rows) {
@@ -266,12 +259,12 @@ public abstract class AbstractSQLTest {
 
     @Test
     public void single_result() {
-        query().from(cat).select(cat.id).fetchFirst();
+        query().from(cat).select(cat.id).fetchFirst().orElse(null);
     }
 
     @Test
     public void single_result_multiple() {
-        assertEquals(1, query().from(cat).orderBy(cat.id.asc()).select(new Expression<?>[]{cat.id}).fetchFirst().get(cat.id).intValue());
+        assertEquals(1, query().from(cat).orderBy(cat.id.asc()).select(new Expression<?>[]{cat.id}).fetchFirst().orElse(null).get(cat.id).intValue());
     }
 
     @Test
@@ -362,13 +355,13 @@ public abstract class AbstractSQLTest {
     @Test
     public void unique_result() {
         assertEquals(1,
-                query().from(cat).orderBy(cat.id.asc()).limit(1).select(cat.id).fetchOne().intValue());
+                query().from(cat).orderBy(cat.id.asc()).limit(1).select(cat.id).fetchOne().orElse(null).intValue());
     }
 
     @Test
     public void unique_result_multiple() {
         assertEquals(1,
-                query().from(cat).orderBy(cat.id.asc()).limit(1).select(new Expression<?>[]{cat.id}).fetchOne().get(cat.id).intValue());
+                query().from(cat).orderBy(cat.id.asc()).limit(1).select(new Expression<?>[]{cat.id}).fetchOne().orElse(null).get(cat.id).intValue());
     }
 
     @Test

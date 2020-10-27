@@ -211,7 +211,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     public void limit1_uniqueResult() {
-        assertNotNull(query().from(cat).limit(1).select(cat).fetchOne());
+        assertNotNull(query().from(cat).limit(1).select(cat).fetchOne().get());
     }
 
     @Test
@@ -245,7 +245,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
         BooleanExpression exists = selectOne().from(cat2).where(cat2.eyecolor.isNotNull()).exists();
         assertNotNull(query().from(cat)
                 .where(cat.breed.eq(0).not())
-                .select(new QCatSummary(cat.breed.count(), exists)).fetchOne());
+                .select(new QCatSummary(cat.breed.count(), exists)).fetchOne().get());
     }
 
     @SuppressWarnings("unchecked")

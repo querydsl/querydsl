@@ -117,10 +117,10 @@ class JDBCIntegrationTest extends SQLHelpers {
 
   @Test
   def Unique_Result {
-    assertEquals("abc", query.from(survey).where(survey.id eq 1).select(survey.name).fetchOne())
-    assertEquals("def", query.from(survey).where(survey.id eq 2).select(survey.name).fetchOne())
-    assertEquals("Bob", query.from(employee).where(employee.lastname eq "Smith").select(employee.firstname).fetchOne())
-    assertEquals("John", query.from(employee).where(employee.lastname eq "Doe").select(employee.firstname).fetchOne())
+    assertEquals("abc", query.from(survey).where(survey.id eq 1).select(survey.name).fetchOne() orElse null)
+    assertEquals("def", query.from(survey).where(survey.id eq 2).select(survey.name).fetchOne() orElse null)
+    assertEquals("Bob", query.from(employee).where(employee.lastname eq "Smith").select(employee.firstname).fetchOne() orElse null)
+    assertEquals("John", query.from(employee).where(employee.lastname eq "Doe").select(employee.firstname).fetchOne() orElse null)
   }
 
   @Test
@@ -129,7 +129,7 @@ class JDBCIntegrationTest extends SQLHelpers {
     s.name = "XXX"
 
     val id = insert(survey) populate(s) executeWithKey(survey.id)
-    val sNew = query from survey where (survey.id === id) select (survey) fetchOne()
+    val sNew = query from survey where (survey.id === id) select (survey) fetchOne() orElse null
     assertEquals(s.name, sNew.name)
   }
 
@@ -145,7 +145,7 @@ class JDBCIntegrationTest extends SQLHelpers {
     val count = update(survey) populate(s) execute()
     assertTrue(count > 0)
 
-    val sNew = query from survey where (survey.id === id) select (survey) fetchOne()
+    val sNew = query from survey where (survey.id === id) select (survey) fetchOne() orElse null
     assertEquals(s.name, sNew.name)
   }
 

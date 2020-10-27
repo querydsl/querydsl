@@ -311,9 +311,8 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         }
     }
 
-    @Nullable
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
@@ -327,15 +326,15 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
                     if (list.size() > 1) {
                         throw new NonUniqueResultException();
                     }
-                    return list.get(0);
+                    return Optional.ofNullable(list.get(0));
                 } else {
-                    return null;
+                    return Optional.empty();
                 }
             } else {
                 // it is not a List typed expression
                 @SuppressWarnings("unchecked") // Compile time checking of user code mandates this
                 T result = (T) rv;
-                return result;
+                return Optional.ofNullable(result);
             }
         } finally {
             reset();

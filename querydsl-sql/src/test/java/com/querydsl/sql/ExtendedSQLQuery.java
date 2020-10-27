@@ -15,6 +15,7 @@ package com.querydsl.sql;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Optional;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
@@ -51,7 +52,7 @@ public class ExtendedSQLQuery<T> extends AbstractSQLQuery<T, ExtendedSQLQuery<T>
         return select(createProjection(type, exprs)).iterate();
     }
 
-    public <RT> RT uniqueResult(Class<RT> type, Expression<?>... exprs) {
+    public <RT> Optional<RT> uniqueResult(Class<RT> type, Expression<?>... exprs) {
         return select(createProjection(type, exprs)).fetchOne();
     }
 

@@ -50,21 +50,21 @@ public class BeanPopulationBase extends AbstractBaseTest {
         // Query
         Employee smith = extQuery().from(e).where(e.lastname.eq("S"))
             .limit(1)
-            .uniqueResult(Employee.class, e.lastname, e.firstname);
+            .uniqueResult(Employee.class, e.lastname, e.firstname).get();
         assertEquals("John", smith.getFirstname());
         assertEquals("S", smith.getLastname());
 
         // Query with alias
         smith = extQuery().from(e).where(e.lastname.eq("S"))
             .limit(1)
-            .uniqueResult(Employee.class, e.lastname.as("lastname"), e.firstname.as("firstname"));
+            .uniqueResult(Employee.class, e.lastname.as("lastname"), e.firstname.as("firstname")).get();
         assertEquals("John", smith.getFirstname());
         assertEquals("S", smith.getLastname());
 
         // Query into custom type
         OtherEmployee other = extQuery().from(e).where(e.lastname.eq("S"))
             .limit(1)
-            .uniqueResult(OtherEmployee.class, e.lastname, e.firstname);
+            .uniqueResult(OtherEmployee.class, e.lastname, e.firstname).get();
         assertEquals("John", other.getFirstname());
         assertEquals("S", other.getLastname());
 
@@ -86,7 +86,7 @@ public class BeanPopulationBase extends AbstractBaseTest {
         assertEquals(1L, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
         // Query
-        Employee smith = query().from(e).where(e.lastname.eq("S")).limit(1).select(e).fetchFirst();
+        Employee smith = query().from(e).where(e.lastname.eq("S")).limit(1).select(e).fetchFirst().get();
         assertEquals("John", smith.getFirstname());
 
         // Delete (no changes needed)

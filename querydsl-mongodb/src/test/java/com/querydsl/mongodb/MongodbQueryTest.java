@@ -106,21 +106,21 @@ public class MongodbQueryTest {
 
     @Test
     public void singleResult_keys() {
-        User u = where(user.firstName.eq("Jaakko")).fetchFirst(user.firstName);
+        User u = where(user.firstName.eq("Jaakko")).fetchFirst(user.firstName).get();
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
 
     @Test
     public void uniqueResult_keys() {
-        User u = where(user.firstName.eq("Jaakko")).fetchOne(user.firstName);
+        User u = where(user.firstName.eq("Jaakko")).fetchOne(user.firstName).get();
         assertEquals("Jaakko", u.getFirstName());
         assertNull(u.getLastName());
     }
 
     @Test
     public void list_deep_keys() {
-        User u = where(user.firstName.eq("Jaakko")).fetchFirst(user.addresses.any().street);
+        User u = where(user.firstName.eq("Jaakko")).fetchFirst(user.addresses.any().street).get();
         for (Address a : u.getAddresses()) {
             assertNotNull(a.street);
             assertNull(a.city);
@@ -213,7 +213,7 @@ public class MongodbQueryTest {
 
     @Test
     public void find_by_id() {
-        assertNotNull(where(user.id.eq(u1.getId())).fetchFirst() != null);
+        assertNotNull(where(user.id.eq(u1.getId())).fetchFirst().orElse(null));
     }
 
     @Test
@@ -224,7 +224,7 @@ public class MongodbQueryTest {
 
     @Test
     public void uniqueResult() {
-        assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).fetchOne().getLastName());
+        assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).fetchOne().get().getLastName());
     }
 
     @Test(expected = NonUniqueResultException.class)
@@ -260,7 +260,7 @@ public class MongodbQueryTest {
         ds.save(d);
         Date end = new Date(current + 2 * dayInMillis);
 
-        assertEquals(d, query(dates).where(dates.date.between(start, end)).fetchFirst());
+        assertEquals(d, query(dates).where(dates.date.between(start, end)).fetchFirst().orElse(null));
         assertEquals(0, query(dates).where(dates.date.between(new Date(0), start)).fetchCount());
     }
 
@@ -598,7 +598,7 @@ public class MongodbQueryTest {
         Country germany = new Country("Germany", Locale.GERMANY);
         ds.save(germany);
 
-        Country fetchedCountry = query(Country.class).where(country.defaultLocale.eq(Locale.GERMANY)).fetchOne();
+        Country fetchedCountry = query(Country.class).where(country.defaultLocale.eq(Locale.GERMANY)).fetchOne().get();
         assertEquals(germany, fetchedCountry);
     }
 

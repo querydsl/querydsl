@@ -23,7 +23,7 @@ public class EntityWithLongIdTest {
         CollQuery<?> query = new CollQuery<Void>().from(root, entities);
         query.where(root.id.eq(1000L));
 
-        Long found = query.select(root.id).fetchFirst();
+        Long found = query.select(root.id).fetchFirst().get();
         assertNotNull(found);
         assertEquals(found.longValue(), 1000);
     }

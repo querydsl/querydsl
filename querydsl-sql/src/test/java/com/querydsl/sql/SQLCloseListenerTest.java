@@ -40,12 +40,12 @@ public class SQLCloseListenerTest {
 
     @Test
     public void fetchOne() {
-        assertNotNull(query.limit(1).fetchOne());
+        assertNotNull(query.limit(1).fetchOne().get());
     }
 
     @Test
     public void fetchFirst() {
-        assertNotNull(query.fetchFirst());
+        assertNotNull(query.fetchFirst().orElse(null));
     }
 
     @Test

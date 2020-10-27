@@ -48,7 +48,7 @@ public class SubqueriesTest extends AbstractJDOTest {
 
     @Test
     public void gt_subquery() {
-        double avg = query().from(product).select(product.price.avg()).fetchFirst();
+        double avg = query().from(product).select(product.price.avg()).fetchFirst().get();
         for (double price : query().from(product)
                 .where(product.price.gt(query().from(other).select(other.price.avg())))
                 .select(product.price).fetch()) {
@@ -67,7 +67,7 @@ public class SubqueriesTest extends AbstractJDOTest {
 
     @Test
     public void eq_subquery() {
-        double avg = query().from(product).select(product.price.avg()).fetchFirst();
+        double avg = query().from(product).select(product.price.avg()).fetchFirst().get();
         for (double price : query().from(product)
                 .where(product.price.eq(query().from(other).select(other.price.avg())))
                 .select(product.price).fetch()) {

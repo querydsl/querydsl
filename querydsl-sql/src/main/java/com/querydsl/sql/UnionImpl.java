@@ -14,6 +14,7 @@
 package com.querydsl.sql;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -52,12 +53,12 @@ public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  imple
     }
 
     @Override
-    public T fetchFirst() {
+    public Optional<T> fetchFirst() {
         return query.fetchFirst();
     }
 
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         return query.fetchOne();
     }
 

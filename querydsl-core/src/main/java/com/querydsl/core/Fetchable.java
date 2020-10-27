@@ -14,6 +14,7 @@
 package com.querydsl.core;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -42,7 +43,7 @@ public interface Fetchable<T> {
      *
      * @return first result or null
      */
-    T fetchFirst();
+    Optional<T> fetchFirst();
 
     /**
      * Get the projection as a unique result or null if no result is found
@@ -50,7 +51,7 @@ public interface Fetchable<T> {
      * @throws NonUniqueResultException if there is more than one matching result
      * @return first result or null
      */
-    T fetchOne() throws NonUniqueResultException;
+    Optional<T> fetchOne() throws NonUniqueResultException;
 
     /**
      * Get the projection as a typed closeable Iterator

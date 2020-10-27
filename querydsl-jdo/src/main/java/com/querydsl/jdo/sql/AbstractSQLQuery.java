@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
@@ -221,8 +222,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     @SuppressWarnings("unchecked")
     @Override
-    @Nullable
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
@@ -234,12 +234,13 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                 if (list.size() > 1) {
                     throw new NonUniqueResultException();
                 }
-                return (T) list.get(0);
+                return Optional.ofNullable((T) list.get(0));
             } else {
-                return null;
+                return Optional.empty();
             }
         } else {
-            return (T) rv;
+            return Optional.ofNullable((T) rv);
         }
     }
+
 }

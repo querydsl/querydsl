@@ -79,7 +79,7 @@ public class KeywordQuotingBase extends AbstractBaseTest {
         assertEquals("from", query().from(quoting.as(from))
                 .where(from.from.eq("from")
                         .and(from.all.isNotNull()))
-                .select(from.from).fetchFirst());
+                .select(from.from).fetchFirst().orElse(null));
     }
 
 }

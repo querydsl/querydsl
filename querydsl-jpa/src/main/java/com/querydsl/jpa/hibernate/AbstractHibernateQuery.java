@@ -16,6 +16,7 @@ package com.querydsl.jpa.hibernate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -334,12 +335,12 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     @SuppressWarnings("unchecked")
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         try {
             QueryModifiers modifiers = getMetadata().getModifiers();
             Query query = createQuery(modifiers, false);
             try {
-                return (T) query.uniqueResult();
+                return Optional.ofNullable((T) query.uniqueResult());
             } catch (org.hibernate.NonUniqueResultException e) {
                 throw new NonUniqueResultException(e);
             }

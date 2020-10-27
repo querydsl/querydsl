@@ -16,6 +16,7 @@ package com.querydsl.jpa.sql;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -304,18 +305,17 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
 
     @Override
     @SuppressWarnings("unchecked")
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         Query query = createQuery();
-        return (T) uniqueResult(query);
+        return (Optional<T>) uniqueResult(query);
     }
 
-    @Nullable
-    private Object uniqueResult(Query query) {
+    private Optional<Object> uniqueResult(Query query) {
         try {
-            return getSingleResult(query);
+            return Optional.ofNullable(getSingleResult(query));
         } catch (javax.persistence.NoResultException e) {
             logger.trace(e.getMessage(),e);
-            return null;
+            return Optional.empty();
         } catch (javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException(e);
         } finally {

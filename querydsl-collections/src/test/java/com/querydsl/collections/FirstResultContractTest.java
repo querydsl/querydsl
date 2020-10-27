@@ -21,7 +21,7 @@ public class FirstResultContractTest extends AbstractQueryTest {
 
     @Test
     public void singleResult() {
-        assertNotNull(CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).fetchFirst());
+        assertNotNull(CollQueryFactory.from(cat, cats).where(cat.name.isNotNull()).fetchFirst().orElse(null));
     }
 
 }

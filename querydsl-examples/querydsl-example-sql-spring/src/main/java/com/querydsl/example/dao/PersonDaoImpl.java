@@ -25,7 +25,7 @@ public class PersonDaoImpl implements PersonDao {
         return queryFactory.select(personBean)
                 .from(person)
                 .where(person.id.eq(id))
-                .fetchOne();
+                .fetchOne().orElse(null);
     }
 
     @Override

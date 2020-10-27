@@ -13,7 +13,7 @@ import static com.querydsl.example.sql.model.QUser.user;
 public class UserRepository extends AbstractRepository {
     @Transactional
     public User findById(Long id) {
-        return selectFrom(user).where(user.id.eq(id)).fetchOne();
+        return selectFrom(user).where(user.id.eq(id)).fetchOne().orElse(null);
     }
 
     @Transactional

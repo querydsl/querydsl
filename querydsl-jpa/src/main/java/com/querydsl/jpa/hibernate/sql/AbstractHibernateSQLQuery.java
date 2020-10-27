@@ -15,6 +15,7 @@ package com.querydsl.jpa.hibernate.sql;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -223,10 +224,10 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
 
     @SuppressWarnings("unchecked")
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         try {
             Query query = createQuery();
-            return (T) uniqueResult(query);
+            return Optional.ofNullable((T) uniqueResult(query));
         } finally {
             reset();
         }

@@ -29,7 +29,7 @@ public class CastTest extends AbstractQueryTest {
          assertEquals(Color.TABBY,
              CollQueryFactory.from(QAnimal.animal, cat)
                  .where(QAnimal.animal.instanceOf(Cat.class))
-                 .select(QAnimal.animal.as(QCat.class).eyecolor).fetchFirst());
+                 .select(QAnimal.animal.as(QCat.class).eyecolor).fetchFirst().get());
     }
 
 }

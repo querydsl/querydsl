@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -87,7 +88,7 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
     }
 
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         throw new UnsupportedOperationException();
     }
 

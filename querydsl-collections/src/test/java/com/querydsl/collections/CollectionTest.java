@@ -48,7 +48,7 @@ public class CollectionTest {
     public void join() {
         assertEquals("4", CollQueryFactory.from(cat, cats)
                 .innerJoin(cat.kittens, other)
-                .where(other.name.eq("4")).select(cat.name).fetchFirst());
+                .where(other.name.eq("4")).select(cat.name).fetchFirst().get());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class CollectionTest {
     @Test
     public void any_uniqueResult() {
         assertEquals("4", CollQueryFactory.from(cat, cats)
-                .where(cat.kittens.any().name.eq("4")).select(cat.name).fetchOne());
+                .where(cat.kittens.any().name.eq("4")).select(cat.name).fetchOne().get());
     }
 
     @Test

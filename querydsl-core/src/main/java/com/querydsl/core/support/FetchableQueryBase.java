@@ -14,8 +14,7 @@
 package com.querydsl.core.support;
 
 import java.util.List;
-
-import javax.annotation.Nullable;
+import java.util.Optional;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -47,7 +46,7 @@ public abstract class FetchableQueryBase<T, Q extends FetchableQueryBase<T, Q>>
     }
 
     @Override
-    public final T fetchFirst() {
+    public final Optional<T> fetchFirst() {
         return limit(1).fetchOne();
     }
 
@@ -55,17 +54,16 @@ public abstract class FetchableQueryBase<T, Q extends FetchableQueryBase<T, Q>>
         return transformer.transform((FetchableQuery<?,?>) this);
     }
 
-    @Nullable
-    protected <T> T uniqueResult(CloseableIterator<T> it) {
+    protected <T> Optional<T> uniqueResult(CloseableIterator<T> it) {
         try {
             if (it.hasNext()) {
                 T rv = it.next();
                 if (it.hasNext()) {
                     throw new NonUniqueResultException();
                 }
-                return rv;
+                return Optional.ofNullable(rv);
             } else {
-                return null;
+                return Optional.empty();
             }
         } finally {
             it.close();

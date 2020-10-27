@@ -325,7 +325,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         }
         query.addListener(SQLNoCloseListener.DEFAULT);
         addKeyConditions(query);
-        return query.select(Expressions.ONE).fetchFirst() != null;
+        return query.select(Expressions.ONE).fetchFirst().isPresent();
     }
 
     @SuppressWarnings("unchecked")

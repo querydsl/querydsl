@@ -67,7 +67,7 @@ public class QueryPerformanceTest implements JPATest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
-            Cat c = query().from(cat).where(cat.id.eq(i + 100)).select(cat).fetchOne();
+            Cat c = query().from(cat).where(cat.id.eq(i + 100)).select(cat).fetchOne().get();
             assertNotNull(c);
         }
         System.err.println("by id - dsl" + (System.currentTimeMillis() - start));
@@ -90,7 +90,7 @@ public class QueryPerformanceTest implements JPATest {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
             QCat cat = QCat.cat;
-            Tuple row = query().from(cat).where(cat.id.eq(i + 100)).select(cat.id, cat.name).fetchOne();
+            Tuple row = query().from(cat).where(cat.id.eq(i + 100)).select(cat.id, cat.name).fetchOne().get();
             assertNotNull(row);
         }
         System.err.println("by id - 2 cols - dsl" + (System.currentTimeMillis() - start));

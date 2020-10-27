@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.mysema.commons.lang.CloseableIterator;
@@ -202,7 +203,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     }
 
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         queryMixin.setUnique(true);
         if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2L);

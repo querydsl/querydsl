@@ -1,8 +1,7 @@
 package com.querydsl.core.support;
 
 import java.util.List;
-
-import javax.annotation.Nullable;
+import java.util.Optional;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -29,21 +28,19 @@ public class DummyFetchable<T> implements Fetchable<T> {
         return results;
     }
 
-    @Nullable
     @Override
-    public T fetchFirst() {
-        return results.isEmpty() ? null : results.get(0);
+    public Optional<T> fetchFirst() {
+        return results.isEmpty() ? Optional.empty() : Optional.ofNullable(results.get(0));
     }
 
-    @Nullable
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         if (results.size() > 1) {
             throw new NonUniqueResultException();
         } else if (results.isEmpty()) {
-            return null;
+            return Optional.empty();
         } else {
-            return results.get(0);
+            return Optional.ofNullable(results.get(0));
         }
     }
 

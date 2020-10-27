@@ -125,19 +125,19 @@ public class CollQueryStandardTest {
     @Test
     public void params() {
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne());
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne().get());
     }
 
     @Test
     public void params_anon() {
         Param<String> name = new Param<String>(String.class);
-        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne());
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").select(cat.name).fetchOne().get());
     }
 
     @Test(expected = ParamNotSetException.class)
     public void params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).select(cat.name).fetchOne());
+        assertEquals("Bob", CollQueryFactory.from(cat, data).where(cat.name.eq(name)).select(cat.name).fetchOne().get());
     }
 
     @Test

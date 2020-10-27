@@ -129,14 +129,14 @@ public class BasicsTest extends AbstractJDOTest {
     public void simpleTest() throws IOException {
         JDOQuery<?> query = new JDOQuery<Void>(pm, templates, false);
         assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman"))
-                .select(product.name).fetchOne());
+                .select(product.name).fetchOne().get());
         query.close();
     }
 
     @Test
     public void projectionTests() {
         assertEquals("Sony Discman", query().from(product).where(product.name.eq("Sony Discman"))
-                .select(product.name).fetchOne());
+                .select(product.name).fetchOne().get());
     }
 
     @Test

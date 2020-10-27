@@ -33,7 +33,7 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
 
     @Test
     public void test() {
-        Product p = query().from(product).limit(1).select(product).fetchOne();
+        Product p = query().from(product).limit(1).select(product).fetchOne().get();
         for (BooleanExpression f : getFilters(
                 product.name, product.description, "A0",
                 store.products, p,

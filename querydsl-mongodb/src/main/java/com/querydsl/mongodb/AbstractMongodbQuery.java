@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -307,22 +308,22 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
      * @param paths fields to return
      * @return first result
      */
-    public K fetchFirst(Path<?>...paths) {
+    public Optional<K> fetchFirst(Path<?>...paths) {
         queryMixin.setProjection(paths);
         return fetchFirst();
     }
 
     @Override
-    public K fetchFirst() {
+    public Optional<K> fetchFirst() {
         try {
             DBCursor c = createCursor().limit(1);
             if (c.hasNext()) {
-                return transformer.apply(c.next());
+                return Optional.ofNullable(transformer.apply(c.next()));
             } else {
-                return null;
+                return Optional.empty();
             }
         } catch (NoResults ex) {
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -332,13 +333,13 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
      * @param paths fields to return
      * @return first result
      */
-    public K fetchOne(Path<?>... paths) {
+    public Optional<K> fetchOne(Path<?>... paths) {
         queryMixin.setProjection(paths);
         return fetchOne();
     }
 
     @Override
-    public K fetchOne() throws NonUniqueResultException {
+    public Optional<K> fetchOne() throws NonUniqueResultException {
         try {
             Long limit = queryMixin.getMetadata().getModifiers().getLimit();
             if (limit == null) {
@@ -350,12 +351,12 @@ public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, 
                 if (c.hasNext()) {
                     throw new NonUniqueResultException();
                 }
-                return rv;
+                return Optional.ofNullable(rv);
             } else {
-                return null;
+                return Optional.empty();
             }
         } catch (NoResults ex) {
-            return null;
+            return Optional.empty();
         }
     }
 

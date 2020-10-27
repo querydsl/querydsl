@@ -108,8 +108,8 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     @Test
     public void standardTest() {
-        Product p = query().from(product).where(product.name.eq(productName)).limit(1).select(product).fetchOne();
-        Product p2 = query().from(product).where(product.name.startsWith(otherName)).limit(1).select(product).fetchOne();
+        Product p = query().from(product).where(product.name.eq(productName)).limit(1).select(product).fetchOne().get();
+        Product p2 = query().from(product).where(product.name.startsWith(otherName)).limit(1).select(product).fetchOne().get();
         standardTest.noProjections();
         standardTest.noCounts();
 
@@ -170,21 +170,21 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     public void params() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0")
-                .select(product.name).fetchFirst());
+                .select(product.name).fetchFirst().orElse(null));
     }
 
     @Test
     public void params_anon() {
         Param<String> name = new Param<String>(String.class);
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0")
-                .select(product.name).fetchFirst());
+                .select(product.name).fetchFirst().orElse(null));
     }
 
     @Test(expected = ParamNotSetException.class)
     public void params_not_set() {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name))
-                .select(product.name).fetchFirst());
+                .select(product.name).fetchFirst().orElse(null));
     }
 
     @Test

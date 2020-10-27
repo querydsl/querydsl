@@ -31,9 +31,9 @@ public class AggregateTest extends AbstractJDOTest {
     @Test
     public void unique() {
         double min = 200.00, avg = 400.00, max = 600.00;
-        assertEquals(Double.valueOf(min), query().from(product).select(product.price.min()).fetchOne());
-        assertEquals(Double.valueOf(avg), query().from(product).select(product.price.avg()).fetchOne());
-        assertEquals(Double.valueOf(max), query().from(product).select(product.price.max()).fetchOne());
+        assertEquals(Double.valueOf(min), query().from(product).select(product.price.min()).fetchOne().get());
+        assertEquals(Double.valueOf(avg), query().from(product).select(product.price.avg()).fetchOne().get());
+        assertEquals(Double.valueOf(max), query().from(product).select(product.price.max()).fetchOne().get());
     }
 
     @Test

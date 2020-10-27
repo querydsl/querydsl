@@ -529,7 +529,7 @@ public class LuceneQueryTest {
 
     @Test
     public void load_singleResult() {
-        Document document = query.where(title.ne("")).load(title).fetchFirst();
+        Document document = query.where(title.ne("")).load(title).fetchFirst().orElse(null);
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));
     }
@@ -537,87 +537,87 @@ public class LuceneQueryTest {
     @Test
     public void load_singleResult_fieldSelector() {
         Document document = query.where(title.ne(""))
-                .load(Sets.newHashSet("title")).fetchFirst();
+                .load(Sets.newHashSet("title")).fetchFirst().orElse(null);
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));
     }
 
     @Test
     public void singleResult() {
-        assertNotNull(query.where(title.ne("")).fetchFirst());
+        assertNotNull(query.where(title.ne("")).fetchFirst().orElse(null));
     }
 
     @Test
     public void single_result_takes_limit() {
         assertEquals("Jurassic Park", query.where(title.ne("")).limit(1)
-                .fetchFirst().get("title"));
+                .fetchFirst().orElse(null).get("title"));
     }
 
     @Test
     public void single_result_considers_limit_and_actual_result_size() {
         query.where(title.startsWith("Nummi"));
-        final Document document = query.limit(3).fetchFirst();
+        final Document document = query.limit(3).fetchFirst().orElse(null);
         assertEquals("Nummisuutarit", document.get("title"));
     }
 
     @Test
     public void single_result_returns_null_if_nothing_is_in_range() {
         query.where(title.startsWith("Nummi"));
-        assertNull(query.offset(10).fetchFirst());
+        assertNull(query.offset(10).fetchFirst().orElse(null));
     }
 
     @Test
     public void single_result_considers_offset() {
         assertEquals("Introduction to Algorithms", query.where(title.ne(""))
-                .offset(3).fetchFirst().get("title"));
+                .offset(3).fetchFirst().orElse(null).get("title"));
     }
 
     @Test
     public void single_result_considers_limit_and_offset() {
         assertEquals("The Lord of the Rings", query.where(title.ne(""))
-                .limit(1).offset(2).fetchFirst().get("title"));
+                .limit(1).offset(2).fetchFirst().orElse(null).get("title"));
     }
 
     @Test(expected = NonUniqueResultException.class)
     public void uniqueResult_contract() {
-        query.where(title.ne("")).fetchOne();
+        query.where(title.ne("")).fetchOne().orElse(null);
     }
 
     @Test
     public void unique_result_takes_limit() {
         assertEquals("Jurassic Park", query.where(title.ne("")).limit(1)
-                .fetchOne().get("title"));
+                .fetchOne().orElse(null).get("title"));
     }
 
     @Test
     public void unique_result_considers_limit_and_actual_result_size() {
         query.where(title.startsWith("Nummi"));
-        final Document document = query.limit(3).fetchOne();
+        final Document document = query.limit(3).fetchOne().orElse(null);
         assertEquals("Nummisuutarit", document.get("title"));
     }
 
     @Test
     public void unique_result_returns_null_if_nothing_is_in_range() {
         query.where(title.startsWith("Nummi"));
-        assertNull(query.offset(10).fetchOne());
+        assertNull(query.offset(10).fetchOne().orElse(null));
     }
 
     @Test
     public void unique_result_considers_offset() {
         assertEquals("Introduction to Algorithms", query.where(title.ne(""))
-                .offset(3).fetchOne().get("title"));
+                .offset(3).fetchOne().orElse(null).get("title"));
     }
 
     @Test
     public void unique_result_considers_limit_and_offset() {
         assertEquals("The Lord of the Rings", query.where(title.ne(""))
-                .limit(1).offset(2).fetchOne().get("title"));
+                .limit(1).offset(2).fetchOne().orElse(null).get("title"));
     }
 
     @Test
     public void uniqueResult() {
         query.where(title.startsWith("Nummi"));
-        final Document document = query.fetchOne();
+        final Document document = query.fetchOne().orElse(null);
         assertEquals("Nummisuutarit", document.get("title"));
     }
 
@@ -626,7 +626,7 @@ public class LuceneQueryTest {
         final Param<String> param = new Param<String>(String.class, "title");
         query.set(param, "Nummi");
         query.where(title.startsWith(param));
-        final Document document = query.fetchOne();
+        final Document document = query.fetchOne().orElse(null);
         assertEquals("Nummisuutarit", document.get("title"));
     }
 
@@ -634,19 +634,19 @@ public class LuceneQueryTest {
     public void uniqueResult_param_not_set() {
         final Param<String> param = new Param<String>(String.class, "title");
         query.where(title.startsWith(param));
-        query.fetchOne();
+        query.fetchOne().orElse(null);
     }
 
     @Test(expected = QueryException.class)
     public void uniqueResult_finds_more_than_one_result() {
         query.where(year.eq(1990));
-        query.fetchOne();
+        query.fetchOne().orElse(null);
     }
 
     @Test
     public void uniqueResult_finds_no_results() {
         query.where(year.eq(2200));
-        assertNull(query.fetchOne());
+        assertNull(query.fetchOne().orElse(null));
     }
 
     @Test
@@ -658,7 +658,7 @@ public class LuceneQueryTest {
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.getIndexReader().maxDoc()).andReturn(0);
         replay(searcher);
-        assertNull(query.where(year.eq(3000)).fetchOne());
+        assertNull(query.where(year.eq(3000)).fetchOne().orElse(null));
         verify(searcher);
     }
 
@@ -673,7 +673,7 @@ public class LuceneQueryTest {
                 new IllegalArgumentException());
         replay(searcher);
         query.where(title.eq("Jurassic Park"));
-        query.fetchOne();
+        query.fetchOne().orElse(null);
         verify(searcher);
     }
 

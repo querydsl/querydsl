@@ -69,7 +69,7 @@ public class SearchQueryTest extends AbstractQueryTest {
     @Test
     public void uniqueResult() {
         BooleanExpression filter = user.emailAddress.eq("bob@example.com");
-        User u = query().where(filter).fetchOne();
+        User u = query().where(filter).fetchOne().get();
         assertNotNull(u);
         assertEquals("bob@example.com", u.getEmailAddress());
     }
@@ -79,7 +79,7 @@ public class SearchQueryTest extends AbstractQueryTest {
         BooleanExpression filter = user.emailAddress.eq("bob@example.com");
         List<User> list = query().where(filter).fetch();
         assertEquals(1, list.size());
-        User u = query().where(filter).fetchOne();
+        User u = query().where(filter).fetchOne().get();
         assertEquals(u, list.get(0));
     }
 
@@ -90,7 +90,7 @@ public class SearchQueryTest extends AbstractQueryTest {
 
     @Test
     public void singleResult() {
-        assertNotNull(query().where(user.middleName.eq("X")).fetchFirst());
+        assertNotNull(query().where(user.middleName.eq("X")).fetchFirst().orElse(null));
     }
 
     @Test

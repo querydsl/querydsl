@@ -21,6 +21,8 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
 
+import java.util.Optional;
+
 class JPASubQuery<T> extends JPAQueryBase<T, JPASubQuery<T>> {
 
     JPASubQuery() {
@@ -63,7 +65,7 @@ class JPASubQuery<T> extends JPAQueryBase<T, JPASubQuery<T>> {
     }
 
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         throw new UnsupportedOperationException();
     }
 

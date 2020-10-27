@@ -16,6 +16,7 @@ package com.querydsl.jpa.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -168,20 +169,19 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
      * @param query query
      * @return single result
      */
-    @Nullable
-    private Object getSingleResult(Query query) {
+    private Optional<Object> getSingleResult(Query query) {
         if (projection != null) {
             Object result = query.getSingleResult();
             if (result != null) {
                 if (!result.getClass().isArray()) {
                     result = new Object[]{result};
                 }
-                return projection.newInstance((Object[]) result);
+                return Optional.ofNullable(projection.newInstance((Object[]) result));
             } else {
-                return null;
+                return Optional.empty();
             }
         } else {
-            return query.getSingleResult();
+            return Optional.ofNullable(query.getSingleResult());
         }
     }
 
@@ -258,10 +258,10 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     @Nullable
     @SuppressWarnings("unchecked")
     @Override
-    public T fetchOne() throws NonUniqueResultException {
+    public Optional<T> fetchOne() throws NonUniqueResultException {
         try {
             Query query = createQuery(getMetadata().getModifiers(), false);
-            return (T) getSingleResult(query);
+            return (Optional<T>) getSingleResult(query);
         } catch (javax.persistence.NoResultException e) {
             logger.trace(e.getMessage(),e);
             return null;

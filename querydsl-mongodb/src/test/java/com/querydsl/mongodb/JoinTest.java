@@ -109,15 +109,15 @@ public class JoinTest {
 
     @Test
     public void single() {
-        assertEquals("Jane", where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().getFirstName());
-        assertEquals("Jane", where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().getFirstName());
-        assertNull(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst());
-        assertNull(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).fetchFirst());
+        assertEquals("Jane", where().join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().get().getFirstName());
+        assertEquals("Jane", where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().get().getFirstName());
+        assertNull(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).fetchFirst().orElse(null));
+        assertNull(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).fetchFirst().orElse(null));
     }
 
     @Test
     public void single_collection() {
-        assertEquals("Bart", where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchFirst().getFirstName());
+        assertEquals("Bart", where().join(user.friends, friend).on(friend.firstName.eq("Mary")).fetchFirst().get().getFirstName());
     }
 
     @Test
@@ -125,7 +125,7 @@ public class JoinTest {
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.isNotNull())
                 .join(user.enemy(), enemy).on(enemy.firstName.isNotNull())
-                .fetchFirst().getFirstName());
+                .fetchFirst().get().getFirstName());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class JoinTest {
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.eq("Mary"))
                 .join(user.enemy(), enemy).on(enemy.firstName.eq("Ann"))
-                .fetchFirst().getFirstName());
+                .fetchFirst().get().getFirstName());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class JoinTest {
         assertEquals("Mike", where()
                 .join(user.friend(), friend).on(friend.firstName.isNotNull())
                 .join(friend.friend(), friend2).on(friend2.firstName.eq("Jane"))
-                .fetchFirst().getFirstName());
+                .fetchFirst().get().getFirstName());
     }
 
     private MorphiaQuery<User> query() {
