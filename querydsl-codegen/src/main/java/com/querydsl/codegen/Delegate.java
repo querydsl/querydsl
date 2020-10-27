@@ -14,8 +14,8 @@
 package com.querydsl.codegen;
 
 import java.util.List;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 
@@ -80,7 +80,7 @@ public class Delegate {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, parameters);
+        return Objects.hash(name, parameters);
     }
 
     @Override

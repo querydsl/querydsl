@@ -26,7 +26,6 @@ import javax.inject.Named;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.core.types.*;
@@ -337,7 +336,7 @@ public class EntitySerializer implements Serializer {
     protected void introFactoryMethods(CodeWriter writer, final EntityType model) throws IOException {
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
-        Set<Integer> sizes = Sets.newHashSet();
+        Set<Integer> sizes = new HashSet<>();
 
         for (Constructor c : model.getConstructors()) {
             // begin
@@ -433,7 +432,7 @@ public class EntitySerializer implements Serializer {
         if (model.hasEntityFields() || model.hasInits()) {
             inits = true;
         } else {
-            Set<TypeCategory> collections = Sets.newHashSet(TypeCategory.COLLECTION, TypeCategory.LIST, TypeCategory.SET);
+            Set<TypeCategory> collections = EnumSet.of(TypeCategory.COLLECTION, TypeCategory.LIST, TypeCategory.SET);
             for (Property property : model.getProperties()) {
                 if (!property.isInherited() && collections.contains(property.getType().getCategory())) {
                     inits = true;
@@ -448,7 +447,7 @@ public class EntitySerializer implements Serializer {
     }
 
     private Set<String> getUsedClassNames(EntityType model) {
-        Set<String> result = Sets.newHashSet();
+        Set<String> result = new HashSet<>();
         result.add(model.getSimpleName());
         for (Property property : model.getProperties()) {
             result.add(property.getType().getSimpleName());

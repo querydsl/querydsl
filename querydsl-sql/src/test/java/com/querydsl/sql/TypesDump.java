@@ -4,16 +4,15 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
 
 public final class TypesDump {
 
     private TypesDump() { }
 
     public static void main(String[] args) throws Exception {
-        Map<Integer, String> typeConstants = Maps.newHashMap();
+        Map<Integer, String> typeConstants = new HashMap<>();
         for (Field field : java.sql.Types.class.getDeclaredFields()) {
             if (field.getType().equals(Integer.TYPE)) {
                 typeConstants.put(field.getInt(null), field.getName());

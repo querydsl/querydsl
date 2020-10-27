@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.UpdateClause;
@@ -54,7 +53,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
 
     protected final List<SQLUpdateBatch> batches = new ArrayList<SQLUpdateBatch>();
 
-    protected Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
+    protected Map<Path<?>, Expression<?>> updates = new LinkedHashMap<>();
 
     protected QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -105,7 +104,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      */
     public C addBatch() {
         batches.add(new SQLUpdateBatch(metadata, updates));
-        updates = Maps.newLinkedHashMap();
+        updates = new LinkedHashMap<>();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
         return (C) this;
@@ -114,7 +113,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
     @Override
     public void clear() {
         batches.clear();
-        updates = Maps.newLinkedHashMap();
+        updates = new LinkedHashMap<>();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
@@ -149,7 +148,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         context.addSQL(createBindings(metadata, serializer));
         listeners.rendered(context);
 
-        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+        Map<String, PreparedStatement> stmts = new HashMap<>();
 
         // add first batch
         listeners.prePrepare(context);

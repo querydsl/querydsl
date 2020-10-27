@@ -126,7 +126,7 @@ public final class ConstructorUtils {
      * @return transformers
      */
     public static Iterable<Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
-        Iterable<ArgumentTransformer> transformers = Lists.newArrayList(
+        Iterable<ArgumentTransformer> transformers = Arrays.asList(
                 new PrimitiveAwareVarArgsTransformer(constructor),
                 new PrimitiveTransformer(constructor),
                 new VarArgsTransformer(constructor));

@@ -15,11 +15,12 @@ package com.querydsl.core;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Visitor;
+
+import java.util.Objects;
 
 /**
  * {@code BooleanBuilder} is a cascading builder for {@link Predicate} expressions.
@@ -118,7 +119,7 @@ public final class BooleanBuilder implements Predicate, Cloneable  {
         if (o == this) {
             return true;
         } else if (o instanceof BooleanBuilder) {
-            return Objects.equal(((BooleanBuilder) o).getValue(), predicate);
+            return Objects.equals(((BooleanBuilder) o).getValue(), predicate);
         } else {
             return false;
         }

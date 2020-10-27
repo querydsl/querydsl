@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.StoreClause;
@@ -422,7 +421,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     protected Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
         boolean addBatches = !configuration.getUseLiterals();
-        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+        Map<String, PreparedStatement> stmts = new HashMap<>();
 
         // add first batch
         listeners.preRender(context);

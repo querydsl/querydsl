@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa.hibernate.sql;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.NonUniqueResultException;
@@ -94,7 +94,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
 
         if (!forCount) {
             ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
-            Set<String> used = Sets.newHashSet();
+            Set<String> used = new HashSet<>();
             // set entity paths
             Expression<?> projection = queryMixin.getMetadata().getProjection();
             if (projection instanceof FactoryExpression) {

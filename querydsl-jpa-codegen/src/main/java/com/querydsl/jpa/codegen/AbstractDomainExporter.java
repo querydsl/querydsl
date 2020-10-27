@@ -29,8 +29,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Type;
@@ -56,15 +54,15 @@ public abstract class AbstractDomainExporter {
 
     private final File targetFolder;
 
-    private final Map<Class<?>, EntityType> allTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> allTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> entityTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> entityTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> embeddableTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> embeddableTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> superTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> superTypes = new HashMap<>();
 
-    private final Map<Class<?>, SerializerConfig> typeToConfig = Maps.newHashMap();
+    private final Map<Class<?>, SerializerConfig> typeToConfig = new HashMap<>();
 
     private final Set<EntityType> serialized = new HashSet<EntityType>();
 
@@ -122,7 +120,7 @@ public abstract class AbstractDomainExporter {
         }
 
         // go through supertypes
-        Set<Supertype> additions = Sets.newHashSet();
+        Set<Supertype> additions = new HashSet<>();
         for (Map.Entry<Class<?>, EntityType> entry : allTypes.entrySet()) {
             EntityType entityType = entry.getValue();
             if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType().getJavaClass())) {

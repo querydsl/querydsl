@@ -17,13 +17,13 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
-import com.google.common.collect.Lists;
 import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.Configuration;
@@ -177,7 +177,7 @@ public class AntMetaDataExporter extends Task {
     /**
      * custom types to use
      */
-    private List<CustomType> customTypes = Lists.newArrayList();
+    private List<CustomType> customTypes = new ArrayList<>();
 
     /**
      * scala generation mode
@@ -260,17 +260,17 @@ public class AntMetaDataExporter extends Task {
     /**
      * custom type mappings to use
      */
-    private List<TypeMapping> typeMappings = Lists.newArrayList();
+    private List<TypeMapping> typeMappings = new ArrayList<>();
 
     /**
      * custom numeric mappings
      */
-    private List<NumericMapping> numericMappings = Lists.newArrayList();
+    private List<NumericMapping> numericMappings = new ArrayList<>();
 
     /**
      * custom rename mappings
      */
-    private List<RenameMapping> renameMappings = Lists.newArrayList();
+    private List<RenameMapping> renameMappings = new ArrayList<>();
 
 
     @Override

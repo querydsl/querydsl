@@ -15,14 +15,14 @@ package com.querydsl.sql;
 
 import static com.google.common.collect.ImmutableList.copyOf;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BeanPath;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -44,11 +44,11 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     @Nullable
     private PrimaryKey<T> primaryKey;
 
-    private final Map<Path<?>, ColumnMetadata> columnMetadata = Maps.newLinkedHashMap();
+    private final Map<Path<?>, ColumnMetadata> columnMetadata = new LinkedHashMap<>();
 
-    private final List<ForeignKey<?>> foreignKeys = Lists.newArrayList();
+    private final List<ForeignKey<?>> foreignKeys = new ArrayList<>();
 
-    private final List<ForeignKey<?>> inverseForeignKeys = Lists.newArrayList();
+    private final List<ForeignKey<?>> inverseForeignKeys = new ArrayList<>();
 
     private final String schema, table;
 
@@ -226,7 +226,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     @Override
     public List<Path<?>> getColumns() {
-        return Lists.newArrayList(this.columnMetadata.keySet());
+        return new ArrayList<>(this.columnMetadata.keySet());
     }
 
     @Override

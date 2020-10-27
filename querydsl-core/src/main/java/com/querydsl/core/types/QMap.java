@@ -13,13 +13,13 @@
  */
 package com.querydsl.core.types;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 
 /**
  * {@code QMap} represents a projection of type Map
@@ -107,7 +107,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
     @Override
     @Nullable
     public Map<Expression<?>, ?> newInstance(Object... args) {
-        Map<Expression<?>, Object> map = Maps.newHashMap();
+        Map<Expression<?>, Object> map = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
             map.put(this.args.get(i), args[i]);
         }

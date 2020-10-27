@@ -13,9 +13,9 @@
  */
 package com.querydsl.sql;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 
@@ -126,7 +126,7 @@ public class WindowRows<A> {
 
     private final StringBuilder str = new StringBuilder();
 
-    private final List<Expression<?>> args = Lists.newArrayList();
+    private final List<Expression<?>> args = new ArrayList<>();
 
     private int offset;
 

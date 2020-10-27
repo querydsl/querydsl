@@ -13,18 +13,17 @@
  */
 package com.querydsl.sql.support;
 
-import static com.google.common.base.StandardSystemProperty.LINE_SEPARATOR;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import com.querydsl.core.QueryException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.function.Function;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.querydsl.core.QueryException;
+import static com.google.common.base.StandardSystemProperty.LINE_SEPARATOR;
 
 /**
  * A {@link SQLExceptionWrapper} that wraps the additional exception
@@ -49,7 +48,7 @@ class JavaSE6SQLExceptionWrapper extends SQLExceptionWrapper {
     }
 
     private static Iterable<Throwable> getLinkedSQLExceptions(SQLException exception) {
-        ArrayList<Throwable> rv = Lists.newArrayList();
+        ArrayList<Throwable> rv = new ArrayList<>();
         SQLException nextException = exception.getNextException();
         while (nextException != null) {
             rv.add(nextException);
@@ -65,7 +64,7 @@ class JavaSE6SQLExceptionWrapper extends SQLExceptionWrapper {
         private WrappedSQLCauseException(Iterable<Throwable> exceptions, SQLException exception) {
             super("Detailed SQLException information:" + LINE_SEPARATOR.value()
                     + lineJoiner.join(Iterables
-                            .transform(exceptions, exceptionMessageFunction)), exception);
+                            .transform(exceptions, exceptionMessageFunction::apply)), exception);
         }
     }
 

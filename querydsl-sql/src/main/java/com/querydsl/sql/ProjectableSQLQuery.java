@@ -14,6 +14,7 @@
 package com.querydsl.sql;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +22,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.JoinFlag;
@@ -450,7 +450,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     protected abstract SQLSerializer createSerializer();
 
     private Set<Path<?>> getRootPaths(Collection<? extends Expression<?>> exprs) {
-        Set<Path<?>> paths = Sets.newHashSet();
+        Set<Path<?>> paths = new HashSet<>();
         for (Expression<?> e : exprs) {
             Path<?> path = e.accept(PathExtractor.DEFAULT, null);
             if (path != null && !path.getMetadata().isRoot()) {

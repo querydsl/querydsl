@@ -23,8 +23,6 @@ import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.codegen.*;
@@ -45,7 +43,7 @@ import com.querydsl.sql.codegen.support.PrimaryKeyData;
  */
 public class MetaDataSerializer extends EntitySerializer {
 
-    private static final Map<Integer, String> typeConstants = Maps.newHashMap();
+    private static final Map<Integer, String> typeConstants = new HashMap<>();
 
     static {
         try {
@@ -223,7 +221,7 @@ public class MetaDataSerializer extends EntitySerializer {
     @Override
     protected void outro(EntityType model, CodeWriter writer) throws IOException {
         writer.beginPublicMethod(Types.VOID,"addMetadata");
-        List<Property> properties = Lists.newArrayList(model.getProperties());
+        List<Property> properties = new ArrayList<>(model.getProperties());
         if (columnComparator != null) {
             properties.sort(columnComparator);
         }

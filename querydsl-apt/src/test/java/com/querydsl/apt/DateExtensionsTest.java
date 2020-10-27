@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +27,6 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 @Ignore
@@ -46,7 +46,7 @@ public class DateExtensionsTest extends AbstractProcessorTest {
         assertTrue(qType.exists());
         long modified = qType.lastModified();
         Thread.sleep(1000);
-        assertTrue(Files.toString(qType, Charsets.UTF_8).contains("QDate"));
+        assertTrue(Files.toString(qType, StandardCharsets.UTF_8).contains("QDate"));
 
         // EntityWithExtensions has not changed, QEntityWithExtensions is not overwritten
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite3");
@@ -56,13 +56,13 @@ public class DateExtensionsTest extends AbstractProcessorTest {
         Files.touch(source);
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite3");
         assertTrue("" + modified + " >= " + qType.lastModified(), modified < qType.lastModified());
-        assertTrue(Files.toString(qType, Charsets.UTF_8).contains("QDate"));
+        assertTrue(Files.toString(qType, StandardCharsets.UTF_8).contains("QDate"));
 
         // QEntityWithExtensions is deleted and regenerated
         assertTrue(qType.delete());
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite3");
         assertTrue(qType.exists());
-        assertTrue(Files.toString(qType, Charsets.UTF_8).contains("QDate"));
+        assertTrue(Files.toString(qType, StandardCharsets.UTF_8).contains("QDate"));
     }
 
     @Override

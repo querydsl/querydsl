@@ -20,7 +20,6 @@ import java.util.*;
 import javax.annotation.Generated;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.core.util.BeanUtils;
@@ -43,7 +42,7 @@ public class BeanSerializer implements Serializer {
 
     private final boolean propertyAnnotations;
 
-    private final List<Type> interfaces = Lists.newArrayList();
+    private final List<Type> interfaces = new ArrayList<>();
 
     private final String javadocSuffix;
 

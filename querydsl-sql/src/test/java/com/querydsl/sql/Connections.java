@@ -14,12 +14,12 @@
 package com.querydsl.sql;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import org.hsqldb.types.Types;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.Target;
 import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
@@ -200,7 +200,7 @@ public final class Connections {
     }
 
     public static Map<Integer, String> getSpatialData() {
-        Map<Integer, String> m = Maps.newHashMap();
+        Map<Integer, String> m = new HashMap<>();
         // point
         m.put(1, "POINT (2 2)");
         m.put(2, "POINT (8 7)");

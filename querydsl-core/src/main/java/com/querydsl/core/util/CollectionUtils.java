@@ -13,6 +13,10 @@
  */
 package com.querydsl.core.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,10 +39,10 @@ public final class CollectionUtils {
         } else if (list instanceof ImmutableList) {
             if (size == 1) {
                 final T val = list.get(0);
-                list = Lists.newArrayList();
+                list = new ArrayList<>();
                 list.add(val);
             } else {
-                list = Lists.newArrayList(list);
+                list = new ArrayList<>(list);
             }
         }
         list.add(element);
@@ -49,7 +53,7 @@ public final class CollectionUtils {
         if (list instanceof ImmutableList) {
             return list;
         } else {
-            return Lists.newArrayList(list);
+            return new ArrayList<>(list);
         }
     }
 
@@ -60,10 +64,10 @@ public final class CollectionUtils {
         } else if (set instanceof ImmutableSet) {
             if (size == 1) {
                 final T val = set.iterator().next();
-                set = Sets.newHashSet();
+                set = new HashSet<>();
                 set.add(val);
             } else {
-                set = Sets.newHashSet(set);
+                set = new HashSet<>(set);
             }
         }
         set.add(element);
@@ -74,7 +78,7 @@ public final class CollectionUtils {
         if (set instanceof ImmutableSet) {
             return set;
         } else {
-            return Sets.newHashSet(set);
+            return new HashSet<>(set);
         }
     }
 
@@ -85,10 +89,10 @@ public final class CollectionUtils {
         } else if (set instanceof ImmutableSet) {
             if (size == 1) {
                 final T val = set.iterator().next();
-                set = Sets.newLinkedHashSet();
+                set = new LinkedHashSet<>();
                 set.add(val);
             } else {
-                set = Sets.newLinkedHashSet(set);
+                set = new LinkedHashSet<>(set);
             }
         }
         set.add(element);
@@ -109,7 +113,7 @@ public final class CollectionUtils {
         if (set instanceof ImmutableSet) {
             return set;
         } else {
-            return Sets.newLinkedHashSet(set);
+            return new LinkedHashSet(set);
         }
     }
 
@@ -118,7 +122,7 @@ public final class CollectionUtils {
         if (size == 0) {
             return ImmutableMap.of(key, value);
         } else if (map instanceof ImmutableMap) {
-            map = Maps.newHashMap(map);
+            map = new HashMap<>(map);
         }
         map.put(key, value);
         return map;
@@ -128,7 +132,7 @@ public final class CollectionUtils {
         if (map instanceof ImmutableMap) {
             return map;
         } else {
-            return Maps.newHashMap(map);
+            return new HashMap<>(map);
         }
     }
 

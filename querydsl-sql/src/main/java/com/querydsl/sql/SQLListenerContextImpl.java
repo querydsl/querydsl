@@ -13,16 +13,16 @@
  */
 package com.querydsl.sql;
 
+import com.querydsl.core.QueryMetadata;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.querydsl.core.QueryMetadata;
 
 /**
  * A mutable implementation of SQL listener context.
@@ -46,9 +46,9 @@ public class SQLListenerContextImpl implements SQLListenerContext {
     private Exception exception;
 
     public SQLListenerContextImpl(final QueryMetadata metadata, final Connection connection, final RelationalPath<?> entity) {
-        this.contextMap = Maps.newHashMap();
-        this.preparedStatements = Lists.newArrayList();
-        this.sqlStatements = Lists.newArrayList();
+        this.contextMap = new HashMap<>();
+        this.preparedStatements = new ArrayList<>();
+        this.sqlStatements = new ArrayList<>();
         this.md = metadata;
         this.connection = connection;
         this.entity = entity;

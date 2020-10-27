@@ -15,6 +15,7 @@ package com.querydsl.jpa.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.support.QueryMixin;
@@ -46,7 +46,7 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
 
     private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
-    private final Map<Path<?>, Expression<?>> inserts = Maps.newLinkedHashMap();
+    private final Map<Path<?>, Expression<?>> inserts = new LinkedHashMap<>();
 
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 

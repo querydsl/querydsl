@@ -13,11 +13,11 @@
  */
 package com.querydsl.jpa.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-import com.google.common.collect.Maps;
 import com.querydsl.jpa.BatooTemplates;
 import com.querydsl.jpa.DataNucleusTemplates;
 import com.querydsl.jpa.EclipseLinkTemplates;
@@ -34,9 +34,9 @@ import com.querydsl.jpa.OpenJPATemplates;
  */
 public final class JPAProvider {
 
-    private static final Map<Class<?>, JPQLTemplates> mappings = Maps.newHashMap();
+    private static final Map<Class<?>, JPQLTemplates> mappings = new HashMap<>();
 
-    private static final Map<String, JPQLTemplates> templatesByName = Maps.newHashMap();
+    private static final Map<String, JPQLTemplates> templatesByName = new HashMap<>();
 
     private static void addMapping(String className, JPQLTemplates templates) {
         try {

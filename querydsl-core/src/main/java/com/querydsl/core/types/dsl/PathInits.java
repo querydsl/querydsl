@@ -18,7 +18,6 @@ import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.PathMetadata;
 
 /**
@@ -48,7 +47,7 @@ public class PathInits implements Serializable {
         boolean initAllProps = false;
         PathInits defaultValue = DEFAULT;
 
-        Map<String, Collection<String>> properties = Maps.newHashMap();
+        Map<String, Collection<String>> properties = new HashMap<>();
         for (String initStr : initStrs) {
             if (initStr.equals("*")) {
                 initAllProps = true;

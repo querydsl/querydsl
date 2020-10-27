@@ -13,13 +13,13 @@
  */
 package com.querydsl.jpa.support;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.dialect.function.SQLFunction;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.type.Type;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Template;
@@ -31,7 +31,7 @@ final class DialectSupport {
     private DialectSupport() { }
 
     public static Map<String, SQLFunction> createFunctions(SQLTemplates templates) {
-        Map<String, SQLFunction> functions = Maps.newHashMap();
+        Map<String, SQLFunction> functions = new HashMap<>();
         functions.put("second", createFunction(templates, Ops.DateTimeOps.SECOND));
         functions.put("minute", createFunction(templates, Ops.DateTimeOps.MINUTE));
         functions.put("hour", createFunction(templates, Ops.DateTimeOps.HOUR));

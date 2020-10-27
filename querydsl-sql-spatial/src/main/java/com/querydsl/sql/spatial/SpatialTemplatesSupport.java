@@ -13,9 +13,9 @@
  */
 package com.querydsl.sql.spatial;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.Operator;
 import com.querydsl.spatial.SpatialOps;
 
@@ -52,7 +52,7 @@ public final class SpatialTemplatesSupport {
     }
 
     public static Map<Operator, String> getSpatialOps(String prefix, boolean asFunction) {
-        Map<Operator, String> ops = Maps.newHashMap();
+        Map<Operator, String> ops = new HashMap<>();
         ops.put(SpatialOps.AREA, createSpatial(prefix + "Area", 1, asFunction));
         ops.put(SpatialOps.AREA2, createSpatial(prefix + "Area", 2, asFunction));
         ops.put(SpatialOps.AS_BINARY, createSpatial(prefix + "AsBinary", 1, asFunction));

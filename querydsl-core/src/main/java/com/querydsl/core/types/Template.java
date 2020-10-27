@@ -15,6 +15,8 @@ package com.querydsl.core.types;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +24,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.util.MathUtils;
 
@@ -38,7 +39,7 @@ public final class Template implements Serializable {
 
     private static final long serialVersionUID = -1697705745769542204L;
 
-    private static final Set<? extends Operator> CONVERTIBLES = Sets.immutableEnumSet(Ops.ADD, Ops.SUB);
+    private static final Set<? extends Operator> CONVERTIBLES = Collections.unmodifiableSet(EnumSet.of(Ops.ADD, Ops.SUB));
 
     /**
      * General template element

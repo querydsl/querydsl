@@ -13,18 +13,16 @@
  */
 package com.querydsl.lucene5;
 
-import java.io.IOException;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
+import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.QueryException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 
-import com.google.common.base.Function;
-import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.QueryException;
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * {@code ResultIterator} is a {@link CloseableIterator} implementation for

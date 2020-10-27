@@ -6,12 +6,12 @@ import static com.querydsl.core.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Test;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 
 public class GuavaOptionalTest {
 
@@ -33,7 +33,7 @@ public class GuavaOptionalTest {
 
     @Test
     public void test() {
-        Collection<Cat> cats = Lists.newArrayList();
+        Collection<Cat> cats = new ArrayList<>();
         cats.add(new Cat(Optional.<String>absent()));
         cats.add(new Cat(Optional.of("persian")));
         Cat c = alias(Cat.class);

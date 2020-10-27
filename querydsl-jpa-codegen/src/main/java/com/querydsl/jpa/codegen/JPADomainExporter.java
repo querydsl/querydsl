@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Temporal;
@@ -25,7 +26,6 @@ import javax.xml.stream.XMLStreamException;
 
 import org.hibernate.MappingException;
 
-import com.google.common.collect.Maps;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
@@ -141,7 +141,7 @@ public class JPADomainExporter extends AbstractDomainExporter {
     protected void collectTypes() throws IOException, XMLStreamException, ClassNotFoundException,
         NoSuchMethodException {
 
-        Map<ManagedType<?>, EntityType> types = Maps.newHashMap();
+        Map<ManagedType<?>, EntityType> types = new HashMap<>();
         for (ManagedType<?> managedType : metamodel.getManagedTypes()) {
             if (managedType instanceof MappedSuperclassType) {
                 types.put(managedType, createSuperType(managedType.getJavaType()));

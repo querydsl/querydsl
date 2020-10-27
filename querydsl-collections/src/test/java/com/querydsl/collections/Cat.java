@@ -15,8 +15,6 @@ package com.querydsl.collections;
 
 import java.util.*;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryProjection;
@@ -31,11 +29,11 @@ public class Cat extends Animal {
 
     private Color eyecolor;
 
-    private List<Cat> kittens = Lists.newArrayList();
+    private List<Cat> kittens = new ArrayList<>();
 
     private Cat[] kittenArray;
 
-    private Map<String, Cat> kittensByName = Maps.newHashMap();
+    private Map<String, Cat> kittensByName = new HashMap<>();
 
     private Cat mate;
 

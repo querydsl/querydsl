@@ -23,9 +23,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
@@ -83,17 +80,17 @@ public class GenericExporter {
 
     private boolean createScalaSources = false;
 
-    private final Set<Class<?>> stopClasses = Sets.newHashSet();
+    private final Set<Class<?>> stopClasses = new HashSet<>();
 
-    private final Map<String, EntityType> allTypes = Maps.newHashMap();
+    private final Map<String, EntityType> allTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> entityTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> entityTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> superTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> superTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> embeddableTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> embeddableTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> projectionTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> projectionTypes = new HashMap<>();
 
     private final CodegenModule codegenModule = new CodegenModule();
 
@@ -112,7 +109,7 @@ public class GenericExporter {
     @Nullable
     private TypeFactory typeFactory;
 
-    private final List<AnnotationHelper> annotationHelpers = Lists.newArrayList();
+    private final List<AnnotationHelper> annotationHelpers = new ArrayList<>();
 
     @Nullable
     private TypeMappings typeMappings;
@@ -239,7 +236,7 @@ public class GenericExporter {
 
         // add constructors and properties
         for (Map<Class<?>, EntityType> entries : Arrays.asList(superTypes, embeddableTypes, entityTypes, projectionTypes)) {
-            for (Map.Entry<Class<?>, EntityType> entry : Sets.newHashSet(entries.entrySet())) {
+            for (Map.Entry<Class<?>, EntityType> entry : new HashSet<>(entries.entrySet())) {
                 addConstructors(entry.getKey(), entry.getValue());
                 addProperties(entry.getKey(), entry.getValue());
             }
@@ -372,7 +369,7 @@ public class GenericExporter {
     private void addConstructors(Class<?> cl, EntityType type) {
         for (Constructor<?> constructor : cl.getConstructors()) {
             if (constructor.isAnnotationPresent(QueryProjection.class)) {
-                List<Parameter> parameters = Lists.newArrayList();
+                List<Parameter> parameters = new ArrayList<>();
                 for (int i = 0; i < constructor.getParameterTypes().length; i++) {
                     Type parameterType = typeFactory.get(
                             constructor.getParameterTypes()[i],
@@ -391,8 +388,8 @@ public class GenericExporter {
     }
 
     private void addProperties(Class<?> cl, EntityType type) {
-        Map<String, Type> types = Maps.newHashMap();
-        Map<String, Annotations> annotations = Maps.newHashMap();
+        Map<String, Type> types = new HashMap<>();
+        Map<String, Annotations> annotations = new HashMap<>();
 
         PropertyHandling.Config config = propertyHandling.getConfig(cl);
 

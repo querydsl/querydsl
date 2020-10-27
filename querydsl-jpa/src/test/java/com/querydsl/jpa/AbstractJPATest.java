@@ -32,7 +32,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.group.Group;
@@ -259,7 +258,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void any_in11() {
-        List<Integer> ids = Lists.newArrayList();
+        List<Integer> ids = new ArrayList<>();
         for (Cat cat : savedCats) {
             ids.add(cat.getId());
         }

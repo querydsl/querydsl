@@ -15,6 +15,7 @@ package com.querydsl.core.types;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.querydsl.core.Tuple;
 
 /**
@@ -56,7 +56,7 @@ import com.querydsl.core.Tuple;
 public class QTuple extends FactoryExpressionBase<Tuple> {
 
     private static ImmutableMap<Expression<?>, Integer> createBindings(List<Expression<?>> exprs) {
-        Map<Expression<?>, Integer> map = Maps.newHashMap();
+        Map<Expression<?>, Integer> map = new HashMap<>();
         for (int i = 0; i < exprs.size(); i++) {
             Expression<?> e = exprs.get(i);
             if (e instanceof Operation && ((Operation<?>) e).getOperator() == Ops.ALIAS) {

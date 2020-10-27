@@ -1,12 +1,12 @@
 package com.querydsl.sql.spatial;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geolatte.geom.*;
 import org.geolatte.geom.codec.Wkt;
 import org.geolatte.geom.crs.CrsId;
 
-import com.google.common.collect.Lists;
 import com.querydsl.sql.Connections;
 
 public abstract class AbstractConverterTest {
@@ -21,7 +21,7 @@ public abstract class AbstractConverterTest {
 
     protected List<Geometry> getGeometries() {
         CrsId crs = CrsId.valueOf(1);
-        List<Geometry> data = Lists.newArrayList();
+        List<Geometry> data = new ArrayList<>();
         // points
 //        data.add(Points.createEmpty());
         data.add(Points.create2D(1, 2));

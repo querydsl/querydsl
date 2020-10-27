@@ -13,11 +13,11 @@
  */
 package com.querydsl.core.support;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 
@@ -38,7 +38,7 @@ public class ConstantHidingExpression<T> extends FactoryExpressionBase<T> {
     public ConstantHidingExpression(FactoryExpression<T> expr) {
         super(expr.getType());
         this.expr = expr;
-        this.args = Lists.newArrayList();
+        this.args = new ArrayList<>();
         this.template = new Object[expr.getArgs().size()];
         for (int i = 0; i < template.length; i++) {
             Expression<?> arg = expr.getArgs().get(i);

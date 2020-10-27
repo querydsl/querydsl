@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import javax.persistence.*;
 
 import org.junit.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ForwardingSet;
 import com.google.common.io.Files;
 import com.querydsl.apt.domain.AbstractEntityTest;
@@ -135,8 +135,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
             if (!other.exists() || !other.isFile()) {
                 continue;
             }
-            String result1 = Files.toString(file, Charsets.UTF_8);
-            String result2 = Files.toString(other, Charsets.UTF_8);
+            String result1 = Files.toString(file, StandardCharsets.UTF_8);
+            String result2 = Files.toString(other, StandardCharsets.UTF_8);
             if (!result1.equals(result2)) {
                 if (!expected.contains(file.getName())) {
                     System.err.println(file.getName());

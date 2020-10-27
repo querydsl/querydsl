@@ -16,6 +16,7 @@ package com.querydsl.jpa;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Provider;
@@ -26,7 +27,6 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Maps;
 import com.querydsl.jpa.domain.QAnimal;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.sql.SQLExpressions;
@@ -43,7 +43,7 @@ public class JPAQueryFactoryTest {
 
     private JPAQueryFactory queryFactory3;
 
-    private Map<String, Object> properties = Maps.newHashMap();
+    private Map<String, Object> properties = new HashMap<>();
 
     @Before
     public void setUp() {

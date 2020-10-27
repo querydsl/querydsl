@@ -17,14 +17,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Provider;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLTemplates;
@@ -40,7 +39,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
 
     private boolean forSession = true;
 
-    private final Map<String, String> values = Maps.newLinkedHashMap();
+    private final Map<String, String> values = new LinkedHashMap<>();
 
     private transient String queryString;
 
@@ -112,7 +111,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
         if (configuration.getUseLiterals() || forSession) {
             bindings = new SQLBindings(toString(), Collections.emptyList());
         } else {
-            bindings = new SQLBindings(toString(), Lists.<Object>newArrayList(parameter));
+            bindings = new SQLBindings(toString(), Collections.singletonList(parameter));
         }
         return ImmutableList.of(bindings);
     }

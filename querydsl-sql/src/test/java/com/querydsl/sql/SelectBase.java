@@ -33,7 +33,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
@@ -261,7 +260,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void casts() throws SQLException {
         NumberExpression<?> num = employee.id;
-        List<Expression<?>> exprs = Lists.newArrayList();
+        List<Expression<?>> exprs = new ArrayList<>();
 
         add(exprs, num.byteValue(), MYSQL);
         add(exprs, num.doubleValue());
@@ -422,7 +421,7 @@ public class SelectBase extends AbstractBaseTest {
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
         long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
 
-        List<Object> data = Lists.newArrayList();
+        List<Object> data = new ArrayList<>();
         data.add(Constants.date);
         data.add(Constants.time);
         data.add(new java.util.Date(ts));
@@ -530,7 +529,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({SQLITE})
     public void date_add_Timestamp() {
-        List<Expression<?>> exprs = Lists.newArrayList();
+        List<Expression<?>> exprs = new ArrayList<>();
         DateTimeExpression<java.util.Date> dt = Expressions.currentTimestamp();
 
         add(exprs, SQLExpressions.addYears(dt, 1));
@@ -553,7 +552,7 @@ public class SelectBase extends AbstractBaseTest {
         SQLQuery<?> query2 = query().from(employee, employee2)
                 .orderBy(employee.id.asc(), employee2.id.desc());
 
-        List<DatePart> dps = Lists.newArrayList();
+        List<DatePart> dps = new ArrayList<>();
         add(dps, DatePart.year);
         add(dps, DatePart.month);
         add(dps, DatePart.week);
@@ -609,7 +608,7 @@ public class SelectBase extends AbstractBaseTest {
     public void date_trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
-        List<DatePart> dps = Lists.newArrayList();
+        List<DatePart> dps = new ArrayList<>();
         add(dps, DatePart.year);
         add(dps, DatePart.month);
         add(dps, DatePart.week, DERBY, FIREBIRD, SQLSERVER);
@@ -877,7 +876,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER, TERADATA})
     public void in_long_list() {
-        List<Integer> ids = Lists.newArrayList();
+        List<Integer> ids = new ArrayList<>();
         for (int i = 0; i < 20000; i++) {
             ids.add(i);
         }
@@ -889,7 +888,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER, TERADATA})
     public void notIn_long_list() {
-        List<Integer> ids = Lists.newArrayList();
+        List<Integer> ids = new ArrayList<>();
         for (int i = 0; i < 20000; i++) {
             ids.add(i);
         }

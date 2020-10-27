@@ -16,11 +16,10 @@ package com.querydsl.sql.spatial;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geolatte.geom.*;
-
-import com.google.common.collect.Lists;
 
 class SQLServerGeometryWriter {
 
@@ -49,11 +48,11 @@ class SQLServerGeometryWriter {
         int type;
     }
 
-    private List<Point> points = Lists.newArrayList();
+    private List<Point> points = new ArrayList<>();
 
-    private List<Figure> figures = Lists.newArrayList();
+    private List<Figure> figures = new ArrayList<>();
 
-    private List<Shape> shapes = Lists.newArrayList();
+    private List<Shape> shapes = new ArrayList<>();
 
     private int calculateCapacity(Geometry geometry) {
         int numPoints = points.size();

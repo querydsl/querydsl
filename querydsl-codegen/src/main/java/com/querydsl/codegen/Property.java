@@ -18,7 +18,6 @@ import java.util.*;
 
 import javax.lang.model.SourceVersion;
 
-import com.google.common.base.Objects;
 import com.mysema.codegen.model.Type;
 
 /**
@@ -112,7 +111,7 @@ public final class Property implements Comparable<Property> {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name, type);
+        return Objects.hash(name, type);
     }
 
     @Override

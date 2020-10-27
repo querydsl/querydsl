@@ -15,12 +15,12 @@ package com.querydsl.jdo;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;
 
@@ -46,7 +46,7 @@ public class AggregateTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        List<Product> entities = Lists.newArrayList();
+        List<Product> entities = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             entities.add(new Product("C" + i, "F", 200.00, 2));
             entities.add(new Product("B" + i, "E", 400.00, 4));

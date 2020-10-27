@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.core.util.FileUtils;
@@ -81,7 +81,7 @@ public class EclipseCompilationTest {
 
         File resultFile = new File("target/out-eclipse/com/querydsl/eclipse/QSimpleEntity.java");
         assertTrue(resultFile.exists());
-        String result = Files.toString(resultFile, Charsets.UTF_8);
+        String result = Files.toString(resultFile, StandardCharsets.UTF_8);
         assertTrue(result.contains("NumberPath<java.math.BigDecimal> bigDecimalProp"));
         assertTrue(result.contains("NumberPath<Integer> integerProp"));
         assertTrue(result.contains("NumberPath<Integer> intProp"));

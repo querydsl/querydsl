@@ -19,6 +19,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Properties;
 import java.util.Set;
@@ -31,7 +32,6 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.TemporaryFolder;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 public class JPADomainExporterTest {
@@ -55,8 +55,8 @@ public class JPADomainExporterTest {
         for (File file : files) {
             Path relativeFile = outputFolder.relativize(file.toPath());
             Path origFile = origRoot.toPath().resolve(relativeFile);
-            String reference = Files.toString(origFile.toFile(), Charsets.UTF_8);
-            String content = Files.toString(file, Charsets.UTF_8);
+            String reference = Files.toString(origFile.toFile(), StandardCharsets.UTF_8);
+            String content = Files.toString(file, StandardCharsets.UTF_8);
             errors.checkThat("Mismatch for " + file.getPath(), content, is(equalTo(reference)));
         }
     }

@@ -4,13 +4,13 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.map;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.querydsl.core.annotations.QueryEntity;
 
 
@@ -29,7 +29,7 @@ public class GroupBy4Test {
 
     @Test
     public void test() {
-        List<Table> data = Lists.newArrayList();
+        List<Table> data = new ArrayList<>();
         data.add(new Table("1", "abc", "111"));
         data.add(new Table("1", "pqr", "222"));
         data.add(new Table("2", "abc", "333"));

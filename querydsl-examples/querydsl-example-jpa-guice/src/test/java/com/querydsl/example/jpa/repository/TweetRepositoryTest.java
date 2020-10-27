@@ -6,6 +6,8 @@ import com.querydsl.example.jpa.model.User;
 import org.junit.Test;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,8 +59,8 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
 
     @Test
     public void find_list_by_complex_predicate() {
-        List<String> usernames = Lists.newArrayList("dr_frank", "mike", "maggie", "liza");
-        List<User> users = Lists.newArrayList();
+        List<String> usernames = Arrays.asList("dr_frank", "mike", "maggie", "liza");
+        List<User> users = new ArrayList<>();
         for (String username : usernames) {
             users.add(userRepository.save(new User(username)));
         }
@@ -78,8 +80,8 @@ public class TweetRepositoryTest extends AbstractPersistenceTest {
 
     @Test
     public void find_list_by_complex_predicate_hibernate() {
-        List<String> usernames = Lists.newArrayList("dr_frank", "mike", "maggie", "liza");
-        List<User> users = Lists.newArrayList();
+        List<String> usernames = Arrays.asList("dr_frank", "mike", "maggie", "liza");
+        List<User> users = new ArrayList<>();
         for (String username : usernames) {
             users.add(userRepository.save(new User(username)));
         }

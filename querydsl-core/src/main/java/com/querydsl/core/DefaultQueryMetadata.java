@@ -15,17 +15,17 @@ package com.querydsl.core;
 
 import static com.querydsl.core.util.CollectionUtils.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.querydsl.core.types.*;
 
 /**
@@ -243,7 +243,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         if (joinTarget == null) {
             return joins;
         } else {
-            List<JoinExpression> j = Lists.newArrayList(joins);
+            List<JoinExpression> j = new ArrayList<>(joins);
             j.add(new JoinExpression(joinType, joinTarget, joinCondition, joinFlags));
             return j;
         }
@@ -370,15 +370,15 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             QueryMetadata q = (QueryMetadata) o;
             return q.getFlags().equals(flags)
                 && q.getGroupBy().equals(groupBy)
-                && Objects.equal(q.getHaving(), having)
+                && Objects.equals(q.getHaving(), having)
                 && q.isDistinct() == distinct
                 && q.isUnique() == unique
                 && q.getJoins().equals(getJoins())
                 && q.getModifiers().equals(modifiers)
                 && q.getOrderBy().equals(orderBy)
                 && q.getParams().equals(params)
-                && Objects.equal(q.getProjection(), projection)
-                && Objects.equal(q.getWhere(), where);
+                && Objects.equals(q.getProjection(), projection)
+                && Objects.equals(q.getWhere(), where);
 
         } else {
             return false;
@@ -387,7 +387,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(flags, groupBy, having, getJoins(), modifiers,
+        return Objects.hash(flags, groupBy, having, getJoins(), modifiers,
                 orderBy, params, projection, unique, where);
     }
 

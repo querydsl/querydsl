@@ -16,11 +16,11 @@ package com.querydsl.sql;
 import static com.google.common.collect.ImmutableSet.copyOf;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Sets;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.Resources;
 
@@ -34,7 +34,7 @@ final class Keywords {
     private static Set<String> readLines(String path) {
         try {
             return copyOf(Resources.readLines(
-                    Keywords.class.getResource("/keywords/" + path), Charsets.UTF_8,
+                    Keywords.class.getResource("/keywords/" + path), StandardCharsets.UTF_8,
                     new CommentDiscardingLineProcessor()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,7 +59,7 @@ final class Keywords {
 
     private static class CommentDiscardingLineProcessor implements LineProcessor<Collection<String>> {
 
-        private final Collection<String> result = Sets.newHashSet();
+        private final Collection<String> result = new HashSet<>();
 
         @Override
         public boolean processLine(String line) throws IOException {

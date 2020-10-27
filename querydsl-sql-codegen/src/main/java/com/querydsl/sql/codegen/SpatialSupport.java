@@ -13,14 +13,14 @@
  */
 package com.querydsl.sql.codegen;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.geolatte.geom.*;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.querydsl.codegen.AbstractModule;
@@ -53,7 +53,7 @@ public final class SpatialSupport {
     }
 
     private static void registerTypes(TypeMappings typeMappings) {
-        Map<Class<?>, Class<?>> mappings = Maps.newHashMap();
+        Map<Class<?>, Class<?>> mappings = new HashMap<>();
         mappings.put(GeometryCollection.class, GeometryCollectionPath.class);
         mappings.put(Geometry.class, GeometryPath.class);
         mappings.put(LinearRing.class, LinearRingPath.class);
@@ -78,7 +78,7 @@ public final class SpatialSupport {
             imports = ImmutableSet.of(packageName);
         } else {
             Set<String> old = imports;
-            imports = Sets.newHashSet();
+            imports = new HashSet<>();
             imports.addAll(old);
             imports.add(packageName);
         }

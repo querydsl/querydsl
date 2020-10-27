@@ -14,12 +14,12 @@
 package com.querydsl.core;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
@@ -102,7 +102,7 @@ public final class JoinExpression implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(condition, target, type);
+        return Objects.hash(condition, target, type);
     }
 
     @Override
@@ -111,9 +111,9 @@ public final class JoinExpression implements Serializable {
             return true;
         } else if (o instanceof JoinExpression) {
             JoinExpression j = (JoinExpression) o;
-            return Objects.equal(condition, j.condition) &&
-                   Objects.equal(target, j.target) &&
-                   Objects.equal(type, j.type);
+            return Objects.equals(condition, j.condition) &&
+                   Objects.equals(target, j.target) &&
+                   Objects.equals(type, j.type);
         } else {
             return false;
         }

@@ -13,32 +13,44 @@
  */
 package com.querydsl.lucene5;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
-import org.apache.lucene.document.Document;
-import org.apache.lucene.sandbox.queries.DuplicateFilter;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.*;
-import org.apache.lucene.search.Query;
-
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.*;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.Fetchable;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryException;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.SimpleQuery;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.sandbox.queries.DuplicateFilter;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.Filter;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.QueryWrapperFilter;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.TotalHitCountCollector;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * AbstractLuceneQuery is an abstract super class for Lucene query

@@ -19,12 +19,12 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 
 import javax.jdo.annotations.PersistenceCapable;
 
 import org.junit.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.mysema.codegen.CodeWriter;
 import com.querydsl.apt.jdo.JDOAnnotationProcessor;
@@ -51,7 +51,7 @@ public class PackageVerification {
         cl.newInstance();
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
         assertEquals(JDOAnnotationProcessor.class.getName(),
-                Resources.toString(oneJarClassLoader.findResource(resourceKey), Charsets.UTF_8));
+                Resources.toString(oneJarClassLoader.findResource(resourceKey), StandardCharsets.UTF_8));
     }
 
 }

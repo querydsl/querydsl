@@ -8,11 +8,11 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
@@ -23,7 +23,7 @@ public class TypesBase extends AbstractBaseTest {
 
     @Test
     public void create_tables() {
-        Map<Class<?>, Object> instances = Maps.newLinkedHashMap();
+        Map<Class<?>, Object> instances = new LinkedHashMap<>();
         instances.put(BigInteger.class, BigInteger.valueOf(1));
         instances.put(Long.class, 1L);
         instances.put(Integer.class, 1);

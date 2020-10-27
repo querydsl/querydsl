@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +25,6 @@ import javax.persistence.Table;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.*;
@@ -129,7 +129,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
             }
         } else if (projection instanceof FactoryExpression) {
             FactoryExpression<?> factoryExpr = (FactoryExpression<?>) projection;
-            List<Expression<?>> fargs = Lists.newArrayList(factoryExpr.getArgs());
+            List<Expression<?>> fargs = new ArrayList<>(factoryExpr.getArgs());
             for (int j = 0; j < fargs.size(); j++) {
                 if (fargs.get(j) instanceof Path) {
                     Path<?> path = (Path<?>) fargs.get(j);

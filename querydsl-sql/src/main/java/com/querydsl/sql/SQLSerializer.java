@@ -21,8 +21,6 @@ import javax.annotation.Nullable;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
@@ -52,7 +50,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     protected final List<Object> constants = new ArrayList<Object>();
 
-    protected final Set<Path<?>> withAliases = Sets.newHashSet();
+    protected final Set<Path<?>> withAliases = new HashSet<>();
 
     protected final boolean dml;
 
@@ -133,7 +131,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
 
         } else {
-            List<Expression<?>> rv = Lists.newArrayList();
+            List<Expression<?>> rv = new ArrayList<>();
             int counter = 0;
             for (JoinExpression join : joins) {
                 if (join.getTarget() instanceof RelationalPath) {
@@ -172,8 +170,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public final SQLSerializer handleSelect(final String sep, final List<? extends Expression<?>> expressions) {
         if (inSubquery) {
-            Set<String> names = Sets.newHashSet();
-            List<Expression<?>> replacements = Lists.newArrayList();
+            Set<String> names = new HashSet<>();
+            List<Expression<?>> replacements = new ArrayList<>();
             for (Expression<?> expr : expressions) {
                 if (expr instanceof Path) {
                     String name = ColumnMetadata.getName((Path<?>) expr);
@@ -247,7 +245,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         // with
         if (hasFlags) {
-            List<Expression<?>> withFlags = Lists.newArrayList();
+            List<Expression<?>> withFlags = new ArrayList<>();
             boolean recursive = false;
             for (QueryFlag flag : flags) {
                 if (flag.getPosition() == Position.WITH) {

@@ -18,7 +18,10 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,8 +29,6 @@ import java.util.Set;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.common.primitives.Primitives;
 import com.mysema.codegen.model.*;
 import com.querydsl.core.util.ReflectionUtils;
@@ -42,13 +43,13 @@ public final class TypeFactory {
 
     private static final Type ANY = new TypeExtends(Types.OBJECT);
 
-    private final Map<List<?>, Type> cache = Maps.newHashMap();
+    private final Map<List<?>, Type> cache = new HashMap<>();
 
     private final List<Class<? extends Annotation>> entityAnnotations;
 
-    private final List<AnnotationHelper> annotationHelpers = Lists.newArrayList();
+    private final List<AnnotationHelper> annotationHelpers = new ArrayList<>();
 
-    private final Set<Class<?>> embeddableTypes = Sets.newHashSet();
+    private final Set<Class<?>> embeddableTypes = new HashSet<>();
 
     private boolean unknownAsEntity = false;
 

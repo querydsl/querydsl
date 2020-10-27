@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryFlag;
@@ -265,7 +264,7 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
             values.clear();
         }
 
-        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+        Map<String, PreparedStatement> stmts = new HashMap<>();
 
         // add first batch
         SQLSerializer serializer = createSerializer();

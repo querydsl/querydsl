@@ -16,13 +16,13 @@ package com.querydsl.jdo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jdo.test.domain.Product;
@@ -100,7 +100,7 @@ public class OrderingTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        List<Object> entities = Lists.newArrayList();
+        List<Object> entities = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             entities.add(new Product("C" + i, "F" + i, i * 200.00, 2));
             entities.add(new Product("B" + i, "E" + i, i * 200.00, 4));
