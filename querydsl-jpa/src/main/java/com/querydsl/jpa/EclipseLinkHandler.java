@@ -105,7 +105,7 @@ class EclipseLinkHandler implements QueryHandler {
     public <T> Stream<T> stream(Query query, @Nullable FactoryExpression<?> projection) {
         final Stream resultStream = query.getResultStream();
         if (projection != null) {
-            return resultStream.map(element -> projection.newInstance((Object[]) (element.getClass().isArray() ? element : new Object[] { element })));
+            return resultStream.map(element -> projection.newInstance((Object[]) (element.getClass().isArray() ? element : new Object[] {element})));
         }
         return resultStream;
     }

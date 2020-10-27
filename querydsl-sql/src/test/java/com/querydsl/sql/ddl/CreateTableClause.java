@@ -194,9 +194,7 @@ public class CreateTableClause {
         builder.append("\n)\n");
         logger.info(builder.toString());
 
-        Statement stmt = null;
-        try {
-            stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
             stmt.execute(builder.toString());
 
             // indexes
@@ -213,14 +211,6 @@ public class CreateTableClause {
         } catch (SQLException e) {
             System.err.println(builder.toString());
             throw new QueryException(e.getMessage(), e);
-        } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    throw new QueryException(e);
-                }
-            }
         }
     }
 

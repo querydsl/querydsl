@@ -43,15 +43,12 @@ public abstract class AbstractPersistenceTest {
                     rs.close();
                 }
 
-                java.sql.Statement stmt = connection.createStatement();
-                try {
+                try (java.sql.Statement stmt = connection.createStatement()) {
                     stmt.execute("SET REFERENTIAL_INTEGRITY FALSE");
                     for (String table : tables) {
                         stmt.execute("TRUNCATE TABLE " + table);
                     }
                     stmt.execute("SET REFERENTIAL_INTEGRITY TRUE");
-                } finally {
-                    stmt.close();
                 }
 
             }
