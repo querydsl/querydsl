@@ -15,8 +15,8 @@ package com.querydsl.core.types.dsl;
 
 import java.lang.reflect.AnnotatedElement;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Range;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.*;
@@ -67,7 +67,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
     }
 
     @Override
-    public SimplePath<E> get(@Nonnegative int index) {
+    public SimplePath<E> get(@Range(from = 0, to = Integer.MAX_VALUE) int index) {
         PathMetadata md = PathMetadataFactory.forArrayAccess(pathMixin, index);
         return Expressions.path(componentType, md);
     }

@@ -16,7 +16,7 @@ package com.querydsl.jdo;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Primitives;

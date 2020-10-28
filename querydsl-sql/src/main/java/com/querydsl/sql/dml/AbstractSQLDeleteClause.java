@@ -18,7 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 
-import javax.annotation.Nonnegative;
+import org.jetbrains.annotations.Range;
 import javax.inject.Provider;
 
 import org.slf4j.Logger;
@@ -259,7 +259,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
         return (C) this;
     }
 
-    public C limit(@Nonnegative long limit) {
+    public C limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
     }

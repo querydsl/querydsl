@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 import java.io.Serializable;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code Expression} defines a general typed expression in a Query instance. The generic type parameter

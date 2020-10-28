@@ -16,8 +16,8 @@ package com.querydsl.core;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Range;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.base.Objects;
 
@@ -43,11 +43,11 @@ public final class QueryModifiers implements Serializable {
         }
     }
 
-    public static QueryModifiers limit(@Nonnegative long limit) {
+    public static QueryModifiers limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         return new QueryModifiers(limit, null);
     }
 
-    public static QueryModifiers offset(@Nonnegative long offset) {
+    public static QueryModifiers offset(@Range(from = 0, to = Integer.MAX_VALUE) long offset) {
         return new QueryModifiers(null, offset);
     }
 

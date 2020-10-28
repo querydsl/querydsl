@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;

@@ -15,7 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import java.util.Date;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;

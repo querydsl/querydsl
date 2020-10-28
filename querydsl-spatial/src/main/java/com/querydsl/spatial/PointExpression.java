@@ -13,7 +13,7 @@
  */
 package com.querydsl.spatial;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.geolatte.geom.Point;
 

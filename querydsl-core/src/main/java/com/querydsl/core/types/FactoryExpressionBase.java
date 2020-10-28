@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.types;
 
-import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * Common superclass for {@link FactoryExpression} implementations

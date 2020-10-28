@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 /**
  * {@code ConstantImpl} is the default implementation of the {@link Constant} interface
