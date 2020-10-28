@@ -15,7 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"org.querydsl.example.jpms"})
+@EnableJpaRepositories(basePackages = {"com.querydsl.example.jpms.repository"})
 @EnableTransactionManagement
 public class DataConfig {
 
@@ -32,7 +32,7 @@ public class DataConfig {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("org.querydsl.example.jpms");
+        factory.setPackagesToScan("com.querydsl.example.jpms.entity");
         factory.setDataSource(dataSource());
         return factory;
     }

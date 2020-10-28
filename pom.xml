@@ -112,6 +112,12 @@
       <artifactId>reflections</artifactId>
       <version>0.9.9</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.javassist</groupId>
+          <artifactId>javassist</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.codehaus.mojo</groupId>

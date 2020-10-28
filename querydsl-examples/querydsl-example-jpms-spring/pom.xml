@@ -102,13 +102,63 @@
                         </goals>
                         <configuration>
                             <module>
-                                <moduleInfo>
-                                    <name>com.querydsl.example.jpms</name>
-                                    <exports>
-                                        *;
-                                    </exports>
-                                </moduleInfo>
+                                <moduleInfoSource>
+                                module com.querydsl.example.jpms {
+                                    requires guava;
+                                    requires spring.boot;
+                                    requires spring.boot.autoconfigure;
+                                    requires spring.beans;
+                                    requires spring.web;
+                                    requires spring.jdbc;
+
+                                    requires transitive java.persistence;
+                                    requires transitive java.sql;
+                                    requires transitive java.xml.bind;
+                                    requires transitive net.bytebuddy;
+                                    requires transitive querydsl.core;
+                                    requires transitive spring.context;
+                                    requires transitive spring.data.commons;
+                                    requires spring.data.jpa;
+                                    requires spring.orm;
+                                    requires spring.tx;
+
+                                    exports com.querydsl.example.jpms;
+                                    exports com.querydsl.example.jpms.config;
+                                    exports com.querydsl.example.jpms.controller;
+                                    exports com.querydsl.example.jpms.entity;
+                                    exports com.querydsl.example.jpms.repository;
+                                    exports com.querydsl.example.jpms.service;
+                                    exports com.querydsl.example.jpms.service.impl;
+
+                                    opens com.querydsl.example.jpms to spring.core, spring.beans, spring.context;
+                                    opens com.querydsl.example.jpms.controller to spring.beans, spring.web;
+                                    opens com.querydsl.example.jpms.service.impl to spring.beans;
+                                    opens com.querydsl.example.jpms.config to spring.core, spring.beans, spring.context;
+                                    opens com.querydsl.example.jpms.entity to org.hibernate.orm.core, spring.core;
+                                }
+                                </moduleInfoSource>
                             </module>
+                            <jdepsExtraArgs>
+                                <arg>--multi-release</arg>
+                                <arg>9</arg>
+                            </jdepsExtraArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <includeScope>runtime</includeScope>
                         </configuration>
                     </execution>
                 </executions>
