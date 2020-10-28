@@ -13,6 +13,7 @@
  */
 package com.querydsl.codegen;
 
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -31,10 +32,23 @@ public final class SupertypeSerializer extends EntitySerializer {
      *
      * @param typeMappings type mappings to be used
      * @param keywords keywords to be used
+     * @param generatedAnnotationClass fully qualified class name to be used as class level "@Generated" annotation.
      */
     @Inject
-    public SupertypeSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
-        super(typeMappings, keywords);
+    public SupertypeSerializer(
+            TypeMappings typeMappings,
+            @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+        super(typeMappings, keywords, generatedAnnotationClass);
+    }
+    /**
+     * Create a new SupertypeSerializer instance
+     *
+     * @param typeMappings type mappings to be used
+     * @param keywords keywords to be used
+     */
+    public SupertypeSerializer(TypeMappings typeMappings, Collection<String> keywords) {
+        super(typeMappings, keywords, GeneratedAnnotationResolver.resolveDefault());
     }
 
 }

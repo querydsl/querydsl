@@ -13,12 +13,20 @@
  */
 package com.querydsl.sql.codegen;
 
-import static com.mysema.codegen.Symbols.*;
+import static com.mysema.codegen.Symbols.COMMA;
+import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.SUPER;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,8 +34,18 @@ import javax.inject.Named;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
-import com.querydsl.codegen.*;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
+import com.querydsl.codegen.EntitySerializer;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.GeneratedAnnotationResolver;
+import com.querydsl.codegen.Property;
+import com.querydsl.codegen.SerializerConfig;
+import com.querydsl.codegen.TypeMappings;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.ForeignKey;
 import com.querydsl.sql.PrimaryKey;
@@ -73,9 +91,11 @@ public class MetaDataSerializer extends EntitySerializer {
     /**
      * Create a new {@code MetaDataSerializer} instance
      *
-     * @param namingStrategy naming strategy for table to class and column to property conversion
-     * @param innerClassesForKeys wrap key properties into inner classes (default: false)
-     * @param imports java user imports
+     * @param namingStrategy           naming strategy for table to class and column to property conversion
+     * @param innerClassesForKeys      wrap key properties into inner classes (default: false)
+     * @param imports                  java user imports
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
      */
     @Inject
     public MetaDataSerializer(
@@ -84,13 +104,31 @@ public class MetaDataSerializer extends EntitySerializer {
             @Named(SQLCodegenModule.INNER_CLASSES_FOR_KEYS) boolean innerClassesForKeys,
             @Named(SQLCodegenModule.IMPORTS) Set<String> imports,
             @Named(SQLCodegenModule.COLUMN_COMPARATOR) Comparator<Property> columnComparator,
-            @Named(SQLCodegenModule.ENTITYPATH_TYPE) Class<?> entityPathType) {
-        super(typeMappings,Collections.<String>emptyList());
+            @Named(SQLCodegenModule.ENTITYPATH_TYPE) Class<?> entityPathType,
+            @Named(SQLCodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+        super(typeMappings, Collections.<String>emptyList(), generatedAnnotationClass);
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
         this.imports = new HashSet<String>(imports);
         this.columnComparator = columnComparator;
         this.entityPathType = entityPathType;
+    }
+
+    /**
+     * Create a new {@code MetaDataSerializer} instance
+     *
+     * @param namingStrategy      naming strategy for table to class and column to property conversion
+     * @param innerClassesForKeys wrap key properties into inner classes (default: false)
+     * @param imports             java user imports
+     */
+    public MetaDataSerializer(
+            TypeMappings typeMappings,
+            NamingStrategy namingStrategy,
+            boolean innerClassesForKeys,
+            Set<String> imports,
+            Comparator<Property> columnComparator,
+            Class<?> entityPathType) {
+        this(typeMappings, namingStrategy, innerClassesForKeys, imports, columnComparator, entityPathType, GeneratedAnnotationResolver.resolveDefault());
     }
 
     @Override
@@ -128,7 +166,7 @@ public class MetaDataSerializer extends EntitySerializer {
     protected void introClassHeader(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
 
-        writer.line("@Generated(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
 
         TypeCategory category = model.getOriginalCategory();
         // serialize annotations only, if no bean types are used

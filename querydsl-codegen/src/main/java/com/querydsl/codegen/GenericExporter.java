@@ -13,11 +13,27 @@
  */
 package com.querydsl.codegen;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +50,17 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.support.ClassUtils;
 import com.querydsl.core.QueryException;
-import com.querydsl.core.annotations.*;
+import com.querydsl.core.annotations.Config;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryEmbeddable;
+import com.querydsl.core.annotations.QueryEmbedded;
+import com.querydsl.core.annotations.QueryEntity;
+import com.querydsl.core.annotations.QueryExclude;
+import com.querydsl.core.annotations.QueryInit;
+import com.querydsl.core.annotations.QueryProjection;
+import com.querydsl.core.annotations.QuerySupertype;
+import com.querydsl.core.annotations.QueryTransient;
+import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
@@ -791,5 +817,17 @@ public class GenericExporter {
      */
     public void addAnnotationHelper(AnnotationHelper annotationHelper) {
         annotationHelpers.add(annotationHelper);
+    }
+
+    /**
+     * Set the Generated annotation class. Will default to java {@code @Generated}
+     *
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on
+     *                                 the generated sources, or {@code null} (defaulting to {@code javax.annotation.Generated} or
+     *                                {@code javax.annotation.processing.Generated} depending on the java version).
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    public void setGeneratedAnnotationClass(@Nullable String generatedAnnotationClass) {
+        codegenModule.bindInstance(CodegenModule.GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolve(generatedAnnotationClass));
     }
 }

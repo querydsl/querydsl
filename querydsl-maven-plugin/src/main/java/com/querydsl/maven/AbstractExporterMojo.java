@@ -21,6 +21,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -113,6 +115,15 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean skip;
 
     /**
+     * The fully qualified class name of the <em>Single-Element Annotation</em> (with <code>String</code> element) to put on the generated sources. Defaults to
+     * <code>javax.annotation.Generated</code> or <code>javax.annotation.processing.Generated</code> depending on the java version.
+     * <em>See also</em> <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     *
+     * @parameter
+     */
+    private String generatedAnnotationClass;
+
+    /**
      * build context
      *
      * @component
@@ -167,6 +178,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         exporter.setHandleFields(handleFields);
         exporter.setHandleMethods(handleMethods);
         exporter.setUseFieldTypes(useFieldTypes);
+        exporter.setGeneratedAnnotationClass(generatedAnnotationClass);
     }
 
     @SuppressWarnings("unchecked")
@@ -246,5 +258,9 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
 
     public void setUseFieldTypes(boolean useFieldTypes) {
         this.useFieldTypes = useFieldTypes;
+    }
+
+    public void setGeneratedAnnotationClass(@Nullable String generatedAnnotationClass) {
+        this.generatedAnnotationClass = generatedAnnotationClass;
     }
 }

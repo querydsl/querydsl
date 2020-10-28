@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -385,6 +387,15 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
      */
     private boolean skip;
 
+    /**
+     * The fully qualified class name of the <em>Single-Element Annotation</em> (with <code>String</code> element) to put on the generated sources.Defaults to
+     * <code>javax.annotation.Generated</code> or <code>javax.annotation.processing.Generated</code> depending on the java version.
+     * <em>See also</em> <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     *
+     * @parameter
+     */
+    private String generatedAnnotationClass;
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -447,6 +458,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             exporter.setExportDirectForeignKeys(exportDirectForeignKeys);
             exporter.setExportInverseForeignKeys(exportInverseForeignKeys);
             exporter.setSpatial(spatial);
+            exporter.setGeneratedAnnotationClass(generatedAnnotationClass);
 
             if (imports != null && imports.length > 0) {
                 exporter.setImports(imports);
@@ -686,6 +698,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
 
     public void setSkip(boolean skip) {
         this.skip = skip;
+    }
+
+    public void setGeneratedAnnotationClass(@Nullable String generatedAnnotationClass) {
+        this.generatedAnnotationClass = generatedAnnotationClass;
     }
 
     private static String emptyIfSetToBlank(String value) {
