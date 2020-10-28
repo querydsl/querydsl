@@ -13,25 +13,6 @@
  */
 package com.querydsl.codegen;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.Date;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.ClassType;
@@ -39,6 +20,19 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
+import com.querydsl.core.annotations.Generated;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.Date;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class BeanSerializerTest {
 
@@ -200,7 +194,7 @@ public class BeanSerializerTest {
 
     @Test
     public void customGeneratedAnnotation() throws IOException {
-        Serializer serializer = new BeanSerializer(BeanSerializer.DEFAULT_JAVADOC_SUFFIX, "com.querydsl.core.annotations.Generated");
+        Serializer serializer = new BeanSerializer(BeanSerializer.DEFAULT_JAVADOC_SUFFIX, Generated.class);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSource = String.valueOf(writer);
         assertFalse(generatedSource.contains("import com.querydsl.core.annotations.Generated;"));

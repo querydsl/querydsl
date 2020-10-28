@@ -51,7 +51,7 @@ public class EntitySerializer implements Serializer {
 
     protected final Collection<String> keywords;
 
-    protected final String generatedAnnotationClass;
+    protected final Class<? extends Annotation> generatedAnnotationClass;
 
     /**
      * Create a new {@code EntitySerializer} instance
@@ -65,7 +65,7 @@ public class EntitySerializer implements Serializer {
     public EntitySerializer(
             TypeMappings mappings,
             @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) String generatedAnnotationClass) {
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
         this.typeMappings = mappings;
         this.keywords = keywords;
         this.generatedAnnotationClass = generatedAnnotationClass;
@@ -327,7 +327,7 @@ public class EntitySerializer implements Serializer {
             writer.annotation(annotation);
         }
 
-        writer.line("@", generatedAnnotationClass, "(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));
@@ -437,7 +437,7 @@ public class EntitySerializer implements Serializer {
         writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class);
+        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, generatedAnnotationClass);
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
         }

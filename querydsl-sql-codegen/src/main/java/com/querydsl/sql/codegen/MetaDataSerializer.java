@@ -105,7 +105,7 @@ public class MetaDataSerializer extends EntitySerializer {
             @Named(SQLCodegenModule.IMPORTS) Set<String> imports,
             @Named(SQLCodegenModule.COLUMN_COMPARATOR) Comparator<Property> columnComparator,
             @Named(SQLCodegenModule.ENTITYPATH_TYPE) Class<?> entityPathType,
-            @Named(SQLCodegenModule.GENERATED_ANNOTATION_CLASS) String generatedAnnotationClass) {
+            @Named(SQLCodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
         super(typeMappings, Collections.<String>emptyList(), generatedAnnotationClass);
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
@@ -166,7 +166,7 @@ public class MetaDataSerializer extends EntitySerializer {
     protected void introClassHeader(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
 
-        writer.line("@", generatedAnnotationClass, "(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
 
         TypeCategory category = model.getOriginalCategory();
         // serialize annotations only, if no bean types are used

@@ -1,10 +1,11 @@
 package com.querydsl.codegen;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 import javax.annotation.Generated;
+import java.lang.annotation.Annotation;
 
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class GeneratedAnnotationResolverTest {
 
@@ -13,19 +14,19 @@ public class GeneratedAnnotationResolverTest {
     @Test
     public void resolveCustom() {
         String customClass = "some.random.Class";
-        String resolvedAnnotationClass = GeneratedAnnotationResolver.resolve(customClass);
-        assertEquals(customClass, resolvedAnnotationClass);
+        Class<? extends Annotation> resolvedAnnotationClass = GeneratedAnnotationResolver.resolve(customClass);
+        assertNotNull(resolvedAnnotationClass);
     }
 
     @Test
     public void resolveNull() {
-        String resolvedAnnotationClass = GeneratedAnnotationResolver.resolve(null);
-        assertEquals(defaultGenerated, resolvedAnnotationClass);
+        Class<? extends Annotation>  resolvedAnnotationClass = GeneratedAnnotationResolver.resolve(null);
+        assertNotNull(resolvedAnnotationClass);
     }
 
     @Test
     public void resolveDefault() {
-        String resolvedAnnotationClass = GeneratedAnnotationResolver.resolveDefault();
-        assertEquals(defaultGenerated, resolvedAnnotationClass);
+        Class<? extends Annotation> resolvedAnnotationClass = GeneratedAnnotationResolver.resolveDefault();
+        assertNotNull(resolvedAnnotationClass);
     }
 }

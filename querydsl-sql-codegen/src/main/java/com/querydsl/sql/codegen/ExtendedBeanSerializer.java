@@ -14,6 +14,7 @@
 package com.querydsl.sql.codegen;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.*;
 
 import javax.inject.Inject;
@@ -23,7 +24,6 @@ import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Types;
 import com.querydsl.codegen.BeanSerializer;
-import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.sql.Column;
@@ -55,7 +55,7 @@ public class ExtendedBeanSerializer extends BeanSerializer {
     @Inject
     public ExtendedBeanSerializer(
             @Named(SQLCodegenModule.JAVADOC_SUFFIX) String javadocSuffix,
-            @Named(SQLCodegenModule.GENERATED_ANNOTATION_CLASS) String generatedAnnotationClass) {
+            @Named(SQLCodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
         super(javadocSuffix, generatedAnnotationClass);
     }
 

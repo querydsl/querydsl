@@ -14,6 +14,7 @@
 package com.querydsl.codegen;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  */
 public final class ProjectionSerializer implements Serializer {
 
-    private final String generatedAnnotationClass;
+    private final Class<? extends Annotation> generatedAnnotationClass;
     private final TypeMappings typeMappings;
 
     /**
@@ -63,7 +64,7 @@ public final class ProjectionSerializer implements Serializer {
     @Inject
     public ProjectionSerializer(
             TypeMappings typeMappings,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) String generatedAnnotationClass) {
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
         this.typeMappings = typeMappings;
         this.generatedAnnotationClass = generatedAnnotationClass;
     }
@@ -79,6 +80,7 @@ public final class ProjectionSerializer implements Serializer {
 
         // imports
         writer.imports(NumberExpression.class.getPackage());
+        writer.imports(ConstructorExpression.class, generatedAnnotationClass);
 
         Set<Integer> sizes = Sets.newHashSet();
         for (Constructor c : model.getConstructors()) {
@@ -91,7 +93,7 @@ public final class ProjectionSerializer implements Serializer {
         // javadoc
         writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);
 
-        writer.line("@" + generatedAnnotationClass + "(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
 
         // class header
 //        writer.suppressWarnings("serial");
@@ -153,7 +155,7 @@ public final class ProjectionSerializer implements Serializer {
             writer.append("}");
 
             for (Parameter p : c.getParameters()) {
-                writer.append(", " + p.getName());
+                writer.append(", ").append(p.getName());
             }
 
             // end

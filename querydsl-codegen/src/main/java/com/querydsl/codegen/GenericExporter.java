@@ -831,6 +831,6 @@ public class GenericExporter {
      * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
      */
     public void setGeneratedAnnotationClass(@Nullable String generatedAnnotationClass) {
-        codegenModule.bind(CodegenModule.GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolve(generatedAnnotationClass));
+        codegenModule.bindInstance(CodegenModule.GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolve(generatedAnnotationClass));
     }
 }

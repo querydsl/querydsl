@@ -20,7 +20,7 @@ public class GenericExporterMojoTest {
 
         GenericExporterMojo mojo = new GenericExporterMojo();
         mojo.setTargetFolder(new File("target/generated-test-data"));
-        mojo.setPackages(new String[] { "com.querydsl.maven" });
+        mojo.setPackages(new String[] {"com.querydsl.maven"});
         mojo.setProject(mavenProject);
         return mojo;
     }

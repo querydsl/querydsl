@@ -25,8 +25,6 @@ import java.lang.annotation.Target;
  * The Generated annotation is used to mark source code that has been generated.
  * It uses <code>CLASS</code> retention to allow byte code analysis tools like
  * Jacoco detect this code as being generated.
- * <p/>
- * It is now used instead of <code>javax.annotation.Generated</code>.
  */
 
 @Documented

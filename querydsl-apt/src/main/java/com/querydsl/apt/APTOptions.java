@@ -102,7 +102,7 @@ public final class APTOptions {
     public static final String QUERYDSL_LOG_INFO = "querydsl.logInfo";
 
     /**
-     * the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * the class instance of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
      * (default: depending on java version: javax.annotation.Generated or javax.annotation.processing.Generated)
      *  @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
      */

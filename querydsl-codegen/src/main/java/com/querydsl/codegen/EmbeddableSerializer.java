@@ -50,7 +50,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
     public EmbeddableSerializer(
             TypeMappings typeMappings,
             @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) String generatedAnnotationClass) {
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
         super(typeMappings, keywords, generatedAnnotationClass);
     }
 
@@ -93,7 +93,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
             writer.annotation(annotation);
         }
 
-        writer.line("@", generatedAnnotationClass, "(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));

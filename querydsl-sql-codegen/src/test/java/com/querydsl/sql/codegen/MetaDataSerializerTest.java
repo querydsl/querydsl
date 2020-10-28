@@ -16,8 +16,6 @@ package com.querydsl.sql.codegen;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.stringContainsInOrder;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
@@ -26,8 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import javax.tools.JavaCompiler;
 
 import org.junit.Assert;
@@ -39,9 +35,6 @@ import org.junit.rules.TemporaryFolder;
 import com.google.common.io.Files;
 import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
-import com.querydsl.codegen.CodegenModule;
-import com.querydsl.codegen.ProjectionSerializer;
-import com.querydsl.codegen.TypeMappings;
 import com.querydsl.sql.AbstractJDBCTest;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;

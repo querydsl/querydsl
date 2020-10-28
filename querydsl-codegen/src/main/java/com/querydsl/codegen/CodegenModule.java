@@ -79,7 +79,7 @@ public class CodegenModule  extends AbstractModule {
         bind(KEYWORDS, Collections.<String>emptySet());
         bind(IMPORTS, Collections.<String>emptySet());
         bind(VARIABLE_NAME_FUNCTION_CLASS, DefaultVariableNameFunction.INSTANCE);
-        bind(GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolveDefault());
+        bindInstance(GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolveDefault());
         bind(JAVADOC_SUFFIX, DEFAULT_JAVADOC_SUFFIX);
     }
 

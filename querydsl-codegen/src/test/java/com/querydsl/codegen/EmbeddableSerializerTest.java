@@ -194,15 +194,13 @@ public class EmbeddableSerializerTest {
 
     @Test
     public void customGeneratedAnnotation() throws IOException {
-        String generatedAnnotation = com.querydsl.core.annotations.Generated.class.getName();
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity", false, false);
         EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
-        new EmbeddableSerializer(typeMappings, Collections.<String>emptySet(), generatedAnnotation).serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new EmbeddableSerializer(typeMappings, Collections.<String>emptySet(), com.querydsl.core.annotations.Generated.class).serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSourceCode = writer.toString();
-        assertFalse(generatedSourceCode.contains("import " + generatedAnnotation + ";"));
-        assertTrue(generatedSourceCode.contains("@" + generatedAnnotation + "(\"com.querydsl.codegen.EmbeddableSerializer\")\npublic class"));
+        assertTrue(generatedSourceCode.contains("@Generated(\"com.querydsl.codegen.EmbeddableSerializer\")\npublic class"));
         CompileUtils.assertCompiles("QEntity", generatedSourceCode);
     }
 }

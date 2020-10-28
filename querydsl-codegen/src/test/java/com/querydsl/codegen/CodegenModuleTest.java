@@ -20,6 +20,8 @@ import javax.annotation.Generated;
 
 import org.junit.Test;
 
+import java.lang.annotation.Annotation;
+
 public class CodegenModuleTest {
 
     private final CodegenModule module = new CodegenModule();
@@ -41,8 +43,8 @@ public class CodegenModuleTest {
 
     @Test
     public void defaultGeneratedClass() {
-        String o = module.get(String.class, CodegenModule.GENERATED_ANNOTATION_CLASS);
-        assertEquals(o, Generated.class.getName());
+        Class<? extends Annotation> o = module.get(Class.class, CodegenModule.GENERATED_ANNOTATION_CLASS);
+        assertEquals(o, Generated.class);
     }
 
     @Test
