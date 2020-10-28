@@ -366,7 +366,7 @@ public class InsertBase extends AbstractBaseTest {
                 .select(Expressions.constant("MyModule")).fetchFirst())
             .execute());
 
-        assertEquals(1L , query().from(survey).where(survey.name.eq("MyModule")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("MyModule")).fetchCount());
     }
 
     @Test
@@ -383,7 +383,7 @@ public class InsertBase extends AbstractBaseTest {
                 .select(Expressions.constant("MyModule2")))
             .execute());
 
-        assertEquals(1L , query().from(survey).where(survey.name.eq("MyModule2")).fetchCount());
+        assertEquals(1L, query().from(survey).where(survey.name.eq("MyModule2")).fetchCount());
     }
 
     @Test

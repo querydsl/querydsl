@@ -149,7 +149,7 @@ public class JoinTest {
         return new MorphiaQuery<User>(morphia, ds, user);
     }
 
-    private MorphiaQuery<User> where(Predicate ... e) {
+    private MorphiaQuery<User> where(Predicate... e) {
         return query().where(e);
     }
 }

@@ -870,7 +870,7 @@ public abstract class AbstractJPATest {
     public void groupBy2() {
 //        select cat0_.name as col_0_0_, cat0_.breed as col_1_0_, sum(cat0_.bodyWeight) as col_2_0_
 //        from animal_ cat0_ where cat0_.DTYPE in ('C', 'DC') and cat0_.bodyWeight>?
-//        group by cat0_.name , cat0_.breed
+//        group by cat0_.name, cat0_.breed
         query().from(cat)
             .where(cat.bodyWeight.gt(0))
             .groupBy(cat.name, cat.breed)
@@ -1682,7 +1682,7 @@ public abstract class AbstractJPATest {
         Cat kitten = savedCats.get(0);
         Cat noKitten = savedCats.get(savedCats.size() - 1);
 
-        ProjectionsFactory projections = new ProjectionsFactory(Module.JPA, getTarget()) {
+        ProjectionsFactory projections = new ProjectionsFactory(QuerydslModule.JPA, getTarget()) {
             @Override
             public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr,
                     ListExpression<A,Q> other, A knownElement) {
@@ -1697,8 +1697,8 @@ public abstract class AbstractJPATest {
 
         QueryExecution standardTest = new QueryExecution(
                 projections,
-                new FilterFactory(projections, Module.JPA, getTarget()),
-                new MatchingFiltersFactory(Module.JPA, getTarget())) {
+                new FilterFactory(projections, QuerydslModule.JPA, getTarget()),
+                new MatchingFiltersFactory(QuerydslModule.JPA, getTarget())) {
 
             @Override
             protected Fetchable<?> createQuery() {

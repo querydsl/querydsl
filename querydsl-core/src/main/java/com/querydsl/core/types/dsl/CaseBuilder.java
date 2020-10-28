@@ -68,6 +68,7 @@ public final class CaseBuilder {
      * @author tiwe
      *
      * @param <A>
+     * @param <Q>
      */
     public abstract static class Cases<A, Q extends Expression<A>> {
 
@@ -128,6 +129,7 @@ public final class CaseBuilder {
      * @author tiwe
      *
      * @param <A>
+     * @param <Q>
      */
     public static class CaseWhen<A,Q extends Expression<A>> {
 

@@ -41,7 +41,7 @@ public class TestMetadataExportMojoTest {
         mojo.setBeanSuffix("Bean");
         mojo.setPackageName("com.example");
         mojo.setTargetFolder("target/export4");
-        mojo.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
+        mojo.setImports(new String[]{"com.pck1", "com.pck2", "com.Q1", "com.Q2"});
         mojo.execute();
 
         //'target/export4' seems to conflict with MetadataExportMojoTest.Execute_With_TypeMappings

@@ -32,11 +32,11 @@ import com.querydsl.core.types.Ops;
  */
 public class CoverageTest {
 
-    private MatchingFiltersFactory matchers = new MatchingFiltersFactory(Module.COLLECTIONS, Target.MEM);
+    private MatchingFiltersFactory matchers = new MatchingFiltersFactory(QuerydslModule.COLLECTIONS, Target.MEM);
 
-    private ProjectionsFactory projections = new ProjectionsFactory(Module.COLLECTIONS, Target.MEM);
+    private ProjectionsFactory projections = new ProjectionsFactory(QuerydslModule.COLLECTIONS, Target.MEM);
 
-    private FilterFactory filters = new FilterFactory(projections, Module.COLLECTIONS, Target.MEM);
+    private FilterFactory filters = new FilterFactory(projections, QuerydslModule.COLLECTIONS, Target.MEM);
 
     @SuppressWarnings("unchecked")
     @Test

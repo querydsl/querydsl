@@ -47,7 +47,7 @@ public class CollQueryStandardTest {
 
     private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
 
-    private QueryExecution standardTest = new QueryExecution(Module.COLLECTIONS, Target.MEM) {
+    private QueryExecution standardTest = new QueryExecution(QuerydslModule.COLLECTIONS, Target.MEM) {
         @Override
         protected Fetchable<?> createQuery() {
             return CollQueryFactory.from(cat, data).from(otherCat, data);

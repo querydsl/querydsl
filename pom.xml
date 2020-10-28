@@ -268,6 +268,11 @@
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <groupId>org.moditect</groupId>
+          <artifactId>moditect-maven-plugin</artifactId>
+          <version>1.0.0.RC1</version>
+        </plugin>
       </plugins>      
     </pluginManagement>
     
@@ -496,7 +501,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.15</version>
+        <version>3.1.1</version>
         <executions>
           <execution>
             <id>checkstyle</id>
@@ -526,7 +531,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>6.6</version>
+            <version>8.36.2</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -768,5 +773,5 @@
       </plugin>
     </plugins>
   </reporting>
-  
+
 </project>

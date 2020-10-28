@@ -51,7 +51,7 @@ public class SelectBase extends AbstractBaseTest {
 
     private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
 
-    private final QueryExecution standardTest = new QueryExecution(Module.SQL, Connections.getTarget()) {
+    private final QueryExecution standardTest = new QueryExecution(QuerydslModule.SQL, Connections.getTarget()) {
         @Override
         protected Fetchable<?> createQuery() {
             return testQuery().from(employee, employee2);
