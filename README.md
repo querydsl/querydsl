@@ -7,6 +7,7 @@ Instead of writing queries as inline strings or externalizing them into XML file
 [![Build Status](https://github.com/querydsl/querydsl/workflows/querydsl/badge.svg)](https://github.com/querydsl/querydsl/actions)
 [![Coverage Status](https://coveralls.io/repos/github/querydsl/querydsl/badge.svg?branch=master)](https://coveralls.io/github/querydsl/querydsl?branch=master)
 [![Stackoverflow](https://img.shields.io/badge/StackOverflow-querydsl-yellow.svg)](https://stackoverflow.com/questions/tagged/querydsl)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.querydsl/querydsl-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.struts/struts2-core/)
 
 **Getting started**
 
