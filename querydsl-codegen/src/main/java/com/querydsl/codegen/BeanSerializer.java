@@ -13,16 +13,25 @@
  */
 package com.querydsl.codegen;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.*;
+import com.mysema.codegen.CodeWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
+import com.querydsl.core.util.BeanUtils;
 
 import javax.annotation.Generated;
-
-import com.google.common.base.Function;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
-import com.querydsl.core.util.BeanUtils;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * {@code BeanSerializer} is a {@link Serializer} implementation which serializes {@link EntityType}
@@ -188,7 +197,7 @@ public class BeanSerializer implements Serializer {
         writer.end();
 
         // full constructor
-        writer.beginConstructor(model.getProperties(), propertyToParameter);
+        writer.beginConstructor(model.getProperties(), propertyToParameter::apply);
         for (Property property : model.getProperties()) {
             writer.line("this.", property.getEscapedName(), " = ", property.getEscapedName(), ";");
         }

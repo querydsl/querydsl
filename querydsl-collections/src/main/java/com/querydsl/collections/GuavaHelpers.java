@@ -13,15 +13,15 @@
  */
 package com.querydsl.collections;
 
-import java.util.Collections;
-
-import com.google.common.base.Function;
 import com.mysema.codegen.Evaluator;
 import com.querydsl.core.EmptyMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathExtractor;
 import com.querydsl.core.types.Predicate;
+
+import java.util.Collections;
+import java.util.function.Function;
 
 /**
  * {@code GuavaHelpers} provides functionality to wrap Querydsl {@link Predicate} instances to Guava predicates

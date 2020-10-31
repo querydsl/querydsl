@@ -13,10 +13,10 @@
  */
 package com.querydsl.collections;
 
-import java.util.Comparator;
-
-import com.google.common.base.Function;
 import com.querydsl.core.types.Path;
+
+import java.util.Comparator;
+import java.util.function.Function;
 
 /**
  * Compares two beans based on the values at a specific path.

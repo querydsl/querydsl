@@ -13,19 +13,18 @@
  */
 package com.querydsl.core.types;
 
+import com.google.common.collect.ImmutableList;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.MathUtils;
+
+import javax.annotation.concurrent.Immutable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.util.MathUtils;
+import java.util.function.Function;
 
 /**
  * {@code Template} provides serialization templates for {@link Operation},

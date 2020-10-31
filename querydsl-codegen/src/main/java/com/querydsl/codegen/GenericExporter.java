@@ -13,15 +13,6 @@
  */
 package com.querydsl.codegen;
 
-import java.io.*;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.nio.charset.Charset;
-import java.util.*;
-
-import javax.annotation.Nullable;
-
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
@@ -31,10 +22,45 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.support.ClassUtils;
 import com.querydsl.core.QueryException;
-import com.querydsl.core.annotations.*;
+import com.querydsl.core.annotations.Config;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryEmbeddable;
+import com.querydsl.core.annotations.QueryEmbedded;
+import com.querydsl.core.annotations.QueryEntity;
+import com.querydsl.core.annotations.QueryExclude;
+import com.querydsl.core.annotations.QueryInit;
+import com.querydsl.core.annotations.QueryProjection;
+import com.querydsl.core.annotations.QuerySupertype;
+import com.querydsl.core.annotations.QueryTransient;
+import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
+
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * {@code GenericExporter} provides query type serialization logic for cases where APT annotation processors

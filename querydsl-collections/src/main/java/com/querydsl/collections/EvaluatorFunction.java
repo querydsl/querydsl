@@ -13,8 +13,9 @@
  */
 package com.querydsl.collections;
 
-import com.google.common.base.Function;
 import com.mysema.codegen.Evaluator;
+
+import java.util.function.Function;
 
 /**
  * Function implementation which uses an {@link Evaluator} for transformation

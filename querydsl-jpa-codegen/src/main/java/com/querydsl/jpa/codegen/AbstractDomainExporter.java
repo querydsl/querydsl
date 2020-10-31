@@ -13,27 +13,24 @@
  */
 package com.querydsl.jpa.codegen;
 
-import java.io.*;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.nio.charset.Charset;
-import java.util.*;
-
-import javax.annotation.Nullable;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.querydsl.codegen.*;
+import com.querydsl.codegen.CodegenModule;
+import com.querydsl.codegen.EmbeddableSerializer;
+import com.querydsl.codegen.EntitySerializer;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.Property;
+import com.querydsl.codegen.QueryTypeFactory;
+import com.querydsl.codegen.Serializer;
+import com.querydsl.codegen.SerializerConfig;
+import com.querydsl.codegen.SimpleSerializerConfig;
+import com.querydsl.codegen.Supertype;
+import com.querydsl.codegen.SupertypeSerializer;
+import com.querydsl.codegen.TypeFactory;
+import com.querydsl.codegen.TypeMappings;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.PropertyType;
@@ -41,6 +38,30 @@ import com.querydsl.core.annotations.QueryInit;
 import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.ReflectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nullable;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * {@code AbstractDomainExporter} is a common supertype for domain exporters

@@ -13,17 +13,17 @@
  */
 package com.querydsl.core.types;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.querydsl.core.types.Template.Element;
+
 import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.querydsl.core.types.Template.Element;
 
 /**
  * {@code TemplateFactory} is a factory for {@link Template} instances

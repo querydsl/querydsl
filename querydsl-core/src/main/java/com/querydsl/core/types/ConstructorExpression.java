@@ -13,8 +13,9 @@
  */
 package com.querydsl.core.types;
 
-import static com.querydsl.core.util.ConstructorUtils.*;
+import com.google.common.collect.ImmutableList;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
@@ -22,11 +23,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
-import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
+import static com.querydsl.core.util.ConstructorUtils.getConstructor;
+import static com.querydsl.core.util.ConstructorUtils.getConstructorParameters;
+import static com.querydsl.core.util.ConstructorUtils.getTransformers;
 
 /**
  * {@code ConstructorExpression} represents a constructor invocation
