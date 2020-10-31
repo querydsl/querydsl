@@ -13,10 +13,8 @@
  */
 package com.querydsl.core.util;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableClassToInstanceMap;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.ExpressionException;
@@ -28,8 +26,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.google.common.collect.Iterables.filter;
 import static com.querydsl.core.util.ArrayUtils.isEmpty;
 
 /**
@@ -128,13 +127,11 @@ public final class ConstructorUtils {
      * @return transformers
      */
     public static Iterable<Function<Object[], Object[]>> getTransformers(Constructor<?> constructor) {
-        Iterable<ArgumentTransformer> transformers = Arrays.asList(
+        return Stream.of(
                 new PrimitiveAwareVarArgsTransformer(constructor),
                 new PrimitiveTransformer(constructor),
-                new VarArgsTransformer(constructor));
-
-        return ImmutableList
-                .<Function<Object[], Object[]>>copyOf(filter(transformers, applicableFilter));
+                new VarArgsTransformer(constructor)
+        ).filter(ArgumentTransformer::isApplicable).collect(Collectors.toList());
     }
 
     private static Class<?> normalize(Class<?> clazz) {
@@ -148,15 +145,6 @@ public final class ConstructorUtils {
         return normalize(parameter)
                 .isAssignableFrom(normalize(argument));
     }
-
-    private static final Predicate<ArgumentTransformer> applicableFilter
-            = new Predicate<ArgumentTransformer>() {
-
-                @Override
-                public boolean apply(ArgumentTransformer transformer) {
-                    return transformer != null ? transformer.isApplicable() : false;
-                }
-            };
 
     protected abstract static class ArgumentTransformer implements Function<Object[], Object[]> {
 

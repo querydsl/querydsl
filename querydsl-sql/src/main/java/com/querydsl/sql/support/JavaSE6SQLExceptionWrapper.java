@@ -13,17 +13,15 @@
  */
 package com.querydsl.sql.support;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
 import com.querydsl.core.QueryException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
-
-import static com.google.common.base.StandardSystemProperty.LINE_SEPARATOR;
+import java.util.stream.Collectors;
 
 /**
  * A {@link SQLExceptionWrapper} that wraps the additional exception
@@ -35,19 +33,19 @@ class JavaSE6SQLExceptionWrapper extends SQLExceptionWrapper {
 
     @Override
     public RuntimeException wrap(SQLException exception) {
-        Iterable<Throwable> linkedSQLExceptions = getLinkedSQLExceptions(exception);
+        List<Throwable> linkedSQLExceptions = getLinkedSQLExceptions(exception);
         return new QueryException(
                 new WrappedSQLCauseException(linkedSQLExceptions, exception));
     }
 
     @Override
     public RuntimeException wrap(String message, SQLException exception) {
-        Iterable<Throwable> linkedSQLExceptions = getLinkedSQLExceptions(exception);
+        List<Throwable> linkedSQLExceptions = getLinkedSQLExceptions(exception);
         return new QueryException(message,
                 new WrappedSQLCauseException(linkedSQLExceptions, exception));
     }
 
-    private static Iterable<Throwable> getLinkedSQLExceptions(SQLException exception) {
+    private static List<Throwable> getLinkedSQLExceptions(SQLException exception) {
         ArrayList<Throwable> rv = new ArrayList<>();
         SQLException nextException = exception.getNextException();
         while (nextException != null) {
@@ -61,14 +59,12 @@ class JavaSE6SQLExceptionWrapper extends SQLExceptionWrapper {
 
         private static final long serialVersionUID = 1L;
 
-        private WrappedSQLCauseException(Iterable<Throwable> exceptions, SQLException exception) {
-            super("Detailed SQLException information:" + LINE_SEPARATOR.value()
-                    + lineJoiner.join(Iterables
-                            .transform(exceptions, exceptionMessageFunction::apply)), exception);
+        private WrappedSQLCauseException(List<Throwable> exceptions, SQLException exception) {
+            super("Detailed SQLException information:" + System.lineSeparator()
+                    + exceptions.stream().map(exceptionMessageFunction).collect(Collectors.joining(System.lineSeparator())), exception);
         }
     }
 
-    private static final Joiner lineJoiner = Joiner.on(LINE_SEPARATOR.value());
     private static final Function<Throwable, String> exceptionMessageFunction = new Function<Throwable, String>() {
         @Override
         public String apply(Throwable input) {

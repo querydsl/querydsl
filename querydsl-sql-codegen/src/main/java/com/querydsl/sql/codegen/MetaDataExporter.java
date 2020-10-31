@@ -14,7 +14,6 @@
 package com.querydsl.sql.codegen;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
@@ -48,6 +47,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -470,7 +470,7 @@ public class MetaDataExporter {
         boolean generate = true;
         byte[] bytes = w.toString().getBytes(sourceEncoding);
         if (targetFile.exists() && targetFile.length() == bytes.length) {
-            String str = Files.toString(targetFile, Charset.forName(sourceEncoding));
+            String str = new String(Files.readAllBytes(targetFile.toPath()), Charset.forName(sourceEncoding));
             if (str.equals(w.toString())) {
                 generate = false;
             }
@@ -479,7 +479,7 @@ public class MetaDataExporter {
         }
 
         if (generate) {
-            Files.write(bytes, targetFile);
+            Files.write(targetFile.toPath(), bytes);
         }
     }
 

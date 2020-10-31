@@ -17,7 +17,6 @@ import java.io.Serializable;
 import java.util.*;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.querydsl.core.types.PathMetadata;
 
 /**
@@ -67,7 +66,7 @@ public class PathInits implements Serializable {
         }
 
         for (Map.Entry<String, Collection<String>> entry : properties.entrySet()) {
-            PathInits inits = new PathInits(Iterables.toArray(entry.getValue(), String.class));
+            PathInits inits = new PathInits(entry.getValue().toArray(new String[0]));
             propertyToInits.put(entry.getKey(), inits);
         }
 
