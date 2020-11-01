@@ -40,7 +40,6 @@ jobs:
       - name: Start test databases
         if: ${{ matrix.containers }}
         run: |
-          cd travis/ &&\
           docker-compose up --detach ${{ matrix.containers }} &&\
           time docker-compose up block-until-healthy &&\
           docker ps
