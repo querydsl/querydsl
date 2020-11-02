@@ -19,13 +19,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.google.common.io.Files;
 import com.querydsl.core.domain.Cat;
 
 public class GenericExporterTest {
@@ -57,7 +57,7 @@ public class GenericExporterTest {
         exporter.setKeywords(Keywords.JPA);
         exporter.setTargetFolder(folder.getRoot());
         exporter.export(getClass().getPackage());
-        String str = Files.toString(new File(folder.getRoot(), "com/querydsl/codegen/QGroup.java"), StandardCharsets.UTF_8);
+        String str = new String(Files.readAllBytes(new File(folder.getRoot(), "com/querydsl/codegen/QGroup.java").toPath()), StandardCharsets.UTF_8);
         assertTrue(str.contains("QGroup group = new QGroup(\"group1\");"));
     }
 
