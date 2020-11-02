@@ -33,7 +33,7 @@
   <properties>
     <commons.collections.version>4.01</commons.collections.version>
     <commons.lang.version>3.0.1</commons.lang.version>
-    <ecj.version>4.3.1</ecj.version>
+    <ecj.version>4.6.1</ecj.version>
   </properties>
   
   <dependencies>
