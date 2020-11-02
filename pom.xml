@@ -2,16 +2,16 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.mysema.codegen</groupId>
-  <artifactId>codegen</artifactId>
-  <version>0.6.9.BUILD-SNAPSHOT</version>
+  <groupId>com.querydsl</groupId>
+  <artifactId>codegen-utils</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <name>Codegen</name>
   <description>Code generation and compilation for Java</description>
-  
+
   <parent>
-    <groupId>com.mysema.home</groupId>
-    <artifactId>mysema-source</artifactId>
-    <version>0.3.1</version>
+    <groupId>com.querydsl</groupId>
+    <artifactId>querydsl-parent</artifactId>
+    <version>0.1.0</version>
   </parent>
   
   <packaging>jar</packaging>
@@ -33,17 +33,10 @@
   <properties>
     <commons.collections.version>4.01</commons.collections.version>
     <commons.lang.version>3.0.1</commons.lang.version>
-    <guava.version>11.0.2</guava.version>
     <ecj.version>4.3.1</ecj.version>
   </properties>
   
   <dependencies>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>18.0</version>
-    </dependency>
-    
     <dependency>
       <groupId>org.eclipse.jdt.core.compiler</groupId>
       <artifactId>ecj</artifactId>
@@ -54,14 +47,8 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.8.1</version>
+      <version>4.13.1</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>javax.validation</groupId>
@@ -69,53 +56,45 @@
       <version>1.0.CR3</version>
       <scope>test</scope>
     </dependency>
-    
-            
   </dependencies>
   
   <build>
     <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <configuration>
-            <useDefaultManifestFile>true</useDefaultManifestFile>
-          </configuration>
-        </plugin>
-        <plugin>
-	      <groupId>com.springsource.bundlor</groupId>
-	      <artifactId>com.springsource.bundlor.maven</artifactId>
-	      <version>1.0.0.RELEASE</version>
-	      <executions>
-	        <execution>
-	          <id>bundlor</id>
-	          <goals>
-	            <goal>bundlor</goal>
-	          </goals>
-	        </execution>
-	      </executions>
-	      <configuration>
-	        <failOnWarnings>true</failOnWarnings> 
-	      </configuration>
-      	</plugin>    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <useDefaultManifestFile>true</useDefaultManifestFile>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.springsource.bundlor</groupId>
+        <artifactId>com.springsource.bundlor.maven</artifactId>
+        <version>1.0.0.RELEASE</version>
+        <executions>
+          <execution>
+            <id>bundlor</id>
+            <goals>
+              <goal>bundlor</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <failOnWarnings>true</failOnWarnings>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
-  
-<!--   
-  <repositories>
-    <repository>
-	  <id>jboss</id>
-	  <url>http://repository.jboss.org/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-	</repository>
-  </repositories>  
--->
-  
+
   <pluginRepositories>
     <pluginRepository>
       <id>com.springsource.repository.bundles.release</id>
@@ -123,4 +102,25 @@
     </pluginRepository>
   </pluginRepositories>
 
+
+  <developers>
+    <developer>
+      <id>tiwe</id>
+      <name>Timo Westkämper</name>
+      <email>timo.westkamper@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      <roles>
+        <role>Architect</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>laim</id>
+      <name>Lassi Immonen</name>
+      <email>lassi.immonen@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      <roles>
+        <role>Consultant</role>
+      </roles>
+    </developer>
+  </developers>
 </project>

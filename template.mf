@@ -1,9 +1,8 @@
-Bundle-SymbolicName: com.mysema.codegen
+Bundle-SymbolicName: com.querydsl.codegen.utils
 Bundle-Name: Codegen
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
 Import-Template:  
   javax.annotation.*;version="0",  
   javax.tools.*;version="0",
-  org.eclipse.jdt.*;version="3.7.2",
-  com.google.common.*;version="${guava.version}"
+  org.eclipse.jdt.*;version="3.7.2"
