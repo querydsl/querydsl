@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Querydsl's User Guide
+    url: https://querydsl.github.io/static/querydsl/latest/reference/html_single/
+    about: Learn about Querydsl's features
+  - name: Querydsl's Google Group
+    url: https://groups.google.com/forum/#!forum/querydsl
+    about: Ask questions, suggest changes and provide feedback.
