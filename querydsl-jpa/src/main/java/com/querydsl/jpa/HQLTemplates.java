@@ -79,7 +79,14 @@ public class HQLTemplates extends JPQLTemplates {
             Class cl = Class.forName("com.querydsl.spatial.hibernate.HibernateSpatialSupport");
             add((Map) cl.getMethod("getSpatialOps").invoke(null));
         } catch (Exception e) {
-            // do nothing
+
+        }
+
+        try {
+            Class cl = Class.forName("com.querydsl.spatial2.hibernate.HibernateSpatialSupport");
+            add((Map) cl.getMethod("getSpatialOps").invoke(null));
+        } catch (Exception ex) {
+
         }
     }
 

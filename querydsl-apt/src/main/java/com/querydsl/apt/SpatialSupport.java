@@ -45,6 +45,25 @@ final class SpatialSupport {
         }
     }
 
+    private static void registerTypesLocationtech(TypeMappings typeMappings) {
+        Map<String, String> additions = Maps.newHashMap();
+        additions.put("Geometry", "GeometryPath");
+        additions.put("GeometryCollection", "GeometryCollectionPath");
+        additions.put("LinearRing", "LinearRingPath");
+        additions.put("LineString", "LineStringPath");
+        additions.put("MultiLineString", "MultiLineStringPath");
+        additions.put("MultiPoint", "MultiPointPath");
+        additions.put("MultiPolygon", "MultiPolygonPath");
+        additions.put("Point", "PointPath");
+        additions.put("Polygon", "PolygonPath");
+        additions.put("PolyHedralSurface", "PolyhedralSurfacePath");
+        for (Map.Entry<String, String> entry : additions.entrySet()) {
+            typeMappings.register(
+                    new SimpleType("org.geolatte.geom." + entry.getKey()),
+                    new SimpleType("com.querydsl.spatial2." + entry.getValue()));
+        }
+    }
+
     private static void registerJTSTypes(TypeMappings typeMappings) {
         Map<String, String> additions = Maps.newHashMap();
         additions.put("Geometry", "JTSGeometryPath");
@@ -60,6 +79,24 @@ final class SpatialSupport {
             typeMappings.register(
                     new SimpleType("com.vividsolutions.jts.geom." + entry.getKey()),
                     new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
+        }
+    }
+
+    private static void registerJTSLocationTechTypes(TypeMappings typeMappings) {
+        Map<String, String> additions = Maps.newHashMap();
+        additions.put("Geometry", "JTSGeometryPath");
+        additions.put("GeometryCollection", "JTSGeometryCollectionPath");
+        additions.put("LinearRing", "JTSLinearRingPath");
+        additions.put("LineString", "JTSLineStringPath");
+        additions.put("MultiLineString", "JTSMultiLineStringPath");
+        additions.put("MultiPoint", "JTSMultiPointPath");
+        additions.put("MultiPolygon", "JTSMultiPolygonPath");
+        additions.put("Point", "JTSPointPath");
+        additions.put("Polygon", "JTSPolygonPath");
+        for (Map.Entry<String, String> entry : additions.entrySet()) {
+            typeMappings.register(
+                    new SimpleType("org.locationtech.jts.geom." + entry.getKey()),
+                    new SimpleType("com.querydsl.spatial2.jts." + entry.getValue()));
         }
     }
 
@@ -82,6 +119,13 @@ final class SpatialSupport {
         addImports(module,"com.querydsl.spatial.path");
         registerJTSTypes(module.get(TypeMappings.class));
         addImports(module,"com.querydsl.spatial.jts.path");
+    }
+
+    public static void addSupportSpatial2(AbstractModule module) {
+        registerTypesLocationtech(module.get(TypeMappings.class));
+        addImports(module,"com.querydsl.spatial2.path");
+        registerJTSLocationTechTypes(module.get(TypeMappings.class));
+        addImports(module,"com.querydsl.spatial2.jts.path");
     }
 
     private SpatialSupport() { }

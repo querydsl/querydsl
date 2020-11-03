@@ -265,6 +265,14 @@ public class DefaultConfiguration implements Configuration {
             // do nothing
         }
 
+        try {
+            // register additional mappings if querydsl-spatial2 is on the classpath
+            Class.forName("com.querydsl.spatial2.GeometryExpression");
+            SpatialSupport.addSupportSpatial2(module);
+        } catch (Exception e) {
+            // do nothing
+        }
+
         ServiceLoader<Extension> loader = ServiceLoader.load(Extension.class, Extension.class.getClassLoader());
 
         for (Extension extension : loader) {
