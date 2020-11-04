@@ -18,7 +18,6 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.google.common.base.Joiner;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -55,8 +54,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
     protected static final String SQL_BUFFER_RESULT = "sql_buffer_result ";
 
     protected static final String SQL_BIG_RESULT = "sql_big_result ";
-
-    protected static final Joiner JOINER = Joiner.on(", ");
 
     public AbstractMySQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
@@ -199,7 +196,7 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @return the current object
      */
     public C forceIndex(String... indexes) {
-        return addJoinFlag(" force index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
+        return addJoinFlag(" force index (" + String.join(", ", indexes) + ")", JoinFlag.Position.END);
     }
 
     /**
@@ -210,7 +207,7 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @return the current object
      */
     public C ignoreIndex(String... indexes) {
-        return addJoinFlag(" ignore index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
+        return addJoinFlag(" ignore index (" + String.join(", ", indexes) + ")", JoinFlag.Position.END);
     }
 
     /**
@@ -221,7 +218,7 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @return the current object
      */
     public C useIndex(String... indexes) {
-        return addJoinFlag(" use index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
+        return addJoinFlag(" use index (" + String.join(", ", indexes) + ")", JoinFlag.Position.END);
     }
 
     /**

@@ -16,7 +16,6 @@ package com.querydsl.lucene4;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 

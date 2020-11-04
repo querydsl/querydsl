@@ -13,7 +13,6 @@
  */
 package com.querydsl.mongodb;
 
-import com.google.common.collect.Sets;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -109,7 +108,7 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         } else if (op == Ops.AND) {
             BSONObject lhs = (BSONObject) handle(expr.getArg(0));
             BSONObject rhs = (BSONObject) handle(expr.getArg(1));
-            if (Sets.intersection(lhs.keySet(), rhs.keySet()).isEmpty()) {
+            if (lhs.keySet().stream().noneMatch(rhs.keySet()::contains)) {
                 lhs.putAll(rhs);
                 return lhs;
             } else {

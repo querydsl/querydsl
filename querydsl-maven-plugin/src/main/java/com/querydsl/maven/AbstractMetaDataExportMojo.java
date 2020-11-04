@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.regex.Pattern;
 
+import com.querydsl.core.util.StringUtils;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,7 +28,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
-import com.google.common.base.Strings;
 import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.Configuration;
@@ -419,9 +419,9 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
 
             MetaDataExporter exporter = new MetaDataExporter();
             exporter.setNamePrefix(emptyIfSetToBlank(namePrefix));
-            exporter.setNameSuffix(Strings.nullToEmpty(nameSuffix));
-            exporter.setBeanPrefix(Strings.nullToEmpty(beanPrefix));
-            exporter.setBeanSuffix(Strings.nullToEmpty(beanSuffix));
+            exporter.setNameSuffix(StringUtils.nullToEmpty(nameSuffix));
+            exporter.setBeanPrefix(StringUtils.nullToEmpty(beanPrefix));
+            exporter.setBeanSuffix(StringUtils.nullToEmpty(beanSuffix));
             if (beansTargetFolder != null) {
                 exporter.setBeansTargetFolder(new File(beansTargetFolder));
             }

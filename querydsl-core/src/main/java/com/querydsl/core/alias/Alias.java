@@ -24,11 +24,11 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.CaseFormat;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.util.StringUtils;
 
 /**
  * {@code Alias} provides alias factory methods
@@ -335,7 +335,7 @@ public final class Alias {
      * @return alias instance
      */
     public static <A> A alias(Class<A> cl) {
-        return alias(cl, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, cl.getSimpleName()));
+        return alias(cl, StringUtils.uncapitalize(cl.getSimpleName()));
     }
 
     /**

@@ -20,6 +20,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.google.common.collect.*;
 
@@ -31,6 +33,13 @@ import com.google.common.collect.*;
  *
  */
 public final class CollectionUtils {
+
+    public static <T> List<List<T>> partition(List<T> list, int batchSize) {
+        return IntStream.range(0, list.size() / batchSize + 1)
+                .mapToObj(i -> list.subList(i * batchSize,
+                        Math.min(i * batchSize + batchSize, list.size())))
+                .filter(s -> !s.isEmpty()).collect(Collectors.toList());
+    }
 
     public static <T> List<T> add(List<T> list, T element) {
         final int size = list.size();

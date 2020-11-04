@@ -24,11 +24,11 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.querydsl.core.util.PrimitiveUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.Path;
 import com.querydsl.sql.namemapping.ChainedNameMapping;
 import com.querydsl.sql.namemapping.NameMapping;
@@ -96,8 +96,8 @@ public final class Configuration {
                 String name = templates.getTypeNameForCode(code);
                 Class<?> arrType = Array.newInstance(cl, 0).getClass();
                 javaTypeMapping.register(new ArrayType(arrType, name));
-                if (Primitives.isWrapperType(cl) && !cl.equals(Byte.class)) {
-                    cl = Primitives.unwrap(cl);
+                if (PrimitiveUtils.isWrapperType(cl) && !cl.equals(Byte.class)) {
+                    cl = PrimitiveUtils.unwrap(cl);
                     arrType = Array.newInstance(cl, 0).getClass();
                     javaTypeMapping.register(new ArrayType(arrType, name));
                 }

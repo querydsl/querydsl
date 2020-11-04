@@ -13,8 +13,6 @@
  */
 package com.querydsl.sql;
 
-import static com.google.common.base.CharMatcher.inRange;
-
 import java.lang.reflect.Field;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
@@ -63,13 +60,6 @@ public class SQLTemplates extends Templates {
                     Ops.LIKE_IC, Ops.LIKE_ESCAPE_IC,
                     Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
                     Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC));
-
-    private static final CharMatcher NON_UNDERSCORE_ALPHA_NUMERIC =
-            CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).or(inRange('0', '9'))
-            .negate().precomputed();
-
-    private static final CharMatcher NON_UNDERSCORE_ALPHA =
-            CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).negate().precomputed();
 
     private final Set<String> reservedWords;
 
@@ -830,9 +820,9 @@ public class SQLTemplates extends Templates {
     }
 
     protected boolean requiresQuotes(final String identifier, final boolean precededByDot) {
-        if (NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier)) {
+        if (identifier.matches(".*[^A-z0-9_].*")) {
             return true;
-        } else if (NON_UNDERSCORE_ALPHA.matches(identifier.charAt(0))) {
+        } else if (identifier.matches("^[^A-z_].*")) {
             return true;
         } else if (precededByDot && supportsUnquotedReservedWordsAsIdentifier) {
             return false;

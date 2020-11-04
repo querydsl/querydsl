@@ -19,12 +19,12 @@ import java.util.Map.Entry;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.primitives.Primitives;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Param;
+import com.querydsl.core.util.PrimitiveUtils;
 
 /**
  * {@code JDOQLSerializer} serializes Querydsl queries and expressions into JDOQL strings
@@ -322,8 +322,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             @SuppressWarnings("unchecked") //This is the expected type for castToNum
             Constant<Class<?>> rightArg = (Constant<Class<?>>) args.get(1);
             Class<?> clazz = rightArg.getConstant();
-            if (Number.class.isAssignableFrom(clazz) && Primitives.isWrapperType(clazz)) {
-                clazz = Primitives.unwrap(clazz);
+            if (Number.class.isAssignableFrom(clazz) && PrimitiveUtils.isWrapperType(clazz)) {
+                clazz = PrimitiveUtils.unwrap(clazz);
             }
             append("(" + clazz.getSimpleName() + ")").handle(args.get(0));
 

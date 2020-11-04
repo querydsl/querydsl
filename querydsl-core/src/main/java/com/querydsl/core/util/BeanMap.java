@@ -15,8 +15,6 @@
  */
 package com.querydsl.core.util;
 
-import com.google.common.primitives.Primitives;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -650,7 +648,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 if (types != null && types.length > 0) {
                     Class<?> paramType = types[0];
                     if (paramType.isPrimitive()) {
-                        paramType = Primitives.wrap(paramType);
+                        paramType = PrimitiveUtils.wrap(paramType);
                     }
                     if (!paramType.isAssignableFrom(value.getClass())) {
                         value = convertType(paramType, value);

@@ -13,6 +13,7 @@
  */
 package com.querydsl.sql;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -34,8 +35,6 @@ import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * {@code ProjectableSQLQuery} is the base type for SQL query implementations
@@ -505,7 +504,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     }
 
     protected SQLBindings getSQL(SQLSerializer serializer) {
-        List<Object> args = newArrayList();
+        List<Object> args = new ArrayList<>();
         Map<ParamExpression<?>, Object> params = getMetadata().getParams();
         for (Object o : serializer.getConstants()) {
             if (o instanceof ParamExpression) {

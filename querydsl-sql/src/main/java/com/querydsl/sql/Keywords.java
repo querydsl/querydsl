@@ -13,16 +13,12 @@
  */
 package com.querydsl.sql;
 
-import static com.google.common.collect.ImmutableSet.copyOf;
-
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.HashSet;
+import java.io.InputStreamReader;
+import java.util.LinkedHashSet;
 import java.util.Set;
-
-import com.google.common.io.LineProcessor;
-import com.google.common.io.Resources;
+import java.util.stream.Collectors;
 
 /**
  * Defines reserved keywords for the supported dialects
@@ -32,10 +28,10 @@ final class Keywords {
     private Keywords() { }
 
     private static Set<String> readLines(String path) {
-        try {
-            return copyOf(Resources.readLines(
-                    Keywords.class.getResource("/keywords/" + path), StandardCharsets.UTF_8,
-                    new CommentDiscardingLineProcessor()));
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Keywords.class.getResourceAsStream("/keywords/" + path)));) {
+            return bufferedReader.lines()
+                    .filter(line -> !line.isEmpty() && !line.startsWith("#"))
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -57,22 +53,4 @@ final class Keywords {
     public static final Set<String> SQLSERVER2008 = readLines("sqlserver2008");
     public static final Set<String> SQLSERVER2012 = readLines("sqlserver2012");
 
-    private static class CommentDiscardingLineProcessor implements LineProcessor<Collection<String>> {
-
-        private final Collection<String> result = new HashSet<>();
-
-        @Override
-        public boolean processLine(String line) throws IOException {
-            if (!line.isEmpty() && !line.startsWith("#")) {
-                result.add(line);
-            }
-            return true;
-        }
-
-        @Override
-        public Collection<String> getResult() {
-            return result;
-        }
-
-    }
 }

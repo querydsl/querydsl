@@ -33,7 +33,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
@@ -462,7 +461,7 @@ public class SelectBase extends AbstractBaseTest {
         data.add(javaTime.atOffset(java.time.ZoneOffset.UTC));      //java.time.OffsetTime
         data.add(javaDateTime.atZone(java.time.ZoneId.of("Z")));    //java.time.ZonedDateTime
 
-        Map<Object, Object> failures = Maps.newIdentityHashMap();
+        Map<Object, Object> failures = new IdentityHashMap<>();
         for (Object dt : data) {
             Object dt2 = firstResult(Expressions.constant(dt));
             if (!dt.equals(dt2)) {

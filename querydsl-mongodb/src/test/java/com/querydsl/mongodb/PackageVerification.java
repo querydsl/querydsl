@@ -20,10 +20,11 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.junit.Test;
 
-import com.google.common.io.Resources;
 import com.mysema.codegen.CodeWriter;
 import com.querydsl.apt.morphia.MorphiaAnnotationProcessor;
 import com.querydsl.codegen.CodegenModule;
@@ -49,7 +50,7 @@ public class PackageVerification {
         Class cl = oneJarClassLoader.loadClass(MorphiaAnnotationProcessor.class.getName()); // querydsl-apt
         cl.newInstance();
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
-        assertEquals(MorphiaAnnotationProcessor.class.getName(), Resources.toString(oneJarClassLoader.findResource(resourceKey), StandardCharsets.UTF_8));
+        assertEquals(MorphiaAnnotationProcessor.class.getName(), new String(Files.readAllBytes(Paths.get(oneJarClassLoader.findResource(resourceKey).toURI())), StandardCharsets.UTF_8));
     }
 
 }

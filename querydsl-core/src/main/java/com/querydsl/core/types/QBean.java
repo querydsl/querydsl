@@ -13,6 +13,11 @@
  */
 package com.querydsl.core.types;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.querydsl.core.group.GroupExpression;
+import com.querydsl.core.util.PrimitiveUtils;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -23,11 +28,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.primitives.Primitives;
-import com.querydsl.core.group.GroupExpression;
 
 /**
  * {@code QBean} is a JavaBean populating projection type
@@ -83,7 +83,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
     }
 
     private static Class<?> normalize(Class<?> cl) {
-        return cl.isPrimitive() ? Primitives.wrap(cl) : cl;
+        return cl.isPrimitive() ? PrimitiveUtils.wrap(cl) : cl;
     }
 
     private static boolean isAssignableFrom(Class<?> cl1, Class<?> cl2) {

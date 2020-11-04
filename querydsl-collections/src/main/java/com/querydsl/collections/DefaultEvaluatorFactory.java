@@ -13,28 +13,36 @@
  */
 package com.querydsl.collections;
 
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-import javax.tools.JavaCompiler;
-
-import com.google.common.primitives.Primitives;
 import com.mysema.codegen.ECJEvaluatorFactory;
 import com.mysema.codegen.Evaluator;
 import com.mysema.codegen.EvaluatorFactory;
 import com.mysema.codegen.JDKEvaluatorFactory;
-import com.mysema.codegen.model.*;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.mysema.codegen.support.ClassUtils;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.CollectionAnyVisitor;
 import com.querydsl.core.support.Context;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.types.Operation;
+import com.querydsl.core.types.ParamExpression;
+import com.querydsl.core.types.ParamNotSetException;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.util.PrimitiveUtils;
+
+import javax.annotation.Nullable;
+import javax.tools.JavaCompiler;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@code DefaultEvaluatorFactory} provides Java source templates for evaluation of {@link CollQuery} queries
@@ -111,8 +119,8 @@ public class DefaultEvaluatorFactory {
 
         // normalize types
         for (int i = 0; i < types.length; i++) {
-            if (Primitives.isWrapperType(types[i])) {
-                types[i] = Primitives.unwrap(types[i]);
+            if (PrimitiveUtils.isWrapperType(types[i])) {
+                types[i] = PrimitiveUtils.unwrap(types[i]);
             }
         }
 

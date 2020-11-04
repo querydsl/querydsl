@@ -32,7 +32,7 @@ public class PathComparator<T, V extends Comparable<V>> implements Comparator<T>
     private final Function<T,V> accessor;
 
     public PathComparator(Path<V> comparingPath) {
-        this(comparingPath, GuavaHelpers.<T,V>wrap(comparingPath));
+        this(comparingPath, FunctionalHelpers.<T,V>wrap(comparingPath));
     }
 
     public PathComparator(Path<V> comparingPath, Function<T,V> accessor) {

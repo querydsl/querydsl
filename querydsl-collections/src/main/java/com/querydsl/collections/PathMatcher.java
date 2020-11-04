@@ -41,7 +41,7 @@ public class PathMatcher<T, V> extends TypeSafeDiagnosingMatcher<T> {
     private final Path<V> path;
 
     public PathMatcher(Path<V> path, Matcher<? super V> matcher) {
-        this(path, matcher, GuavaHelpers.<T,V>wrap(path));
+        this(path, matcher, FunctionalHelpers.<T,V>wrap(path));
     }
 
     public PathMatcher(Path<V> path, Matcher<? super V> matcher, Function<T, V> accessor) {

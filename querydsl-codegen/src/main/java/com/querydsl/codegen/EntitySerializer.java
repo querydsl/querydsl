@@ -24,8 +24,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.*;
 import com.querydsl.core.types.*;
@@ -38,8 +36,6 @@ import com.querydsl.core.types.dsl.*;
  *
  */
 public class EntitySerializer implements Serializer {
-
-    private static final Joiner JOINER = Joiner.on("\", \"");
 
     private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class));
 
@@ -419,7 +415,9 @@ public class EntitySerializer implements Serializer {
         writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
+        List<Class<?>> classes = new ArrayList<>();
+        classes.add(PathMetadata.class);
+        classes.add(Generated.class);
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
         }
@@ -501,7 +499,7 @@ public class EntitySerializer implements Serializer {
         }
         if (!inits.isEmpty()) {
             inits.add(0, STAR);
-            String initsAsString = QUOTE + JOINER.join(inits) + QUOTE;
+            String initsAsString = QUOTE + String.join("\", \"", inits) + QUOTE;
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
         } else if (model.hasEntityFields() || superTypeHasEntityFields(model)) {
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT2");

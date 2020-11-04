@@ -18,9 +18,7 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
@@ -30,6 +28,8 @@ import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.Template.Element;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.CollectionUtils;
+import com.querydsl.core.util.StringUtils;
 import com.querydsl.sql.dml.SQLInsertBatch;
 import com.querydsl.sql.types.Null;
 
@@ -658,7 +658,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     protected void serializeSources(List<JoinExpression> joins) {
         if (joins.isEmpty()) {
             String dummyTable = templates.getDummyTable();
-            if (!Strings.isNullOrEmpty(dummyTable)) {
+            if (!StringUtils.isNullOrEmpty(dummyTable)) {
                 append(templates.getFrom());
                 append(dummyTable);
             }
@@ -995,8 +995,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     if (pathAdded) {
                         constantPaths.removeLast();
                     }
-                    Iterable<List<Object>> partitioned = Iterables
-                            .partition(coll, templates.getListMaxSize());
+                    Iterable<List<Object>> partitioned = CollectionUtils.partition(new ArrayList<>(coll), templates.getListMaxSize());
                     Predicate result;
                     if (operator == Ops.IN) {
                         result = ExpressionUtils.inAny(path, partitioned);

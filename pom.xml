@@ -69,7 +69,6 @@
     
     <!-- Import-Package definitions for maven-bundle-plugin -->
     <osgi.import.package.root>
-      com.google.common.*;version=${@},
       *
     </osgi.import.package.root>
     <osgi.import.package>${osgi.import.package.root}</osgi.import.package>

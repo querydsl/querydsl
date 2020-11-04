@@ -14,8 +14,6 @@
 package com.querydsl.codegen;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Primitives;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -23,6 +21,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
+import com.querydsl.core.util.PrimitiveUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
@@ -62,7 +61,7 @@ public final class TypeFactory {
     private Function<EntityType, String> variableNameFunction;
 
     public TypeFactory() {
-        this(Lists.<Class<? extends Annotation>>newArrayList(), DefaultVariableNameFunction.INSTANCE);
+        this(new ArrayList<>(), DefaultVariableNameFunction.INSTANCE);
     }
 
     public TypeFactory(List<Class<? extends Annotation>> entityAnnotations) {
@@ -134,7 +133,7 @@ public final class TypeFactory {
     private Type create(boolean entity, Class<?> cl, AnnotationHelper annotationHelper, Annotation annotation, java.lang.reflect.Type genericType,
             List<?> key) {
         if (cl.isPrimitive()) {
-            cl = Primitives.wrap(cl);
+            cl = PrimitiveUtils.wrap(cl);
         }
         Type value;
         Type[] tempParams = (Type[]) Array.newInstance(Type.class,

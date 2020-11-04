@@ -17,9 +17,8 @@ import java.util.List;
 
 import javax.annotation.concurrent.Immutable;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.primitives.Primitives;
+import com.querydsl.core.util.PrimitiveUtils;
 
 /**
  * {@code OperationImpl} is the default implementation of the {@link Operation} interface
@@ -43,8 +42,10 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     protected OperationImpl(Class<? extends T> type, Operator operator, ImmutableList<Expression<?>> args) {
         super(type);
-        Class<?> wrapped = Primitives.wrap(type);
-        Preconditions.checkArgument(operator.getType().isAssignableFrom(wrapped), operator.name());
+        Class<?> wrapped = PrimitiveUtils.wrap(type);
+        if (!operator.getType().isAssignableFrom(wrapped)) {
+            throw new IllegalArgumentException(operator.name());
+        }
         this.operator = operator;
         this.args = args;
     }

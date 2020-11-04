@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -17,7 +18,6 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 
-import com.google.common.io.Resources;
 import com.querydsl.core.testutil.H2;
 import com.querydsl.sql.Connections;
 
@@ -52,8 +52,7 @@ public class ExportH2TwoSchemasTest {
         exporter.setNamingStrategy(namingStrategy);
         exporter.export(Connections.getConnection().getMetaData());
 
-        String contents = Resources.toString(new File(folder.getRoot(), "test/QSurvey.java").toURI().toURL(),
-                StandardCharsets.UTF_8);
+        String contents = new String(Files.readAllBytes(new File(folder.getRoot(), "test/QSurvey.java").toPath()), StandardCharsets.UTF_8);
         assertTrue(contents.contains("id"));
         assertTrue(contents.contains("name"));
         assertTrue(contents.contains("name2"));
