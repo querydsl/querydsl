@@ -3,17 +3,7 @@ name: Bug report
 about: Encountered an issue with Querydsl? Report it here.
 labels: 'bug'
 ---
-Which querydsl version are you using?
 
-Which database are you using and what version?
-
-Which submodule is causing the issue?
-
-What are you trying to achieve?
-
-What’s going wrong?
-
-Provide a minimal verifiable example
 ## Observed vs. expected behavior
 
 <!--
