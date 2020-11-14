@@ -528,6 +528,9 @@
             <version>6.6</version>
           </dependency>
         </dependencies>
+        <configuration>
+          <excludes>**/generated/**/*</excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

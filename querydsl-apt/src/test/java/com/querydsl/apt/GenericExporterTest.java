@@ -13,7 +13,6 @@ import javax.persistence.*;
 
 import org.junit.Test;
 
-import com.google.common.collect.ForwardingSet;
 import com.querydsl.apt.domain.AbstractEntityTest;
 import com.querydsl.apt.domain.CustomCollection;
 import com.querydsl.apt.domain.Generic2Test;
@@ -68,14 +67,12 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSupertypeAnnotation(MappedSuperclass.class);
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest2"));
-        exporter.addStopClass(ForwardingSet.class);
         exporter.setStrictMode(true);
         exporter.setPropertyHandling(PropertyHandling.JPA);
         exporter.export(AbstractEntityTest.class.getPackage(), A.class.getPackage());
 
         List<String> expected = new ArrayList<String>();
         // GenericExporter doesn't include field/method selection
-        expected.add("QCustomCollection_MyCustomCollection2.java");
         expected.add("QTemporalTest_MyEntity.java");
         expected.add("QTemporal2Test_Cheque.java");
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
@@ -106,7 +103,6 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest3"));
         exporter.setPropertyHandling(PropertyHandling.JPA);
-        //exporter.addStopClass(ForwardingSet.class);
         exporter.export(CustomCollection.MyCustomCollection.class,
                         CustomCollection.MyCustomCollection2.class,
                         CustomCollection.MyEntity.class);
@@ -123,7 +119,6 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest4"));
         exporter.setPropertyHandling(PropertyHandling.JPA);
-        exporter.addStopClass(ForwardingSet.class);
         exporter.export(Generic2Test.class.getClasses());
     }
 
