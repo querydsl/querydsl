@@ -14,6 +14,7 @@
 package com.querydsl.core.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -33,6 +34,104 @@ import com.google.common.collect.*;
  *
  */
 public final class CollectionUtils {
+
+    private static final Set<Class<?>> UNMODIFIABLE_TYPES;
+
+    static {
+        Set<Class<?>> unmodifiableTypes = new HashSet<>();
+        unmodifiableTypes.add(Collections.emptyList().getClass());
+        unmodifiableTypes.add(Collections.emptySet().getClass());
+        unmodifiableTypes.add(Collections.emptyNavigableSet().getClass());
+        unmodifiableTypes.add(Collections.emptySortedSet().getClass());
+        unmodifiableTypes.add(Collections.emptyMap().getClass());
+        unmodifiableTypes.add(Collections.emptySortedMap().getClass());
+        unmodifiableTypes.add(Collections.emptyNavigableMap().getClass());
+        unmodifiableTypes.add(Collections.singleton(1).getClass());
+        unmodifiableTypes.add(Collections.singletonList(1).getClass());
+        unmodifiableTypes.add(Collections.singletonMap(1, 1).getClass());
+        unmodifiableTypes.add(Collections.unmodifiableList(Collections.emptyList()).getClass());
+        unmodifiableTypes.add(Collections.unmodifiableCollection(Collections.emptyList()).getClass());
+        unmodifiableTypes.add(Collections.unmodifiableSet(Collections.emptySet()).getClass());
+        unmodifiableTypes.add(Collections.unmodifiableNavigableSet(Collections.emptyNavigableSet()).getClass());
+        unmodifiableTypes.add(Collections.unmodifiableSortedSet(Collections.emptySortedSet()).getClass());
+        unmodifiableTypes.add(Collections.unmodifiableMap(Collections.emptyMap()).getClass());
+        unmodifiableTypes.add(Collections.unmodifiableSortedMap(Collections.emptySortedMap()).getClass());
+        unmodifiableTypes.add(Collections.unmodifiableNavigableMap(Collections.emptyNavigableMap()).getClass());
+
+        try {
+            unmodifiableTypes.add(Class.forName("com.google.common.collect.ImmutableSet"));
+            unmodifiableTypes.add(Class.forName("com.google.common.collect.ImmutableList"));
+            unmodifiableTypes.add(Class.forName("com.google.common.collect.ImmutableMap"));
+        } catch (ClassNotFoundException e) {
+            // Nothing happens
+        }
+
+        try {
+            unmodifiableTypes.add(Class.forName("java.util.ImmutableCollections$AbstractImmutableCollection"));
+            unmodifiableTypes.add(Class.forName("java.util.ImmutableCollections$AbstractImmutableMap"));
+        } catch (ClassNotFoundException e) {
+            // Nothing happens
+        }
+
+        UNMODIFIABLE_TYPES = Collections.unmodifiableSet(unmodifiableTypes);
+    }
+
+    /**
+     * Returns true if the type is a known unmodifiable type.
+     *
+     * @param clazz the type
+     * @return true if the type is a known unmodifiable type
+     */
+    public static boolean isUnmodifiableType(Class<?> clazz) {
+        for (; clazz != null; clazz = clazz.getSuperclass()) {
+            if (UNMODIFIABLE_TYPES.contains(clazz)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Return an unmodifiable copy of a list, or the same list if its already an unmodifiable type.
+     *
+     * @param list the list
+     * @param <T> element type
+     * @return unmodifiable copy of a list, or the same list if its already an unmodifiable type
+     */
+    public static <T> List<T> unmodifiableList(List<T> list) {
+        if (isUnmodifiableType(list.getClass())) {
+            return list;
+        }
+        switch (list.size()) {
+            case 0:
+                return Collections.emptyList();
+            case 1:
+                return Collections.singletonList(list.get(0));
+            default:
+                return Collections.unmodifiableList(new ArrayList<>(list));
+        }
+    }
+
+    /**
+     * Return an unmodifiable copy of a set, or the same set if its already an unmodifiable type.
+     *
+     * @param set the set
+     * @param <T> element type
+     * @return unmodifiable copy of a set, or the same set if its already an unmodifiable type
+     */
+    public static <T> Set<T> unmodifiableSet(Set<T> set) {
+        if (isUnmodifiableType(set.getClass())) {
+            return set;
+        }
+        switch (set.size()) {
+            case 0:
+                return Collections.emptySet();
+            case 1:
+                return Collections.singleton(set.iterator().next());
+            default:
+                return Collections.unmodifiableSet(new HashSet<>(set));
+        }
+    }
 
     public static <T> List<List<T>> partition(List<T> list, int batchSize) {
         return IntStream.range(0, list.size() / batchSize + 1)
