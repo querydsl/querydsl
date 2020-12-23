@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.lang.reflect.Method;
 import java.sql.Time;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -26,7 +27,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.util.BeanUtils;
 
@@ -56,7 +56,7 @@ public class ExpressionsTest {
 
     @Test
     public void  Signature() throws NoSuchMethodException {
-        List<String> types = ImmutableList.of("boolean", "comparable", "date", "dsl", "dateTime",
+        List<String> types = Arrays.asList("boolean", "comparable", "date", "dsl", "dateTime",
                 "enum", "number", "simple", "string", "time");
         for (String type : types) {
             if (type.equals("boolean") || type.equals("string")) {
@@ -65,10 +65,8 @@ public class ExpressionsTest {
                 assertReturnType(Expressions.class.getMethod(type + "Path", PathMetadata.class));
                 assertReturnType(Expressions.class.getMethod(type + "Operation", Operator.class, Expression[].class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", String.class, Object[].class));
-                assertReturnType(Expressions.class.getMethod(type + "Template", String.class, ImmutableList.class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", String.class, List.class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Template.class, Object[].class));
-                assertReturnType(Expressions.class.getMethod(type + "Template", Template.class, ImmutableList.class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Template.class, List.class));
             } else {
                 assertReturnType(Expressions.class.getMethod(type + "Path", Class.class, String.class));
@@ -76,10 +74,8 @@ public class ExpressionsTest {
                 assertReturnType(Expressions.class.getMethod(type + "Path", Class.class, PathMetadata.class));
                 assertReturnType(Expressions.class.getMethod(type + "Operation", Class.class, Operator.class, Expression[].class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, String.class, Object[].class));
-                assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, String.class, ImmutableList.class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, String.class, List.class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, Template.class, Object[].class));
-                assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, Template.class, ImmutableList.class));
                 assertReturnType(Expressions.class.getMethod(type + "Template", Class.class, Template.class, List.class));
             }
         }

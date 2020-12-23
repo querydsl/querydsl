@@ -13,7 +13,6 @@
  */
 package com.querydsl.sql.codegen;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
@@ -284,7 +283,7 @@ public class MetaDataExporter {
      */
     private List<String> patternAsList(@Nullable String input) {
         if (input != null && input.contains(",")) {
-            return ImmutableList.copyOf(input.split(","));
+            return Arrays.asList(input.split(","));
         } else {
             return Collections.singletonList(input);
         }

@@ -13,11 +13,11 @@
  */
 package com.querydsl.spatial;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.geolatte.geom.Polygon;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -35,10 +35,10 @@ public class PolygonOperation<T extends Polygon> extends PolygonExpression<T> im
     private final OperationImpl<T> opMixin;
 
     protected PolygonOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
-        this(type, op, ImmutableList.copyOf(args));
+        this(type, op, Arrays.asList(args));
     }
 
-    protected PolygonOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected PolygonOperation(Class<? extends T> type, Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>) mixin;
     }

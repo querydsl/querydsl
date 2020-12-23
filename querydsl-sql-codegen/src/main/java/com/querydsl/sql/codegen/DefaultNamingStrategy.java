@@ -13,9 +13,9 @@
  */
 package com.querydsl.sql.codegen;
 
+import java.util.Arrays;
 import java.util.Locale;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.codegen.EntityType;
 
 /**
@@ -90,7 +90,7 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
             pkName = pkName.substring(3) + "_" + pkName.substring(0,2);
         }
         String propertyName = getPropertyName(pkName, entityType);
-        for (String candidate : ImmutableList.of(propertyName, propertyName + "Pk")) {
+        for (String candidate : Arrays.asList(propertyName, propertyName + "Pk")) {
             if (!entityType.getEscapedPropertyNames().contains(candidate)) {
                 return normalizeJavaName(candidate);
             }

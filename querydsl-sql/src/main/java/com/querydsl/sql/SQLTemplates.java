@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
@@ -40,11 +39,11 @@ import com.querydsl.sql.types.Type;
 public class SQLTemplates extends Templates {
 
     protected static final Expression<?> FOR_SHARE = ExpressionUtils.operation(
-            Object.class, SQLOps.FOR_SHARE, ImmutableList.<Expression<?>>of());
+            Object.class, SQLOps.FOR_SHARE, Collections.emptyList());
     protected static final Expression<?> FOR_UPDATE = ExpressionUtils.operation(
-            Object.class, SQLOps.FOR_UPDATE, ImmutableList.<Expression<?>>of());
+            Object.class, SQLOps.FOR_UPDATE, Collections.emptyList());
     protected static final Expression<?> NO_WAIT = ExpressionUtils.operation(
-            Object.class, SQLOps.NO_WAIT, ImmutableList.<Expression<?>>of());
+            Object.class, SQLOps.NO_WAIT, Collections.emptyList());
 
     protected static final int TIME_WITH_TIMEZONE = 2013;
 

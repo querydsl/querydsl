@@ -1,6 +1,5 @@
 package com.querydsl.example.jpa.repository;
 
-import com.google.common.collect.Lists;
 import com.querydsl.example.jpa.model.Tweet;
 import com.querydsl.example.jpa.model.User;
 import org.junit.Test;

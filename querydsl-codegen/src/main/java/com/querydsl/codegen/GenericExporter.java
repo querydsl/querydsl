@@ -13,7 +13,6 @@
  */
 package com.querydsl.codegen;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
@@ -233,7 +232,7 @@ public class GenericExporter {
     private void innerExport() {
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
-        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation), codegenModule.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
+        typeFactory = new TypeFactory(Arrays.asList(entityAnnotation, supertypeAnnotation, embeddableAnnotation), codegenModule.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
 
         // copy annotations helpers to typeFactory
         for (AnnotationHelper helper : annotationHelpers) {
@@ -517,7 +516,7 @@ public class GenericExporter {
             return null;
         }
         if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
+            inits = Arrays.asList(annotated.getAnnotation(QueryInit.class).value());
         }
         if (annotated.isAnnotationPresent(QueryType.class)) {
             QueryType queryType = annotated.getAnnotation(QueryType.class);

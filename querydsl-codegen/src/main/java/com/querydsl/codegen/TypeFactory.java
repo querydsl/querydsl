@@ -13,7 +13,6 @@
  */
 package com.querydsl.codegen;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -31,6 +30,7 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -98,23 +98,24 @@ public final class TypeFactory {
     }
 
     public Type get(boolean entity, Class<?> cl, AnnotatedElement annotated, java.lang.reflect.Type genericType) {
-        ImmutableList.Builder<Object> keyBuilder = ImmutableList.builder().add(cl).add(genericType);
+        List<Object> key = new ArrayList<>();
+        key.add(genericType);
         AnnotationHelper annotationHelper = null;
         Annotation selectedAnnotation = null;
         if (annotated != null) {
             for (Annotation annotation : annotated.getDeclaredAnnotations()) {
                 for (AnnotationHelper helper : annotationHelpers) {
                     if (helper.isSupported(annotation.annotationType())) {
-                        keyBuilder.add(annotation.annotationType());
+                        key.add(annotation.annotationType());
                         selectedAnnotation = annotated.getAnnotation(annotation.annotationType());
                         annotationHelper = helper;
-                        keyBuilder.add(helper.getCustomKey(selectedAnnotation));
+                        key.add(helper.getCustomKey(selectedAnnotation));
                         break;
                     }
                 }
             }
         }
-        List<?> key = keyBuilder.build();
+        key = Collections.unmodifiableList(key);
         if (cache.containsKey(key)) {
             Type value = cache.get(key);
             if (entity && !(value instanceof EntityType)) {

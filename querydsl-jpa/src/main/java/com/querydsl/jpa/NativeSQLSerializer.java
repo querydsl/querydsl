@@ -23,7 +23,6 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
@@ -160,7 +159,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                 }
             }
-            projection = Projections.tuple(ImmutableList.copyOf(fargs));
+            projection = Projections.tuple(new ArrayList<>(fargs));
             modified = true;
         } else if (isAlias(projection)) {
             Operation<?> operation = (Operation<?>) projection;

@@ -18,7 +18,6 @@ import java.util.*;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
@@ -238,9 +237,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (select instanceof FactoryExpression) {
             sqlSelect = ((FactoryExpression<?>) select).getArgs();
         } else if (select != null) {
-            sqlSelect = ImmutableList.of(select);
+            sqlSelect = Collections.singletonList(select);
         } else {
-            sqlSelect = ImmutableList.of();
+            sqlSelect = Collections.emptyList();
         }
 
         // with
@@ -822,7 +821,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 && configuration.getTemplates().isWrapSelectParameters()) {
                 String typeName = configuration.getTypeNameForCast(constant.getClass());
                 Expression type = Expressions.constant(typeName);
-                super.visitOperation(constant.getClass(), SQLOps.CAST, ImmutableList.<Expression<?>>of(Q, type));
+                super.visitOperation(constant.getClass(), SQLOps.CAST, Arrays.<Expression<?>> asList(Q, type));
             } else {
                 append("?");
             }
@@ -945,12 +944,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             final String escape = String.valueOf(templates.getEscapeChar());
             final String escaped = args.get(1).toString().replace(escape, escape + escape);
             super.visitOperation(String.class, Ops.LIKE,
-                    ImmutableList.of(args.get(0), ConstantImpl.create(escaped)));
+                    Arrays.asList(args.get(0), ConstantImpl.create(escaped)));
 
         } else if (operator == Ops.STRING_CAST) {
             final String typeName = configuration.getTypeNameForCast(String.class);
             super.visitOperation(String.class, SQLOps.CAST,
-                    ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
+                    Arrays.asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
             @SuppressWarnings("unchecked") //this is the second argument's type
@@ -959,13 +958,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             final Class<?> targetType = expectedConstant.getConstant();
             final String typeName = configuration.getTypeNameForCast(targetType);
             super.visitOperation(targetType, SQLOps.CAST,
-                    ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
+                    Arrays.asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.ALIAS) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {
                 if (args.get(1) instanceof Path && !((Path<?>) args.get(1)).getMetadata().isRoot()) {
                     Path<?> path = (Path<?>) args.get(1);
-                    args = ImmutableList.of(args.get(0),
+                    args = Arrays.asList(args.get(0),
                             ExpressionUtils.path(path.getType(), path.getMetadata().getName()));
                 }
                 super.visitOperation(type, operator, args);
@@ -983,7 +982,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             Collection<Object> coll = ((Constant<Collection<Object>>) args.get(1)).getConstant();
             if (coll.isEmpty()) {
                 super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
-                        ImmutableList.of(Expressions.ONE, Expressions.TWO));
+                        Arrays.asList(Expressions.ONE, Expressions.TWO));
             } else {
                 if (templates.getListMaxSize() == 0 || coll.size() <= templates.getListMaxSize()) {
                     super.visitOperation(type, operator, args);

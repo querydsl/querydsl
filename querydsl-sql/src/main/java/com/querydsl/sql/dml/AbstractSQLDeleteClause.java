@@ -24,7 +24,6 @@ import javax.inject.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.DeleteClause;
@@ -233,15 +232,15 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeDelete(metadata, entity);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (QueryMetadata metadata : batches) {
                 SQLSerializer serializer = createSerializer();
                 serializer.serializeDelete(metadata, entity);
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return Collections.unmodifiableList(builder);
         }
     }
 

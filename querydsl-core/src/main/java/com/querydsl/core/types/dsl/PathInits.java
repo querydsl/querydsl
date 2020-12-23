@@ -16,7 +16,6 @@ package com.querydsl.core.types.dsl;
 import java.io.Serializable;
 import java.util.*;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.PathMetadata;
 
 /**
@@ -58,7 +57,7 @@ public class PathInits implements Serializable {
                 List<String> inits = Collections.emptyList();
                 if (initStr.contains(".")) {
                     key = initStr.substring(0, initStr.indexOf('.'));
-                    inits = ImmutableList.of(initStr.substring(key.length() + 1));
+                    inits = Collections.singletonList(initStr.substring(key.length() + 1));
                 }
                 Collection<String> values = properties.computeIfAbsent(key, k -> new ArrayList<String>());
                 values.addAll(inits);

@@ -15,7 +15,6 @@ package com.querydsl.core.types.dsl;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -35,7 +34,7 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
         this.templateMixin = mixin;
     }
 
-    protected BooleanTemplate(Template template, ImmutableList<?> args) {
+    protected BooleanTemplate(Template template, List<?> args) {
         super(ExpressionUtils.predicateTemplate(template, args));
         this.templateMixin = (PredicateTemplate) mixin;
     }

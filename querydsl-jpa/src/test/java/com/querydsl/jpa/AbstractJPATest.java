@@ -31,7 +31,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.group.Group;
@@ -309,14 +308,14 @@ public abstract class AbstractJPATest {
 
     @Test
     public void between() {
-        assertEquals(ImmutableList.of(2, 3, 4, 5),
+        assertEquals(Arrays.asList(2, 3, 4, 5),
                 query().from(cat).where(cat.id.between(2, 5)).orderBy(cat.id.asc()).select(cat.id).fetch());
     }
 
     @Test
     @NoBatooJPA
     public void case1() {
-        assertEquals(ImmutableList.of(1, 2, 2, 2, 2, 2),
+        assertEquals(Arrays.asList(1, 2, 2, 2, 2, 2),
                 query().from(cat).orderBy(cat.id.asc())
                         .select(cat.name.when("Bob123").then(1).otherwise(2)).fetch());
     }
@@ -324,7 +323,7 @@ public abstract class AbstractJPATest {
     @Test
     @NoBatooJPA
     public void case1_long() {
-        assertEquals(ImmutableList.of(1L, 2L, 2L, 2L, 2L, 2L),
+        assertEquals(Arrays.asList(1L, 2L, 2L, 2L, 2L, 2L),
                 query().from(cat).orderBy(cat.id.asc())
                         .select(cat.name.when("Bob123").then(1L).otherwise(2L)).fetch());
         List<Integer> rv = query().from(cat).select(cat.name.when("Bob").then(1).otherwise(2)).fetch();
@@ -387,7 +386,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void case2() {
-        assertEquals(ImmutableList.of(4, 4, 4, 4, 4, 4),
+        assertEquals(Arrays.asList(4, 4, 4, 4, 4, 4),
                 query().from(cat)
                         .select(Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
                                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
@@ -396,7 +395,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void case3() {
-        assertEquals(ImmutableList.of(4, 4, 4, 4, 4, 4),
+        assertEquals(Arrays.asList(4, 4, 4, 4, 4, 4),
                 query().from(cat).select(Expressions.cases()
                         .when(cat.toes.in(2, 3)).then(cat.id.multiply(cat.toes))
                         .otherwise(4)).fetch());
@@ -407,7 +406,7 @@ public abstract class AbstractJPATest {
     public void case4() {
         NumberExpression<Float> numExpression = cat.bodyWeight.floatValue().divide(otherCat.bodyWeight.floatValue()).multiply(100);
         NumberExpression<Float> numExpression2 = cat.id.when(0).then(0.0F).otherwise(numExpression);
-        assertEquals(ImmutableList.of(200, 150, 133, 125, 120),
+        assertEquals(Arrays.asList(200, 150, 133, 125, 120),
                 query().from(cat, otherCat)
                         .where(cat.id.eq(otherCat.id.add(1)))
                         .orderBy(cat.id.asc(), otherCat.id.asc())
@@ -416,7 +415,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void case5() {
-        assertEquals(ImmutableList.of(1, 0, 1, 1, 1, 1),
+        assertEquals(Arrays.asList(1, 0, 1, 1, 1, 1),
                 query().from(cat).orderBy(cat.id.asc())
                         .select(cat.mate.when(savedCats.get(0)).then(0).otherwise(1)).fetch());
     }
@@ -917,7 +916,7 @@ public abstract class AbstractJPATest {
     public void groupBy_select() {
         // select length(my_column) as column_size from my_table group by column_size
         NumberPath<Integer> length = Expressions.numberPath(Integer.class, "len");
-        assertEquals(ImmutableList.of(4, 6, 7, 8),
+        assertEquals(Arrays.asList(4, 6, 7, 8),
                 query().select(cat.name.length().as(length)).from(cat).orderBy(length.asc()).groupBy(length).fetch());
     }
 
@@ -978,7 +977,7 @@ public abstract class AbstractJPATest {
 
     @Test
     public void in_empty() {
-        assertEquals(0, query().from(cat).where(cat.name.in(ImmutableList.<String>of())).fetchCount());
+        assertEquals(0, query().from(cat).where(cat.name.in(Collections.emptyList())).fetchCount());
     }
 
     @Test
@@ -1827,7 +1826,7 @@ public abstract class AbstractJPATest {
     @ExcludeIn({DERBY, ORACLE})
     public void byte_array() {
         QSimpleTypes simpleTypes = QSimpleTypes.simpleTypes;
-        assertEquals(ImmutableList.of(), query().from(simpleTypes)
+        assertEquals(Collections.emptyList(), query().from(simpleTypes)
                 .where(simpleTypes.byteArray.eq(new byte[]{0, 1})).select(simpleTypes).fetch());
     }
 }

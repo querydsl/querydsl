@@ -1,12 +1,14 @@
 package com.querydsl.example.config;
 
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.example.dao.*;
 import com.querydsl.example.dto.*;
 import org.joda.time.LocalDate;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 
 @Transactional
 public class TestDataServiceImpl implements TestDataService {
@@ -44,7 +46,7 @@ public class TestDataServiceImpl implements TestDataService {
         l10nDe.setLang("de");
         l10nDe.setName("Schraubenzieher");
 
-        product.setLocalizations(ImmutableSet.of(l10nEn, l10nDe));
+        product.setLocalizations(new HashSet<ProductL10n>(Arrays.asList(l10nEn, l10nDe)));
         productDao.save(product);
 
         Product product2 = new Product();
@@ -56,7 +58,7 @@ public class TestDataServiceImpl implements TestDataService {
         l10nEn.setLang("en");
         l10nEn.setName("Hammer");
 
-        product2.setLocalizations(ImmutableSet.of(l10nEn));
+        product2.setLocalizations(Collections.singleton(l10nEn));
         productDao.save(product2);
 
         // persons
@@ -85,13 +87,13 @@ public class TestDataServiceImpl implements TestDataService {
         customerAddress.setFromDate(new LocalDate());
 
         Customer customer = new Customer();
-        customer.setAddresses(ImmutableSet.of(customerAddress));
+        customer.setAddresses(Collections.singleton(customerAddress));
         customer.setContactPerson(person);
         customer.setName("SmallS");
         customerDao.save(customer);
 
         Customer customer2 = new Customer();
-        customer2.setAddresses(ImmutableSet.<CustomerAddress>of());
+        customer2.setAddresses(Collections.<CustomerAddress>emptySet());
         customer2.setContactPerson(person);
         customer2.setName("MediumM");
         customerDao.save(customer2);
@@ -111,7 +113,7 @@ public class TestDataServiceImpl implements TestDataService {
         Order order = new Order();
         order.setCustomerPaymentMethod(paymentMethod);
         order.setOrderPlacedDate(new LocalDate());
-        order.setOrderProducts(ImmutableSet.of(orderProduct));
+        order.setOrderProducts(Collections.singleton(orderProduct));
         order.setTotalOrderPrice(13124.00);
         orderDao.save(order);
     }

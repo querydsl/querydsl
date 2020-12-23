@@ -13,8 +13,6 @@
  */
 package com.querydsl.sql;
 
-import static com.google.common.collect.ImmutableList.copyOf;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -82,7 +80,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     protected <F> ForeignKey<F> createForeignKey(List<? extends Path<?>> local, List<String> foreign) {
-        ForeignKey<F> foreignKey = new ForeignKey<F>(this, copyOf(local), copyOf(foreign));
+        ForeignKey<F> foreignKey = new ForeignKey<F>(this, new ArrayList<>(local), new ArrayList<>(foreign));
         foreignKeys.add(foreignKey);
         return foreignKey;
     }
@@ -95,7 +93,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     protected <F> ForeignKey<F> createInvForeignKey(List<? extends Path<?>> local,
             List<String> foreign) {
-        ForeignKey<F> foreignKey = new ForeignKey<F>(this, copyOf(local), copyOf(foreign));
+        ForeignKey<F> foreignKey = new ForeignKey<F>(this, new ArrayList<>(local), new ArrayList<>(foreign));
         inverseForeignKeys.add(foreignKey);
         return foreignKey;
     }

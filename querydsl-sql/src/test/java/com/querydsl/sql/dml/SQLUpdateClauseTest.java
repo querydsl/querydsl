@@ -6,10 +6,11 @@ import static org.junit.Assert.assertEquals;
 import com.querydsl.core.QueryFlag.Position;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.sql.KeyAccessorsTest.QEmployee;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLTemplates;
+
+import java.util.Collections;
 
 public class SQLUpdateClauseTest {
 
@@ -29,7 +30,7 @@ public class SQLUpdateClauseTest {
 
         SQLBindings sql = update.getSQL().get(0);
         assertEquals("update EMPLOYEE\nset ID = ?", sql.getSQL());
-        assertEquals(ImmutableList.of(1), sql.getBindings());
+        assertEquals(Collections.singletonList(1), sql.getNullFriendlyBindings());
     }
 
     @Test

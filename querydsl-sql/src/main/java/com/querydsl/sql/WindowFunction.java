@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
@@ -62,7 +61,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
     public SimpleExpression<A> getValue() {
         if (value == null) {
             int size = 0;
-            ImmutableList.Builder<Expression<?>> args = ImmutableList.builder();
+            List<Expression<?>> args = new ArrayList<>();
             StringBuilder builder = new StringBuilder();
             builder.append("{0} over (");
             args.add(target);
@@ -96,7 +95,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                 size += rowsOrRangeArgs.size();
             }
             builder.append(")");
-            value = Expressions.template(target.getType(), builder.toString(), args.build());
+            value = Expressions.template(target.getType(), builder.toString(), Collections.unmodifiableList(args));
         }
         return value;
     }

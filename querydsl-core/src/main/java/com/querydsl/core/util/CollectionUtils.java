@@ -21,6 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -119,6 +120,7 @@ public final class CollectionUtils {
      * @param <T> element type
      * @return unmodifiable copy of a set, or the same set if its already an unmodifiable type
      */
+    @SuppressWarnings("unchecked")
     public static <T> Set<T> unmodifiableSet(Set<T> set) {
         if (isUnmodifiableType(set.getClass())) {
             return set;
@@ -129,7 +131,11 @@ public final class CollectionUtils {
             case 1:
                 return Collections.singleton(set.iterator().next());
             default:
-                return Collections.unmodifiableSet(new HashSet<>(set));
+                return Collections.unmodifiableSet((Set<T>) (
+                        set instanceof LinkedHashSet ? ((LinkedHashSet<T>) set).clone() :
+                        set instanceof TreeSet ? ((TreeSet<T>) set).clone() :
+                        set instanceof HashSet ? ((HashSet<T>) set).clone() :
+                        new LinkedHashSet<>(set)));
         }
     }
 

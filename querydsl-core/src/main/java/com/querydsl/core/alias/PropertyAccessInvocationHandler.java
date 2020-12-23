@@ -27,7 +27,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
@@ -101,7 +100,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (methodType == MethodType.LIST_ACCESS || methodType == MethodType.SCALA_LIST_ACCESS) {
             // TODO : manage cases where the argument is based on a property invocation
-            Object propKey = ImmutableList.of(MethodType.LIST_ACCESS, args[0]);
+            Object propKey = Arrays.asList(MethodType.LIST_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
@@ -112,7 +111,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
         } else if (methodType == MethodType.MAP_ACCESS || methodType == MethodType.SCALA_MAP_ACCESS) {
-            Object propKey = ImmutableList.of(MethodType.MAP_ACCESS, args[0]);
+            Object propKey = Arrays.asList(MethodType.MAP_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {

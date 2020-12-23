@@ -15,9 +15,9 @@ package com.querydsl.sql;
 
 import static com.querydsl.core.util.CollectionUtils.add;
 
+import java.util.Collections;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.*;
@@ -33,7 +33,7 @@ public final class RelationalPathExtractor implements Visitor<Set<RelationalPath
     public static final RelationalPathExtractor DEFAULT = new RelationalPathExtractor();
 
     public static Set<RelationalPath<?>> extract(QueryMetadata md) {
-        Set<RelationalPath<?>> known = ImmutableSet.of();
+        Set<RelationalPath<?>> known = Collections.emptySet();
         known = DEFAULT.visitJoins(md.getJoins(), known);
         if (md.getProjection() != null) {
             known = md.getProjection().accept(DEFAULT, known);
@@ -54,7 +54,7 @@ public final class RelationalPathExtractor implements Visitor<Set<RelationalPath
     }
 
     public static Set<RelationalPath<?>> extract(Expression<?> expr) {
-        return expr.accept(DEFAULT, ImmutableSet.<RelationalPath<?>>of());
+        return expr.accept(DEFAULT, Collections.emptySet());
     }
 
     @Override

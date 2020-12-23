@@ -13,6 +13,7 @@
  */
 package com.querydsl.sql.codegen;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,7 +21,6 @@ import java.util.Set;
 
 import org.geolatte.geom.*;
 
-import com.google.common.collect.ImmutableSet;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.querydsl.codegen.AbstractModule;
@@ -75,11 +75,10 @@ public final class SpatialSupport {
         Set<String> imports = module.get(Set.class, CodegenModule.IMPORTS);
         String packageName = GeometryPath.class.getPackage().getName();
         if (imports.isEmpty()) {
-            imports = ImmutableSet.of(packageName);
+            imports = Collections.singleton(packageName);
         } else {
             Set<String> old = imports;
-            imports = new HashSet<>();
-            imports.addAll(old);
+            imports = new HashSet<>(old);
             imports.add(packageName);
         }
         module.bind(CodegenModule.IMPORTS, imports);

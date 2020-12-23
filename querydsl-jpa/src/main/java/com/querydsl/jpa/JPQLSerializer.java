@@ -21,7 +21,6 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
@@ -432,12 +431,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         if (operator == Ops.EQ && args.get(1) instanceof Operation &&
                 ((Operation) args.get(1)).getOperator() == Ops.QuantOps.ANY) {
-            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation) args.get(1)).getArg(0));
+            args = Arrays.<Expression<?>> asList(args.get(0), ((Operation) args.get(1)).getArg(0));
             visitOperation(type, Ops.IN, args);
 
         } else if (operator == Ops.NE && args.get(1) instanceof Operation &&
                 ((Operation) args.get(1)).getOperator() == Ops.QuantOps.ANY) {
-            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation) args.get(1)).getArg(0));
+            args = Arrays.<Expression<?>> asList(args.get(0), ((Operation) args.get(1)).getArg(0));
             visitOperation(type, Ops.NOT_IN, args);
 
         } else if (operator == Ops.IN || operator == Ops.NOT_IN) {
@@ -460,13 +459,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         } else if (operator == Ops.MATCHES || operator == Ops.MATCHES_IC) {
             super.visitOperation(type, Ops.LIKE,
-                    ImmutableList.of(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
+                    Arrays.asList(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
         } else if (operator == Ops.LIKE && args.get(1) instanceof Constant<?>) {
             final String escape = String.valueOf(templates.getEscapeChar());
             final String escaped = args.get(1).toString().replace(escape, escape + escape);
             super.visitOperation(String.class, Ops.LIKE,
-                    ImmutableList.of(args.get(0), ConstantImpl.create(escaped)));
+                    Arrays.asList(args.get(0), ConstantImpl.create(escaped)));
 
         } else if (NUMERIC.contains(operator)) {
             super.visitOperation(type, operator, normalizeNumericArgs(args));
@@ -474,7 +473,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         } else if (operator == Ops.ALIAS) {
             if (args.get(1) instanceof Path && !((Path<?>) args.get(1)).getMetadata().isRoot()) {
                 Path<?> path = (Path<?>) args.get(1);
-                args = ImmutableList.of(args.get(0),
+                args = Arrays.asList(args.get(0),
                         ExpressionUtils.path(path.getType(), path.getMetadata().getName()));
             }
             super.visitOperation(type, operator, args);
@@ -493,7 +492,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         final Class<?> targetType = rightArg.getConstant();
         final String typeName = templates.getTypeForCast(targetType);
-        visitOperation(targetType, JPQLOps.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
+        visitOperation(targetType, JPQLOps.CAST, Arrays.asList(args.get(0), ConstantImpl.create(typeName)));
     }
 
     private void visitPathInCollection(Class<?> type, Operator operator,
@@ -503,7 +502,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         Constant<? extends Collection<?>> rhs = (Constant<? extends Collection<?>>) args.get(1);
         if (rhs.getConstant().isEmpty()) {
             operator = operator == Ops.IN ? Ops.EQ : Ops.NE;
-            args = ImmutableList.of(Expressions.ONE, Expressions.TWO);
+            args = Arrays.<Expression<?>> asList(Expressions.ONE, Expressions.TWO);
         } else if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             final Metamodel metamodel = entityManager.getMetamodel();
             final PersistenceUnitUtil util = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
@@ -518,7 +517,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                     ids.add(util.getIdentifier(entity));
                 }
                 rhs = ConstantImpl.create(ids);
-                args = ImmutableList.of(lhs, rhs);
+                args = Arrays.asList(lhs, rhs);
             }
         }
 

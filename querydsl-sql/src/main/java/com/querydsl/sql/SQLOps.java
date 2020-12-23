@@ -13,12 +13,12 @@
  */
 package com.querydsl.sql;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Operator;
+
+import java.util.Collections;
 
 /**
  * {@code SQLOps} provides SQL specific operators
@@ -96,12 +96,12 @@ public enum SQLOps implements Operator {
 
     @Deprecated
     public static final QueryFlag FOR_SHARE_FLAG = new QueryFlag(Position.END, ExpressionUtils.operation(
-            Object.class, FOR_SHARE, ImmutableList.<Expression<?>>of()));
+            Object.class, FOR_SHARE, Collections.emptyList()));
     @Deprecated
     public static final QueryFlag FOR_UPDATE_FLAG = new QueryFlag(Position.END, ExpressionUtils.operation(
-            Object.class, FOR_UPDATE, ImmutableList.<Expression<?>>of()));
+            Object.class, FOR_UPDATE, Collections.emptyList()));
     @Deprecated
     public static final QueryFlag NO_WAIT_FLAG = new QueryFlag(Position.END, ExpressionUtils.operation(
-            Object.class, NO_WAIT, ImmutableList.<Expression<?>>of()));
+            Object.class, NO_WAIT, Collections.emptyList()));
 
 }

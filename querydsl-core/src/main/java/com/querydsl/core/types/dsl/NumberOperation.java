@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.types.dsl;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -38,10 +38,10 @@ public class NumberOperation<T extends Number & Comparable<?>>
     }
 
     protected NumberOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
-        this(type, op, ImmutableList.copyOf(args));
+        this(type, op, Arrays.asList(args));
     }
 
-    protected NumberOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected NumberOperation(Class<? extends T> type, Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>) mixin;
     }

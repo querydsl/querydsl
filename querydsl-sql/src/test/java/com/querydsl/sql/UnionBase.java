@@ -6,13 +6,13 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
@@ -30,11 +30,11 @@ public class UnionBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({MYSQL, TERADATA})
     public void in_union() {
-        assertTrue(query().from(employee)
-            .where(employee.id.in(
-                query().union(query().select(Expressions.ONE),
-                              query().select(Expressions.TWO))))
-            .select(Expressions.ONE).fetchFirst() != null);
+        assertNotNull(query().from(employee)
+                .where(employee.id.in(
+                        query().union(query().select(Expressions.ONE),
+                                query().select(Expressions.TWO))))
+                .select(Expressions.ONE).fetchFirst());
     }
 
     @Test
@@ -44,8 +44,8 @@ public class UnionBase extends AbstractBaseTest {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max().as("ID"));
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min().as("ID"));
         assertEquals(
-                ImmutableList.of(query().select(employee.id.min()).from(employee).fetchFirst(),
-                                 query().select(employee.id.max()).from(employee).fetchFirst()),
+                Arrays.asList(query().select(employee.id.min()).from(employee).fetchFirst(),
+                        query().select(employee.id.max()).from(employee).fetchFirst()),
                 query().union(sq1, sq2).orderBy(employee.id.asc()).fetch());
     }
 

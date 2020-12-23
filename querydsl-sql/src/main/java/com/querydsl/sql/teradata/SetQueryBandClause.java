@@ -23,7 +23,6 @@ import java.util.Map;
 
 import javax.inject.Provider;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLTemplates;
@@ -96,7 +95,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
             }
             return 1;
         } catch (SQLException e) {
-            List<Object> bindings = parameter != null ? ImmutableList.<Object>of(parameter) : ImmutableList.of();
+            List<Object> bindings = parameter != null ? Collections.singletonList(parameter) : Collections.emptyList();
             throw configuration.translate(queryString, bindings, e);
         } finally {
             if (stmt != null) {
@@ -113,7 +112,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
         } else {
             bindings = new SQLBindings(toString(), Collections.singletonList(parameter));
         }
-        return ImmutableList.of(bindings);
+        return Collections.singletonList(bindings);
     }
 
     @Override

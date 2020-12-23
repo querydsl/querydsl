@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,6 @@ import com.querydsl.core.util.PrimitiveUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Path;
 import com.querydsl.sql.namemapping.ChainedNameMapping;
 import com.querydsl.sql.namemapping.NameMapping;
@@ -88,7 +88,7 @@ public final class Configuration {
 
         if (templates.isArraysSupported()) {
             // register array types
-            List<Class<?>> classes = ImmutableList.<Class<?>>of(String.class, Long.class, Integer.class, Short.class,
+            List<Class<?>> classes = Arrays.asList(String.class, Long.class, Integer.class, Short.class,
                     Byte.class, Boolean.class, java.sql.Date.class, java.sql.Timestamp.class,
                     java.sql.Time.class, Double.class, Float.class);
             for (Class<?> cl : classes) {

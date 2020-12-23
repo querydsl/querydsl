@@ -32,7 +32,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
@@ -228,7 +227,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void between() {
         // 11-13
-        assertEquals(ImmutableList.of(11, 12, 13),
+        assertEquals(Arrays.asList(11, 12, 13),
                 query().from(employee).where(employee.id.between(11, 13)).orderBy(employee.id.asc())
                        .select(employee.id).fetch());
     }
@@ -249,7 +248,7 @@ public class SelectBase extends AbstractBaseTest {
     public void case_() {
         NumberExpression<Float> numExpression = employee.salary.floatValue().divide(employee2.salary.floatValue()).multiply(100.1);
         NumberExpression<Float> numExpression2 = employee.id.when(0).then(0.0F).otherwise(numExpression);
-        assertEquals(ImmutableList.of(87, 90, 88, 87, 83, 80, 75),
+        assertEquals(Arrays.asList(87, 90, 88, 87, 83, 80, 75),
                 query().from(employee, employee2)
                         .where(employee.id.eq(employee2.id.add(1)))
                         .orderBy(employee.id.asc(), employee2.id.asc())
@@ -896,7 +895,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void in_empty() {
-        assertEquals(0, query().from(employee).where(employee.id.in(ImmutableList.<Integer>of())).fetchCount());
+        assertEquals(0, query().from(employee).where(employee.id.in(Collections.emptyList())).fetchCount());
     }
 
     @Test
@@ -919,7 +918,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void notIn_empty() {
         long count = query().from(employee).fetchCount();
-        assertEquals(count, query().from(employee).where(employee.id.notIn(ImmutableList.<Integer>of())).fetchCount());
+        assertEquals(count, query().from(employee).where(employee.id.notIn(Collections.emptyList())).fetchCount());
     }
 
     @Test
@@ -977,7 +976,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD)
     public void like_escape() {
-        List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen", "a\nb");
+        List<String> strs = Arrays.asList("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen", "a\nb");
 
         for (String str : strs) {
             assertTrue(str, query()
@@ -2125,9 +2124,9 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DB2, DERBY, ORACLE, SQLSERVER})
     public void groupConcat() {
-        List<String> expected = ImmutableList.of("Mike,Mary", "Joe,Peter,Steve,Jim", "Jennifer,Helen,Daisy,Barbara");
+        List<String> expected = Arrays.asList("Mike,Mary", "Joe,Peter,Steve,Jim", "Jennifer,Helen,Daisy,Barbara");
         if (Connections.getTarget() == POSTGRESQL) {
-            expected = ImmutableList.of("Steve,Jim,Joe,Peter", "Barbara,Helen,Daisy,Jennifer", "Mary,Mike");
+            expected = Arrays.asList("Steve,Jim,Joe,Peter", "Barbara,Helen,Daisy,Jennifer", "Mary,Mike");
         }
         assertEquals(
                 expected,
@@ -2139,9 +2138,9 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DB2, DERBY, ORACLE, SQLSERVER})
     public void groupConcat2() {
-        List<String> expected = ImmutableList.of("Mike-Mary", "Joe-Peter-Steve-Jim", "Jennifer-Helen-Daisy-Barbara");
+        List<String> expected = Arrays.asList("Mike-Mary", "Joe-Peter-Steve-Jim", "Jennifer-Helen-Daisy-Barbara");
         if (Connections.getTarget() == POSTGRESQL) {
-            expected = ImmutableList.of("Steve-Jim-Joe-Peter", "Barbara-Helen-Daisy-Jennifer", "Mary-Mike");
+            expected = Arrays.asList("Steve-Jim-Joe-Peter", "Barbara-Helen-Daisy-Jennifer", "Mary-Mike");
         }
         assertEquals(
                 expected,

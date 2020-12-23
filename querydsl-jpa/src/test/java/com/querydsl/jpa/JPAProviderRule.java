@@ -4,9 +4,10 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.Target;
 import com.querydsl.core.testutil.EmptyStatement;
+
+import java.util.Arrays;
 
 /**
  * @author tiwe
@@ -37,6 +38,6 @@ public class JPAProviderRule implements TestRule {
     }
 
     private boolean applies(Target[] targets) {
-        return targets.length == 0 || ImmutableSet.copyOf(targets).contains(Mode.target.get());
+        return targets.length == 0 || Arrays.asList(targets).contains(Mode.target.get());
     }
 }

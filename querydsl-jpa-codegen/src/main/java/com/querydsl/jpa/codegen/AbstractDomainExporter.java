@@ -13,7 +13,6 @@
  */
 package com.querydsl.jpa.codegen;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Type;
@@ -265,7 +264,7 @@ public abstract class AbstractDomainExporter {
             AnnotatedElement annotated) {
         List<String> inits = Collections.emptyList();
         if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
+            inits = Collections.unmodifiableList(Arrays.asList(annotated.getAnnotation(QueryInit.class).value()));
         }
         return new Property(entityType, propertyName, propertyType, inits);
     }

@@ -24,7 +24,6 @@ import javax.inject.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.UpdateClause;
@@ -231,15 +230,15 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeUpdate(metadata, entity, updates);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (SQLUpdateBatch batch : batches) {
                 SQLSerializer serializer = createSerializer();
                 serializer.serializeUpdate(batch.getMetadata(), entity, batch.getUpdates());
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return Collections.unmodifiableList(builder);
         }
     }
 

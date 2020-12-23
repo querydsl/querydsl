@@ -13,13 +13,16 @@
  */
 package com.querydsl.core.types;
 
+import com.querydsl.core.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * {@code QMap} represents a projection of type Map
@@ -42,7 +45,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
 
     private static final long serialVersionUID = -7545994090073480810L;
 
-    private final ImmutableList<Expression<?>> args;
+    private final List<Expression<?>> args;
 
     /**
      * Create a new QMap instance
@@ -52,7 +55,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
     @SuppressWarnings("unchecked")
     protected QMap(Expression<?>... args) {
         super((Class) Map.class);
-        this.args = ImmutableList.copyOf(args);
+        this.args = CollectionUtils.unmodifiableList(Arrays.asList(args));
     }
 
     /**
@@ -61,9 +64,9 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
      * @param args
      */
     @SuppressWarnings("unchecked")
-    protected QMap(ImmutableList<Expression<?>> args) {
+    protected QMap(List<Expression<?>> args) {
         super((Class) Map.class);
-        this.args = args;
+        this.args = CollectionUtils.unmodifiableList(args);
     }
 
     /**
@@ -74,11 +77,11 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
     @SuppressWarnings("unchecked")
     protected QMap(Expression<?>[]... args) {
         super((Class) Map.class);
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        List<Expression<?>> builder = new ArrayList<>();
         for (Expression<?>[] exprs: args) {
-            builder.add(exprs);
+            Collections.addAll(builder, exprs);
         }
-        this.args = builder.build();
+        this.args = CollectionUtils.unmodifiableList(builder);
     }
 
     @Override

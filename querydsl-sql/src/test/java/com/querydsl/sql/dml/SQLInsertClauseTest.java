@@ -4,11 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.sql.KeyAccessorsTest.QEmployee;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLTemplates;
+
+import java.util.Collections;
 
 public class SQLInsertClauseTest {
 
@@ -28,7 +29,7 @@ public class SQLInsertClauseTest {
 
         SQLBindings sql = insert.getSQL().get(0);
         assertEquals("insert into EMPLOYEE (ID)\nvalues (?)", sql.getSQL());
-        assertEquals(ImmutableList.of(1), sql.getBindings());
+        assertEquals(Collections.singletonList(1), sql.getNullFriendlyBindings());
     }
 
     @Test

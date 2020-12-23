@@ -14,7 +14,6 @@
 package com.querydsl.lucene5;
 
 import com.google.common.base.CharMatcher;
-import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -47,6 +46,7 @@ import org.apache.lucene.search.TotalHitCountCollector;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -77,7 +77,7 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
     @Nullable
     private Set<String> fieldsToLoad;
 
-    private List<Filter> filters = ImmutableList.of();
+    private List<Filter> filters = Collections.emptyList();
 
     @Nullable
     private Filter filter;
@@ -176,7 +176,7 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
     public Q filter(Filter filter) {
         if (filters.isEmpty()) {
             this.filter = filter;
-            filters = ImmutableList.of(filter);
+            filters = Collections.singletonList(filter);
         } else {
             this.filter = null;
             if (filters.size() == 1) {

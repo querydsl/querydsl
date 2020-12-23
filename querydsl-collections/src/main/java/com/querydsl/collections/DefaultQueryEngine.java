@@ -13,7 +13,6 @@
  */
 package com.querydsl.collections;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.codegen.Evaluator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.JoinExpression;
@@ -29,6 +28,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -99,7 +99,7 @@ public class DefaultQueryEngine implements QueryEngine {
         if (!list.isEmpty() && list.get(0) != null && list.get(0).getClass().isArray()) {
             Set set = new HashSet(list.size());
             for (T o : list) {
-                if (set.add(ImmutableList.copyOf((Object[]) o))) {
+                if (set.add(Collections.unmodifiableList(Arrays.asList((Object[]) o)))) {
                     rv.add(o);
                 }
             }
@@ -235,7 +235,7 @@ public class DefaultQueryEngine implements QueryEngine {
         EvaluatorFunction<Object, Object> transformer = new EvaluatorFunction(projectionEvaluator);
         List target = list.stream().map(transformer).collect(Collectors.toList());
         if (aggregator != null) {
-            return ImmutableList.of(CollQueryFunctions.aggregate(target, projection, aggregator));
+            return Collections.singletonList(CollQueryFunctions.aggregate(target, projection, aggregator));
         } else {
             return target;
         }

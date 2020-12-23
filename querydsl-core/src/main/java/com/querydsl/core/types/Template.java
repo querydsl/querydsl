@@ -13,8 +13,8 @@
  */
 package com.querydsl.core.types;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.CollectionUtils;
 import com.querydsl.core.util.MathUtils;
 
 import javax.annotation.concurrent.Immutable;
@@ -345,13 +345,13 @@ public final class Template implements Serializable {
         }
     }
 
-    private final ImmutableList<Element> elements;
+    private final List<Element> elements;
 
     private final String template;
 
-    Template(String template, ImmutableList<Element> elements) {
+    Template(String template, List<Element> elements) {
         this.template = template;
-        this.elements = elements;
+        this.elements = CollectionUtils.unmodifiableList(elements);
     }
 
     public List<Element> getElements() {

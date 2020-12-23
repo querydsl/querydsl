@@ -13,11 +13,11 @@
  */
 package com.querydsl.spatial;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.geolatte.geom.LineString;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -35,10 +35,10 @@ public class LineStringOperation<T extends LineString> extends LineStringExpress
     private final OperationImpl<T> opMixin;
 
     protected LineStringOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
-        this(type, op, ImmutableList.copyOf(args));
+        this(type, op, Arrays.asList(args));
     }
 
-    protected LineStringOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected LineStringOperation(Class<? extends T> type, Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>) mixin;
     }

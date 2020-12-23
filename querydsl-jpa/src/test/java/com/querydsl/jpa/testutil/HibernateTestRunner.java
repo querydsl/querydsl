@@ -13,8 +13,6 @@
  */
 package com.querydsl.jpa.testutil;
 
-import static com.google.common.base.Verify.verify;
-
 import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -39,6 +37,8 @@ import com.querydsl.jpa.HibernateTest;
 import com.querydsl.jpa.Mode;
 import com.querydsl.jpa.domain.Domain;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * @author tiwe
  *
@@ -57,8 +57,8 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
 
     @Override
     protected List<MethodRule> rules(Object test) {
-        verify(test instanceof HibernateTest, "In order to use the %s for %s, it should (directly or indirectly) implement %s",
-                HibernateTestRunner.class.getSimpleName(), test.getClass(), HibernateTest.class);
+        assertTrue(String.format("In order to use the %s for %s, it should (directly or indirectly) implement %s",
+                HibernateTestRunner.class.getSimpleName(), test.getClass(), HibernateTest.class), test instanceof HibernateTest);
 
         List<MethodRule> rules = super.rules(test);
         rules.add(new MethodRule() {

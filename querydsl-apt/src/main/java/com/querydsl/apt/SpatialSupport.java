@@ -13,16 +13,16 @@
  */
 package com.querydsl.apt;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import com.google.common.collect.ImmutableSet;
 import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.AbstractModule;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.TypeMappings;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 final class SpatialSupport {
 
@@ -67,7 +67,7 @@ final class SpatialSupport {
         @SuppressWarnings("unchecked")
         Set<String> imports = module.get(Set.class, CodegenModule.IMPORTS);
         if (imports.isEmpty()) {
-            imports = ImmutableSet.of(packageName);
+            imports = Collections.singleton(packageName);
         } else {
             Set<String> old = imports;
             imports = new HashSet<>();

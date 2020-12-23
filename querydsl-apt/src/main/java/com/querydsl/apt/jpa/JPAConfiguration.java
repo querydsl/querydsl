@@ -13,22 +13,53 @@
  */
 package com.querydsl.apt.jpa;
 
-import java.lang.annotation.Annotation;
-import java.util.List;
+import com.querydsl.apt.DefaultConfiguration;
+import com.querydsl.apt.QueryTypeImpl;
+import com.querydsl.apt.TypeUtils;
+import com.querydsl.apt.VisitorConfig;
+import com.querydsl.codegen.Keywords;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryEntities;
+import com.querydsl.core.annotations.QueryInit;
+import com.querydsl.core.annotations.QueryTransient;
+import com.querydsl.core.annotations.QueryType;
+import com.querydsl.core.util.Annotations;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.*;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
-import javax.persistence.*;
-
-import com.google.common.collect.ImmutableList;
-import com.querydsl.apt.*;
-import com.querydsl.codegen.Keywords;
-import com.querydsl.core.annotations.*;
-import com.querydsl.core.util.Annotations;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Configuration for {@link JPAAnnotationProcessor}
@@ -58,12 +89,12 @@ public class JPAConfiguration extends DefaultConfiguration {
 
     @SuppressWarnings("unchecked")
     protected List<Class<? extends Annotation>> getAnnotations() {
-        return ImmutableList.of(
+        return Collections.unmodifiableList(Arrays.asList(
             Access.class, Basic.class, Column.class, ElementCollection.class,
             Embedded.class, EmbeddedId.class, Enumerated.class, GeneratedValue.class, Id.class,
             JoinColumn.class, ManyToOne.class, ManyToMany.class, MapKeyEnumerated.class,
             OneToOne.class, OneToMany.class, PrimaryKeyJoinColumn.class, QueryType.class, QueryInit.class,
-            QueryTransient.class, Temporal.class, Transient.class, Version.class);
+            QueryTransient.class, Temporal.class, Transient.class, Version.class));
     }
 
     @Override

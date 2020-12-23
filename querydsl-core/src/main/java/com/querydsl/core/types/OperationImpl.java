@@ -13,11 +13,12 @@
  */
 package com.querydsl.core.types;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.Immutable;
 
-import com.google.common.collect.ImmutableList;
+import com.querydsl.core.util.CollectionUtils;
 import com.querydsl.core.util.PrimitiveUtils;
 
 /**
@@ -32,22 +33,22 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T> 
 
     private static final long serialVersionUID = 4796432056083507588L;
 
-    private final ImmutableList<Expression<?>> args;
+    private final List<Expression<?>> args;
 
     private final Operator operator;
 
     protected OperationImpl(Class<? extends T> type, Operator operator, Expression<?>... args) {
-        this(type, operator, ImmutableList.copyOf(args));
+        this(type, operator, Arrays.asList(args));
     }
 
-    protected OperationImpl(Class<? extends T> type, Operator operator, ImmutableList<Expression<?>> args) {
+    protected OperationImpl(Class<? extends T> type, Operator operator, List<Expression<?>> args) {
         super(type);
         Class<?> wrapped = PrimitiveUtils.wrap(type);
         if (!operator.getType().isAssignableFrom(wrapped)) {
             throw new IllegalArgumentException(operator.name());
         }
         this.operator = operator;
-        this.args = args;
+        this.args = CollectionUtils.unmodifiableList(args);
     }
 
     @Override

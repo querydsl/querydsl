@@ -14,11 +14,10 @@
 package com.querydsl.core;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * {@code QueryResults} bundles data for paged query results
@@ -32,7 +31,7 @@ public final class QueryResults<T> implements Serializable {
     private static final long serialVersionUID = -4591506147471300909L;
 
     private static final QueryResults<Object> EMPTY = new QueryResults<Object>(
-            ImmutableList.of(), Long.MAX_VALUE, 0L, 0L);
+            Collections.emptyList(), Long.MAX_VALUE, 0L, 0L);
 
     @SuppressWarnings("unchecked")
     public static <T> QueryResults<T> emptyResults() {
