@@ -15,15 +15,15 @@ package com.querydsl.jpa;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.*;
@@ -38,7 +38,7 @@ import com.querydsl.sql.*;
  */
 public final class NativeSQLSerializer extends SQLSerializer {
 
-    private final ListMultimap<Expression<?>, String> aliases = ArrayListMultimap.create();
+    private final Map<Expression<?>, List<String>> aliases = new HashMap<>();
 
     private final boolean wrapEntityProjections;
 
@@ -89,7 +89,7 @@ public final class NativeSQLSerializer extends SQLSerializer {
         return expr instanceof Operation && ((Operation<?>) expr).getOperator() == Ops.ALIAS;
     }
 
-    public ListMultimap<Expression<?>, String> getAliases() {
+    public Map<Expression<?>, List<String>> getAliases() {
         return aliases;
     }
 
@@ -113,18 +113,18 @@ public final class NativeSQLSerializer extends SQLSerializer {
             Path<?> path = (Path<?>) projection;
             if (!used.add(path.getMetadata().getName())) {
                 String alias = "col_1";
-                aliases.put(projection, alias);
+                aliases.computeIfAbsent(projection, NativeSQLSerializer::createArrayList).add(alias);
                 projection = ExpressionUtils.as(projection, alias);
                 modified = true;
             } else if (path.getAnnotatedElement().isAnnotationPresent(Column.class)) {
                 Column column = path.getAnnotatedElement().getAnnotation(Column.class);
                 if (!column.name().isEmpty()) {
-                    aliases.put(path, column.name());
+                    aliases.computeIfAbsent(projection, NativeSQLSerializer::createArrayList).add(column.name());
                 } else {
-                    aliases.put(path, ColumnMetadata.getName(path));
+                    aliases.computeIfAbsent(projection, NativeSQLSerializer::createArrayList).add(ColumnMetadata.getName(path));
                 }
             } else {
-                aliases.put(path, ColumnMetadata.getName(path));
+                aliases.computeIfAbsent(projection, NativeSQLSerializer::createArrayList).add(ColumnMetadata.getName(path));
             }
         } else if (projection instanceof FactoryExpression) {
             FactoryExpression<?> factoryExpr = (FactoryExpression<?>) projection;
@@ -145,17 +145,17 @@ public final class NativeSQLSerializer extends SQLSerializer {
                     }
                     if (!used.add(columnName)) {
                         String alias = "col_" + (j + 1);
-                        aliases.put(path, alias);
+                        aliases.computeIfAbsent(path, NativeSQLSerializer::createArrayList).add(alias);
                         fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                     } else {
-                        aliases.put(path, columnName);
+                        aliases.computeIfAbsent(path, NativeSQLSerializer::createArrayList).add(columnName);
                     }
                 } else if (isAlias(fargs.get(j))) {
                     Operation<?> operation = (Operation<?>) fargs.get(j);
-                    aliases.put(operation, operation.getArg(1).toString());
+                    aliases.computeIfAbsent(operation, NativeSQLSerializer::createArrayList).add(operation.getArg(1).toString());
                 } else if (!isAllExpression(fargs.get(j))) {
                     String alias = "col_" + (j + 1);
-                    aliases.put(fargs.get(j), alias);
+                    aliases.computeIfAbsent(fargs.get(j), NativeSQLSerializer::createArrayList).add(alias);
                     fargs.set(j, ExpressionUtils.as(fargs.get(j), alias));
                 }
             }
@@ -163,12 +163,12 @@ public final class NativeSQLSerializer extends SQLSerializer {
             modified = true;
         } else if (isAlias(projection)) {
             Operation<?> operation = (Operation<?>) projection;
-            aliases.put(operation, operation.getArg(1).toString());
+            aliases.computeIfAbsent(operation, NativeSQLSerializer::createArrayList).add(operation.getArg(1).toString());
         } else {
             // https://github.com/querydsl/querydsl/issues/80
             if (!isAllExpression(projection)) {
                 String alias = "col_1";
-                aliases.put(projection, alias);
+                aliases.computeIfAbsent(projection, NativeSQLSerializer::createArrayList).add(alias);
                 projection = ExpressionUtils.as(projection, alias);
                 modified = true;
             }
@@ -178,6 +178,10 @@ public final class NativeSQLSerializer extends SQLSerializer {
             metadata.setProjection(projection);
         }
         super.serialize(metadata, forCountRow);
+    }
+
+    private static <T> ArrayList<T> createArrayList(Object key) {
+        return new ArrayList<T>();
     }
 
     @Override

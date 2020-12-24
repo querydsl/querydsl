@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import com.google.common.collect.ListMultimap;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.NonUniqueResultException;
@@ -93,7 +92,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
                 queryMixin.getMetadata().getParams());
 
         if (!forCount) {
-            ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
+            Map<Expression<?>, List<String>> aliases = serializer.getAliases();
             Set<String> used = new HashSet<>();
             // set entity paths
             Expression<?> projection = queryMixin.getMetadata().getProjection();
