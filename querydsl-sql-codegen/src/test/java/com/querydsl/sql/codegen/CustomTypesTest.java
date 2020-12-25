@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 import org.junit.Before;
@@ -75,7 +76,7 @@ public class CustomTypesTest extends AbstractJDBCTest {
 
         // export
         exporter.export(connection.getMetaData());
-        String person = new String(Files.readAllBytes(new File("target/customExport/test/QPerson.java").toPath()), StandardCharsets.UTF_8);
+        String person = new String(Files.readAllBytes(Paths.get("target", "customExport", "test", "QPerson.java")), StandardCharsets.UTF_8);
         //System.err.println(person);
         assertTrue(person.contains("createEnum(\"gender\""));
     }
