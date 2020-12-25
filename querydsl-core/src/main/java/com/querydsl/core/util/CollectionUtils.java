@@ -25,8 +25,6 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.google.common.collect.*;
-
 /**
  * CollectionUtils provides addition operations for Collection types that provide an immutable type
  * for single item collections and after that mutable instances
@@ -149,8 +147,8 @@ public final class CollectionUtils {
     public static <T> List<T> add(List<T> list, T element) {
         final int size = list.size();
         if (size == 0) {
-            return ImmutableList.of(element);
-        } else if (list instanceof ImmutableList) {
+            return Collections.singletonList(element);
+        } else if (isUnmodifiableType(list.getClass())) {
             if (size == 1) {
                 final T val = list.get(0);
                 list = new ArrayList<>();
@@ -164,7 +162,7 @@ public final class CollectionUtils {
     }
 
     public static <T> List<T> copyOf(List<T> list) {
-        if (list instanceof ImmutableList) {
+        if (isUnmodifiableType(list.getClass())) {
             return list;
         } else {
             return new ArrayList<>(list);
@@ -174,8 +172,8 @@ public final class CollectionUtils {
     public static <T> Set<T> add(Set<T> set, T element) {
         final int size = set.size();
         if (size == 0) {
-            return ImmutableSet.of(element);
-        } else if (set instanceof ImmutableSet) {
+            return Collections.singleton(element);
+        } else if (isUnmodifiableType(set.getClass())) {
             if (size == 1) {
                 final T val = set.iterator().next();
                 set = new HashSet<>();
@@ -189,7 +187,7 @@ public final class CollectionUtils {
     }
 
     public static <T> Set<T> copyOf(Set<T> set) {
-        if (set instanceof ImmutableSet) {
+        if (isUnmodifiableType(set.getClass())) {
             return set;
         } else {
             return new HashSet<>(set);
@@ -199,8 +197,8 @@ public final class CollectionUtils {
     public static <T> Set<T> addSorted(Set<T> set, T element) {
         final int size = set.size();
         if (size == 0) {
-            return ImmutableSet.of(element);
-        } else if (set instanceof ImmutableSet) {
+            return Collections.singleton(element);
+        } else if (isUnmodifiableType(set.getClass())) {
             if (size == 1) {
                 final T val = set.iterator().next();
                 set = new LinkedHashSet<>();
@@ -216,7 +214,7 @@ public final class CollectionUtils {
     public static <T> Set<T> removeSorted(Set<T> set, T element) {
         final int size = set.size();
         if (size == 0 || (size == 1 && set.contains(element))) {
-            return ImmutableSet.of();
+            return Collections.emptySet();
         } else {
             set.remove(element);
         }
@@ -224,18 +222,18 @@ public final class CollectionUtils {
     }
 
     public static <T> Set<T> copyOfSorted(Set<T> set) {
-        if (set instanceof ImmutableSet) {
+        if (isUnmodifiableType(set.getClass())) {
             return set;
         } else {
-            return new LinkedHashSet(set);
+            return new LinkedHashSet<>(set);
         }
     }
 
     public static <K,V> Map<K,V> put(Map<K,V> map, K key, V value) {
         final int size = map.size();
         if (size == 0) {
-            return ImmutableMap.of(key, value);
-        } else if (map instanceof ImmutableMap) {
+            return Collections.singletonMap(key, value);
+        } else if (isUnmodifiableType(map.getClass())) {
             map = new HashMap<>(map);
         }
         map.put(key, value);
@@ -243,7 +241,7 @@ public final class CollectionUtils {
     }
 
     public static <K,V> Map<K,V> copyOf(Map<K,V> map) {
-        if (map instanceof ImmutableMap) {
+        if (isUnmodifiableType(map.getClass())) {
             return map;
         } else {
             return new HashMap<>(map);
