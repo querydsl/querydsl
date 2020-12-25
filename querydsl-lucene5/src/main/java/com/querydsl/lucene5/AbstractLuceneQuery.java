@@ -13,7 +13,6 @@
  */
 package com.querydsl.lucene5;
 
-import com.google.common.base.CharMatcher;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -65,6 +64,8 @@ import java.util.function.Function;
  */
 public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>>
         implements SimpleQuery<Q>, Fetchable<T> {
+
+    private static final String JAVA_ISO_CONTROL = "[\\p{Cntrl}&&[^\r\n\t]]";
 
     private final QueryMixin<Q> queryMixin;
 
@@ -393,8 +394,7 @@ public abstract class AbstractLuceneQuery<T, Q extends AbstractLuceneQuery<T, Q>
 
     @Override
     public String toString() {
-        String str = createQuery().toString();
-        return CharMatcher.JAVA_ISO_CONTROL.replaceFrom(str, '_');
+        return createQuery().toString().replaceAll(JAVA_ISO_CONTROL, "");
     }
 
     private int maxDoc() throws IOException {
