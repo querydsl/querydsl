@@ -353,8 +353,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
 
     @Override
     public String toString() {
-        String str = createQuery().toString();
-        return createQuery().toString().replaceAll(JAVA_ISO_CONTROL, "");
+        return createQuery().toString().replaceAll(JAVA_ISO_CONTROL, "_");
     }
 
     private int maxDoc() throws IOException {
