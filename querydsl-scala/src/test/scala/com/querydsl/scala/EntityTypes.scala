@@ -1,8 +1,8 @@
 package com.querydsl.scala
 
-import com.google.common.base.CaseFormat
 import com.querydsl.codegen.utils.model._
 import com.querydsl.codegen._
+import com.querydsl.core.util.StringUtils.uncapitalize
 
 import scala.collection.JavaConversions._
 
@@ -36,7 +36,5 @@ object EntityTypes {
     val lastName = new Parameter("lastName", Types.STRING)
 
     entityType.addConstructor(new Constructor(List(firstName, lastName)))
-
-    def uncapitalize(str: String) = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, str)
 
 }
