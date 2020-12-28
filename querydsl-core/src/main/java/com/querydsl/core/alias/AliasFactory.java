@@ -13,21 +13,18 @@
  */
 package com.querydsl.core.alias;
 
-import java.util.concurrent.ExecutionException;
-
-import javax.annotation.Nullable;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.QueryException;
-import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadataFactory;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@code AliasFactory} is a factory class for alias creation
@@ -42,30 +39,11 @@ class AliasFactory {
 
     private final TypeSystem typeSystem;
 
-    // caches top level paths (class/var as key)
-    private final LoadingCache<Pair<Class<?>,String>, EntityPath<?>> pathCache;
-
-    private final LoadingCache<Pair<Class<?>,Expression<?>>, ManagedObject> proxyCache =
-        CacheBuilder.newBuilder().build(
-            new CacheLoader<Pair<Class<?>,Expression<?>>,ManagedObject>() {
-                @Override
-                public ManagedObject load(Pair<Class<?>, Expression<?>> input) {
-                    return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
-                }
-            });
+    private final ConcurrentHashMap<Class<?>, Map<Expression<?>, ManagedObject>> proxyCache = new ConcurrentHashMap<>();
 
     public AliasFactory(final PathFactory pathFactory, TypeSystem typeSystem) {
         this.pathFactory = pathFactory;
         this.typeSystem = typeSystem;
-        this.pathCache = CacheBuilder.newBuilder().build(
-            new CacheLoader<Pair<Class<?>, String>, EntityPath<?>>() {
-                @Override
-                public EntityPath<?> load(Pair<Class<?>, String> input) {
-                    return (EntityPath<?>) pathFactory.createEntityPath(
-                            input.getFirst(),
-                            PathMetadataFactory.forVariable(input.getSecond()));
-                }
-            });
     }
 
     /**
@@ -79,8 +57,9 @@ class AliasFactory {
     @SuppressWarnings("unchecked")
     public <A> A createAliasForExpr(Class<A> cl, Expression<? extends A> expr) {
         try {
-            return (A) proxyCache.get(Pair.<Class<?>, Expression<?>>of(cl, expr));
-        } catch (ExecutionException e) {
+            final Map<Expression<?>, ManagedObject> expressionCache = proxyCache.computeIfAbsent(cl, a -> Collections.synchronizedMap(new WeakHashMap<>()));
+            return (A) expressionCache.computeIfAbsent(expr, e -> (ManagedObject) createProxy(cl, expr));
+        } catch (ClassCastException e) {
            throw new QueryException(e);
         }
     }
@@ -105,14 +84,9 @@ class AliasFactory {
      * @param var variable name for the underlying expression
      * @return alias instance
      */
-    @SuppressWarnings("unchecked")
     public <A> A createAliasForVariable(Class<A> cl, String var) {
-        try {
-            Expression<?> path = pathCache.get(Pair.<Class<?>, String>of(cl, var));
-            return (A) proxyCache.get(Pair.<Class<?>, Expression<?>>of(cl, path));
-        } catch (ExecutionException e) {
-            throw new QueryException(e);
-        }
+        final Path<A> expr = pathFactory.createEntityPath(cl, PathMetadataFactory.forVariable(var));
+        return createAliasForExpr(cl, expr);
     }
 
     /**
