@@ -26,7 +26,7 @@ import javax.tools.JavaCompiler;
 
 import org.junit.Assert;
 
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.core.util.FileUtils;
 
 public abstract class AbstractProcessorTest {

@@ -27,9 +27,9 @@ import org.hibernate.mapping.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.codegen.SerializerConfig;

@@ -1,0 +1,9 @@
+public class JavaWriterTest {
+
+    public JavaWriterTest(String a, String b) {
+    }
+
+    public JavaWriterTest(String a) {
+    }
+
+}

@@ -13,7 +13,7 @@
  */
 package com.querydsl.collections;
 
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;

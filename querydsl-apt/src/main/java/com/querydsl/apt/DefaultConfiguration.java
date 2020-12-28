@@ -13,7 +13,7 @@
  */
 package com.querydsl.apt;
 
-import com.mysema.codegen.model.ClassType;
+import com.querydsl.codegen.utils.model.ClassType;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.DefaultVariableNameFunction;
 import com.querydsl.codegen.EmbeddableSerializer;

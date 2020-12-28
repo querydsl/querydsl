@@ -13,13 +13,13 @@
  */
 package com.querydsl.sql.codegen;
 
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.ScalaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.ScalaWriter;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;

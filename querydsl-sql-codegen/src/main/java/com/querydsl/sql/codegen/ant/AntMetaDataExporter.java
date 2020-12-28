@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
-import com.mysema.codegen.model.SimpleType;
+import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;

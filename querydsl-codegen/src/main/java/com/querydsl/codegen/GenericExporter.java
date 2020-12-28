@@ -13,13 +13,13 @@
  */
 package com.querydsl.codegen;
 
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.ScalaWriter;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.support.ClassUtils;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.ScalaWriter;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.utils.support.ClassUtils;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.PropertyType;
@@ -407,7 +407,7 @@ public class GenericExporter {
                     }
                     parameters.add(new Parameter("param" + i, parameterType));
                 }
-                type.addConstructor(new com.mysema.codegen.model.Constructor(parameters));
+                type.addConstructor(new com.querydsl.codegen.utils.model.Constructor(parameters));
             }
         }
     }

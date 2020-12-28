@@ -13,16 +13,16 @@
  */
 package com.querydsl.collections;
 
-import com.mysema.codegen.ECJEvaluatorFactory;
-import com.mysema.codegen.Evaluator;
-import com.mysema.codegen.EvaluatorFactory;
-import com.mysema.codegen.JDKEvaluatorFactory;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
-import com.mysema.codegen.support.ClassUtils;
+import com.querydsl.codegen.utils.ECJEvaluatorFactory;
+import com.querydsl.codegen.utils.Evaluator;
+import com.querydsl.codegen.utils.EvaluatorFactory;
+import com.querydsl.codegen.utils.JDKEvaluatorFactory;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.utils.model.Types;
+import com.querydsl.codegen.utils.support.ClassUtils;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
@@ -187,7 +187,7 @@ public class DefaultEvaluatorFactory {
         // creating context
         for (JoinExpression join : joins) {
             Expression<?> target = join.getTarget();
-            String typeName = com.mysema.codegen.support.ClassUtils.getName(target.getType());
+            String typeName = com.querydsl.codegen.utils.support.ClassUtils.getName(target.getType());
             if (vars.length() > 0) {
                 vars.append(",");
             }

@@ -13,10 +13,10 @@
  */
 package com.querydsl.apt;
 
-import com.mysema.codegen.model.Constructor;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.model.Constructor;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.codegen.QueryTypeFactory;

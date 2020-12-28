@@ -17,8 +17,8 @@ package com.querydsl.scala
 import java.util._
 import javax.inject.Inject
 
-import com.mysema.codegen.model.Parameter
-import com.mysema.codegen.{CodeWriter, ScalaWriter}
+import com.querydsl.codegen.utils.model.Parameter
+import com.querydsl.codegen.utils.{CodeWriter, ScalaWriter}
 import com.querydsl.codegen._
 import com.querydsl.scala.Serializer._
 

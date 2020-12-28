@@ -16,9 +16,9 @@ package com.querydsl.sql.codegen;
 import java.io.IOException;
 import java.util.*;
 
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Types;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Types;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;

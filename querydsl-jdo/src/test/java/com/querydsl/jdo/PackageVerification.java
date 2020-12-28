@@ -25,7 +25,7 @@ import javax.jdo.annotations.PersistenceCapable;
 
 import org.junit.Test;
 
-import com.mysema.codegen.CodeWriter;
+import com.querydsl.codegen.utils.CodeWriter;
 import com.querydsl.apt.jdo.JDOAnnotationProcessor;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.core.types.Expression;

@@ -27,12 +27,12 @@
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
-    </dependency>  
+    </dependency>
     <dependency>
-      <groupId>com.mysema.codegen</groupId>
-      <artifactId>codegen</artifactId>
-      <version>${codegen.version}</version>
-    </dependency>    
+      <groupId>com.querydsl</groupId>
+      <artifactId>codegen-utils</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     
     <dependency>  
       <groupId>javax.inject</groupId>  

@@ -13,7 +13,7 @@
  */
 package com.querydsl.codegen;
 
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;

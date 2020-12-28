@@ -25,7 +25,7 @@ import javax.persistence.Entity;
 
 import org.junit.Test;
 
-import com.mysema.codegen.CodeWriter;
+import com.querydsl.codegen.utils.CodeWriter;
 import com.querydsl.apt.hibernate.HibernateAnnotationProcessor;
 import com.querydsl.apt.jpa.JPAAnnotationProcessor;
 import com.querydsl.codegen.CodegenModule;

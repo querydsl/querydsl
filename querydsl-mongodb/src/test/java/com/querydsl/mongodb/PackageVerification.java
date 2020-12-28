@@ -25,7 +25,7 @@ import java.nio.file.Paths;
 
 import org.junit.Test;
 
-import com.mysema.codegen.CodeWriter;
+import com.querydsl.codegen.utils.CodeWriter;
 import com.querydsl.apt.morphia.MorphiaAnnotationProcessor;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.core.Entity;

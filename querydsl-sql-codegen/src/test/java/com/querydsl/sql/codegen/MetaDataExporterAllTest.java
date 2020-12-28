@@ -19,7 +19,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.core.testutil.Parallelized;
 import com.querydsl.core.testutil.SlowTest;

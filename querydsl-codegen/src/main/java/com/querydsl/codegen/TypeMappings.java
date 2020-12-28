@@ -19,7 +19,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.model.*;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.TemplateExpression;

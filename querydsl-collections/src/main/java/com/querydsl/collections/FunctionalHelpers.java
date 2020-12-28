@@ -13,7 +13,7 @@
  */
 package com.querydsl.collections;
 
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 import com.querydsl.core.EmptyMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;

@@ -25,8 +25,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.*;
 import com.querydsl.core.annotations.PropertyType;
 
 public class EmbeddableSerializerTest {

@@ -13,7 +13,7 @@
  */
 package com.querydsl.codegen;
 
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.Type;
 
 /**
  * {@code QueryTypeFactory} defines an interface for mapping domain types to Querydsl expression types

@@ -1,7 +1,7 @@
 package com.querydsl.scala
 
 import com.google.common.base.CaseFormat
-import com.mysema.codegen.model._
+import com.querydsl.codegen.utils.model._
 import com.querydsl.codegen._
 
 import scala.collection.JavaConversions._

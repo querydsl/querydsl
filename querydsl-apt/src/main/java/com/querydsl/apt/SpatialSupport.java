@@ -13,7 +13,7 @@
  */
 package com.querydsl.apt;
 
-import com.mysema.codegen.model.SimpleType;
+import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.codegen.AbstractModule;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.TypeMappings;

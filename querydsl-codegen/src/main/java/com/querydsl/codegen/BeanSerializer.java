@@ -13,12 +13,12 @@
  */
 package com.querydsl.codegen;
 
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.utils.model.Types;
 import com.querydsl.core.util.BeanUtils;
 
 import javax.annotation.Generated;

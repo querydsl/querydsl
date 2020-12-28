@@ -38,7 +38,7 @@
       <scope>provided</scope>
       <includes>
         <include>com.querydsl:*</include>
-        <include>com.mysema.codegen:*</include>
+        <include>com.querydsl.codegen.utils:*</include>
         <include>org.hibernate.javax.persistence:*</include>
       </includes>
     </dependencySet>

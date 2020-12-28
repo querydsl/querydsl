@@ -32,7 +32,7 @@ import com.querydsl.sql.Connections;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.core.util.FileUtils;
 

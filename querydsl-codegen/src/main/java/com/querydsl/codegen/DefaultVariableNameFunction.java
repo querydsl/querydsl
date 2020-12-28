@@ -15,7 +15,7 @@
  */
 package com.querydsl.codegen;
 
-import com.mysema.codegen.StringUtils;
+import com.querydsl.codegen.utils.StringUtils;
 
 import javax.lang.model.SourceVersion;
 import java.util.function.Function;

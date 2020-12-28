@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 
 public class MultiComparatorTest {
 

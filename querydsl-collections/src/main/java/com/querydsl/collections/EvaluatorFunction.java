@@ -13,7 +13,7 @@
  */
 package com.querydsl.collections;
 
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 
 import java.util.function.Function;
 

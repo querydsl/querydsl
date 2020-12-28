@@ -28,7 +28,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
-import com.mysema.codegen.model.SimpleType;
+import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;

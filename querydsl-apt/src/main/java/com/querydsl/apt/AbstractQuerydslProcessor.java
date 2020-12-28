@@ -32,10 +32,10 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
 
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.*;
 import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.annotations.QueryExclude;

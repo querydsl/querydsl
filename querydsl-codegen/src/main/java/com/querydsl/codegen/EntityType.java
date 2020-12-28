@@ -13,11 +13,11 @@
  */
 package com.querydsl.codegen;
 
-import com.mysema.codegen.StringUtils;
-import com.mysema.codegen.model.Constructor;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeAdapter;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.StringUtils;
+import com.querydsl.codegen.utils.model.Constructor;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeAdapter;
+import com.querydsl.codegen.utils.model.TypeCategory;
 
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;

@@ -13,12 +13,12 @@
  */
 package com.querydsl.apt;
 
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.TypeExtends;
-import com.mysema.codegen.model.TypeSuper;
-import com.mysema.codegen.model.Types;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.utils.model.TypeExtends;
+import com.querydsl.codegen.utils.model.TypeSuper;
+import com.querydsl.codegen.utils.model.Types;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.codegen.QueryTypeFactory;

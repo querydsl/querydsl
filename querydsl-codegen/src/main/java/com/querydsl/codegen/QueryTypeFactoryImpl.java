@@ -16,8 +16,8 @@ package com.querydsl.codegen;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
 
 /**
  * {@code QueryTypeFactoryImpl} is the default implementation of the {@link QueryTypeFactory} interface

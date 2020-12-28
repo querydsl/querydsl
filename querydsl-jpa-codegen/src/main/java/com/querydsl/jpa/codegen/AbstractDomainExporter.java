@@ -13,10 +13,10 @@
  */
 package com.querydsl.jpa.codegen;
 
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.EmbeddableSerializer;
 import com.querydsl.codegen.EntitySerializer;

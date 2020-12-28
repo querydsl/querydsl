@@ -19,7 +19,7 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 

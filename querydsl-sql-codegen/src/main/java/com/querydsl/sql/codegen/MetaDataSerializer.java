@@ -13,7 +13,7 @@
  */
 package com.querydsl.sql.codegen;
 
-import static com.mysema.codegen.Symbols.*;
+import static com.querydsl.codegen.utils.Symbols.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -23,8 +23,8 @@ import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.model.*;
 import com.querydsl.codegen.*;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.ForeignKey;

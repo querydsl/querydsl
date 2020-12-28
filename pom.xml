@@ -529,7 +529,7 @@
           </dependency>
         </dependencies>
         <configuration>
-          <excludes>**/generated/**/*</excludes>
+          <excludes>**/generated/**/*,**/com/querydsl/codegen/utils/**/*</excludes>
         </configuration>
       </plugin>
     </plugins>
@@ -560,6 +560,7 @@
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
+        <module>querydsl-codegen-utils</module>
         <module>querydsl-spatial</module>
         <module>querydsl-apt</module>
         <module>querydsl-collections</module>
@@ -591,6 +592,7 @@
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
+        <module>querydsl-codegen-utils</module>
         <module>querydsl-lucene3</module>
         <module>querydsl-hibernate-search</module>
       </modules>
@@ -601,6 +603,7 @@
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
+        <module>querydsl-codegen-utils</module>
         <module>querydsl-spatial</module>
         <module>querydsl-apt</module>
         <module>querydsl-sql</module>
@@ -618,6 +621,7 @@
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
+        <module>querydsl-codegen-utils</module>
         <module>querydsl-spatial</module>
         <module>querydsl-apt</module>
         <module>querydsl-sql</module>
@@ -634,6 +638,7 @@
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
+        <module>querydsl-codegen-utils</module>
         <module>querydsl-apt</module>
         <module>querydsl-lucene3</module>
         <module>querydsl-lucene4</module>
@@ -646,6 +651,7 @@
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
+        <module>querydsl-codegen-utils</module>
         <module>querydsl-apt</module>
         <module>querydsl-mongodb</module>
       </modules>
@@ -656,6 +662,7 @@
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
+        <module>querydsl-codegen-utils</module>
         <module>querydsl-spatial</module>
         <module>querydsl-sql</module>
         <module>querydsl-sql-spatial</module>
@@ -670,6 +677,7 @@
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
+        <module>querydsl-codegen-utils</module>
         <module>querydsl-apt</module>
         <module>querydsl-collections</module>
       </modules>
@@ -720,12 +728,6 @@
             <configuration>
               <disableXmlReport>true</disableXmlReport>
               <printSummary>false</printSummary>
-              <properties>
-                <property>
-                  <name>listener</name>
-                  <value>com.querydsl.core.testutil.TravisFoldListener</value>
-                </property>
-              </properties>
             </configuration>
           </plugin>
         </plugins>
