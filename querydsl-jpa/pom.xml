@@ -162,12 +162,6 @@
          </exclusion>
        </exclusions>
      </dependency>
-     <dependency>
-      <groupId>com.jolbox</groupId>
-      <artifactId>bonecp</artifactId>
-      <version>0.7.1.RELEASE</version>
-      <scope>test</scope>
-    </dependency>
     
     <dependency>
       <groupId>org.hsqldb</groupId>
