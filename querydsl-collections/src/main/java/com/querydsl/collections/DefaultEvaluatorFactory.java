@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 
 import com.google.common.primitives.Primitives;
 import com.mysema.codegen.ECJEvaluatorFactory;
@@ -52,7 +53,7 @@ public class DefaultEvaluatorFactory {
 
     public DefaultEvaluatorFactory(CollQueryTemplates templates) {
         this(templates,
-        Thread.currentThread().getContextClassLoader());
+        Thread.currentThread().getContextClassLoader() != null ? Thread.currentThread().getContextClassLoader() : DefaultEvaluatorFactory.class.getClassLoader());
     }
 
     public DefaultEvaluatorFactory(CollQueryTemplates templates, EvaluatorFactory factory) {
@@ -68,10 +69,11 @@ public class DefaultEvaluatorFactory {
 
     protected DefaultEvaluatorFactory(CollQueryTemplates templates, ClassLoader classLoader) {
         this.templates = templates;
-        if (classLoader instanceof URLClassLoader) {
-            this.factory = new JDKEvaluatorFactory((URLClassLoader) classLoader);
+        final JavaCompiler systemJavaCompiler = ToolProvider.getSystemJavaCompiler();
+        if (classLoader instanceof URLClassLoader && systemJavaCompiler != null) {
+            this.factory = new JDKEvaluatorFactory((URLClassLoader) classLoader, systemJavaCompiler);
         } else {
-            // for OSGi compatibility
+            // for OSGi and JRE compatibility
             this.factory = new ECJEvaluatorFactory(classLoader);
         }
     }
