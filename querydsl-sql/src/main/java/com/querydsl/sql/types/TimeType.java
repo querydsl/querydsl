@@ -33,7 +33,7 @@ public class TimeType extends AbstractDateTimeType<Time> {
 
     @Override
     public String getLiteral(Time value) {
-        return formatTime(value);
+        return timeFormatter.format(value.toLocalTime());
     }
 
     @Override

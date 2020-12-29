@@ -13,13 +13,17 @@
  */
 package com.querydsl.sql;
 
-import java.sql.Types;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import com.querydsl.core.types.Ops;
 import com.querydsl.sql.types.BigDecimalAsDoubleType;
 import com.querydsl.sql.types.BigIntegerAsLongType;
+
+import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 
 /**
  * {@code SQLiteTemplates} is a SQL dialect for SQLite
@@ -29,26 +33,11 @@ import com.querydsl.sql.types.BigIntegerAsLongType;
  */
 public class SQLiteTemplates extends SQLTemplates {
 
-    private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd");
-        }
-    };
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static final ThreadLocal<SimpleDateFormat> dateTimeFormatter = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        }
-    };
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private static final ThreadLocal<SimpleDateFormat> timeFormatter = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("HH:mm:ss");
-        }
-    };
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLiteTemplates DEFAULT = new SQLiteTemplates();
@@ -128,22 +117,27 @@ public class SQLiteTemplates extends SQLTemplates {
 
     @Override
     public String serialize(String literal, int jdbcType) {
-        try {
-            // XXX doesn't work with LocalDate, LocalDateTime and LocalTime
-            switch (jdbcType) {
-                case Types.TIMESTAMP:
-                case TIMESTAMP_WITH_TIMEZONE:
-                    return String.valueOf(dateTimeFormatter.get().parse(literal).getTime());
-                case Types.DATE:
-                    return String.valueOf(dateFormatter.get().parse(literal).getTime());
-                case Types.TIME:
-                case TIME_WITH_TIMEZONE:
-                    return String.valueOf(timeFormatter.get().parse(literal).getTime());
-                default:
-                    return super.serialize(literal, jdbcType);
-            }
-        } catch (ParseException e) {
-            throw new IllegalArgumentException(e);
+        // XXX doesn't work with LocalDate, LocalDateTime and LocalTime
+        switch (jdbcType) {
+            case Types.TIMESTAMP:
+            case TIMESTAMP_WITH_TIMEZONE:
+                return String.valueOf(
+                        dateTimeFormatter.parse(literal, LocalDateTime::from)
+                                .toInstant(ZoneOffset.UTC)
+                                .toEpochMilli());
+            case Types.DATE:
+                return String.valueOf(
+                        dateFormatter.parse(literal, LocalDate::from)
+                                .atStartOfDay(ZoneOffset.UTC)
+                                .toInstant()
+                                .toEpochMilli());
+            case Types.TIME:
+            case TIME_WITH_TIMEZONE:
+                return String.valueOf(
+                        timeFormatter.parse(literal, LocalTime::from)
+                                .get(ChronoField.MILLI_OF_DAY));
+            default:
+                return super.serialize(literal, jdbcType);
         }
     }
 

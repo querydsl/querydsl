@@ -13,9 +13,8 @@
  */
 package com.querydsl.sql.types;
 
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -37,40 +36,14 @@ public abstract class AbstractDateTimeType<T>  extends AbstractType<T> {
         return (Calendar) UTC.clone();
     }
 
-    private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd");
-        }
-    };
+    protected static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static final ThreadLocal<SimpleDateFormat> dateTimeFormatter = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        }
-    };
+    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private static final ThreadLocal<SimpleDateFormat> timeFormatter = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("HH:mm:ss");
-        }
-    };
+    protected static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public AbstractDateTimeType(int type) {
         super(type);
     }
 
-    protected static String formatDate(Date date) {
-        return dateFormatter.get().format(date);
-    }
-
-    protected static String formatDateTime(Date date) {
-        return dateTimeFormatter.get().format(date);
-    }
-
-    protected static String formatTime(Date date) {
-        return timeFormatter.get().format(date);
-    }
 }
