@@ -285,11 +285,13 @@
             <configuration>
               <rules>
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
+                  <excludes>
                     <exclude>com/querydsl/sql/types/AbstractJodaTimeDateTimeType</exclude>
                     <exclude>com/querydsl/sql/types/DateTimeType</exclude>
                     <exclude>com/querydsl/sql/types/LocalDateTimeType</exclude>
                     <exclude>com/querydsl/sql/types/LocalDateType</exclude>
                     <exclude>com/querydsl/sql/types/LocalTimeType</exclude>
+                  </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>
