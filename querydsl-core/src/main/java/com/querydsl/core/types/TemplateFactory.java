@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.WeakHashMap;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,7 +58,7 @@ public class TemplateFactory {
             + "([slu%]?%?)"
             + "\\}");
 
-    private final Map<String,Template> cache = new ConcurrentHashMap<String,Template>();
+    private final Map<String, Template> cache = Collections.synchronizedMap(new WeakHashMap<>());;
 
     private final char escape;
 
