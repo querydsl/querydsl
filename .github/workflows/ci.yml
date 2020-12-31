@@ -64,7 +64,7 @@ jobs:
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-        run: mvn --batch-mode deploy --settings deploy/.m2/settings.xml -DskipTests
+        run: mvn --batch-mode clean deploy --settings deploy/.m2/settings.xml -DskipTests
 
       - name: Clean up before caching
         run: rm -rf ~/.m2/repository/com/querydsl/
