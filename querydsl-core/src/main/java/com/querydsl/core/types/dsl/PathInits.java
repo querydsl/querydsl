@@ -62,11 +62,7 @@ public class PathInits implements Serializable {
                     key = initStr.substring(0, initStr.indexOf('.'));
                     inits = ImmutableList.of(initStr.substring(key.length() + 1));
                 }
-                Collection<String> values = properties.get(key);
-                if (values == null) {
-                    values = new ArrayList<String>();
-                    properties.put(key, values);
-                }
+                Collection<String> values = properties.computeIfAbsent(key, k -> new ArrayList<String>());
                 values.addAll(inits);
             }
         }

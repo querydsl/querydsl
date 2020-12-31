@@ -216,7 +216,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     public Path<?>[] all() {
-        return columnMetadata.keySet().toArray(new Path<?>[columnMetadata.size()]);
+        return columnMetadata.keySet().toArray(new Path<?>[0]);
     }
 
     @Override

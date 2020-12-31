@@ -19,6 +19,8 @@ import javax.persistence.Query;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.types.FactoryExpression;
 
+import java.util.stream.Stream;
+
 /**
  * {@code QueryHandle}r provides injection of provider specific functionality into the query logic
  *
@@ -41,6 +43,14 @@ public interface QueryHandler {
      * @return iterator
      */
     <T> CloseableIterator<T> iterate(Query query, @Nullable FactoryExpression<?> projection);
+
+    /**
+     * Stream the results with the optional projection
+     *
+     * @param query query
+     * @return stream
+     */
+    <T> Stream<T> stream(Query query, @Nullable FactoryExpression<?> projection);
 
     /**
      * Add the given scalar to the given native query

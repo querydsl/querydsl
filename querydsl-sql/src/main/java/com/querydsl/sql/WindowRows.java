@@ -59,7 +59,7 @@ public class WindowRows<A> {
         public BetweenAnd preceding(Expression<Integer> expr) {
             args.add(expr);
             str.append(PRECEDING);
-            str.append(" {" + (offset++) + "}");
+            str.append(" {").append(offset++).append("}");
             return new BetweenAnd();
         }
 
@@ -70,7 +70,7 @@ public class WindowRows<A> {
         public BetweenAnd following(Expression<Integer> expr) {
             args.add(expr);
             str.append(FOLLOWING);
-            str.append(" {" + (offset++) + "}");
+            str.append(" {").append(offset++).append("}");
             return new BetweenAnd();
         }
 
@@ -102,7 +102,7 @@ public class WindowRows<A> {
         public WindowFunction<A> preceding(Expression<Integer> expr) {
             args.add(expr);
             str.append(PRECEDING);
-            str.append(" {" + (offset++) + "}");
+            str.append(" {").append(offset++).append("}");
             return rv.withRowsOrRange(str.toString(), args);
         }
 
@@ -113,7 +113,7 @@ public class WindowRows<A> {
         public WindowFunction<A> following(Expression<Integer> expr) {
             args.add(expr);
             str.append(FOLLOWING);
-            str.append(" {" + (offset++) + "}");
+            str.append(" {").append(offset++).append("}");
             return rv.withRowsOrRange(str.toString(), args);
         }
 
@@ -155,7 +155,7 @@ public class WindowRows<A> {
     public WindowFunction<A> preceding(Expression<Integer> expr) {
         args.add(expr);
         str.append(PRECEDING);
-        str.append(" {" + (offset++) + "}");
+        str.append(" {").append(offset++).append("}");
         return rv.withRowsOrRange(str.toString(), args);
     }
 

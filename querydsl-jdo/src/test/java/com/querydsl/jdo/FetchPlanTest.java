@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class FetchPlanTest extends AbstractJDOTest {
         queriesField.setAccessible(true);
         List<Query> queries = (List<Query>) queriesField.get(query);
         Query jdoQuery = queries.get(0);
-        assertEquals(new HashSet<String>(Arrays.asList("products")),
+        assertEquals(new HashSet<String>(Collections.singletonList("products")),
                 jdoQuery.getFetchPlan().getGroups());
         assertEquals(1, jdoQuery.getFetchPlan().getMaxFetchDepth());
     }

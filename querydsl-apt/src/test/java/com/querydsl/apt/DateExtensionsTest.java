@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Ignore;
@@ -66,7 +67,7 @@ public class DateExtensionsTest extends AbstractProcessorTest {
 
     @Override
     protected Collection<String> getAPTOptions() {
-        return Arrays.asList("-AdefaultOverwrite=true");
+        return Collections.singletonList("-AdefaultOverwrite=true");
     }
 
 }

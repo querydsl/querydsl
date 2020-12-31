@@ -79,9 +79,7 @@ class JavaTypeMapping {
             registerDefault((Type<?>) Class.forName("com.querydsl.sql.types.JSR310ZonedDateTimeType").newInstance());
         } catch (ClassNotFoundException e) {
             // converters for JSR 310 are not loaded
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -160,11 +158,7 @@ class JavaTypeMapping {
     }
 
     public void setType(String table, String column, Type<?> type) {
-        Map<String,Type<?>> columns = typeByColumn.get(table);
-        if (columns == null) {
-            columns = new HashMap<String, Type<?>>();
-            typeByColumn.put(table, columns);
-        }
+        Map<String, Type<?>> columns = typeByColumn.computeIfAbsent(table, k -> new HashMap<String, Type<?>>());
         columns.put(column, type);
     }
 

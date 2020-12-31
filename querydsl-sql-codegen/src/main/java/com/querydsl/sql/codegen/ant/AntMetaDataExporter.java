@@ -379,15 +379,7 @@ public class AntMetaDataExporter extends Task {
 
             exporter.export(dbConn.getMetaData());
 
-        } catch (RuntimeException e) {
-            throw new BuildException(e);
-        } catch (InstantiationException e) {
-            throw new BuildException(e);
-        } catch (IllegalAccessException e) {
-            throw new BuildException(e);
-        } catch (ClassNotFoundException e) {
-            throw new BuildException(e);
-        } catch (SQLException e) {
+        } catch (RuntimeException | SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             throw new BuildException(e);
         } finally {
             if (dbConn != null) {

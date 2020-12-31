@@ -363,10 +363,8 @@ public class DefaultConfiguration implements Configuration {
     public SerializerConfig getSerializerConfig(EntityType entityType) {
         if (typeToConfig.containsKey(entityType.getFullName())) {
             return typeToConfig.get(entityType.getFullName());
-        } else if (packageToConfig.containsKey(entityType.getPackageName())) {
-            return packageToConfig.get(entityType.getPackageName());
         } else {
-            return defaultSerializerConfig;
+            return packageToConfig.getOrDefault(entityType.getPackageName(), defaultSerializerConfig);
         }
     }
 

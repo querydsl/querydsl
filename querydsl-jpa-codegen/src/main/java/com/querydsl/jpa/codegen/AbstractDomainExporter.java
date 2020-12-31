@@ -311,16 +311,13 @@ public abstract class AbstractDomainExporter {
     private void write(Serializer serializer, String path, EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         generatedFiles.add(targetFile);
-        Writer w = writerFor(targetFile);
-        try {
+        try (Writer w = writerFor(targetFile)) {
             CodeWriter writer = new JavaWriter(w);
             if (typeToConfig.containsKey(type.getJavaClass())) {
                 serializer.serialize(type, typeToConfig.get(type.getJavaClass()), writer);
             } else {
                 serializer.serialize(type, serializerConfig, writer);
             }
-        } finally {
-            w.close();
         }
     }
 

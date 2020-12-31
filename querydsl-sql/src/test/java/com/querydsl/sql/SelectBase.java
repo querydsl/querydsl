@@ -281,7 +281,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void coalesce() {
         Coalesce<String> c = new Coalesce<String>(employee.firstname, employee.lastname).add("xxx");
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(employee).where(c.getValue().eq("xxx")).select(employee.id).fetch());
     }
 
@@ -806,7 +806,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void groupBy_yearMonth() {
-        assertEquals(Arrays.asList(10L), query().from(employee)
+        assertEquals(Collections.singletonList(10L), query().from(employee)
                .groupBy(employee.datefield.yearMonth())
                .orderBy(employee.datefield.yearMonth().asc())
                .select(employee.id.count()).fetch());
@@ -1316,21 +1316,21 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void operation_in_constant_list() {
-        assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a'))).fetchCount());
+        assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Collections.singletonList('a'))).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b'))).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b','c'))).fetchCount());
     }
 
     @Test
     public void order_nullsFirst() {
-        assertEquals(Arrays.asList("Hello World"), query().from(survey)
+        assertEquals(Collections.singletonList("Hello World"), query().from(survey)
             .orderBy(survey.name.asc().nullsFirst())
             .select(survey.name).fetch());
     }
 
     @Test
     public void order_nullsLast() {
-        assertEquals(Arrays.asList("Hello World"), query().from(survey)
+        assertEquals(Collections.singletonList("Hello World"), query().from(survey)
             .orderBy(survey.name.asc().nullsLast())
             .select(survey.name).fetch());
     }
@@ -1378,7 +1378,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void path_in_constant_list() {
-        assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a"))).fetchCount());
+        assertEquals(0, query().from(survey).where(survey.name.in(Collections.singletonList("a"))).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).fetchCount());
     }
@@ -1815,7 +1815,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     public void templateExpression() {
         NumberExpression<Integer> one = Expressions.numberTemplate(Integer.class, "1");
-        assertEquals(Arrays.asList(1), query().from(survey).select(one.as("col1")).fetch());
+        assertEquals(Collections.singletonList(1), query().from(survey).select(one.as("col1")).fetch());
     }
 
     @Test

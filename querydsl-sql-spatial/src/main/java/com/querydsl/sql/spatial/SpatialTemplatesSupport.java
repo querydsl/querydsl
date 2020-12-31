@@ -41,7 +41,7 @@ public final class SpatialTemplatesSupport {
             if (i > start) {
                 result.append(", ");
             }
-            result.append("{" + i + "}");
+            result.append("{").append(i).append("}");
         }
         result.append(")");
         return result.toString();

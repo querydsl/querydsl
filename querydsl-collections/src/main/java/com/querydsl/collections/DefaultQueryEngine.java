@@ -209,7 +209,7 @@ public class DefaultQueryEngine implements QueryEngine {
         }
         Expression<?> expr = new ArrayConstructorExpression<Object>(Object[].class, orderByExpr);
         Evaluator orderEvaluator = evaluatorFactory.create(metadata, sources, expr);
-        Collections.sort(list, new MultiComparator(orderEvaluator, directions));
+        list.sort(new MultiComparator(orderEvaluator, directions));
     }
 
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {

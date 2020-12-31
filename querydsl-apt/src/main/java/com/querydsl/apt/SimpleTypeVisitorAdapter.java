@@ -54,9 +54,7 @@ class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor6<R, P> {
             try {
                 List<TypeMirror> bounds = (List<TypeMirror>) getBoundsMethod.invoke(t);
                 return bounds.get(0).accept(this, p);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e.getMessage(), e);
-            } catch (InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
         } else {

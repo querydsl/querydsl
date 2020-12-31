@@ -204,10 +204,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     protected Set<TypeElement> collectElements() {
-        Set<TypeElement> elements = new HashSet<TypeElement>();
 
         // from delegate methods
-        elements.addAll(processDelegateMethods());
+        Set<TypeElement> elements = new HashSet<TypeElement>(processDelegateMethods());
 
         // from class annotations
         for (Class<? extends Annotation> annotation : conf.getEntityAnnotations()) {
@@ -301,11 +300,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     private void registerTypeElement(String entityName, TypeElement element) {
-        Set<TypeElement> elements = context.typeElements.get(entityName);
-        if (elements == null) {
-            elements = new HashSet<TypeElement>();
-            context.typeElements.put(entityName, elements);
-        }
+        Set<TypeElement> elements = context.typeElements.computeIfAbsent(entityName, k -> new HashSet<TypeElement>());
         elements.add(element);
     }
 
@@ -599,15 +594,10 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
                 logInfo("Generating " + className + " for " + elements);
                 JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(className,
-                        elements.toArray(new Element[elements.size()]));
-                Writer writer = fileObject.openWriter();
-                try {
+                        elements.toArray(new Element[0]));
+                try (Writer writer = fileObject.openWriter()) {
                     SerializerConfig serializerConfig = conf.getSerializerConfig(model);
                     serializer.serialize(model, serializerConfig, new JavaWriter(writer));
-                } finally {
-                    if (writer != null) {
-                        writer.close();
-                    }
                 }
 
             } catch (IOException e) {

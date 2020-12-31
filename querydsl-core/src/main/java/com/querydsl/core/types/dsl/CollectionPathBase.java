@@ -92,13 +92,7 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
                     return (Q) constructor.newInstance(pm);
                 }
             }
-        } catch (NoSuchMethodException e) {
-            throw new ExpressionException(e);
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e);
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             throw new ExpressionException(e);
         }
 

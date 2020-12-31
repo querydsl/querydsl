@@ -223,7 +223,7 @@ public class MetaDataExporter {
             for (String tableType : tableTypesToExport.split(",")) {
                 types.add(tableType.trim());
             }
-            typesArray = types.toArray(new String[types.size()]);
+            typesArray = types.toArray(new String[0]);
         } else if (!exportAll) {
             List<String> types = new ArrayList<String>(2);
             if (exportTables) {
@@ -232,7 +232,7 @@ public class MetaDataExporter {
             if (exportViews) {
                 types.add("VIEW");
             }
-            typesArray = types.toArray(new String[types.size()]);
+            typesArray = types.toArray(new String[0]);
         }
 
         List<String> catalogs = patternAsList(catalogPattern);
@@ -268,13 +268,10 @@ public class MetaDataExporter {
     }
 
     private void handleTables(DatabaseMetaData md, String catalogPattern, String schemaPattern, String tablePattern, String[] types) throws SQLException {
-        ResultSet tables = md.getTables(catalogPattern, schemaPattern, tablePattern, types);
-        try {
+        try (ResultSet tables = md.getTables(catalogPattern, schemaPattern, tablePattern, types)) {
             while (tables.next()) {
                 handleTable(md, tables);
             }
-        } finally {
-            tables.close();
         }
     }
 
@@ -395,13 +392,10 @@ public class MetaDataExporter {
         }
 
         // collect columns
-        ResultSet columns = md.getColumns(catalog, schema, tableName.replace("/", "//"), null);
-        try {
+        try (ResultSet columns = md.getColumns(catalog, schema, tableName.replace("/", "//"), null)) {
             while (columns.next()) {
                 handleColumn(classModel, tableName, columns);
             }
-        } finally {
-            columns.close();
         }
 
         // serialize model

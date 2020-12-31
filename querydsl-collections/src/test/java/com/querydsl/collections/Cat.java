@@ -53,7 +53,7 @@ public class Cat extends Animal {
 
     public Cat(String name) {
         Cat kitten = new Cat();
-        this.kittens = Arrays.asList(kitten);
+        this.kittens = Collections.singletonList(kitten);
         this.kittenArray = new Cat[]{kitten};
         this.kittensByName = Collections.singletonMap("Kitty", kitten);
         this.name = name;

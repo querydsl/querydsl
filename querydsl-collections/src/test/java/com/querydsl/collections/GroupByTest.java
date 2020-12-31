@@ -124,7 +124,7 @@ public class GroupByTest {
         assertEquals(toInt(1), group.getOne(post.id));
         assertEquals("Post 1", group.getOne(post.name));
         assertEquals(toSet(1), group.getSet(comment.id));
-        assertEquals(Arrays.asList("Comment 1"), group.getList(comment.text));
+        assertEquals(Collections.singletonList("Comment 1"), group.getList(comment.text));
     }
 
     @Test
@@ -185,7 +185,7 @@ public class GroupByTest {
         assertEquals(toInt(1), array[0]);
         assertEquals("Post 1", array[1]);
         assertEquals(toSet(1), array[2]);
-        assertEquals(Arrays.asList("Comment 1"), array[3]);
+        assertEquals(Collections.singletonList("Comment 1"), array[3]);
     }
 
     @Test

@@ -558,12 +558,9 @@ public class GenericExporter {
             EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         generatedFiles.add(targetFile);
-        Writer w = writerFor(targetFile);
-        try {
+        try (Writer w = writerFor(targetFile)) {
             CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
             serializer.serialize(type, serializerConfig, writer);
-        } finally {
-            w.close();
         }
     }
 

@@ -136,9 +136,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         ClassLoader classLoader = null;
         try {
             classLoader = getProjectClassLoader();
-        } catch (MalformedURLException e) {
-            throw new MojoFailureException(e.getMessage(), e);
-        } catch (DependencyResolutionRequiredException e) {
+        } catch (MalformedURLException | DependencyResolutionRequiredException e) {
             throw new MojoFailureException(e.getMessage(), e);
         }
 
@@ -187,7 +185,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
                 urls.add(file.toURI().toURL());
             }
         }
-        return new URLClassLoader(urls.toArray(new URL[urls.size()]), getClass().getClassLoader());
+        return new URLClassLoader(urls.toArray(new URL[0]), getClass().getClassLoader());
     }
 
     @SuppressWarnings("rawtypes")

@@ -18,6 +18,7 @@ import static com.querydsl.core.alias.Alias.*;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 import org.junit.Before;
@@ -57,12 +58,12 @@ public class AliasTest extends AbstractQueryTest {
     public void aliasVariations2() {
         // 1st
         QCat cat = new QCat("cat");
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 from(cat, cats).where(cat.name.matches("fri.*")).select(cat.name).fetch());
 
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 from(c, cats).where($(c.getName()).matches("fri.*")).select($(c.getName())).fetch());
     }
 

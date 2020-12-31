@@ -25,8 +25,7 @@ public final class TypesDump {
             Connection c = Connections.getConnection();
             DatabaseMetaData m = c.getMetaData();
             System.out.println(m.getDatabaseProductName());
-            ResultSet rs = m.getTypeInfo();
-            try {
+            try (ResultSet rs = m.getTypeInfo()) {
                 while (rs.next()) {
                     String name = rs.getString("TYPE_NAME");
                     int jdbcType = rs.getInt("DATA_TYPE");
@@ -39,8 +38,6 @@ public final class TypesDump {
                         //System.out.println(rs.getInt("PRECISION"));
                     }
                 }
-            } finally {
-                rs.close();
             }
         } finally {
             Connections.close();

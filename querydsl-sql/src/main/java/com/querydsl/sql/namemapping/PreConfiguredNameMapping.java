@@ -71,20 +71,12 @@ public class PreConfiguredNameMapping implements NameMapping {
 
     public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
         SchemaAndTable key = new SchemaAndTable(schema, table);
-        Map<String, String> columnOverrides = schemaTableColumns.get(key);
-        if (columnOverrides == null) {
-            columnOverrides = new HashMap<String, String>();
-            schemaTableColumns.put(key, columnOverrides);
-        }
+        Map<String, String> columnOverrides = schemaTableColumns.computeIfAbsent(key, k -> new HashMap<String, String>());
         return columnOverrides.put(oldColumn, newColumn);
     }
 
     public String registerColumnOverride(String table, String oldColumn, String newColumn) {
-        Map<String, String> columnOverrides = tableColumns.get(table);
-        if (columnOverrides == null) {
-            columnOverrides = new HashMap<String, String>();
-            tableColumns.put(table, columnOverrides);
-        }
+        Map<String, String> columnOverrides = tableColumns.computeIfAbsent(table, k -> new HashMap<String, String>());
         return columnOverrides.put(oldColumn, newColumn);
     }
 

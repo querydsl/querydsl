@@ -74,8 +74,7 @@ public class FilterFactory {
 
     private <A extends Comparable<A>> Collection<Predicate> comparable(ComparableExpression<A> expr,
             ComparableExpression<A> other, A knownValue) {
-        List<Predicate> rv = new ArrayList<Predicate>();
-        rv.addAll(exprFilters(expr, other, knownValue));
+        List<Predicate> rv = new ArrayList<Predicate>(exprFilters(expr, other, knownValue));
         rv.add(expr.gt(other));
         rv.add(expr.gt(knownValue));
         rv.add(expr.goe(other));
@@ -167,8 +166,7 @@ public class FilterFactory {
 
     public <A, Q extends SimpleExpression<A>> Collection<Predicate> list(ListPath<A, Q> expr,
             ListExpression<A, Q> other, A knownElement) {
-        List<Predicate> rv = new ArrayList<Predicate>();
-        rv.addAll(collection(expr, other, knownElement));
+        List<Predicate> rv = new ArrayList<Predicate>(collection(expr, other, knownElement));
         rv.add(expr.get(0).eq(knownElement));
         return ImmutableList.copyOf(rv);
     }
@@ -268,7 +266,7 @@ public class FilterFactory {
         rv.add(expr.equalsIgnoreCase(other));
         rv.add(expr.equalsIgnoreCase(knownValue));
 
-        rv.add(expr.in(Arrays.asList(knownValue)));
+        rv.add(expr.in(Collections.singletonList(knownValue)));
 
         rv.add(expr.indexOf(other).gt(0));
         rv.add(expr.indexOf("X", 1).gt(0));

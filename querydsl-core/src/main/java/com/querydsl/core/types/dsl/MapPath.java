@@ -81,13 +81,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         try {
             PathMetadata md =  forMapAccess(key);
             return newInstance(md);
-        } catch (NoSuchMethodException e) {
-            throw new ExpressionException(e);
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e);
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             throw new ExpressionException(e);
         }
     }
@@ -97,13 +91,7 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
         try {
             PathMetadata md =  forMapAccess(key);
             return newInstance(md);
-        } catch (NoSuchMethodException e) {
-            throw new ExpressionException(e);
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e);
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             throw new ExpressionException(e);
         }
     }

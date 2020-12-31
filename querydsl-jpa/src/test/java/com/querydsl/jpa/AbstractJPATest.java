@@ -185,7 +185,7 @@ public abstract class AbstractJPATest {
         NumberPath<BigDecimal> bigd1 = entity.bigDecimal;
         NumberPath<BigDecimal> bigd2 = entity2.bigDecimal;
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                         .where(bigd1.add(bigd2).loe(new BigDecimal("1.00")))
                         .select(entity).fetch());
@@ -473,15 +473,14 @@ public abstract class AbstractJPATest {
     @Test
     public void collection_predicates() {
         ListPath<Cat, QCat> path = cat.kittens;
-        List<Predicate> predicates = Arrays.asList(
-//            path.eq(savedCats),
-//            path.in(savedCats),
-//            path.isNotNull(),
-//            path.isNull(),
-//            path.ne(savedCats),
-//            path.notIn(savedCats)
-//            path.when(other)
-        );
+        //            path.eq(savedCats),
+        //            path.in(savedCats),
+        //            path.isNotNull(),
+        //            path.isNull(),
+        //            path.ne(savedCats),
+        //            path.notIn(savedCats)
+        //            path.when(other)
+        List<Predicate> predicates = Collections.emptyList();
         for (Predicate pred : predicates) {
             System.err.println(pred);
             query().from(cat).where(pred).select(cat).fetch();
@@ -491,10 +490,9 @@ public abstract class AbstractJPATest {
     @Test
     public void collection_projections() {
         ListPath<Cat, QCat> path = cat.kittens;
-        List<Expression<?>> projections = Arrays.asList(
-//            path.fetchCount(),
-//            path.countDistinct()
-        );
+        //            path.fetchCount(),
+        //            path.countDistinct()
+        List<Expression<?>> projections = Collections.emptyList();
         for (Expression<?> proj : projections) {
             System.err.println(proj);
             query().from(cat).select(proj).fetch();
@@ -570,7 +568,7 @@ public abstract class AbstractJPATest {
     @Test
     public void contains4() {
         QEmployee employee = QEmployee.employee;
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(employee)
                         .where(
                                 employee.jobFunctions.contains(JobFunction.CODER),
@@ -701,22 +699,22 @@ public abstract class AbstractJPATest {
         QSimpleTypes entity = new QSimpleTypes("entity1");
         QSimpleTypes entity2 = new QSimpleTypes("entity2");
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                 .where(entity.ddouble.divide(entity2.ddouble).loe(2.0))
                 .select(entity).fetch());
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                 .where(entity.ddouble.divide(entity2.iint).loe(2.0))
                 .select(entity).fetch());
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                 .where(entity.iint.divide(entity2.ddouble).loe(2.0))
                 .select(entity).fetch());
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                         .where(entity.iint.divide(entity2.iint).loe(2))
                         .select(entity).fetch());
@@ -730,17 +728,17 @@ public abstract class AbstractJPATest {
         NumberPath<BigDecimal> bigd1 = entity.bigDecimal;
         NumberPath<BigDecimal> bigd2 = entity2.bigDecimal;
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                         .where(bigd1.divide(bigd2).loe(new BigDecimal("1.00")))
                         .select(entity).fetch());
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                 .where(entity.ddouble.divide(bigd2).loe(new BigDecimal("1.00")))
                 .select(entity).fetch());
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                 .where(bigd1.divide(entity.ddouble).loe(new BigDecimal("1.00")))
                 .select(entity).fetch());
@@ -959,7 +957,7 @@ public abstract class AbstractJPATest {
     @Test
     public void in4() {
         //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(cat).where(cat.id.eq(1), cat.kittens.any().id.in(1, 2, 3)).select(cat).fetch());
     }
 
@@ -1039,7 +1037,7 @@ public abstract class AbstractJPATest {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         QBookMark bookMark = QBookMark.bookMark;
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(bookVersion)
                         .join(bookVersion.definition.bookMarks, bookMark)
                         .where(
@@ -1122,7 +1120,7 @@ public abstract class AbstractJPATest {
     @Test
     public void map_get() {
         QShow show = QShow.show;
-        assertEquals(Arrays.asList("A"), query().from(show).select(show.acts.get("a")).fetch());
+        assertEquals(Collections.singletonList("A"), query().from(show).select(show.acts.get("a")).fetch());
     }
 
     @Test
@@ -1203,7 +1201,7 @@ public abstract class AbstractJPATest {
         //select m.text from Show s join s.acts a where key(a) = 'B'
         QShow show = QShow.show;
         StringPath act = Expressions.stringPath("act");
-        assertEquals(Arrays.asList(), query().from(show).join(show.acts, act).select(act).fetch());
+        assertEquals(Collections.emptyList(), query().from(show).join(show.acts, act).select(act).fetch());
     }
 
     @Test
@@ -1222,7 +1220,7 @@ public abstract class AbstractJPATest {
         QSimpleTypes entity = new QSimpleTypes("entity1");
         QSimpleTypes entity2 = new QSimpleTypes("entity2");
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                         .where(entity.ddouble.multiply(entity2.ddouble).loe(2.0))
                         .select(entity).fetch());
@@ -1236,7 +1234,7 @@ public abstract class AbstractJPATest {
         NumberPath<BigDecimal> bigd1 = entity.bigDecimal;
         NumberPath<BigDecimal> bigd2 = entity2.bigDecimal;
 
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(entity, entity2)
                         .where(bigd1.multiply(bigd2).loe(new BigDecimal("1.00")))
                         .select(entity).fetch());
@@ -1543,7 +1541,7 @@ public abstract class AbstractJPATest {
     @Ignore // FIXME
     @ExcludeIn(DERBY)
     public void substring_from_right() {
-        assertEquals(Arrays.asList(), query().from(cat)
+        assertEquals(Collections.emptyList(), query().from(cat)
                 .where(cat.name.substring(-1, 1).eq(cat.name.substring(-2, 1)))
                 .select(cat).fetch());
     }
@@ -1551,7 +1549,7 @@ public abstract class AbstractJPATest {
     @Test
     @ExcludeIn({HSQLDB, DERBY})
     public void substring_from_right2() {
-        assertEquals(Arrays.asList(), query().from(cat)
+        assertEquals(Collections.emptyList(), query().from(cat)
                 .where(cat.name.substring(cat.name.length().subtract(1), cat.name.length())
                         .eq(cat.name.substring(cat.name.length().subtract(2), cat.name.length().subtract(1))))
                 .select(cat).fetch());
@@ -1565,7 +1563,7 @@ public abstract class AbstractJPATest {
         NumberPath<BigDecimal> bigd1 = entity.bigDecimal;
         NumberPath<BigDecimal> bigd2 = entity2.bigDecimal;
 
-        assertEquals(Arrays.asList(), query().from(entity, entity2)
+        assertEquals(Collections.emptyList(), query().from(entity, entity2)
                 .where(bigd1.subtract(bigd2).loe(new BigDecimal("1.00")))
                 .select(entity).fetch());
     }
@@ -1613,7 +1611,7 @@ public abstract class AbstractJPATest {
     @Test
     public void sum_of_integer() {
         QCat cat2 = new QCat("cat2");
-        assertEquals(Arrays.asList(), query().from(cat)
+        assertEquals(Collections.emptyList(), query().from(cat)
                 .where(select(cat2.breed.sum())
                         .from(cat2).where(cat2.eq(cat.mate)).gt(0))
                 .select(cat).fetch());

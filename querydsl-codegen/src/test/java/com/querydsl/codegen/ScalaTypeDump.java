@@ -60,7 +60,7 @@ public class ScalaTypeDump {
                     params.add(new Parameter("arg" + params.size(), new ClassType(paramType)));
                 }
                 Type returnType = new ClassType(m.getReturnType());
-                writer.beginPublicMethod(returnType, ":" + m.getName(), params.toArray(new Parameter[params.size()]));
+                writer.beginPublicMethod(returnType, ":" + m.getName(), params.toArray(new Parameter[0]));
                 writer.end();
             }
             writer.end();

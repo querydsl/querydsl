@@ -74,7 +74,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                     if (!first) {
                         builder.append(", ");
                     }
-                    builder.append("{" + size + "}");
+                    builder.append("{").append(size).append("}");
                     args.add(expr);
                     size++;
                     first = false;
@@ -86,7 +86,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                     builder.append(" ");
                 }
                 builder.append(ORDER_BY);
-                builder.append("{" + size + "}");
+                builder.append("{").append(size).append("}");
                 args.add(ExpressionUtils.orderBy(orderBy));
                 size++;
             }

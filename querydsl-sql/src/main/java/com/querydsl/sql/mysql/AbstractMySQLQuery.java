@@ -19,7 +19,6 @@ import java.sql.Connection;
 import javax.inject.Provider;
 
 import com.google.common.base.Joiner;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -73,7 +72,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C bigResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BIG_RESULT);
     }
@@ -86,7 +84,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C bufferResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BUFFER_RESULT);
     }
@@ -97,7 +94,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C cache() {
         return addFlag(Position.AFTER_SELECT, SQL_CACHE);
     }
@@ -108,7 +104,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C calcFoundRows() {
         return addFlag(Position.AFTER_SELECT, SQL_CALC_FOUND_ROWS);
     }
@@ -119,7 +114,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C highPriority() {
         return addFlag(Position.AFTER_SELECT, HIGH_PRIORITY);
     }
@@ -130,7 +124,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @param var variable name
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C into(String var) {
         return addFlag(Position.END, "\ninto " + var);
     }
@@ -141,7 +134,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @param file file to write to
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C intoDumpfile(File file) {
         return addFlag(Position.END, "\ninto dumpfile '" + file.getPath() + "'");
     }
@@ -153,7 +145,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @param file file to write to
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C intoOutfile(File file) {
         return addFlag(Position.END, "\ninto outfile '" + file.getPath() + "'");
     }
@@ -164,7 +155,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C lockInShareMode() {
         return addFlag(Position.END, LOCK_IN_SHARE_MODE);
     }
@@ -175,7 +165,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C noCache() {
         return addFlag(Position.AFTER_SELECT, SQL_NO_CACHE);
     }
@@ -186,7 +175,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C smallResult() {
         return addFlag(Position.AFTER_SELECT, SQL_SMALL_RESULT);
     }
@@ -198,7 +186,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C straightJoin() {
         return addFlag(Position.AFTER_SELECT, STRAIGHT_JOIN);
     }
@@ -211,7 +198,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @param indexes index names
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C forceIndex(String... indexes) {
         return addJoinFlag(" force index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
@@ -223,7 +209,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @param indexes index names
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C ignoreIndex(String... indexes) {
         return addJoinFlag(" ignore index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
@@ -235,7 +220,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      * @param indexes index names
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C useIndex(String... indexes) {
         return addJoinFlag(" use index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
@@ -248,7 +232,6 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = MySQLQuery.class, castRequired = true)
     public C withRollup() {
         return addFlag(Position.AFTER_GROUP_BY, WITH_ROLLUP);
     }

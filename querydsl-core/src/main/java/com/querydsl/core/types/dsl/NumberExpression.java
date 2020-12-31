@@ -776,8 +776,8 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
 
     private List<T> convert(Number... numbers) {
         List<T> list = new ArrayList<T>(numbers.length);
-        for (int i = 0; i < numbers.length; i++) {
-            list.add(MathUtils.cast(numbers[i], getType()));
+        for (Number number : numbers) {
+            list.add(MathUtils.cast(number, getType()));
         }
         return list;
     }

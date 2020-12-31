@@ -16,6 +16,7 @@ package com.querydsl.jdo;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 import javax.jdo.JDOUserException;
@@ -226,7 +227,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
 
     @Override
     public <U> Q from(CollectionExpression<?, U> path, Path<U> alias) {
-        return queryMixin.from(ExpressionUtils.as((Path) path, alias));
+        return (Q) queryMixin.from((Expression) ExpressionUtils.as((Path) path, alias));
     }
 
     public JDOQLTemplates getTemplates() {
@@ -240,6 +241,11 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     @Override
     public CloseableIterator<T> iterate() {
         return new IteratorAdapter<T>(fetch().iterator(), closeable);
+    }
+
+    @Override
+    public Stream<T> stream() {
+        return fetch().stream().onClose(this::close);
     }
 
     @Override

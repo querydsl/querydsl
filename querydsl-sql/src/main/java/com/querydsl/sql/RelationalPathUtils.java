@@ -45,7 +45,7 @@ public final class RelationalPathUtils {
     }
 
     private static <T> FactoryExpression<T> createConstructorProjection(RelationalPath<T> path) {
-        Expression<?>[] exprs = path.getColumns().toArray(new Expression[path.getColumns().size()]);
+        Expression<?>[] exprs = path.getColumns().toArray(new Expression[0]);
         return Projections.<T>constructor((Class) path.getType(), exprs);
     }
 

@@ -42,11 +42,8 @@ public abstract class AbstractQueryTest {
         AnnotationConfiguration cfg = new AnnotationConfiguration();
         cfg.addAnnotatedClass(User.class);
         Properties props = new Properties();
-        InputStream is = SearchQueryTest.class.getResourceAsStream("/derby.properties");
-        try {
+        try (InputStream is = SearchQueryTest.class.getResourceAsStream("/derby.properties")) {
             props.load(is);
-        } finally {
-            is.close();
         }
         cfg.setProperties(props);
         sessionFactory = cfg.buildSessionFactory();

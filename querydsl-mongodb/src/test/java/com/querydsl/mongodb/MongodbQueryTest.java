@@ -497,7 +497,7 @@ public class MongodbQueryTest {
                 list.add(u);
             }
         }
-        return list.toArray(new User[list.size()]);
+        return list.toArray(new User[0]);
     }
 
     @Test

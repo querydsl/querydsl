@@ -88,7 +88,7 @@ abstract class AbstractGroupByTransformer<K, T> implements ResultTransformer<T> 
             }
         }
 
-        this.expressions = projection.toArray(new Expression[projection.size()]);
+        this.expressions = projection.toArray(new Expression[0]);
     }
 
     protected static FactoryExpression<Tuple> withoutGroupExpressions(final FactoryExpression<Tuple> expr) {
