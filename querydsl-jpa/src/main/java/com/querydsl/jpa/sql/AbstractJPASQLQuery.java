@@ -157,7 +157,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
         JPAUtil.setConstants(query, serializer.getConstantToAllLabels(), queryMixin.getMetadata().getParams());
         this.projection = null; // necessary when query is reused
 
-        if (projection instanceof FactoryExpression) {
+        if (!forCount && projection instanceof FactoryExpression) {
             if (!queryHandler.transform(query, (FactoryExpression<?>) projection)) {
                 this.projection = (FactoryExpression<?>) projection;
             }
@@ -265,11 +265,11 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     public QueryResults<T> fetchResults() {
         // TODO : handle entity projections as well
         try {
-            Query query = createQuery(true);
-            long total = ((Number) query.getSingleResult()).longValue();
+            Query countQuery = createQuery(true);
+            long total = ((Number) countQuery.getSingleResult()).longValue();
             if (total > 0) {
                 QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-                query = createQuery(false);
+                Query query = createQuery(false);
                 @SuppressWarnings("unchecked")
                 List<T> list = (List<T>) getResultList(query);
                 return new QueryResults<T>(list, modifiers, total);
