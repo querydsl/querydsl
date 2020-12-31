@@ -20,12 +20,13 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 
 /**
- * {@code LocalDateTimeType} maps LocalDateTime to Timestamp on the JDBC level
+ * {@code LocalDateTimeType} maps {@linkplain org.joda.time.LocalDateTime}
+ * to {@linkplain java.sql.Timestamp} on the JDBC level
  *
  * @author tiwe
  *
  */
-public class LocalDateTimeType extends AbstractDateTimeType<LocalDateTime> {
+public class LocalDateTimeType extends AbstractJodaTimeDateTimeType<LocalDateTime> {
 
     public LocalDateTimeType() {
         super(Types.TIMESTAMP);

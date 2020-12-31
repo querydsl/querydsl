@@ -64,6 +64,7 @@
     <slf4j.version>1.6.1</slf4j.version>
     <surefire.version>2.18</surefire.version>
     <animal-sniffer.version>1.18</animal-sniffer.version>
+    <jodatime.version>2.10.8</jodatime.version>
     <morphia.version>1.3.2</morphia.version>
     
     <!-- Import-Package definitions for maven-bundle-plugin -->
@@ -284,6 +285,13 @@
             <configuration>
               <rules>
                 <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
+                  <excludes>
+                    <exclude>com/querydsl/sql/types/AbstractJodaTimeDateTimeType</exclude>
+                    <exclude>com/querydsl/sql/types/DateTimeType</exclude>
+                    <exclude>com/querydsl/sql/types/LocalDateTimeType</exclude>
+                    <exclude>com/querydsl/sql/types/LocalDateType</exclude>
+                    <exclude>com/querydsl/sql/types/LocalTimeType</exclude>
+                  </excludes>
                   <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
                   <dumpDetails>true</dumpDetails>
                   <publicOnly>true</publicOnly>

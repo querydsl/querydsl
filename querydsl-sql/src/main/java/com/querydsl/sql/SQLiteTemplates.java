@@ -13,14 +13,17 @@
  */
 package com.querydsl.sql;
 
-import java.sql.Types;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import com.querydsl.core.types.Ops;
 import com.querydsl.sql.types.BigDecimalAsDoubleType;
 import com.querydsl.sql.types.BigIntegerAsLongType;
+
+import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 
 /**
  * {@code SQLiteTemplates} is a SQL dialect for SQLite
@@ -30,11 +33,11 @@ import com.querydsl.sql.types.BigIntegerAsLongType;
  */
 public class SQLiteTemplates extends SQLTemplates {
 
-    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLiteTemplates DEFAULT = new SQLiteTemplates();
@@ -118,12 +121,21 @@ public class SQLiteTemplates extends SQLTemplates {
         switch (jdbcType) {
             case Types.TIMESTAMP:
             case TIMESTAMP_WITH_TIMEZONE:
-                return String.valueOf(dateTimeFormatter.parseDateTime(literal).getMillis());
+                return String.valueOf(
+                        dateTimeFormatter.parse(literal, LocalDateTime::from)
+                                .toInstant(ZoneOffset.UTC)
+                                .toEpochMilli());
             case Types.DATE:
-                return String.valueOf(dateFormatter.parseDateTime(literal).getMillis());
+                return String.valueOf(
+                        dateFormatter.parse(literal, LocalDate::from)
+                                .atStartOfDay(ZoneOffset.UTC)
+                                .toInstant()
+                                .toEpochMilli());
             case Types.TIME:
             case TIME_WITH_TIMEZONE:
-                return String.valueOf(timeFormatter.parseDateTime(literal).getMillis());
+                return String.valueOf(
+                        timeFormatter.parse(literal, LocalTime::from)
+                                .get(ChronoField.MILLI_OF_DAY));
             default:
                 return super.serialize(literal, jdbcType);
         }

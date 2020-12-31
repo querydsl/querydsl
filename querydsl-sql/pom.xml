@@ -33,8 +33,10 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>1.6</version>
-    </dependency>    
+      <version>${jodatime.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
