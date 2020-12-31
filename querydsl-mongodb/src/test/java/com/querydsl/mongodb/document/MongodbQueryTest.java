@@ -15,8 +15,6 @@
  */
 package com.querydsl.mongodb.document;
 
-import com.google.common.base.Functions;
-import com.google.common.collect.Lists;
 import com.mongodb.DBRef;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -47,6 +45,7 @@ import org.mongodb.morphia.mapping.Mapper;
 import java.lang.reflect.AnnotatedElement;
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.function.Function;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
@@ -67,8 +66,8 @@ public class MongodbQueryTest {
     private final QDates dates = QDates.dates;
     private final QCountry country = QCountry.country;
 
-    List<User> users = Lists.newArrayList();
-    List<Document> userDocuments = Lists.newArrayList();
+    List<User> users = new ArrayList<>();
+    List<Document> userDocuments = new ArrayList<>();
     User user1, user2, user3, user4;
     Document u1, u2, u3, u4;
     City tampere, helsinki;
@@ -103,7 +102,7 @@ public class MongodbQueryTest {
         u4 = asDocument(user4);
 
         // order users by lastname, firstname
-        userDocuments = Lists.newArrayList(u3, u4, u2, u1);
+        userDocuments = Arrays.asList(u3, u4, u2, u1);
     }
 
     @Test
@@ -665,7 +664,7 @@ public class MongodbQueryTest {
 
         SimpleMongodbQuery(final Morphia morphia, final Datastore datastore, final Class<?> entityType,
                            final MongoDatabase database) {
-            super(database.getCollection(datastore.getCollection(entityType).getName()), Functions.<Document>identity(),
+            super(database.getCollection(datastore.getCollection(entityType).getName()), Function.identity(),
                     new SampleSerializer(morphia));
             this.datastore = datastore;
             this.database = database;

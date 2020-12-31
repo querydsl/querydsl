@@ -16,14 +16,14 @@
 package com.querydsl.mongodb.document;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import org.bson.Document;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.mongodb.ReadPreference;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinExpression;
@@ -119,23 +119,24 @@ public abstract class AbstractMongodbQuery<Q extends AbstractMongodbQuery<Q>> im
     @SuppressWarnings("unchecked")
     @Nullable
     protected Predicate createJoinFilter(QueryMetadata metadata) {
-        Multimap<Expression<?>, Predicate> predicates = HashMultimap.create();
+        Map<Expression<?>, Predicate> predicates = new HashMap<>();
         List<JoinExpression> joins = metadata.getJoins();
         for (int i = joins.size() - 1; i >= 0; i--) {
             JoinExpression join = joins.get(i);
             Path<?> source = (Path) ((Operation<?>) join.getTarget()).getArg(0);
             Path<?> target = (Path) ((Operation<?>) join.getTarget()).getArg(1);
-            Collection<Predicate> extraFilters = predicates.get(target.getRoot());
-            Predicate filter = ExpressionUtils.allOf(join.getCondition(), allOf(extraFilters));
+
+            final Predicate extraFilters = predicates.get(target.getRoot());
+            Predicate filter = ExpressionUtils.allOf(join.getCondition(), extraFilters);
             List<? extends Object> ids = getIds(target.getType(), filter);
             if (ids.isEmpty()) {
                 throw new NoResults();
             }
             Path<?> path = ExpressionUtils.path(String.class, source, "$id");
-            predicates.put(source.getRoot(), ExpressionUtils.in((Path<Object>) path, ids));
+            predicates.merge(source.getRoot(),  ExpressionUtils.in((Path<Object>) path, ids), ExpressionUtils::and);
         }
         Path<?> source = (Path) ((Operation) joins.get(0).getTarget()).getArg(0);
-        return allOf(predicates.get(source.getRoot()));
+        return predicates.get(source.getRoot());
     }
 
     private Predicate allOf(Collection<Predicate> predicates) {

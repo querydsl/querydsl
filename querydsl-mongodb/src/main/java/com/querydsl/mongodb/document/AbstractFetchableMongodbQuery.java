@@ -15,7 +15,6 @@
  */
 package com.querydsl.mongodb.document;
 
-import com.google.common.base.Function;
 import com.mongodb.ReadPreference;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -32,6 +31,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * {@link Fetchable} Mongodb query with a pluggable Document to Bean transformation.
