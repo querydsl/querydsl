@@ -1,7 +1,5 @@
 package com.querydsl.sql.types;
 
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
-
 import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +14,6 @@ import java.time.ZoneOffset;
  * to {@linkplain java.sql.Timestamp} on the JDBC level
  *
  */
-@IgnoreJRERequirement //conditionally included
 public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDateTime> {
 
     public JSR310LocalDateTimeType() {

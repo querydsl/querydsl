@@ -1,7 +1,5 @@
 package com.querydsl.sql.types;
 
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
-
 import java.time.temporal.Temporal;
 
 /**
@@ -9,10 +7,10 @@ import java.time.temporal.Temporal;
  *
  * @param <T>
  */
-@IgnoreJRERequirement //conditionally included
 public abstract class AbstractJSR310DateTimeType<T extends Temporal> extends AbstractDateTimeType<T> {
 
     public AbstractJSR310DateTimeType(int type) {
         super(type);
     }
+
 }

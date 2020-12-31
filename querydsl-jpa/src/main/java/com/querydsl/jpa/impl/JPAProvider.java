@@ -52,8 +52,8 @@ public final class JPAProvider {
             String[] versionParts = version.split("\\.");
             int major = Integer.parseInt(versionParts[0]);
             hibernate5 = major >= 5;
-        } catch (ClassNotFoundException e) {
-            hibernate5 = false;
+        } catch (Exception e) {
+            hibernate5 = true;
         }
 
         JPQLTemplates hibernateTemplates = hibernate5 ? Hibernate5Templates.DEFAULT : HQLTemplates.DEFAULT;
@@ -70,8 +70,8 @@ public final class JPAProvider {
 
         templatesByName.put("batoo", BatooTemplates.DEFAULT);
         templatesByName.put("eclipselink", EclipseLinkTemplates.DEFAULT);
-        templatesByName.put("hibernate", HQLTemplates.DEFAULT);
-        templatesByName.put("hibernate5", Hibernate5Templates.DEFAULT);
+        templatesByName.put("hibernate4", HQLTemplates.DEFAULT);
+        templatesByName.put("hibernate", Hibernate5Templates.DEFAULT);
         templatesByName.put("openjpa", OpenJPATemplates.DEFAULT);
         templatesByName.put("datanucleus", DataNucleusTemplates.DEFAULT);
     }

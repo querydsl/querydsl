@@ -7,14 +7,11 @@ import java.time.ZoneId;
 
 import javax.annotation.Nullable;
 
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
-
 /**
  * JSR310InstantType maps {@linkplain java.time.Instant} to
  * {@linkplain java.sql.Timestamp} on the JDBC level
  *
  */
-@IgnoreJRERequirement //conditionally included
 public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
 
     public JSR310InstantType() {

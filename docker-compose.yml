@@ -16,7 +16,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql.sh:/docker-entrypoint-initdb.d/mysql.sh
+      - ./db/mysql.sh:/docker-entrypoint-initdb.d/mysql.sh
     environment:
       - MYSQL_ROOT_PASSWORD=querydsl
       - MYSQL_USER=querydsl
@@ -27,7 +27,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./postgresql.sql:/docker-entrypoint-initdb.d/postgresql.sql
+      - ./db/postgresql.sql:/docker-entrypoint-initdb.d/postgresql.sql
     environment:
       - POSTGRES_USER=querydsl
       - POSTGRES_PASSWORD=querydsl
@@ -38,7 +38,7 @@ services:
     ports:
       - "1521:1521"
     volumes:
-    - "../devops/sql-snippets/oracle.sql:/docker-entrypoint-initdb.d/oracle.sql"
+    - "./devops/sql-snippets/oracle.sql:/docker-entrypoint-initdb.d/oracle.sql"
 
   cubrid:
     image: lighthopper/cubrid:9.2.26.0004
