@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import com.mysema.codegen.CodeWriter;
+import com.querydsl.codegen.utils.CodeWriter;
 
 /**
  * {@code GroovyBeanSerializer} is a {@link Serializer} implementation which serializes {@link EntityType}

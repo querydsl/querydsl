@@ -13,10 +13,10 @@
  */
 package com.querydsl.collections;
 
-import java.util.Comparator;
-
-import com.google.common.base.Function;
 import com.querydsl.core.types.Path;
+
+import java.util.Comparator;
+import java.util.function.Function;
 
 /**
  * Compares two beans based on the values at a specific path.
@@ -32,7 +32,7 @@ public class PathComparator<T, V extends Comparable<V>> implements Comparator<T>
     private final Function<T,V> accessor;
 
     public PathComparator(Path<V> comparingPath) {
-        this(comparingPath, GuavaHelpers.<T,V>wrap(comparingPath));
+        this(comparingPath, FunctionalHelpers.<T,V>wrap(comparingPath));
     }
 
     public PathComparator(Path<V> comparingPath, Function<T,V> accessor) {

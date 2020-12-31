@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.support.QueryMixin;
@@ -44,7 +44,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
 
     private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
-    private final Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
+    private final Map<Path<?>, Expression<?>> updates = new LinkedHashMap<>();
 
     private final EntityManager entityManager;
 

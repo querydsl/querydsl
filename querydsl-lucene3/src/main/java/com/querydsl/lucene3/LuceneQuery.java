@@ -16,7 +16,7 @@ package com.querydsl.lucene3;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
 
 /**
  * {@code LuceneQuery} is a Querydsl query implementation for Lucene queries.

@@ -14,6 +14,7 @@
 package com.querydsl.sql.dml;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +32,6 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.Path;
 import com.querydsl.sql.*;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * {@code AbstractSQLClause} is a superclass for SQL based DMLClause implementations
@@ -125,7 +124,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected SQLBindings createBindings(QueryMetadata metadata, SQLSerializer serializer) {
         String queryString = serializer.toString();
-        List<Object> args = newArrayList();
+        List<Object> args = new ArrayList<>();
         Map<ParamExpression<?>, Object> params = metadata.getParams();
         for (Object o : serializer.getConstants()) {
             if (o instanceof ParamExpression) {

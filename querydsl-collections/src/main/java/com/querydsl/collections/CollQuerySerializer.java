@@ -21,17 +21,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.primitives.Primitives;
 import com.querydsl.codegen.Serializer;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
+import com.querydsl.core.util.PrimitiveUtils;
 
 /**
  * {@code CollQuerySerializer} is a {@link Serializer} implementation for the Java language
@@ -40,11 +39,9 @@ import com.querydsl.core.types.*;
  */
 public final class CollQuerySerializer extends SerializerBase<CollQuerySerializer> {
 
-    private static final Set<Class<?>> WRAPPER_TYPES = ImmutableSet.copyOf(Primitives.allWrapperTypes());
+    private static final Map<Operator, String> OPERATOR_SYMBOLS = new IdentityHashMap<>();
 
-    private static final Map<Operator, String> OPERATOR_SYMBOLS = Maps.newIdentityHashMap();
-
-    private static final Map<Class<?>, String> CAST_SUFFIXES = Maps.newHashMap();
+    private static final Map<Class<?>, String> CAST_SUFFIXES = new HashMap<>();
 
     static {
         OPERATOR_SYMBOLS.put(Ops.EQ, " == ");
@@ -183,7 +180,7 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
             throw new UnsupportedOperationException("Aggregation operators are only supported as single expressions");
         }
         if (args.size() == 2 && OPERATOR_SYMBOLS.containsKey(operator)
-             && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())) {
+             && isPrimitiveOrWrapperType(args.get(0).getType()) && isPrimitiveOrWrapperType(args.get(1).getType())) {
             handle(args.get(0));
             append(OPERATOR_SYMBOLS.get(operator));
             handle(args.get(1));
@@ -205,8 +202,8 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
         }
     }
 
-    private static boolean isPrimitive(Class<?> type) {
-        return type.isPrimitive() || WRAPPER_TYPES.contains(type);
+    private static boolean isPrimitiveOrWrapperType(Class<?> type) {
+        return type.isPrimitive() || PrimitiveUtils.isWrapperType(type);
     }
 
     @Override

@@ -14,6 +14,8 @@
 package com.querydsl.jpa.sql;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,10 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
@@ -59,7 +57,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
 
     private final EntityManager entityManager;
 
-    protected final Multimap<String,Object> hints = HashMultimap.create();
+    protected final Map<String, Object> hints = new LinkedHashMap<>();
 
     protected final QueryHandler queryHandler;
 
@@ -113,8 +111,8 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
             query = entityManager.createNativeQuery(queryString);
         }
         if (!forCount) {
-            ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
-            Set<String> used = Sets.newHashSet();
+            Map<Expression<?>, List<String>> aliases = serializer.getAliases();
+            Set<String> used = new HashSet<>();
             if (projection instanceof FactoryExpression) {
                 for (Expression<?> expr : ((FactoryExpression<?>) projection).getArgs()) {
                     if (isEntityExpression(expr)) {
@@ -150,7 +148,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
             query.setFlushMode(flushMode);
         }
 
-        for (Map.Entry<String, Object> entry : hints.entries()) {
+        for (Map.Entry<String, Object> entry : hints.entrySet()) {
             query.setHint(entry.getKey(), entry.getValue());
         }
 

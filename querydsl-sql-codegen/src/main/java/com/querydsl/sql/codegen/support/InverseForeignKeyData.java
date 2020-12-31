@@ -18,7 +18,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.Type;
 
 /**
  * {@code InverseForeignKeyData} defines inverse foreign key data

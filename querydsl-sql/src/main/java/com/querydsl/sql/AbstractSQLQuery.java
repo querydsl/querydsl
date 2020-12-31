@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
@@ -270,7 +270,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public ResultSet getResults() {
         final SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
-        List<Object> constants = ImmutableList.of();
+        List<Object> constants = Collections.emptyList();
 
         try {
             listeners.preRender(context);
@@ -346,7 +346,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private CloseableIterator<T> iterateSingle(QueryMetadata metadata, @Nullable final Expression<T> expr) {
         SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
-        List<Object> constants = ImmutableList.of();
+        List<Object> constants = Collections.emptyList();
 
         try {
             listeners.preRender(context);
@@ -424,7 +424,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         Expression<T> expr = (Expression<T>) queryMixin.getMetadata().getProjection();
         SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
-        List<Object> constants = ImmutableList.of();
+        List<Object> constants = Collections.emptyList();
 
         try {
             listeners.preRender(context);
@@ -581,7 +581,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private long unsafeCount() throws SQLException {
         SQLListenerContextImpl context = startContext(connection(), getMetadata());
         String queryString = null;
-        List<Object> constants = ImmutableList.of();
+        List<Object> constants = Collections.emptyList();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 

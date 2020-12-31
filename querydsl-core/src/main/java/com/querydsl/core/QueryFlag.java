@@ -14,8 +14,8 @@
 package com.querydsl.core;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 
@@ -129,7 +129,7 @@ public class QueryFlag implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(position, flag);
+        return Objects.hash(position, flag);
     }
 
     @Override

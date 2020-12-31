@@ -13,15 +13,17 @@
  */
 package com.querydsl.sql;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.JoinFlag;
@@ -34,8 +36,6 @@ import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * {@code ProjectableSQLQuery} is the base type for SQL query implementations
@@ -295,7 +295,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
 
     @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
-        return innerUnion((List) ImmutableList.copyOf(sq));
+        return innerUnion((List) Arrays.asList(sq));
     }
 
     @SuppressWarnings("unchecked")
@@ -350,7 +350,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      */
     @SuppressWarnings("unchecked")
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from((Expression) UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
+        return from((Expression) UnionUtils.union(Arrays.asList(sq), (Path) alias, false));
     }
 
     /**
@@ -388,7 +388,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
      */
     @SuppressWarnings("unchecked")
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from((Expression) UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, true));
+        return from((Expression) UnionUtils.union(Arrays.asList(sq), (Path) alias, true));
     }
 
     @Override
@@ -450,7 +450,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     protected abstract SQLSerializer createSerializer();
 
     private Set<Path<?>> getRootPaths(Collection<? extends Expression<?>> exprs) {
-        Set<Path<?>> paths = Sets.newHashSet();
+        Set<Path<?>> paths = new HashSet<>();
         for (Expression<?> e : exprs) {
             Path<?> path = e.accept(PathExtractor.DEFAULT, null);
             if (path != null && !path.getMetadata().isRoot()) {
@@ -465,7 +465,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         if (expr instanceof FactoryExpression) {
             return ((FactoryExpression) expr).getArgs();
         } else {
-            return ImmutableList.of(expr);
+            return Collections.singletonList(expr);
         }
     }
 
@@ -505,7 +505,7 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     }
 
     protected SQLBindings getSQL(SQLSerializer serializer) {
-        List<Object> args = newArrayList();
+        List<Object> args = new ArrayList<>();
         Map<ParamExpression<?>, Object> params = getMetadata().getParams();
         for (Object o : serializer.getConstants()) {
             if (o instanceof ParamExpression) {

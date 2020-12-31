@@ -22,8 +22,8 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.*;
 
 
 public class ProjectionSerializerTest {

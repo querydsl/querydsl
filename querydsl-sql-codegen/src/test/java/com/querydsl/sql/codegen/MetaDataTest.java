@@ -18,9 +18,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.EntityType;
 
 public class MetaDataTest {

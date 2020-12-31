@@ -13,6 +13,9 @@
  */
 package com.querydsl.jpa;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,9 +23,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
@@ -42,9 +42,9 @@ import com.querydsl.core.types.dsl.CollectionPathBase;
  */
 public class JPAQueryMixin<T> extends QueryMixin<T> {
 
-    private final Set<Path<?>> paths = Sets.newHashSet();
+    private final Set<Path<?>> paths = new HashSet<>();
 
-    private final Map<Expression<?>, Path<?>> aliases = Maps.newHashMap();
+    private final Map<Expression<?>, Path<?>> aliases = new HashMap<>();
 
     private final JPAMapAccessVisitor mapAccessVisitor;
 
@@ -156,7 +156,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         PathMetadata metadata = path.getMetadata();
         // at least three levels
         if (metadata.getParent() != null && !metadata.getParent().getMetadata().isRoot()) {
-            Set<Expression<?>> exprs = Sets.newHashSet();
+            Set<Expression<?>> exprs = new HashSet<>();
             QueryMetadata md = getMetadata();
             exprs.addAll(md.getGroupBy());
             if (md.getProjection() != null) {
@@ -168,7 +168,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             if (md.getHaving() != null) {
                 exprs.add(md.getHaving());
             }
-            List<Path<?>> paths = Lists.newArrayList();
+            List<Path<?>> paths = new ArrayList<>();
             // extract paths
             PathsExtractor.DEFAULT.visit(exprs, paths);
 

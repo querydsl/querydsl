@@ -16,6 +16,7 @@ package com.querydsl.jdo;
 import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -27,7 +28,6 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.querydsl.jdo.test.domain.Product;
 import com.querydsl.jdo.test.domain.QProduct;
 import com.querydsl.jdo.test.domain.QStore;
@@ -86,7 +86,7 @@ public class FetchPlanTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        List<Object> entities = Lists.newArrayList();
+        List<Object> entities = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             entities.add(new Product("C" + i, "F", 200.00, 2));
             entities.add(new Product("B" + i, "E", 400.00, 4));

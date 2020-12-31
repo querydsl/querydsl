@@ -18,13 +18,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 import com.querydsl.core.alias.Gender;
 import com.querydsl.sql.*;
 import com.querydsl.sql.dml.SQLInsertClause;
@@ -75,7 +76,7 @@ public class CustomTypesTest extends AbstractJDBCTest {
 
         // export
         exporter.export(connection.getMetaData());
-        String person = Files.toString(new File("target/customExport/test/QPerson.java"), Charsets.UTF_8);
+        String person = new String(Files.readAllBytes(Paths.get("target", "customExport", "test", "QPerson.java")), StandardCharsets.UTF_8);
         //System.err.println(person);
         assertTrue(person.contains("createEnum(\"gender\""));
     }

@@ -21,7 +21,7 @@ public class SQLBindingsTest {
     public void empty() {
         SQLBindings bindings = query.getSQL();
         assertEquals("\nfrom dual", bindings.getSQL());
-        assertTrue(bindings.getBindings().isEmpty());
+        assertTrue(bindings.getNullFriendlyBindings().isEmpty());
     }
 
     @Test
@@ -29,7 +29,7 @@ public class SQLBindingsTest {
         query.from(survey).where(survey.name.eq("Bob")).select(survey.id);
         SQLBindings bindings = query.getSQL();
         assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ?", bindings.getSQL());
-        assertEquals(Collections.singletonList("Bob"), bindings.getBindings());
+        assertEquals(Collections.singletonList("Bob"), bindings.getNullFriendlyBindings());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class SQLBindingsTest {
         query.from(survey).where(survey.name.eq("Bob"), survey.name2.eq("A")).select(survey.id);
         SQLBindings bindings = query.getSQL();
         assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSQL());
-        assertEquals(Arrays.asList("Bob", "A"), bindings.getBindings());
+        assertEquals(Arrays.asList("Bob", "A"), bindings.getNullFriendlyBindings());
     }
 
     @Test
@@ -47,6 +47,6 @@ public class SQLBindingsTest {
         query.set(name, "Bob");
         SQLBindings bindings = query.getSQL();
         assertEquals("select SURVEY.ID\nfrom SURVEY SURVEY\nwhere SURVEY.NAME = ? and SURVEY.NAME2 = ?", bindings.getSQL());
-        assertEquals(Arrays.asList("Bob", "A"), bindings.getBindings());
+        assertEquals(Arrays.asList("Bob", "A"), bindings.getNullFriendlyBindings());
     }
 }

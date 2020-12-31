@@ -14,12 +14,12 @@
 package com.querydsl.sql;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import org.hsqldb.types.Types;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.Target;
 import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
@@ -111,9 +111,9 @@ public final class Connections {
         return DriverManager.getConnection(url, "sa", "");
     }
 
-    private static Connection getH2() throws SQLException, ClassNotFoundException {
+    public static Connection getH2() throws SQLException, ClassNotFoundException {
         Class.forName("org.h2.Driver");
-        String url = "jdbc:h2:./target/h2-test;LOCK_MODE=0";
+        String url = "jdbc:h2:./target/h2-test;LOCK_MODE=0;AUTO_SERVER=TRUE";
         return DriverManager.getConnection(url, "sa", "");
     }
 
@@ -200,7 +200,7 @@ public final class Connections {
     }
 
     public static Map<Integer, String> getSpatialData() {
-        Map<Integer, String> m = Maps.newHashMap();
+        Map<Integer, String> m = new HashMap<>();
         // point
         m.put(1, "POINT (2 2)");
         m.put(2, "POINT (8 7)");

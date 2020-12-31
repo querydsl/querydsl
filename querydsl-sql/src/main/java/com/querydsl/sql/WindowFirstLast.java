@@ -19,11 +19,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code WindowFirstLast} is a builder for window function expressions
@@ -90,7 +90,7 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
                 // TODO this check should be static
                 throw new IllegalStateException("No order by arguments given");
             }
-            ImmutableList.Builder<Expression<?>> args = ImmutableList.builder();
+            List<Expression<?>> args = new ArrayList<>();
             StringBuilder builder = new StringBuilder();
             builder.append("{0} keep (dense_rank ");
             args.add(target);
@@ -99,7 +99,7 @@ public class WindowFirstLast<T> extends MutableExpressionBase<T> {
             builder.append("{1}");
             args.add(ExpressionUtils.orderBy(orderBy));
             builder.append(")");
-            value = Expressions.template(target.getType(), builder.toString(), args.build());
+            value = Expressions.template(target.getType(), builder.toString(), CollectionUtils.unmodifiableList(args));
         }
         return value;
     }

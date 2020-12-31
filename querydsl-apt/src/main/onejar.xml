@@ -36,7 +36,6 @@
       <scope>provided</scope>
       <includes>
         <include>com.querydsl:*</include>
-        <include>com.mysema.codegen:*</include>
       </includes>
     </dependencySet>
   </dependencySets>

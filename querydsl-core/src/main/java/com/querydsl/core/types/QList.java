@@ -13,13 +13,14 @@
  */
 package com.querydsl.core.types;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code QList} represents a projection of type List
@@ -31,7 +32,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
 
     private static final long serialVersionUID = -7545994090073480810L;
 
-    private final ImmutableList<Expression<?>> args;
+    private final List<Expression<?>> args;
 
     /**
      * Create a new QList instance
@@ -41,7 +42,7 @@ public class QList extends FactoryExpressionBase<List<?>> {
     @SuppressWarnings("unchecked")
     protected QList(Expression<?>... args) {
         super((Class) List.class);
-        this.args = ImmutableList.copyOf(args);
+        this.args = CollectionUtils.unmodifiableList(Arrays.asList(args));
     }
 
     /**
@@ -50,9 +51,9 @@ public class QList extends FactoryExpressionBase<List<?>> {
      * @param args
      */
     @SuppressWarnings("unchecked")
-    protected QList(ImmutableList<Expression<?>> args) {
+    protected QList(List<Expression<?>> args) {
         super((Class) List.class);
-        this.args = args;
+        this.args = CollectionUtils.unmodifiableList(args);
     }
 
     /**
@@ -63,11 +64,11 @@ public class QList extends FactoryExpressionBase<List<?>> {
     @SuppressWarnings("unchecked")
     protected QList(Expression<?>[]... args) {
         super((Class) List.class);
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        List<Expression<?>> builder = new ArrayList<>();
         for (Expression<?>[] exprs: args) {
-            builder.add(exprs);
+            Collections.addAll(builder, exprs);
         }
-        this.args = builder.build();
+        this.args = CollectionUtils.unmodifiableList(builder);
     }
 
     @Override

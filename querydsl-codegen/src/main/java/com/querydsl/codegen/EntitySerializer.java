@@ -13,22 +13,19 @@
  */
 package com.querydsl.codegen;
 
-import static com.mysema.codegen.Symbols.*;
+import static com.querydsl.codegen.utils.Symbols.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.*;
+import java.util.function.Function;
 
 import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.model.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 
@@ -39,8 +36,6 @@ import com.querydsl.core.types.dsl.*;
  *
  */
 public class EntitySerializer implements Serializer {
-
-    private static final Joiner JOINER = Joiner.on("\", \"");
 
     private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class));
 
@@ -337,7 +332,7 @@ public class EntitySerializer implements Serializer {
     protected void introFactoryMethods(CodeWriter writer, final EntityType model) throws IOException {
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
-        Set<Integer> sizes = Sets.newHashSet();
+        Set<Integer> sizes = new HashSet<>();
 
         for (Constructor c : model.getConstructors()) {
             // begin
@@ -420,7 +415,9 @@ public class EntitySerializer implements Serializer {
         writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
+        List<Class<?>> classes = new ArrayList<>();
+        classes.add(PathMetadata.class);
+        classes.add(Generated.class);
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
         }
@@ -433,7 +430,7 @@ public class EntitySerializer implements Serializer {
         if (model.hasEntityFields() || model.hasInits()) {
             inits = true;
         } else {
-            Set<TypeCategory> collections = Sets.newHashSet(TypeCategory.COLLECTION, TypeCategory.LIST, TypeCategory.SET);
+            Set<TypeCategory> collections = EnumSet.of(TypeCategory.COLLECTION, TypeCategory.LIST, TypeCategory.SET);
             for (Property property : model.getProperties()) {
                 if (!property.isInherited() && collections.contains(property.getType().getCategory())) {
                     inits = true;
@@ -448,7 +445,7 @@ public class EntitySerializer implements Serializer {
     }
 
     private Set<String> getUsedClassNames(EntityType model) {
-        Set<String> result = Sets.newHashSet();
+        Set<String> result = new HashSet<>();
         result.add(model.getSimpleName());
         for (Property property : model.getProperties()) {
             result.add(property.getType().getSimpleName());
@@ -502,7 +499,7 @@ public class EntitySerializer implements Serializer {
         }
         if (!inits.isEmpty()) {
             inits.add(0, STAR);
-            String initsAsString = QUOTE + JOINER.join(inits) + QUOTE;
+            String initsAsString = QUOTE + String.join("\", \"", inits) + QUOTE;
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
         } else if (model.hasEntityFields() || superTypeHasEntityFields(model)) {
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT2");

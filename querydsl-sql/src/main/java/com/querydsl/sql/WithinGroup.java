@@ -14,17 +14,18 @@
 package com.querydsl.sql;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.SimpleOperation;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code WithinGroup} is a builder for {@code WITHIN GROUP} constructs
@@ -67,7 +68,7 @@ public class WithinGroup<T> extends SimpleOperation<T> {
         public SimpleExpression<T> getValue() {
             if (value == null) {
                 int size = 0;
-                ImmutableList.Builder<Expression<?>> args = ImmutableList.builder();
+                List<Expression<?>> args = new ArrayList<>();
                 StringBuilder builder = new StringBuilder();
                 builder.append("{0} within group (");
                 args.add(WithinGroup.this);
@@ -78,7 +79,7 @@ public class WithinGroup<T> extends SimpleOperation<T> {
                     args.add(ExpressionUtils.orderBy(orderBy));
                 }
                 builder.append(")");
-                value = Expressions.template((Class) WithinGroup.this.getType(), builder.toString(), args.build());
+                value = Expressions.template((Class) WithinGroup.this.getType(), builder.toString(), CollectionUtils.unmodifiableList(args));
             }
             return value;
         }
@@ -116,15 +117,15 @@ public class WithinGroup<T> extends SimpleOperation<T> {
     }
 
     public WithinGroup(Class<? extends T> type, Operator op) {
-        super(type, op, ImmutableList.<Expression<?>>of());
+        super(type, op, Collections.emptyList());
     }
 
     public WithinGroup(Class<? extends T> type, Operator op, Expression<?> arg) {
-        super(type, op, ImmutableList.<Expression<?>>of(arg));
+        super(type, op, Collections.singletonList(arg));
     }
 
     public WithinGroup(Class<? extends T> type, Operator op, Expression<?> arg1, Expression<?> arg2) {
-        super(type, op, ImmutableList.of(arg1, arg2));
+        super(type, op, Arrays.asList(arg1, arg2));
     }
 
     public WithinGroup(Class<? extends T> type, Operator op, Expression<?>... args) {

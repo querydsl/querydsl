@@ -15,7 +15,6 @@ package com.querydsl.core;
 
 import java.util.*;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.MapExpression;
 import com.querydsl.core.types.Path;
@@ -47,7 +46,7 @@ public class FilterFactory {
         rv.add(expr.not().and(other.not()));
         rv.add(expr.not());
         rv.add(other.not());
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public <A> Collection<Predicate> collection(CollectionExpressionBase<?,A> expr,
@@ -59,7 +58,7 @@ public class FilterFactory {
         if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public <A> Collection<Predicate> array(ArrayExpression<A[], A> expr, ArrayExpression<A[], A> other,
@@ -69,7 +68,7 @@ public class FilterFactory {
             rv.add(expr.size().gt(0));
         }
         rv.add(expr.get(0).eq(knownElement));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     private <A extends Comparable<A>> Collection<Predicate> comparable(ComparableExpression<A> expr,
@@ -87,7 +86,7 @@ public class FilterFactory {
 //        rv.add(expr.in(IntervalImpl.create(knownValue, null)));
 //        rv.add(expr.in(IntervalImpl.create(null, knownValue)));
 
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableList(rv);
 
     }
 
@@ -98,7 +97,7 @@ public class FilterFactory {
         rv.add(expr.after(knownValue));
         rv.add(expr.before(other));
         rv.add(expr.before(knownValue));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableList(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -116,7 +115,7 @@ public class FilterFactory {
                 rv.add(expr.yearWeek().eq(other.yearWeek()));
             }
         }
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableList(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -150,7 +149,7 @@ public class FilterFactory {
 
         rv.add(expr.second().eq(1));
         rv.add(expr.second().eq(other.second()));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableList(rv);
     }
 
     private <A> Collection<BooleanExpression> exprFilters(SimpleExpression<A> expr,
@@ -161,14 +160,14 @@ public class FilterFactory {
 
         rv.add(expr.ne(other));
         rv.add(expr.ne(knownValue));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public <A, Q extends SimpleExpression<A>> Collection<Predicate> list(ListPath<A, Q> expr,
             ListExpression<A, Q> other, A knownElement) {
         List<Predicate> rv = new ArrayList<Predicate>(collection(expr, other, knownElement));
         rv.add(expr.get(0).eq(knownElement));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableList(rv);
     }
 
     public <K,V> Collection<Predicate> map(MapExpressionBase<K,V,?> expr,
@@ -183,7 +182,7 @@ public class FilterFactory {
         if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -223,7 +222,7 @@ public class FilterFactory {
 
 //        rv.add(expr.in(IntervalImpl.create(0, 100)));
 
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableList(rv);
     }
 
     public <A> Collection<Predicate> pathFilters(SimpleExpression<A> expr,
@@ -334,7 +333,7 @@ public class FilterFactory {
 
 //        rv.add(expr.in(IntervalImpl.create("A", "Z")));
 
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableList(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -346,7 +345,7 @@ public class FilterFactory {
         rv.add(expr.hour().eq(other.hour()));
         rv.add(expr.minute().eq(other.minute()));
         rv.add(expr.second().eq(other.second()));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableList(rv);
     }
 
 }

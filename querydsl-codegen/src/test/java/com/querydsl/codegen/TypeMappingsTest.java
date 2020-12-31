@@ -16,11 +16,11 @@ package com.querydsl.codegen;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.mysema.codegen.model.SimpleType;
+import com.querydsl.codegen.utils.model.SimpleType;
 import org.junit.Test;
 
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.Type;
 
 import java.util.Collections;
 import java.util.List;

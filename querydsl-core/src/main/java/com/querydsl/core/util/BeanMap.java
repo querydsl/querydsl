@@ -22,10 +22,16 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
-
-import com.google.common.base.Function;
-import com.google.common.primitives.Primitives;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * An implementation of Map for JavaBeans which uses introspection to
@@ -642,7 +648,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 if (types != null && types.length > 0) {
                     Class<?> paramType = types[0];
                     if (paramType.isPrimitive()) {
-                        paramType = Primitives.wrap(paramType);
+                        paramType = PrimitiveUtils.wrap(paramType);
                     }
                     if (!paramType.isAssignableFrom(value.getClass())) {
                         value = convertType(paramType, value);

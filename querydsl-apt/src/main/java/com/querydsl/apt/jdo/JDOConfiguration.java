@@ -15,23 +15,40 @@
  */
 package com.querydsl.apt.jdo;
 
-import java.lang.annotation.Annotation;
-import java.util.List;
-
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
-import javax.jdo.annotations.*;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.TypeElement;
-
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.apt.DefaultConfiguration;
 import com.querydsl.apt.VisitorConfig;
 import com.querydsl.codegen.Keywords;
 import com.querydsl.core.annotations.QueryInit;
 import com.querydsl.core.annotations.QueryTransient;
 import com.querydsl.core.annotations.QueryType;
+
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
+import javax.jdo.annotations.Cacheable;
+import javax.jdo.annotations.Column;
+import javax.jdo.annotations.Columns;
+import javax.jdo.annotations.Embedded;
+import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.Extensions;
+import javax.jdo.annotations.ForeignKey;
+import javax.jdo.annotations.Index;
+import javax.jdo.annotations.Join;
+import javax.jdo.annotations.Key;
+import javax.jdo.annotations.NotPersistent;
+import javax.jdo.annotations.Order;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Serialized;
+import javax.jdo.annotations.Transactional;
+import javax.jdo.annotations.Unique;
+import javax.jdo.annotations.Value;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.TypeElement;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Configuration for {@link JDOAnnotationProcessor}
@@ -43,13 +60,13 @@ public class JDOConfiguration extends DefaultConfiguration {
 
     @SuppressWarnings("unchecked")
     private static final Iterable<Class<? extends Annotation>> relevantAnnotations
-            = ImmutableSet.of(
+            = Collections.unmodifiableList(Arrays.asList(
                     Cacheable.class, Column.class, Columns.class,
                     javax.jdo.annotations.Element.class, Embedded.class,
                     Extension.class, Extensions.class, ForeignKey.class,
                     Index.class, Join.class, Key.class, NotPersistent.class,
                     Order.class, Persistent.class, PrimaryKey.class, QueryType.class, QueryInit.class,
-                    QueryTransient.class, Serialized.class, Transactional.class, Unique.class, Value.class);
+                    QueryTransient.class, Serialized.class, Transactional.class, Unique.class, Value.class));
 
     public JDOConfiguration(ProcessingEnvironment processingEnvironment,
             RoundEnvironment roundEnv,

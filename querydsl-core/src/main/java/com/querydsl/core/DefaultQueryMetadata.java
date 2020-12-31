@@ -15,18 +15,20 @@ package com.querydsl.core;
 
 import static com.querydsl.core.util.CollectionUtils.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.querydsl.core.types.*;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code DefaultQueryMetadata} is the default implementation of the {@link QueryMetadata} interface.
@@ -42,14 +44,14 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private boolean distinct;
 
-    private Set<Expression<?>> exprInJoins = ImmutableSet.of();
+    private Set<Expression<?>> exprInJoins = new LinkedHashSet<>();
 
-    private List<Expression<?>> groupBy = ImmutableList.of();
+    private List<Expression<?>> groupBy = new ArrayList<>();
 
     @Nullable
     private Predicate having;
 
-    private List<JoinExpression> joins = ImmutableList.of();
+    private List<JoinExpression> joins = new ArrayList<>();
 
     private Expression<?> joinTarget;
 
@@ -58,24 +60,24 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Nullable
     private Predicate joinCondition;
 
-    private Set<JoinFlag> joinFlags = ImmutableSet.of();
+    private Set<JoinFlag> joinFlags = new LinkedHashSet<>();
 
     private QueryModifiers modifiers = QueryModifiers.EMPTY;
 
-    private List<OrderSpecifier<?>> orderBy = ImmutableList.of();
+    private List<OrderSpecifier<?>> orderBy = new ArrayList<>();
 
     @Nullable
     private Expression<?> projection;
 
     // NOTE : this is not necessarily serializable
-    private Map<ParamExpression<?>,Object> params = ImmutableMap.of();
+    private Map<ParamExpression<?>, Object> params = new LinkedHashMap<>();
 
     private boolean unique;
 
     @Nullable
     private Predicate where;
 
-    private Set<QueryFlag> flags = ImmutableSet.of();
+    private Set<QueryFlag> flags = new LinkedHashSet<>();
 
     private boolean extractParams = true;
 
@@ -114,14 +116,14 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addJoinFlag(JoinFlag flag) {
-        joinFlags = addSorted(joinFlags, flag);
+        joinFlags.add(flag);
     }
 
     @Override
     public void addGroupBy(Expression<?> o) {
         // group by elements can't be validated, since they can refer to projection elements
         // that are declared later
-        groupBy = add(groupBy, o);
+        groupBy.add(o);
     }
 
     @Override
@@ -139,11 +141,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private void addLastJoin() {
         if (joinTarget != null) {
-            joins = add(joins, new JoinExpression(joinType, joinTarget, joinCondition, joinFlags));
+            joins.add(new JoinExpression(joinType, joinTarget, joinCondition, CollectionUtils.unmodifiableSet(joinFlags)));
             joinType = null;
             joinTarget = null;
             joinCondition = null;
-            joinFlags = ImmutableSet.of();
+            joinFlags.clear();
         }
     }
 
@@ -152,7 +154,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         addLastJoin();
         if (!exprInJoins.contains(expr)) {
             if (expr instanceof Path && ((Path<?>) expr).getMetadata().isRoot()) {
-                exprInJoins = add(exprInJoins, expr);
+                exprInJoins.add(expr);
             } else {
                 validate(expr);
             }
@@ -173,7 +175,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void addOrderBy(OrderSpecifier<?> o) {
         // order specifiers can't be validated, since they can refer to projection elements
         // that are declared later
-        orderBy = add(orderBy, o);
+        orderBy.add(o);
     }
 
     @Override
@@ -196,7 +198,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void clearOrderBy() {
-        orderBy = ImmutableList.of();
+        orderBy.clear();
     }
 
     @Override
@@ -230,7 +232,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public List<Expression<?>> getGroupBy() {
-        return groupBy;
+        return Collections.unmodifiableList(groupBy);
     }
 
     @Override
@@ -241,10 +243,10 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public List<JoinExpression> getJoins() {
         if (joinTarget == null) {
-            return joins;
+            return Collections.unmodifiableList(joins);
         } else {
-            List<JoinExpression> j = Lists.newArrayList(joins);
-            j.add(new JoinExpression(joinType, joinTarget, joinCondition, joinFlags));
+            List<JoinExpression> j = new ArrayList<>(joins);
+            j.add(new JoinExpression(joinType, joinTarget, joinCondition, Collections.unmodifiableSet(new HashSet<>(joinFlags))));
             return j;
         }
     }
@@ -256,12 +258,12 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public Map<ParamExpression<?>,Object> getParams() {
-        return params;
+        return Collections.unmodifiableMap(params);
     }
 
     @Override
     public List<OrderSpecifier<?>> getOrderBy() {
-        return orderBy;
+        return Collections.unmodifiableList(orderBy);
     }
 
     @Override
@@ -286,7 +288,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void reset() {
-        params = ImmutableMap.of();
+        params = new LinkedHashMap<>();
         modifiers = QueryModifiers.EMPTY;
     }
 
@@ -370,15 +372,15 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             QueryMetadata q = (QueryMetadata) o;
             return q.getFlags().equals(flags)
                 && q.getGroupBy().equals(groupBy)
-                && Objects.equal(q.getHaving(), having)
+                && Objects.equals(q.getHaving(), having)
                 && q.isDistinct() == distinct
                 && q.isUnique() == unique
                 && q.getJoins().equals(getJoins())
                 && q.getModifiers().equals(modifiers)
                 && q.getOrderBy().equals(orderBy)
                 && q.getParams().equals(params)
-                && Objects.equal(q.getProjection(), projection)
-                && Objects.equal(q.getWhere(), where);
+                && Objects.equals(q.getProjection(), projection)
+                && Objects.equals(q.getWhere(), where);
 
         } else {
             return false;
@@ -387,7 +389,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(flags, groupBy, having, getJoins(), modifiers,
+        return Objects.hash(flags, groupBy, having, getJoins(), modifiers,
                 orderBy, params, projection, unique, where);
     }
 

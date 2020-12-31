@@ -17,10 +17,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
 
@@ -61,7 +62,7 @@ public class HQLTemplates extends JPQLTemplates {
     public HQLTemplates(char escape) {
         super(escape, QUERY_HANDLER);
 
-        ImmutableMap.Builder<Class<?>, String> builder = ImmutableMap.builder();
+        Map<Class<?>, String> builder = new HashMap<>();
         builder.put(Byte.class, "byte");
         builder.put(Short.class, "short");
         builder.put(Integer.class, "integer");
@@ -70,7 +71,7 @@ public class HQLTemplates extends JPQLTemplates {
         builder.put(Float.class, "float");
         builder.put(Double.class, "double");
         builder.put(BigDecimal.class, "big_decimal");
-        typeNames = builder.build();
+        typeNames = Collections.unmodifiableMap(builder);
 
         // add Hibernate Spatial mappings, if on classpath
         try {

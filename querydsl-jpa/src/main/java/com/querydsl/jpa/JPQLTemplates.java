@@ -13,11 +13,12 @@
  */
 package com.querydsl.jpa;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Sets;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.PathType;
@@ -36,11 +37,11 @@ public class JPQLTemplates extends Templates {
     public static final char DEFAULT_ESCAPE = '!';
 
     protected static final Set<? extends Operator> OTHER_LIKE_CASES
-            = Sets.immutableEnumSet(Ops.MATCHES, Ops.MATCHES_IC,
+            = Collections.unmodifiableSet(EnumSet.of(Ops.MATCHES, Ops.MATCHES_IC,
                     Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
                     Ops.LIKE_IC, Ops.LIKE_ESCAPE_IC,
                     Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
-                    Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
+                    Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC));
 
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
 

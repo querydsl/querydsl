@@ -26,7 +26,6 @@ import org.junit.experimental.categories.Category;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -58,7 +57,7 @@ public class MongodbQueryTest {
     private final QDates dates = QDates.dates;
     private final QCountry country = QCountry.country;
 
-    List<User> users = Lists.newArrayList();
+    List<User> users = new ArrayList<>();
     User u1, u2, u3, u4;
     City tampere, helsinki;
 
@@ -86,7 +85,7 @@ public class MongodbQueryTest {
         u4 = addUser("Jaana", "BeekkoNen", 50, new Address("Deekatu","00400",tampere));
 
         // order users by lastname, firstname
-        users = Lists.newArrayList(u3, u4, u2, u1);
+        users = Arrays.asList(u3, u4, u2, u1);
     }
 
     @Test
@@ -491,7 +490,7 @@ public class MongodbQueryTest {
     }
 
     private User[] otherUsers(User user) {
-        List<User> list = Lists.newArrayList();
+        List<User> list = new ArrayList<>();
         for (User u : users) {
             if (!u.equals(user)) {
                 list.add(u);

@@ -19,11 +19,10 @@ import java.util.*;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 
+import com.querydsl.core.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.StoreClause;
@@ -306,15 +305,15 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeMerge(metadata, entity, keys, columns, values, subQuery);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (SQLMergeBatch batch : batches) {
                 SQLSerializer serializer = createSerializer();
                 serializer.serializeMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return CollectionUtils.unmodifiableList(builder);
         }
     }
 
@@ -422,7 +421,7 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
 
     protected Collection<PreparedStatement> createStatements(boolean withKeys) throws SQLException {
         boolean addBatches = !configuration.getUseLiterals();
-        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+        Map<String, PreparedStatement> stmts = new HashMap<>();
 
         // add first batch
         listeners.preRender(context);

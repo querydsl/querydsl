@@ -16,7 +16,7 @@ package com.querydsl.core.types;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 /**
  * {@code PredicateOperation} provides a Boolean typed {@link Operation} implementation
@@ -32,7 +32,7 @@ public final class PredicateOperation extends OperationImpl<Boolean> implements 
     @Nullable
     private transient volatile Predicate not;
 
-    protected PredicateOperation(Operator operator, ImmutableList<Expression<?>> args) {
+    protected PredicateOperation(Operator operator, List<Expression<?>> args) {
         super(Boolean.class, operator, args);
     }
 

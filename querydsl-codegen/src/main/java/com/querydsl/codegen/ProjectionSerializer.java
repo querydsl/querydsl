@@ -14,15 +14,15 @@
 package com.querydsl.codegen;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.annotation.Generated;
 import javax.inject.Inject;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Sets;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.model.*;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -60,7 +60,7 @@ public final class ProjectionSerializer implements Serializer {
         writer.imports(NumberExpression.class.getPackage());
         writer.imports(ConstructorExpression.class, Generated.class);
 
-        Set<Integer> sizes = Sets.newHashSet();
+        Set<Integer> sizes = new HashSet<>();
         for (Constructor c : model.getConstructors()) {
             sizes.add(c.getParameters().size());
         }
@@ -91,7 +91,7 @@ public final class ProjectionSerializer implements Serializer {
         intro(model, writer);
 
         String localName = writer.getRawName(model);
-        Set<Integer> sizes = Sets.newHashSet();
+        Set<Integer> sizes = new HashSet<>();
 
         for (Constructor c : model.getConstructors()) {
             final boolean asExpr = sizes.add(c.getParameters().size());

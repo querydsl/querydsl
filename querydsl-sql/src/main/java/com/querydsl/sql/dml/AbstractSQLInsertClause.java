@@ -19,11 +19,10 @@ import java.util.*;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 
+import com.querydsl.core.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryFlag;
@@ -265,7 +264,7 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
             values.clear();
         }
 
-        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+        Map<String, PreparedStatement> stmts = new HashMap<>();
 
         // add first batch
         SQLSerializer serializer = createSerializer();
@@ -447,19 +446,19 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, columns, values, subQuery);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else if (batchToBulk) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, batches);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (SQLInsertBatch batch : batches) {
                 SQLSerializer serializer = createSerializer();
                 serializer.serializeInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return CollectionUtils.unmodifiableList(builder);
         }
     }
 

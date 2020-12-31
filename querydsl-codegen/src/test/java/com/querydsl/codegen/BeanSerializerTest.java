@@ -26,9 +26,9 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.StringUtils;
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.StringUtils;
+import com.querydsl.codegen.utils.model.*;
 
 public class BeanSerializerTest {
 

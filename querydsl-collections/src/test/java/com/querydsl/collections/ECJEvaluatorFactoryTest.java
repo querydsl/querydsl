@@ -2,7 +2,7 @@ package com.querydsl.collections;
 
 import org.junit.Test;
 
-import com.mysema.codegen.ECJEvaluatorFactory;
+import com.querydsl.codegen.utils.ECJEvaluatorFactory;
 
 public class ECJEvaluatorFactoryTest extends AbstractQueryTest {
 

@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.types.dsl;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -37,10 +37,10 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
     }
 
     protected EnumOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
-        this(type, op, ImmutableList.copyOf(args));
+        this(type, op, Arrays.asList(args));
     }
 
-    protected EnumOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected EnumOperation(Class<? extends T> type, Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>) mixin;
     }

@@ -14,7 +14,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Joiner;
 import com.querydsl.core.QueryException;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
@@ -28,8 +27,6 @@ import com.querydsl.sql.SQLTemplates;
 public class CreateTableClause {
 
     private static final Logger logger = LoggerFactory.getLogger(CreateTableClause.class);
-
-    private static final Joiner COMMA_JOINER = Joiner.on(", ");
 
     private final Connection connection;
 
@@ -178,7 +175,7 @@ public class CreateTableClause {
         if (primaryKey != null) {
             StringBuilder line = new StringBuilder();
             line.append("CONSTRAINT ").append(primaryKey.getName()).append(" ");
-            line.append("PRIMARY KEY(").append(COMMA_JOINER.join(primaryKey.getColumns())).append(")");
+            line.append("PRIMARY KEY(").append(String.join(", ", primaryKey.getColumns())).append(")");
             lines.add(line.toString());
         }
 
@@ -186,11 +183,11 @@ public class CreateTableClause {
         for (ForeignKeyData foreignKey : foreignKeys) {
             StringBuilder line = new StringBuilder();
             line.append("CONSTRAINT ").append(foreignKey.getName()).append(" ");
-            line.append("FOREIGN KEY(").append(COMMA_JOINER.join(foreignKey.getForeignColumns())).append(") ");
-            line.append("REFERENCES ").append(foreignKey.getTable()).append("(").append(COMMA_JOINER.join(foreignKey.getParentColumns())).append(")");
+            line.append("FOREIGN KEY(").append(String.join(", ", foreignKey.getForeignColumns())).append(") ");
+            line.append("REFERENCES ").append(foreignKey.getTable()).append("(").append(String.join(", ", foreignKey.getParentColumns())).append(")");
             lines.add(line.toString());
         }
-        builder.append("  ").append(Joiner.on(",\n  ").join(lines));
+        builder.append("  ").append(String.join(",\n  ", lines));
         builder.append("\n)\n");
         logger.info(builder.toString());
 
@@ -199,7 +196,7 @@ public class CreateTableClause {
 
             // indexes
             for (IndexData index : indexes) {
-                String indexColumns = COMMA_JOINER.join(index.getColumns());
+                String indexColumns = String.join(", ", index.getColumns());
                 String prefix = templates.getCreateIndex();
                 if (index.isUnique()) {
                     prefix = templates.getCreateUniqueIndex();

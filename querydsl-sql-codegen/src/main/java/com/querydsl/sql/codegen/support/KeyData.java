@@ -15,7 +15,7 @@ package com.querydsl.sql.codegen.support;
 
 import java.util.List;
 
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.Type;
 
 /**
  * Common interface for {@link ForeignKeyData} and {@link InverseForeignKeyData}

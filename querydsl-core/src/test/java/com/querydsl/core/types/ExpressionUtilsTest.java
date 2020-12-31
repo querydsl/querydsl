@@ -17,12 +17,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.types.dsl.Expressions;
@@ -157,7 +157,7 @@ public class ExpressionUtilsTest {
 
     @Test
     public void inAny() {
-        ImmutableSet<List<String>> of = ImmutableSet.of(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
+        Collection<List<String>> of = Arrays.asList(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
         assertEquals("str in [a, b, c] || str in [d, e, f]",
                 ExpressionUtils.inAny(str, of).toString());
     }
@@ -184,7 +184,7 @@ public class ExpressionUtilsTest {
 
     @Test
     public void notInAny() {
-        ImmutableSet<List<String>> of = ImmutableSet.of(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
+        Collection<List<String>> of = Arrays.asList(Arrays.asList("a", "b", "c"), Arrays.asList("d", "e", "f"));
         assertEquals("str not in [a, b, c] && str not in [d, e, f]",
                 ExpressionUtils.notInAny(str, of).toString());
     }

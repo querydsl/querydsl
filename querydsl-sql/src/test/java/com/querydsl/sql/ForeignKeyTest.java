@@ -17,9 +17,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.sql.domain.Employee;
 import com.querydsl.sql.domain.QEmployee;
+
+import java.util.Arrays;
 
 public class ForeignKeyTest {
 
@@ -32,8 +33,8 @@ public class ForeignKeyTest {
         assertEquals("employee.superiorId = employee2.ID", foreignKey.on(employee2).toString());
 
         foreignKey = new ForeignKey<Employee>(employee,
-               ImmutableList.of(employee.superiorId, employee.firstname),
-               ImmutableList.of("ID", "FN"));
+                Arrays.asList(employee.superiorId, employee.firstname),
+                Arrays.asList("ID", "FN"));
         assertEquals("employee.superiorId = employee2.ID && employee.firstname = employee2.FN", foreignKey.on(employee2).toString());
     }
 

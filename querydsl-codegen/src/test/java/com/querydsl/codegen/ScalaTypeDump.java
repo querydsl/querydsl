@@ -22,10 +22,10 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.codegen.ScalaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.ScalaWriter;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Type;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.*;
 

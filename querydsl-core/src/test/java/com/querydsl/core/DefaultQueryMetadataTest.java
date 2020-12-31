@@ -20,7 +20,6 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.dsl.Expressions;
@@ -106,11 +105,11 @@ public class DefaultQueryMetadataTest {
         metadata.addJoin(JoinType.DEFAULT, str);
         assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, str)), metadata.getJoins());
         metadata.addJoinCondition(str.isNull());
-        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, str, str.isNull(), ImmutableSet.<JoinFlag>of())),
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, str, str.isNull(), Collections.emptySet())),
                 metadata.getJoins());
         metadata.addJoin(JoinType.DEFAULT, str2);
         assertEquals(Arrays.asList(
-                new JoinExpression(JoinType.DEFAULT, str, str.isNull(), ImmutableSet.<JoinFlag>of()),
+                new JoinExpression(JoinType.DEFAULT, str, str.isNull(), Collections.emptySet()),
                 new JoinExpression(JoinType.DEFAULT, str2)),
                 metadata.getJoins());
     }

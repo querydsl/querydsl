@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.types;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
-
-import com.google.common.collect.ImmutableSet;
 
 /**
  * {@code Ops} provides the operators for the fluent query grammar.
@@ -131,19 +131,19 @@ public enum Ops implements Operator {
         return type;
     }
 
-    public static final Set<Operator> equalsOps = ImmutableSet.<Operator>of(EQ);
+    public static final Set<Ops> equalsOps = Collections.unmodifiableSet(EnumSet.of(EQ));
 
-    public static final Set<Operator> notEqualsOps = ImmutableSet.<Operator>of(NE);
+    public static final Set<Ops> notEqualsOps = Collections.unmodifiableSet(EnumSet.of(NE));
 
-    public static final Set<Operator> compareOps = ImmutableSet.<Operator>of(EQ, NE, LT, GT, GOE, LOE);
+    public static final Set<Ops> compareOps = Collections.unmodifiableSet(EnumSet.of(EQ, NE, LT, GT, GOE, LOE));
 
-    public static final Set<Operator> aggOps = ImmutableSet.<Operator>of(
+    public static final Set<Ops.AggOps> aggOps = Collections.unmodifiableSet(EnumSet.of(
             Ops.AggOps.AVG_AGG,
             Ops.AggOps.COUNT_AGG,
             Ops.AggOps.COUNT_DISTINCT_AGG,
             Ops.AggOps.MAX_AGG,
             Ops.AggOps.MIN_AGG,
-            Ops.AggOps.SUM_AGG);
+            Ops.AggOps.SUM_AGG));
 
     /**
      * Aggregation operators

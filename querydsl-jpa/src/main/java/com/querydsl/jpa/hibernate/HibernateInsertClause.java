@@ -16,6 +16,7 @@ package com.querydsl.jpa.hibernate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.support.QueryMixin;
@@ -49,7 +49,7 @@ public class HibernateInsertClause implements
 
     private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
-    private final Map<Path<?>, Expression<?>> inserts = Maps.newLinkedHashMap();
+    private final Map<Path<?>, Expression<?>> inserts = new LinkedHashMap<>();
 
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 

@@ -16,7 +16,7 @@ package com.querydsl.collections;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 import com.querydsl.core.util.NullSafeComparableComparator;
 
 /**

@@ -13,16 +13,16 @@
  */
 package com.querydsl.sql.codegen;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.geolatte.geom.*;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.Type;
 import com.querydsl.codegen.AbstractModule;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.TypeMappings;
@@ -53,7 +53,7 @@ public final class SpatialSupport {
     }
 
     private static void registerTypes(TypeMappings typeMappings) {
-        Map<Class<?>, Class<?>> mappings = Maps.newHashMap();
+        Map<Class<?>, Class<?>> mappings = new HashMap<>();
         mappings.put(GeometryCollection.class, GeometryCollectionPath.class);
         mappings.put(Geometry.class, GeometryPath.class);
         mappings.put(LinearRing.class, LinearRingPath.class);
@@ -75,11 +75,10 @@ public final class SpatialSupport {
         Set<String> imports = module.get(Set.class, CodegenModule.IMPORTS);
         String packageName = GeometryPath.class.getPackage().getName();
         if (imports.isEmpty()) {
-            imports = ImmutableSet.of(packageName);
+            imports = Collections.singleton(packageName);
         } else {
             Set<String> old = imports;
-            imports = Sets.newHashSet();
-            imports.addAll(old);
+            imports = new HashSet<>(old);
             imports.add(packageName);
         }
         module.bind(CodegenModule.IMPORTS, imports);

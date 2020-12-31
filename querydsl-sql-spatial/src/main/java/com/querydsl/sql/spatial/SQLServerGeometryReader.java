@@ -14,12 +14,12 @@
 package com.querydsl.sql.spatial;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geolatte.geom.*;
 import org.geolatte.geom.crs.CrsId;
 
-import com.google.common.collect.Lists;
 import com.vividsolutions.jts.io.ByteArrayInStream;
 import com.vividsolutions.jts.io.ByteOrderDataInStream;
 import com.vividsolutions.jts.io.ByteOrderValues;
@@ -146,7 +146,7 @@ class SQLServerGeometryReader {
     }
 
     private GeometryCollection decodeGeometryCollection(int shapeIdx) {
-        List<Geometry> geometries = Lists.newArrayList();
+        List<Geometry> geometries = new ArrayList<>();
         for (int i = shapeIdx; i < shapes.length; i++) {
             if (shapes[i].parentOffset == shapeIdx) {
                 geometries.add(decode(i));
@@ -156,7 +156,7 @@ class SQLServerGeometryReader {
     }
 
     private MultiLineString decodeMultiLineString(int shapeIdx) {
-        List<LineString> lineStrings = Lists.newArrayList();
+        List<LineString> lineStrings = new ArrayList<>();
         for (int i = shapeIdx; i < shapes.length; i++) {
             if (shapes[i].parentOffset == shapeIdx) {
                 lineStrings.add(decodeLineString(i));
@@ -166,7 +166,7 @@ class SQLServerGeometryReader {
     }
 
     private MultiPolygon decodeMultiPolygon(int shapeIdx) {
-        List<Polygon> polygons = Lists.newArrayList();
+        List<Polygon> polygons = new ArrayList<>();
         for (int i = shapeIdx; i < shapes.length; i++) {
             if (shapes[i].parentOffset == shapeIdx) {
                 polygons.add(decodePolygon(i));
@@ -176,7 +176,7 @@ class SQLServerGeometryReader {
     }
 
     private MultiPoint decodeMultiPoint(int shapeIdx) {
-        List<Point> points = Lists.newArrayList();
+        List<Point> points = new ArrayList<>();
         for (int i = shapeIdx; i < shapes.length; i++) {
             if (shapes[i].parentOffset == shapeIdx) {
                 points.add(decodePoint(i));
@@ -195,7 +195,7 @@ class SQLServerGeometryReader {
         if (shapeIdx < (shapes.length - 1)) {
             figureStopIdx = shapes[shapeIdx + 1].figureOffset - 1;
         }
-        List<LinearRing> linearRings = Lists.newArrayList();
+        List<LinearRing> linearRings = new ArrayList<>();
         for (int i = figureOffset; i <= figureStopIdx; i++) {
             linearRings.add(new LinearRing(createPoints(i)));
         }

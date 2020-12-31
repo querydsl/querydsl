@@ -29,7 +29,7 @@
       <scope>provided</scope>
       <includes>
         <include>com.querydsl:*</include>
-        <include>com.mysema.codegen:*</include>
+        <include>com.querydsl.codegen.utils:*</include>
       </includes>
     </dependencySet>        
   </dependencySets>

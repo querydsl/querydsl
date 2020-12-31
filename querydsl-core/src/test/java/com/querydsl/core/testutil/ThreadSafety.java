@@ -1,21 +1,17 @@
 package com.querydsl.core.testutil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
-
-import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.MoreExecutors;
 
 public final class ThreadSafety {
 
     private ThreadSafety() { }
 
     public static void check(Runnable... runnables) {
-        Collection<Callable<Object>> callables = Lists.newArrayListWithCapacity(runnables.length);
-        ExecutorService executor = MoreExecutors.getExitingScheduledExecutorService(
-                new ScheduledThreadPoolExecutor(runnables.length));
+        Collection<Callable<Object>> callables = new ArrayList<>(runnables.length);
+        ExecutorService executor = Executors.newFixedThreadPool(runnables.length);
 
         for (Runnable runnable : runnables) {
             callables.add(Executors.callable(runnable));
@@ -28,8 +24,12 @@ public final class ThreadSafety {
         }
 
         for (Future<Object> each : result) {
-            // all need to complete successfully
-            Futures.getUnchecked(each);
+            try {
+                // all need to complete successfully
+                each.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

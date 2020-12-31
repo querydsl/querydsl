@@ -13,13 +13,13 @@
  */
 package com.querydsl.sql;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Sets;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
@@ -39,7 +39,7 @@ public class SQLListeners implements SQLDetailedListener {
     @Nullable
     private final SQLDetailedListener parent;
 
-    private final Set<SQLDetailedListener> listeners = Sets.newLinkedHashSet();
+    private final Set<SQLDetailedListener> listeners = new LinkedHashSet<>();
 
     public SQLListeners(SQLListener parent) {
         this.parent = new SQLListenerAdapter(parent);

@@ -14,6 +14,7 @@
 package com.querydsl.jpa.hibernate;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.support.QueryMixin;
@@ -47,7 +47,7 @@ public class HibernateUpdateClause implements
 
     private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
-    private final Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
+    private final Map<Path<?>, Expression<?>> updates = new LinkedHashMap<>();
 
     private final SessionHolder session;
 

@@ -13,11 +13,12 @@
  */
 package com.querydsl.core.types.dsl;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -35,11 +36,11 @@ public class CollectionOperation<E> extends CollectionExpressionBase<Collection<
     private final OperationImpl<Collection<E>> opMixin;
 
     protected CollectionOperation(Class<? super E> type, Operator op, Expression<?>... args) {
-        this(type, op, ImmutableList.copyOf(args));
+        this(type, op, Arrays.asList(args));
     }
 
     @SuppressWarnings("unchecked")
-    protected CollectionOperation(Class<? super E> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected CollectionOperation(Class<? super E> type, Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation((Class) Collection.class, op, args));
         this.opMixin = (OperationImpl) super.mixin;
         this.elementType = (Class<E>) type;

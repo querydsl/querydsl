@@ -15,6 +15,7 @@ package com.querydsl.jdo;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.*;
 import com.querydsl.core.types.ArrayConstructorExpression;
 import com.querydsl.core.types.ParamNotSetException;
@@ -66,7 +66,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        List<Object> entities = Lists.newArrayList();
+        List<Object> entities = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             // Product instances
             entities.add(new Product("ABC" + i, "F" + i, i * 200.00, 2, publicationDate));

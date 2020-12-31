@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,8 +33,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.google.common.io.Files;
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.AbstractJDBCTest;
 import com.querydsl.sql.Configuration;
@@ -176,7 +176,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
     }
 
     private void assertMethodsPresent(String path, String... methods) throws IOException {
-        String content = Files.toString(folder.getRoot().toPath().resolve(path).toFile(), UTF_8);
+        String content = new String(Files.readAllBytes(folder.getRoot().toPath().resolve(path)), UTF_8);
         assertThat(content, stringContainsInOrder(asList(methods)));
     }
 }

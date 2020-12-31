@@ -20,8 +20,6 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Sets;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
@@ -80,8 +78,9 @@ public final class CollQueryFunctions {
 
     private static final List<Object> nullList = Collections.singletonList((Object) null);
 
+    @SuppressWarnings("unused")
     public static boolean equals(Object o1, Object o2) {
-        return Objects.equal(o1, o2);
+        return Objects.equals(o1, o2);
     }
 
     public static <T extends Comparable<? super T>> int compareTo(T c1, T c2) {
@@ -223,7 +222,7 @@ public final class CollQueryFunctions {
             return (long) source.size();
         } else if (aggregator == Ops.AggOps.COUNT_DISTINCT_AGG) {
             if (!Set.class.isInstance(source)) {
-                source = Sets.newHashSet(source);
+                source = new HashSet<>(source);
             }
             return (long) source.size();
         } else if (aggregator == Ops.AggOps.MAX_AGG) {

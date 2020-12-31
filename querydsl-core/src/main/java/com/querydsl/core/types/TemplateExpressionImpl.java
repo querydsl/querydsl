@@ -13,11 +13,12 @@
  */
 package com.querydsl.core.types;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.concurrent.Immutable;
 
-import com.google.common.collect.ImmutableList;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * Default implementation of the {@link TemplateExpression} interface
@@ -31,17 +32,17 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
 
     private static final long serialVersionUID = 6951623726800809083L;
 
-    private final ImmutableList<?> args;
+    private final List<?> args;
 
     private final Template template;
 
     protected TemplateExpressionImpl(Class<? extends T> type, Template template, Object... args) {
-        this(type, template, ImmutableList.copyOf(args));
+        this(type, template, Arrays.asList(args));
     }
 
-    protected TemplateExpressionImpl(Class<? extends T> type, Template template, ImmutableList<?> args) {
+    protected TemplateExpressionImpl(Class<? extends T> type, Template template, List<?> args) {
         super(type);
-        this.args = args;
+        this.args = CollectionUtils.unmodifiableList(args);
         this.template = template;
     }
 

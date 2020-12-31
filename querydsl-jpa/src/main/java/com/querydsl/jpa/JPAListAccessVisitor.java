@@ -13,11 +13,11 @@
  */
 package com.querydsl.jpa;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.ReplaceVisitor;
@@ -30,7 +30,7 @@ class JPAListAccessVisitor extends ReplaceVisitor<Void> {
 
     private final Map<Expression<?>, Path<?>> aliases;
 
-    private final Map<Path<?>, Path<?>> replacements = Maps.newHashMap();
+    private final Map<Path<?>, Path<?>> replacements = new HashMap<>();
 
     public JPAListAccessVisitor(QueryMetadata metadata, Map<Expression<?>, Path<?>> aliases) {
         this.metadata = metadata;

@@ -13,20 +13,20 @@
  */
 package com.querydsl.core.types;
 
-import static com.querydsl.core.util.ConstructorUtils.*;
-
+import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
-import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
+import static com.querydsl.core.util.ConstructorUtils.getConstructor;
+import static com.querydsl.core.util.ConstructorUtils.getConstructorParameters;
+import static com.querydsl.core.util.ConstructorUtils.getTransformers;
 
 /**
  * {@code ConstructorExpression} represents a constructor invocation
@@ -60,7 +60,7 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
         return paramTypes;
     }
 
-    private final ImmutableList<Expression<?>> args;
+    private final List<Expression<?>> args;
 
     private final Class<?>[] parameterTypes;
 
@@ -69,18 +69,18 @@ public class ConstructorExpression<T> extends FactoryExpressionBase<T> {
     private final transient Iterable<Function<Object[], Object[]>> transformers;
 
     protected ConstructorExpression(Class<? extends T> type, Expression<?>... args) {
-        this(type, getParameterTypes(args), ImmutableList.copyOf(args));
+        this(type, getParameterTypes(args), Arrays.asList(args));
     }
 
     protected ConstructorExpression(Class<? extends T> type, Class<?>[] paramTypes, Expression<?>... args) {
-        this(type, paramTypes, ImmutableList.copyOf(args));
+        this(type, paramTypes, Arrays.asList(args));
     }
 
-    protected ConstructorExpression(Class<? extends T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> args) {
+    protected ConstructorExpression(Class<? extends T> type, Class<?>[] paramTypes, List<Expression<?>> args) {
         super(type);
         try {
             this.parameterTypes = getConstructorParameters(type, paramTypes).clone();
-            this.args = args;
+            this.args = Collections.unmodifiableList(args);
             this.constructor = getConstructor(getType(), parameterTypes);
             this.transformers = getTransformers(constructor);
         } catch (NoSuchMethodException e) {

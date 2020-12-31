@@ -13,15 +13,15 @@
  */
 package com.querydsl.collections;
 
-import java.util.Collections;
-
-import com.google.common.base.Function;
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 import com.querydsl.core.EmptyMetadata;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathExtractor;
 import com.querydsl.core.types.Predicate;
+
+import java.util.Collections;
+import java.util.function.Function;
 
 /**
  * {@code GuavaHelpers} provides functionality to wrap Querydsl {@link Predicate} instances to Guava predicates
@@ -30,7 +30,7 @@ import com.querydsl.core.types.Predicate;
  * @author tiwe
  *
  */
-public final class GuavaHelpers {
+public final class FunctionalHelpers {
 
     private static final DefaultEvaluatorFactory evaluatorFactory =
             new DefaultEvaluatorFactory(CollQueryTemplates.DEFAULT);
@@ -41,16 +41,11 @@ public final class GuavaHelpers {
      * @param predicate predicate to wrapped
      * @return Guava predicate
      */
-    public static <T> com.google.common.base.Predicate<T> wrap(Predicate predicate) {
+    public static <T> java.util.function.Predicate<T> wrap(Predicate predicate) {
         Path<?> path = predicate.accept(PathExtractor.DEFAULT, null);
         if (path != null) {
             final Evaluator<Boolean> ev = createEvaluator(path.getRoot(), predicate);
-            return new com.google.common.base.Predicate<T>() {
-                @Override
-                public boolean apply(T input) {
-                    return ev.evaluate(input);
-                }
-            };
+            return ev::evaluate;
         } else {
             throw new IllegalArgumentException("No path in " + predicate);
         }
@@ -66,12 +61,7 @@ public final class GuavaHelpers {
         Path<?> path = projection.accept(PathExtractor.DEFAULT, null);
         if (path != null) {
             final Evaluator<T> ev = createEvaluator(path.getRoot(), projection);
-            return new Function<F,T>() {
-                @Override
-                public T apply(F input) {
-                    return ev.evaluate(input);
-                }
-            };
+            return ev::evaluate;
         } else {
             throw new IllegalArgumentException("No path in " + projection);
         }
@@ -82,6 +72,6 @@ public final class GuavaHelpers {
                 Collections.singletonList(path), projection);
     }
 
-    private GuavaHelpers() {  }
+    private FunctionalHelpers() {  }
 
 }

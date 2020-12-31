@@ -13,33 +13,17 @@
  */
 package com.querydsl.sql.support;
 
-import static com.google.common.base.StandardSystemProperty.JAVA_SPECIFICATION_VERSION;
-
 import java.sql.SQLException;
 
 /**
  * A {@code SQLExceptionWrapper} is used to accommodate for
  * Java™ 7's suppressed exceptions.
  *
- * <p>
- * When Java™ 6 is used, a fallback {@code SQLExceptionWrapper}
- * that produces similar output is used instead.
- * </p>
  * @author Shredder121
  */
 public abstract class SQLExceptionWrapper {
 
-    public static final SQLExceptionWrapper INSTANCE;
-
-    static {
-        double javaVersion
-                = Double.parseDouble(JAVA_SPECIFICATION_VERSION.value());
-        if (javaVersion > 1.6) {
-            INSTANCE = new JavaSE7SQLExceptionWrapper();
-        } else {
-            INSTANCE = new JavaSE6SQLExceptionWrapper();
-        }
-    }
+    public static final SQLExceptionWrapper INSTANCE = new JavaSE7SQLExceptionWrapper();
 
     public abstract RuntimeException wrap(SQLException exception);
 

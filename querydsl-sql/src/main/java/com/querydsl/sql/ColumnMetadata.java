@@ -14,8 +14,8 @@
 package com.querydsl.sql;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Path;
 
@@ -167,7 +167,7 @@ public final class ColumnMetadata implements Serializable {
         } else if (o instanceof ColumnMetadata) {
             ColumnMetadata md = (ColumnMetadata) o;
             return name.equals(md.name)
-                && Objects.equal(jdbcType, md.jdbcType)
+                && Objects.equals(jdbcType, md.jdbcType)
                 && nullable == md.nullable
                 && size == md.size
                 && decimalDigits == md.decimalDigits;

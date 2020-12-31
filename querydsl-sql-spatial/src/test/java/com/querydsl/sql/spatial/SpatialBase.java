@@ -4,13 +4,13 @@ package com.querydsl.sql.spatial;
 import static com.querydsl.core.Target.*;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geolatte.geom.*;
 import org.geolatte.geom.codec.Wkt;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.Target;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
@@ -188,7 +188,7 @@ public class SpatialBase extends AbstractBaseTest {
     public void point_methods() {
         PointPath<Point> point = shapes.geometry.asPoint();
 
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         add(expressions, point.asBinary(), H2);
         add(expressions, point.asText());
         add(expressions, point.boundary(), MYSQL);
@@ -219,7 +219,7 @@ public class SpatialBase extends AbstractBaseTest {
     }
 
     private List<Expression<?>> createExpressions(PointExpression<Point> point1, Expression<Point> point2) {
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         add(expressions, point1.contains(point2));
         add(expressions, point1.crosses(point2));
         add(expressions, point1.difference(point2), H2, MYSQL);
@@ -243,7 +243,7 @@ public class SpatialBase extends AbstractBaseTest {
         QShapes shapes1 = QShapes.shapes;
         QShapes shapes2 = new QShapes("shapes2");
 
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         expressions.addAll(createExpressions(shapes1.geometry.asPoint(), shapes2.geometry.asPoint()));
         expressions.addAll(createExpressions(shapes1.geometry.asPoint(), ConstantImpl.create((Point) Wkt.fromWkt("Point(2 2)"))));
 
@@ -263,7 +263,7 @@ public class SpatialBase extends AbstractBaseTest {
     public void lineString_methods() {
         LineStringPath<LineString> lineString = shapes.geometry.asLineString();
 
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         add(expressions, lineString.asBinary(), H2);
         add(expressions, lineString.asText());
         add(expressions, lineString.boundary(), MYSQL);
@@ -298,7 +298,7 @@ public class SpatialBase extends AbstractBaseTest {
     public void polygon_methods() {
         PolygonPath<Polygon> polygon = shapes.geometry.asPolygon();
 
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         add(expressions, polygon.asBinary(), H2);
         add(expressions, polygon.asText());
         add(expressions, polygon.boundary(), MYSQL);
@@ -332,7 +332,7 @@ public class SpatialBase extends AbstractBaseTest {
     public void multiPoint_methods() {
         MultiPointPath<MultiPoint> multipoint = shapes.geometry.asMultiPoint();
 
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         add(expressions, multipoint.asBinary(), H2);
         add(expressions, multipoint.asText());
         add(expressions, multipoint.boundary(), MYSQL);
@@ -361,7 +361,7 @@ public class SpatialBase extends AbstractBaseTest {
     public void multiLineString_methods() {
         MultiLineStringPath<MultiLineString> multilinestring = shapes.geometry.asMultiLineString();
 
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         add(expressions, multilinestring.asBinary(), H2);
         add(expressions, multilinestring.asText());
         add(expressions, multilinestring.boundary(), MYSQL);
@@ -393,7 +393,7 @@ public class SpatialBase extends AbstractBaseTest {
     public void multiPolygon_methods() {
         MultiPolygonPath<MultiPolygon> multipolygon = shapes.geometry.asMultiPolygon();
 
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         add(expressions, multipolygon.asBinary(), H2);
         add(expressions, multipolygon.asText());
         add(expressions, multipolygon.boundary(), MYSQL);
@@ -421,7 +421,7 @@ public class SpatialBase extends AbstractBaseTest {
     @Test
     @IncludeIn(Target.POSTGRESQL)
     public void extensions() {
-        List<Expression<?>> expressions = Lists.newArrayList();
+        List<Expression<?>> expressions = new ArrayList<>();
         GeometryExpression<?> expr1 = shapes.geometry;
 
         expressions.add(GeometryExpressions.asEWKT(expr1));

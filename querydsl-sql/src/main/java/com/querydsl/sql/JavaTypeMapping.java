@@ -19,7 +19,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.google.common.primitives.Primitives;
+import com.querydsl.core.util.PrimitiveUtils;
 import com.querydsl.core.util.ReflectionUtils;
 import com.querydsl.sql.types.*;
 
@@ -86,7 +86,7 @@ class JavaTypeMapping {
 
     private static void registerDefault(Type<?> type) {
         defaultTypes.put(type.getReturnedClass(), type);
-        Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
+        Class<?> primitive = PrimitiveUtils.unwrap(type.getReturnedClass());
         if (primitive != null) {
             defaultTypes.put(primitive, type);
         }
@@ -149,7 +149,7 @@ class JavaTypeMapping {
 
     public void register(Type<?> type) {
         typeByClass.put(type.getReturnedClass(), type);
-        Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
+        Class<?> primitive = PrimitiveUtils.unwrap(type.getReturnedClass());
         if (primitive != null) {
             typeByClass.put(primitive, type);
         }

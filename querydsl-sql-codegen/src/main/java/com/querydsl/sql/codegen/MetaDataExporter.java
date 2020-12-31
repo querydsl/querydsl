@@ -13,33 +13,55 @@
  */
 package com.querydsl.sql.codegen;
 
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.ScalaWriter;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.CodegenModule;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.Property;
+import com.querydsl.codegen.QueryTypeFactory;
+import com.querydsl.codegen.Serializer;
+import com.querydsl.codegen.SimpleSerializerConfig;
+import com.querydsl.codegen.TypeMappings;
+import com.querydsl.sql.ColumnImpl;
+import com.querydsl.sql.ColumnMetadata;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.SQLTemplatesRegistry;
+import com.querydsl.sql.SchemaAndTable;
+import com.querydsl.sql.codegen.support.ForeignKeyData;
+import com.querydsl.sql.codegen.support.InverseForeignKeyData;
+import com.querydsl.sql.codegen.support.NotNullImpl;
+import com.querydsl.sql.codegen.support.PrimaryKeyData;
+import com.querydsl.sql.codegen.support.SizeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-
-import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Files;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.ScalaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.querydsl.codegen.*;
-import com.querydsl.sql.*;
-import com.querydsl.sql.codegen.support.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * {@code MetadataExporter} exports JDBC metadata to Querydsl query types
@@ -261,7 +283,7 @@ public class MetaDataExporter {
      */
     private List<String> patternAsList(@Nullable String input) {
         if (input != null && input.contains(",")) {
-            return ImmutableList.copyOf(input.split(","));
+            return Arrays.asList(input.split(","));
         } else {
             return Collections.singletonList(input);
         }
@@ -447,7 +469,7 @@ public class MetaDataExporter {
         boolean generate = true;
         byte[] bytes = w.toString().getBytes(sourceEncoding);
         if (targetFile.exists() && targetFile.length() == bytes.length) {
-            String str = Files.toString(targetFile, Charset.forName(sourceEncoding));
+            String str = new String(Files.readAllBytes(targetFile.toPath()), Charset.forName(sourceEncoding));
             if (str.equals(w.toString())) {
                 generate = false;
             }
@@ -456,7 +478,7 @@ public class MetaDataExporter {
         }
 
         if (generate) {
-            Files.write(bytes, targetFile);
+            Files.write(targetFile.toPath(), bytes);
         }
     }
 

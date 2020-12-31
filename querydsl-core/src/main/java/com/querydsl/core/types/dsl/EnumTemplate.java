@@ -15,7 +15,6 @@ package com.querydsl.core.types.dsl;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -36,7 +35,7 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
         this.templateMixin = mixin;
     }
 
-    protected EnumTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
+    protected EnumTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;
     }

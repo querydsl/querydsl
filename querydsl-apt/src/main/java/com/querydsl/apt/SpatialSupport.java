@@ -13,21 +13,21 @@
  */
 package com.querydsl.apt;
 
-import java.util.Map;
-import java.util.Set;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.mysema.codegen.model.SimpleType;
+import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.codegen.AbstractModule;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.TypeMappings;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 final class SpatialSupport {
 
     private static void registerTypes(TypeMappings typeMappings) {
-        Map<String, String> additions = Maps.newHashMap();
+        Map<String, String> additions = new HashMap<>();
         additions.put("Geometry", "GeometryPath");
         additions.put("GeometryCollection", "GeometryCollectionPath");
         additions.put("LinearRing", "LinearRingPath");
@@ -46,7 +46,7 @@ final class SpatialSupport {
     }
 
     private static void registerJTSTypes(TypeMappings typeMappings) {
-        Map<String, String> additions = Maps.newHashMap();
+        Map<String, String> additions = new HashMap<>();
         additions.put("Geometry", "JTSGeometryPath");
         additions.put("GeometryCollection", "JTSGeometryCollectionPath");
         additions.put("LinearRing", "JTSLinearRingPath");
@@ -67,10 +67,10 @@ final class SpatialSupport {
         @SuppressWarnings("unchecked")
         Set<String> imports = module.get(Set.class, CodegenModule.IMPORTS);
         if (imports.isEmpty()) {
-            imports = ImmutableSet.of(packageName);
+            imports = Collections.singleton(packageName);
         } else {
             Set<String> old = imports;
-            imports = Sets.newHashSet();
+            imports = new HashSet<>();
             imports.addAll(old);
             imports.add(packageName);
         }
