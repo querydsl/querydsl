@@ -13,6 +13,8 @@
  */
 package com.querydsl.core.types;
 
+import org.jetbrains.annotations.Unmodifiable;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class Concatenation extends FactoryExpressionBase<String> {
 
     private static final long serialVersionUID = -355693583588722395L;
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     public Concatenation(Expression<?>... args) {
@@ -32,6 +35,7 @@ public class Concatenation extends FactoryExpressionBase<String> {
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

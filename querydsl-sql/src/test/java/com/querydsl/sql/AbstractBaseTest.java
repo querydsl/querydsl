@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 import java.sql.Connection;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.junit.ClassRule;
 import org.junit.Rule;

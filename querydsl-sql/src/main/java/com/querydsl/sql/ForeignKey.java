@@ -17,8 +17,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;

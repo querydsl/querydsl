@@ -15,7 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import static org.junit.Assert.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.junit.Ignore;
 import org.junit.Test;

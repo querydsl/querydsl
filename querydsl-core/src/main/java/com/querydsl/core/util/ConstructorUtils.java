@@ -15,7 +15,6 @@ package com.querydsl.core.util;
 
 import com.querydsl.core.types.ExpressionException;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -29,6 +28,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.Nullable;
 import static com.querydsl.core.util.ArrayUtils.isEmpty;
 
 /**

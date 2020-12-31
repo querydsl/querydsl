@@ -29,6 +29,7 @@ A huge thanks goes out to all contributors that made this release possible in th
   The `joda-time` types will still be registered automatically if they are on the classpath.
 * [#2215](https://github.com/querydsl/querydsl/issues/2215) - MongoDB 4 support through the Document API 
 * [#2697](https://github.com/querydsl/querydsl/issues/2697) - Allow `com.querydsl.core.alias.Alias.*` to be used on a JRE by relying on ECJ as compiler
+* [#2479](https://github.com/querydsl/querydsl/issues/2479) - Swap out JSR305 for Jetbrains Annotations.
 
 #### Bugfixes
 
@@ -56,6 +57,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * This release targets Hibernate 5 in the Hibernate integration. If you need Hibernate 4 dialect specific workarounds, use the `HQLTemplates` instead of the `Hibernate5Templates`.
 * Removal of various deprecated methods.
 * `joda-time` is now an optional dependency. If your application relies on `joda-time` make sure to specify it as a direct dependency rather than relying on QueryDSL to include it transitively.
+* `com.google.code.findbugs:jsr305` is no longer a dependency. If your application currently relies on QueryDSL shipping JSR305 transitivily, you should add JSR305 as a direct dependency to your project.
 
 #### Dependency updates
 

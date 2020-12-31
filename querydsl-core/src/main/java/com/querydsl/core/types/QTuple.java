@@ -21,10 +21,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.util.CollectionUtils;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code QTuple} represents a projection of type {@link Tuple}
@@ -129,6 +130,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
 
     private static final long serialVersionUID = -2640616030595420465L;
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     private final Map<Expression<?>, Integer> bindings;
@@ -191,6 +193,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

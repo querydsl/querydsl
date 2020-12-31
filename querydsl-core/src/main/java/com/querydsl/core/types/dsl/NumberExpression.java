@@ -16,7 +16,7 @@ package com.querydsl.core.types.dsl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.Ops.MathOps;

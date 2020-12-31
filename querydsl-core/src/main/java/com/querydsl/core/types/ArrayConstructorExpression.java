@@ -19,7 +19,8 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code ArrayConstructorExpression} extends {@link FactoryExpressionBase} to represent array initializers
@@ -35,6 +36,7 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
 
     private final Class<T> elementType;
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     @SuppressWarnings("unchecked")
@@ -71,6 +73,7 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

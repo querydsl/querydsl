@@ -13,8 +13,8 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
 import java.util.List;
 

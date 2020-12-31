@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
@@ -30,6 +29,7 @@ import org.eclipse.persistence.queries.Cursor;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code EclipseLinkHandler} is the {@link QueryHandler} implementation for EclipseLink

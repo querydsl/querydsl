@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code FactoryExpression} represents factory expressions such as JavaBean or

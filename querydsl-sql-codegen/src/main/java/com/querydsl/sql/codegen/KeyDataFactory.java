@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.codegen.utils.model.Type;

@@ -16,8 +16,8 @@ package com.querydsl.core.types;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
 /**
  * {@code PathMetadata} provides metadata for {@link Path} expressions.

@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;

@@ -16,7 +16,7 @@ package com.querydsl.sql;
 import java.sql.Types;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinFlag;

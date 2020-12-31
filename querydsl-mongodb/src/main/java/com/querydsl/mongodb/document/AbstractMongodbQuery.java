@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.bson.Document;
 
 import com.mongodb.ReadPreference;
@@ -40,6 +38,7 @@ import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.CollectionPathBase;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code AbstractMongodbQuery} provides a base class for general Querydsl query implementation.

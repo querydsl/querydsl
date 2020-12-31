@@ -22,7 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code QMap} represents a projection of type Map
@@ -45,6 +46,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
 
     private static final long serialVersionUID = -7545994090073480810L;
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     /**
@@ -91,6 +93,7 @@ public class QMap extends FactoryExpressionBase<Map<Expression<?>,?>> {
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

@@ -20,7 +20,7 @@ import com.querydsl.codegen.SerializerConfig;
 import com.querydsl.codegen.TypeMappings;
 import com.querydsl.core.util.Annotations;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;

@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code ExpressionBase} is the base class for immutable {@link Expression} implementations

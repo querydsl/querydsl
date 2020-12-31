@@ -17,7 +17,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.util.CollectionUtils;
 import com.querydsl.core.util.MathUtils;
 
-import javax.annotation.concurrent.Immutable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -25,6 +24,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+
+import com.querydsl.core.annotations.Immutable;
 
 /**
  * {@code Template} provides serialization templates for {@link Operation},

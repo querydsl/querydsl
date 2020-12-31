@@ -24,10 +24,11 @@
   
   <dependencies>
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>1.3.9</version>
-    </dependency>          
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>20.1.0</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>com.mysema.commons</groupId>
       <artifactId>mysema-commons-lang</artifactId>
