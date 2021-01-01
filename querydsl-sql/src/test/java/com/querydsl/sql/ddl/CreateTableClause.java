@@ -10,9 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import com.querydsl.core.QueryException;
 import com.querydsl.sql.Configuration;
@@ -26,7 +24,7 @@ import com.querydsl.sql.SQLTemplates;
  */
 public class CreateTableClause {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreateTableClause.class);
+    private static final Logger logger = Logger.getLogger(CreateTableClause.class.getName());
 
     private final Connection connection;
 

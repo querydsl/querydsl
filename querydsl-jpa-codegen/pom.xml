@@ -61,12 +61,6 @@
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate4.validator.version}</version>
       <scope>provided</scope>
-    <exclusions>
-        <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </exclusion>
-    </exclusions>      
     </dependency>    
  
     <dependency>
@@ -113,16 +107,7 @@
       <artifactId>h2</artifactId>
       <version>${h2.version}</version>
       <scope>test</scope>
-    </dependency>              
-    
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-    </dependency>    
         
   </dependencies>
 

@@ -18,14 +18,13 @@ import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.codegen.utils.model.Type;
@@ -43,7 +42,7 @@ import com.querydsl.codegen.SimpleSerializerConfig;
  */
 public class HibernateDomainExporter extends AbstractDomainExporter {
 
-    private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
+    private static final Logger logger = Logger.getLogger(HibernateDomainExporter.class.getName());
 
     private final Configuration configuration;
 

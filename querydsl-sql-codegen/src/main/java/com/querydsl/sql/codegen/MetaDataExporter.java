@@ -39,8 +39,6 @@ import com.querydsl.sql.codegen.support.NotNullImpl;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
 import com.querydsl.sql.codegen.support.SizeImpl;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 /**
  * {@code MetadataExporter} exports JDBC metadata to Querydsl query types
@@ -79,7 +78,7 @@ import java.util.function.Function;
  */
 public class MetaDataExporter {
 
-    private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
+    private static final Logger logger = Logger.getLogger(MetaDataExporter.class.getName());
 
     private final SQLTemplatesRegistry sqlTemplatesRegistry = new SQLTemplatesRegistry();
 

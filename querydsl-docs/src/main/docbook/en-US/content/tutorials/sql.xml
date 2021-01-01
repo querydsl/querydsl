@@ -27,12 +27,6 @@
   <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>
-
-<dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-log4j12</artifactId>
-  <version>1.6.1</version>
-</dependency>
 ]]></programlisting>
 
     <para>The querydsl-sql-codegen dependency can be skipped, if code generation happens

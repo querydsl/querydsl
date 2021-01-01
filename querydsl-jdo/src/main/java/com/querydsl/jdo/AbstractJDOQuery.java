@@ -16,16 +16,14 @@ package com.querydsl.jdo;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -43,7 +41,7 @@ import com.querydsl.core.types.*;
  */
 public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> extends FetchableSubQueryBase<T, Q> implements JDOQLQuery<T> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JDOQuery.class);
+    private static final Logger logger =  Logger.getLogger(JDOQuery.class.getName());
 
     private final Closeable closeable = new Closeable() {
         @Override
@@ -161,17 +159,10 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
-    }
-
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
     }
 
     @SuppressWarnings("unchecked")
@@ -279,7 +270,6 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     }
 
     private void reset() {
-        cleanupMDC();
     }
 
     /**

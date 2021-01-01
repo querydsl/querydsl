@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
@@ -24,10 +26,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
@@ -48,7 +46,7 @@ import com.querydsl.jpa.QueryHandler;
  */
 public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> extends JPAQueryBase<T, Q> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
+    private static final Logger logger = Logger.getLogger(JPAQuery.class.getName());
 
     protected final Map<String, Object> hints = new LinkedHashMap<>();
 
@@ -106,7 +104,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     public long fetchCount() {
         try {
             if (getMetadata().getGroupBy().size() > 1 || getMetadata().getHaving() != null) {
-                logger.warn("Fetchable#fetchCount() was computed in memory! See the Javadoc for AbstractJPAQuery#fetchCount for more details.");
+                logger.warning("Fetchable#fetchCount() was computed in memory! See the Javadoc for AbstractJPAQuery#fetchCount for more details.");
                 Query query = createQuery(null, false);
                 return query.getResultList().size();
             }
@@ -283,7 +281,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         try {
             QueryModifiers modifiers = getMetadata().getModifiers();
             if (getMetadata().getGroupBy().size() > 1 || getMetadata().getHaving() != null) {
-                logger.warn("Fetchable#fetchResults() was computed in memory! See the Javadoc for AbstractJPAQuery#fetchResults for more details.");
+                logger.warning("Fetchable#fetchResults() was computed in memory! See the Javadoc for AbstractJPAQuery#fetchResults for more details.");
                 Query query = createQuery(null, false);
                 @SuppressWarnings("unchecked")
                 List<T> resultList = query.getResultList();
@@ -309,22 +307,14 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINEST)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.finest(normalizedQuery);
         }
-    }
-
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
     }
 
     @Override
     protected void reset() {
-        cleanupMDC();
     }
 
     @Nullable
@@ -335,7 +325,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
             Query query = createQuery(getMetadata().getModifiers(), false);
             return (T) getSingleResult(query);
         } catch (javax.persistence.NoResultException e) {
-            logger.trace(e.getMessage(),e);
+            logger.log(Level.FINEST, e.getMessage(), e);
             return null;
         } catch (javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException(e);

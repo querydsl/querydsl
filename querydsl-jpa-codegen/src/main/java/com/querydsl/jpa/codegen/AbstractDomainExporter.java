@@ -38,8 +38,6 @@ import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.ReflectionUtils;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -61,6 +59,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * {@code AbstractDomainExporter} is a common supertype for domain exporters
@@ -70,7 +70,7 @@ import java.util.function.Function;
  */
 public abstract class AbstractDomainExporter {
 
-    private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
+    private static final Logger logger = Logger.getLogger(HibernateDomainExporter.class.getName());
 
     private final File targetFolder;
 
@@ -342,7 +342,7 @@ public abstract class AbstractDomainExporter {
 
     private Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            logger.error("Folder " + file.getParent() + " could not be created");
+            logger.log(Level.WARNING, "Folder " + file.getParent() + " could not be created");
         }
         try {
             return new OutputStreamWriter(new FileOutputStream(file), charset);

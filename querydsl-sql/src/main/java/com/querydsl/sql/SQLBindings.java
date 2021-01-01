@@ -14,10 +14,9 @@
 package com.querydsl.sql;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.querydsl.core.util.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * {@code SQLBindings} provides the SQL query string and bindings
@@ -27,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SQLBindings {
 
-    private static final Logger log = LoggerFactory.getLogger(SQLBindings.class);
+    private static final Logger log = Logger.getLogger(SQLBindings.class.getName());
 
     private final String sql;
 

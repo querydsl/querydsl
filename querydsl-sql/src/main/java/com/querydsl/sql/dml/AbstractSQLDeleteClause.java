@@ -17,12 +17,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Range;
 import javax.inject.Provider;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
@@ -44,7 +42,7 @@ import com.querydsl.sql.SQLSerializer;
  */
 public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<C>> extends AbstractSQLClause<C> implements DeleteClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractSQLDeleteClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractSQLDeleteClause.class.getName());
 
     protected static final ValidatingVisitor validatingVisitor = new ValidatingVisitor("Undeclared path '%s'. " +
             "A delete operation can only reference a single table. " +
