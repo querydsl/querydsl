@@ -29,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -278,5 +279,26 @@ public class JPABase extends AbstractJPATest implements JPATest {
         for (String row : rows) {
             assertNotNull(row);
         }
+    }
+
+    @Test
+    public void fetchCountResultsGroupByWithMultipleFields() {
+        QueryResults<Tuple> results = query().from(cat)
+                .groupBy(cat.alive, cat.breed)
+                .select(cat.alive, cat.breed, cat.id.sum())
+                .fetchResults();
+
+        assertEquals(1, results.getTotal());
+    }
+
+    @Test
+    public void fetchCountResultsGroupByWithHaving() {
+        QueryResults<Tuple> results = query().from(cat)
+                .groupBy(cat.alive)
+                .having(cat.id.sum().gt(5))
+                .select(cat.alive, cat.id.sum())
+                .fetchResults();
+
+        assertEquals(1, results.getTotal());
     }
 }
