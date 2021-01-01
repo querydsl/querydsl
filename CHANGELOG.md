@@ -45,6 +45,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * [#2504](https://github.com/querydsl/querydsl/issues/2504) - Work around issues with `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` in a query with multiple group by expressions by using an in-memory calculation.
 * [#2663](https://github.com/querydsl/querydsl/issues/2663) - Fix issues with the JPA implementation of `InsertClause`.
 * [#2706](https://github.com/querydsl/querydsl/pull/2706) - Fix a memory leak in `TemplateFactory`.
+* [#2467](https://github.com/querydsl/querydsl/issues/2467) - Prevent `ExtendedBeanSerializer` from generating `toString` method twice
 
 #### Breaking changes
 

@@ -54,7 +54,6 @@ public class ExtendedBeanSerializer extends BeanSerializer {
 
         StringBuilder anyColumnIsNull = new StringBuilder();
         StringBuilder columnEquals = new StringBuilder();
-        StringBuilder toString = new StringBuilder();
         List<String> properties = new ArrayList<String>();
         for (PrimaryKeyData pk : primaryKeys) {
             for (String column : pk.getColumns()) {
@@ -63,13 +62,9 @@ public class ExtendedBeanSerializer extends BeanSerializer {
                 if (anyColumnIsNull.length() > 0) {
                     anyColumnIsNull.append(" || ");
                     columnEquals.append(" && ");
-                    toString.append("+ \";\" + ");
-                } else {
-                    toString.append("\"").append(model.getSimpleName()).append("#\" + ");
                 }
                 anyColumnIsNull.append(propName).append(" == null");
                 columnEquals.append(propName).append(".equals(obj.").append(propName).append(")");
-                toString.append(propName);
                 properties.add(propName);
             }
         }
@@ -101,6 +96,37 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         writer.line("return result;");
         writer.end();
 
+
+    }
+
+    @Override
+    protected void addToString(EntityType model, CodeWriter writer) throws IOException {
+        Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
+
+        if (primaryKeys == null || primaryKeys.isEmpty()) {
+            super.addToString(model, writer);
+            return;
+        }
+
+        StringBuilder toString = new StringBuilder();
+        Map<String, Property> columnToProperty = new HashMap<String, Property>();
+        for (Property property : model.getProperties()) {
+            columnToProperty.put(property.getAnnotation(Column.class).value(), property);
+        }
+
+        for (PrimaryKeyData pk : primaryKeys) {
+            for (String column : pk.getColumns()) {
+                Property property = columnToProperty.get(column);
+                String propName = property.getEscapedName();
+                if (toString.length() > 0) {
+                    toString.append("+ \";\" + ");
+                } else {
+                    toString.append("\"" + model.getSimpleName() + "#\" + ");
+                }
+                toString.append(propName);
+            }
+        }
+
         // toString
         writer.annotation(Override.class);
         writer.beginPublicMethod(Types.STRING, "toString");
@@ -109,7 +135,6 @@ public class ExtendedBeanSerializer extends BeanSerializer {
 //        writer.line("}");
         writer.line("return ", toString + ";");
         writer.end();
-
     }
 
 }
