@@ -3,7 +3,7 @@
 ### 5.0.0
 
 This release of QueryDSL targets Java 8 minimally and comes with various improvements to make QueryDSL ready for the modern Java ecosystem.
-This version also removes `joda-time`, `guava` and `JSR305` as required runtime dependencies for using QueryDSL.
+This version also removes `joda-time:joda-time`, `com.google.guava:guava`  and `com.google.code.findbugs:jsr305` as required runtime dependencies for using QueryDSL.
 
 QueryDSL 5.0 is the long awaited major release after the QueryDSL project was left mostly unmaintained for over two years.
 With this release the team worked hard on resolving the most pressing issues that have been requested repeatedly for a long time.
@@ -11,7 +11,7 @@ With this release the team worked hard on resolving the most pressing issues tha
 A huge thanks goes out to all contributors that made this release possible in their free time:
 
 * **[@mp911de](https://github.com/mp911de)**, for working on the MongoDB Document API;
-* **[@daniel-shuy](https://github.com/daniel-shuy)**, for working on decoupling `querydsl-sql` from `joda-time`;
+* **[@daniel-shuy](https://github.com/daniel-shuy)**, for working on decoupling `querydsl-sql` from `joda-time:joda-time`;
 * **[@heesuk-ahn](https://github.com/heesuk-ahn)**, for working on improved Hibernate support and count query generation in `JPASQLQuery`;
 * **[@jwgmeligmeyling](https://github.com/jwgmeligmeyling)**, **[@Shredder121](https://github.com/Shredder121)**, **[@johnktims](https://github.com/johnktims)**, **[@idosal](https://github.com/idosal)** and **[@robertandrewbain](https://github.com/robertandrewbain)**.
 
@@ -24,12 +24,15 @@ A huge thanks goes out to all contributors that made this release possible in th
 * [#2324](https://github.com/querydsl/querydsl/issues/2324) - Removal of Guava as dependency.
   Almost no required transitive dependencies to get started with QueryDSL.
   And no more conflicts with Guava versions required by your other tools or own application.
-* [#2025](https://github.com/querydsl/querydsl/issues/2025) - `joda-time` is no longer a required dependency for `querydsl-sql`.
+* [#2025](https://github.com/querydsl/querydsl/issues/2025) - `joda-time:joda-time` is no longer a required dependency for `querydsl-sql`.
   By default, the Java 8 date/time API is used for date/time operations.
-  The `joda-time` types will still be registered automatically if they are on the classpath.
+  The `joda-time:joda-time` types will still be registered automatically if they are on the classpath.
 * [#2215](https://github.com/querydsl/querydsl/issues/2215) - MongoDB 4 support through the Document API 
 * [#2697](https://github.com/querydsl/querydsl/issues/2697) - Allow `com.querydsl.core.alias.Alias.*` to be used on a JRE by relying on ECJ as compiler
 * [#2479](https://github.com/querydsl/querydsl/issues/2479) - Swap out JSR305 for Jetbrains Annotations.
+  Because the Jetbrains Annotations, contrary to the JSR305 annotations, use a Class retention level, Jetbrains Annotations
+  does not have to be available at runtime and is not a transitive dependency.
+* [#658](https://github.com/querydsl/querydsl/issues/658) - Added `JPAExpressions#treat` which can be used to generate JPA 2.1 Treated path expressions.
 
 #### Bugfixes
 
@@ -59,7 +62,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * `com.querydsl.codegen.NamingFunction`, `EvaluatorFunction`, `DefaultVariableFunction` now extend `java.util.function.Function` instead of `com.google.common.base.Function`.
 * This release targets Hibernate 5 in the Hibernate integration. If you need Hibernate 4 dialect specific workarounds, use the `HQLTemplates` instead of the `Hibernate5Templates`.
 * Removal of various deprecated methods.
-* `joda-time` is now an optional dependency. If your application relies on `joda-time` make sure to specify it as a direct dependency rather than relying on QueryDSL to include it transitively.
+* `joda-time:joda-time` is now an optional dependency. If your application relies on `joda-time:joda-time` make sure to specify it as a direct dependency rather than relying on QueryDSL to include it transitively.
 * `com.google.code.findbugs:jsr305` is no longer a dependency. If your application currently relies on QueryDSL shipping JSR305 transitivily, you should add JSR305 as a direct dependency to your project.
 * MDC keys now use an underscore instead of a dot as separator: ` querydsl.query` now is `querydsl_query` and `querydsl.parameters` is `querydsl_parameters`.
 
@@ -73,9 +76,9 @@ A huge thanks goes out to all contributors that made this release possible in th
 
 #### Dependency updates
 
-* `cglib` to 3.3.0 for Java 8+ support
-* `ecj` to 4.6.1 for Java 8+ support
-* `joda-time` to 2.10.8 for better interoperability with other frameworks that use more recent versions than QueryDSL.
+* `cglib:cglib` to 3.3.0 for Java 8+ support
+* `org.eclipse.jdt.core.compiler:ecj` to 4.6.1 for Java 8+ support
+* `joda-time:joda-time` to 2.10.8 for better interoperability with other frameworks that use more recent versions than QueryDSL.
 * DataNucleus 5.2.x for Java 8+ support
   * JDO now uses `org.datanucleus:javax.jdo` instead of `javax.jdo:jdo-api`
   
