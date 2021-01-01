@@ -13,6 +13,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * **[@mp911de](https://github.com/mp911de)**, for working on the MongoDB Document API;
 * **[@daniel-shuy](https://github.com/daniel-shuy)**, for working on decoupling `querydsl-sql` from `joda-time:joda-time`;
 * **[@heesuk-ahn](https://github.com/heesuk-ahn)**, for working on improved Hibernate support and count query generation in `JPASQLQuery`;
+* **[@harshtuna](https://github.com/harshtuna)**, for working on NullsLast ordering in `querydsl-collections`;
 * **[@jwgmeligmeyling](https://github.com/jwgmeligmeyling)**, **[@Shredder121](https://github.com/Shredder121)**, **[@johnktims](https://github.com/johnktims)**, **[@idosal](https://github.com/idosal)** and **[@robertandrewbain](https://github.com/robertandrewbain)**.
 
 #### New features
@@ -34,6 +35,7 @@ A huge thanks goes out to all contributors that made this release possible in th
   does not have to be available at runtime and is not a transitive dependency.
 * [#658](https://github.com/querydsl/querydsl/issues/658) - Added `JPAExpressions#treat` which can be used to generate JPA 2.1 Treated path expressions.
 * [#2666](https://github.com/querydsl/querydsl/issues/2666) - More descriptive error message when using unsupported query features in JPA.
+* [#2106](https://github.com/querydsl/querydsl/issues/2106) - Support NullsLast ordering in `querydsl-collections`.
 
 #### Bugfixes
 

@@ -60,9 +60,25 @@ public class OrderTest extends AbstractQueryTest {
 
     @Test
     public void with_null() {
-        List<Cat> cats = Arrays.asList(new Cat(), new Cat("Bob"));
-        assertEquals(cats, query().from(cat, cats).orderBy(cat.name.asc()).select(cat).fetch());
-        assertEquals(Arrays.asList(cats.get(1), cats.get(0)), query().from(cat, cats).orderBy(cat.name.desc()).select(cat).fetch());
+        Cat unknown = new Cat();
+        Cat bob = new Cat("Bob");
+        Cat alex = new Cat("Alex");
+        List<Cat> cats = Arrays.asList(alex, unknown, bob);
+        assertEquals(Arrays.asList(unknown, alex, bob),
+                query().from(cat, cats).orderBy(cat.name.asc()).select(cat).fetch());
+        assertEquals(Arrays.asList(unknown, bob, alex),
+                query().from(cat, cats).orderBy(cat.name.desc()).select(cat).fetch());
+    }
 
+    @Test
+    public void with_nulls_last() {
+        Cat unknown = new Cat();
+        Cat bob = new Cat("Bob");
+        Cat alex = new Cat("Alex");
+        List<Cat> cats = Arrays.asList(alex, unknown, bob);
+        assertEquals(Arrays.asList(bob, alex, unknown),
+                query().from(this.cat, cats).orderBy(this.cat.name.desc().nullsLast()).select(this.cat).fetch());
+        assertEquals(Arrays.asList(alex, bob, unknown),
+                query().from(this.cat, cats).orderBy(this.cat.name.asc().nullsLast()).select(this.cat).fetch());
     }
 }
