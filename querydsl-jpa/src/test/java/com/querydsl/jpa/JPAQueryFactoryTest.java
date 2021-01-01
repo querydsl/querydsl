@@ -18,8 +18,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
-import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -49,12 +49,7 @@ public class JPAQueryFactoryTest {
     public void setUp() {
         factoryMock = EasyMock.createMock(EntityManagerFactory.class);
         mock = EasyMock.createMock(EntityManager.class);
-        Provider<EntityManager> provider = new Provider<EntityManager>() {
-            @Override
-            public EntityManager get() {
-                return mock;
-            }
-        };
+        Supplier<EntityManager> provider = () -> mock;
         queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, provider);
         queryFactory2 = queryFactory;
 

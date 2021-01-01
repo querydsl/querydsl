@@ -14,8 +14,7 @@
 package com.querydsl.sql.oracle;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -47,7 +46,7 @@ public abstract class AbstractOracleQuery<T, C extends AbstractOracleQuery<T, C>
         super(conn, configuration, metadata);
     }
 
-    public AbstractOracleQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+    public AbstractOracleQuery(Supplier<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
         super(connProvider, configuration, metadata);
     }
 

@@ -16,9 +16,8 @@ package com.querydsl.sql.dml;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Logger;
-
+import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
-import javax.inject.Provider;
 
 import com.querydsl.core.util.CollectionUtils;
 
@@ -77,12 +76,12 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
-    public AbstractSQLInsertClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity, SQLQuery<?> subQuery) {
+    public AbstractSQLInsertClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity, SQLQuery<?> subQuery) {
         this(connection, configuration, entity);
         this.subQueryBuilder = subQuery;
     }
 
-    public AbstractSQLInsertClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+    public AbstractSQLInsertClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);

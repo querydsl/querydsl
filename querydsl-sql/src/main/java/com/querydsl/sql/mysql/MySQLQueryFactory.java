@@ -14,8 +14,7 @@
 package com.querydsl.sql.mysql;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.Tuple;
@@ -33,15 +32,15 @@ import com.querydsl.sql.dml.SQLInsertClause;
  */
 public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery<?>> {
 
-    public MySQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
+    public MySQLQueryFactory(Configuration configuration, Supplier<Connection> connection) {
         super(configuration, connection);
     }
 
-    public MySQLQueryFactory(Provider<Connection> connection) {
+    public MySQLQueryFactory(Supplier<Connection> connection) {
         this(new Configuration(new MySQLTemplates()), connection);
     }
 
-    public MySQLQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
+    public MySQLQueryFactory(SQLTemplates templates, Supplier<Connection> connection) {
         this(new Configuration(templates), connection);
     }
 

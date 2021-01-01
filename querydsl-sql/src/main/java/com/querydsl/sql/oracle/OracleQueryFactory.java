@@ -14,8 +14,7 @@
 package com.querydsl.sql.oracle;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
@@ -30,15 +29,15 @@ import com.querydsl.sql.*;
  */
 public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery<?>> {
 
-    public OracleQueryFactory(Configuration configuration, Provider<Connection> connection) {
+    public OracleQueryFactory(Configuration configuration, Supplier<Connection> connection) {
         super(configuration, connection);
     }
 
-    public OracleQueryFactory(Provider<Connection> connection) {
+    public OracleQueryFactory(Supplier<Connection> connection) {
         this(new Configuration(new OracleTemplates()), connection);
     }
 
-    public OracleQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
+    public OracleQueryFactory(SQLTemplates templates, Supplier<Connection> connection) {
         this(new Configuration(templates), connection);
     }
 

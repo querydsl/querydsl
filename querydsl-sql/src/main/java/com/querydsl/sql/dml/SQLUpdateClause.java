@@ -14,8 +14,7 @@
 package com.querydsl.sql.dml;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.RelationalPath;
@@ -34,7 +33,7 @@ public class SQLUpdateClause extends AbstractSQLUpdateClause<SQLUpdateClause> {
         super(connection, configuration, entity);
     }
 
-    public SQLUpdateClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+    public SQLUpdateClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
         super(connection, configuration, entity);
     }
 }
