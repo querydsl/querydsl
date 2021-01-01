@@ -43,7 +43,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      *
      * @return ascending order by this
      */
-    public final OrderSpecifier<T> asc() {
+    public OrderSpecifier<T> asc() {
         if (asc == null) {
             asc = new OrderSpecifier<T>(Order.ASC, mixin);
         }
@@ -57,7 +57,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return coalesce
      */
     @SuppressWarnings("unchecked")
-    public final Coalesce<T> coalesce(Expression<?>...exprs) {
+    public Coalesce<T> coalesce(Expression<?>...exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (Expression expr : exprs) {
             coalesce.add(expr);
@@ -71,7 +71,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @param args additional arguments
      * @return coalesce
      */
-    public final Coalesce<T> coalesce(T... args) {
+    public Coalesce<T> coalesce(T... args) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (T arg : args) {
             coalesce.add(arg);
@@ -84,7 +84,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      *
      * @return descending order by this
      */
-    public final OrderSpecifier<T> desc() {
+    public OrderSpecifier<T> desc() {
         if (desc == null) {
             desc = new OrderSpecifier<T>(Order.DESC, mixin);
         }
