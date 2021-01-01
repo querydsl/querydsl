@@ -207,6 +207,13 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>jwgmeligmeyling</id>
+      <name>Jan-Willem Gmelig Meyling</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <licenses>

@@ -10,10 +10,10 @@ With this release the team worked hard on resolving the most pressing issues tha
 
 A huge thanks goes out to all contributors that made this release possible in their free time:
 
-* @mp911de, for working on the MongoDB Document API
-* @daniel-shuy, for working on decoupling `querydsl-sql` from `joda-time`.
-* @heesuk-ahn, for working on improved Hibernate support and count query generation in `JPASQLQuery`
-* @jwgmeligmeyling, @Shredder121, @Johnktims and @idosal
+* **[@mp911de](https://github.com/mp911de)**, for working on the MongoDB Document API;
+* **[@daniel-shuy](https://github.com/daniel-shuy)**, for working on decoupling `querydsl-sql` from `joda-time`;
+* **[@heesuk-ahn](https://github.com/heesuk-ahn)**, for working on improved Hibernate support and count query generation in `JPASQLQuery`;
+* **[@jwgmeligmeyling](https://github.com/jwgmeligmeyling)**, **[@Shredder121](https://github.com/Shredder121)**, **[@johnktims](https://github.com/johnktims)**, **[@idosal](https://github.com/idosal)** and **[@robertandrewbain](https://github.com/robertandrewbain)**.
 
 #### New features
 
@@ -35,6 +35,9 @@ A huge thanks goes out to all contributors that made this release possible in th
 
 * [#2579](https://github.com/querydsl/querydsl/issues/2579) - Count query generation in `JPASQLQuery`
 * [#2671](https://github.com/querydsl/querydsl/issues/2671) - Fixed a concurrency issue in `Alias.*`. `Alias.*` is now Thread safe.
+* [#2053](https://github.com/querydsl/querydsl/issues/2053) - Work around issues with `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` in a query with a having clause by using an in-memory calculation.
+* [#2504](https://github.com/querydsl/querydsl/issues/2504) - Work around issues with `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` in a query with multiple group by expressions by using an in-memory calculation.
+* [#2663](https://github.com/querydsl/querydsl/issues/2663) - Fix issues with the JPA implementation of `InsertClause`.
 
 #### Breaking changes
 
@@ -43,7 +46,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * Removed bridge method that were in place for backwards compatibility of legacy API's. This may lead to some breaking API changes.
 * Removed Guava as a dependency. If your application relies on Guava, make sure to add it as a direct dependency for your project and not rely on QueryDSL shipping it transitively.
 * In order for Guava to be removed Mysema Codegen had to be rereleased as QueryDSL Codegen Utils.
-  Therefore, the classes in this module moved to a different package: `com.mysema.codegen` is now `com.querydsl.codegen.utils.model`.
+  Therefore, the classes in this module moved to a different package: `com.mysema.codegen` is now `com.querydsl.codegen.utils`.
   This for example affects `com.mysema.codegen.model.SimpleType`.
   Although many applications won't touch the codgen internal classes, custom APT extensions might be affected by this.
 * Due to the removal of Guava, any method that received an `ImmutableList` as parameter, now accepts any `List` instead.
@@ -58,6 +61,15 @@ A huge thanks goes out to all contributors that made this release possible in th
 * Removal of various deprecated methods.
 * `joda-time` is now an optional dependency. If your application relies on `joda-time` make sure to specify it as a direct dependency rather than relying on QueryDSL to include it transitively.
 * `com.google.code.findbugs:jsr305` is no longer a dependency. If your application currently relies on QueryDSL shipping JSR305 transitivily, you should add JSR305 as a direct dependency to your project.
+* MDC keys now use an underscore instead of a dot as separator: ` querydsl.query` now is `querydsl_query` and `querydsl.parameters` is `querydsl_parameters`.
+
+#### Deprecations
+* `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` are now deprecated for queries that have multiple group by
+  expressions or a having clause, because these scenarios cannot be supported by pure JPA and are instead computed in-memory.
+  If the total count of results is not necessary, we recommend to always use `AbstractJPAQuery#fetch` instead.
+  If you want a reliable way of computing the result count for a paginated result for even the most complicated queries,
+  we recommend using the [Blaze-Persistence QueryDSL integration](https://persistence.blazebit.com/documentation/1.5/core/manual/en_US/#querydsl-integration).
+  `BlazeJPAQuery` properly implements both `fetchResults` and `fetchCount` and even comes with a `page` method.
 
 #### Dependency updates
 
