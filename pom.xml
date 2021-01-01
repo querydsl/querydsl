@@ -601,6 +601,7 @@
 
         <!-- Languages -->
         <module>querydsl-scala</module>
+        <module>querydsl-kotlin</module>
       </modules>
     </profile>
 
