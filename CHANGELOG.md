@@ -33,6 +33,7 @@ A huge thanks goes out to all contributors that made this release possible in th
   Because the Jetbrains Annotations, contrary to the JSR305 annotations, use a Class retention level, Jetbrains Annotations
   does not have to be available at runtime and is not a transitive dependency.
 * [#658](https://github.com/querydsl/querydsl/issues/658) - Added `JPAExpressions#treat` which can be used to generate JPA 2.1 Treated path expressions.
+* [#2666](https://github.com/querydsl/querydsl/issues/2666) - More descriptive error message when using unsupported query features in JPA.
 
 #### Bugfixes
 
@@ -41,6 +42,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * [#2053](https://github.com/querydsl/querydsl/issues/2053) - Work around issues with `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` in a query with a having clause by using an in-memory calculation.
 * [#2504](https://github.com/querydsl/querydsl/issues/2504) - Work around issues with `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` in a query with multiple group by expressions by using an in-memory calculation.
 * [#2663](https://github.com/querydsl/querydsl/issues/2663) - Fix issues with the JPA implementation of `InsertClause`.
+* [#2706](https://github.com/querydsl/querydsl/pull/2706) - Fix a memory leak in `TemplateFactory`.
 
 #### Breaking changes
 

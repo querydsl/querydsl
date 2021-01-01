@@ -308,7 +308,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 }
             }
         } else if (strict) {
-            throw new IllegalArgumentException("No pattern found for " + operator);
+            throw new IllegalArgumentException(String.format("No pattern found for %s. Make sure to register any custom functions with %s.", operator, templates.getClass()));
         } else {
             append(operator.toString());
             append("(");
