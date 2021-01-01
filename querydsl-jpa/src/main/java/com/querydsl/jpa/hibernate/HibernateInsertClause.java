@@ -85,7 +85,7 @@ public class HibernateInsertClause implements
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, values, subQuery, inserts);
+        serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
         Map<Object, String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
@@ -121,7 +121,7 @@ public class HibernateInsertClause implements
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, values, subQuery, inserts);
+        serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
         return serializer.toString();
     }
 
@@ -158,8 +158,8 @@ public class HibernateInsertClause implements
 
     @Override
     public HibernateInsertClause values(Object... v)  {
-        // TODO Auto-generated method stub
-        return null;
+        this.values.addAll(Arrays.asList(v));
+        return this;
     }
 
 

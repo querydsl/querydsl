@@ -74,7 +74,7 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, values, subQuery, inserts);
+        serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
@@ -93,7 +93,7 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, values, subQuery, inserts);
+        serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
         return serializer.toString();
     }
 
