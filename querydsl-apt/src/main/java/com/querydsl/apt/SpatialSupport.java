@@ -59,6 +59,9 @@ final class SpatialSupport {
             typeMappings.register(
                     new SimpleType("com.vividsolutions.jts.geom." + entry.getKey()),
                     new SimpleType("com.querydsl.spatial.jts." + entry.getValue()));
+            typeMappings.register(
+                    new SimpleType("org.locationtech.jts.geom." + entry.getKey()),
+                    new SimpleType("com.querydsl.spatial.locationtech.jts." + entry.getValue()));
         }
     }
 
