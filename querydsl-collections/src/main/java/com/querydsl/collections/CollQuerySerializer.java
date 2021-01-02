@@ -210,8 +210,9 @@ public final class CollQuerySerializer extends SerializerBase<CollQuerySerialize
     public Void visit(FactoryExpression<?> expr, Void context) {
         visitConstant(expr);
         append(".newInstance(");
+        append("new Object[] {");
         handle(", ", expr.getArgs());
-        append(")");
+        append("})");
         return null;
     }
 

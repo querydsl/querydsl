@@ -18,6 +18,7 @@ import static com.querydsl.jpa.JPAExpressions.selectOne;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
@@ -31,6 +32,8 @@ import javax.persistence.LockModeType;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -278,6 +281,18 @@ public class JPABase extends AbstractJPATest implements JPATest {
         List<String> rows = query().from(cat).select(cat.name).createQuery().getResultList();
         for (String row : rows) {
             assertNotNull(row);
+        }
+    }
+
+    @Test
+    @NoHibernate
+    @ExcludeIn(Target.DERBY)
+    public void createQuery4() {
+        List<Tuple> rows = query().from(cat).select(new Expression<?>[] {Expressions.nullExpression()}).fetch();
+        for (Tuple row : rows) {
+            assertNotNull(row);
+            assertEquals(1, row.size());
+            assertNull(row.get(Expressions.nullExpression()));
         }
     }
 
