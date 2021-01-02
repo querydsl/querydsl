@@ -185,7 +185,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
                     }
                     rv.add(projection.newInstance((Object[]) o));
                 } else {
-                    rv.add(projection.newInstance(new Object[] { null }));
+                    rv.add(projection.newInstance(new Object[] {null}));
                 }
             }
             return rv;

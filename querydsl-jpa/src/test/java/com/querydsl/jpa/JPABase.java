@@ -286,7 +286,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     public void createQuery4() {
-        List<Tuple> rows = query().from(cat).select(new Expression<?>[] { Expressions.nullExpression() }).fetch();
+        List<Tuple> rows = query().from(cat).select(new Expression<?>[] {Expressions.nullExpression()}).fetch();
         for (Tuple row : rows) {
             assertNotNull(row);
             assertEquals(1, row.size());
