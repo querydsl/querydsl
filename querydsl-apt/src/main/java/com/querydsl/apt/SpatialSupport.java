@@ -37,7 +37,6 @@ final class SpatialSupport {
         additions.put("MultiPolygon", "MultiPolygonPath");
         additions.put("Point", "PointPath");
         additions.put("Polygon", "PolygonPath");
-        additions.put("PolyHedralSurface", "PolyhedralSurfacePath");
         for (Map.Entry<String, String> entry : additions.entrySet()) {
             typeMappings.register(
                     new SimpleType("org.geolatte.geom." + entry.getKey()),

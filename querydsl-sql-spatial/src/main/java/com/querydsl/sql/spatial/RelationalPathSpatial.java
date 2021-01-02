@@ -92,10 +92,4 @@ public class RelationalPathSpatial<T> extends RelationalPathBase<T> implements G
         return add(new PolygonPath<A>(type, forProperty(property)));
     }
 
-    @Override
-    public <A extends PolyHedralSurface> PolyhedralSurfacePath<A> createPolyhedralSurface(
-            String property, Class<? extends A> type) {
-        return add(new PolyhedralSurfacePath<A>(type, forProperty(property)));
-    }
-
 }

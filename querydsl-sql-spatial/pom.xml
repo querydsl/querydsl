@@ -39,6 +39,17 @@
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-spatial</artifactId>
       <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>geolatte-geom</artifactId>
+          <groupId>org.geolatte</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.geolatte</groupId>
+      <artifactId>geolatte-geom</artifactId>
+      <version>0.13</version>
     </dependency>
     <dependency>
       <groupId>com.vividsolutions</groupId>

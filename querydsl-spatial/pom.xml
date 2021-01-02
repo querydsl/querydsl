@@ -32,8 +32,14 @@
     <dependency>
       <groupId>org.geolatte</groupId>
       <artifactId>geolatte-geom</artifactId>
-      <version>0.13</version>
     </dependency>
+    <dependency>
+      <groupId>com.vividsolutions</groupId>
+      <artifactId>jts</artifactId>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+
 
     <!--test -->
     <dependency>

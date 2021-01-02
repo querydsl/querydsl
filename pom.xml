@@ -143,6 +143,16 @@
         <artifactId>javax.jdo</artifactId>
         <version>3.2.0-m13</version>
       </dependency>
+      <dependency>
+        <groupId>org.geolatte</groupId>
+        <artifactId>geolatte-geom</artifactId>
+        <version>1.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.vividsolutions</groupId>
+        <artifactId>jts</artifactId>
+        <version>1.13</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
