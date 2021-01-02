@@ -22,7 +22,19 @@
       <version>20.1.0</version>
       <scope>provided</scope>
     </dependency>
-
+    <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-codegen</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>

@@ -11,8 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.apt;
+package com.querydsl.spatial.apt;
 
+import com.querydsl.codegen.Extension;
 import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.codegen.AbstractModule;
 import com.querydsl.codegen.CodegenModule;
@@ -24,7 +25,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-final class SpatialSupport {
+/**
+ * {@code SpatialSupport} provides support for spatial types in code generation
+ *
+ * @author tiwe
+ *
+ */
+public final class SpatialSupport implements Extension {
 
     private static void registerTypes(TypeMappings typeMappings) {
         Map<String, String> additions = new HashMap<>();
@@ -79,12 +86,16 @@ final class SpatialSupport {
         module.bind(CodegenModule.IMPORTS, imports);
     }
 
-    public static void addSupport(AbstractModule module) {
+    /**
+     * Register spatial types to the given codegen module
+     *
+     * @param module module to be customized for spatial support
+     */
+    public void addSupport(AbstractModule module) {
         registerTypes(module.get(TypeMappings.class));
         addImports(module,"com.querydsl.spatial.path");
         registerJTSTypes(module.get(TypeMappings.class));
         addImports(module,"com.querydsl.spatial.jts.path");
     }
 
-    private SpatialSupport() { }
 }

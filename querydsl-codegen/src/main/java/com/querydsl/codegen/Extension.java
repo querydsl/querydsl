@@ -11,9 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.apt;
-
-import com.querydsl.codegen.AbstractModule;
+package com.querydsl.codegen;
 
 /**
  * {@code Extension} allows for custom code generation extensions to be registered as service provider
