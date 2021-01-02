@@ -53,6 +53,13 @@ jobs:
       - name: Run tests
         run: mvn --batch-mode install -am jacoco:report ${{ matrix.maven-args }}
 
+      - name: Upload test reports
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: test-reports
+          path: './**/target/surefire-reports/'
+
       - name: Report coverage
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         env:

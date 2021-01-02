@@ -548,16 +548,16 @@ public final class Connections {
             return;
         }
 
-        stmt.execute("DROP ALIAS IF EXISTS InitGeoDB");
-        stmt.execute("CREATE ALIAS InitGeoDB for \"geodb.GeoDB.InitGeoDB\"");
-        stmt.execute("CALL InitGeoDB()");
+        stmt.execute("DROP ALIAS IF EXISTS H2GIS_SPATIAL");
+        stmt.execute("CREATE ALIAS IF NOT EXISTS H2GIS_SPATIAL FOR \"org.h2gis.functions.factory.H2GISFunctions.load\"");
+        stmt.execute("CALL H2GIS_SPATIAL();");
 
         // shapes
         dropTable(templates, "SHAPES");
-        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY blob)");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
         for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
             stmt.execute("insert into SHAPES values(" + entry.getKey()
-                    + ", ST_GeomFromText('" + entry.getValue() + "', 4326))");
+                    + ", ST_GeomFromText('" + entry.getValue() + "'))");
         }
 
         // qtest

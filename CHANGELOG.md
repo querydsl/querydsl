@@ -72,12 +72,15 @@ A huge thanks goes out to all contributors that made this release possible in th
 * This release targets Hibernate 5 in the Hibernate integration. If you need Hibernate 4 dialect specific workarounds, use the `HQLTemplates` instead of the `Hibernate5Templates`.
 * Removal of various deprecated methods.
 * `joda-time:joda-time` is now an optional dependency. If your application relies on `joda-time:joda-time` make sure to specify it as a direct dependency rather than relying on QueryDSL to include it transitively.
-* `com.google.code.findbugs:jsr305` is no longer a dependency. If your application currently relies on QueryDSL shipping JSR305 transitivily, you should add JSR305 as a direct dependency to your project.
+* `com.google.code.findbugs:jsr305` is no longer a dependency. If your application currently relies on QueryDSL shipping JSR305 transitively, you should add JSR305 as a direct dependency to your project.
 * MDC keys now use an underscore instead of a dot as separator: ` querydsl.query` now is `querydsl_query` and `querydsl.parameters` is `querydsl_parameters`.
-* Removal of `PolyHedralSurface` in `querydsl-spatial` due to the upgrade of `geolatte-geom`.
+* Removal of `PolyHedralSurface` in `querydsl-spatial` and `querydsl-sql-spatial` due to the upgrade of `geolatte-geom`.
 * `com.querydsl.apt.Extension` moved to `com.querydsl.codegen` and now resides in the `querydsl-codegen` module.
 * `com.querydsl.apt.SpatialSupport` moved to `com.querydsl.spatial.apt.SpatialSupport` and now resides in the `querydsl-spatial` module.
 * `com.querydsl.sql.codegen.SpatialSupport` moved to `com.querydsl.sql.spatial.SpatialSupport` and now resides in the `querydsl-sql-spatial` module.
+* `SQLServerGeometryReader` in `querydsl-sql-spatial` is removed in favour of `org.geolatte.geom.codec.db.sqlserver.*`.
+* `PGgeometryConverter` in `querydsl-sql-spatial` is removed in favour of `org.geolatte.geom.codec.Wkt`.
+* `JGeometryConverter` in `querydsl-sql-spatial` is removed in favour of `org.geolatte.geom.codec.db.oracle.*`.
 
 #### Deprecations
 * `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` are now deprecated for queries that have multiple group by
@@ -86,7 +89,6 @@ A huge thanks goes out to all contributors that made this release possible in th
   If you want a reliable way of computing the result count for a paginated result for even the most complicated queries,
   we recommend using the [Blaze-Persistence QueryDSL integration](https://persistence.blazebit.com/documentation/1.5/core/manual/en_US/#querydsl-integration).
   `BlazeJPAQuery` properly implements both `fetchResults` and `fetchCount` and even comes with a `page` method.
-* `querydsl-spatial-sql` is deprecated as it requires GeoLatte < 1.0.0. `querydsl-spatial-sql` is currently not maintained.
 
 #### Dependency updates
 
@@ -94,7 +96,8 @@ A huge thanks goes out to all contributors that made this release possible in th
 * `org.eclipse.jdt.core.compiler:ecj` to 4.6.1 for Java 8+ support
 * `joda-time:joda-time` to 2.10.8 for better interoperability with other frameworks that use more recent versions than QueryDSL.
 * `org.geolatte:geolatte-geom` to 1.4.0 for better interopability with Hibernate Spatial.
+  `querydsl-spatial` is still backwards compatible with older versions of Geolatte, however, `querydsl-sql-spatial` is not and requires 1.4.0 or newer.
 * `com.vividsolutions:jts` to `org.locationtech:jts` for better interopability with Hibernate Spatial.
+  `com.vividsolutions:jts` is still supported for `querydsl-spatial` if an older version of `org.geolatte:geolatte-geom` is provided.
 * DataNucleus 5.2.x for Java 8+ support
   * JDO now uses `org.datanucleus:javax.jdo` instead of `javax.jdo:jdo-api`
-  

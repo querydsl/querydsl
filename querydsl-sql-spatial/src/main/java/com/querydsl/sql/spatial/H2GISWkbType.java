@@ -13,27 +13,28 @@
  */
 package com.querydsl.sql.spatial;
 
+import com.querydsl.sql.types.AbstractType;
+import org.geolatte.geom.ByteBuffer;
+import org.geolatte.geom.ByteOrder;
+import org.geolatte.geom.Geometry;
+import org.geolatte.geom.codec.Wkb;
+import org.geolatte.geom.codec.WkbDecoder;
+import org.geolatte.geom.codec.WkbEncoder;
+import org.geolatte.geom.codec.Wkt;
+import org.jetbrains.annotations.Nullable;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.geolatte.geom.codec.db.sqlserver.Decoders;
-import org.geolatte.geom.codec.db.sqlserver.Encoders;
-import org.jetbrains.annotations.Nullable;
+class H2GISWkbType extends AbstractType<Geometry> {
 
-import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.Wkt;
+    public static final H2GISWkbType DEFAULT = new H2GISWkbType();
 
-import com.querydsl.sql.types.AbstractType;
+    private final ByteOrder byteOrder = ByteOrder.NDR;
 
-class SQLServerGeometryType extends AbstractType<Geometry> {
-
-    public static final SQLServerGeometryType DEFAULT = new SQLServerGeometryType();
-
-    private static final int DEFAULT_SRID = 4326;
-
-    public SQLServerGeometryType() {
+    public H2GISWkbType() {
         super(Types.BLOB);
     }
 
@@ -47,7 +48,15 @@ class SQLServerGeometryType extends AbstractType<Geometry> {
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
         byte[] bytes = rs.getBytes(startIndex);
         if (bytes != null) {
-            return Decoders.decode(bytes);
+            byte[] wkb;
+            if (bytes[0] != 0 && bytes[0] != 1) { // decodes EWKB
+                wkb = new byte[bytes.length - 32];
+                System.arraycopy(bytes, 32, wkb, 0, wkb.length);
+            } else {
+                wkb = bytes;
+            }
+            WkbDecoder decoder = Wkb.newDecoder(Wkb.Dialect.POSTGIS_EWKB_1);
+            return decoder.decode(ByteBuffer.from(wkb));
         } else {
             return null;
         }
@@ -55,17 +64,18 @@ class SQLServerGeometryType extends AbstractType<Geometry> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        byte[] bytes = Encoders.encode(value);
-        st.setBytes(startIndex, bytes);
+        WkbEncoder encoder = Wkb.newEncoder(Wkb.Dialect.POSTGIS_EWKB_1);
+        ByteBuffer buffer = encoder.encode(value, byteOrder);
+        st.setBytes(startIndex, buffer.toByteArray());
     }
 
     @Override
     public String getLiteral(Geometry geometry) {
         String str = Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(geometry);
         if (geometry.getSRID() > -1) {
-            return "geometry::STGeomFromText('" + str + "', " + geometry.getSRID() + ")";
+            return "ST_GeomFromText('" + str + "', " + geometry.getSRID() + ")";
         } else {
-            return "geometry::STGeomFromText('" + str + "', " + DEFAULT_SRID + ")";
+            return "ST_GeomFromText('" + str + "', -1)";
         }
     }
 
