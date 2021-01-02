@@ -114,10 +114,16 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.opengeo</groupId>
-      <artifactId>geodb</artifactId>
-      <version>0.7</version>
+      <groupId>org.orbisgis</groupId>
+      <artifactId>h2gis</artifactId>
+      <version>${h2gis.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>

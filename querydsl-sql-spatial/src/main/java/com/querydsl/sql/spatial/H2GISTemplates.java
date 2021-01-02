@@ -13,41 +13,41 @@
  */
 package com.querydsl.sql.spatial;
 
-import com.querydsl.sql.OracleTemplates;
+import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.SQLTemplates;
 
 /**
- * {@code OracleSpatialTemplates} is a spatial enabled SQL dialect for Oracle
+ * {@code GeoDBTemplates} is a spatial enabled SQL dialect for GeoDB
  *
  * @author tiwe
  *
  */
-public class OracleSpatialTemplates extends OracleTemplates {
+public class H2GISTemplates extends H2Templates {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
-    public static final OracleSpatialTemplates DEFAULT = new OracleSpatialTemplates();
+    public static final H2GISTemplates DEFAULT = new H2GISTemplates();
 
     public static Builder builder() {
         return new Builder() {
             @Override
             protected SQLTemplates build(char escape, boolean quote) {
-                return new OracleSpatialTemplates(escape, quote);
+                return new H2GISTemplates(escape, quote);
             }
         };
     }
 
-    public OracleSpatialTemplates() {
+    public H2GISTemplates() {
         this('\\', false);
     }
 
-    public OracleSpatialTemplates(boolean quote) {
+    public H2GISTemplates(boolean quote) {
         this('\\', quote);
     }
 
-    public OracleSpatialTemplates(char escape, boolean quote) {
+    public H2GISTemplates(char escape, boolean quote) {
         super(escape, quote);
-        addCustomType(SDOGeometryType.DEFAULT);
-        // TODO
+        addCustomType(H2GISWkbType.DEFAULT);
+        add(SpatialTemplatesSupport.getSpatialOps(true));
     }
 
 }

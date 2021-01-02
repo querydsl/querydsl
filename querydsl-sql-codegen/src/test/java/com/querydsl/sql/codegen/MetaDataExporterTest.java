@@ -172,7 +172,7 @@ public class MetaDataExporterTest {
     @Test
     public void validation_annotations_are_not_added_to_columns_with_default_values() throws SQLException, ClassNotFoundException, MalformedURLException {
         Statement stmt = connection.createStatement();
-        stmt.execute("CREATE TABLE table ("
+        stmt.execute("CREATE TABLE foo ("
                 + "id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,"
                 + "name VARCHAR(255) NOT NULL DEFAULT 'some default')");
 
@@ -180,25 +180,25 @@ public class MetaDataExporterTest {
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
         exporter.setPackageName("test");
-        exporter.setTableNamePattern("TABLE");
+        exporter.setTableNamePattern("FOO");
         exporter.setTargetFolder(folder.getRoot());
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setValidationAnnotations(true);
         exporter.export(metadata);
 
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] {folder.getRoot().toURI().toURL()});
-        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Table.java");
-        Class<?> cls = Class.forName("test.Table", true, classLoader);
+        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Foo.java");
+        Class<?> cls = Class.forName("test.Foo", true, classLoader);
         assertThat(ReflectionUtils.getAnnotatedElement(cls, "id", Integer.class).getAnnotation(NotNull.class), is(nullValue()));
         assertThat(ReflectionUtils.getAnnotatedElement(cls, "name", String.class).getAnnotation(NotNull.class), is(nullValue()));
 
-        stmt.execute("DROP TABLE table");
+        stmt.execute("DROP TABLE foo");
     }
 
     @Test
     public void validation_annotations_are_added_to_columns_without_default_values() throws SQLException, ClassNotFoundException, MalformedURLException {
         Statement stmt = connection.createStatement();
-        stmt.execute("CREATE TABLE table ("
+        stmt.execute("CREATE TABLE bar ("
                 + "id VARCHAR(10) PRIMARY KEY NOT NULL,"
                 + "name VARCHAR(255) NOT NULL)");
 
@@ -206,19 +206,19 @@ public class MetaDataExporterTest {
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
         exporter.setPackageName("test");
-        exporter.setTableNamePattern("TABLE");
+        exporter.setTableNamePattern("BAR");
         exporter.setTargetFolder(folder.getRoot());
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setValidationAnnotations(true);
         exporter.export(metadata);
 
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] {folder.getRoot().toURI().toURL()});
-        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Table.java");
-        Class<?> cls = Class.forName("test.Table", true, classLoader);
+        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Bar.java");
+        Class<?> cls = Class.forName("test.Bar", true, classLoader);
         assertThat(ReflectionUtils.getAnnotatedElement(cls, "id", Integer.class).getAnnotation(NotNull.class), is(notNullValue()));
         assertThat(ReflectionUtils.getAnnotatedElement(cls, "name", String.class).getAnnotation(NotNull.class), is(notNullValue()));
 
-        stmt.execute("DROP TABLE table");
+        stmt.execute("DROP TABLE bar");
     }
 
     @Test
