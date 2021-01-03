@@ -18,6 +18,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -73,6 +74,14 @@ public abstract class AbstractModule {
     public final <T> AbstractModule bind(Class<T> iface, T implementation) {
         instances.put(iface, implementation);
         return this;
+    }
+
+    public final void loadExtensions() {
+        ServiceLoader<Extension> loader = ServiceLoader.load(Extension.class, Extension.class.getClassLoader());
+
+        for (Extension extension : loader) {
+            extension.addSupport(this);
+        }
     }
 
     protected abstract void configure();

@@ -51,7 +51,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -289,20 +288,7 @@ public class DefaultConfiguration implements Configuration {
             variableNameFunction = DefaultVariableNameFunction.INSTANCE;
         }
         module.bind(CodegenModule.VARIABLE_NAME_FUNCTION_CLASS, variableNameFunction);
-
-        try {
-            // register additional mappings if querydsl-spatial is on the classpath
-            Class.forName("com.querydsl.spatial.GeometryExpression");
-            SpatialSupport.addSupport(module);
-        } catch (Exception e) {
-            // do nothing
-        }
-
-        ServiceLoader<Extension> loader = ServiceLoader.load(Extension.class, Extension.class.getClassLoader());
-
-        for (Extension extension : loader) {
-            extension.addSupport(module);
-        }
+        module.loadExtensions();
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
                 mapAccessors, createDefaultVariable, "");

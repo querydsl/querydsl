@@ -210,10 +210,7 @@ public class MetaDataExporter {
             beansTargetFolder = targetFolder;
         }
         module.bind(SQLCodegenModule.BEAN_PACKAGE_NAME, beanPackageName);
-
-        if (spatial) {
-            SpatialSupport.addSupport(module);
-        }
+        module.loadExtensions();
 
         classes.clear();
         typeMappings = module.get(TypeMappings.class);

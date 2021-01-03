@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, The Querydsl Team (http://www.querydsl.com/team)
+ * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,23 +11,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.apt;
+package com.querydsl.spatial.locationtech.jts;
 
-import com.querydsl.codegen.AbstractModule;
+import com.querydsl.core.types.Expression;
+import org.locationtech.jts.geom.LineString;
 
 /**
- * {@code Extension} allows for custom code generation extensions to be registered as service provider
+ * A Line is a LineString with exactly 2 Points.
  *
- * @author Jan-Willem Gmelig Meyling
+ * @author tiwe
  *
+ * @param <T>
  */
-public interface Extension {
+public abstract class JTSLineExpression<T extends LineString> extends JTSLineStringExpression<T> {
 
-    /**
-     * Register custom types to the given codegen module
-     *
-     * @param module module to be customized
-     */
-    void addSupport(AbstractModule module);
+    private static final long serialVersionUID = -4849454664355502296L;
+
+    public JTSLineExpression(Expression<T> mixin) {
+        super(mixin);
+    }
 
 }

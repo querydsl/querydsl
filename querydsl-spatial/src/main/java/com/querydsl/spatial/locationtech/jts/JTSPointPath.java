@@ -11,50 +11,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.spatial;
+package com.querydsl.spatial.locationtech.jts;
+
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.core.types.Visitor;
+import org.locationtech.jts.geom.Point;
 
 import java.lang.reflect.AnnotatedElement;
 
-import org.geolatte.geom.PolyHedralSurface;
-
-import com.querydsl.core.types.*;
-
 /**
- * {@code PolyhedralSurfacePath} extends {@link PolyhedralSurfaceExpression} to implement the
+ * {@code JTSPointPath} extends {@link JTSPointExpression} to implement the
  * {@link Path} interface
  *
  * @author tiwe
  *
  * @param <T>
  */
-public class PolyhedralSurfacePath<T extends PolyHedralSurface> extends PolyhedralSurfaceExpression<T> implements Path<T> {
+public class JTSPointPath<T extends Point> extends JTSPointExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = 312776751843333543L;
 
     private final PathImpl<T> pathMixin;
 
     @SuppressWarnings("unchecked")
-    public PolyhedralSurfacePath(Path<?> parent, String property) {
-        this((Class<? extends T>) PolyHedralSurface.class, parent, property);
+    public JTSPointPath(Path<?> parent, String property) {
+        this((Class<? extends T>) Point.class, parent, property);
     }
 
-    public PolyhedralSurfacePath(Class<? extends T> type, Path<?> parent, String property) {
+    public JTSPointPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
     @SuppressWarnings("unchecked")
-    public PolyhedralSurfacePath(PathMetadata metadata) {
-        this((Class<? extends T>) PolyHedralSurface.class, metadata);
+    public JTSPointPath(PathMetadata metadata) {
+        this((Class<? extends T>) Point.class, metadata);
     }
 
-    public PolyhedralSurfacePath(Class<? extends T> type, PathMetadata metadata) {
+    public JTSPointPath(Class<? extends T> type, PathMetadata metadata) {
         super(ExpressionUtils.path(type, metadata));
         this.pathMixin = (PathImpl<T>) mixin;
     }
 
     @SuppressWarnings("unchecked")
-    public PolyhedralSurfacePath(String var) {
-        this((Class<? extends T>) PolyHedralSurface.class, PathMetadataFactory.forVariable(var));
+    public JTSPointPath(String var) {
+        this((Class<? extends T>) Point.class, PathMetadataFactory.forVariable(var));
     }
 
     @Override
@@ -62,7 +66,7 @@ public class PolyhedralSurfacePath<T extends PolyHedralSurface> extends Polyhedr
         return v.visit(pathMixin, context);
     }
 
-    public PolyhedralSurfacePath(Class<? extends T> type, String var) {
+    public JTSPointPath(Class<? extends T> type, String var) {
         this(type, PathMetadataFactory.forVariable(var));
     }
 

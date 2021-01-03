@@ -41,6 +41,4 @@ public interface GeometryPaths {
 
     <A extends Polygon> PolygonPath<A> createPolygon(String property, Class<? extends A> type);
 
-    <A extends PolyHedralSurface> PolyhedralSurfacePath<A> createPolyhedralSurface(String property, Class<? extends A> type);
-
 }
