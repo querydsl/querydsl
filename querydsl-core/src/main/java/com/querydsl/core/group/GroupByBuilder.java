@@ -14,9 +14,11 @@
 package com.querydsl.core.group;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.ResultTransformer;
@@ -34,7 +36,7 @@ import com.querydsl.core.types.FactoryExpressionUtils;
  */
 public class GroupByBuilder<K> {
 
-    private final Expression<K> key;
+    protected final Expression<K> key;
 
     /**
      * Create a new GroupByBuilder for the given key expression
@@ -53,6 +55,17 @@ public class GroupByBuilder<K> {
      */
     public ResultTransformer<Map<K, Group>> as(Expression<?>... expressions) {
         return new GroupByMap<K, Group>(key, expressions);
+    }
+
+    /**
+     * Get the results as a map
+     *
+     * @param mapFactory the map factory to use, i.e. {@code HashMap::new}.
+     * @param expressions projection
+     * @return new result transformer
+     */
+    public <RES extends Map<K, Group>> ResultTransformer<RES> as(Supplier<RES> mapFactory, Expression<?>... expressions) {
+        return new GroupByGenericMap<K, Group, RES>(mapFactory, key, expressions);
     }
 
     /**
@@ -76,6 +89,17 @@ public class GroupByBuilder<K> {
     }
 
     /**
+     * Get the results as a collection.
+     *
+     * @param resultFactory The collection factory to use, i.e. {@code HashSet::new}.
+     * @param expressions projection
+     * @return new result transformer
+     */
+    public <RES extends Collection<Group>> ResultTransformer<RES> collection(Supplier<RES> resultFactory, Expression<?>... expressions) {
+        return new GroupByGenericCollection<K, Group, RES>(resultFactory, key, expressions);
+    }
+
+    /**
      * Get the results as a map
      *
      * @param expression projection
@@ -88,6 +112,27 @@ public class GroupByBuilder<K> {
             @Override
             protected Map<K, V> transform(Map<K, Group> groups) {
                 Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size() / 0.75), 0.75f);
+                for (Map.Entry<K, Group> entry : groups.entrySet()) {
+                    results.put(entry.getKey(), entry.getValue().getOne(lookup));
+                }
+                return results;
+            }
+        };
+    }
+
+    /**
+     * Get the results as a map
+     *
+     * @param mapFactory The map factory to use, i.e. {@code HashMap::new}.
+     * @param expression projection
+     * @return new result transformer
+     */
+    public <V, RES extends Map<K ,V>> ResultTransformer<RES> as(final Supplier<RES> mapFactory, Expression<V> expression) {
+        final Expression<V> lookup = getLookup(expression);
+        return new GroupByGenericMap<K, V, RES>(mapFactory, key, expression) {
+            @Override
+            protected RES transform(Map<K, Group> groups) {
+                RES results = mapFactory.get();
                 for (Map.Entry<K, Group> entry : groups.entrySet()) {
                     results.put(entry.getKey(), entry.getValue().getOne(lookup));
                 }
@@ -128,7 +173,24 @@ public class GroupByBuilder<K> {
         };
     }
 
-    private <V> Expression<V> getLookup(Expression<V> expression) {
+    /**
+     * Get the results as a set
+     *
+     * @param expression projection
+     * @return new result transformer
+     */
+    public <V, RES extends Collection<V>> ResultTransformer<RES> collection(Supplier<RES> resultFactory, Expression<V> expression) {
+        final Expression<V> lookup = getLookup(expression);
+        return new GroupByGenericCollection<K, V, RES>(resultFactory, key, expression) {
+            @Override
+            protected V transform(Group group) {
+                return group.getOne(lookup);
+            }
+        };
+    }
+
+
+    protected  <V> Expression<V> getLookup(Expression<V> expression) {
         if (expression instanceof GroupExpression) {
             @SuppressWarnings("unchecked") // This is the underlying type
             GroupExpression<V, ?> groupExpression = (GroupExpression<V, ?>) expression;
@@ -215,5 +277,26 @@ public class GroupByBuilder<K> {
         };
     }
 
+    /**
+     * Get the results as a list
+     *
+     * @param expression projection
+     * @return new result transformer
+     */
+    public <V, RES extends Collection<V>> ResultTransformer<RES> collection(Supplier<RES> resultFactory, FactoryExpression<V> expression) {
+        final FactoryExpression<V> transformation = FactoryExpressionUtils.wrap(expression);
+        List<Expression<?>> args = transformation.getArgs();
+        return new GroupByGenericCollection<K, V, RES>(resultFactory, key, args.toArray(new Expression<?>[args.size()])) {
+            @Override
+            protected V transform(Group group) {
+                // XXX Isn't group.toArray() suitable here?
+                List<Object> args = new ArrayList<Object>(groupExpressions.size() - 1);
+                for (int i = 1; i < groupExpressions.size(); i++) {
+                    args.add(group.getGroup(groupExpressions.get(i)));
+                }
+                return transformation.newInstance(args.toArray());
+            }
+        };
+    }
 
 }

@@ -26,7 +26,7 @@ import com.querydsl.core.types.Ops;
  * @author tiwe
  *
  */
-class GroupImpl implements Group {
+public class GroupImpl implements Group {
 
     private final Map<Expression<?>, GroupCollector<?,?>> groupCollectorMap = new LinkedHashMap<Expression<?>, GroupCollector<?,?>>();
 
@@ -54,7 +54,7 @@ class GroupImpl implements Group {
     }
 
     @SuppressWarnings("unchecked")
-    void add(Object[] row) {
+    public void add(Object[] row) {
         int i = 0;
         for (GroupCollector groupCollector : groupCollectors) {
             groupCollector.add(row[i]);

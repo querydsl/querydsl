@@ -46,6 +46,7 @@ import com.querydsl.core.types.Visitor;
  * @author tiwe
  *
  */
+@SuppressWarnings("FileLength")
 public final class Expressions {
 
     public static final NumberExpression<Integer> ONE = numberTemplate(Integer.class, "1");
