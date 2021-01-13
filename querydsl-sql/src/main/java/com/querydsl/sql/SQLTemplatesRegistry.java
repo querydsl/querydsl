@@ -64,14 +64,7 @@ public class SQLTemplatesRegistry {
         } else if (name.startsWith("teradata")) {
             return TeradataTemplates.builder();
         } else if (name.equals("microsoft sql server")) {
-            switch (md.getDatabaseMajorVersion()) {
-                case 13:
-                case 12:
-                case 11: return SQLServer2012Templates.builder();
-                case 10: return SQLServer2008Templates.builder();
-                case 9:  return SQLServer2005Templates.builder();
-                default: return SQLServerTemplates.builder();
-            }
+            return getMssqlSqlTemplates(md);
         } else {
             return new SQLTemplates.Builder() {
                 @Override
@@ -82,4 +75,21 @@ public class SQLTemplatesRegistry {
         }
     }
 
+    private SQLTemplates.Builder getMssqlSqlTemplates(DatabaseMetaData md) throws SQLException {
+        int databaseMajorVersion = md.getDatabaseMajorVersion();
+
+        if(databaseMajorVersion < 9) {
+            return SQLServerTemplates.builder();
+        }
+
+        if(databaseMajorVersion == 9) {
+            return SQLServer2005Templates.builder();
+        }
+
+        if(databaseMajorVersion == 10) {
+            return SQLServer2008Templates.builder();
+        }
+
+        return SQLServer2012Templates.builder();
+    }
 }
