@@ -78,15 +78,15 @@ public class SQLTemplatesRegistry {
     private SQLTemplates.Builder getMssqlSqlTemplates(DatabaseMetaData md) throws SQLException {
         int databaseMajorVersion = md.getDatabaseMajorVersion();
 
-        if(databaseMajorVersion < 9) {
+        if (databaseMajorVersion < 9) {
             return SQLServerTemplates.builder();
         }
 
-        if(databaseMajorVersion == 9) {
+        if (databaseMajorVersion == 9) {
             return SQLServer2005Templates.builder();
         }
 
-        if(databaseMajorVersion == 10) {
+        if (databaseMajorVersion == 10) {
             return SQLServer2008Templates.builder();
         }
 
