@@ -10,7 +10,7 @@
     </modules>
     <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
-  <url>${project.homepage}</url>
+  <url>https://querydsl.github.io/</url>
   
   <parent>
     <groupId>com.querydsl</groupId>
