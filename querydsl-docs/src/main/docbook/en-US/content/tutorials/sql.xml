@@ -257,7 +257,15 @@
           </row>
           <row>
             <entry>imports</entry>
-            <entry>Array of java imports added to generated query classes: <emphasis>com.bar</emphasis> for package (without .* notation), <emphasis>com.bar.Foo</emphasis> for class (default: empty)
+            <entry>Array of java imports added to generated query classes: <emphasis>com.bar</emphasis> for package (without .* notation), <emphasis>com.bar.Foo</emphasis> for class (default: empty)</entry>
+          </row>
+          <row>
+            <entry>generatedAnnotationClass</entry>
+            <entry>
+              The fully qualified class name of the <emphasis>Single-Element Annotation</emphasis> (with String element) to be added on the generated sources. Build in
+              <emphasis>com.querydsl.core.annotations.Generated</emphasis>has CLASS retention which can be used for byte code analysis tools like Jacoco.
+              (default: <emphasis>javax.annotation.Generated</emphasis> or<emphasis>javax.annotation.processing.Generated</emphasis> depending on the java version). See also
+              <ulink url="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</ulink>
             </entry>
           </row>
         </tbody>

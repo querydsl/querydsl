@@ -13,8 +13,16 @@
  */
 package com.querydsl.codegen;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.StringUtils;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.utils.model.Types;
+import com.querydsl.core.annotations.Generated;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,12 +31,10 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Date;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.querydsl.codegen.utils.JavaWriter;
-import com.querydsl.codegen.utils.StringUtils;
-import com.querydsl.codegen.utils.model.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class BeanSerializerTest {
 
@@ -177,6 +183,24 @@ public class BeanSerializerTest {
                 "java.sql.Time time;")) {
             assertTrue(prop + " was not contained", str.contains(prop));
         }
+    }
+
+    @Test
+    public void defaultsGeneratedAnnotation() throws IOException {
+        Serializer serializer = new BeanSerializer();
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        String generatedSource = String.valueOf(writer);
+        assertThat(generatedSource, containsString("import javax.annotation.Generated;"));
+        assertThat(generatedSource, containsString("@Generated(\"com.querydsl.codegen.BeanSerializer\")\npublic class"));
+    }
+
+    @Test
+    public void customGeneratedAnnotation() throws IOException {
+        Serializer serializer = new BeanSerializer(BeanSerializer.DEFAULT_JAVADOC_SUFFIX, Generated.class);
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        String generatedSource = String.valueOf(writer);
+        assertThat(generatedSource, containsString("import com.querydsl.core.annotations.Generated;"));
+        assertThat(generatedSource, containsString("@Generated(\"com.querydsl.codegen.BeanSerializer\")\npublic class"));
     }
 
 }

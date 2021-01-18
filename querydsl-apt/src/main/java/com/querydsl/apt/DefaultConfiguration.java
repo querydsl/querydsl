@@ -13,6 +13,7 @@
  */
 package com.querydsl.apt;
 
+import com.querydsl.codegen.GeneratedAnnotationResolver;
 import com.querydsl.codegen.utils.model.ClassType;
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.DefaultVariableNameFunction;
@@ -58,6 +59,7 @@ import static com.querydsl.apt.APTOptions.QUERYDSL_CREATE_DEFAULT_VARIABLE;
 import static com.querydsl.apt.APTOptions.QUERYDSL_ENTITY_ACCESSORS;
 import static com.querydsl.apt.APTOptions.QUERYDSL_EXCLUDED_CLASSES;
 import static com.querydsl.apt.APTOptions.QUERYDSL_EXCLUDED_PACKAGES;
+import static com.querydsl.apt.APTOptions.QUERYDSL_GENERATED_ANNOTATION_CLASS;
 import static com.querydsl.apt.APTOptions.QUERYDSL_INCLUDED_CLASSES;
 import static com.querydsl.apt.APTOptions.QUERYDSL_INCLUDED_PACKAGES;
 import static com.querydsl.apt.APTOptions.QUERYDSL_LIST_ACCESSORS;
@@ -287,8 +289,13 @@ public class DefaultConfiguration implements Configuration {
         } else {
             variableNameFunction = DefaultVariableNameFunction.INSTANCE;
         }
+
         module.bind(CodegenModule.VARIABLE_NAME_FUNCTION_CLASS, variableNameFunction);
+
         module.loadExtensions();
+
+        Class<? extends Annotation> generatedAnnotationClass = GeneratedAnnotationResolver.resolve(options.get(QUERYDSL_GENERATED_ANNOTATION_CLASS));
+        module.bindInstance(CodegenModule.GENERATED_ANNOTATION_CLASS, generatedAnnotationClass);
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
                 mapAccessors, createDefaultVariable, "");

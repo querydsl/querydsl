@@ -104,7 +104,9 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         // validation of output
         try {
             //
-            assertMethodsPresent("test/QSurvey.java",
+            assertFileContainsInOrder("test/QSurvey.java",
+                    "import javax.annotation.Generated;",
+                    "@Generated(\"com.querydsl.sql.codegen.MetaDataSerializer\")\npublic class QSurvey",
                     // variable + schema constructor
                     "    public QSurvey(String variable, String schema) {\n"
                     + "        super(Survey.class, forVariable(variable), schema, \"SURVEY\");\n"
@@ -145,6 +147,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         exporter.setTargetFolder(folder.getRoot());
         exporter.setNamingStrategy(namingStrategy);
         exporter.setConfiguration(conf);
+        exporter.setGeneratedAnnotationClass("com.querydsl.core.annotations.Generated");
         exporter.export(connection.getMetaData());
 
         compile(exporter);
@@ -152,7 +155,9 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         // validation of output
         try {
             //
-            assertMethodsPresent("test/QSurvey.java",
+            assertFileContainsInOrder("test/QSurvey.java",
+                    "import com.querydsl.core.annotations.Generated;",
+                    "@Generated(\"com.querydsl.sql.codegen.MetaDataSerializer\")\npublic class QSurvey",
                     // variable + schema constructor
                     "    public QSurvey(String variable, String schema) {\n"
                     + "        super(Survey.class, forVariable(variable), schema, \"SURVEY\");\n"
@@ -175,8 +180,9 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         }
     }
 
-    private void assertMethodsPresent(String path, String... methods) throws IOException {
+    private void assertFileContainsInOrder(String path, String... methods) throws IOException {
         String content = new String(Files.readAllBytes(folder.getRoot().toPath().resolve(path)), UTF_8);
         assertThat(content, stringContainsInOrder(asList(methods)));
     }
+
 }

@@ -13,23 +13,9 @@
  */
 package com.querydsl.maven;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Comparator;
-import java.util.regex.Pattern;
-
-import com.querydsl.core.util.StringUtils;
-import org.apache.maven.artifact.manager.WagonManager;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.wagon.authentication.AuthenticationInfo;
-
-import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.core.util.StringUtils;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.codegen.DefaultNamingStrategy;
@@ -39,6 +25,19 @@ import com.querydsl.sql.codegen.support.NumericMapping;
 import com.querydsl.sql.codegen.support.RenameMapping;
 import com.querydsl.sql.codegen.support.TypeMapping;
 import com.querydsl.sql.types.Type;
+import org.apache.maven.artifact.manager.WagonManager;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.wagon.authentication.AuthenticationInfo;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Comparator;
+import java.util.regex.Pattern;
 
 /**
  * {@code AbstractMetaDataExportMojo} is the base class for {@link MetaDataExporter} usage
@@ -385,6 +384,15 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
      */
     private boolean skip;
 
+    /**
+     * The fully qualified class name of the <em>Single-Element Annotation</em> (with <code>String</code> element) to put on the generated sources.Defaults to
+     * <code>javax.annotation.Generated</code> or <code>javax.annotation.processing.Generated</code> depending on the java version.
+     * <em>See also</em> <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     *
+     * @parameter
+     */
+    private String generatedAnnotationClass;
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -447,6 +455,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
             exporter.setExportDirectForeignKeys(exportDirectForeignKeys);
             exporter.setExportInverseForeignKeys(exportInverseForeignKeys);
             exporter.setSpatial(spatial);
+            exporter.setGeneratedAnnotationClass(generatedAnnotationClass);
 
             if (imports != null && imports.length > 0) {
                 exporter.setImports(imports);
@@ -686,6 +695,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
 
     public void setSkip(boolean skip) {
         this.skip = skip;
+    }
+
+    public void setGeneratedAnnotationClass(String generatedAnnotationClass) {
+        this.generatedAnnotationClass = generatedAnnotationClass;
     }
 
     private static String emptyIfSetToBlank(String value) {

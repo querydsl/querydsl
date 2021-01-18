@@ -13,23 +13,25 @@
  */
 package com.querydsl.maven;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.util.Collections;
-
+import com.querydsl.codegen.GeneratedAnnotationResolver;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.FileUtils;
 import org.junit.Test;
 
+import java.io.File;
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class TestMetadataExportMojoTest {
 
     private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
 
-    @Test
-    public void execute() throws Exception {
-        MavenProject project = new MavenProject();
+    private TestMetadataExportMojo setupMojoWith(MavenProject project) {
         TestMetadataExportMojo mojo = new TestMetadataExportMojo();
         mojo.setProject(project);
         mojo.setJdbcDriver("org.h2.Driver");
@@ -41,12 +43,43 @@ public class TestMetadataExportMojoTest {
         mojo.setBeanSuffix("Bean");
         mojo.setPackageName("com.example");
         mojo.setTargetFolder("target/export4");
-        mojo.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
+        mojo.setImports(new String[] {"com.pck1", "com.pck2", "com.Q1", "com.Q2"});
+        return mojo;
+    }
+
+    @Test
+    public void execute() throws Exception {
+        MavenProject project = new MavenProject();
+        TestMetadataExportMojo mojo = setupMojoWith(project);
         mojo.execute();
 
         //'target/export4' seems to conflict with MetadataExportMojoTest.Execute_With_TypeMappings
         assertEquals(Collections.singletonList("target/export4"), project.getTestCompileSourceRoots());
         assertTrue(new File("target/export4").exists());
+    }
+
+    @Test
+    public void defaultGeneratedAnnotation() throws Exception {
+        MavenProject project = new MavenProject();
+        TestMetadataExportMojo mojo = setupMojoWith(project);
+        mojo.execute();
+
+        File sourceFile = new File("target/export4/com/example/QCatalogs.java");
+        String sourceFileContent = FileUtils.fileRead(sourceFile);
+        assertThat(sourceFileContent, containsString("@" + GeneratedAnnotationResolver.resolveDefault().getSimpleName()));
+    }
+
+    @Test
+    public void providedGeneratedAnnotation() throws Exception {
+        Class<? extends Annotation> annotationClass = com.querydsl.core.annotations.Generated.class;
+        MavenProject project = new MavenProject();
+        TestMetadataExportMojo mojo = setupMojoWith(project);
+        mojo.setGeneratedAnnotationClass(annotationClass.getName());
+        mojo.execute();
+
+        File sourceFile = new File("target/export4/com/example/QCatalogs.java");
+        String sourceFileContent = FileUtils.fileRead(sourceFile);
+        assertThat(sourceFileContent, containsString("@" + annotationClass.getSimpleName()));
     }
 
 }

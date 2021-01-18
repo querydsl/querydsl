@@ -204,6 +204,15 @@ import com.querydsl.core.annotations.Config;
             <entry>querydsl.useGetters</entry>
             <entry>set whether accessors are used as metadata source (default: true)</entry>
           </row>
+          <row>
+            <entry>querydsl.generatedAnnotationClass</entry>
+            <entry>
+              The fully qualified class name of the <emphasis>Single-Element Annotation</emphasis> (with String element) to be added on the generated sources. Build in
+              <emphasis>com.querydsl.core.annotations.Generated</emphasis>has CLASS retention which can be used for byte code analysis tools like Jacoco.
+              (default: <emphasis>javax.annotation.Generated</emphasis> or<emphasis>javax.annotation.processing.Generated</emphasis> depending on the java version). See also
+              <ulink url="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</ulink>
+            </entry>
+          </row>
         </tbody>
       </tgroup>
     </table>

@@ -15,6 +15,7 @@ package com.querydsl.sql.codegen;
 
 import com.querydsl.codegen.CodegenModule;
 import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.GeneratedAnnotationResolver;
 import com.querydsl.codegen.Property;
 import com.querydsl.codegen.QueryTypeFactory;
 import com.querydsl.codegen.Serializer;
@@ -809,6 +810,18 @@ public class MetaDataExporter {
      */
     public void setTableTypesToExport(String tableTypesToExport) {
         this.tableTypesToExport = tableTypesToExport;
+    }
+
+    /**
+     * Set the fully qualified class name of the "generated" annotation added ot the generated sources
+     *
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on
+     *                                 the generated sources, or {@code null} (defaulting to {@code javax.annotation.Generated} or
+     *                                {@code javax.annotation.processing.Generated} depending on the java version).
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    public void setGeneratedAnnotationClass(@Nullable String generatedAnnotationClass) {
+        module.bindInstance(CodegenModule.GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolve(generatedAnnotationClass));
     }
 
 }

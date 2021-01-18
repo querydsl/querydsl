@@ -21,7 +21,8 @@ import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.utils.model.Types;
 import com.querydsl.core.util.BeanUtils;
 
-import javax.annotation.Generated;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -38,9 +39,12 @@ import java.util.function.Function;
  * instances into JavaBean classes
  *
  * @author tiwe
- *
  */
 public class BeanSerializer implements Serializer {
+
+    public static final String DEFAULT_JAVADOC_SUFFIX = " is a Querydsl bean type";
+
+    public static final boolean DEFAULT_PROPERTY_ANNOTATIONS = true;
 
     private static final Function<Property, Parameter> propertyToParameter = new Function<Property, Parameter>() {
         @Override
@@ -48,6 +52,7 @@ public class BeanSerializer implements Serializer {
             return new Parameter(input.getName(), input.getType());
         }
     };
+    private final Class<? extends Annotation> generatedAnnotationClass;
 
     private final boolean propertyAnnotations;
 
@@ -63,7 +68,7 @@ public class BeanSerializer implements Serializer {
      * Create a new BeanSerializer
      */
     public BeanSerializer() {
-        this(true, " is a Querydsl bean type");
+        this(DEFAULT_PROPERTY_ANNOTATIONS, DEFAULT_JAVADOC_SUFFIX, GeneratedAnnotationResolver.resolveDefault());
     }
 
     /**
@@ -72,7 +77,21 @@ public class BeanSerializer implements Serializer {
      * @param javadocSuffix suffix to be used after the simple name in class level javadoc
      */
     public BeanSerializer(String javadocSuffix) {
-        this(true, javadocSuffix);
+        this(DEFAULT_PROPERTY_ANNOTATIONS, javadocSuffix);
+    }
+
+    /**
+     * Create a new BeanSerializer with the given javadoc suffix and generatedAnnotationClass
+     *
+     * @param javadocSuffix suffix to be used after the simple name in class level javadoc
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    @Inject
+    public BeanSerializer(
+            @Named(CodegenModule.JAVADOC_SUFFIX) String javadocSuffix,
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+        this(DEFAULT_PROPERTY_ANNOTATIONS, javadocSuffix, generatedAnnotationClass);
     }
 
     /**
@@ -81,22 +100,36 @@ public class BeanSerializer implements Serializer {
      * @param propertyAnnotations true, to serialize property annotations
      */
     public BeanSerializer(boolean propertyAnnotations) {
-        this(propertyAnnotations, " is a Querydsl bean type");
+        this(propertyAnnotations, DEFAULT_JAVADOC_SUFFIX);
     }
 
     /**
      * Create a new BeanSerializer
      *
      * @param propertyAnnotations true, to serialize property annotations
-     * @param javadocSuffix suffix to be used after the simple name in class level javadoc
+     * @param javadocSuffix       suffix to be used after the simple name in class level javadoc
      */
     public BeanSerializer(boolean propertyAnnotations, String javadocSuffix) {
+        this(propertyAnnotations, javadocSuffix, GeneratedAnnotationResolver.resolveDefault());
+    }
+
+    /**
+     * Create a new BeanSerializer
+     *
+     * @param propertyAnnotations      true, to serialize property annotations
+     * @param javadocSuffix            suffix to be used after the simple name in class level javadoc
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     *      * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    public BeanSerializer(boolean propertyAnnotations, String javadocSuffix, Class<? extends Annotation> generatedAnnotationClass) {
         this.propertyAnnotations = propertyAnnotations;
         this.javadocSuffix = javadocSuffix;
+        this.generatedAnnotationClass = generatedAnnotationClass;
     }
 
     @Override
-    public void serialize(EntityType model, SerializerConfig serializerConfig,
+    public void serialize(
+            EntityType model, SerializerConfig serializerConfig,
             CodeWriter writer) throws IOException {
         String simpleName = model.getSimpleName();
 
@@ -110,7 +143,7 @@ public class BeanSerializer implements Serializer {
         for (Type iface : interfaces) {
             importedClasses.add(iface.getFullName());
         }
-        importedClasses.add(Generated.class.getName());
+        importedClasses.add(generatedAnnotationClass.getName());
         if (model.hasLists()) {
             importedClasses.add(List.class.getName());
         }
@@ -136,7 +169,7 @@ public class BeanSerializer implements Serializer {
             writer.annotation(annotation);
         }
 
-        writer.line("@Generated(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
 
         if (!interfaces.isEmpty()) {
             Type superType = null;
