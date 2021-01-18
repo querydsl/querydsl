@@ -15,13 +15,12 @@ package com.querydsl.sql.dml;
 
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 import javax.inject.Provider;
 
 import com.querydsl.core.util.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
@@ -40,7 +39,7 @@ import com.querydsl.sql.types.Null;
  */
 public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements StoreClause<SQLMergeClause> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
+    protected static final Logger logger = Logger.getLogger(SQLMergeClause.class.getName());
 
     protected final List<Path<?>> columns = new ArrayList<Path<?>>();
 

@@ -37,16 +37,6 @@
       <version>${project.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-        <scope>provided</scope>      
-    </dependency>    
-
     <!-- ANT integration -->    
     <dependency>
         <groupId>org.apache.ant</groupId>

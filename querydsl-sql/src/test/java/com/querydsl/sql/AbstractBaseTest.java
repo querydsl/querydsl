@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +25,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.rules.TestRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
@@ -41,7 +40,7 @@ import com.querydsl.sql.types.XMLAsStringType;
 
 public abstract class AbstractBaseTest {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractBaseTest.class);
+    protected static final Logger logger = Logger.getLogger(AbstractBaseTest.class.getName());
 
     protected final class TestQuery<T> extends SQLQuery<T>  {
 
@@ -61,7 +60,7 @@ public abstract class AbstractBaseTest {
                 assertEquals(expectedQuery, rv.replace('\n', ' '));
                 expectedQuery = null;
             }
-            logger.debug(rv);
+            logger.fine(rv);
             return serializer;
         }
 

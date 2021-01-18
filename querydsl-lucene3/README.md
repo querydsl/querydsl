@@ -12,12 +12,6 @@ The Lucene module provides integration with the Lucene 3 indexing library.
   <artifactId>querydsl-lucene3</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
-
-<dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-log4j12</artifactId>
-  <version>1.6.1</version>
-</dependency>
 ```
 
 **Creating the query types**

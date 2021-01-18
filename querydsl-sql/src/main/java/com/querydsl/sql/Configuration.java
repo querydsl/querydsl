@@ -22,12 +22,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.util.PrimitiveUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.sql.namemapping.ChainedNameMapping;
@@ -45,7 +44,7 @@ import com.querydsl.sql.types.Type;
  */
 public final class Configuration {
 
-    private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
+    private static final Logger logger = Logger.getLogger(Configuration.class.getName());
 
     static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
 
@@ -168,7 +167,7 @@ public final class Configuration {
 
                 Integer sqlComponentType = templates.getCodeForTypeName(typeName);
                 if (sqlComponentType == null) {
-                    logger.warn("Found no JDBC type for " + typeName + " using OTHER instead");
+                    logger.warning("Found no JDBC type for " + typeName + " using OTHER instead");
                     sqlComponentType = Types.OTHER;
                 }
                 Class<?> componentType = jdbcTypeMapping.get(sqlComponentType, size, digits);

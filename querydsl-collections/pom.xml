@@ -40,15 +40,6 @@
       <version>${project.version}</version>
     </dependency>
     <!-- alias dependencies -->
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-    </dependency>    
     
     <dependency>
       <groupId>org.hamcrest</groupId>

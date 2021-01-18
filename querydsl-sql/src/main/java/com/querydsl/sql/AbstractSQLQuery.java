@@ -23,13 +23,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 import javax.inject.Provider;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
@@ -52,7 +50,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     protected static final String PARENT_CONTEXT = AbstractSQLQuery.class.getName() + "#PARENT_CONTEXT";
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
+    private static final Logger logger = Logger.getLogger(AbstractSQLQuery.class.getName());
 
     private static final QueryFlag rowCountFlag = new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() ");
 
@@ -132,7 +130,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             return unsafeCount();
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
+            logger.log(Level.SEVERE, error, e);
             throw configuration.translate(e);
         }
     }
@@ -409,7 +407,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             endContext(context);
             throw configuration.translate(queryString, constants, e);
         } catch (RuntimeException e) {
-            logger.error("Caught " + e.getClass().getName() + " for " + queryString);
+            logger.log(Level.SEVERE, "Caught " + e.getClass().getName() + " for " + queryString);
             onException(context, e);
             endContext(context);
             throw e;
@@ -553,7 +551,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private void reset() {
-        cleanupMDC();
     }
 
     protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths,
@@ -626,22 +623,14 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                 }
             }
             endContext(context);
-            cleanupMDC();
         }
     }
 
     protected void logQuery(String queryString, Collection<Object> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
-    }
-
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
     }
 
     private Connection connection() {

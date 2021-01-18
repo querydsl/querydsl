@@ -16,15 +16,14 @@ package com.querydsl.jpa.hibernate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.*;
 import org.hibernate.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
@@ -45,7 +44,7 @@ import com.querydsl.jpa.*;
  */
 public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery<T, Q>> extends JPAQueryBase<T, Q> {
 
-    private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
+    private static final Logger logger = Logger.getLogger(HibernateQuery.class.getName());
 
     @Nullable
     protected Boolean cacheable, readOnly;
@@ -210,22 +209,14 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
-    }
-
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
     }
 
     @Override
     protected void reset() {
-        cleanupMDC();
     }
 
     /**

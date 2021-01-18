@@ -19,6 +19,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
@@ -26,10 +28,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
@@ -53,7 +51,7 @@ import com.querydsl.sql.SQLSerializer;
  */
 public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>> extends AbstractSQLQuery<T, Q> {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractJPASQLQuery.class);
+    private static final Logger logger = Logger.getLogger(AbstractJPASQLQuery.class.getName());
 
     private final EntityManager entityManager;
 
@@ -283,21 +281,13 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
     }
 
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
-    }
-
     protected void reset() {
-        cleanupMDC();
     }
 
     @Override
@@ -312,7 +302,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
         try {
             return getSingleResult(query);
         } catch (javax.persistence.NoResultException e) {
-            logger.trace(e.getMessage(),e);
+            logger.log(Level.FINEST, e.getMessage(),e);
             return null;
         } catch (javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException(e);

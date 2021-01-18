@@ -17,12 +17,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Range;
 import javax.inject.Provider;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
@@ -46,7 +44,7 @@ import com.querydsl.sql.types.Null;
  */
 public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<C>> extends AbstractSQLClause<C> implements UpdateClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractSQLUpdateClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractSQLUpdateClause.class.getName());
 
     protected final RelationalPath<?> entity;
 

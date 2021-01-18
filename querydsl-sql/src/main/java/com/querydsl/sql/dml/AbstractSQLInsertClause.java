@@ -15,13 +15,12 @@ package com.querydsl.sql.dml;
 
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 import javax.inject.Provider;
 
 import com.querydsl.core.util.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
@@ -43,7 +42,7 @@ import com.querydsl.sql.types.Null;
  */
 public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<C>> extends AbstractSQLClause<C> implements InsertClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractSQLInsertClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractSQLInsertClause.class.getName());
 
     protected final RelationalPath<?> entity;
 

@@ -18,16 +18,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jetbrains.annotations.Nullable;
 import javax.inject.Provider;
 
-import org.slf4j.Logger;
-import org.slf4j.MDC;
-
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.DMLClause;
-import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.Path;
@@ -227,21 +225,13 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     }
 
     protected void logQuery(Logger logger, String queryString, Collection<Object> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(QueryBase.MDC_QUERY, normalizedQuery);
-            MDC.put(QueryBase.MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
     }
 
-    protected void cleanupMDC() {
-        MDC.remove(QueryBase.MDC_QUERY);
-        MDC.remove(QueryBase.MDC_PARAMETERS);
-    }
-
     protected void reset() {
-        cleanupMDC();
     }
 
     protected Connection connection() {
