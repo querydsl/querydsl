@@ -139,6 +139,13 @@
             </configuration>              
           </execution>            
         </executions>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.querydsl.jdo</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin> 
         
       <!-- this plugin does the JDO class enhancement -->

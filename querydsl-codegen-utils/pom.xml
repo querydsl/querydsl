@@ -67,6 +67,11 @@
         <version>2.6</version>
         <configuration>
           <useDefaultManifestFile>true</useDefaultManifestFile>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.querydsl.codegen.utils</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
       <plugin>
