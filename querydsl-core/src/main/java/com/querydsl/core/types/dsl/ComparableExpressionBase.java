@@ -13,6 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
+import com.querydsl.core.types.Ops;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
@@ -89,6 +90,28 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
             desc = new OrderSpecifier<T>(Order.DESC, mixin);
         }
         return desc;
+    }
+
+    /**
+     * Create a {@code min(this)} expression
+     *
+     * <p>Get the minimum value of this expression (aggregation)</p>
+     *
+     * @return min(this)
+     */
+    public ComparableExpressionBase<T> min() {
+        return Expressions.comparableOperation(getType(), Ops.AggOps.MIN_AGG, mixin);
+    }
+
+    /**
+     * Create a {@code max(this)} expression
+     *
+     * <p>Get the maximum value of this expression (aggregation)</p>
+     *
+     * @return max(this)
+     */
+    public ComparableExpressionBase<T> max() {
+        return Expressions.comparableOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
     }
 
 }

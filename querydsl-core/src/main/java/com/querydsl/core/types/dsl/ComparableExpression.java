@@ -363,4 +363,28 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
         return loe(ExpressionUtils.any(right));
     }
 
+    /**
+     * Create a {@code min(this)} expression
+     *
+     * <p>Get the minimum value of this expression (aggregation)</p>
+     *
+     * @return min(this)
+     */
+    @Override
+    public ComparableExpression<T> min() {
+        return Expressions.comparableOperation(getType(), Ops.AggOps.MIN_AGG, mixin);
+    }
+
+    /**
+     * Create a {@code max(this)} expression
+     *
+     * <p>Get the maximum value of this expression (aggregation)</p>
+     *
+     * @return max(this)
+     */
+    @Override
+    public ComparableExpression<T> max() {
+        return Expressions.comparableOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
+    }
+
 }
