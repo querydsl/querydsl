@@ -563,6 +563,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
      *
      * @return min(this)
      */
+    @Override
     public StringExpression min() {
         if (min == null) {
             min = Expressions.stringOperation(Ops.AggOps.MIN_AGG, mixin);

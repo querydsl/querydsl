@@ -157,6 +157,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      *
      * @return max(this)
      */
+    @Override
     public DateTimeExpression<T> max() {
         if (max == null) {
             max = Expressions.dateTimeOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
@@ -182,6 +183,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
      *
      * @return min(this)
      */
+    @Override
     public DateTimeExpression<T> min() {
         if (min == null) {
             min = Expressions.dateTimeOperation(getType(), Ops.AggOps.MIN_AGG, mixin);
