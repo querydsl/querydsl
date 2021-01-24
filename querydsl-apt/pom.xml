@@ -184,6 +184,7 @@
                 <descriptor>src/main/hibernate.xml</descriptor>
                 <descriptor>src/main/jdo.xml</descriptor>
                 <descriptor>src/main/jpa.xml</descriptor>
+                <descriptor>src/main/jakarta.xml</descriptor>
                 <descriptor>src/main/morphia.xml</descriptor>
                 <descriptor>src/main/roo.xml</descriptor>
                 <descriptor>src/main/onejar.xml</descriptor>

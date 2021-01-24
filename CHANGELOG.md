@@ -40,6 +40,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * [#2106](https://github.com/querydsl/querydsl/issues/2106) - Support NullsLast ordering in `querydsl-collections`.
 * [#2404](https://github.com/querydsl/querydsl/issues/2404) - Upgrade of JTS / Geolatte in `querydsl-spatial`
 * [#2320](https://github.com/querydsl/querydsl/issues/2320) - Make Spatial support available to `HibernateDomainExporter` and `JPADomainExporter`. 
+* [#2612](https://github.com/querydsl/querydsl/issues/2612) - Support jakarta.* packages for new Jakarta EE releases (available through the`jakarta` classifiers for Maven)
 
 #### Bugfixes
 
