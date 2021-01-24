@@ -2,7 +2,7 @@ package com.querydsl.codegen.utils;
 
 import java.lang.annotation.Annotation;
 
-import javax.validation.ConstraintPayload;
+import javax.validation.Payload;
 import javax.validation.constraints.*;
 
 /**
@@ -18,14 +18,13 @@ public class NotNullImpl implements NotNull {
     }
 
     @Override
-    public String message() {
-        return "{javax.validation.constraints.NotNull.message}";
+    public Class<? extends Payload>[] payload() {
+        return new Class[0];
     }
 
     @Override
-    @SuppressWarnings("unchecked") // Empty array
-    public Class<? extends ConstraintPayload>[] payload() {
-        return (Class<? extends ConstraintPayload>[]) new Class<?>[0];
+    public String message() {
+        return "{javax.validation.constraints.NotNull.message}";
     }
 
     @Override

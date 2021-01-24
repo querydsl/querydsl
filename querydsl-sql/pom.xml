@@ -47,6 +47,7 @@
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <!-- test -->
@@ -135,6 +136,10 @@
         <exclusion>
           <artifactId>jts-core</artifactId>
           <groupId>org.locationtech.jts</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
         </exclusion>
       </exclusions>
     </dependency>

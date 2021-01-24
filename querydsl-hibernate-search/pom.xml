@@ -55,6 +55,10 @@
           <groupId>asm</groupId>
           <artifactId>asm</artifactId>
         </exclusion>
+        <exclusion>
+          <artifactId>jboss-logging</artifactId>
+          <groupId>org.jboss.logging</groupId>
+        </exclusion>
       </exclusions>      
       <scope>provided</scope>      
     </dependency>   
@@ -63,6 +67,12 @@
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jboss-logging</artifactId>
+          <groupId>org.jboss.logging</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>    
  
     <dependency>
@@ -91,6 +101,10 @@
         <exclusion>
           <artifactId>hibernate-core</artifactId>
           <groupId>org.hibernate</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
         </exclusion>
       </exclusions>
     </dependency>  

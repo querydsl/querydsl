@@ -48,6 +48,7 @@
         </exclusion>
       </exclusions>
       <optional>true</optional>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.thoughtworks.proxytoys</groupId>
