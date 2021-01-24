@@ -15,7 +15,6 @@ package com.querydsl.jdo;
 
 import static org.junit.Assert.assertNotNull;
 
-import javax.inject.Provider;
 import javax.jdo.PersistenceManager;
 
 import org.easymock.EasyMock;
@@ -24,18 +23,15 @@ import org.junit.Test;
 
 import com.querydsl.jdo.test.domain.QProduct;
 
+import java.util.function.Supplier;
+
 public class JDOQueryFactoryTest {
 
     private JDOQueryFactory queryFactory;
 
     @Before
     public void setUp() {
-        Provider<PersistenceManager> provider = new Provider<PersistenceManager>() {
-            @Override
-            public PersistenceManager get() {
-                return EasyMock.createNiceMock(PersistenceManager.class);
-            }
-        };
+        Supplier<PersistenceManager> provider = () -> EasyMock.createNiceMock(PersistenceManager.class);
         queryFactory = new JDOQueryFactory(provider);
     }
 

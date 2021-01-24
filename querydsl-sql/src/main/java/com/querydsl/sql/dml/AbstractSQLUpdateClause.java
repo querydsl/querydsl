@@ -18,9 +18,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Range;
-import javax.inject.Provider;
 
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
@@ -64,7 +64,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
-    public AbstractSQLUpdateClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+    public AbstractSQLUpdateClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);

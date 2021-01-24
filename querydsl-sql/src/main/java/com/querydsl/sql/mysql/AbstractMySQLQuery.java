@@ -15,8 +15,7 @@ package com.querydsl.sql.mysql;
 
 import java.io.File;
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag.Position;
@@ -59,7 +58,7 @@ public abstract class AbstractMySQLQuery<T, C extends AbstractMySQLQuery<T, C>> 
         super(conn, configuration, metadata);
     }
 
-    public AbstractMySQLQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+    public AbstractMySQLQuery(Supplier<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
         super(connProvider, configuration, metadata);
     }
 

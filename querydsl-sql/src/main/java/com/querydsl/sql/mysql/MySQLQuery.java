@@ -14,8 +14,7 @@
 package com.querydsl.sql.mysql;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
@@ -49,11 +48,11 @@ public class MySQLQuery<T> extends AbstractMySQLQuery<T, MySQLQuery<T>> {
         super(conn, configuration, metadata);
     }
 
-    public MySQLQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+    public MySQLQuery(Supplier<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
         super(connProvider, configuration, metadata);
     }
 
-    public MySQLQuery(Provider<Connection> connProvider, Configuration configuration) {
+    public MySQLQuery(Supplier<Connection> connProvider, Configuration configuration) {
         super(connProvider, configuration, new DefaultQueryMetadata());
     }
 

@@ -23,7 +23,6 @@
   </scm>
 
   <properties>
-    <hibernate4.version>4.1.7.Final</hibernate4.version>
     <hibernate4.validator.version>4.3.0.Final</hibernate4.validator.version>
   </properties>
 
@@ -37,7 +36,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>${hibernate4.version}</version>
+      <version>${hibernate.version}</version>
       <exclusions>
         <exclusion>
           <groupId>cglib</groupId>
@@ -49,12 +48,6 @@
         </exclusion>
       </exclusions>      
       <scope>provided</scope>      
-    </dependency>   
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>${hibernate4.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -123,6 +116,23 @@
             </manifestEntries>
           </archive>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.transformer</groupId>
+        <artifactId>org.eclipse.transformer.maven</artifactId>
+        <version>0.2.0</version>
+        <executions>
+          <execution>
+            <id>jakarta-ee</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <classifier>jakarta</classifier>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>

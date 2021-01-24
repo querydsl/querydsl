@@ -1,0 +1,29 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+  <id>jakarta</id>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <moduleSets>
+    <moduleSet>
+      <useAllReactorProjects>true</useAllReactorProjects>
+      <includes>
+        <include>${project.groupId}:${project.artifactId}</include>
+      </includes>
+      <binaries>
+        <unpack>true</unpack>
+        <includeDependencies>false</includeDependencies>
+        <attachmentClassifier>jakarta</attachmentClassifier>
+        <outputDirectory>/</outputDirectory>
+      </binaries>
+    </moduleSet>
+  </moduleSets>
+  <fileSets>
+    <fileSet>
+      <directory>src/apt/jpa</directory>    
+      <outputDirectory>/</outputDirectory>
+    </fileSet>
+  </fileSets>
+</assembly>

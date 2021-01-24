@@ -15,8 +15,6 @@ package com.querydsl.jpa;
 
 import static org.junit.Assert.assertNotNull;
 
-import javax.inject.Provider;
-
 import org.easymock.EasyMock;
 import org.hibernate.Session;
 import org.junit.Before;
@@ -25,18 +23,15 @@ import org.junit.Test;
 import com.querydsl.jpa.domain.QAnimal;
 import com.querydsl.jpa.hibernate.HibernateQueryFactory;
 
+import java.util.function.Supplier;
+
 public class HibernateQueryFactoryTest {
 
     private HibernateQueryFactory queryFactory;
 
     @Before
     public void setUp() {
-        Provider<Session> provider = new Provider<Session>() {
-            @Override
-            public Session get() {
-                return EasyMock.createNiceMock(Session.class);
-            }
-        };
+        Supplier<Session> provider = () -> EasyMock.createNiceMock(Session.class);
         queryFactory = new HibernateQueryFactory(JPQLTemplates.DEFAULT, provider);
     }
 

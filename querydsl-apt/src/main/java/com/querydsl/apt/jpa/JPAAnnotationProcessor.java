@@ -29,7 +29,7 @@ import com.querydsl.apt.Configuration;
  * @author tiwe
  *
  */
-@SupportedAnnotationTypes({"com.querydsl.core.annotations.*","javax.persistence.*"})
+@SupportedAnnotationTypes({"com.querydsl.core.annotations.*", "jakarta.persistence.*", "javax.persistence.*"})
 public class JPAAnnotationProcessor extends AbstractQuerydslProcessor {
 
     @Override

@@ -14,8 +14,7 @@
 package com.querydsl.sql.postgresql;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
@@ -30,15 +29,15 @@ import com.querydsl.sql.*;
  */
 public class PostgreSQLQueryFactory extends AbstractSQLQueryFactory<PostgreSQLQuery<?>> {
 
-    public PostgreSQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
+    public PostgreSQLQueryFactory(Configuration configuration, Supplier<Connection> connection) {
         super(configuration, connection);
     }
 
-    public PostgreSQLQueryFactory(Provider<Connection> connection) {
+    public PostgreSQLQueryFactory(Supplier<Connection> connection) {
         this(new Configuration(new PostgreSQLTemplates()), connection);
     }
 
-    public PostgreSQLQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
+    public PostgreSQLQueryFactory(SQLTemplates templates, Supplier<Connection> connection) {
         this(new Configuration(templates), connection);
     }
 

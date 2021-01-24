@@ -70,7 +70,7 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractDomainExporter {
 
-    private static final Logger logger = Logger.getLogger(HibernateDomainExporter.class.getName());
+    private static final Logger logger = Logger.getLogger(AbstractDomainExporter.class.getName());
 
     private final File targetFolder;
 

@@ -16,9 +16,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.sql.DataSource;
-import java.sql.Connection;
 
 @Configuration
 @PropertySource({"classpath:jdbc.properties"})
@@ -53,7 +51,7 @@ public class JdbcConfiguration {
 
     @Bean
     public SQLQueryFactory queryFactory() {
-        Provider<Connection> provider = new SpringConnectionProvider(dataSource());
+        SpringConnectionProvider provider = new SpringConnectionProvider(dataSource());
         return new SQLQueryFactory(querydslConfiguration(), provider);
     }
 

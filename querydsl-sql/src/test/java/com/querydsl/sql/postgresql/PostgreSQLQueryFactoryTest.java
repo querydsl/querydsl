@@ -16,8 +16,7 @@ package com.querydsl.sql.postgresql;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -32,12 +31,7 @@ public class PostgreSQLQueryFactoryTest {
 
     @Before
     public void setUp() {
-        Provider<Connection> provider = new Provider<Connection>() {
-            @Override
-            public Connection get() {
-                return EasyMock.createNiceMock(Connection.class);
-            }
-        };
+        Supplier<Connection> provider = () -> EasyMock.createNiceMock(Connection.class);
         queryFactory = new PostgreSQLQueryFactory(SQLTemplates.DEFAULT, provider);
     }
 
