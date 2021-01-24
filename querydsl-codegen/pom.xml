@@ -39,12 +39,11 @@
       <artifactId>codegen-utils</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
-    <dependency>  
-      <groupId>javax.inject</groupId>  
-      <artifactId>javax.inject</artifactId>  
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
     </dependency>
-
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>

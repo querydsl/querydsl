@@ -14,8 +14,7 @@
 package com.querydsl.sql.mssql;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
@@ -35,7 +34,7 @@ public abstract class AbstractSQLServerQuery<T, C extends AbstractSQLServerQuery
         super(conn, configuration, metadata);
     }
 
-    public AbstractSQLServerQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+    public AbstractSQLServerQuery(Supplier<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
         super(connProvider, configuration, metadata);
     }
 

@@ -20,8 +20,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLBindings;
@@ -52,7 +51,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
         super(configuration, connection);
     }
 
-    public SetQueryBandClause(Provider<Connection> connection, Configuration configuration) {
+    public SetQueryBandClause(Supplier<Connection> connection, Configuration configuration) {
         super(configuration, connection);
     }
 

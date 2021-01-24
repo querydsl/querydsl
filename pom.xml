@@ -127,11 +127,6 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>javax.inject</groupId>
-        <artifactId>javax.inject</artifactId>
-        <version>1</version>
-      </dependency>
-      <dependency>
         <groupId>org.datanucleus</groupId>
         <artifactId>javax.jdo</artifactId>
         <version>3.2.0-m13</version>
@@ -451,8 +446,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>8</source>
+          <target>8</target>
         </configuration>
       </plugin>
       <plugin>
