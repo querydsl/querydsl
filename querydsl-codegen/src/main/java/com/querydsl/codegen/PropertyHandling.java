@@ -88,9 +88,11 @@ public enum PropertyHandling {
             boolean methods = false;
             for (Field field : type.getDeclaredFields()) {
                 fields |= hasAnnotations(field, "javax.persistence.");
+                fields |= hasAnnotations(field, "jakarta.persistence.");
             }
             for (Method method : type.getDeclaredMethods()) {
                 methods |= hasAnnotations(method, "javax.persistence.");
+                methods |= hasAnnotations(method, "jakarta.persistence.");
             }
             return Config.of(fields, methods, Config.ALL);
         }
