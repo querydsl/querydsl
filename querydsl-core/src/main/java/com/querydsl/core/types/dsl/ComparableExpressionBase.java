@@ -13,6 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Ops;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,6 +79,28 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
             coalesce.add(arg);
         }
         return coalesce;
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public ComparableExpression<T> nullif(Expression<T> other) {
+        return Expressions.comparableOperation(this.getType(), Ops.NULLIF, this, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public ComparableExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
     }
 
     /**

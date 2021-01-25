@@ -840,4 +840,27 @@ public abstract class StringExpression extends LiteralExpression<String> {
         return upper;
     }
 
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public StringExpression nullif(Expression<String> other) {
+        return Expressions.stringOperation(Ops.NULLIF, this, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public StringExpression nullif(String other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
 }
