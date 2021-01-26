@@ -228,4 +228,34 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
         return nullif(ConstantImpl.create(other));
     }
 
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    public DateExpression<T> coalesce(Expression<?>... exprs) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (Expression expr : exprs) {
+            coalesce.add(expr);
+        }
+        return coalesce.asDate();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    public DateExpression<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return coalesce.asDate();
+    }
+
 }

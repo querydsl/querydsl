@@ -80,4 +80,35 @@ public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpressio
         return nullif(ConstantImpl.create(other));
     }
 
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public EnumExpression<T> coalesce(Expression<?>... exprs) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (Expression expr : exprs) {
+            coalesce.add(expr);
+        }
+        return (EnumExpression<T>) coalesce.asEnum();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public EnumExpression<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return (EnumExpression<T>) coalesce.asEnum();
+    }
 }

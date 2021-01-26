@@ -59,12 +59,12 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return coalesce
      */
     @SuppressWarnings("unchecked")
-    public Coalesce<T> coalesce(Expression<?>...exprs) {
+    public ComparableExpressionBase<T> coalesce(Expression<?>...exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (Expression expr : exprs) {
             coalesce.add(expr);
         }
-        return coalesce;
+        return coalesce.getValue();
     }
 
     /**
@@ -73,12 +73,12 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @param args additional arguments
      * @return coalesce
      */
-    public Coalesce<T> coalesce(T... args) {
+    public ComparableExpressionBase<T> coalesce(T... args) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (T arg : args) {
             coalesce.add(arg);
         }
-        return coalesce;
+        return coalesce.getValue();
     }
 
     /**

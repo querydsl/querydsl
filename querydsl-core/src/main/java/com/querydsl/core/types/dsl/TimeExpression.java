@@ -144,4 +144,36 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
         return nullif(ConstantImpl.create(other));
     }
 
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public TimeExpression<T> coalesce(Expression<?>... exprs) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (Expression expr : exprs) {
+            coalesce.add(expr);
+        }
+        return coalesce.asTime();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public TimeExpression<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return coalesce.asTime();
+    }
+
 }

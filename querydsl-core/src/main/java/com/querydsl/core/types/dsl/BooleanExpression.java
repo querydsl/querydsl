@@ -177,4 +177,33 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
         return nullif(ConstantImpl.create(other));
     }
 
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    public BooleanExpression coalesce(Expression<?>... exprs) {
+        Coalesce<Boolean> coalesce = new Coalesce<Boolean>(getType(), mixin);
+        for (Expression expr : exprs) {
+            coalesce.add(expr);
+        }
+        return coalesce.asBoolean();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    public BooleanExpression coalesce(Boolean... args) {
+        Coalesce<Boolean> coalesce = new Coalesce<Boolean>(getType(), mixin);
+        for (Boolean arg : args) {
+            coalesce.add(arg);
+        }
+        return coalesce.asBoolean();
+    }
 }

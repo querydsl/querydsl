@@ -41,6 +41,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * [#2404](https://github.com/querydsl/querydsl/issues/2404) - Upgrade of JTS / Geolatte in `querydsl-spatial`
 * [#2320](https://github.com/querydsl/querydsl/issues/2320) - Make Spatial support available to `HibernateDomainExporter` and `JPADomainExporter`. 
 * [#2612](https://github.com/querydsl/querydsl/issues/2612) - Support jakarta.* packages for new Jakarta EE releases (available through the`jakarta` classifiers for Maven)
+* [#1376](https://github.com/querydsl/querydsl/issues/1376) - Return typed expression from `nullif` and `coalesce` methods.
 
 #### Bugfixes
 
@@ -84,6 +85,8 @@ A huge thanks goes out to all contributors that made this release possible in th
 * `PGgeometryConverter` in `querydsl-sql-spatial` is removed in favour of `org.geolatte.geom.codec.Wkt`.
 * `JGeometryConverter` in `querydsl-sql-spatial` is removed in favour of `org.geolatte.geom.codec.db.oracle.*`.
 * Removal of `HibernateDomainExporter` in `querysql-jpa-codegen`. `HibernateDomainExporter` only supported Hibernate 4, which QueryDSL no longer actively supports. Instead, use the `JPADomainExporter` with Hibernate.
+* `ComparableExpression#coalesce` (and subtypes) no longer return a mutable `Coalesce` expression, but instead return a typed expression.
+  If you need the Coalesce builder, use `new Coalesce<T>().add(expression)` instead.
 
 #### Deprecations
 * `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` are now deprecated for queries that have multiple group by
