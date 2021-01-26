@@ -13,6 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
@@ -55,6 +56,28 @@ public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpressio
             ordinal = Expressions.numberOperation(Integer.class, Ops.ORDINAL, mixin);
         }
         return ordinal;
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public EnumExpression<T> nullif(Expression<T> other) {
+        return Expressions.enumOperation(getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public EnumExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
     }
 
 }

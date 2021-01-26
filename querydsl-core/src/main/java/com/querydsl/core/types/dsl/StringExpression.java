@@ -849,7 +849,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
      */
     @Override
     public StringExpression nullif(Expression<String> other) {
-        return Expressions.stringOperation(Ops.NULLIF, this, other);
+        return Expressions.stringOperation(Ops.NULLIF, mixin, other);
     }
 
     /**

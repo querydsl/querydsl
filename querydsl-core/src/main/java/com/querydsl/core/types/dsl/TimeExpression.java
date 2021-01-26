@@ -15,6 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import java.sql.Time;
 
+import com.querydsl.core.types.ConstantImpl;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
@@ -119,6 +120,28 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      */
     public static <T extends Comparable> TimeExpression<T> currentTime(Class<T> cl) {
         return Expressions.timeOperation(cl, Ops.DateTimeOps.CURRENT_TIME);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public TimeExpression<T> nullif(Expression<T> other) {
+        return Expressions.timeOperation(getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public TimeExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
     }
 
 }

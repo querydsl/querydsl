@@ -387,4 +387,27 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
         return Expressions.comparableOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
     }
 
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public ComparableExpression<T> nullif(Expression<T> other) {
+        return Expressions.comparableOperation(this.getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public ComparableExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+
 }

@@ -782,4 +782,26 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         return list;
     }
 
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public NumberExpression<T> nullif(Expression<T> other) {
+        return Expressions.numberOperation(getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public NumberExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
 }

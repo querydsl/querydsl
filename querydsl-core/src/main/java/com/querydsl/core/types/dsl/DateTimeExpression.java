@@ -15,6 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import java.util.Date;
 
+import com.querydsl.core.types.ConstantImpl;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
@@ -273,6 +274,28 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
             yearWeek = Expressions.numberOperation(Integer.class, Ops.DateTimeOps.YEAR_WEEK, mixin);
         }
         return yearWeek;
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public DateTimeExpression<T> nullif(Expression<T> other) {
+        return Expressions.dateTimeOperation(getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public DateTimeExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
     }
 
 }

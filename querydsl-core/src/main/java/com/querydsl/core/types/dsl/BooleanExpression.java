@@ -154,4 +154,27 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
             return eqFalse;
         }
     }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public BooleanExpression nullif(Expression<Boolean> other) {
+        return Expressions.booleanOperation(Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public BooleanExpression nullif(Boolean other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
 }

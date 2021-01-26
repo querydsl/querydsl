@@ -88,8 +88,8 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return nullif(this, other)
      */
     @Override
-    public ComparableExpression<T> nullif(Expression<T> other) {
-        return Expressions.comparableOperation(this.getType(), Ops.NULLIF, this, other);
+    public ComparableExpressionBase<T> nullif(Expression<T> other) {
+        return Expressions.comparableOperation(this.getType(), Ops.NULLIF, mixin, other);
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return nullif(this, other)
      */
     @Override
-    public ComparableExpression<T> nullif(T other) {
+    public ComparableExpressionBase<T> nullif(T other) {
         return nullif(ConstantImpl.create(other));
     }
 
