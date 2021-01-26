@@ -22,7 +22,6 @@
     <scala.version>2.10</scala.version>
     <scala.full.version>2.10.5</scala.full.version>
     <hibernate.version>3.5.1-Final</hibernate.version>
-    <hibernate.validator.version>4.0.2.GA</hibernate.validator.version>
   </properties>
   
   <dependencies>
@@ -95,18 +94,18 @@
         </exclusion>
       </exclusions>      
       <scope>test</scope>      
-    </dependency>   
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>${hibernate.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>       
     
     <dependency>
@@ -118,7 +117,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
     

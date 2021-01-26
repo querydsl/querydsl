@@ -47,7 +47,7 @@
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
-      <version>1.1.0.Final</version>
+      <scope>test</scope>
     </dependency>
 
     <!-- test -->
@@ -121,7 +121,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -137,6 +136,10 @@
         <exclusion>
           <artifactId>jts-core</artifactId>
           <groupId>org.locationtech.jts</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
         </exclusion>
       </exclusions>
     </dependency>

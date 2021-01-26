@@ -61,6 +61,7 @@
     <hibernate.validator.version>6.0.18.Final</hibernate.validator.version>
     <eclipselink.version>2.6.2</eclipselink.version>
 
+    <guava.version>30.0-jre</guava.version>
     <codegen.version>0.6.8</codegen.version>
     <mysema.lang.version>0.2.4</mysema.lang.version>
     <cglib.version>3.3.0</cglib.version>
@@ -82,14 +83,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
         <groupId>org.hamcrest</groupId>
@@ -97,7 +91,6 @@
         <version>1.3</version>
         <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
@@ -113,7 +106,11 @@
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
-      <version>0.9.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -132,14 +129,55 @@
         <version>3.2.0-m13</version>
       </dependency>
       <dependency>
-        <groupId>org.geolatte</groupId>
-        <artifactId>geolatte-geom</artifactId>
-        <version>1.4.0</version>
-      </dependency>
-      <dependency>
         <groupId>com.vividsolutions</groupId>
         <artifactId>jts</artifactId>
         <version>1.13</version>
+      </dependency>
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${h2.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>2.0.1.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jdt.core.compiler</groupId>
+        <artifactId>ecj</artifactId>
+        <version>4.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.reflections</groupId>
+        <artifactId>reflections</artifactId>
+        <version>0.9.12</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.javassist</groupId>
+        <artifactId>javassist</artifactId>
+        <version>3.26.0-GA</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.geolatte</groupId>
+        <artifactId>geolatte-geom</artifactId>
+        <version>1.4.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -282,8 +320,70 @@
         <version>1.4.1</version>
         <executions>
           <execution>
+            <id>enforce-maven</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <dependencyConvergence/>
+              </rules>
+            </configuration>
+          </execution>
+          <execution>
+            <id>enforce-banned-dependencies</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <excludes>
+                    <!-- Jetbrains Annotations should be in provided scope -->
+                    <exclude>org.jetbrains:annotations:*:*:compile</exclude>
+                    <!-- JSR-305 annotations should not be used, instead use Jetbrains Annotations -->
+                    <exclude>com.google.code.findbugs:jsr305:*:*:compile</exclude>
+                    <!-- The following API's should be optionally provided and declare provided scope -->
+                    <exclude>org.hibernate:hibernate-core:*:*:compile</exclude>
+                    <exclude>org.hibernate:hibernate-envers:*:*:compile</exclude>
+                    <exclude>org.hibernate.validator:hibernate-validator:*:*:compile</exclude>
+                    <exclude>org.eclipse.persistence:eclipselink:*:*:compile</exclude>
+                    <exclude>javax.transaction:jta:*:*:compile</exclude>
+                    <exclude>org.datanucleus:javax.jdo:*:*:compile</exclude>
+                    <exclude>org.springframework.roo:org.springframework.roo.annotations:*:*:compile</exclude>
+                    <exclude>org.mongodb.morphia:morphia:*:*:compile</exclude>
+                    <exclude>joda-time:joda-time:*:*:compile</exclude>
+                    <exclude>org.joda:joda-money:*:*:compile</exclude>
+                    <exclude>javax.el:javax.el-api:*:*:compile</exclude>
+                    <exclude>jakarta.persistence:jakarta.persistence-api:*:*:compile</exclude>
+                    <exclude>org.batoo.jpa:batoo-jpa:*:*:compile</exclude>
+                    <!-- The following database drivers should be in test scope -->
+                    <exclude>org.hsqldb:hsqldb:*:*:compile</exclude>
+                    <exclude>com.h2database:h2:*:*:compile</exclude>
+                    <exclude>org.apche.derby:derby:*:*:compile</exclude>
+                    <exclude>mysql:mysql-connector-java:*:*:compile</exclude>
+                    <exclude>net.sourceforge.jtds:jtds:*:*:compile</exclude>
+                    <exclude>com.oracle:ojdbc6:*:*:compile</exclude>
+                    <exclude>org.postgresql:postgresql:*:*:compile</exclude>
+                    <exclude>cubrid:cubrid-jdbc:*:*:compile</exclude>
+                    <exclude>org.firebirdsql.jdbc:jaybird-jdk16:*:*:compile</exclude>
+                    <exclude>org.xerial:sqlite-jdbc:*:*:compile</exclude>
+                    <!-- hibernate-entitymanager is a legacy artefact and should not be used anymore -->
+                    <exclude>org.hibernate:hibernate-entitymanager</exclude>
+                    <!-- We favor JUL over Slf4j -->
+                    <exclude>org.slf4j:slf4j-api:*:*:compile</exclude>
+                    <exclude>org.slf4j:slf4j-log4j12:*:*:compile</exclude>
+                  </excludes>
+                  <searchTransitive>false</searchTransitive>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+          <execution>
             <id>check</id>
-            <phase>verify</phase> 
+            <phase>verify</phase>
             <goals>
               <goal>enforce</goal>
             </goals>

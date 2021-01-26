@@ -22,10 +22,6 @@
     <url>${project.githubpage}</url>
   </scm>
 
-  <properties>
-    <hibernate4.validator.version>4.3.0.Final</hibernate4.validator.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.jetbrains</groupId>
@@ -50,17 +46,23 @@
       <scope>provided</scope>      
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>${hibernate4.validator.version}</version>
+      <version>${hibernate.validator.version}</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jboss-logging</artifactId>
+          <groupId>org.jboss.logging</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>    
  
     <dependency>
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
       <version>2.2.3</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -98,7 +100,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
         

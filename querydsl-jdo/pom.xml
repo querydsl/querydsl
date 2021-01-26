@@ -33,6 +33,7 @@
     <dependency>
       <groupId>org.datanucleus</groupId>
       <artifactId>javax.jdo</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
@@ -96,7 +97,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>    
     
