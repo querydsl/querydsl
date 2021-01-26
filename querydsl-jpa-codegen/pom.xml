@@ -48,12 +48,15 @@
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>${hibernate.validator.version}</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
           <artifactId>jboss-logging</artifactId>
           <groupId>org.jboss.logging</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>classmate</artifactId>
+          <groupId>com.fasterxml</groupId>
         </exclusion>
       </exclusions>
     </dependency>    

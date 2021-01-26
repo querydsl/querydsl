@@ -91,7 +91,6 @@
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>${hibernate.validator.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>

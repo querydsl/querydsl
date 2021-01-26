@@ -41,7 +41,9 @@ public final class JPAProvider {
     private static void addMapping(String className, JPQLTemplates templates) {
         try {
             mappings.put(Class.forName(className), templates);
-        } catch (Exception e) { }
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     static {

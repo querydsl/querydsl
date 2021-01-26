@@ -50,12 +50,6 @@
       <optional>true</optional>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.hibernate.validator</groupId>
-      <artifactId>hibernate-validator</artifactId>
-      <version>${hibernate.validator.version}</version>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>jakarta.persistence</groupId>
@@ -101,12 +95,6 @@
       <groupId>org.eclipse.persistence</groupId>
       <artifactId>eclipselink</artifactId>
       <version>${eclipselink.version}</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>validation-api</artifactId>
-          <groupId>javax.validation</groupId>
-        </exclusion>
-      </exclusions>
       <optional>true</optional>
       <scope>provided</scope>
     </dependency>
