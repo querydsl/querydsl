@@ -23,7 +23,7 @@
   </scm>
 
   <properties>
-    <hibernate4.validator.version>4.3.0.Final</hibernate4.validator.version>
+    <hibernate4.validator.version>7.0.0.Final</hibernate4.validator.version>
   </properties>
 
   <dependencies>
