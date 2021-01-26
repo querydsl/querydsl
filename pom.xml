@@ -369,7 +369,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
+        <version>3.2.0</version>
         <configuration>
           <outputDirectory>${project.build.directory}/dist/apidocs</outputDirectory>
           <reportOutputDirectory>${project.build.directory}/dist/apidocs</reportOutputDirectory>
@@ -765,7 +765,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9.1</version>
+        <version>3.2.0</version>
         <configuration>
           <detectJavaApiLink>true</detectJavaApiLink>
         </configuration>
