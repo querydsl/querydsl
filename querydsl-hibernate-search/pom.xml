@@ -26,7 +26,7 @@
     <hibernate.version>4.1.7.Final</hibernate.version>
     <hibernate.validator.version>4.3.0.Final</hibernate.validator.version>
     <hibernate.search.version>4.2.0.Final</hibernate.search.version>
-    <lucene.version>3.6.2</lucene.version>
+    <lucene.version>8.7.0</lucene.version>
     <osgi.import.package>
       org.apache.lucene.*;version="[3.6,4)",
       org.hibernate.*;version="[4,5)",

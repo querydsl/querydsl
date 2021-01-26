@@ -23,7 +23,7 @@
   </scm>
 
   <properties>
-    <lucene.version>5.1.0</lucene.version>
+    <lucene.version>8.7.0</lucene.version>
     <osgi.import.package>
       org.apache.lucene.*;version="[5.1.0)",
       ${osgi.import.package.root}
