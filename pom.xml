@@ -610,7 +610,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.15</version>
+        <version>3.1.2</version>
         <executions>
           <execution>
             <id>checkstyle</id>
