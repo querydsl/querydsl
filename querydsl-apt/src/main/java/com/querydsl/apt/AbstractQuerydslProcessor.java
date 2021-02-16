@@ -545,9 +545,24 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedOptions() {
-        Set<String> optionKeys = new HashSet<String>();
-        optionKeys.add(QUERYDSL_LOG_INFO);
-        return optionKeys;
+        return new HashSet<>(Arrays.asList(
+                QUERYDSL_CREATE_DEFAULT_VARIABLE,
+                QUERYDSL_PREFIX,
+                QUERYDSL_SUFFIX,
+                QUERYDSL_PACKAGE_SUFFIX,
+                QUERYDSL_MAP_ACCESSORS,
+                QUERYDSL_LIST_ACCESSORS,
+                QUERYDSL_ENTITY_ACCESSORS,
+                QUERYDSL_USE_FIELDS,
+                QUERYDSL_USE_GETTERS,
+                QUERYDSL_EXCLUDED_PACKAGES,
+                QUERYDSL_EXCLUDED_CLASSES,
+                QUERYDSL_INCLUDED_PACKAGES,
+                QUERYDSL_INCLUDED_CLASSES,
+                QUERYDSL_UNKNOWN_AS_EMBEDDABLE,
+                QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS,
+                QUERYDSL_LOG_INFO,
+                QUERYDSL_GENERATED_ANNOTATION_CLASS));
     }
 
     private void setLogInfo() {
