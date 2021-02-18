@@ -36,6 +36,8 @@ import com.querydsl.core.testutil.MongoDB;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.DateExpression;
+import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.ListPath;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.mongodb.domain.*;
@@ -261,6 +263,86 @@ public class MongodbQueryTest {
 
         assertEquals(d, query(dates).where(dates.date.between(start, end)).fetchFirst());
         assertEquals(0, query(dates).where(dates.date.between(new Date(0), start)).fetchCount());
+    }
+
+    @Test
+    public void currentDateTime() {
+        long current = System.currentTimeMillis();
+        int minInMillis = 60 * 1000;
+        int dayInMillis = 24 * 60 * minInMillis;
+
+        ds.delete(ds.createQuery(Dates.class));
+
+        Dates pastDate1 = new Dates();
+        pastDate1.setDate(new Date(current - 2 * dayInMillis));
+        ds.save(pastDate1);
+
+        Dates pastDate2 = new Dates();
+        pastDate2.setDate(new Date(current - 1));
+        ds.save(pastDate2);
+
+        Dates futureDate1 = new Dates();
+        futureDate1.setDate(new Date(current + minInMillis));
+        ds.save(futureDate1);
+
+        Dates futureDate2 = new Dates();
+        futureDate2.setDate(new Date(current + 2 * dayInMillis));
+        ds.save(futureDate2);
+
+        List<Dates> result = query(dates).where(dates.date.lt(DateTimeExpression.currentTimestamp())).fetch();
+        assertEquals(asList(pastDate1, pastDate2), result);
+
+        result = query(dates).where(dates.date.loe(DateTimeExpression.currentTimestamp())).fetch();
+        assertEquals(asList(pastDate1, pastDate2), result);
+
+        result = query(dates).where(dates.date.gt(DateTimeExpression.currentTimestamp())).fetch();
+        assertEquals(asList(futureDate1, futureDate2), result);
+
+        result = query(dates).where(dates.date.goe(DateTimeExpression.currentTimestamp())).fetch();
+        assertEquals(asList(futureDate1, futureDate2), result);
+    }
+
+    @Test
+    public void currentDate() {
+        long current = System.currentTimeMillis();
+        int minInMillis = 60 * 1000;
+        int dayInMillis = 24 * 60 * minInMillis;
+
+        ds.delete(ds.createQuery(Dates.class));
+
+        Dates pastDate = new Dates();
+        pastDate.setDate(new Date(current - 2 * dayInMillis));
+        ds.save(pastDate);
+
+        Dates currentDate = new Dates();
+        currentDate.setDate(new Date(current - 1));
+        ds.save(currentDate);
+
+        Dates currentDate2 = new Dates();
+        currentDate2.setDate(new Date(current + minInMillis));
+        ds.save(currentDate2);
+
+        Dates futureDate = new Dates();
+        futureDate.setDate(new Date(current + 2 * dayInMillis));
+        ds.save(futureDate);
+
+        List<Dates> result = query(dates).where(dates.date.lt(DateExpression.currentDate())).fetch();
+        assertEquals(asList(pastDate), result);
+
+        result = query(dates).where(dates.date.loe(DateExpression.currentDate())).fetch();
+        assertEquals(asList(pastDate), result);
+
+        result = query(dates).where(dates.date.gt(DateExpression.currentDate())).fetch();
+        assertEquals(asList(futureDate), result);
+
+        result = query(dates).where(dates.date.goe(DateExpression.currentDate())).fetch();
+        assertEquals(asList(futureDate), result);
+
+        result = query(dates).where(dates.date.eq(DateExpression.currentDate())).fetch();
+        assertEquals(asList(currentDate, currentDate2), result);
+
+        result = query(dates).where(dates.date.ne(DateExpression.currentDate())).fetch();
+        assertEquals(asList(pastDate, futureDate), result);
     }
 
     @Test

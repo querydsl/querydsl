@@ -18,13 +18,14 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.DBRef;
 import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.Expressions;
 import org.bson.BSONObject;
 import org.bson.types.ObjectId;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -77,6 +78,14 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
         return expr.getArg(index).accept(this, null);
     }
 
+    private Date asStartOfDay() {
+        return Date.from(LocalDate.now().atTime(LocalTime.MIN).atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    private Date asEndOfDay() {
+        return Date.from(LocalDate.now().atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
+    }
+
     private String regexValue(Operation<?> expr, int index) {
         return Pattern.quote(expr.getArg(index).accept(this, null).toString());
     }
@@ -99,8 +108,13 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
                 }
             } else if (expr.getArg(0) instanceof Path) {
                 Path<?> path = (Path<?>) expr.getArg(0);
-                Constant<?> constant = (Constant<?>) expr.getArg(1);
-                return asDBObject(asDBKey(expr, 0), convert(path, constant));
+                if (expr.getArg(1) instanceof Operation && ((Operation<?>) expr.getArg(1)).getOperator() == Ops.DateTimeOps.CURRENT_DATE) {
+                    return visit(ExpressionUtils.operation(Boolean.class, Ops.BETWEEN, path,
+                            Expressions.asDate(asStartOfDay()), Expressions.asDate(asEndOfDay())), context);
+                } else {
+                    Constant<?> constant = (Constant<?>) expr.getArg(1);
+                    return asDBObject(asDBKey(expr, 0), convert(path, constant));
+                }
             }
         } else if (op == Ops.STRING_IS_EMPTY) {
             return asDBObject(asDBKey(expr, 0), "");
@@ -138,8 +152,17 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
         } else if (op == Ops.NE) {
             Path<?> path = (Path<?>) expr.getArg(0);
-            Constant<?> constant = (Constant<?>) expr.getArg(1);
-            return asDBObject(asDBKey(expr, 0), asDBObject("$ne", convert(path, constant)));
+            if (expr.getArg(1) instanceof Operation && ((Operation<?>) expr.getArg(1)).getOperator() == Ops.DateTimeOps.CURRENT_DATE) {
+                return visit(
+                        ExpressionUtils.operation(
+                                Boolean.class, Ops.NOT,
+                                ExpressionUtils.operation(Boolean.class, Ops.BETWEEN, path,
+                                        Expressions.asDate(asStartOfDay()), Expressions.asDate(asEndOfDay()))
+                        ), context);
+            } else {
+                Constant<?> constant = (Constant<?>) expr.getArg(1);
+                return asDBObject(asDBKey(expr, 0), asDBObject("$ne", convert(path, constant)));
+            }
 
         } else if (op == Ops.STARTS_WITH) {
             return asDBObject(asDBKey(expr, 0),
@@ -223,16 +246,40 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject("$or", list);
 
         } else if (op == Ops.LT) {
-            return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
+            Object value;
+            if (expr.getArg(1) instanceof Operation && ((Operation<?>) expr.getArg(1)).getOperator() == Ops.DateTimeOps.CURRENT_DATE) {
+                value = asStartOfDay();
+            } else {
+                value = asDBValue(expr, 1);
+            }
+            return asDBObject(asDBKey(expr, 0), asDBObject("$lt", value));
 
         } else if (op == Ops.GT) {
-            return asDBObject(asDBKey(expr, 0), asDBObject("$gt", asDBValue(expr, 1)));
+            Object value;
+            if (expr.getArg(1) instanceof Operation && ((Operation<?>) expr.getArg(1)).getOperator() == Ops.DateTimeOps.CURRENT_DATE) {
+                value = asEndOfDay();
+            } else {
+                value = asDBValue(expr, 1);
+            }
+            return asDBObject(asDBKey(expr, 0), asDBObject("$gt", value));
 
         } else if (op == Ops.LOE) {
-            return asDBObject(asDBKey(expr, 0), asDBObject("$lte", asDBValue(expr, 1)));
+            Object value;
+            if (expr.getArg(1) instanceof Operation && ((Operation<?>) expr.getArg(1)).getOperator() == Ops.DateTimeOps.CURRENT_DATE) {
+                value = asStartOfDay();
+            } else {
+                value = asDBValue(expr, 1);
+            }
+            return asDBObject(asDBKey(expr, 0), asDBObject("$lte", value));
 
         } else if (op == Ops.GOE) {
-            return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
+            Object value;
+            if (expr.getArg(1) instanceof Operation && ((Operation<?>) expr.getArg(1)).getOperator() == Ops.DateTimeOps.CURRENT_DATE) {
+                value = asEndOfDay();
+            } else {
+                value = asDBValue(expr, 1);
+            }
+            return asDBObject(asDBKey(expr, 0), asDBObject("$gte", value));
 
         } else if (op == Ops.IS_NULL) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", false));
@@ -259,6 +306,9 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
         } else if (op == MongodbOps.ELEM_MATCH) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
+
+        } else if (op == Ops.DateTimeOps.CURRENT_TIMESTAMP) {
+            return new Date();
         }
 
         throw new UnsupportedOperationException("Illegal operation " + expr);
