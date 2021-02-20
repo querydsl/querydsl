@@ -186,6 +186,10 @@ public abstract class MongodbDocumentSerializer implements Visitor<Object, Void>
             String regex = ExpressionUtils.likeToRegex((Expression) expr.getArg(1)).toString();
             return asDocument(asDBKey(expr, 0), new BsonRegularExpression(regex));
 
+        } else if (op == Ops.LIKE_IC) {
+            String regex = ExpressionUtils.likeToRegex((Expression) expr.getArg(1)).toString();
+            return asDocument(asDBKey(expr, 0), new BsonRegularExpression(regex, "i"));
+
         } else if (op == Ops.BETWEEN) {
             Document value = new Document("$gte", asDBValue(expr, 1));
             value.append("$lte", asDBValue(expr, 2));

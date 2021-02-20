@@ -177,6 +177,10 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
             String regex = ExpressionUtils.likeToRegex((Expression) expr.getArg(1)).toString();
             return asDBObject(asDBKey(expr, 0), Pattern.compile(regex));
 
+        } else if (op == Ops.LIKE_IC) {
+            String regex = ExpressionUtils.likeToRegex((Expression) expr.getArg(1)).toString();
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(regex, Pattern.CASE_INSENSITIVE));
+
         } else if (op == Ops.BETWEEN) {
             BasicDBObject value = new BasicDBObject("$gte", asDBValue(expr, 1));
             value.append("$lte", asDBValue(expr, 2));

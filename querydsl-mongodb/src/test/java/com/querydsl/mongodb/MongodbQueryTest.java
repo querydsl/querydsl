@@ -393,6 +393,28 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void likeIgnoreCase() {
+        assertQuery(user.firstName.likeIgnoreCase("JAAN"));
+        assertQuery(user.firstName.likeIgnoreCase("Jaan%"), u3, u4);
+        assertQuery(user.firstName.likeIgnoreCase("JAAN%"), u3, u4);
+        assertQuery(user.firstName.likeIgnoreCase("jaan%"), u3, u4);
+
+        assertQuery(user.lastName.likeIgnoreCase("%unen"), u2, u1);
+        assertQuery(user.lastName.likeIgnoreCase("%UNEN"), u2, u1);
+    }
+
+    @Test
+    public void likeIgnoreCase_not() {
+        assertQuery(user.firstName.likeIgnoreCase("Jaan").not(), u3, u4, u2, u1);
+        assertQuery(user.firstName.likeIgnoreCase("Jaan%").not(), u2, u1);
+        assertQuery(user.firstName.likeIgnoreCase("JAAN%").not(), u2, u1);
+        assertQuery(user.firstName.likeIgnoreCase("jaan%").not(), u2, u1);
+
+        assertQuery(user.lastName.likeIgnoreCase("%unen").not(), u3, u4);
+        assertQuery(user.lastName.likeIgnoreCase("%UNEN").not(), u3, u4);
+    }
+
+    @Test
     public void isNotNull() {
         assertQuery(user.firstName.isNotNull(), u3, u4, u2, u1);
     }
