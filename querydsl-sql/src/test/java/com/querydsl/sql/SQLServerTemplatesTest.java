@@ -73,4 +73,14 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest {
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new SQLServerTemplates())).handle(nextval).toString());
     }
 
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void truncateWeek() {
+        final SQLQuery<Comparable> expression = query.select(
+                SQLExpressions.datetrunc(DatePart.week,
+                        Expressions.dateTimeTemplate(Comparable.class, "dateExpression")));
+        assertEquals("select cast(floor(cast(dateadd(dd, 2 - datepart(dw, dateExpression), dateExpression) as float)) as datetime",
+                expression.toString());
+    }
+
 }

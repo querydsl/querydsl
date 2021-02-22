@@ -16,6 +16,7 @@ package com.querydsl.sql;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.querydsl.core.types.dsl.Expressions;
 import org.junit.Test;
 
 import com.querydsl.core.types.Ops;
@@ -89,4 +90,13 @@ public class MySQLTemplatesTest extends AbstractSQLTemplatesTest {
         assertTrue(p7 < p8);
     }
 
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void truncateWeek() {
+        final SQLQuery<Comparable> expression = query.select(
+                SQLExpressions.datetrunc(DatePart.week,
+                        Expressions.dateTimeTemplate(Comparable.class, "dateExpression")));
+        assertEquals("select str_to_date(concat(date_format(dateExpression,'%Y-%u'),'-1'),'%Y-%u-%w') from dual",
+                expression.toString());
+    }
 }
