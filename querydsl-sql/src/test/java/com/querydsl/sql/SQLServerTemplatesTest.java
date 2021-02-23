@@ -79,7 +79,7 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest {
         final SQLQuery<Comparable> expression = query.select(
                 SQLExpressions.datetrunc(DatePart.week,
                         Expressions.dateTimeTemplate(Comparable.class, "dateExpression")));
-        assertEquals("select cast(floor(cast(dateadd(dd, 2 - datepart(dw, dateExpression), dateExpression) as float)) as datetime",
+        assertEquals("select DATEADD(WEEK, DATEDIFF(WEEK, 0, dateExpression - 1), 0)",
                 expression.toString());
     }
 

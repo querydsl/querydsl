@@ -126,19 +126,13 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
         assertTrue(p7 < p8);
     }
 
-    /**
-     * According to Oracle documentation, 'day' expression truncates to the start of the
-     * start of the week.
-     *
-     * <a href="https://docs.oracle.com/cd/B19306_01/server.102/b14200/functions230.htm#i1002084">Link to documentation</a>
-     */
     @SuppressWarnings("rawtypes")
     @Test
     public void truncateWeek() {
         final SQLQuery<Comparable> expression = query.select(
                 SQLExpressions.datetrunc(DatePart.week,
                         Expressions.dateTimeTemplate(Comparable.class, "dateExpression")));
-        assertEquals("select trunc(dateExpression, 'day') from dual",
+        assertEquals("select trunc(dateExpression, 'iw') from dual",
                 expression.toString());
     }
 }
