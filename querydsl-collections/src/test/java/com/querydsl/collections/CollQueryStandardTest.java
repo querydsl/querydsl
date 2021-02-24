@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.querydsl.core.Fetchable;
-import com.querydsl.core.Module;
+import com.querydsl.core.QuerydslModule;
 import com.querydsl.core.QueryExecution;
 import com.querydsl.core.Target;
 import com.querydsl.core.Tuple;

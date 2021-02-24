@@ -18,7 +18,7 @@ package com.querydsl.codegen;
 import java.util.function.Function;
 
 /**
- * The {@link Function} signature to convert {@link EntityType} to {@link String}.
+ * The {@link Function} signature to convert {@link EntityType} to {@code String}.
  *
  * @author Shredder121
  */

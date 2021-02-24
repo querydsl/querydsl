@@ -127,7 +127,7 @@ public class GroupByBuilder<K> {
      * @param expression projection
      * @return new result transformer
      */
-    public <V, RES extends Map<K ,V>> ResultTransformer<RES> as(final Supplier<RES> mapFactory, Expression<V> expression) {
+    public <V, RES extends Map<K, V>> ResultTransformer<RES> as(final Supplier<RES> mapFactory, Expression<V> expression) {
         final Expression<V> lookup = getLookup(expression);
         return new GroupByGenericMap<K, V, RES>(mapFactory, key, expression) {
             @Override

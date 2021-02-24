@@ -469,10 +469,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
+        <version>3.2.0</version>
         <configuration>
+          <source>8</source>
+          <excludePackageNames>com.querydsl.examples.kotlin.*</excludePackageNames>
           <outputDirectory>${project.build.directory}/dist/apidocs</outputDirectory>
           <reportOutputDirectory>${project.build.directory}/dist/apidocs</reportOutputDirectory>
+          <detectJavaApiLink>false</detectJavaApiLink>
           <groups>
             <group>
               <title>Core</title>
@@ -546,8 +549,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
       <plugin>
@@ -862,14 +865,6 @@
   
   <reporting>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9.1</version>
-        <configuration>
-          <detectJavaApiLink>true</detectJavaApiLink>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>junit-report-maven-plugin</artifactId>

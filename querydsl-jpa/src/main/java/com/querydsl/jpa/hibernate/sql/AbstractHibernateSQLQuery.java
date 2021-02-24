@@ -243,7 +243,7 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
 
     /**
      * Set the name of the cache region.
-     * @param cacheRegion the name of a query cache region, or <tt>null</tt>
+     * @param cacheRegion the name of a query cache region, or {@code null}
      * for the default query cache
      */
     @SuppressWarnings("unchecked")
