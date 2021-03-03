@@ -13,15 +13,6 @@
  */
 package com.querydsl.sql;
 
-import static com.querydsl.sql.SQLExpressions.select;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.ExpressionUtils;
@@ -30,6 +21,14 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.querydsl.sql.SQLExpressions.select;
+import static org.junit.Assert.*;
 
 public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
 
@@ -43,19 +42,19 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
     @Test
     public void union() {
         SimpleExpression<Integer> one = Expressions.template(Integer.class, "1");
-        SimpleExpression<Integer> two = Expressions.template(Integer.class,"2");
-        SimpleExpression<Integer> three = Expressions.template(Integer.class,"3");
+        SimpleExpression<Integer> two = Expressions.template(Integer.class, "2");
+        SimpleExpression<Integer> three = Expressions.template(Integer.class, "3");
         NumberPath<Integer> col1 = Expressions.numberPath(Integer.class, "col1");
-        Union union = query.union(
-            select(one.as(col1)),
-            select(two),
-            select(three));
+        Union<?> union = query.union(
+                select(one.as(col1)),
+                select(two),
+                select(three));
         assertEquals(
                 "(select 1 col1 from dual)\n" +
-                "union\n" +
-                "(select 2 from dual)\n" +
-                "union\n" +
-                "(select 3 from dual)", union.toString());
+                        "union\n" +
+                        "(select 2 from dual)\n" +
+                        "union\n" +
+                        "(select 3 from dual)", union.toString());
     }
 
     @Test
@@ -76,13 +75,14 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
         query.getMetadata().addFlag(new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() "));
 
         assertEquals("select * from (  " +
-            "select a.*, rownum rn from (   " +
-            "select survey1.ID, count(*) over()  from SURVEY survey1  ) " +
-            "a) " +
-            "where rn > 3 and rownum <= 5", query.toString());
+                "select a.*, rownum rn from (   " +
+                "select survey1.ID, count(*) over()  from SURVEY survey1  ) " +
+                "a) " +
+                "where rn > 3 and rownum <= 5", query.toString());
     }
 
     @Test
+    @Override
     public void in() {
         List<Integer> ids = new ArrayList<Integer>();
         for (int i = 0; i < 2000; i++) {
@@ -90,13 +90,20 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
         }
         query.where(survey1.id.isNotNull());
         query.where(survey1.id.in(ids));
-        assertTrue(query.toString().startsWith("from dual where survey1.ID is not null and (survey1.ID in "));
+        assertThat(query.toString(), Matchers.startsWith("from dual where survey1.ID is not null and (survey1.ID in "));
     }
 
     @Test
     public void nextVal() {
         Operation<String> nextval = ExpressionUtils.operation(String.class, SQLOps.NEXTVAL, ConstantImpl.create("myseq"));
         assertEquals("myseq.nextval", new SQLSerializer(new Configuration(new OracleTemplates())).handle(nextval).toString());
+    }
+
+    @Test
+    @Override
+    public void booleanTemplate() {
+        query.select(Expressions.ONE).where(Expressions.FALSE.or(Expressions.TRUE));
+        assertEquals("select 1 from dual where 1!=1 or 1=1", query.toString());
     }
 
     @Test
