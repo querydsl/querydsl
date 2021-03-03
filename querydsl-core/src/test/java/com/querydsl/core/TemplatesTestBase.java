@@ -16,17 +16,17 @@
 package com.querydsl.core;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.reflections.ReflectionUtils.getAll;
-import static org.reflections.ReflectionUtils.withPattern;
 
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.reflections.Reflections;
 
-import com.google.common.base.Predicate;
 import com.querydsl.core.types.Templates;
 
 public class TemplatesTestBase {
@@ -42,7 +42,7 @@ public class TemplatesTestBase {
     @Test
     public void default_instance() {
         Set<Class<? extends Templates>> templates = querydsl.getSubTypesOf(Templates.class);
-        Set<Class<? extends Templates>> moduleSpecific = getAll(templates, MODULE_SPECIFIC);
+        Set<Class<? extends Templates>> moduleSpecific = templates.stream().filter(MODULE_SPECIFIC).collect(Collectors.toSet());
 
         for (Class<? extends Templates> template : moduleSpecific) {
             try {
@@ -54,16 +54,9 @@ public class TemplatesTestBase {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private final Predicate<Class<? extends Templates>>[] MODULE_SPECIFIC =
-            (Predicate<Class<? extends Templates>>[]) new Predicate<?>[] {topLevelClass, withPattern("class " + modulePrefix + ".*") };
+    private final Predicate<Class<? extends Templates>> objectPredicate = o -> Pattern.matches("class " + modulePrefix + ".*", o.toString());
+    private final Predicate<Class<? extends Templates>> MODULE_SPECIFIC = objectPredicate.and(topLevelClass);
 
-    private static final Predicate<Class<?>> topLevelClass = new Predicate<Class<?>>() {
-
-        @Override
-        public boolean apply(Class<?> input) {
-            return !input.isAnonymousClass()
-                    && !input.isMemberClass();
-        }
-    };
+    private static final Predicate<Class<?>> topLevelClass = input -> !input.isAnonymousClass()
+            && !input.isMemberClass();
 }

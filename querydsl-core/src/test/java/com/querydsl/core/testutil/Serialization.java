@@ -21,9 +21,7 @@ public final class Serialization {
             T rv = (T) in.readObject();
             in.close();
             return rv;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

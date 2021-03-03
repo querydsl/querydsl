@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.*;
+import java.util.stream.Stream;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -31,11 +32,10 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.JavaFileObject;
 
-import com.google.common.collect.Iterables;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.*;
 import com.querydsl.core.annotations.QueryDelegate;
 import com.querydsl.core.annotations.QueryExclude;
@@ -204,10 +204,9 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     protected Set<TypeElement> collectElements() {
-        Set<TypeElement> elements = new HashSet<TypeElement>();
 
         // from delegate methods
-        elements.addAll(processDelegateMethods());
+        Set<TypeElement> elements = new HashSet<TypeElement>(processDelegateMethods());
 
         // from class annotations
         for (Class<? extends Annotation> annotation : conf.getEntityAnnotations()) {
@@ -301,11 +300,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     private void registerTypeElement(String entityName, TypeElement element) {
-        Set<TypeElement> elements = context.typeElements.get(entityName);
-        if (elements == null) {
-            elements = new HashSet<TypeElement>();
-            context.typeElements.put(entityName, elements);
-        }
+        Set<TypeElement> elements = context.typeElements.computeIfAbsent(entityName, k -> new HashSet<TypeElement>());
         elements.add(element);
     }
 
@@ -486,20 +481,16 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     private void validateMetaTypes() {
-        @SuppressWarnings("unchecked") // Only concatenated
-        Iterable<? extends EntityType> entityTypes = Iterables.concat(
+        Stream.of(
                 context.supertypes.values(),
                 context.entityTypes.values(),
                 context.extensionTypes.values(),
                 context.embeddableTypes.values(),
-                context.projectionTypes.values());
-        for (EntityType entityType : entityTypes) {
-            for (Property property : entityType.getProperties()) {
-                if (property.getInits() != null && property.getInits().size() > 0) {
-                    validateInits(entityType, property);
-                }
-            }
-        }
+                context.projectionTypes.values()
+        ).flatMap(Collection::stream).forEach(entityType ->
+                entityType.getProperties().stream()
+                        .filter(property -> property.getInits() != null && property.getInits().size() > 0)
+                        .forEach(property -> validateInits(entityType, property)));
     }
 
     protected void validateInits(EntityType entityType, Property property) {
@@ -554,9 +545,24 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedOptions() {
-        Set<String> optionKeys = new HashSet<String>();
-        optionKeys.add(QUERYDSL_LOG_INFO);
-        return optionKeys;
+        return new HashSet<>(Arrays.asList(
+                QUERYDSL_CREATE_DEFAULT_VARIABLE,
+                QUERYDSL_PREFIX,
+                QUERYDSL_SUFFIX,
+                QUERYDSL_PACKAGE_SUFFIX,
+                QUERYDSL_MAP_ACCESSORS,
+                QUERYDSL_LIST_ACCESSORS,
+                QUERYDSL_ENTITY_ACCESSORS,
+                QUERYDSL_USE_FIELDS,
+                QUERYDSL_USE_GETTERS,
+                QUERYDSL_EXCLUDED_PACKAGES,
+                QUERYDSL_EXCLUDED_CLASSES,
+                QUERYDSL_INCLUDED_PACKAGES,
+                QUERYDSL_INCLUDED_CLASSES,
+                QUERYDSL_UNKNOWN_AS_EMBEDDABLE,
+                QUERYDSL_VARIABLE_NAME_FUNCTION_CLASS,
+                QUERYDSL_LOG_INFO,
+                QUERYDSL_GENERATED_ANNOTATION_CLASS));
     }
 
     private void setLogInfo() {
@@ -599,15 +605,10 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
                 logInfo("Generating " + className + " for " + elements);
                 JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(className,
-                        elements.toArray(new Element[elements.size()]));
-                Writer writer = fileObject.openWriter();
-                try {
+                        elements.toArray(new Element[0]));
+                try (Writer writer = fileObject.openWriter()) {
                     SerializerConfig serializerConfig = conf.getSerializerConfig(model);
                     serializer.serialize(model, serializerConfig, new JavaWriter(writer));
-                } finally {
-                    if (writer != null) {
-                        writer.close();
-                    }
                 }
 
             } catch (IOException e) {

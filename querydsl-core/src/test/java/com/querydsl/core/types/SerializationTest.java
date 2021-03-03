@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -12,7 +13,6 @@ import java.util.Set;
 import org.junit.Test;
 import org.reflections.Reflections;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.group.GroupBy;
@@ -26,7 +26,7 @@ public class SerializationTest {
 
     @Test
     public void expressions() throws Exception {
-        Map<Class<?>, Object> args = Maps.newHashMap();
+        Map<Class<?>, Object> args = new HashMap<>();
         args.put(Object.class, "obj");
         args.put(BeanPath.class, new EntityPathBase<Object>(Object.class, "obj"));
         args.put(Class.class, Integer.class);

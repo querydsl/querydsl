@@ -13,11 +13,11 @@
  */
 package com.querydsl.spatial;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.geolatte.geom.Geometry;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -40,10 +40,10 @@ public class GeometryOperation<T extends Geometry> extends GeometryExpression<T>
     }
 
     protected GeometryOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
-        this(type, op, ImmutableList.copyOf(args));
+        this(type, op, Arrays.asList(args));
     }
 
-    protected GeometryOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected GeometryOperation(Class<? extends T> type, Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>) mixin;
     }

@@ -17,8 +17,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.Type;
 
 public class QueryTypeFactoryTest {
 

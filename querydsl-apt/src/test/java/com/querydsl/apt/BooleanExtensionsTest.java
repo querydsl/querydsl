@@ -17,13 +17,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 
 public class BooleanExtensionsTest extends AbstractProcessorTest {
 
@@ -35,7 +35,8 @@ public class BooleanExtensionsTest extends AbstractProcessorTest {
                 new File(packagePath, "BooleanExtensions.java").getPath(),
                 new File(packagePath, "ExampleEntity.java").getPath());
         process(QuerydslAnnotationProcessor.class, sources,"booleanExtensions");
-        String qtypeContent = Files.toString(new File("target/booleanExtensions/com/querydsl/QExampleEntity.java"), Charsets.UTF_8);
+
+        String qtypeContent = new String(Files.readAllBytes(Paths.get("target", "booleanExtensions", "com", "querydsl", "QExampleEntity.java")), StandardCharsets.UTF_8);
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp"));
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp2"));
     }
@@ -46,7 +47,7 @@ public class BooleanExtensionsTest extends AbstractProcessorTest {
                 new File(packagePath, "BooleanExtensions2.java").getPath(),
                 new File(packagePath, "ExampleEntity.java").getPath());
         process(QuerydslAnnotationProcessor.class, sources,"booleanExtensions2");
-        String qtypeContent = Files.toString(new File("target/booleanExtensions2/com/querydsl/QExampleEntity.java"), Charsets.UTF_8);
+        String qtypeContent = new String(Files.readAllBytes(Paths.get("target", "booleanExtensions2", "com", "querydsl", "QExampleEntity.java")), StandardCharsets.UTF_8);
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp"));
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp2"));
     }

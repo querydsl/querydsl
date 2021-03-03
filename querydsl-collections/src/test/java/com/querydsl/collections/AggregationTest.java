@@ -24,7 +24,7 @@ public class AggregationTest extends AbstractQueryTest {
         cat3.setWeight(4);
         Cat cat4 = new Cat();
         cat4.setWeight(5);
-        query = CollQueryFactory.from(cat, Arrays.asList(cat1, cat2, cat3, cat4));
+        query = CollQueryFactory.<Cat> from(cat, Arrays.asList(cat1, cat2, cat3, cat4));
     }
 
     @Test

@@ -13,8 +13,6 @@
  */
 package com.querydsl.jpa.hibernate;
 
-import javax.inject.Provider;
-
 import org.hibernate.Session;
 
 import com.querydsl.core.Tuple;
@@ -24,6 +22,8 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.JPQLTemplates;
+
+import java.util.function.Supplier;
 
 /**
  * Factory class for query and DML clause creation
@@ -35,27 +35,22 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
 
     private final JPQLTemplates templates;
 
-    private final Provider<Session> session;
+    private final Supplier<Session> session;
 
     public HibernateQueryFactory(Session session) {
         this(HQLTemplates.DEFAULT, session);
     }
 
     public HibernateQueryFactory(JPQLTemplates templates, final Session session) {
-        this.session = new Provider<Session>() {
-            @Override
-            public Session get() {
-                return session;
-            }
-        };
+        this.session = () -> session;
         this.templates = templates;
     }
 
-    public HibernateQueryFactory(Provider<Session> session) {
+    public HibernateQueryFactory(Supplier<Session> session) {
         this(HQLTemplates.DEFAULT, session);
     }
 
-    public HibernateQueryFactory(JPQLTemplates templates, Provider<Session> session) {
+    public HibernateQueryFactory(JPQLTemplates templates, Supplier<Session> session) {
         this.session = session;
         this.templates = templates;
     }
@@ -113,6 +108,11 @@ public class HibernateQueryFactory implements JPQLQueryFactory {
     @Override
     public HibernateUpdateClause update(EntityPath<?> path) {
         return new HibernateUpdateClause(session.get(), path, templates);
+    }
+
+    @Override
+    public HibernateInsertClause insert(EntityPath<?> path) {
+        return new HibernateInsertClause(session.get(), path, templates);
     }
 
     @Override

@@ -55,13 +55,10 @@ public class SQLCloseListenerTest {
 
     @Test
     public void iterate() {
-        CloseableIterator<Employee> it = query.iterate();
-        try {
+        try (CloseableIterator<Employee> it = query.iterate()) {
             while (it.hasNext()) {
                 it.next();
             }
-        } finally {
-            it.close();
         }
     }
 

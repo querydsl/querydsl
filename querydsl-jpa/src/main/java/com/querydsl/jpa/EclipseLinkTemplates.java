@@ -15,9 +15,10 @@ package com.querydsl.jpa;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Ops;
 
 /**
@@ -34,9 +35,7 @@ public class EclipseLinkTemplates extends JPQLTemplates {
         QueryHandler instance;
         try {
             instance = (QueryHandler) Class.forName("com.querydsl.jpa.EclipseLinkHandler").newInstance();
-        } catch (NoClassDefFoundError e) {
-            instance = DefaultQueryHandler.DEFAULT;
-        } catch (Exception e) {
+        } catch (NoClassDefFoundError | Exception e) {
             instance = DefaultQueryHandler.DEFAULT;
         }
         QUERY_HANDLER = instance;
@@ -54,7 +53,7 @@ public class EclipseLinkTemplates extends JPQLTemplates {
     public EclipseLinkTemplates(char escape) {
         super(escape, QUERY_HANDLER);
 
-        ImmutableMap.Builder<Class<?>, String> builder = ImmutableMap.builder();
+        Map<Class<?>, String> builder = new HashMap<>();
         builder.put(Short.class, "short");
         builder.put(Integer.class, "integer");
         builder.put(Long.class, "bigint");
@@ -62,7 +61,7 @@ public class EclipseLinkTemplates extends JPQLTemplates {
         builder.put(Float.class, "float");
         builder.put(Double.class, "double");
         builder.put(BigDecimal.class, "double");
-        typeNames = builder.build();
+        typeNames = Collections.unmodifiableMap(builder);
 
         add(Ops.CHAR_AT, "substring({0},{1+'1'},1)");
         add(JPQLOps.CAST, "cast({0} {1s})");

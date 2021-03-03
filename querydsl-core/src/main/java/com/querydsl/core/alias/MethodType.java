@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Path;
 
 /**
  * {@code MethodType} defines the supported method types used in the Alias functionality
@@ -33,7 +33,7 @@ public enum MethodType {
     /**
      * __mappedPath invocation
      */
-    GET_MAPPED_PATH("__mappedPath", EntityPath.class, ManagedObject.class),
+    GET_MAPPED_PATH("__mappedPath", Path.class, ManagedObject.class),
     /**
      * getter invocation
      */

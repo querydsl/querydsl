@@ -18,15 +18,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 
 @Ignore
 public class EntityExtensionsTest extends AbstractProcessorTest {
@@ -45,28 +45,28 @@ public class EntityExtensionsTest extends AbstractProcessorTest {
         assertTrue(qType.exists());
         long modified = qType.lastModified();
         Thread.sleep(1000);
-        assertTrue(Files.toString(qType, Charsets.UTF_8).contains("extension()"));
+        assertTrue(new String(Files.readAllBytes(qType.toPath()), StandardCharsets.UTF_8).contains("extension()"));
 
         // EntityWithExtensions has not changed, QEntityWithExtensions is not overwritten
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite2");
         assertEquals(modified, qType.lastModified());
 
         // EntityWithExtensions is updated, QEntityWithExtensions is overwritten
-        Files.touch(source);
+        Files.createFile(source.toPath());
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite2");
         assertTrue("" + modified + " >= " + qType.lastModified(), modified < qType.lastModified());
-        assertTrue(Files.toString(qType, Charsets.UTF_8).contains("extension()"));
+        assertTrue(new String(Files.readAllBytes(qType.toPath()), StandardCharsets.UTF_8).contains("extension()"));
 
         // QEntityWithExtensions is deleted and regenerated
         assertTrue(qType.delete());
         compile(QuerydslAnnotationProcessor.class, sources, "overwrite2");
         assertTrue(qType.exists());
-        assertTrue(Files.toString(qType, Charsets.UTF_8).contains("extension()"));
+        assertTrue(new String(Files.readAllBytes(qType.toPath()), StandardCharsets.UTF_8).contains("extension()"));
     }
 
     @Override
     protected Collection<String> getAPTOptions() {
-        return Arrays.asList("-AdefaultOverwrite=true");
+        return Collections.singletonList("-AdefaultOverwrite=true");
     }
 
 }

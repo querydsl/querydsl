@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.base.CaseFormat;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.util.StringUtils;
 
 /**
  * {@code Alias} provides alias factory methods
@@ -140,8 +140,16 @@ public final class Alias {
      * @param <D>
      * @return expression
      */
+    @SuppressWarnings("unchecked")
     public static <D> CollectionPath<D, SimpleExpression<D>> $(Collection<D> arg) {
-        return aliasFactory.getCurrentAndReset();
+        final Object current = aliasFactory.getCurrentAndReset();
+        if (arg instanceof CollectionPath) {
+            return (CollectionPath<D, SimpleExpression<D>>) arg; //NOSONAR
+        } else if (arg instanceof ManagedObject) {
+            return (CollectionPath<D, SimpleExpression<D>>) ((ManagedObject) arg).__mappedPath();
+        } else {
+            return (CollectionPath<D, SimpleExpression<D>>) current;
+        }
     }
 
     /**
@@ -212,8 +220,16 @@ public final class Alias {
      * @param <D>
      * @return expression
      */
+    @SuppressWarnings("unchecked")
     public static <D> ListPath<D, SimpleExpression<D>> $(List<D> arg) {
-        return aliasFactory.getCurrentAndReset();
+        final Object current = aliasFactory.getCurrentAndReset();
+        if (arg instanceof ListPath) {
+            return (ListPath<D, SimpleExpression<D>>) arg; //NOSONAR
+        } else if (arg instanceof ManagedObject) {
+            return (ListPath<D, SimpleExpression<D>>) ((ManagedObject) arg).__mappedPath();
+        } else {
+            return (ListPath<D, SimpleExpression<D>>) current;
+        }
     }
 
     /**
@@ -234,8 +250,16 @@ public final class Alias {
      * @param <V>
      * @return expression
      */
+    @SuppressWarnings("unchecked")
     public static <K, V> MapPath<K, V, SimpleExpression<V>> $(Map<K, V> arg) {
-        return aliasFactory.getCurrentAndReset();
+        final Object current = aliasFactory.getCurrentAndReset();
+        if (arg instanceof MapPath) {
+            return (MapPath<K, V, SimpleExpression<V>>) arg; //NOSONAR
+        } else if (arg instanceof ManagedObject) {
+            return (MapPath<K, V, SimpleExpression<V>>) ((ManagedObject) arg).__mappedPath();
+        } else {
+            return (MapPath<K, V, SimpleExpression<V>>) current;
+        }
     }
 
     /**
@@ -245,8 +269,16 @@ public final class Alias {
      * @param <D>
      * @return expression
      */
+    @SuppressWarnings("unchecked")
     public static <D> SetPath<D, SimpleExpression<D>> $(Set<D> arg) {
-        return aliasFactory.getCurrentAndReset();
+        final Object current = aliasFactory.getCurrentAndReset();
+        if (arg instanceof SetPath) {
+            return (SetPath<D, SimpleExpression<D>>) arg; //NOSONAR
+        } else if (arg instanceof ManagedObject) {
+            return (SetPath<D, SimpleExpression<D>>) ((ManagedObject) arg).__mappedPath();
+        } else {
+            return (SetPath<D, SimpleExpression<D>>) current;
+        }
     }
 
     /**
@@ -299,30 +331,26 @@ public final class Alias {
     @SuppressWarnings("unchecked")
     @Nullable
     public static <D> EntityPathBase<D> $(D arg) {
-        EntityPathBase<D> rv = aliasFactory.getCurrentAndReset();
-        if (rv != null) {
-            return rv;
-        } else if (arg instanceof EntityPath<?>) {
+        final Object current = aliasFactory.getCurrentAndReset();
+        if (arg instanceof EntityPath<?>) {
             return (EntityPathBase<D>) arg; //NOSONAR
         } else if (arg instanceof ManagedObject) {
             return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
         } else {
-            return null;
+            return (EntityPathBase<D>) current;
         }
     }
 
     @SuppressWarnings("unchecked")
     @Nullable
     private static <D, P extends Path<D>> P getPath(D arg) {
-        P rv = aliasFactory.getCurrentAndReset();
-        if (rv != null) {
-            return rv;
-        } else if (arg instanceof Path<?>) {
+        final Object current = aliasFactory.getCurrentAndReset();
+        if (arg instanceof Path<?>) {
             return (P) arg;
         } else if (arg instanceof ManagedObject) {
             return (P) ((ManagedObject) arg).__mappedPath();
         } else {
-            return null;
+            return (P) current;
         }
     }
 
@@ -335,7 +363,7 @@ public final class Alias {
      * @return alias instance
      */
     public static <A> A alias(Class<A> cl) {
-        return alias(cl, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, cl.getSimpleName()));
+        return alias(cl, StringUtils.uncapitalize(cl.getSimpleName()));
     }
 
     /**
@@ -369,11 +397,11 @@ public final class Alias {
      */
     @SuppressWarnings("unchecked")
     public static <D> Expression<D> getAny(D arg) {
-        Expression<D> current = aliasFactory.getCurrentAndReset();
-        if (current != null) {
-            return current;
-        } else if (arg instanceof ManagedObject) {
+        Object current = aliasFactory.getCurrentAndReset();
+        if (arg instanceof ManagedObject) {
             return (Expression<D>) ((ManagedObject) arg).__mappedPath();
+        } else if (current != null) {
+            return (Expression<D>) current;
         } else {
             throw new IllegalArgumentException("No path mapped to " + arg);
         }

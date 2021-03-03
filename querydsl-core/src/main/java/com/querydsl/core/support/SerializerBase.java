@@ -13,25 +13,30 @@
  */
 package com.querydsl.core.support;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.types.*;
+
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * {@code SerializerBase} is a stub for Serializer implementations which serialize query metadata to Strings
  *
  * @param <S> concrete subtype
- *
  * @author tiwe
  */
-public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
+public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void, Void> {
 
-    private static final Set<Operator> SAME_PRECEDENCE = ImmutableSet.<Operator>of(Ops.CASE,
-        Ops.CASE_WHEN, Ops.CASE_ELSE, Ops.CASE_EQ, Ops.CASE_EQ_WHEN, Ops.CASE_EQ_ELSE);
+    private static final Set<? extends Operator> SAME_PRECEDENCE = Collections.unmodifiableSet(EnumSet.of(Ops.CASE,
+            Ops.CASE_WHEN, Ops.CASE_ELSE, Ops.CASE_EQ, Ops.CASE_EQ_WHEN, Ops.CASE_EQ_ELSE));
 
     private final StringBuilder builder = new StringBuilder(128);
 
@@ -41,7 +46,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private String anonParamPrefix = "_";
 
-    private Map<Object,String> constantToLabel;
+    private Map<Object, String> constantToNamedLabel;
+    private Map<Object, Integer> constantToNumberedLabel;
 
     @SuppressWarnings("unchecked")
     private final S self = (S) this;
@@ -73,11 +79,35 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return constantPrefix;
     }
 
-    public Map<Object,String> getConstantToLabel() {
-        if (constantToLabel == null) {
-            constantToLabel = new HashMap<Object,String>(4);
+    @Deprecated
+    public Map<Object, String> getConstantToLabel() {
+        return getConstantToAllLabels();
+    }
+
+    public Map<Object, String> getConstantToNamedLabel() {
+        if (constantToNamedLabel == null) {
+            constantToNamedLabel = new HashMap<Object, String>(4);
         }
-        return constantToLabel;
+        return constantToNamedLabel;
+    }
+
+    public Map<Object, Integer> getConstantToNumberedLabel() {
+        if (constantToNumberedLabel == null) {
+            constantToNumberedLabel = new HashMap<Object, Integer>(4);
+        }
+        return constantToNumberedLabel;
+    }
+
+    public Map<Object, String> getConstantToAllLabels() {
+        Map<Object, String> namedLabels = getConstantToNamedLabel();
+        Map<Object, Integer> numberedLabels = getConstantToNumberedLabel();
+
+        Map<Object, String> allLabels = new HashMap<Object, String>(namedLabels);
+        for (Map.Entry<Object, Integer> entry : numberedLabels.entrySet()) {
+            allLabels.put(entry.getKey(), entry.getValue().toString());
+        }
+
+        return unmodifiableMap(allLabels);
     }
 
     protected int getLength() {
@@ -174,7 +204,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
      * @deprecated normalization happens now at template level
      */
     @Deprecated
-    public void setNormalize(boolean normalize) { }
+    public void setNormalize(boolean normalize) {
+    }
 
     public void setStrict(boolean strict) {
         this.strict = strict;
@@ -192,12 +223,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     public void visitConstant(Object constant) {
-        if (!getConstantToLabel().containsKey(constant)) {
-            final String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
-            getConstantToLabel().put(constant, constLabel);
+        if (!getConstantToAllLabels().containsKey(constant)) {
+            final String constLabel = constantPrefix + (getConstantToNamedLabel().size() + 1);
+            getConstantToNamedLabel().put(constant, constLabel);
             append(constLabel);
         } else {
-            append(getConstantToLabel().get(constant));
+            append(getConstantToNamedLabel().get(constant));
         }
     }
 
@@ -209,7 +240,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         } else {
             paramLabel = paramPrefix + param.getName();
         }
-        getConstantToLabel().put(param, paramLabel);
+        getConstantToNamedLabel().put(param, paramLabel);
         append(paramLabel);
         return null;
     }
@@ -239,9 +270,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         final Object element = path.getMetadata().getElement();
         List<Object> args;
         if (path.getMetadata().getParent() != null) {
-            args = ImmutableList.of(path.getMetadata().getParent(), element);
+            args = Arrays.asList(path.getMetadata().getParent(), element);
         } else {
-            args = ImmutableList.of(element);
+            args = Collections.singletonList(element);
         }
         handleTemplate(template, args);
         return null;
@@ -277,7 +308,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 }
             }
         } else if (strict) {
-            throw new IllegalArgumentException("No pattern found for " + operator);
+            throw new IllegalArgumentException(String.format("No pattern found for %s. Make sure to register any custom functions with %s.", operator, templates.getClass()));
         } else {
             append(operator.toString());
             append("(");

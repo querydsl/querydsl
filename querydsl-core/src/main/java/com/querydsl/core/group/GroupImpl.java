@@ -26,7 +26,7 @@ import com.querydsl.core.types.Ops;
  * @author tiwe
  *
  */
-class GroupImpl implements Group {
+public class GroupImpl implements Group {
 
     private final Map<Expression<?>, GroupCollector<?,?>> groupCollectorMap = new LinkedHashMap<Expression<?>, GroupCollector<?,?>>();
 
@@ -39,9 +39,8 @@ class GroupImpl implements Group {
     public GroupImpl(List<GroupExpression<?, ?>> columnDefinitions,  List<QPair<?, ?>> maps) {
         this.groupExpressions = columnDefinitions;
         this.maps = maps;
-        for (int i = 0; i < columnDefinitions.size(); i++) {
-            GroupExpression<?, ?> coldef = columnDefinitions.get(i);
-            GroupCollector<?,?> collector = groupCollectorMap.get(coldef.getExpression());
+        for (GroupExpression<?, ?> coldef : columnDefinitions) {
+            GroupCollector<?, ?> collector = groupCollectorMap.get(coldef.getExpression());
             if (collector == null) {
                 collector = coldef.createGroupCollector();
                 Expression<?> coldefExpr = coldef.getExpression();
@@ -55,7 +54,7 @@ class GroupImpl implements Group {
     }
 
     @SuppressWarnings("unchecked")
-    void add(Object[] row) {
+    public void add(Object[] row) {
         int i = 0;
         for (GroupCollector groupCollector : groupCollectors) {
             groupCollector.add(row[i]);

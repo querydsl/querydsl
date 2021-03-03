@@ -13,12 +13,10 @@
  */
 package com.querydsl.sql;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
-import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code SQLBindings} provides the SQL query string and bindings
@@ -28,21 +26,15 @@ import org.slf4j.LoggerFactory;
  */
 public class SQLBindings {
 
-    private static final Logger log = LoggerFactory.getLogger(SQLBindings.class);
+    private static final Logger log = Logger.getLogger(SQLBindings.class.getName());
 
     private final String sql;
 
     private final List<Object> bindings;
 
-    @Deprecated
-    public SQLBindings(String sql, ImmutableList<Object> bindings) {
-        this(sql, (List<Object>) bindings);
-        log.warn("Using deprecated SQLBindings constructor");
-    }
-
     public SQLBindings(String sql, List<Object> bindings) {
         this.sql = sql;
-        this.bindings = Collections.unmodifiableList(bindings);
+        this.bindings = CollectionUtils.unmodifiableList(bindings);
     }
 
     public String getSQL() {
@@ -51,25 +43,6 @@ public class SQLBindings {
 
     public List<Object> getNullFriendlyBindings() {
         return bindings;
-    }
-
-    /**
-     * Returns the bindings for this instance.
-     *
-     * @deprecated use {@link #getNullFriendlyBindings()} instead - this method is broken as null is a meaningful element
-     * and ImmutableList is null-hostile.
-     * @return an ImmutableList copy of the contents of {@link #getNullFriendlyBindings()}, with nulls removed
-     */
-    @Deprecated
-    public ImmutableList<Object> getBindings() {
-        final ImmutableList.Builder<Object> builder = ImmutableList.builder();
-        for (Object o : getNullFriendlyBindings()) {
-            if (o != null) {
-                builder.add(o);
-            }
-        }
-
-        return builder.build();
     }
 
 }

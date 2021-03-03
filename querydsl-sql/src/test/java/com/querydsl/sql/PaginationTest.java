@@ -1,11 +1,11 @@
 package com.querydsl.sql;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.support.QueryMixin;
@@ -23,7 +23,7 @@ public class PaginationTest {
 
     @Test
     public void test() {
-        List<SQLTemplates> list = Lists.newArrayList();
+        List<SQLTemplates> list = new ArrayList<>();
         list.add(new CUBRIDTemplates());
         list.add(new DerbyTemplates());
         list.add(new H2Templates());

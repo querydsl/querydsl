@@ -15,6 +15,7 @@ package com.querydsl.sql.mssql;
 
 import static org.junit.Assert.assertEquals;
 
+import com.querydsl.sql.domain.QEmployee;
 import org.junit.Test;
 
 import com.querydsl.sql.SQLServerTemplates;
@@ -46,6 +47,29 @@ public class SQLServerQueryTest {
              .from(survey2).tableHints(SQLServerTableHints.NOLOCK)
              .where(survey.name.isNull());
         assertEquals("from SURVEY SURVEY with (NOWAIT), SURVEY survey2 with (NOLOCK)\nwhere SURVEY.NAME is null", query.toString());
+    }
+
+
+    @Test
+    public void join_tableHints_single() {
+        QEmployee employee1 = QEmployee.employee;
+        QEmployee employee2 = new QEmployee("employee2");
+        SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
+        query.from(employee1).tableHints(SQLServerTableHints.NOLOCK)
+                .join(employee2).tableHints(SQLServerTableHints.NOLOCK)
+                .on(employee1.superiorId.eq(employee2.id));
+        assertEquals("from EMPLOYEE EMPLOYEE with (NOLOCK)\njoin EMPLOYEE employee2 with (NOLOCK)\non EMPLOYEE.SUPERIOR_ID = employee2.ID", query.toString());
+    }
+
+    @Test
+    public void join_tableHints_multiple() {
+        QEmployee employee1 = QEmployee.employee;
+        QEmployee employee2 = new QEmployee("employee2");
+        SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
+        query.from(employee1).tableHints(SQLServerTableHints.NOLOCK,SQLServerTableHints.READUNCOMMITTED)
+                .join(employee2).tableHints(SQLServerTableHints.NOLOCK,SQLServerTableHints.READUNCOMMITTED)
+                .on(employee1.superiorId.eq(employee2.id));
+        assertEquals("from EMPLOYEE EMPLOYEE with (NOLOCK, READUNCOMMITTED)\njoin EMPLOYEE employee2 with (NOLOCK, READUNCOMMITTED)\non EMPLOYEE.SUPERIOR_ID = employee2.ID", query.toString());
     }
 
 }

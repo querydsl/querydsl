@@ -13,17 +13,29 @@
  */
 package com.querydsl.collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.querydsl.core.*;
-import com.querydsl.core.types.*;
+import com.querydsl.core.Fetchable;
+import com.querydsl.core.Module;
+import com.querydsl.core.QueryExecution;
+import com.querydsl.core.Target;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ArrayConstructorExpression;
+import com.querydsl.core.types.Concatenation;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ParamNotSetException;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Param;
+import org.junit.Test;
 
 public class CollQueryStandardTest {
 
@@ -38,11 +50,11 @@ public class CollQueryStandardTest {
     private final QCat otherCat = new QCat("otherCat");
 
     private final List<Cat> data = Arrays.asList(
-            new Cat("Bob", 1, birthDate),
-            new Cat("Ruth", 2, birthDate),
-            new Cat("Felix", 3, birthDate),
-            new Cat("Allen", 4, birthDate),
-            new Cat("Mary", 5, birthDate)
+        new Cat("Bob", 1, birthDate),
+        new Cat("Ruth", 2, birthDate),
+        new Cat("Felix", 3, birthDate),
+        new Cat("Allen", 4, birthDate),
+        new Cat("Mary", 5, birthDate)
     );
 
     private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
@@ -55,7 +67,7 @@ public class CollQueryStandardTest {
         @Override
         protected Fetchable<?> createQuery(Predicate filter) {
             return CollQueryFactory.from(cat, data).from(otherCat, data)
-                    .where(filter).select(cat.name);
+                .where(filter).select(cat.name);
         }
     };
 
@@ -80,12 +92,33 @@ public class CollQueryStandardTest {
     }
 
     @Test
-    public void tupleProjection() {
+    public void tupleMultipleFieldsProjection() {
         List<Tuple> tuples = CollQueryFactory.from(cat, data)
             .select(cat.name, cat.birthdate).fetch();
         for (Tuple tuple : tuples) {
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
+        }
+    }
+
+    @Test
+    public void tupleOneFieldProjection() {
+        List<Tuple> tuples = CollQueryFactory.from(cat, data)
+            .select(new Expression<?>[] {cat.name}).fetch();
+        for (Tuple tuple : tuples) {
+            assertEquals(1, tuple.size());
+            assertNotNull(tuple.get(cat.name));
+        }
+    }
+
+    @Test
+    public void tupleOneNullFieldProjection() {
+        List<Tuple> tuples = CollQueryFactory.from(cat, data)
+            .select(new Expression<?>[] {Expressions.nullExpression()}).fetch();
+        for (Tuple tuple : tuples) {
+            assertNotNull(tuple);
+            assertEquals(1, tuple.size()); // THIS FAILS WITH NPE
+            assertNull(tuple.get(Expressions.nullExpression()));
         }
     }
 

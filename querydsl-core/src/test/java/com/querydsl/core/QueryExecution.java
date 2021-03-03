@@ -91,11 +91,11 @@ public abstract class QueryExecution {
 
     private Throwable addError(Expression<?> expr, Throwable throwable) {
         StringBuilder error = new StringBuilder();
-        error.append(expr + " failed : \n");
-        error.append(" " + throwable.getClass().getName() + " : " + throwable.getMessage() + "\n");
+        error.append(expr).append(" failed : \n");
+        error.append(" ").append(throwable.getClass().getName()).append(" : ").append(throwable.getMessage()).append("\n");
         if (throwable.getCause() != null) {
             throwable = throwable.getCause();
-            error.append(" " + throwable.getClass().getName() + " : " + throwable.getMessage() + "\n");
+            error.append(" ").append(throwable.getClass().getName()).append(" : ").append(throwable.getMessage()).append("\n");
         }
         errors.add(error.toString());
         return throwable;
@@ -219,7 +219,7 @@ public abstract class QueryExecution {
             }
 
             // construct String for Assert.fail()
-            StringBuffer buffer = new StringBuffer("Failed with ");
+            StringBuilder buffer = new StringBuilder("Failed with ");
             if (!failures.isEmpty()) {
                 buffer.append(failures.size()).append(" failure(s) ");
                 if (!errors.isEmpty()) {
@@ -231,10 +231,10 @@ public abstract class QueryExecution {
             }
             buffer.append("of ").append(total).append(" tests\n");
             for (String f : failures) {
-                buffer.append(f + "\n");
+                buffer.append(f).append("\n");
             }
             for (String e : errors) {
-                buffer.append(e + "\n");
+                buffer.append(e).append("\n");
             }
             Assert.fail(buffer.toString());
         } else {

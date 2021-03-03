@@ -14,15 +14,16 @@
 package com.querydsl.core;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code JoinExpression} is a join element in a {@link Query} instance.
@@ -37,7 +38,7 @@ public final class JoinExpression implements Serializable {
     @Nullable
     private final Predicate condition;
 
-    private final ImmutableSet<JoinFlag> flags;
+    private final Set<JoinFlag> flags;
 
     private final Expression<?> target;
 
@@ -50,7 +51,7 @@ public final class JoinExpression implements Serializable {
      * @param target target of join
      */
     public JoinExpression(JoinType type, Expression<?> target) {
-        this(type, target, null, ImmutableSet.<JoinFlag>of());
+        this(type, target, null, Collections.emptySet());
     }
 
 
@@ -67,7 +68,7 @@ public final class JoinExpression implements Serializable {
         this.type = type;
         this.target = target;
         this.condition = condition;
-        this.flags = ImmutableSet.copyOf(flags);
+        this.flags = CollectionUtils.unmodifiableSet(flags);
     }
 
     @Nullable
@@ -102,7 +103,7 @@ public final class JoinExpression implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(condition, target, type);
+        return Objects.hash(condition, target, type);
     }
 
     @Override
@@ -111,9 +112,9 @@ public final class JoinExpression implements Serializable {
             return true;
         } else if (o instanceof JoinExpression) {
             JoinExpression j = (JoinExpression) o;
-            return Objects.equal(condition, j.condition) &&
-                   Objects.equal(target, j.target) &&
-                   Objects.equal(type, j.type);
+            return Objects.equals(condition, j.condition) &&
+                   Objects.equals(target, j.target) &&
+                   Objects.equals(type, j.type);
         } else {
             return false;
         }

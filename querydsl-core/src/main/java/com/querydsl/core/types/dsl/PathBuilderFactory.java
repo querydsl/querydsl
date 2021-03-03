@@ -14,9 +14,9 @@
 package com.querydsl.core.types.dsl;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.base.CaseFormat;
-import com.google.common.collect.Maps;
+import com.querydsl.core.util.StringUtils;
 
 /**
  * {@code PathBuilderFactory} is a factory class for PathBuilder creation
@@ -26,7 +26,7 @@ import com.google.common.collect.Maps;
  */
 public final class PathBuilderFactory {
 
-    private final Map<Class<?>, PathBuilder<?>> paths = Maps.newConcurrentMap();
+    private final Map<Class<?>, PathBuilder<?>> paths = new ConcurrentHashMap<>();
 
     private final String suffix;
 
@@ -55,7 +55,7 @@ public final class PathBuilderFactory {
     }
 
     private String variableName(Class<?> type) {
-        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, type.getSimpleName()) + suffix;
+        return StringUtils.uncapitalize(type.getSimpleName()) + suffix;
     }
 
 }

@@ -12,12 +12,6 @@ The JPA module provides integration with the JPA 2 persistence API.
   <artifactId>querydsl-jpa</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
-
-<dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-log4j12</artifactId>
-  <version>1.6.1</version>
-</dependency>
 ```
 
 And now, configure the Maven APT plugin :

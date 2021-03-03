@@ -13,10 +13,10 @@
  */
 package com.querydsl.core.group;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.Tuple;
@@ -52,7 +52,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
         }
         final CloseableIterator<Tuple> iter = query.select(expr).iterate();
 
-        List<V> list = Lists.newArrayList();
+        List<V> list = new ArrayList<>();
         GroupImpl group = null;
         K groupId = null;
         while (iter.hasNext()) {
@@ -61,7 +61,7 @@ public class GroupByList<K, V> extends AbstractGroupByTransformer<K, List<V>> {
             if (group == null) {
                 group = new GroupImpl(groupExpressions, maps);
                 groupId = row[0];
-            } else if (!Objects.equal(groupId, row[0])) {
+            } else if (!Objects.equals(groupId, row[0])) {
                 list.add(transform(group));
                 group = new GroupImpl(groupExpressions, maps);
                 groupId = row[0];

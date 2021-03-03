@@ -17,8 +17,8 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class ExcludedClassesTest extends AbstractProcessorTest {
 
     @Override
     protected Collection<String> getAPTOptions() {
-        return Arrays.asList("-Aquerydsl.excludedClasses=com.querydsl.apt.domain.ArrayTest.ArrayTestEntity");
+        return Collections.singletonList("-Aquerydsl.excludedClasses=com.querydsl.apt.domain.ArrayTest.ArrayTestEntity");
     }
 
 }

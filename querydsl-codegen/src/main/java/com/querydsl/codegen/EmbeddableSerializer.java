@@ -13,7 +13,7 @@
  */
 package com.querydsl.codegen;
 
-import static com.mysema.codegen.Symbols.UNCHECKED;
+import static com.querydsl.codegen.utils.Symbols.UNCHECKED;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -22,11 +22,11 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.utils.model.Types;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.*;
 
@@ -43,10 +43,27 @@ public final class EmbeddableSerializer extends EntitySerializer {
      *
      * @param typeMappings type mappings to be used
      * @param keywords keywords to be used
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
      */
     @Inject
-    public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
-        super(typeMappings, keywords);
+    public EmbeddableSerializer(
+            TypeMappings typeMappings,
+            @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+        super(typeMappings, keywords, generatedAnnotationClass);
+    }
+
+    /**
+     * Create a new {@code EmbeddableSerializer} instance.
+     *
+     * @param typeMappings type mappings to be used
+     * @param keywords keywords to be used
+     */
+    public EmbeddableSerializer(
+            TypeMappings typeMappings,
+            Collection<String> keywords) {
+        this(typeMappings, keywords, GeneratedAnnotationResolver.resolveDefault());
     }
 
     @Override
@@ -76,7 +93,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
             writer.annotation(annotation);
         }
 
-        writer.line("@Generated(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));

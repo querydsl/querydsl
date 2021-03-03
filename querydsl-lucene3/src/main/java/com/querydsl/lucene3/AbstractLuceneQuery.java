@@ -13,30 +13,42 @@
  */
 package com.querydsl.lucene3;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.FieldSelector;
-import org.apache.lucene.document.MapFieldSelector;
-import org.apache.lucene.search.*;
-import org.apache.lucene.search.Query;
-
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.*;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.Fetchable;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryException;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.SimpleQuery;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.FieldSelector;
+import org.apache.lucene.document.MapFieldSelector;
+import org.apache.lucene.search.ChainedFilter;
+import org.apache.lucene.search.DuplicateFilter;
+import org.apache.lucene.search.Filter;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.QueryWrapperFilter;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.TotalHitCountCollector;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * AbstractLuceneQuery is an abstract super class for Lucene query implementations
@@ -47,6 +59,8 @@ import com.querydsl.core.types.Predicate;
  * @param <Q> concrete subtype of query
  */
 public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> implements SimpleQuery<Q>, Fetchable<T> {
+
+    private static final String JAVA_ISO_CONTROL = "[\\p{Cntrl}&&[^\r\n\t]]";
 
     private final QueryMixin<Q> queryMixin;
 
@@ -59,7 +73,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     @Nullable
     private FieldSelector fieldSelector;
 
-    private List<Filter> filters = ImmutableList.of();
+    private List<Filter> filters = Collections.emptyList();
 
     @Nullable
     private Filter filter;
@@ -89,9 +103,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
             TotalHitCountCollector collector = new TotalHitCountCollector();
             searcher.search(createQuery(), getFilter(), collector);
             return collector.getTotalHits();
-        } catch (IOException e) {
-            throw new QueryException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new QueryException(e);
         }
     }
@@ -142,7 +154,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
     public Q filter(Filter filter) {
         if (filters.isEmpty()) {
             this.filter = filter;
-            filters = ImmutableList.of(filter);
+            filters = Collections.singletonList(filter);
         } else {
             this.filter = null;
             if (filters.size() == 1) {
@@ -155,7 +167,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
 
     private Filter getFilter() {
         if (filter == null && !filters.isEmpty()) {
-            filter = new ChainedFilter(filters.toArray(new Filter[filters.size()]));
+            filter = new ChainedFilter(filters.toArray(new Filter[0]));
         }
         return filter;
     }
@@ -179,9 +191,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
             if (limit == 0) {
                 return new EmptyCloseableIterator<T>();
             }
-        } catch (IOException e) {
-            throw new QueryException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new QueryException(e);
         }
         if (queryLimit != null && queryLimit < limit) {
@@ -317,9 +327,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
             } else {
                 return null;
             }
-        } catch (IOException e) {
-            throw new QueryException(e);
-        }  catch (IllegalArgumentException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new QueryException(e);
         }
     }
@@ -345,8 +353,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
 
     @Override
     public String toString() {
-        String str = createQuery().toString();
-        return CharMatcher.JAVA_ISO_CONTROL.replaceFrom(str, '_');
+        return createQuery().toString().replaceAll(JAVA_ISO_CONTROL, "_");
     }
 
     private int maxDoc() throws IOException {

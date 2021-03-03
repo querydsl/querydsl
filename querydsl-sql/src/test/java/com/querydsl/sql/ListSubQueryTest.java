@@ -3,11 +3,11 @@ package com.querydsl.sql;
 import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
 
-import com.google.common.collect.Sets;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.sql.domain.QEmployee;
@@ -22,7 +22,7 @@ public class ListSubQueryTest {
         SubQueryExpression<Tuple> query1 = select(survey.all()).from(survey);
         SubQueryExpression<Tuple> query2 = select(survey2.all()).from(survey2);
 
-        Set<SubQueryExpression<Tuple>> queries = Sets.newHashSet();
+        Set<SubQueryExpression<Tuple>> queries = new HashSet<>();
         queries.add(query1);
         queries.add(query2);
         assertEquals(2, queries.size());
@@ -35,7 +35,7 @@ public class ListSubQueryTest {
         SubQueryExpression<Integer> query1 = select(survey.id).from(survey);
         SubQueryExpression<Integer> query2 = select(employee.id).from(employee);
 
-        Set<SubQueryExpression<Integer>> queries = Sets.newHashSet();
+        Set<SubQueryExpression<Integer>> queries = new HashSet<>();
         queries.add(query1);
         queries.add(query2);
         assertEquals(1, queries.size());

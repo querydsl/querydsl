@@ -14,24 +14,21 @@
 package com.querydsl.jpa.sql;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
@@ -54,11 +51,11 @@ import com.querydsl.sql.SQLSerializer;
  */
 public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>> extends AbstractSQLQuery<T, Q> {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractJPASQLQuery.class);
+    private static final Logger logger = Logger.getLogger(AbstractJPASQLQuery.class.getName());
 
     private final EntityManager entityManager;
 
-    protected final Multimap<String,Object> hints = HashMultimap.create();
+    protected final Map<String, Object> hints = new LinkedHashMap<>();
 
     protected final QueryHandler queryHandler;
 
@@ -97,7 +94,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     private Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstantToLabel());
+        logQuery(queryString, serializer.getConstantToAllLabels());
         Expression<?> projection = queryMixin.getMetadata().getProjection();
         Query query;
 
@@ -112,8 +109,8 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
             query = entityManager.createNativeQuery(queryString);
         }
         if (!forCount) {
-            ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
-            Set<String> used = Sets.newHashSet();
+            Map<Expression<?>, List<String>> aliases = serializer.getAliases();
+            Set<String> used = new HashSet<>();
             if (projection instanceof FactoryExpression) {
                 for (Expression<?> expr : ((FactoryExpression<?>) projection).getArgs()) {
                     if (isEntityExpression(expr)) {
@@ -149,16 +146,16 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
             query.setFlushMode(flushMode);
         }
 
-        for (Map.Entry<String, Object> entry : hints.entries()) {
+        for (Map.Entry<String, Object> entry : hints.entrySet()) {
             query.setHint(entry.getKey(), entry.getValue());
         }
 
 
         // set constants
-        JPAUtil.setConstants(query, serializer.getConstantToLabel(), queryMixin.getMetadata().getParams());
+        JPAUtil.setConstants(query, serializer.getConstantToAllLabels(), queryMixin.getMetadata().getParams());
         this.projection = null; // necessary when query is reused
 
-        if (projection instanceof FactoryExpression) {
+        if (!forCount && projection instanceof FactoryExpression) {
             if (!queryHandler.transform(query, (FactoryExpression<?>) projection)) {
                 this.projection = (FactoryExpression<?>) projection;
             }
@@ -252,14 +249,25 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public Stream<T> stream() {
+        try {
+            Query query = createQuery();
+            return query.getResultStream();
+        } finally {
+            reset();
+        }
+    }
+
+    @Override
     public QueryResults<T> fetchResults() {
         // TODO : handle entity projections as well
         try {
-            Query query = createQuery(true);
-            long total = ((Number) query.getSingleResult()).longValue();
+            Query countQuery = createQuery(true);
+            long total = ((Number) countQuery.getSingleResult()).longValue();
             if (total > 0) {
                 QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-                query = createQuery(false);
+                Query query = createQuery(false);
                 @SuppressWarnings("unchecked")
                 List<T> list = (List<T>) getResultList(query);
                 return new QueryResults<T>(list, modifiers, total);
@@ -273,21 +281,13 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
     }
 
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
-    }
-
     protected void reset() {
-        cleanupMDC();
     }
 
     @Override
@@ -302,7 +302,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
         try {
             return getSingleResult(query);
         } catch (javax.persistence.NoResultException e) {
-            logger.trace(e.getMessage(),e);
+            logger.log(Level.FINEST, e.getMessage(),e);
             return null;
         } catch (javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException(e);

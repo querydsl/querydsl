@@ -13,18 +13,19 @@
  */
 package com.querydsl.core.types;
 
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.CollectionUtils;
+import com.querydsl.core.util.MathUtils;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
-import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.util.MathUtils;
+import com.querydsl.core.annotations.Immutable;
 
 /**
  * {@code Template} provides serialization templates for {@link Operation},
@@ -38,7 +39,7 @@ public final class Template implements Serializable {
 
     private static final long serialVersionUID = -1697705745769542204L;
 
-    private static final Set<? extends Operator> CONVERTIBLES = Sets.immutableEnumSet(Ops.ADD, Ops.SUB);
+    private static final Set<? extends Operator> CONVERTIBLES = Collections.unmodifiableSet(EnumSet.of(Ops.ADD, Ops.SUB));
 
     /**
      * General template element
@@ -345,13 +346,13 @@ public final class Template implements Serializable {
         }
     }
 
-    private final ImmutableList<Element> elements;
+    private final List<Element> elements;
 
     private final String template;
 
-    Template(String template, ImmutableList<Element> elements) {
+    Template(String template, List<Element> elements) {
         this.template = template;
-        this.elements = elements;
+        this.elements = CollectionUtils.unmodifiableList(elements);
     }
 
     public List<Element> getElements() {

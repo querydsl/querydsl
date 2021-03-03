@@ -23,6 +23,35 @@ import com.querydsl.core.annotations.QueryEntity;
 public class ComparableTest {
 
     @QueryEntity
+    public static class CustomComparableHolder {
+
+        private CustomComparable customComparable;
+
+        public CustomComparable getCustomComparable() {
+            return customComparable;
+        }
+
+        public void setCustomComparable(CustomComparable customComparable) {
+            this.customComparable = customComparable;
+        }
+    }
+
+    @QueryEmbeddable
+    public static class CustomComparable2 {
+
+
+        private CustomComparable customComparable;
+
+        public CustomComparable getCustomComparable() {
+            return customComparable;
+        }
+
+        public void setCustomComparable(CustomComparable customComparable) {
+            this.customComparable = customComparable;
+        }
+
+    }
+
     public static class CustomComparable implements Comparable<CustomComparable> {
 
         @Override
@@ -36,23 +65,9 @@ public class ComparableTest {
 
     }
 
-    @QueryEmbeddable
-    public static class CustomComparable2 implements Comparable<CustomComparable2> {
-
-        @Override
-        public int compareTo(CustomComparable2 o) {
-            return 0;
-        }
-
-        public boolean equals(Object o) {
-            return o == this;
-        }
-
-    }
-
     @Test
     public void customComparable_is_properly_handled() {
-        assertNotNull(QComparableTest_CustomComparable.customComparable.asc());
+        assertNotNull(QComparableTest_CustomComparableHolder.customComparableHolder.customComparable.asc());
     }
 
 }

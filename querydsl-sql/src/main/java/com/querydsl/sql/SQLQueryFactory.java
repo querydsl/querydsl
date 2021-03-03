@@ -15,8 +15,8 @@ package com.querydsl.sql;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.function.Supplier;
 
-import javax.inject.Provider;
 import javax.sql.DataSource;
 
 import com.querydsl.core.Tuple;
@@ -31,7 +31,7 @@ import com.querydsl.core.types.dsl.Expressions;
  */
 public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
 
-    static class DataSourceProvider implements Provider<Connection> {
+    static class DataSourceProvider implements Supplier<Connection> {
 
         private final DataSource ds;
 
@@ -50,11 +50,11 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
 
     }
 
-    public SQLQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
+    public SQLQueryFactory(SQLTemplates templates, Supplier<Connection> connection) {
         this(new Configuration(templates), connection);
     }
 
-    public SQLQueryFactory(Configuration configuration, Provider<Connection> connProvider) {
+    public SQLQueryFactory(Configuration configuration, Supplier<Connection> connProvider) {
         super(configuration, connProvider);
     }
 

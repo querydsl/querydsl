@@ -19,8 +19,8 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 
-import com.google.common.primitives.Primitives;
 import com.querydsl.core.util.BeanUtils;
+import com.querydsl.core.util.PrimitiveUtils;
 import com.querydsl.core.util.ReflectionUtils;
 
 /**
@@ -56,7 +56,7 @@ public interface PathBuilderValidator extends Serializable {
                     } else if (Collection.class.isAssignableFrom(field.getType())) {
                         return (Class) ReflectionUtils.getTypeParameterAsClass(field.getGenericType(), 0);
                     } else {
-                        return (Class) Primitives.wrap(field.getType());
+                        return (Class) PrimitiveUtils.wrap(field.getType());
                     }
                 } catch (NoSuchFieldException e) {
                     parent = parent.getSuperclass();
@@ -70,7 +70,7 @@ public interface PathBuilderValidator extends Serializable {
         @Override
         public Class<?> validate(Class<?> parent, String property, Class<?> propertyType) {
             Method getter = BeanUtils.getAccessor("get", property, parent);
-            if (getter == null && Primitives.wrap(propertyType).equals(Boolean.class)) {
+            if (getter == null && PrimitiveUtils.wrap(propertyType).equals(Boolean.class)) {
                 getter = BeanUtils.getAccessor("is", property, parent);
             }
             if (getter != null) {
@@ -79,7 +79,7 @@ public interface PathBuilderValidator extends Serializable {
                 } else if (Collection.class.isAssignableFrom(getter.getReturnType())) {
                     return (Class) ReflectionUtils.getTypeParameterAsClass(getter.getGenericReturnType(), 0);
                 } else {
-                    return (Class) Primitives.wrap(getter.getReturnType());
+                    return (Class) PrimitiveUtils.wrap(getter.getReturnType());
                 }
             } else {
                 return null;

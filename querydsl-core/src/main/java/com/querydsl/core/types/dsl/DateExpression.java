@@ -15,7 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import java.util.Date;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
@@ -124,6 +124,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      *
      * @return max(this)
      */
+    @Override
     public DateExpression<T> max() {
         if (max == null) {
             max = Expressions.dateOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
@@ -136,6 +137,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      *
      * @return min(this)
      */
+    @Override
     public DateExpression<T> min() {
         if (min == null) {
             min = Expressions.dateOperation(getType(), Ops.AggOps.MIN_AGG, mixin);

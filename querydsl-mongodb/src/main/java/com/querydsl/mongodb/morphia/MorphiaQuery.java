@@ -13,17 +13,17 @@
  */
 package com.querydsl.mongodb.morphia;
 
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-import org.mongodb.morphia.mapping.cache.DefaultEntityCache;
-import org.mongodb.morphia.mapping.cache.EntityCache;
-
-import com.google.common.base.Function;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.mongodb.AbstractMongodbQuery;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.mapping.cache.DefaultEntityCache;
+import org.mongodb.morphia.mapping.cache.EntityCache;
+
+import java.util.function.Function;
 
 /**
  * {@code MorphiaQuery} extends {@link AbstractMongodbQuery} with Morphia specific transformations

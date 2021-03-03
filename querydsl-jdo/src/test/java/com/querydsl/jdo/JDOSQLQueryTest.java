@@ -16,13 +16,13 @@ package com.querydsl.jdo;
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
@@ -158,7 +158,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        List<Object> entities = Lists.newArrayList();
+        List<Object> entities = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             entities.add(new Product("C" + i, "F", 200.00, 2));
             entities.add(new Product("B" + i, "E", 400.00, 4));

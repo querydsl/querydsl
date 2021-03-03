@@ -13,6 +13,8 @@
  */
 package com.querydsl.codegen;
 
+import static com.querydsl.codegen.BeanSerializer.DEFAULT_JAVADOC_SUFFIX;
+
 import java.util.Collections;
 
 /**
@@ -53,6 +55,14 @@ public class CodegenModule  extends AbstractModule {
      */
     public static final String VARIABLE_NAME_FUNCTION_CLASS = "variableNameFunction";
 
+    /**
+     * the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element)
+     * to indicate that these have been generated. Defaults to java's {@code Generated} annotation (depending on java version)
+     */
+    public static final String GENERATED_ANNOTATION_CLASS = "generatedAnnotationClass";
+
+    protected static final String JAVADOC_SUFFIX = "javadocSuffix";
+
     @Override
     protected void configure() {
         bind(TypeMappings.class, JavaTypeMappings.class);
@@ -69,6 +79,8 @@ public class CodegenModule  extends AbstractModule {
         bind(KEYWORDS, Collections.<String>emptySet());
         bind(IMPORTS, Collections.<String>emptySet());
         bind(VARIABLE_NAME_FUNCTION_CLASS, DefaultVariableNameFunction.INSTANCE);
+        bindInstance(GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolveDefault());
+        bind(JAVADOC_SUFFIX, DEFAULT_JAVADOC_SUFFIX);
     }
 
 }

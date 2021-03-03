@@ -18,12 +18,13 @@ import java.sql.*;
 import org.joda.time.DateTime;
 
 /**
- * {@code DateTimeType} maps DateTime to Timestamp on the JDBC level
+ * {@code DateTimeType} maps {@linkplain org.joda.time.DateTime}
+ * to {@linkplain java.sql.Timestamp} on the JDBC level
  *
  * @author tiwe
  *
  */
-public class DateTimeType extends AbstractDateTimeType<DateTime> {
+public class DateTimeType extends AbstractJodaTimeDateTimeType<DateTime> {
 
     public DateTimeType() {
         super(Types.TIMESTAMP);

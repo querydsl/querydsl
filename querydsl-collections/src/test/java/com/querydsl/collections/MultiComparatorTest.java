@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 
 public class MultiComparatorTest {
 
@@ -34,7 +34,8 @@ public class MultiComparatorTest {
 
     @Test
     public void test() {
-        MultiComparator<Object[]> comparator = new MultiComparator<Object[]>(evaluator, new boolean[]{true, true});
+        MultiComparator<Object[]> comparator = new MultiComparator<Object[]>(evaluator, new boolean[]{true, true},
+                new boolean[]{true, true});
         assertTrue(comparator.compare(new Object[]{"a", "b"}, new Object[]{"a","c"}) < 0);
         assertTrue(comparator.compare(new Object[]{"b", "a"}, new Object[]{"a","b"}) > 0);
         assertTrue(comparator.compare(new Object[]{"b", "b"}, new Object[]{"b","b"}) == 0);

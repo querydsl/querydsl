@@ -5,8 +5,10 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.tools.JavaCompiler;
@@ -17,9 +19,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.core.testutil.Parallelized;
 import com.querydsl.core.testutil.SlowTest;
@@ -58,7 +58,7 @@ public class MetaDataExporterAllTest {
 
     @Parameterized.Parameters
     public static List<Object[]> parameters() {
-        List<Object[]> params = Lists.newArrayList();
+        List<Object[]> params = new ArrayList<>();
 
         List<NamingStrategy> ns = Arrays.<NamingStrategy>asList(
                 new DefaultNamingStrategy(), new OriginalNamingStrategy());
@@ -78,7 +78,7 @@ public class MetaDataExporterAllTest {
                                             for (boolean exportColumns : booleans) {
                                                 for (boolean schemaToPackage : booleans) {
                                                     if (withBeans && beanPackageName == null) {
-                                                        if (Objects.equal(namePrefix, beanPrefix) && Objects.equal(nameSuffix, beanSuffix)) {
+                                                        if (Objects.equals(namePrefix, beanPrefix) && Objects.equals(nameSuffix, beanSuffix)) {
                                                             continue;
                                                         }
                                                     }
@@ -153,7 +153,7 @@ public class MetaDataExporterAllTest {
 
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, System.out, System.err,
-                classes.toArray(new String[classes.size()]));
+                classes.toArray(new String[0]));
         if (compilationResult != 0) {
             Assert.fail("Compilation Failed for " + folder.getRoot().getPath());
         }

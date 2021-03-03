@@ -1,0 +1,19 @@
+public class JavaWriterTest {
+
+    private String privateField;
+
+    private static final String privateStaticFinal = "val";
+
+    protected String protectedField;
+
+    String field;
+
+    public String publicField;
+
+    public static final String publicStaticFinal = "val";
+
+    public final String publicFinalField;
+
+    public final String publicFinalField2 = "val";
+
+}

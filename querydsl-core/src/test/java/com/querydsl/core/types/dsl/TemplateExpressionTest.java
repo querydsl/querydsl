@@ -17,12 +17,12 @@ import static org.junit.Assert.*;
 
 import java.sql.Time;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.types.*;
 
@@ -32,7 +32,7 @@ public class TemplateExpressionTest {
     public void constructors() {
         Templates templates = new JavaTemplates();
         Template template = TemplateFactory.DEFAULT.create("{0}");
-        ImmutableList<Expression<?>> args = ImmutableList.<Expression<?>>of(new StringPath("a"));
+        List<Expression<?>> args = Collections.singletonList(new StringPath("a"));
         List<TemplateExpression<?>> customs = Arrays.<TemplateExpression<?>>asList(
             new BooleanTemplate(template, args),
             new ComparableTemplate<String>(String.class, template, args),

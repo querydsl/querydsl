@@ -61,10 +61,8 @@ public class ExpressionTest {
         exprs.add(ConstantImpl.create(true));
         exprs.add(ConstantImpl.create(false));
 
-        Set<Expression<?>> toVisit = new HashSet<Expression<?>>();
-
         // all entities
-        toVisit.addAll(exprs);
+        Set<Expression<?>> toVisit = new HashSet<Expression<?>>(exprs);
         // and all their direct properties
         for (Expression<?> expr : exprs) {
             for (Field field : expr.getClass().getFields()) {

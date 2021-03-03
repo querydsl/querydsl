@@ -14,8 +14,7 @@
 package com.querydsl.sql.oracle;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
@@ -54,11 +53,11 @@ public class OracleQuery<T> extends AbstractOracleQuery<T, OracleQuery<T>> {
         super(conn, new Configuration(templates), metadata);
     }
 
-    public OracleQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+    public OracleQuery(Supplier<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
         super(connProvider, configuration, metadata);
     }
 
-    public OracleQuery(Provider<Connection> connProvider, Configuration configuration) {
+    public OracleQuery(Supplier<Connection> connProvider, Configuration configuration) {
         super(connProvider, configuration, new DefaultQueryMetadata());
     }
 

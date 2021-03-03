@@ -13,11 +13,11 @@
  */
 package com.querydsl.jpa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.support.ConstantHidingExpression;
 import com.querydsl.core.support.EnumConversion;
 import com.querydsl.core.support.NumberConversion;
@@ -78,7 +78,7 @@ public final class Conversions {
     }
 
     private static <RT> FactoryExpression<RT> createEntityPathConversions(FactoryExpression<RT> factoryExpr) {
-        List<Expression<?>> conversions = Lists.newArrayList();
+        List<Expression<?>> conversions = new ArrayList<>();
         for (Expression<?> e : factoryExpr.getArgs()) {
             if (isEntityPathAndNeedsWrapping(e)) {
                 conversions.add(ExpressionUtils.operation(e.getType(), SQLOps.ALL, e));

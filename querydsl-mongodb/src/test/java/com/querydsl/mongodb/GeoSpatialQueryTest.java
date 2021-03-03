@@ -76,6 +76,19 @@ public class GeoSpatialQueryTest {
         assertEquals(10.0, entities.get(2).getLocation()[0], 0.1);
     }
 
+    @Test
+    public void geo_within_box() {
+        ds.save(new GeoEntity(10.0, 50.0));
+        ds.save(new GeoEntity(20.0, 50.0));
+        ds.save(new GeoEntity(30.0, 50.0));
+
+        List<GeoEntity> entities = query().where(MongodbExpressions.withinBox(geoEntity.location, 0, 0, 20, 50)).fetch();
+        assertEquals(2,entities.size());
+        assertEquals(10.0, entities.get(0).getLocation()[0], 0.1);
+        assertEquals(20.0, entities.get(1).getLocation()[0], 0.1);
+
+    }
+
     private MorphiaQuery<GeoEntity> query() {
         return new MorphiaQuery<GeoEntity>(morphia, ds, geoEntity);
     }

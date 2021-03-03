@@ -13,12 +13,14 @@
  */
 package com.querydsl.core.types;
 
+import com.querydsl.core.util.CollectionUtils;
+
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.concurrent.Immutable;
-
-import com.google.common.collect.ImmutableList;
+import com.querydsl.core.annotations.Immutable;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code ArrayConstructorExpression} extends {@link FactoryExpressionBase} to represent array initializers
@@ -34,7 +36,8 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
 
     private final Class<T> elementType;
 
-    private final ImmutableList<Expression<?>> args;
+    @Unmodifiable
+    private final List<Expression<?>> args;
 
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Expression<?>... args) {
@@ -45,7 +48,7 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
     public ArrayConstructorExpression(Class<T[]> type, Expression<T>... args) {
         super(type);
         this.elementType = (Class<T>) type.getComponentType();
-        this.args = ImmutableList.<Expression<?>>copyOf(args);
+        this.args = CollectionUtils.unmodifiableList(Arrays.asList(args));
     }
 
     public final Class<T> getElementType() {
@@ -70,6 +73,7 @@ public class ArrayConstructorExpression<T> extends FactoryExpressionBase<T[]> {
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

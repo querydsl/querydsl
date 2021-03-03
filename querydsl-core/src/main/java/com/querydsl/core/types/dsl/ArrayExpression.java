@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
-import javax.annotation.Nonnegative;
+import org.jetbrains.annotations.Range;
 
 import com.querydsl.core.types.Expression;
 
@@ -54,6 +54,6 @@ public interface ArrayExpression<A, T> extends Expression<A> {
      * @param index zero based index
      * @return element at index
      */
-    SimpleExpression<T> get(@Nonnegative int index);
+    SimpleExpression<T> get(@Range(from = 0, to = Integer.MAX_VALUE) int index);
 
 }

@@ -13,7 +13,9 @@
  */
 package com.querydsl.jpa;
 
-import static org.junit.Assert.assertEquals;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -27,6 +29,8 @@ import org.junit.runner.RunWith;
 
 import com.querydsl.core.Target;
 import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.Color;
 import com.querydsl.jpa.domain.QCat;
@@ -34,6 +38,8 @@ import com.querydsl.jpa.domain.sql.SAnimal;
 import com.querydsl.jpa.sql.JPASQLQuery;
 import com.querydsl.jpa.testutil.JPATestRunner;
 import com.querydsl.sql.SQLTemplates;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(JPATestRunner.class)
 public class JPASQLBase extends AbstractSQLTest implements JPATest {
@@ -49,6 +55,9 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
     private final SQLTemplates templates = Mode.getSQLTemplates();
 
     private EntityManager entityManager;
+
+    private final SAnimal cat = new SAnimal("cat");
+    private final QCat catEntity = QCat.cat;
 
     @Override
     protected JPASQLQuery<?> query() {
@@ -73,11 +82,22 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
         }
     }
 
+    private <T> void insertEntitiesForTest(final List<T> entities) {
+        for (T entity: entities) {
+            entityManager.persist(entity);
+        }
+        entityManager.flush();
+    }
+
+    private <T> void removeEntitiesForTest(final List<T> entities) {
+        for (T entity: entities) {
+            entityManager.remove(entity);
+        }
+        entityManager.flush();
+    }
+
     @Test
     public void entityQueries_createQuery() {
-        SAnimal cat = new SAnimal("cat");
-        QCat catEntity = QCat.cat;
-
         Query query = query().from(cat).select(catEntity).createQuery();
         assertEquals(6, query.getResultList().size());
     }
@@ -86,10 +106,55 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
     @ExcludeIn(Target.MYSQL)
     public void entityQueries_createQuery2() {
         SAnimal cat = new SAnimal("CAT");
-        QCat catEntity = QCat.cat;
 
         Query query = query().from(cat).select(catEntity).createQuery();
         assertEquals(6, query.getResultList().size());
+    }
+
+    @Test
+    public void should_fetch_results_with_factory_expression() {
+        final long expectedTotalResultCount = 6;
+        final HashMap<String, Expression<?>> bindings = new HashMap<String, Expression<?>>();
+        bindings.put("name", cat.name);
+
+        final long actualTotalResultCount = query().from(cat)
+                                                   .select(Projections.bean(Cat.class, bindings))
+                                                   .fetchResults()
+                                                   .getTotal();
+
+        assertEquals(expectedTotalResultCount, actualTotalResultCount);
+    }
+
+    @Test
+    public void should_get_grouped_list_by_using_fetch_results() {
+        final long expectedCatColorKindCount = 1;
+
+        final long actualCatColorKindCount = query().from(cat)
+                                                    .select(catEntity.color)
+                                                    .groupBy(catEntity.color)
+                                                    .fetchResults()
+                                                    .getTotal();
+
+        assertEquals(expectedCatColorKindCount, actualCatColorKindCount);
+    }
+
+    @Test
+    public void should_get_black_cat_count_by_using_group_by_and_having() {
+        final long expectedTabbyCatCount = 2L;
+        final Cat tabbyColorCatFoo = new Cat("Foo", 7, Color.TABBY);
+        final Cat tabbyColorCatBar = new Cat("Bar", 8, Color.TABBY);
+
+        insertEntitiesForTest(Arrays.asList(tabbyColorCatFoo, tabbyColorCatBar));
+
+        final long actualTabbyCatCount = query().from(cat)
+                                                .select(catEntity.name.count())
+                                                .groupBy(catEntity.color)
+                                                .having(catEntity.name.count().eq(2L))
+                                                .fetchOne();
+
+        removeEntitiesForTest(Arrays.asList(tabbyColorCatFoo, tabbyColorCatBar));
+
+        assertEquals(expectedTabbyCatCount, actualTabbyCatCount);
     }
 
 }

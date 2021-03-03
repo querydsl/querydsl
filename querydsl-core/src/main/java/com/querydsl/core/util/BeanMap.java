@@ -22,10 +22,16 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
-
-import com.google.common.base.Function;
-import com.google.common.primitives.Primitives;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * An implementation of Map for JavaBeans which uses introspection to
@@ -194,9 +200,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
             // copy only properties that are readable and writable.  If its
             // not readable, we can't get the value from the old map.  If
             // its not writable, we can't write a value into the new map.
-            Iterator<String> readableKeys = readMethods.keySet().iterator();
-            while (readableKeys.hasNext()) {
-                String key = readableKeys.next();
+            for (String key : readMethods.keySet()) {
                 if (getWriteMethod(key) != null) {
                     newMap.put(key, get(key));
                 }
@@ -215,9 +219,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * @param map the BeanMap whose properties to put
      */
     public void putAllWriteable(BeanMap map) {
-        Iterator<String> readableKeys = map.readMethods.keySet().iterator();
-        while (readableKeys.hasNext()) {
-            String key = readableKeys.next();
+        for (String key : map.readMethods.keySet()) {
             if (getWriteMethod(key) != null) {
                 this.put(key, map.get(key));
             }
@@ -288,10 +290,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
             if (method != null) {
                 try {
                     return method.invoke(bean, NULL_ARGUMENTS);
-                } catch (IllegalAccessException e) {
-                } catch (IllegalArgumentException e) {
-                } catch (InvocationTargetException e) {
-                } catch (NullPointerException e) {
+                } catch (IllegalAccessException | NullPointerException | InvocationTargetException | IllegalArgumentException e) {
                 }
             }
         }
@@ -319,9 +318,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
 
                 Object newValue = get(name);
                 firePropertyChange(name, oldValue, newValue);
-            } catch (InvocationTargetException e) {
-                throw new IllegalArgumentException(e.getMessage());
-            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException | IllegalAccessException e) {
                 throw new IllegalArgumentException(e.getMessage());
             }
             return oldValue;
@@ -542,8 +539,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
             BeanInfo beanInfo = Introspector.getBeanInfo(beanClass);
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
             if (propertyDescriptors != null) {
-                for (int i = 0; i < propertyDescriptors.length; i++) {
-                    PropertyDescriptor propertyDescriptor = propertyDescriptors[i];
+                for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
                     if (propertyDescriptor != null) {
                         String name = propertyDescriptor.getName();
                         Method readMethod = propertyDescriptor.getReadMethod();
@@ -652,7 +648,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 if (types != null && types.length > 0) {
                     Class<?> paramType = types[0];
                     if (paramType.isPrimitive()) {
-                        paramType = Primitives.wrap(paramType);
+                        paramType = PrimitiveUtils.wrap(paramType);
                     }
                     if (!paramType.isAssignableFrom(value.getClass())) {
                         value = convertType(paramType, value);
@@ -660,9 +656,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 }
             }
             return new Object[]{value};
-        } catch (InvocationTargetException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        } catch (InstantiationException e) {
+        } catch (InvocationTargetException | InstantiationException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }

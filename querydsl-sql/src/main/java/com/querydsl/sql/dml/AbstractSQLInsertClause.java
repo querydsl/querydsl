@@ -15,16 +15,12 @@ package com.querydsl.sql.dml;
 
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.function.Supplier;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import javax.inject.Provider;
+import com.querydsl.core.util.CollectionUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryFlag;
@@ -45,7 +41,7 @@ import com.querydsl.sql.types.Null;
  */
 public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<C>> extends AbstractSQLClause<C> implements InsertClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractSQLInsertClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractSQLInsertClause.class.getName());
 
     protected final RelationalPath<?> entity;
 
@@ -80,12 +76,12 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
-    public AbstractSQLInsertClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity, SQLQuery<?> subQuery) {
+    public AbstractSQLInsertClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity, SQLQuery<?> subQuery) {
         this(connection, configuration, entity);
         this.subQueryBuilder = subQuery;
     }
 
-    public AbstractSQLInsertClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+    public AbstractSQLInsertClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
@@ -98,7 +94,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -111,7 +106,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -122,10 +116,9 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C addBatch() {
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[0])).clone();
             values.clear();
         }
         batches.add(new SQLInsertBatch(columns, values, subQuery));
@@ -152,7 +145,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return (C) this;
@@ -247,7 +239,7 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
         listeners.preRender(context);
         SQLSerializer serializer = createSerializer();
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[0])).clone();
             values.clear();
         }
 
@@ -266,11 +258,11 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
         listeners.preRender(context);
 
         if (subQueryBuilder != null) {
-            subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
+            subQuery = subQueryBuilder.select(values.toArray(new Expression[0])).clone();
             values.clear();
         }
 
-        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+        Map<String, PreparedStatement> stmts = new HashMap<>();
 
         // add first batch
         SQLSerializer serializer = createSerializer();
@@ -325,6 +317,7 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
                 for (int i = 0; i < target.length; i++) {
                     Path<?> path = entity.getPrimaryKey().getLocalColumns().get(i);
                     String column = ColumnMetadata.getName(path);
+                    column = configuration.getColumnOverride(entity.getSchemaAndTable(), column);
                     target[i] = column;
                 }
                 stmt = connection().prepareStatement(queryString, target);
@@ -451,24 +444,23 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, columns, values, subQuery);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else if (batchToBulk) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeInsert(metadata, entity, batches);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (SQLInsertBatch batch : batches) {
                 SQLSerializer serializer = createSerializer();
                 serializer.serializeInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return CollectionUtils.unmodifiableList(builder);
         }
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C select(SubQueryExpression<?> sq) {
         subQuery = sq;
         for (Map.Entry<ParamExpression<?>, Object> entry : sq.getMetadata().getParams().entrySet()) {
@@ -478,7 +470,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public <T> C set(Path<T> path, T value) {
         columns.add(path);
         if (value instanceof Expression<?>) {
@@ -492,7 +483,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public <T> C set(Path<T> path, Expression<? extends T> expression) {
         columns.add(path);
         values.add(expression);
@@ -500,7 +490,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public <T> C setNull(Path<T> path) {
         columns.add(path);
         values.add(Null.CONSTANT);
@@ -508,7 +497,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C values(Object... v) {
         for (Object value : v) {
             if (value instanceof Expression<?>) {
@@ -540,7 +528,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      * @param bean bean to use for population
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public C populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
     }
@@ -554,7 +541,6 @@ public abstract class AbstractSQLInsertClause<C extends AbstractSQLInsertClause<
      * @return the current object
      */
     @SuppressWarnings("rawtypes")
-    @WithBridgeMethods(value = SQLInsertClause.class, castRequired = true)
     public <T> C populate(T obj, Mapper<T> mapper) {
         Map<Path<?>, Object> values = mapper.createMap(entity, obj);
         for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {

@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 public class OperationTest {
@@ -48,7 +47,7 @@ public class OperationTest {
 
         for (Operation<?> operation : operations) {
             Operation<?> other = ExpressionUtils.operation(operation.getType(), operation.getOperator(),
-                    ImmutableList.copyOf(operation.getArgs()));
+                    new ArrayList<>(operation.getArgs()));
             assertEquals(operation.toString(), operation.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
             assertEquals(operation.hashCode(), other.hashCode());
             assertEquals(operation, other);

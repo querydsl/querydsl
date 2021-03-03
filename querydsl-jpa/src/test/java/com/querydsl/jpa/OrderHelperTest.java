@@ -3,11 +3,11 @@ package com.querydsl.jpa;
 import static com.querydsl.jpa.JPAExpressions.select;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.types.dsl.PathBuilder;
 
 public class OrderHelperTest {
@@ -15,7 +15,7 @@ public class OrderHelperTest {
     @Test
     public void order() {
         PathBuilder<Object> entity = new PathBuilder<Object>(Object.class, "project");
-        List<String> order = Lists.newArrayList();
+        List<String> order = new ArrayList<>();
         order.add("customer.name");
         order.add("department.superior.name");
         order.add("customer.company.name");

@@ -13,21 +13,24 @@
  */
 package com.querydsl.apt;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.QueryTypeFactory;
+import com.querydsl.codegen.Serializer;
+import com.querydsl.codegen.SerializerConfig;
+import com.querydsl.codegen.TypeMappings;
+import com.querydsl.core.util.Annotations;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
-
-import com.google.common.base.Function;
-import com.querydsl.codegen.*;
-import com.querydsl.core.util.Annotations;
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * {@code Configuration} defines the configuration options for APT-based Querydsl code generation

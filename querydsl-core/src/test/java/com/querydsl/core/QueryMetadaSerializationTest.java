@@ -63,8 +63,7 @@ public class QueryMetadaSerializationTest {
     @SuppressWarnings("unchecked")
     @Test
     public void fullySerializable() {
-        Set<Class<?>> checked = new HashSet<Class<?>>();
-        checked.addAll(Arrays.asList(Collection.class, List.class, Set.class, Map.class,
+        Set<Class<?>> checked = new HashSet<Class<?>>(Arrays.asList(Collection.class, List.class, Set.class, Map.class,
                 Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
         classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class,

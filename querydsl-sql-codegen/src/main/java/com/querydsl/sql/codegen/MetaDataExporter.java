@@ -13,33 +13,55 @@
  */
 package com.querydsl.sql.codegen;
 
+import com.querydsl.codegen.CodegenModule;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.GeneratedAnnotationResolver;
+import com.querydsl.codegen.Property;
+import com.querydsl.codegen.QueryTypeFactory;
+import com.querydsl.codegen.Serializer;
+import com.querydsl.codegen.SimpleSerializerConfig;
+import com.querydsl.codegen.TypeMappings;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.ScalaWriter;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.sql.ColumnImpl;
+import com.querydsl.sql.ColumnMetadata;
+import com.querydsl.sql.Configuration;
+import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.SQLTemplatesRegistry;
+import com.querydsl.sql.SchemaAndTable;
+import com.querydsl.sql.codegen.support.ForeignKeyData;
+import com.querydsl.sql.codegen.support.InverseForeignKeyData;
+import com.querydsl.sql.codegen.support.NotNullImpl;
+import com.querydsl.sql.codegen.support.PrimaryKeyData;
+import com.querydsl.sql.codegen.support.SizeImpl;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
-
-import javax.annotation.Nullable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Files;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.ScalaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.querydsl.codegen.*;
-import com.querydsl.sql.*;
-import com.querydsl.sql.codegen.support.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.logging.Logger;
 
 /**
  * {@code MetadataExporter} exports JDBC metadata to Querydsl query types
@@ -57,7 +79,7 @@ import com.querydsl.sql.codegen.support.*;
  */
 public class MetaDataExporter {
 
-    private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
+    private static final Logger logger = Logger.getLogger(MetaDataExporter.class.getName());
 
     private final SQLTemplatesRegistry sqlTemplatesRegistry = new SQLTemplatesRegistry();
 
@@ -73,7 +95,7 @@ public class MetaDataExporter {
     private String beanPackageName;
 
     @Nullable
-    private String schemaPattern, tableNamePattern;
+    private String schemaPattern, tableNamePattern, catalogPattern;
 
     @Nullable
     private Serializer beanSerializer;
@@ -188,10 +210,7 @@ public class MetaDataExporter {
             beansTargetFolder = targetFolder;
         }
         module.bind(SQLCodegenModule.BEAN_PACKAGE_NAME, beanPackageName);
-
-        if (spatial) {
-            SpatialSupport.addSupport(module);
-        }
+        module.loadExtensions();
 
         classes.clear();
         typeMappings = module.get(TypeMappings.class);
@@ -223,7 +242,7 @@ public class MetaDataExporter {
             for (String tableType : tableTypesToExport.split(",")) {
                 types.add(tableType.trim());
             }
-            typesArray = types.toArray(new String[types.size()]);
+            typesArray = types.toArray(new String[0]);
         } else if (!exportAll) {
             List<String> types = new ArrayList<String>(2);
             if (exportTables) {
@@ -232,35 +251,46 @@ public class MetaDataExporter {
             if (exportViews) {
                 types.add("VIEW");
             }
-            typesArray = types.toArray(new String[types.size()]);
+            typesArray = types.toArray(new String[0]);
         }
 
-        List<String> schemas = Arrays.asList(schemaPattern);
-        if (schemaPattern != null && schemaPattern.contains(",")) {
-            schemas = ImmutableList.copyOf(schemaPattern.split(","));
-        }
-        List<String> tables = Arrays.asList(tableNamePattern);
-        if (tableNamePattern != null && tableNamePattern.contains(",")) {
-            tables = ImmutableList.copyOf(tableNamePattern.split(","));
-        }
+        List<String> catalogs = patternAsList(catalogPattern);
+        List<String> schemas = patternAsList(schemaPattern);
+        List<String> tables = patternAsList(tableNamePattern);
 
-        for (String schema : schemas) {
-            schema = schema != null ? schema.trim() : null;
-            for (String table : tables) {
-                table = table != null ? table.trim() : null;
-                handleTables(md, schema, table, typesArray);
+        for (String catalog : catalogs) {
+            catalog = trimIfNonNull(catalog);
+            for (String schema : schemas) {
+                schema = trimIfNonNull(schema);
+                for (String table : tables) {
+                    table = trimIfNonNull(table);
+                    handleTables(md, catalog, schema, table, typesArray);
+                }
             }
         }
     }
 
-    private void handleTables(DatabaseMetaData md, String schemaPattern, String tablePattern, String[] types) throws SQLException {
-        ResultSet tables = md.getTables(null, schemaPattern, tablePattern, types);
-        try {
+    private String trimIfNonNull(String input) {
+        return input != null ? input.trim() : null;
+    }
+
+    /**
+     * Splits the input on ',' if non-null and a ',' is present.
+     * Returns a singletonList of null if null
+     */
+    private List<String> patternAsList(@Nullable String input) {
+        if (input != null && input.contains(",")) {
+            return Arrays.asList(input.split(","));
+        } else {
+            return Collections.singletonList(input);
+        }
+    }
+
+    private void handleTables(DatabaseMetaData md, String catalogPattern, String schemaPattern, String tablePattern, String[] types) throws SQLException {
+        try (ResultSet tables = md.getTables(catalogPattern, schemaPattern, tablePattern, types)) {
             while (tables.next()) {
                 handleTable(md, tables);
             }
-        } finally {
-            tables.close();
         }
     }
 
@@ -277,6 +307,7 @@ public class MetaDataExporter {
         Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
         int columnIndex = columns.getInt("ORDINAL_POSITION");
         int nullable = columns.getInt("NULLABLE");
+        String columnDefaultValue = columns.getString("COLUMN_DEF");
 
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType,
@@ -311,7 +342,7 @@ public class MetaDataExporter {
             property.addAnnotation(new ColumnImpl(normalizedColumnName));
         }
         if (validationAnnotations) {
-            if (nullable == DatabaseMetaData.columnNoNulls) {
+            if (nullable == DatabaseMetaData.columnNoNulls && columnDefaultValue == null) {
                 property.addAnnotation(new NotNullImpl());
             }
             int size = columns.getInt("COLUMN_SIZE");
@@ -356,7 +387,7 @@ public class MetaDataExporter {
                 Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
                         .getImportedKeys(md, catalog, schema, tableName);
                 if (!foreignKeyData.isEmpty()) {
-                    Collection<ForeignKeyData> foreignKeysToGenerate = new HashSet<ForeignKeyData>();
+                    Collection<ForeignKeyData> foreignKeysToGenerate = new LinkedHashSet<ForeignKeyData>();
                     for (ForeignKeyData fkd : foreignKeyData.values()) {
                         if (namingStrategy.shouldGenerateForeignKey(schemaAndTable, fkd)) {
                             foreignKeysToGenerate.add(fkd);
@@ -380,13 +411,10 @@ public class MetaDataExporter {
         }
 
         // collect columns
-        ResultSet columns = md.getColumns(catalog, schema, tableName.replace("/", "//"), null);
-        try {
+        try (ResultSet columns = md.getColumns(catalog, schema, tableName.replace("/", "//"), null)) {
             while (columns.next()) {
                 handleColumn(classModel, tableName, columns);
             }
-        } finally {
-            columns.close();
         }
 
         // serialize model
@@ -438,7 +466,7 @@ public class MetaDataExporter {
         boolean generate = true;
         byte[] bytes = w.toString().getBytes(sourceEncoding);
         if (targetFile.exists() && targetFile.length() == bytes.length) {
-            String str = Files.toString(targetFile, Charset.forName(sourceEncoding));
+            String str = new String(Files.readAllBytes(targetFile.toPath()), Charset.forName(sourceEncoding));
             if (str.equals(w.toString())) {
                 generate = false;
             }
@@ -447,7 +475,7 @@ public class MetaDataExporter {
         }
 
         if (generate) {
-            Files.write(bytes, targetFile);
+            Files.write(targetFile.toPath(), bytes);
         }
     }
 
@@ -462,6 +490,16 @@ public class MetaDataExporter {
      */
     public void setSchemaPattern(@Nullable String schemaPattern) {
         this.schemaPattern = schemaPattern;
+    }
+
+    /**
+     * a catalog name; must match the catalog name as it
+     *      is stored in the database; "" retrieves those without a catalog;
+     *      <code>null</code> means that the catalog name should not be used to narrow
+     *      the search
+     */
+    public void setCatalogPattern(@Nullable String catalogPattern) {
+        this.catalogPattern = catalogPattern;
     }
 
     /**
@@ -772,6 +810,18 @@ public class MetaDataExporter {
      */
     public void setTableTypesToExport(String tableTypesToExport) {
         this.tableTypesToExport = tableTypesToExport;
+    }
+
+    /**
+     * Set the fully qualified class name of the "generated" annotation added ot the generated sources
+     *
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on
+     *                                 the generated sources, or {@code null} (defaulting to {@code javax.annotation.Generated} or
+     *                                {@code javax.annotation.processing.Generated} depending on the java version).
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    public void setGeneratedAnnotationClass(@Nullable String generatedAnnotationClass) {
+        module.bindInstance(CodegenModule.GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolve(generatedAnnotationClass));
     }
 
 }

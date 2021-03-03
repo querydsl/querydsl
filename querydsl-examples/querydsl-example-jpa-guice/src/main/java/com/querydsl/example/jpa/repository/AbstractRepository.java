@@ -4,12 +4,15 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.example.jpa.model.Identifiable;
 import com.querydsl.jpa.HQLTemplates;
+import com.querydsl.jpa.hibernate.HibernateQuery;
 import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
+
+import org.hibernate.Session;
 
 public abstract class AbstractRepository<T extends Identifiable> implements Repository<T, Long> {
 
@@ -54,6 +57,14 @@ public abstract class AbstractRepository<T extends Identifiable> implements Repo
 
     protected void remove(Object entity) {
         em.get().remove(entity);
+    }
+
+    protected <T> HibernateQuery<T> selectFromHibernateQuery(EntityPath<T> entity) {
+        return selectHibernateQuery(entity).from(entity);
+    }
+
+    protected <T> HibernateQuery<T> selectHibernateQuery(Expression<T> select) {
+        return new HibernateQuery<>(em.get().unwrap(Session.class)).select(select);
     }
 
 

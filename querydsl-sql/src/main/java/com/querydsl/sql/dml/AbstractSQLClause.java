@@ -14,25 +14,22 @@
 package com.querydsl.sql.dml;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-import javax.inject.Provider;
-
-import org.slf4j.Logger;
-import org.slf4j.MDC;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.DMLClause;
-import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.ParamNotSetException;
 import com.querydsl.core.types.Path;
 import com.querydsl.sql.*;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * {@code AbstractSQLClause} is a superclass for SQL based DMLClause implementations
@@ -52,7 +49,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     protected SQLListenerContextImpl context;
 
     @Nullable
-    private Provider<Connection> connProvider;
+    private Supplier<Connection> connProvider;
 
     @Nullable
     private Connection conn;
@@ -63,7 +60,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
         this.useLiterals = configuration.getUseLiterals();
     }
 
-    public AbstractSQLClause(Configuration configuration, Provider<Connection> connProvider) {
+    public AbstractSQLClause(Configuration configuration, Supplier<Connection> connProvider) {
         this(configuration);
         this.connProvider = connProvider;
     }
@@ -125,7 +122,7 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
 
     protected SQLBindings createBindings(QueryMetadata metadata, SQLSerializer serializer) {
         String queryString = serializer.toString();
-        List<Object> args = newArrayList();
+        List<Object> args = new ArrayList<>();
         Map<ParamExpression<?>, Object> params = metadata.getParams();
         for (Object o : serializer.getConstants()) {
             if (o instanceof ParamExpression) {
@@ -228,21 +225,13 @@ public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implemen
     }
 
     protected void logQuery(Logger logger, String queryString, Collection<Object> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(QueryBase.MDC_QUERY, normalizedQuery);
-            MDC.put(QueryBase.MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
     }
 
-    protected void cleanupMDC() {
-        MDC.remove(QueryBase.MDC_QUERY);
-        MDC.remove(QueryBase.MDC_PARAMETERS);
-    }
-
     protected void reset() {
-        cleanupMDC();
     }
 
     protected Connection connection() {

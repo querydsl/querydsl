@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.types.dsl;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -36,10 +36,10 @@ public class StringOperation extends StringExpression implements Operation<Strin
     }
 
     protected StringOperation(Operator op, Expression<?>... args) {
-        this(op, ImmutableList.copyOf(args));
+        this(op, Arrays.asList(args));
     }
 
-    protected StringOperation(Operator op, ImmutableList<Expression<?>> args) {
+    protected StringOperation(Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation(String.class, op, args));
         this.opMixin = (OperationImpl<String>) mixin;
     }

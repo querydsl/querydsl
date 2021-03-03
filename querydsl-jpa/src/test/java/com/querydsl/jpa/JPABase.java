@@ -15,7 +15,11 @@ package com.querydsl.jpa;
 
 import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static com.querydsl.jpa.JPAExpressions.selectOne;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 import java.util.HashMap;
@@ -26,6 +30,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.Expressions;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -36,10 +44,8 @@ import org.junit.runner.RunWith;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.Target;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.domain.*;
 import com.querydsl.jpa.impl.JPADeleteClause;
@@ -217,7 +223,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
         javax.persistence.Query query = query().from(cat)
                 .setLockMode(LockModeType.PESSIMISTIC_READ)
                 .select(cat).createQuery();
-        assertTrue(query.getLockMode().equals(LockModeType.PESSIMISTIC_READ));
+        assertEquals(query.getLockMode(), LockModeType.PESSIMISTIC_READ);
         assertFalse(query.getResultList().isEmpty());
     }
 
@@ -230,8 +236,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @Test
     public void queryExposure() {
         //save(new Cat(20));
-        List<Cat> results = query().from(cat)
-                .select(cat).createQuery().getResultList();
+        List<Cat> results = query().from(cat).select(cat).createQuery().getResultList();
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
@@ -265,7 +270,7 @@ public class JPABase extends AbstractJPATest implements JPATest {
     @NoBatooJPA
     public void createQuery2() {
         List<Tuple> rows = query().from(cat)
-                .select(new Expression<?>[]{cat.id, cat.name}).createQuery().getResultList();
+                .select(cat.id, cat.name).createQuery().getResultList();
         for (Tuple row : rows) {
             assertEquals(2, row.size());
         }
@@ -273,10 +278,42 @@ public class JPABase extends AbstractJPATest implements JPATest {
 
     @Test
     public void createQuery3() {
-        List<String> rows = query().from(cat)
-                .select(cat.name).createQuery().getResultList();
+        List<String> rows = query().from(cat).select(cat.name).createQuery().getResultList();
         for (String row : rows) {
-            assertTrue(row instanceof String);
+            assertNotNull(row);
         }
+    }
+
+    @Test
+    @NoHibernate
+    @ExcludeIn(Target.DERBY)
+    public void createQuery4() {
+        List<Tuple> rows = query().from(cat).select(new Expression<?>[] {Expressions.nullExpression()}).fetch();
+        for (Tuple row : rows) {
+            assertNotNull(row);
+            assertEquals(1, row.size());
+            assertNull(row.get(Expressions.nullExpression()));
+        }
+    }
+
+    @Test
+    public void fetchCountResultsGroupByWithMultipleFields() {
+        QueryResults<Tuple> results = query().from(cat)
+                .groupBy(cat.alive, cat.breed)
+                .select(cat.alive, cat.breed, cat.id.sum())
+                .fetchResults();
+
+        assertEquals(1, results.getTotal());
+    }
+
+    @Test
+    public void fetchCountResultsGroupByWithHaving() {
+        QueryResults<Tuple> results = query().from(cat)
+                .groupBy(cat.alive)
+                .having(cat.id.sum().gt(5))
+                .select(cat.alive, cat.id.sum())
+                .fetchResults();
+
+        assertEquals(1, results.getTotal());
     }
 }

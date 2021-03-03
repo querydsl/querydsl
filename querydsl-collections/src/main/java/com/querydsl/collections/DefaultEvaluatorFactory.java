@@ -13,28 +13,37 @@
  */
 package com.querydsl.collections;
 
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-import javax.tools.JavaCompiler;
-
-import com.google.common.primitives.Primitives;
-import com.mysema.codegen.ECJEvaluatorFactory;
-import com.mysema.codegen.Evaluator;
-import com.mysema.codegen.EvaluatorFactory;
-import com.mysema.codegen.JDKEvaluatorFactory;
-import com.mysema.codegen.model.*;
-import com.mysema.codegen.support.ClassUtils;
+import com.querydsl.codegen.utils.ECJEvaluatorFactory;
+import com.querydsl.codegen.utils.Evaluator;
+import com.querydsl.codegen.utils.EvaluatorFactory;
+import com.querydsl.codegen.utils.JDKEvaluatorFactory;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.utils.model.Types;
+import com.querydsl.codegen.utils.support.ClassUtils;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.CollectionAnyVisitor;
 import com.querydsl.core.support.Context;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.types.Operation;
+import com.querydsl.core.types.ParamExpression;
+import com.querydsl.core.types.ParamNotSetException;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.util.PrimitiveUtils;
+import org.jetbrains.annotations.Nullable;
+
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@code DefaultEvaluatorFactory} provides Java source templates for evaluation of {@link CollQuery} queries
@@ -52,7 +61,7 @@ public class DefaultEvaluatorFactory {
 
     public DefaultEvaluatorFactory(CollQueryTemplates templates) {
         this(templates,
-        Thread.currentThread().getContextClassLoader());
+        Thread.currentThread().getContextClassLoader() != null ? Thread.currentThread().getContextClassLoader() : DefaultEvaluatorFactory.class.getClassLoader());
     }
 
     public DefaultEvaluatorFactory(CollQueryTemplates templates, EvaluatorFactory factory) {
@@ -68,10 +77,11 @@ public class DefaultEvaluatorFactory {
 
     protected DefaultEvaluatorFactory(CollQueryTemplates templates, ClassLoader classLoader) {
         this.templates = templates;
-        if (classLoader instanceof URLClassLoader) {
-            this.factory = new JDKEvaluatorFactory((URLClassLoader) classLoader);
+        final JavaCompiler systemJavaCompiler = ToolProvider.getSystemJavaCompiler();
+        if (classLoader instanceof URLClassLoader && systemJavaCompiler != null) {
+            this.factory = new JDKEvaluatorFactory((URLClassLoader) classLoader, systemJavaCompiler);
         } else {
-            // for OSGi compatibility
+            // for OSGi and JRE compatibility
             this.factory = new ECJEvaluatorFactory(classLoader);
         }
     }
@@ -111,8 +121,8 @@ public class DefaultEvaluatorFactory {
 
         // normalize types
         for (int i = 0; i < types.length; i++) {
-            if (Primitives.isWrapperType(types[i])) {
-                types[i] = Primitives.unwrap(types[i]);
+            if (PrimitiveUtils.isWrapperType(types[i])) {
+                types[i] = PrimitiveUtils.unwrap(types[i]);
             }
         }
 
@@ -179,7 +189,7 @@ public class DefaultEvaluatorFactory {
         // creating context
         for (JoinExpression join : joins) {
             Expression<?> target = join.getTarget();
-            String typeName = com.mysema.codegen.support.ClassUtils.getName(target.getType());
+            String typeName = com.querydsl.codegen.utils.support.ClassUtils.getName(target.getType());
             if (vars.length() > 0) {
                 vars.append(",");
             }
@@ -262,9 +272,9 @@ public class DefaultEvaluatorFactory {
         return factory.createEvaluator(
                 ser.toString(),
                 projectionType,
-                sourceNames.toArray(new String[sourceNames.size()]),
-                sourceTypes.toArray(new Type[sourceTypes.size()]),
-                sourceClasses.toArray(new Class<?>[sourceClasses.size()]),
+                sourceNames.toArray(new String[0]),
+                sourceTypes.toArray(new Type[0]),
+                sourceClasses.toArray(new Class<?>[0]),
                 constants);
     }
 

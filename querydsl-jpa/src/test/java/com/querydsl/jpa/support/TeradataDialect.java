@@ -142,11 +142,6 @@ public class TeradataDialect extends Dialect {
     }
 
     @Override
-    public boolean supportsIdentityColumns() {
-        return false;
-    }
-
-    @Override
     public boolean supportsSequences() {
         return false;
     }
@@ -325,13 +320,13 @@ public class TeradataDialect extends Dialect {
 
         java.util.StringTokenizer st = new java.util.StringTokenizer(dropSql);
         if (alterStr.equalsIgnoreCase(st.nextToken()) && tableStr.equalsIgnoreCase(st.nextToken())) {
-            String tableName = st.nextToken();
+            StringBuilder tableName = new StringBuilder(st.nextToken());
 
-            if ((tableName.startsWith("\"")) && (!tableName.endsWith("\""))) {
+            if ((tableName.toString().startsWith("\"")) && (!tableName.toString().endsWith("\""))) {
                 String next = null;
                 while (true) {
                     next = st.nextToken();
-                    tableName += " " + next;
+                    tableName.append(" ").append(next);
                     if (next.endsWith("\\\"")) {
                         continue;
                     }
@@ -351,10 +346,10 @@ public class TeradataDialect extends Dialect {
 
                 int idxStart = dropSql.indexOf(tableStr, 0) + 5;
                 int idxEnd = dropSql.lastIndexOf(dropStr);
-                tableName = dropSql.substring(idxStart, idxEnd).trim();
+                tableName = new StringBuilder(dropSql.substring(idxStart, idxEnd).trim());
 
-                if (tableName.startsWith("\"") && tableName.endsWith("\"")) {
-                    tableName = tableName.substring(1, tableName.length() - 1);
+                if (tableName.toString().startsWith("\"") && tableName.toString().endsWith("\"")) {
+                    tableName = new StringBuilder(tableName.substring(1, tableName.length() - 1));
                 }
 
                 String arrStr = null;

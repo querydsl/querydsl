@@ -38,7 +38,7 @@ public class JPAProviderTest {
         factory = Persistence.createEntityManagerFactory("h2");
         em = factory.createEntityManager();
         System.out.println(em.getDelegate().getClass());
-        assertEquals(HQLTemplates.DEFAULT, JPAProvider.getTemplates(em));
+        assertEquals(Hibernate5Templates.DEFAULT, JPAProvider.getTemplates(em));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class JPAProviderTest {
                 Thread.currentThread().getContextClassLoader(),
                 new Class<?>[]{EntityManager.class},
                 handler);
-        assertEquals(HQLTemplates.DEFAULT, JPAProvider.getTemplates(proxy));
+        assertEquals(Hibernate5Templates.DEFAULT, JPAProvider.getTemplates(proxy));
     }
 
     @Test

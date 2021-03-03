@@ -13,6 +13,9 @@
  */
 package com.querydsl.core.types;
 
+import com.querydsl.core.group.GroupExpression;
+import com.querydsl.core.util.PrimitiveUtils;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -21,13 +24,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.primitives.Primitives;
-import com.querydsl.core.group.GroupExpression;
 
 /**
  * {@code QBean} is a JavaBean populating projection type
@@ -52,8 +52,8 @@ public class QBean<T> extends FactoryExpressionBase<T> {
 
     private static final long serialVersionUID = -8210214512730989778L;
 
-    private static ImmutableMap<String,Expression<?>> createBindings(Expression<?>... args) {
-        ImmutableMap.Builder<String, Expression<?>> rv = ImmutableMap.builder();
+    private static Map<String,Expression<?>> createBindings(Expression<?>... args) {
+        Map<String, Expression<?>> rv = new LinkedHashMap<>();
         for (Expression<?> expr : args) {
             if (expr instanceof Path<?>) {
                 Path<?> path = (Path<?>) expr;
@@ -75,7 +75,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
                 throw new IllegalArgumentException("Unsupported expression " + expr);
             }
         }
-        return rv.build();
+        return Collections.unmodifiableMap(rv);
     }
 
     private static boolean isCompoundExpression(Expression<?> expr) {
@@ -83,14 +83,14 @@ public class QBean<T> extends FactoryExpressionBase<T> {
     }
 
     private static Class<?> normalize(Class<?> cl) {
-        return cl.isPrimitive() ? Primitives.wrap(cl) : cl;
+        return cl.isPrimitive() ? PrimitiveUtils.wrap(cl) : cl;
     }
 
     private static boolean isAssignableFrom(Class<?> cl1, Class<?> cl2) {
         return normalize(cl1).isAssignableFrom(normalize(cl2));
     }
 
-    private final ImmutableMap<String, Expression<?>> bindings;
+    private final Map<String, Expression<?>> bindings;
 
     private final List<Field> fields;
 
@@ -138,13 +138,13 @@ public class QBean<T> extends FactoryExpressionBase<T> {
      */
     protected QBean(Class<? extends T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
         super(type);
-        this.bindings = ImmutableMap.copyOf(bindings);
+        this.bindings = Collections.unmodifiableMap(new LinkedHashMap<>(bindings));
         this.fieldAccess = fieldAccess;
         if (fieldAccess) {
             this.fields = initFields(bindings);
-            this.setters = ImmutableList.of();
+            this.setters = Collections.emptyList();
         } else {
-            this.fields = ImmutableList.of();
+            this.fields = Collections.emptyList();
             this.setters = initMethods(bindings);
         }
     }
@@ -242,11 +242,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
                 }
             }
             return rv;
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             throw new ExpressionException(e.getMessage(), e);
         }
     }
@@ -293,7 +289,7 @@ public class QBean<T> extends FactoryExpressionBase<T> {
 
     @Override
     public List<Expression<?>> getArgs() {
-        return bindings.values().asList();
+        return new ArrayList<>(bindings.values());
     }
 
 }

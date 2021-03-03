@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nonnegative;
+import org.jetbrains.annotations.Range;
 
 /**
  * {@code PathMetadataFactory} is a factory class for {@link Path} construction
@@ -41,7 +41,7 @@ public final class PathMetadataFactory {
      * @param index index of element
      * @return array access path
      */
-    public static PathMetadata forArrayAccess(Path<?> parent, @Nonnegative int index) {
+    public static PathMetadata forArrayAccess(Path<?> parent, @Range(from = 0, to = Integer.MAX_VALUE) int index) {
         return new PathMetadata(parent, index, PathType.ARRAYVALUE_CONSTANT);
     }
 
@@ -83,7 +83,7 @@ public final class PathMetadataFactory {
      * @param index index of element
      * @return list access path
      */
-    public static PathMetadata forListAccess(Path<?> parent, @Nonnegative int index) {
+    public static PathMetadata forListAccess(Path<?> parent, @Range(from = 0, to = Integer.MAX_VALUE) int index) {
         return new PathMetadata(parent, index, PathType.LISTVALUE_CONSTANT);
     }
 

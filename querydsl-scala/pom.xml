@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>4.2.3-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -22,10 +22,15 @@
     <scala.version>2.10</scala.version>
     <scala.full.version>2.10.5</scala.full.version>
     <hibernate.version>3.5.1-Final</hibernate.version>
-    <hibernate.validator.version>4.0.2.GA</hibernate.validator.version>
   </properties>
   
-  <dependencies>   
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>20.1.0</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
@@ -89,18 +94,18 @@
         </exclusion>
       </exclusions>      
       <scope>test</scope>      
-    </dependency>   
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>${hibernate.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>       
     
     <dependency>
@@ -112,15 +117,8 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
-    
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>provided</scope>      
-    </dependency>      
     
   </dependencies>
   

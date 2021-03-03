@@ -14,9 +14,9 @@
 package com.querydsl.core;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 
@@ -42,7 +42,7 @@ public class MatchingFiltersFactory {
         if (!module.equals(Module.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public <A> Collection<Predicate> collection(CollectionExpressionBase<?,A> expr,
@@ -54,7 +54,7 @@ public class MatchingFiltersFactory {
         }
         rv.add(expr.isEmpty().not());
         rv.add(expr.isNotEmpty());
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -65,13 +65,12 @@ public class MatchingFiltersFactory {
         rv.add(expr.goe(other));
         rv.add(expr.loe(other));
         rv.add(expr.ne(other).not());
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public Collection<Predicate> date(DateExpression<java.sql.Date> expr,
             DateExpression<java.sql.Date> other) {
-        HashSet<Predicate> rv = new HashSet<Predicate>();
-        rv.addAll(comparable(expr, other));
+        HashSet<Predicate> rv = new HashSet<Predicate>(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
@@ -90,7 +89,7 @@ public class MatchingFiltersFactory {
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));
         rv.add(expr.yearMonth().eq(other.yearMonth()));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public Collection<Predicate> date(DateExpression<java.sql.Date> expr,
@@ -98,13 +97,12 @@ public class MatchingFiltersFactory {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(date(expr, other));
         rv.addAll(date(expr, DateConstant.create(knownValue)));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public Collection<Predicate> dateTime(DateTimeExpression<java.util.Date> expr,
             DateTimeExpression<java.util.Date> other) {
-        HashSet<Predicate> rv = new HashSet<Predicate>();
-        rv.addAll(comparable(expr, other));
+        HashSet<Predicate> rv = new HashSet<Predicate>(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
         rv.add(expr.second().eq(other.second()));
         rv.add(expr.minute().eq(other.minute()));
@@ -126,7 +124,7 @@ public class MatchingFiltersFactory {
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));
         rv.add(expr.yearMonth().eq(other.yearMonth()));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public Collection<Predicate> dateTime(DateTimeExpression<java.util.Date> expr,
@@ -134,7 +132,7 @@ public class MatchingFiltersFactory {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(dateTime(expr, other));
         rv.addAll(dateTime(expr, DateTimeConstant.create(knownValue)));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public <A,Q extends SimpleExpression<A>> Collection<Predicate> list(ListPath<A,Q> expr,
@@ -152,7 +150,7 @@ public class MatchingFiltersFactory {
         rv.add(expr.get(knownKey).eq(knownValue));
         rv.add(expr.isEmpty().not());
         rv.add(expr.isNotEmpty());
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public <A extends Number & Comparable<A>> Collection<Predicate> numeric(
@@ -160,7 +158,7 @@ public class MatchingFiltersFactory {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(numeric(expr, other));
         rv.addAll(numeric(expr, NumberConstant.create(knownValue)));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public <A extends Number & Comparable<A>> Collection<Predicate> numeric(
@@ -174,7 +172,7 @@ public class MatchingFiltersFactory {
         rv.add(expr.lt(other.add(1)));
         rv.add(expr.lt(other.add(2)));
         rv.add(expr.ne(other).not());
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public Collection<Predicate> string(StringExpression expr, StringExpression other) {
@@ -282,7 +280,7 @@ public class MatchingFiltersFactory {
         }
 
         rv.add(expr.upper().eq(other.upper()));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public Collection<Predicate> string(StringExpression expr, StringExpression other,
@@ -290,18 +288,17 @@ public class MatchingFiltersFactory {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(string(expr, other));
         rv.addAll(string(expr, StringConstant.create(knownValue)));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public Collection<Predicate> time(TimeExpression<java.sql.Time> expr,
             TimeExpression<java.sql.Time> other) {
-        HashSet<Predicate> rv = new HashSet<Predicate>();
-        rv.addAll(comparable(expr, other));
+        HashSet<Predicate> rv = new HashSet<Predicate>(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
         rv.add(expr.second().eq(other.second()));
         rv.add(expr.minute().eq(other.minute()));
         rv.add(expr.hour().eq(other.hour()));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 
     public Collection<Predicate> time(TimeExpression<java.sql.Time> expr,
@@ -309,6 +306,6 @@ public class MatchingFiltersFactory {
         HashSet<Predicate> rv = new HashSet<Predicate>();
         rv.addAll(time(expr, other));
         rv.addAll(time(expr, TimeConstant.create(knownValue)));
-        return ImmutableList.copyOf(rv);
+        return Collections.unmodifiableSet(rv);
     }
 }

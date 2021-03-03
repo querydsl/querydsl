@@ -1,11 +1,11 @@
 package com.querydsl.example.dao;
 
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.example.dto.Product;
 import com.querydsl.example.dto.ProductL10n;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -38,7 +38,7 @@ public class ProductDaoTest extends AbstractDaoTest {
         Product product = new Product();
         product.setSupplier(supplierDao.findById(1));
         product.setName("ProductX");
-        product.setLocalizations(ImmutableSet.of(new ProductL10n()));
+        product.setLocalizations(Collections.singleton(new ProductL10n()));
         productDao.save(product);
         assertNotNull(productDao.findById(product.getId()));
         productDao.delete(product);

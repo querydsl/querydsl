@@ -21,9 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -45,8 +44,6 @@ import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.BytesRefBuilder;
 import org.apache.lucene.util.NumericUtils;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Constant;
 import com.querydsl.core.types.Expression;
@@ -78,9 +75,6 @@ public class LuceneSerializer {
         sortFields.put(BigDecimal.class, SortField.Type.DOUBLE);
         sortFields.put(BigInteger.class, SortField.Type.LONG);
     }
-
-    private static final Splitter WS_SPLITTER = Splitter.on(Pattern
-            .compile("\\s+"));
 
     public static final LuceneSerializer DEFAULT = new LuceneSerializer(false,
             true);
@@ -525,9 +519,7 @@ public class LuceneSerializer {
         if (rightHandSide instanceof Operation) {
             Operation<?> operation = (Operation<?>) rightHandSide;
             if (operation.getOperator() == LuceneOps.PHRASE) {
-                return Iterables.toArray(
-                        WS_SPLITTER.split(operation.getArg(0).toString()),
-                        String.class);
+                return operation.getArg(0).toString().split("\\s+");
             } else if (operation.getOperator() == LuceneOps.TERM) {
                 return new String[] {operation.getArg(0).toString() };
             } else {
@@ -567,7 +559,7 @@ public class LuceneSerializer {
             if (str.equals("")) {
                 return new String[] {str };
             } else {
-                return Iterables.toArray(WS_SPLITTER.split(str), String.class);
+                return str.split("\\s+");
             }
         } else {
             return new String[] {str };
@@ -610,7 +602,7 @@ public class LuceneSerializer {
             }
         }
         Sort sort = new Sort();
-        sort.setSort(sorts.toArray(new SortField[sorts.size()]));
+        sort.setSort(sorts.toArray(new SortField[0]));
         return sort;
     }
 }

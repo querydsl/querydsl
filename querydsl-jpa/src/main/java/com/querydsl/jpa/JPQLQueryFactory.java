@@ -16,6 +16,7 @@ package com.querydsl.jpa;
 import com.querydsl.core.QueryFactory;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.dml.DeleteClause;
+import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
@@ -116,5 +117,13 @@ public interface JPQLQueryFactory extends QueryFactory<JPQLQuery<?>> {
      * @return update clause
      */
     UpdateClause<?> update(EntityPath<?> path);
+
+    /**
+     * Create a new INSERT clause
+     *
+     * @param path entity to insert to
+     * @return insert clause
+     */
+    InsertClause<?> insert(EntityPath<?> path);
 
 }

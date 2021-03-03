@@ -4,6 +4,8 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +13,6 @@ import javax.persistence.*;
 
 import org.junit.Test;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.ForwardingSet;
-import com.google.common.io.Files;
 import com.querydsl.apt.domain.AbstractEntityTest;
 import com.querydsl.apt.domain.CustomCollection;
 import com.querydsl.apt.domain.Generic2Test;
@@ -68,14 +67,12 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSupertypeAnnotation(MappedSuperclass.class);
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest2"));
-        exporter.addStopClass(ForwardingSet.class);
         exporter.setStrictMode(true);
         exporter.setPropertyHandling(PropertyHandling.JPA);
         exporter.export(AbstractEntityTest.class.getPackage(), A.class.getPackage());
 
         List<String> expected = new ArrayList<String>();
         // GenericExporter doesn't include field/method selection
-        expected.add("QCustomCollection_MyCustomCollection2.java");
         expected.add("QTemporalTest_MyEntity.java");
         expected.add("QTemporal2Test_Cheque.java");
         expected.add("QQueryProjectionTest_DTOWithProjection.java");
@@ -106,7 +103,6 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest3"));
         exporter.setPropertyHandling(PropertyHandling.JPA);
-        //exporter.addStopClass(ForwardingSet.class);
         exporter.export(CustomCollection.MyCustomCollection.class,
                         CustomCollection.MyCustomCollection2.class,
                         CustomCollection.MyEntity.class);
@@ -123,7 +119,6 @@ public class GenericExporterTest extends AbstractProcessorTest {
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest4"));
         exporter.setPropertyHandling(PropertyHandling.JPA);
-        exporter.addStopClass(ForwardingSet.class);
         exporter.export(Generic2Test.class.getClasses());
     }
 
@@ -135,8 +130,8 @@ public class GenericExporterTest extends AbstractProcessorTest {
             if (!other.exists() || !other.isFile()) {
                 continue;
             }
-            String result1 = Files.toString(file, Charsets.UTF_8);
-            String result2 = Files.toString(other, Charsets.UTF_8);
+            String result1 = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+            String result2 = new String(Files.readAllBytes(other.toPath()), StandardCharsets.UTF_8);
             if (!result1.equals(result2)) {
                 if (!expected.contains(file.getName())) {
                     System.err.println(file.getName());

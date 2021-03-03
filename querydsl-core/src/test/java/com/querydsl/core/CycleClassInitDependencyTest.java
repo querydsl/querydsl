@@ -19,7 +19,7 @@ public class CycleClassInitDependencyTest {
     public static void overrideClassLoader() {
         loader = Thread.currentThread().getContextClassLoader();
         Collection<URL> urls = ClasspathHelper.forClassLoader();
-        ClassLoader cl = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]), null/*no delegation*/);
+        ClassLoader cl = URLClassLoader.newInstance(urls.toArray(new URL[0]), null/*no delegation*/);
         Thread.currentThread().setContextClassLoader(cl);
     }
 

@@ -32,6 +32,7 @@ import com.querydsl.jpa.domain.Cat;
 import com.querydsl.jpa.domain.QCat;
 import com.querydsl.jpa.hibernate.HibernateDeleteClause;
 import com.querydsl.jpa.hibernate.HibernateQuery;
+import com.querydsl.jpa.hibernate.HibernateInsertClause;
 import com.querydsl.jpa.hibernate.HibernateUpdateClause;
 import com.querydsl.jpa.hibernate.HibernateUtil;
 import com.querydsl.jpa.testutil.HibernateTestRunner;
@@ -54,7 +55,8 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
                     JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
                     serializer.serialize(getMetadata(), false, null);
                     Query query = session.createQuery(serializer.toString());
-                    HibernateUtil.setConstants(query, serializer.getConstantToLabel(), getMetadata().getParams());
+                    HibernateUtil.setConstants(query, serializer.getConstantToNamedLabel(),
+                            serializer.getConstantToNumberedLabel(), getMetadata().getParams());
                     query.list();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -98,6 +100,11 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
         return new HibernateUpdateClause(session, entity);
     }
 
+    private HibernateInsertClause insert(EntityPath<?> entity) {
+        return new HibernateInsertClause(session, entity);
+    }
+
+
     @Test
     public void scroll() {
         session.save(new Cat("Bob",10));
@@ -110,6 +117,49 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
             assertNotNull(results.get(0));
         }
         results.close();
+    }
+
+    @Test
+    public void insert() {
+        session.save(new Cat("Bob",10));
+
+        QCat cat = QCat.cat;
+        long amount = insert(cat)
+            .set(cat.name, "Bobby")
+            .set(cat.alive, false)
+            .execute();
+        assertEquals(1, amount);
+
+        assertEquals(1L, query().from(cat).where(cat.name.eq("Bobby")).fetchCount());
+    }
+
+    @Test
+    public void insert2() {
+        session.save(new Cat("Bob",10));
+
+        QCat cat = QCat.cat;
+        long amount = insert(cat).columns(cat.name, cat.alive)
+            .values("Bobby", false)
+            .execute();
+        assertEquals(1, amount);
+
+        assertEquals(1L, query().from(cat).where(cat.name.eq("Bobby")).fetchCount());
+    }
+
+    @Test
+    public void insert3() {
+        session.save(new Cat("Bob",10));
+
+        QCat cat = QCat.cat;
+        QCat bob = new QCat("Bob");
+
+        long amount = insert(cat)
+                .columns(cat.name, cat.alive)
+                .select(JPAExpressions.select(bob.name, bob.alive).from(bob))
+                .execute();
+        assertEquals(1, amount);
+
+        assertEquals(1L, query().from(cat).where(cat.name.eq("Bobby")).fetchCount());
     }
 
     @Test

@@ -1,0 +1,77 @@
+name: querydsl
+
+on:
+  push:
+    branches:
+      - '*'
+    paths-ignore:
+      - README.md
+
+  pull_request:
+    branches:
+      - '*'
+    paths-ignore:
+      - README.md
+
+env:
+  MAVEN_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
+jobs:
+  build:
+
+    strategy:
+      matrix:
+        target: [test]
+        include:
+          - target: test
+            containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
+            maven-args: --activate-profiles all,travis,examples
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Start test databases
+        if: ${{ matrix.containers }}
+        run: |
+          docker-compose up --detach ${{ matrix.containers }} &&\
+          time docker-compose up block-until-healthy &&\
+          docker ps
+
+      - name: Initialize cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+
+      - name: Run tests
+        run: mvn --batch-mode install -am jacoco:report ${{ matrix.maven-args }}
+
+      - name: Upload test reports
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: test-reports
+          path: './**/target/surefire-reports/'
+
+      - name: Report coverage
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: mvn --batch-mode coveralls:report
+
+      - name: Deploy snapshot 🚀
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        run: mvn --batch-mode clean deploy --settings deploy/.m2/settings.xml -DskipTests
+
+      - name: Clean up before caching
+        run: rm -rf ~/.m2/repository/com/querydsl/

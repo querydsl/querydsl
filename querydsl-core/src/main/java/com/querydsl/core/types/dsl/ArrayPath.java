@@ -13,13 +13,20 @@
  */
 package com.querydsl.core.types.dsl;
 
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathImpl;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.PathMetadataFactory;
+import com.querydsl.core.types.Visitor;
+import com.querydsl.core.util.PrimitiveUtils;
+
 import java.lang.reflect.AnnotatedElement;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nullable;
-
-import com.google.common.primitives.Primitives;
-import com.querydsl.core.types.*;
+import org.jetbrains.annotations.Range;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code ArrayPath} represents an array typed path
@@ -52,7 +59,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
     protected ArrayPath(Class<? super A> type, PathMetadata metadata) {
         super(ExpressionUtils.path((Class) type, metadata));
         this.pathMixin = (PathImpl<A>) mixin;
-        this.componentType = Primitives.wrap((Class<E>) type.getComponentType());
+        this.componentType = PrimitiveUtils.wrap((Class<E>) type.getComponentType());
     }
 
     @Override
@@ -67,7 +74,7 @@ public class ArrayPath<A, E> extends SimpleExpression<A> implements Path<A>, Arr
     }
 
     @Override
-    public SimplePath<E> get(@Nonnegative int index) {
+    public SimplePath<E> get(@Range(from = 0, to = Integer.MAX_VALUE) int index) {
         PathMetadata md = PathMetadataFactory.forArrayAccess(pathMixin, index);
         return Expressions.path(componentType, md);
     }

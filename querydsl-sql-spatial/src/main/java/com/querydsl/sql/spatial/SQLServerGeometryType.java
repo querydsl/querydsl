@@ -13,13 +13,14 @@
  */
 package com.querydsl.sql.spatial;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import javax.annotation.Nullable;
+import org.geolatte.geom.codec.db.sqlserver.Decoders;
+import org.geolatte.geom.codec.db.sqlserver.Encoders;
+import org.jetbrains.annotations.Nullable;
 
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;
@@ -44,26 +45,18 @@ class SQLServerGeometryType extends AbstractType<Geometry> {
     @Override
     @Nullable
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
-        try {
-            byte[] bytes = rs.getBytes(startIndex);
-            if (bytes != null) {
-                return new SQLServerGeometryReader().read(bytes);
-            } else {
-                return null;
-            }
-        } catch (IOException e) {
-            throw new SQLException(e);
+        byte[] bytes = rs.getBytes(startIndex);
+        if (bytes != null) {
+            return Decoders.decode(bytes);
+        } else {
+            return null;
         }
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        try {
-            byte[] bytes = new SQLServerGeometryWriter().write(value);
-            st.setBytes(startIndex, bytes);
-        } catch (IOException e) {
-            throw new SQLException(e);
-        }
+        byte[] bytes = Encoders.encode(value);
+        st.setBytes(startIndex, bytes);
     }
 
     @Override

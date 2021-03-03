@@ -25,7 +25,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.model.*;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.types.Expression;
 

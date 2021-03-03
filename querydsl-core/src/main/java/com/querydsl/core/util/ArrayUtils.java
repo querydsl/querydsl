@@ -32,6 +32,14 @@ public final class ArrayUtils {
         return array;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T[] combine(Class<T> type, T first, T... rest) {
+        T[] array = (T[]) Array.newInstance(type, rest.length + 1);
+        array[0] = first;
+        System.arraycopy(rest, 0, array, 1, rest.length);
+        return array;
+    }
+
     public static Object[] combine(int size, Object[]... arrays) {
         int offset = 0;
         Object[] target = new Object[size];

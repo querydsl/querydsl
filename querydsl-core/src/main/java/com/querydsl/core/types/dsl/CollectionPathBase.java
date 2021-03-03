@@ -17,7 +17,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.ExpressionException;
 import com.querydsl.core.types.Path;
@@ -92,13 +92,7 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
                     return (Q) constructor.newInstance(pm);
                 }
             }
-        } catch (NoSuchMethodException e) {
-            throw new ExpressionException(e);
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e);
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
             throw new ExpressionException(e);
         }
 

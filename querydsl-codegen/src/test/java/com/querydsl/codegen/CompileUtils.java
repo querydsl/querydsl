@@ -12,9 +12,9 @@ import javax.tools.SimpleJavaFileObject;
 
 import org.junit.Assert;
 
-import com.mysema.codegen.MemFileManager;
-import com.mysema.codegen.MemSourceFileObject;
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.MemFileManager;
+import com.querydsl.codegen.utils.MemSourceFileObject;
+import com.querydsl.codegen.utils.SimpleCompiler;
 
 public final class CompileUtils {
 

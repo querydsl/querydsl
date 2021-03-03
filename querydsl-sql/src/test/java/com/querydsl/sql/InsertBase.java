@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
@@ -64,7 +65,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn(SQLITE) // https://bitbucket.org/xerial/sqlite-jdbc/issue/133/prepstmtsetdate-int-date-calendar-seems
+    @ExcludeIn({CUBRID, SQLITE}) // https://bitbucket.org/xerial/sqlite-jdbc/issue/133/prepstmtsetdate-int-date-calendar-seems
     public void insert_dates() {
         QDateTest dateTest = QDateTest.qDateTest;
         LocalDate localDate = new LocalDate(1978, 1, 2);
@@ -299,6 +300,24 @@ public class InsertBase extends AbstractBaseTest {
         assertNotNull(id);
     }
 
+    @Test(expected = QueryException.class)
+    @IncludeIn({DERBY, HSQLDB})
+    public void insert_with_keys_OverriddenColumn() throws SQLException {
+      String originalColumnName = ColumnMetadata.getName(survey.id);
+        try {
+            configuration.registerColumnOverride(survey.getSchemaName(), survey.getTableName(),
+                originalColumnName, "wrongColumnName");
+
+            SQLInsertClause sqlInsertClause = new SQLInsertClause(connection, configuration, survey);
+            sqlInsertClause.addListener(new TestLoggingListener());
+            Object id = sqlInsertClause.set(survey.name, "Hello you").executeWithKey(survey.id);
+            assertNotNull(id);
+        } finally {
+            configuration.registerColumnOverride(survey.getSchemaName(), survey.getTableName(),
+                originalColumnName, originalColumnName);
+        }
+    }
+
  // http://sourceforge.net/tracker/index.php?func=detail&aid=3513432&group_id=280608&atid=2377440
 
     @Test
@@ -334,7 +353,7 @@ public class InsertBase extends AbstractBaseTest {
     }
 
     @Test
-    @ExcludeIn({HSQLDB, CUBRID, DERBY, FIREBIRD})
+    @ExcludeIn({DB2, HSQLDB, CUBRID, DERBY, FIREBIRD})
     public void insert_with_subQuery2() {
 //        insert into modules(name)
 //        select 'MyModule'

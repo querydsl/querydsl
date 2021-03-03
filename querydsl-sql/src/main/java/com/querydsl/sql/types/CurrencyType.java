@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Currency;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code CurrencyType} maps Currency to String on the JDBC level

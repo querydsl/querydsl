@@ -16,7 +16,7 @@ package com.querydsl.core.types.dsl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.Ops.MathOps;
@@ -312,7 +312,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this &gt;= all right
      */
     public BooleanExpression goeAll(CollectionExpression<?, ? super T> right) {
-        return goe(ExpressionUtils.all(right));
+        return goe(ExpressionUtils.<T> all(right));
     }
 
     /**
@@ -322,7 +322,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this &gt;= any right
      */
     public BooleanExpression goeAny(CollectionExpression<?, ? super T> right) {
-        return goe(ExpressionUtils.any(right));
+        return goe(ExpressionUtils.<T> any(right));
     }
 
     /**
@@ -356,7 +356,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this &gt; all right
      */
     public BooleanExpression gtAll(CollectionExpression<?, ? super T> right) {
-        return gt(ExpressionUtils.all(right));
+        return gt(ExpressionUtils.<T> all(right));
     }
 
     /**
@@ -366,7 +366,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this &gt; any right
      */
     public BooleanExpression gtAny(CollectionExpression<?, ? super T> right) {
-        return gt(ExpressionUtils.any(right));
+        return gt(ExpressionUtils.<T> any(right));
     }
 
     /**
@@ -527,7 +527,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this &lt;= all right
      */
     public BooleanExpression loeAll(CollectionExpression<?, ? super T> right) {
-        return loe(ExpressionUtils.all(right));
+        return loe(ExpressionUtils.<T> all(right));
     }
 
     /**
@@ -537,7 +537,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this &lt;= any right
      */
     public BooleanExpression loeAny(CollectionExpression<?, ? super T> right) {
-        return loe(ExpressionUtils.any(right));
+        return loe(ExpressionUtils.<T> any(right));
     }
 
     /**
@@ -583,7 +583,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this &lt; all right
      */
     public BooleanExpression ltAll(CollectionExpression<?, ? super T> right) {
-        return lt(ExpressionUtils.all(right));
+        return lt(ExpressionUtils.<T> all(right));
     }
 
     /**
@@ -593,7 +593,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this &lt; any right
      */
     public BooleanExpression ltAny(CollectionExpression<?, ? super T> right) {
-        return lt(ExpressionUtils.any(right));
+        return lt(ExpressionUtils.<T> any(right));
     }
 
     /**
@@ -603,7 +603,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @return max(this)
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public NumberExpression<T> max() {
         if (max == null) {
             max = Expressions.numberOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
@@ -618,7 +618,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      *
      * @return min(this)
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public NumberExpression<T> min() {
         if (min == null) {
             min = Expressions.numberOperation(getType(), Ops.AggOps.MIN_AGG, mixin);
@@ -776,8 +776,8 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
 
     private List<T> convert(Number... numbers) {
         List<T> list = new ArrayList<T>(numbers.length);
-        for (int i = 0; i < numbers.length; i++) {
-            list.add(MathUtils.cast(numbers[i], getType()));
+        for (Number number : numbers) {
+            list.add(MathUtils.cast(number, getType()));
         }
         return list;
     }

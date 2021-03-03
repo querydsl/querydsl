@@ -14,8 +14,7 @@
 package com.querydsl.sql.dml;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.RelationalPath;
@@ -37,7 +36,7 @@ public class SQLDeleteClause extends AbstractSQLDeleteClause<SQLDeleteClause> {
         super(connection, configuration, entity);
     }
 
-    public SQLDeleteClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+    public SQLDeleteClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
         super(connection, configuration, entity);
     }
 }
