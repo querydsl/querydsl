@@ -16,6 +16,7 @@ package com.querydsl.collections;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class CollectionTest {
     @Before
     public void setUp() {
         Cat cat1 = new Cat("1");
-        cat1.setKittens(Arrays.asList(cat1));
+        cat1.setKittens(Collections.singletonList(cat1));
         Cat cat2 = new Cat("2");
         cat2.setKittens(Arrays.asList(cat1, cat2));
         Cat cat3 = new Cat("3");

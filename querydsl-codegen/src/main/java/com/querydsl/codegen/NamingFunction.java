@@ -15,7 +15,7 @@
  */
 package com.querydsl.codegen;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
 
 /**
  * The {@link Function} signature to convert {@link EntityType} to {@link String}.

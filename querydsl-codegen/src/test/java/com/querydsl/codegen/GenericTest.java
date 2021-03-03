@@ -2,7 +2,7 @@ package com.querydsl.codegen;
 
 import org.junit.Test;
 
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.Type;
 
 
 public class GenericTest {

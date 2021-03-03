@@ -13,31 +13,53 @@
  */
 package com.querydsl.codegen;
 
-import java.io.*;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.nio.charset.Charset;
-import java.util.*;
-
-import javax.annotation.Nullable;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.ScalaWriter;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.support.ClassUtils;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.ScalaWriter;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
+import com.querydsl.codegen.utils.support.ClassUtils;
 import com.querydsl.core.QueryException;
-import com.querydsl.core.annotations.*;
+import com.querydsl.core.annotations.Config;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryEmbeddable;
+import com.querydsl.core.annotations.QueryEmbedded;
+import com.querydsl.core.annotations.QueryEntity;
+import com.querydsl.core.annotations.QueryExclude;
+import com.querydsl.core.annotations.QueryInit;
+import com.querydsl.core.annotations.QueryProjection;
+import com.querydsl.core.annotations.QuerySupertype;
+import com.querydsl.core.annotations.QueryTransient;
+import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * {@code GenericExporter} provides query type serialization logic for cases where APT annotation processors
@@ -83,17 +105,17 @@ public class GenericExporter {
 
     private boolean createScalaSources = false;
 
-    private final Set<Class<?>> stopClasses = Sets.newHashSet();
+    private final Set<Class<?>> stopClasses = new HashSet<>();
 
-    private final Map<String, EntityType> allTypes = Maps.newHashMap();
+    private final Map<String, EntityType> allTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> entityTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> entityTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> superTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> superTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> embeddableTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> embeddableTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> projectionTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> projectionTypes = new HashMap<>();
 
     private final CodegenModule codegenModule = new CodegenModule();
 
@@ -112,7 +134,7 @@ public class GenericExporter {
     @Nullable
     private TypeFactory typeFactory;
 
-    private final List<AnnotationHelper> annotationHelpers = Lists.newArrayList();
+    private final List<AnnotationHelper> annotationHelpers = new ArrayList<>();
 
     @Nullable
     private TypeMappings typeMappings;
@@ -210,7 +232,7 @@ public class GenericExporter {
     private void innerExport() {
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
-        typeFactory = new TypeFactory(ImmutableList.of(entityAnnotation, supertypeAnnotation, embeddableAnnotation), codegenModule.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
+        typeFactory = new TypeFactory(Arrays.asList(entityAnnotation, supertypeAnnotation, embeddableAnnotation), codegenModule.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS));
 
         // copy annotations helpers to typeFactory
         for (AnnotationHelper helper : annotationHelpers) {
@@ -239,7 +261,7 @@ public class GenericExporter {
 
         // add constructors and properties
         for (Map<Class<?>, EntityType> entries : Arrays.asList(superTypes, embeddableTypes, entityTypes, projectionTypes)) {
-            for (Map.Entry<Class<?>, EntityType> entry : Sets.newHashSet(entries.entrySet())) {
+            for (Map.Entry<Class<?>, EntityType> entry : new HashSet<>(entries.entrySet())) {
                 addConstructors(entry.getKey(), entry.getValue());
                 addProperties(entry.getKey(), entry.getValue());
             }
@@ -372,7 +394,7 @@ public class GenericExporter {
     private void addConstructors(Class<?> cl, EntityType type) {
         for (Constructor<?> constructor : cl.getConstructors()) {
             if (constructor.isAnnotationPresent(QueryProjection.class)) {
-                List<Parameter> parameters = Lists.newArrayList();
+                List<Parameter> parameters = new ArrayList<>();
                 for (int i = 0; i < constructor.getParameterTypes().length; i++) {
                     Type parameterType = typeFactory.get(
                             constructor.getParameterTypes()[i],
@@ -385,14 +407,14 @@ public class GenericExporter {
                     }
                     parameters.add(new Parameter("param" + i, parameterType));
                 }
-                type.addConstructor(new com.mysema.codegen.model.Constructor(parameters));
+                type.addConstructor(new com.querydsl.codegen.utils.model.Constructor(parameters));
             }
         }
     }
 
     private void addProperties(Class<?> cl, EntityType type) {
-        Map<String, Type> types = Maps.newHashMap();
-        Map<String, Annotations> annotations = Maps.newHashMap();
+        Map<String, Type> types = new HashMap<>();
+        Map<String, Annotations> annotations = new HashMap<>();
 
         PropertyHandling.Config config = propertyHandling.getConfig(cl);
 
@@ -494,7 +516,7 @@ public class GenericExporter {
             return null;
         }
         if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
+            inits = Arrays.asList(annotated.getAnnotation(QueryInit.class).value());
         }
         if (annotated.isAnnotationPresent(QueryType.class)) {
             QueryType queryType = annotated.getAnnotation(QueryType.class);
@@ -558,12 +580,9 @@ public class GenericExporter {
             EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         generatedFiles.add(targetFile);
-        Writer w = writerFor(targetFile);
-        try {
+        try (Writer w = writerFor(targetFile)) {
             CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
             serializer.serialize(type, serializerConfig, writer);
-        } finally {
-            w.close();
         }
     }
 
@@ -794,5 +813,17 @@ public class GenericExporter {
      */
     public void addAnnotationHelper(AnnotationHelper annotationHelper) {
         annotationHelpers.add(annotationHelper);
+    }
+
+    /**
+     * Set the Generated annotation class. Will default to java {@code @Generated}
+     *
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on
+     *                                 the generated sources, or {@code null} (defaulting to {@code javax.annotation.Generated} or
+     *                                {@code javax.annotation.processing.Generated} depending on the java version).
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    public void setGeneratedAnnotationClass(@Nullable String generatedAnnotationClass) {
+        codegenModule.bindInstance(CodegenModule.GENERATED_ANNOTATION_CLASS, GeneratedAnnotationResolver.resolve(generatedAnnotationClass));
     }
 }

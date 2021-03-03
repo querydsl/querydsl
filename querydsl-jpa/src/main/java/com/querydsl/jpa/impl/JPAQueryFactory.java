@@ -13,8 +13,7 @@
  */
 package com.querydsl.jpa.impl;
 
-import javax.annotation.Nullable;
-import javax.inject.Provider;
+import org.jetbrains.annotations.Nullable;
 import javax.persistence.EntityManager;
 
 import com.querydsl.core.Tuple;
@@ -23,6 +22,8 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.JPQLTemplates;
+
+import java.util.function.Supplier;
 
 /**
  * Factory class for query and DML clause creation
@@ -35,34 +36,24 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
     @Nullable
     private final JPQLTemplates templates;
 
-    private final Provider<EntityManager> entityManager;
+    private final Supplier<EntityManager> entityManager;
 
     public JPAQueryFactory(final EntityManager entityManager) {
-        this.entityManager = new Provider<EntityManager>() {
-            @Override
-            public EntityManager get() {
-                return entityManager;
-            }
-        };
+        this.entityManager = () -> entityManager;
         this.templates = null;
     }
 
     public JPAQueryFactory(JPQLTemplates templates, final EntityManager entityManager) {
-        this.entityManager = new Provider<EntityManager>() {
-            @Override
-            public EntityManager get() {
-                return entityManager;
-            }
-        };
+        this.entityManager = () -> entityManager;
         this.templates = templates;
     }
 
-    public JPAQueryFactory(Provider<EntityManager> entityManager) {
+    public JPAQueryFactory(Supplier<EntityManager> entityManager) {
         this.entityManager = entityManager;
         this.templates = null;
     }
 
-    public JPAQueryFactory(JPQLTemplates templates, Provider<EntityManager> entityManager) {
+    public JPAQueryFactory(JPQLTemplates templates, Supplier<EntityManager> entityManager) {
         this.entityManager = entityManager;
         this.templates = templates;
     }
@@ -127,6 +118,15 @@ public class JPAQueryFactory implements JPQLQueryFactory  {
             return new JPAUpdateClause(entityManager.get(), path, templates);
         } else {
             return new JPAUpdateClause(entityManager.get(), path);
+        }
+    }
+
+    @Override
+    public JPAInsertClause insert(EntityPath<?> path) {
+        if (templates != null) {
+            return new JPAInsertClause(entityManager.get(), path, templates);
+        } else {
+            return new JPAInsertClause(entityManager.get(), path);
         }
     }
 

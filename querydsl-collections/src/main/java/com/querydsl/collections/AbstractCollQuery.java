@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -172,7 +173,12 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     public CloseableIterator<T> iterate() {
         @SuppressWarnings("unchecked") // This is the built type
         Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
-        return new IteratorAdapter<T>(queryEngine.list(getMetadata(), iterables, projection).iterator());
+        return new IteratorAdapter<T>(fetch().iterator());
+    }
+
+    @Override
+    public Stream<T> stream() {
+        return fetch().stream();
     }
 
     @Override

@@ -14,7 +14,7 @@
 
 package com.querydsl.scala
 
-import com.mysema.codegen.model.TypeCategory
+import com.querydsl.codegen.utils.model.TypeCategory
 import com.querydsl.codegen.TypeMappings
 import com.querydsl.core.types.{Expression, Path}
 

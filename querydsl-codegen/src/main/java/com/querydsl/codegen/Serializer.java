@@ -15,7 +15,7 @@ package com.querydsl.codegen;
 
 import java.io.IOException;
 
-import com.mysema.codegen.CodeWriter;
+import com.querydsl.codegen.utils.CodeWriter;
 
 /**
  * {@code Serializer} defines a common interface for {@link EntityType} serializers

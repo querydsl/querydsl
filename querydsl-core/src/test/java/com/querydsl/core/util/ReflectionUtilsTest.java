@@ -22,8 +22,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 import org.junit.Test;
 
 import com.querydsl.core.types.Expression;
@@ -31,13 +29,12 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 
 public class ReflectionUtilsTest {
 
-    @Nullable
     String property;
 
     @Test
     public void getAnnotatedElement() {
         AnnotatedElement annotatedElement = ReflectionUtils.getAnnotatedElement(ReflectionUtilsTest.class, "property", String.class);
-        assertNotNull(annotatedElement.getAnnotation(Nullable.class));
+        assertNotNull(annotatedElement);
     }
 
     @Test

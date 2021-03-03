@@ -50,6 +50,11 @@ public class SQLTemplatesTest {
     }
 
     @Test
+    public void testRequiresQuotes() {
+        assertTrue(SQLTemplates.DEFAULT.requiresQuotes("First Name", false));
+    }
+
+    @Test
     public void asLiteral() {
         SQLTemplates templates = SQLTemplates.DEFAULT;
         Configuration conf = new Configuration(templates);

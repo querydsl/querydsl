@@ -17,10 +17,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
 
@@ -28,7 +29,6 @@ import com.querydsl.core.types.Ops;
  * HQLTemplates extends {@link JPQLTemplates} with Hibernate specific extensions
  *
  * @author tiwe
- *
  */
 public class HQLTemplates extends JPQLTemplates {
 
@@ -38,9 +38,7 @@ public class HQLTemplates extends JPQLTemplates {
         QueryHandler instance;
         try {
             instance = (QueryHandler) Class.forName("com.querydsl.jpa.HibernateHandler").newInstance();
-        } catch (NoClassDefFoundError e) {
-            instance = DefaultQueryHandler.DEFAULT;
-        } catch (Exception e) {
+        } catch (NoClassDefFoundError | Exception e) {
             instance = DefaultQueryHandler.DEFAULT;
         }
         QUERY_HANDLER = instance;
@@ -64,7 +62,7 @@ public class HQLTemplates extends JPQLTemplates {
     public HQLTemplates(char escape) {
         super(escape, QUERY_HANDLER);
 
-        ImmutableMap.Builder<Class<?>, String> builder = ImmutableMap.builder();
+        Map<Class<?>, String> builder = new HashMap<>();
         builder.put(Byte.class, "byte");
         builder.put(Short.class, "short");
         builder.put(Integer.class, "integer");
@@ -73,7 +71,7 @@ public class HQLTemplates extends JPQLTemplates {
         builder.put(Float.class, "float");
         builder.put(Double.class, "double");
         builder.put(BigDecimal.class, "big_decimal");
-        typeNames = builder.build();
+        typeNames = Collections.unmodifiableMap(builder);
 
         // add Hibernate Spatial mappings, if on classpath
         try {
@@ -86,16 +84,22 @@ public class HQLTemplates extends JPQLTemplates {
 
     @Override
     public boolean wrapElements(Operator operator) {
+        // For example: JPaIntegration.docoExamples98_12
         return wrapElements.contains(operator);
     }
 
     @Override
     public String getTypeForCast(Class<?> cl) {
-        return typeNames.get(cl);
+        String typeName = typeNames.get(cl);
+        if (typeName == null) {
+            return super.getTypeForCast(cl);
+        }
+        return typeName;
     }
 
     @Override
     public String getExistsProjection() {
+        // TODO Required / supported just for Hibernate?
         return "1";
     }
 

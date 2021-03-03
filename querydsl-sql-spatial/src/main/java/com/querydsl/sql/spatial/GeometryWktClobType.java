@@ -15,7 +15,7 @@ package com.querydsl.sql.spatial;
 
 import java.sql.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;

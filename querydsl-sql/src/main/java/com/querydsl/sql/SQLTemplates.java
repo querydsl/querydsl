@@ -13,20 +13,17 @@
  */
 package com.querydsl.sql;
 
-import static com.google.common.base.CharMatcher.inRange;
-
 import java.lang.reflect.Field;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
@@ -42,11 +39,11 @@ import com.querydsl.sql.types.Type;
 public class SQLTemplates extends Templates {
 
     protected static final Expression<?> FOR_SHARE = ExpressionUtils.operation(
-            Object.class, SQLOps.FOR_SHARE, ImmutableList.<Expression<?>>of());
+            Object.class, SQLOps.FOR_SHARE, Collections.emptyList());
     protected static final Expression<?> FOR_UPDATE = ExpressionUtils.operation(
-            Object.class, SQLOps.FOR_UPDATE, ImmutableList.<Expression<?>>of());
+            Object.class, SQLOps.FOR_UPDATE, Collections.emptyList());
     protected static final Expression<?> NO_WAIT = ExpressionUtils.operation(
-            Object.class, SQLOps.NO_WAIT, ImmutableList.<Expression<?>>of());
+            Object.class, SQLOps.NO_WAIT, Collections.emptyList());
 
     protected static final int TIME_WITH_TIMEZONE = 2013;
 
@@ -58,17 +55,10 @@ public class SQLTemplates extends Templates {
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
 
     protected static final Set<? extends Operator> OTHER_LIKE_CASES
-            = Sets.immutableEnumSet(Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+            = Collections.unmodifiableSet(EnumSet.of(Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
                     Ops.LIKE_IC, Ops.LIKE_ESCAPE_IC,
                     Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
-                    Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
-
-    private static final CharMatcher NON_UNDERSCORE_ALPHA_NUMERIC =
-            CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).or(inRange('0', '9'))
-            .negate().precomputed();
-
-    private static final CharMatcher NON_UNDERSCORE_ALPHA =
-            CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).negate().precomputed();
+                    Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC));
 
     private final Set<String> reservedWords;
 
@@ -114,13 +104,13 @@ public class SQLTemplates extends Templates {
 
     }
 
-    private final Map<String, Integer> typeNameToCode = Maps.newHashMap();
+    private final Map<String, Integer> typeNameToCode = new HashMap<>();
 
-    private final Map<Integer, String> codeToTypeName = Maps.newHashMap();
+    private final Map<Integer, String> codeToTypeName = new HashMap<>();
 
-    private final Map<SchemaAndTable, SchemaAndTable> tableOverrides = Maps.newHashMap();
+    private final Map<SchemaAndTable, SchemaAndTable> tableOverrides = new HashMap<>();
 
-    private final List<Type<?>> customTypes = Lists.newArrayList();
+    private final List<Type<?>> customTypes = new ArrayList<>();
 
     private final String quoteStr;
 
@@ -829,9 +819,9 @@ public class SQLTemplates extends Templates {
     }
 
     protected boolean requiresQuotes(final String identifier, final boolean precededByDot) {
-        if (NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier)) {
+        if (identifier.matches(".*[^A-z0-9_].*")) {
             return true;
-        } else if (NON_UNDERSCORE_ALPHA.matches(identifier.charAt(0))) {
+        } else if (identifier.matches("^[^A-z_].*")) {
             return true;
         } else if (precededByDot && supportsUnquotedReservedWordsAsIdentifier) {
             return false;

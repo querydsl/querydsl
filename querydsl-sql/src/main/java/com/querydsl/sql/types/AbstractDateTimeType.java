@@ -13,11 +13,9 @@
  */
 package com.querydsl.sql.types;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Common abstract superclass for Type implementations
@@ -38,11 +36,11 @@ public abstract class AbstractDateTimeType<T>  extends AbstractType<T> {
         return (Calendar) UTC.clone();
     }
 
-    protected static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    protected static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    protected static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
+    protected static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public AbstractDateTimeType(int type) {
         super(type);

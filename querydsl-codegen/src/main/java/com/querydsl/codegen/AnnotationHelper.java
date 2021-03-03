@@ -15,7 +15,7 @@ package com.querydsl.codegen;
 
 import java.lang.annotation.Annotation;
 
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.model.TypeCategory;
 
 /**
  * {@code AnnotationHelper} defines a interface to provide custom annotation processing

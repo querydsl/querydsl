@@ -13,17 +13,28 @@
  */
 package com.querydsl.collections;
 
-import java.util.*;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterators;
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.types.*;
+import com.querydsl.core.types.ArrayConstructorExpression;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Operation;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Default implementation of the {@link QueryEngine} interface
@@ -88,7 +99,7 @@ public class DefaultQueryEngine implements QueryEngine {
         if (!list.isEmpty() && list.get(0) != null && list.get(0).getClass().isArray()) {
             Set set = new HashSet(list.size());
             for (T o : list) {
-                if (set.add(ImmutableList.copyOf((Object[]) o))) {
+                if (set.add(Collections.unmodifiableList(Arrays.asList((Object[]) o)))) {
                     rv.add(o);
                 }
             }
@@ -203,13 +214,15 @@ public class DefaultQueryEngine implements QueryEngine {
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         Expression<Object>[] orderByExpr = new Expression[orderBy.size()];
         boolean[] directions = new boolean[orderBy.size()];
+        boolean[] nullsLast = new boolean[orderBy.size()];
         for (int i = 0; i < orderBy.size(); i++) {
             orderByExpr[i] = (Expression) orderBy.get(i).getTarget();
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
+            nullsLast[i] = orderBy.get(i).getNullHandling() == OrderSpecifier.NullHandling.NullsLast;
         }
         Expression<?> expr = new ArrayConstructorExpression<Object>(Object[].class, orderByExpr);
         Evaluator orderEvaluator = evaluatorFactory.create(metadata, sources, expr);
-        Collections.sort(list, new MultiComparator(orderEvaluator, directions));
+        list.sort(new MultiComparator(orderEvaluator, directions, nullsLast));
     }
 
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
@@ -221,11 +234,10 @@ public class DefaultQueryEngine implements QueryEngine {
             projection = aggregation.getArg(0);
         }
         Evaluator projectionEvaluator = evaluatorFactory.create(metadata, sources, projection);
-        EvaluatorFunction transformer = new EvaluatorFunction(projectionEvaluator);
-        List target = new ArrayList();
-        Iterators.addAll(target, Iterators.transform(list.iterator(), transformer));
+        EvaluatorFunction<Object, Object> transformer = new EvaluatorFunction(projectionEvaluator);
+        List target = list.stream().map(transformer).collect(Collectors.toList());
         if (aggregator != null) {
-            return ImmutableList.of(CollQueryFunctions.aggregate(target, projection, aggregator));
+            return Collections.singletonList(CollQueryFunctions.aggregate(target, projection, aggregator));
         } else {
             return target;
         }

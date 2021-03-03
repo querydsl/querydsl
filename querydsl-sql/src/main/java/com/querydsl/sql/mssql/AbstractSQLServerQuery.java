@@ -14,10 +14,8 @@
 package com.querydsl.sql.mssql;
 
 import java.sql.Connection;
+import java.util.function.Supplier;
 
-import javax.inject.Provider;
-
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.sql.AbstractSQLQuery;
@@ -36,7 +34,7 @@ public abstract class AbstractSQLServerQuery<T, C extends AbstractSQLServerQuery
         super(conn, configuration, metadata);
     }
 
-    public AbstractSQLServerQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+    public AbstractSQLServerQuery(Supplier<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
         super(connProvider, configuration, metadata);
     }
 
@@ -46,11 +44,10 @@ public abstract class AbstractSQLServerQuery<T, C extends AbstractSQLServerQuery
      * @param tableHints table hints
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLServerQuery.class, castRequired = true)
     public C tableHints(SQLServerTableHints... tableHints) {
         if (tableHints.length > 0) {
             String hints = SQLServerGrammar.tableHints(tableHints);
-            addJoinFlag(hints, JoinFlag.Position.END);
+            addJoinFlag(hints, JoinFlag.Position.BEFORE_CONDITION);
         }
         return (C) this;
     }

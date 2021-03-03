@@ -13,11 +13,12 @@
  */
 package com.querydsl.codegen;
 
-import com.google.common.base.Objects;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeExtends;
-import com.mysema.codegen.model.TypeSuper;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeExtends;
+import com.querydsl.codegen.utils.model.TypeSuper;
+
+import java.util.Objects;
 
 /**
  * {@code TypeResolver} provides type resolving functionality for resolving generic type variables to
@@ -64,7 +65,7 @@ final class TypeResolver {
         int index = -1;
         for (int i = 0; i < declaringType.getParameters().size(); i++) {
             Type param = unwrap(declaringType.getParameters().get(i));
-            if (Objects.equal(getVarName(param), varName)) {
+            if (Objects.equals(getVarName(param), varName)) {
                 index = i;
             }
         }

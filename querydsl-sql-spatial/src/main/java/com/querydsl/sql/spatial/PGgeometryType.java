@@ -18,7 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.codec.Wkt;
@@ -42,13 +42,17 @@ class PGgeometryType extends AbstractType<Geometry> {
     @Override
     @Nullable
     public Geometry getValue(ResultSet rs, int startIndex) throws SQLException {
-        Object obj = rs.getObject(startIndex);
-        return obj != null ? PGgeometryConverter.convert(((PGgeometry) obj).getGeometry()) : null;
+        PGgeometry obj = (PGgeometry) rs.getObject(startIndex);
+        if (obj == null) {
+            return null;
+        }
+        return Wkt.newDecoder(Wkt.Dialect.POSTGIS_EWKT_1).decode(obj.getValue());
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Geometry value) throws SQLException {
-        PGgeometry geometry = new PGgeometry(PGgeometryConverter.convert(value));
+        final String encode = Wkt.newEncoder(Wkt.Dialect.POSTGIS_EWKT_1).encode(value);
+        PGgeometry geometry = new PGgeometry(encode);
         st.setObject(startIndex, geometry);
     }
 

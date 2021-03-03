@@ -3,12 +3,14 @@ package com.querydsl.sql.dml;
 import static com.querydsl.sql.SQLExpressions.select;
 import static org.junit.Assert.assertEquals;
 
+import com.querydsl.core.QueryFlag.Position;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.sql.KeyAccessorsTest.QEmployee;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLTemplates;
+
+import java.util.Collections;
 
 public class SQLUpdateClauseTest {
 
@@ -28,7 +30,7 @@ public class SQLUpdateClauseTest {
 
         SQLBindings sql = update.getSQL().get(0);
         assertEquals("update EMPLOYEE\nset ID = ?", sql.getSQL());
-        assertEquals(ImmutableList.of(1), sql.getBindings());
+        assertEquals(Collections.singletonList(1), sql.getNullFriendlyBindings());
     }
 
     @Test
@@ -76,6 +78,32 @@ public class SQLUpdateClauseTest {
                 "set SUPERIOR_ID = (select emp2.ID\n" +
                 "from EMPLOYEE emp2\n" +
                 "where emp2.ID = EMPLOYEE.ID)", sql.getSQL());
+    }
+
+    @Test
+    public void testBeforeFiltersFlag() {
+        QEmployee emp1 = new QEmployee("emp1");
+        QEmployee emp2 = new QEmployee("emp2");
+        SQLUpdateClause update = new SQLUpdateClause(null, SQLTemplates.DEFAULT, emp1)
+          .set(emp1.superiorId, emp2.id)
+          .addFlag(Position.BEFORE_FILTERS, String.format("\nfrom %s %s", emp2.getTableName(), emp2))
+          .where(emp2.id.eq(emp1.id));
+
+        SQLBindings sql = update.getSQL().get(0);
+        assertEquals("update EMPLOYEE\n" +
+                "set SUPERIOR_ID = emp2.ID\n" +
+                "from EMPLOYEE emp2\n" +
+                "where emp2.ID = EMPLOYEE.ID", sql.getSQL());
+
+        update = new SQLUpdateClause(null, SQLTemplates.DEFAULT, emp1)
+          .set(emp1.superiorId, emp2.id)
+          .addFlag(Position.BEFORE_FILTERS, " THE_FLAG")
+          .where(emp2.id.eq(emp1.id));
+
+        sql = update.getSQL().get(0);
+        assertEquals("update EMPLOYEE\n" +
+          "set SUPERIOR_ID = emp2.ID THE_FLAG\n" +
+          "where emp2.ID = EMPLOYEE.ID", sql.getSQL());
     }
 
     @Test

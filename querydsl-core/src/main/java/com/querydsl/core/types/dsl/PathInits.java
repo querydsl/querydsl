@@ -16,9 +16,6 @@ package com.querydsl.core.types.dsl;
 import java.io.Serializable;
 import java.util.*;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.PathMetadata;
 
 /**
@@ -48,7 +45,7 @@ public class PathInits implements Serializable {
         boolean initAllProps = false;
         PathInits defaultValue = DEFAULT;
 
-        Map<String, Collection<String>> properties = Maps.newHashMap();
+        Map<String, Collection<String>> properties = new HashMap<>();
         for (String initStr : initStrs) {
             if (initStr.equals("*")) {
                 initAllProps = true;
@@ -60,19 +57,15 @@ public class PathInits implements Serializable {
                 List<String> inits = Collections.emptyList();
                 if (initStr.contains(".")) {
                     key = initStr.substring(0, initStr.indexOf('.'));
-                    inits = ImmutableList.of(initStr.substring(key.length() + 1));
+                    inits = Collections.singletonList(initStr.substring(key.length() + 1));
                 }
-                Collection<String> values = properties.get(key);
-                if (values == null) {
-                    values = new ArrayList<String>();
-                    properties.put(key, values);
-                }
+                Collection<String> values = properties.computeIfAbsent(key, k -> new ArrayList<String>());
                 values.addAll(inits);
             }
         }
 
         for (Map.Entry<String, Collection<String>> entry : properties.entrySet()) {
-            PathInits inits = new PathInits(Iterables.toArray(entry.getValue(), String.class));
+            PathInits inits = new PathInits(entry.getValue().toArray(new String[0]));
             propertyToInits.put(entry.getKey(), inits);
         }
 

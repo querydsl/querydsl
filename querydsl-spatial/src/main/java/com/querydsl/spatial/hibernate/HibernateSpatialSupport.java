@@ -13,9 +13,9 @@
  */
 package com.querydsl.spatial.hibernate;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.Operator;
 import com.querydsl.spatial.SpatialOps;
 
@@ -28,7 +28,7 @@ public final class HibernateSpatialSupport {
     private HibernateSpatialSupport() { }
 
     public static Map<Operator, String> getSpatialOps() {
-        Map<Operator, String> ops = Maps.newHashMap();
+        Map<Operator, String> ops = new HashMap<>();
         ops.put(SpatialOps.DIMENSION, "dimension({0})");
         ops.put(SpatialOps.GEOMETRY_TYPE, "geometrytype({0}, {1})");
         ops.put(SpatialOps.SRID, "srid({0})");

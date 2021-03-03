@@ -22,6 +22,10 @@ import org.junit.rules.TemporaryFolder;
 
 import com.querydsl.sql.Connections;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+
 public abstract class ExportBaseTest {
 
     @Rule
@@ -37,6 +41,8 @@ public abstract class ExportBaseTest {
         exporter.setTargetFolder(folder.getRoot());
         exporter.setNamingStrategy(namingStrategy);
         exporter.export(Connections.getConnection().getMetaData());
+
+        assertThat(folder.getRoot().listFiles().length, is(greaterThan(0)));
     }
 
     protected String getSchemaPattern() {

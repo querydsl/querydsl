@@ -3,6 +3,7 @@ package com.querydsl.jpa;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -40,7 +41,7 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.DEFAULT, cat),
                 new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(catMate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(catMate.name.asc()),
+        assertEquals(Collections.singletonList(catMate.name.asc()),
                 md.getOrderBy());
     }
 
@@ -70,8 +71,8 @@ public class JPAQueryMixinTest {
         mixin.orderBy(cat.mate.name.asc());
 
         QueryMetadata md = mixin.getMetadata();
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, cat)), md.getJoins());
-        assertEquals(Arrays.asList(cat.mate.name.asc()), md.getOrderBy());
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, cat)), md.getJoins());
+        assertEquals(Collections.singletonList(cat.mate.name.asc()), md.getOrderBy());
     }
 
     @Test
@@ -82,8 +83,8 @@ public class JPAQueryMixinTest {
         mixin.orderBy(cat.mate.name.asc());
 
         QueryMetadata md = mixin.getMetadata();
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, cat)), md.getJoins());
-        assertEquals(Arrays.asList(cat.mate.name.asc()), md.getOrderBy());
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, cat)), md.getJoins());
+        assertEquals(Collections.singletonList(cat.mate.name.asc()), md.getOrderBy());
     }
 
     @Test
@@ -98,7 +99,7 @@ public class JPAQueryMixinTest {
                         new JoinExpression(JoinType.DEFAULT, cat),
                         new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(catMate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(catMate.name.lower().asc()),
+        assertEquals(Collections.singletonList(catMate.name.lower().asc()),
                 md.getOrderBy());
     }
 
@@ -116,7 +117,7 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(catMate)),
                 new JoinExpression(JoinType.LEFTJOIN, catMate.mate.as(catMateMate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(catMateMate.name.asc()),
+        assertEquals(Collections.singletonList(catMateMate.name.asc()),
                 md.getOrderBy());
     }
 
@@ -133,7 +134,7 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.DEFAULT, cat),
                 new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(mate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(mate.name.asc()),
+        assertEquals(Collections.singletonList(mate.name.asc()),
                 md.getOrderBy());
     }
 
@@ -152,7 +153,7 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.LEFTJOIN, cat.mate.as(mate)),
                 new JoinExpression(JoinType.LEFTJOIN, mate.mate.as(mateMate))),
                 md.getJoins());
-        assertEquals(Arrays.asList(mateMate.name.asc()),
+        assertEquals(Collections.singletonList(mateMate.name.asc()),
                 md.getOrderBy());
     }
 
@@ -168,7 +169,7 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.DEFAULT, cat),
                 new JoinExpression(JoinType.LEFTJOIN, cat.kittens.as(catKittens))),
                 md.getJoins());
-        assertEquals(Arrays.asList(catKittens.name.asc()),
+        assertEquals(Collections.singletonList(catKittens.name.asc()),
                 md.getOrderBy());
     }
 
@@ -179,9 +180,9 @@ public class JPAQueryMixinTest {
         mixin.orderBy(bookVersion.definition.name.asc());
 
         QueryMetadata md = mixin.getMetadata();
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, bookVersion)),
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, bookVersion)),
                 md.getJoins());
-        assertEquals(Arrays.asList(bookVersion.definition.name.asc()),
+        assertEquals(Collections.singletonList(bookVersion.definition.name.asc()),
                 md.getOrderBy());
     }
 
@@ -198,7 +199,7 @@ public class JPAQueryMixinTest {
                 new JoinExpression(JoinType.DEFAULT, article),
                 new JoinExpression(JoinType.LEFTJOIN, article.content.article.as(articleContentArticle))),
                 md.getJoins());
-        assertEquals(Arrays.asList(articleContentArticle.name.asc()),
+        assertEquals(Collections.singletonList(articleContentArticle.name.asc()),
                 md.getOrderBy());
     }
 
@@ -211,9 +212,9 @@ public class JPAQueryMixinTest {
         mixin.orderBy(bookVersion.definition.bookMarks.any().comment.asc());
 
         QueryMetadata md = mixin.getMetadata();
-        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, bookVersion)),
+        assertEquals(Collections.singletonList(new JoinExpression(JoinType.DEFAULT, bookVersion)),
                 md.getJoins());
-        assertEquals(Arrays.asList(Expressions.stringPath(bookVersion.definition.bookMarks, "comment").asc()),
+        assertEquals(Collections.singletonList(Expressions.stringPath(bookVersion.definition.bookMarks, "comment").asc()),
                 md.getOrderBy());
     }
 

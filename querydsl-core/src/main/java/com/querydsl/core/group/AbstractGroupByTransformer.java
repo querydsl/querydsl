@@ -28,7 +28,7 @@ import com.querydsl.core.types.*;
  * @param <K>
  * @param <T>
  */
-abstract class AbstractGroupByTransformer<K, T> implements ResultTransformer<T> {
+public abstract class AbstractGroupByTransformer<K, T> implements ResultTransformer<T> {
 
     private static final class FactoryExpressionAdapter<T> extends ExpressionBase<T> implements FactoryExpression<T> {
         private final FactoryExpression<T> expr;
@@ -64,7 +64,7 @@ abstract class AbstractGroupByTransformer<K, T> implements ResultTransformer<T> 
     protected final Expression<?>[] expressions;
 
     @SuppressWarnings("unchecked")
-    AbstractGroupByTransformer(Expression<K> key, Expression<?>... expressions) {
+    protected AbstractGroupByTransformer(Expression<K> key, Expression<?>... expressions) {
         List<Expression<?>> projection = new ArrayList<Expression<?>>(expressions.length);
         groupExpressions.add(new GOne<K>(key));
         projection.add(key);
@@ -88,7 +88,7 @@ abstract class AbstractGroupByTransformer<K, T> implements ResultTransformer<T> 
             }
         }
 
-        this.expressions = projection.toArray(new Expression[projection.size()]);
+        this.expressions = projection.toArray(new Expression[0]);
     }
 
     protected static FactoryExpression<Tuple> withoutGroupExpressions(final FactoryExpression<Tuple> expr) {

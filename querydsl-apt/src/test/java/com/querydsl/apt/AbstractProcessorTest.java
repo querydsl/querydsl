@@ -26,7 +26,7 @@ import javax.tools.JavaCompiler;
 
 import org.junit.Assert;
 
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.core.util.FileUtils;
 
 public abstract class AbstractProcessorTest {
@@ -68,7 +68,7 @@ public abstract class AbstractProcessorTest {
 
         ByteArrayOutputStream out = getStdOut();
         ByteArrayOutputStream err = getStdErr();
-        int compilationResult = compiler.run(null, out, err, options.toArray(new String[options.size()]));
+        int compilationResult = compiler.run(null, out, err, options.toArray(new String[0]));
 
 //        Processor.elementCache.clear();
         if (compilationResult != 0) {

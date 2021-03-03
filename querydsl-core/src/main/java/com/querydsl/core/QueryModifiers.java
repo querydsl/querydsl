@@ -15,11 +15,10 @@ package com.querydsl.core;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
-import javax.annotation.Nonnegative;
-import javax.annotation.Nullable;
-
-import com.google.common.base.Objects;
+import org.jetbrains.annotations.Range;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code QueryModifiers} combines limit and offset info into a single immutable value type.
@@ -43,11 +42,11 @@ public final class QueryModifiers implements Serializable {
         }
     }
 
-    public static QueryModifiers limit(@Nonnegative long limit) {
+    public static QueryModifiers limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         return new QueryModifiers(limit, null);
     }
 
-    public static QueryModifiers offset(@Nonnegative long offset) {
+    public static QueryModifiers offset(@Range(from = 0, to = Integer.MAX_VALUE) long offset) {
         return new QueryModifiers(null, offset);
     }
 
@@ -127,7 +126,7 @@ public final class QueryModifiers implements Serializable {
             return true;
         } else if (o instanceof QueryModifiers) {
             QueryModifiers qm = (QueryModifiers) o;
-            return Objects.equal(qm.getLimit(), limit) && Objects.equal(qm.getOffset(), offset);
+            return Objects.equals(qm.getLimit(), limit) && Objects.equals(qm.getOffset(), offset);
         } else {
             return false;
         }
@@ -135,7 +134,7 @@ public final class QueryModifiers implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(limit, offset);
+        return Objects.hash(limit, offset);
     }
 
 }

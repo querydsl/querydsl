@@ -13,7 +13,6 @@
  */
 package com.querydsl.jdo;
 
-import javax.inject.Provider;
 import javax.jdo.PersistenceManager;
 
 import com.querydsl.core.QueryFactory;
@@ -23,6 +22,8 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jdo.dml.JDODeleteClause;
 
+import java.util.function.Supplier;
+
 /**
  * Factory class for query and DML clause creation
  *
@@ -31,9 +32,9 @@ import com.querydsl.jdo.dml.JDODeleteClause;
  */
 public class JDOQueryFactory implements QueryFactory<JDOQuery<?>> {
 
-    private final Provider<PersistenceManager> persistenceManager;
+    private final Supplier<PersistenceManager> persistenceManager;
 
-    public JDOQueryFactory(Provider<PersistenceManager> persistenceManager) {
+    public JDOQueryFactory(Supplier<PersistenceManager> persistenceManager) {
         this.persistenceManager = persistenceManager;
     }
 

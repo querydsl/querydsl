@@ -14,12 +14,12 @@
 package com.querydsl.sql;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import org.hsqldb.types.Types;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.Target;
 import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
@@ -101,7 +101,7 @@ public final class Connections {
 
     private static Connection getFirebird() throws SQLException, ClassNotFoundException {
         Class.forName("org.firebirdsql.jdbc.FBDriver");
-        String url = "jdbc:firebirdsql:localhost/3050:/databases/querydsl.fdb";
+        String url = "jdbc:firebirdsql:localhost/3050:/firebird/data/querydsl.fdb";
         return DriverManager.getConnection(url, "sysdba", "masterkey");
     }
 
@@ -111,9 +111,9 @@ public final class Connections {
         return DriverManager.getConnection(url, "sa", "");
     }
 
-    private static Connection getH2() throws SQLException, ClassNotFoundException {
+    public static Connection getH2() throws SQLException, ClassNotFoundException {
         Class.forName("org.h2.Driver");
-        String url = "jdbc:h2:./target/h2-test;LOCK_MODE=0";
+        String url = "jdbc:h2:./target/h2-test;LOCK_MODE=0;AUTO_SERVER=TRUE";
         return DriverManager.getConnection(url, "sa", "");
     }
 
@@ -126,7 +126,7 @@ public final class Connections {
     private static Connection getOracle() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
-        return DriverManager.getConnection(url, "system", "oracle");
+        return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
 
     private static Connection getPostgreSQL() throws ClassNotFoundException, SQLException {
@@ -138,10 +138,10 @@ public final class Connections {
     private static Connection getSQLServer() throws ClassNotFoundException, SQLException {
         Class.forName("net.sourceforge.jtds.jdbc.Driver");
         Properties props = new Properties();
-        props.put("user", "querydsl");
-        props.put("password", "querydsl");
+        props.put("user", "sa");
+        props.put("password", "Password1!");
         props.put("sendTimeAsDatetime", "false");
-        String url = "jdbc:jtds:sqlserver://localhost:1433/querydsl";
+        String url = "jdbc:jtds:sqlserver://localhost:1433/tempdb";
 //        return DriverManager.getConnection(url, "querydsl", "querydsl");
         return DriverManager.getConnection(url, props);
     }
@@ -200,7 +200,7 @@ public final class Connections {
     }
 
     public static Map<Integer, String> getSpatialData() {
-        Map<Integer, String> m = Maps.newHashMap();
+        Map<Integer, String> m = new HashMap<>();
         // point
         m.put(1, "POINT (2 2)");
         m.put(2, "POINT (8 7)");
@@ -261,15 +261,12 @@ public final class Connections {
         // test
         stmt.execute("drop table if exists \"TEST\"");
         stmt.execute("create table \"TEST\"(NAME varchar(255))");
-        PreparedStatement pstmt = c.prepareStatement("insert into \"TEST\" values(?)");
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement("insert into \"TEST\" values(?)")) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -329,15 +326,12 @@ public final class Connections {
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
         stmt.execute("create index test_name on test(name)");
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -394,15 +388,12 @@ public final class Connections {
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
         stmt.execute("create index test_name on test(name)");
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -487,15 +478,12 @@ public final class Connections {
         // test
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -560,16 +548,16 @@ public final class Connections {
             return;
         }
 
-        stmt.execute("DROP ALIAS IF EXISTS InitGeoDB");
-        stmt.execute("CREATE ALIAS InitGeoDB for \"geodb.GeoDB.InitGeoDB\"");
-        stmt.execute("CALL InitGeoDB()");
+        stmt.execute("DROP ALIAS IF EXISTS H2GIS_SPATIAL");
+        stmt.execute("CREATE ALIAS IF NOT EXISTS H2GIS_SPATIAL FOR \"org.h2gis.functions.factory.H2GISFunctions.load\"");
+        stmt.execute("CALL H2GIS_SPATIAL();");
 
         // shapes
         dropTable(templates, "SHAPES");
-        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY blob)");
+        stmt.execute("create table SHAPES (ID int not null primary key, GEOMETRY geometry)");
         for (Map.Entry<Integer, String> entry : getSpatialData().entrySet()) {
             stmt.execute("insert into SHAPES values(" + entry.getKey()
-                    + ", ST_GeomFromText('" + entry.getValue() + "', 4326))");
+                    + ", ST_GeomFromText('" + entry.getValue() + "'))");
         }
 
         // qtest
@@ -589,15 +577,12 @@ public final class Connections {
         // test
         stmt.execute("drop table TEST if exists");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -659,15 +644,12 @@ public final class Connections {
         // test
         stmt.execute("drop table TEST if exists");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -723,15 +705,12 @@ public final class Connections {
         // test
         stmt.execute("drop table if exists TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -909,15 +888,12 @@ public final class Connections {
         dropTable(templates, "TEST");
         stmt.execute(quote(CREATE_TABLE_TEST,"TEST","NAME"));
         String sql = quote(INSERT_INTO_TEST_VALUES,"TEST");
-        PreparedStatement pstmt = c.prepareStatement(sql);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(sql)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -972,15 +948,12 @@ public final class Connections {
         // test
         stmt.execute("drop table if exists TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -1043,15 +1016,12 @@ public final class Connections {
         // test
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee
@@ -1110,15 +1080,12 @@ public final class Connections {
         // test
         dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
-        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
-        try {
+        try (PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES)) {
             for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } finally {
-            pstmt.close();
         }
 
         // employee

@@ -6,16 +6,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import javax.annotation.Nullable;
-
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * JSR310LocalDateType maps {@linkplain java.time.LocalDate}
  * to {@linkplain java.sql.Date} on the JDBC level
  *
  */
-@IgnoreJRERequirement //conditionally included
 public class JSR310LocalDateType extends AbstractJSR310DateTimeType<LocalDate> {
 
     public JSR310LocalDateType() {

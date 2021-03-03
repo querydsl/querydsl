@@ -13,10 +13,12 @@
  */
 package com.querydsl.sql;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.dsl.SimpleOperation;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * {@code WindowOver} is the first part of a WindowFunction construction
@@ -30,15 +32,15 @@ public class WindowOver<T> extends SimpleOperation<T> {
     private static final long serialVersionUID = 464583892898579544L;
 
     public WindowOver(Class<? extends T> type, Operator op) {
-        super(type, op, ImmutableList.<Expression<?>>of());
+        super(type, op, Collections.emptyList());
     }
 
     public WindowOver(Class<? extends T> type, Operator op, Expression<?> arg) {
-        super(type, op, ImmutableList.<Expression<?>>of(arg));
+        super(type, op, Collections.singletonList(arg));
     }
 
     public WindowOver(Class<? extends T> type, Operator op, Expression<?> arg1, Expression<?> arg2) {
-        super(type, op, ImmutableList.of(arg1, arg2));
+        super(type, op, Arrays.asList(arg1, arg2));
     }
 
     public WindowFirstLast<T> keepFirst() {

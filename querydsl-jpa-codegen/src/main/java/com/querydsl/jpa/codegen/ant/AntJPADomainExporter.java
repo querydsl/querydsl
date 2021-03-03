@@ -15,6 +15,7 @@ package com.querydsl.jpa.codegen.ant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +24,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.metamodel.Metamodel;
 
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.jpa.codegen.JPADomainExporter;
 
 /**
@@ -92,7 +92,7 @@ public class AntJPADomainExporter {
      */
     private String persistenceUnitName;
 
-    private Set<File> generatedFiles = ImmutableSet.of();
+    private Set<File> generatedFiles = Collections.emptySet();
 
     public Configuration getConfiguration() {
         return configuration;

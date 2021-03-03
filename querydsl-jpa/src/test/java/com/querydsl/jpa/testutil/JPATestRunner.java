@@ -13,8 +13,6 @@
  */
 package com.querydsl.jpa.testutil;
 
-import static com.google.common.base.Verify.verify;
-
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.junit.Assert;
 import org.junit.rules.MethodRule;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
@@ -53,8 +52,8 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
 
     @Override
     protected List<MethodRule> rules(Object test) {
-        verify(test instanceof JPATest, "In order to use the %s for %s, it should (directly or indirectly) implement %s",
-                JPATestRunner.class.getSimpleName(), test.getClass(), JPATest.class);
+        Assert.assertTrue(String.format("In order to use the %s for %s, it should (directly or indirectly) implement %s",
+                JPATestRunner.class.getSimpleName(), test.getClass(), JPATest.class), test instanceof JPATest);
 
         List<MethodRule> rules = super.rules(test);
         rules.add(new MethodRule() {

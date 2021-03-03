@@ -16,17 +16,20 @@ package com.querydsl.jpa;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
-import org.eclipse.persistence.config.ResultSetType;
 import org.eclipse.persistence.jpa.JpaQuery;
 import org.eclipse.persistence.queries.Cursor;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code EclipseLinkHandler} is the {@link QueryHandler} implementation for EclipseLink
@@ -54,20 +57,40 @@ class EclipseLinkHandler implements QueryHandler {
     @SuppressWarnings("unchecked")
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
+        boolean canUseCursor = false;
+        try {
+            canUseCursor = query.unwrap(Query.class) instanceof JpaQuery;
+        } catch (PersistenceException e) { } // can't unwrap, just ignore the exception
+
         Iterator<T> iterator = null;
         Closeable closeable = null;
-        if (query instanceof JpaQuery) {
-            JpaQuery<T> elQuery = (JpaQuery<T>) query;
-            elQuery.setHint(QueryHints.RESULT_SET_TYPE, ResultSetType.ForwardOnly);
-            elQuery.setHint(QueryHints.SCROLLABLE_CURSOR, true);
-            final Cursor cursor = elQuery.getResultCursor();
+        if (canUseCursor) {
+            query.setHint(QueryHints.CURSOR, HintValues.TRUE);
+            final Cursor cursor = (Cursor) query.getSingleResult();
+            final int pageSize = cursor.getPageSize();
             closeable = new Closeable() {
                 @Override
                 public void close() throws IOException {
                     cursor.close();
                 }
             };
-            iterator = cursor;
+            iterator = new Iterator<T>() {
+                private int rowsSinceLastClear = 0;
+
+                @Override
+                public boolean hasNext() {
+                    return cursor.hasNext();
+                }
+
+                @Override
+                public T next() {
+                    if (rowsSinceLastClear++ == pageSize) {
+                        rowsSinceLastClear = 0;
+                        cursor.clear();
+                    }
+                    return (T) cursor.next();
+                }
+            };
         } else {
             iterator = query.getResultList().iterator();
         }
@@ -76,6 +99,15 @@ class EclipseLinkHandler implements QueryHandler {
         } else {
             return new IteratorAdapter<T>(iterator, closeable);
         }
+    }
+
+    @Override
+    public <T> Stream<T> stream(Query query, @Nullable FactoryExpression<?> projection) {
+        final Stream resultStream = query.getResultStream();
+        if (projection != null) {
+            return resultStream.map(element -> projection.newInstance((Object[]) (element.getClass().isArray() ? element : new Object[] {element})));
+        }
+        return resultStream;
     }
 
     @Override

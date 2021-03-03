@@ -13,9 +13,8 @@
  */
 package com.querydsl.core.types;
 
+import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * Factory class for {@link FactoryExpression} instances
@@ -144,7 +143,7 @@ public final class Projections {
      * @param <T> type of projection
      * @return factory expression
      */
-    public static <T> ConstructorExpression<T> constructor(Class<? extends T> type, Class<?>[] paramTypes, ImmutableList<Expression<?>> exprs) {
+    public static <T> ConstructorExpression<T> constructor(Class<? extends T> type, Class<?>[] paramTypes, List<Expression<?>> exprs) {
         return new ConstructorExpression<T>(type, paramTypes, exprs);
     }
 
@@ -218,7 +217,7 @@ public final class Projections {
      * @param args list elements
      * @return factory expression
      */
-    public static QList list(ImmutableList<Expression<?>> args) {
+    public static QList list(List<Expression<?>> args) {
         return new QList(args);
     }
 
@@ -264,7 +263,7 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return factory expression
      */
-    public static QTuple tuple(ImmutableList<Expression<?>> exprs) {
+    public static QTuple tuple(List<Expression<?>> exprs) {
         return new QTuple(exprs);
     }
 

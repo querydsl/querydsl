@@ -17,10 +17,10 @@ package com.querydsl.scala
 import java.util._
 import javax.inject.Inject
 
-import com.mysema.codegen.model.TypeCategory._
-import com.mysema.codegen.model._
-import com.mysema.codegen.support.ScalaSyntaxUtils
-import com.mysema.codegen.{CodeWriter, ScalaWriter}
+import com.querydsl.codegen.utils.model.TypeCategory._
+import com.querydsl.codegen.utils.model._
+import com.querydsl.codegen.utils.support.ScalaSyntaxUtils
+import com.querydsl.codegen.utils.{CodeWriter, ScalaWriter}
 import com.querydsl.codegen._
 import com.querydsl.core.types._
 

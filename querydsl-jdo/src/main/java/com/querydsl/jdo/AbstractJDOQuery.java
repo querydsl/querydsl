@@ -16,17 +16,15 @@ package com.querydsl.jdo;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
-import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.*;
@@ -43,7 +41,7 @@ import com.querydsl.core.types.*;
  */
 public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> extends FetchableSubQueryBase<T, Q> implements JDOQLQuery<T> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JDOQuery.class);
+    private static final Logger logger =  Logger.getLogger(JDOQuery.class.getName());
 
     private final Closeable closeable = new Closeable() {
         @Override
@@ -137,7 +135,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
 
-        logQuery(serializer.toString(), serializer.getConstantToLabel());
+        logQuery(serializer.toString(), serializer.getConstantToAllLabels());
 
         // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
@@ -161,17 +159,10 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
-    }
-
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
     }
 
     @SuppressWarnings("unchecked")
@@ -207,7 +198,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
         if (projection != null && !forCount) {
             if (rv instanceof List) {
                 List<?> original = (List<?>) rv;
-                rv = Lists.newArrayList();
+                rv = new ArrayList<>();
                 for (Object o : original) {
                     ((List) rv).add(project(projection, o));
                 }
@@ -226,7 +217,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
 
     @Override
     public <U> Q from(CollectionExpression<?, U> path, Path<U> alias) {
-        return queryMixin.from(ExpressionUtils.as((Path) path, alias));
+        return (Q) queryMixin.from((Expression) ExpressionUtils.as((Path) path, alias));
     }
 
     public JDOQLTemplates getTemplates() {
@@ -240,6 +231,11 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     @Override
     public CloseableIterator<T> iterate() {
         return new IteratorAdapter<T>(fetch().iterator(), closeable);
+    }
+
+    @Override
+    public Stream<T> stream() {
+        return fetch().stream().onClose(this::close);
     }
 
     @Override
@@ -274,7 +270,6 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
     }
 
     private void reset() {
-        cleanupMDC();
     }
 
     /**

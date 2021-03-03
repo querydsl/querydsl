@@ -16,7 +16,7 @@ package com.querydsl.core.util;
 import java.lang.reflect.*;
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -48,9 +48,7 @@ public final class ReflectionUtils {
         while (beanClass != null && !beanClass.equals(Object.class)) {
             try {
                 return beanClass.getDeclaredField(propertyName);
-            } catch (SecurityException e) {
-                // skip
-            } catch (NoSuchFieldException e) {
+            } catch (SecurityException | NoSuchFieldException e) {
                 // skip
             }
             beanClass = beanClass.getSuperclass();
@@ -74,8 +72,7 @@ public final class ReflectionUtils {
         while (beanClass != null && !beanClass.equals(Object.class)) {
             try {
                 return beanClass.getDeclaredMethod(methodName);
-            } catch (SecurityException e) { // skip
-            } catch (NoSuchMethodException e) { // skip
+            } catch (SecurityException | NoSuchMethodException e) { // skip
             }
             beanClass = beanClass.getSuperclass();
         }

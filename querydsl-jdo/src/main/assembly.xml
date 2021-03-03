@@ -20,8 +20,6 @@
         <exclude>cglib:cglib</exclude>
         <exclude>com.querydsl:querydsl-sql</exclude>
         <exclude>com.querydsl:querydsl-jdo</exclude>
-        <exclude>org.slf4j:slf4j-api</exclude>
-        <exclude>org.slf4j:slf4j-log4j12</exclude>                    
       </excludes>
     </dependencySet>
     <dependencySet>
@@ -29,7 +27,7 @@
       <scope>provided</scope>
       <includes>
         <include>com.querydsl:*</include>
-        <include>com.mysema.codegen:*</include>
+        <include>com.querydsl.codegen.utils:*</include>
       </includes>
     </dependencySet>        
   </dependencySets>

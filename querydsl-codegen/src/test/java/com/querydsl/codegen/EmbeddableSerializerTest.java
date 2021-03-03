@@ -13,6 +13,8 @@
  */
 package com.querydsl.codegen;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -25,8 +27,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.*;
 import com.querydsl.core.annotations.PropertyType;
 
 public class EmbeddableSerializerTest {
@@ -175,4 +177,28 @@ public class EmbeddableSerializerTest {
         CompileUtils.assertCompiles("QEntity", writer.toString());
     }
 
+    @Test
+    public void defaultGeneratedAnnotation() throws IOException {
+        SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity", false, false);
+        EntityType entityType = new EntityType(type);
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
+
+        serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        final String generatedSource = writer.toString();
+        assertThat(generatedSource, containsString("import javax.annotation.Generated;"));
+        assertThat(generatedSource, containsString("@Generated(\"com.querydsl.codegen.EmbeddableSerializer\")\npublic class"));
+        CompileUtils.assertCompiles("QEntity", generatedSource);
+    }
+
+    @Test
+    public void customGeneratedAnnotation() throws IOException {
+        SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity", false, false);
+        EntityType entityType = new EntityType(type);
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
+
+        new EmbeddableSerializer(typeMappings, Collections.<String>emptySet(), com.querydsl.core.annotations.Generated.class).serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        String generatedSourceCode = writer.toString();
+        assertThat(generatedSourceCode, containsString("@Generated(\"com.querydsl.codegen.EmbeddableSerializer\")\npublic class"));
+        CompileUtils.assertCompiles("QEntity", generatedSourceCode);
+    }
 }

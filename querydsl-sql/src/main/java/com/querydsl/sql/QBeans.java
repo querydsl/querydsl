@@ -13,15 +13,16 @@
  */
 package com.querydsl.sql;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.*;
 import com.querydsl.core.util.ArrayUtils;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * Expression used to project a list of beans
@@ -32,16 +33,16 @@ public class QBeans extends FactoryExpressionBase<Beans> {
 
     private static final long serialVersionUID = -4411839816134215923L;
 
-    private final ImmutableMap<RelationalPath<?>, QBean<?>> qBeans;
+    private final Map<RelationalPath<?>, QBean<?>> qBeans;
 
-    private final ImmutableList<Expression<?>> expressions;
+    private final List<Expression<?>> expressions;
 
     @SuppressWarnings("unchecked")
     public QBeans(RelationalPath<?>... beanPaths) {
         super(Beans.class);
         try {
-            final ImmutableList.Builder<Expression<?>> listBuilder = ImmutableList.builder();
-            final ImmutableMap.Builder<RelationalPath<?>, QBean<?>> mapBuilder = ImmutableMap.builder();
+            final List<Expression<?>> listBuilder = new ArrayList<>();
+            final Map<RelationalPath<?>, QBean<?>> mapBuilder = new HashMap<>();
             for (RelationalPath<?> path : beanPaths) {
                 Map<String, Expression<?>> bindings = new LinkedHashMap<String, Expression<?>>();
                 for (Path<?> column : path.getColumns()) {
@@ -50,8 +51,8 @@ public class QBeans extends FactoryExpressionBase<Beans> {
                 }
                 mapBuilder.put(path, Projections.bean((Class) path.getType(), bindings));
             }
-            expressions = listBuilder.build();
-            qBeans = mapBuilder.build();
+            expressions = CollectionUtils.unmodifiableList(listBuilder);
+            qBeans = Collections.unmodifiableMap(mapBuilder);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

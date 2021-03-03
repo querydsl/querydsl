@@ -14,8 +14,8 @@
 package com.querydsl.core.group;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.Tuple;
@@ -81,7 +81,7 @@ public class GroupByIterate<K, V> extends AbstractGroupByTransformer<K, Closeabl
                         group = new GroupImpl(groupExpressions, maps);
                         groupId = row[0];
                         group.add(row);
-                    } else if (Objects.equal(groupId, row[0])) {
+                    } else if (Objects.equals(groupId, row[0])) {
                         group.add(row);
                     } else {
                         Group current = group;

@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.support;
 
-import javax.annotation.Nonnegative;
+import org.jetbrains.annotations.Range;
 
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.Expression;
@@ -30,9 +30,9 @@ import com.querydsl.core.types.Predicate;
  */
 public abstract class QueryBase<Q extends QueryBase<Q>> {
 
-    public static final String MDC_QUERY = "querydsl.query";
+    public static final String MDC_QUERY = "querydsl_query";
 
-    public static final String MDC_PARAMETERS = "querydsl.parameters";
+    public static final String MDC_PARAMETERS = "querydsl_parameters";
 
     protected final QueryMixin<Q> queryMixin;
 
@@ -139,7 +139,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
      * @param limit max rows
      * @return the current object
      */
-    public Q limit(@Nonnegative long limit) {
+    public Q limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         return queryMixin.limit(limit);
     }
 

@@ -13,10 +13,10 @@
  */
 package com.querydsl.core.support;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.core.types.FactoryExpressionBase;
@@ -37,7 +37,7 @@ public class NumberConversions<T> extends FactoryExpressionBase<T> {
 
     private final FactoryExpression<T> expr;
 
-    private final Map<Class<?>, Enum<?>[]> values = Maps.newHashMap();
+    private final Map<Class<?>, Enum<?>[]> values = new HashMap<>();
 
     public NumberConversions(FactoryExpression<T> expr) {
         super(expr.getType());

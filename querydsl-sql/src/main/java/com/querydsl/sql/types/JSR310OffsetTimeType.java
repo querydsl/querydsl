@@ -6,16 +6,13 @@ import java.time.OffsetTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 
-import javax.annotation.Nullable;
-
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * JSR310OffsetTimeType maps {@linkplain java.time.OffsetTime}
  * to {@linkplain java.sql.Time} on the JDBC level
  *
  */
-@IgnoreJRERequirement //conditionally included
 public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime> {
 
     public JSR310OffsetTimeType() {

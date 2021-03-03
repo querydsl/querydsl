@@ -127,11 +127,11 @@ public class OracleTemplates extends SQLTemplates {
 
         add(Ops.DateTimeOps.DIFF_YEARS, "trunc(months_between({1}, {0}) / 12)");
         add(Ops.DateTimeOps.DIFF_MONTHS, "trunc(months_between({1}, {0}))");
-        add(Ops.DateTimeOps.DIFF_WEEKS, "round(({1} - {0}) / 7)");
-        add(Ops.DateTimeOps.DIFF_DAYS, "round({1} - {0})");
-        add(Ops.DateTimeOps.DIFF_HOURS, "round(({1} - {0}) * 24)");
-        add(Ops.DateTimeOps.DIFF_MINUTES, "round(({1} - {0}) * 1440)");
-        add(Ops.DateTimeOps.DIFF_SECONDS, "round(({1} - {0}) * 86400)");
+        add(Ops.DateTimeOps.DIFF_WEEKS, "round((cast({1} as date) - cast({0} as date)) / 7)");
+        add(Ops.DateTimeOps.DIFF_DAYS, "round(cast({1} as date) - cast({0} as date))");
+        add(Ops.DateTimeOps.DIFF_HOURS, "round((cast({1} as date) - cast({0} as date)) * 24)");
+        add(Ops.DateTimeOps.DIFF_MINUTES, "round((cast({1} as date) - cast({0} as date)) * 1440)");
+        add(Ops.DateTimeOps.DIFF_SECONDS, "round((cast({1} as date) - cast({0} as date)) * 86400)");
 
         add(Ops.DateTimeOps.TRUNC_YEAR, "trunc({0}, 'year')");
         add(Ops.DateTimeOps.TRUNC_MONTH, "trunc({0}, 'month')");

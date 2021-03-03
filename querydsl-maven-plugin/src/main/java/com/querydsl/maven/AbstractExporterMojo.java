@@ -113,6 +113,15 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean skip;
 
     /**
+     * The fully qualified class name of the <em>Single-Element Annotation</em> (with <code>String</code> element) to put on the generated sources. Defaults to
+     * <code>javax.annotation.Generated</code> or <code>javax.annotation.processing.Generated</code> depending on the java version.
+     * <em>See also</em> <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     *
+     * @parameter
+     */
+    private String generatedAnnotationClass;
+
+    /**
      * build context
      *
      * @component
@@ -136,9 +145,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         ClassLoader classLoader = null;
         try {
             classLoader = getProjectClassLoader();
-        } catch (MalformedURLException e) {
-            throw new MojoFailureException(e.getMessage(), e);
-        } catch (DependencyResolutionRequiredException e) {
+        } catch (MalformedURLException | DependencyResolutionRequiredException e) {
             throw new MojoFailureException(e.getMessage(), e);
         }
 
@@ -169,6 +176,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         exporter.setHandleFields(handleFields);
         exporter.setHandleMethods(handleMethods);
         exporter.setUseFieldTypes(useFieldTypes);
+        exporter.setGeneratedAnnotationClass(generatedAnnotationClass);
     }
 
     @SuppressWarnings("unchecked")
@@ -187,7 +195,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
                 urls.add(file.toURI().toURL());
             }
         }
-        return new URLClassLoader(urls.toArray(new URL[urls.size()]), getClass().getClassLoader());
+        return new URLClassLoader(urls.toArray(new URL[0]), getClass().getClassLoader());
     }
 
     @SuppressWarnings("rawtypes")
@@ -248,5 +256,9 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
 
     public void setUseFieldTypes(boolean useFieldTypes) {
         this.useFieldTypes = useFieldTypes;
+    }
+
+    public void setGeneratedAnnotationClass(String generatedAnnotationClass) {
+        this.generatedAnnotationClass = generatedAnnotationClass;
     }
 }

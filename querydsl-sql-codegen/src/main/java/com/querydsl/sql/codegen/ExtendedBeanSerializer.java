@@ -13,17 +13,24 @@
  */
 package com.querydsl.sql.codegen;
 
-import java.io.IOException;
-import java.util.*;
-
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Types;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Types;
 import com.querydsl.sql.Column;
 import com.querydsl.sql.codegen.support.PrimaryKeyData;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@code ExtendedBeanSerializer} outputs primary key based {@code equals}, {@code hashCode} and
@@ -37,6 +44,23 @@ import com.querydsl.sql.codegen.support.PrimaryKeyData;
 public class ExtendedBeanSerializer extends BeanSerializer {
 
     private static final Parameter o = new Parameter("o", Types.OBJECT);
+
+    public ExtendedBeanSerializer() {
+    }
+
+    /**
+     * Create a new ExtendedBeanSerializer with the given javadoc suffix and generatedAnnotationClass
+     *
+     * @param javadocSuffix suffix to be used after the simple name in class level javadoc
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    @Inject
+    public ExtendedBeanSerializer(
+            @Named(SQLCodegenModule.JAVADOC_SUFFIX) String javadocSuffix,
+            @Named(SQLCodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+        super(javadocSuffix, generatedAnnotationClass);
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -54,7 +78,6 @@ public class ExtendedBeanSerializer extends BeanSerializer {
 
         StringBuilder anyColumnIsNull = new StringBuilder();
         StringBuilder columnEquals = new StringBuilder();
-        StringBuilder toString = new StringBuilder();
         List<String> properties = new ArrayList<String>();
         for (PrimaryKeyData pk : primaryKeys) {
             for (String column : pk.getColumns()) {
@@ -63,13 +86,9 @@ public class ExtendedBeanSerializer extends BeanSerializer {
                 if (anyColumnIsNull.length() > 0) {
                     anyColumnIsNull.append(" || ");
                     columnEquals.append(" && ");
-                    toString.append("+ \";\" + ");
-                } else {
-                    toString.append("\"" + model.getSimpleName() + "#\" + ");
                 }
-                anyColumnIsNull.append(propName + " == null");
-                columnEquals.append(propName + ".equals(obj." + propName + ")");
-                toString.append(propName);
+                anyColumnIsNull.append(propName).append(" == null");
+                columnEquals.append(propName).append(".equals(obj.").append(propName).append(")");
                 properties.add(propName);
             }
         }
@@ -101,6 +120,37 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         writer.line("return result;");
         writer.end();
 
+
+    }
+
+    @Override
+    protected void addToString(EntityType model, CodeWriter writer) throws IOException {
+        Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
+
+        if (primaryKeys == null || primaryKeys.isEmpty()) {
+            super.addToString(model, writer);
+            return;
+        }
+
+        StringBuilder toString = new StringBuilder();
+        Map<String, Property> columnToProperty = new HashMap<String, Property>();
+        for (Property property : model.getProperties()) {
+            columnToProperty.put(property.getAnnotation(Column.class).value(), property);
+        }
+
+        for (PrimaryKeyData pk : primaryKeys) {
+            for (String column : pk.getColumns()) {
+                Property property = columnToProperty.get(column);
+                String propName = property.getEscapedName();
+                if (toString.length() > 0) {
+                    toString.append("+ \";\" + ");
+                } else {
+                    toString.append("\"" + model.getSimpleName() + "#\" + ");
+                }
+                toString.append(propName);
+            }
+        }
+
         // toString
         writer.annotation(Override.class);
         writer.beginPublicMethod(Types.STRING, "toString");
@@ -109,7 +159,6 @@ public class ExtendedBeanSerializer extends BeanSerializer {
 //        writer.line("}");
         writer.line("return ", toString + ";");
         writer.end();
-
     }
 
 }

@@ -15,7 +15,6 @@ package com.querydsl.core.types.dsl;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -36,7 +35,7 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
         this.templateMixin = mixin;
     }
 
-    protected NumberTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
+    protected NumberTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;
     }

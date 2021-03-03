@@ -14,8 +14,7 @@
 package com.querydsl.sql;
 
 import java.io.Serializable;
-
-import com.google.common.base.Objects;
+import java.util.Objects;
 
 /**
  * {@code SchemaAndTable} combines schema and table into a single value type
@@ -43,7 +42,7 @@ public class SchemaAndTable implements Serializable {
             return true;
         } else if (o instanceof SchemaAndTable) {
             SchemaAndTable st = (SchemaAndTable) o;
-            return Objects.equal(st.schema, schema) && Objects.equal(st.table, table);
+            return Objects.equals(st.schema, schema) && Objects.equals(st.table, table);
         } else {
             return false;
         }

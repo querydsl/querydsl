@@ -16,7 +16,6 @@ package com.querydsl.core.support;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.base.Preconditions;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpressionBase;
 import com.querydsl.core.types.Visitor;
@@ -40,7 +39,9 @@ public class EnumConversion<T> extends FactoryExpressionBase<T> {
     public EnumConversion(Expression<T> expr) {
         super(expr.getType());
         Class<? extends T> type = getType();
-        Preconditions.checkArgument(type.isEnum(), "%s is not an enum", type);
+        if (!type.isEnum()) {
+            throw new IllegalArgumentException(type + " is not an enum");
+        }
         exprs = Collections.<Expression<?>>singletonList(expr);
         values = type.getEnumConstants();
     }

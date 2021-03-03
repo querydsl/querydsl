@@ -1,12 +1,12 @@
 package com.querydsl.sql;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.testutil.ReportingOnly;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.DateTimePath;
@@ -23,7 +23,7 @@ public class DateArithmeticTest {
 
     @Test
     public void test() {
-        List<SQLTemplates> list = Lists.newArrayList();
+        List<SQLTemplates> list = new ArrayList<>();
         list.add(new CUBRIDTemplates());
         list.add(new DerbyTemplates());
         list.add(new H2Templates());
@@ -37,7 +37,7 @@ public class DateArithmeticTest {
         list.add(new SQLServer2012Templates());
         list.add(new TeradataTemplates());
 
-        List<Expression<?>> exprs = Lists.newArrayList();
+        List<Expression<?>> exprs = new ArrayList<>();
         DateTimePath<Date> path = Expressions.dateTimePath(Date.class, "date");
         exprs.add(SQLExpressions.addYears(path, 2));
         exprs.add(SQLExpressions.addMonths(path, 2));

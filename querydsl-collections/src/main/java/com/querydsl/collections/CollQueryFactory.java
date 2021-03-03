@@ -13,9 +13,10 @@
  */
 package com.querydsl.collections;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.alias.Alias;
 import com.querydsl.core.types.Path;
 
@@ -57,7 +58,7 @@ public final class CollQueryFactory {
      * @return query
      */
     public static <A> CollQuery<A> from(Path<A> path, A... arr) {
-        return new CollQuery<Void>().from(path, ImmutableList.copyOf(arr)).select(path);
+        return new CollQuery<Void>().from(path, Collections.unmodifiableList(Arrays.asList(arr))).select(path);
     }
 
     /**

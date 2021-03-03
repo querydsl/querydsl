@@ -15,10 +15,10 @@
  */
 package com.querydsl.codegen;
 
-import javax.lang.model.SourceVersion;
+import com.querydsl.codegen.utils.StringUtils;
 
-import com.google.common.base.Function;
-import com.mysema.codegen.StringUtils;
+import javax.lang.model.SourceVersion;
+import java.util.function.Function;
 
 /**
  * Default variable name generation strategy which un-capitalizes the first letter of the class name.

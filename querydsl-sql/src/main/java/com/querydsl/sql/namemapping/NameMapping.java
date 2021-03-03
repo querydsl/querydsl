@@ -13,8 +13,9 @@
  */
 package com.querydsl.sql.namemapping;
 
-import com.google.common.base.Optional;
 import com.querydsl.sql.SchemaAndTable;
+
+import java.util.Optional;
 
 /**
  * By implementing this interface, it is possible to programmatically override

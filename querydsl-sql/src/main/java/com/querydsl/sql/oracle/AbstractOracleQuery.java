@@ -14,10 +14,8 @@
 package com.querydsl.sql.oracle;
 
 import java.sql.Connection;
+import java.util.function.Supplier;
 
-import javax.inject.Provider;
-
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.Expression;
@@ -48,7 +46,7 @@ public abstract class AbstractOracleQuery<T, C extends AbstractOracleQuery<T, C>
         super(conn, configuration, metadata);
     }
 
-    public AbstractOracleQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+    public AbstractOracleQuery(Supplier<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
         super(connProvider, configuration, metadata);
     }
 
@@ -58,7 +56,6 @@ public abstract class AbstractOracleQuery<T, C extends AbstractOracleQuery<T, C>
      * @param cond condition
      * @return the current object
      */
-    @WithBridgeMethods(value = OracleQuery.class, castRequired = true)
     public C connectByPrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }
@@ -69,7 +66,6 @@ public abstract class AbstractOracleQuery<T, C extends AbstractOracleQuery<T, C>
      * @param cond condition
      * @return the current object
      */
-    @WithBridgeMethods(value = OracleQuery.class, castRequired = true)
     public C connectBy(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY, cond);
     }
@@ -80,7 +76,6 @@ public abstract class AbstractOracleQuery<T, C extends AbstractOracleQuery<T, C>
      * @param cond condition
      * @return the current object
      */
-    @WithBridgeMethods(value = OracleQuery.class, castRequired = true)
     public C connectByNocyclePrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
     }
@@ -91,7 +86,6 @@ public abstract class AbstractOracleQuery<T, C extends AbstractOracleQuery<T, C>
      * @param cond condition
      * @return the current object
      */
-    @WithBridgeMethods(value = OracleQuery.class, castRequired = true)
     public <A> C startWith(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
     }
@@ -103,7 +97,6 @@ public abstract class AbstractOracleQuery<T, C extends AbstractOracleQuery<T, C>
      * @param path path
      * @return the current object
      */
-    @WithBridgeMethods(value = OracleQuery.class, castRequired = true)
     public C orderSiblingsBy(Expression<?> path) {
         return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
     }

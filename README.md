@@ -4,9 +4,11 @@ Querydsl is a framework which enables the construction of type-safe SQL-like que
 
 Instead of writing queries as inline strings or externalizing them into XML files they are constructed via a fluent API.
 
-[![Build Status](https://travis-ci.org/querydsl/querydsl.svg?branch=master)](https://travis-ci.org/querydsl/querydsl)
-[![Coverage Status](https://coveralls.io/repos/querydsl/querydsl/badge.svg?branch=master&service=github)](https://coveralls.io/github/querydsl/querydsl?branch=master)
+[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/querydsl.github.io.svg)](https://querydsl.github.io/)
+[![Build Status](https://github.com/querydsl/querydsl/workflows/querydsl/badge.svg)](https://github.com/querydsl/querydsl/actions)
+[![Coverage Status](https://coveralls.io/repos/github/querydsl/querydsl/badge.svg?branch=master)](https://coveralls.io/github/querydsl/querydsl?branch=master)
 [![Stackoverflow](https://img.shields.io/badge/StackOverflow-querydsl-yellow.svg)](https://stackoverflow.com/questions/tagged/querydsl)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.querydsl/querydsl-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.querydsl/querydsl-core/)
 
 **Getting started**
 
@@ -74,9 +76,3 @@ If you are unsure about the details of a contribution, ask on the Querydsl Googl
 [Puppet]: http://puppetlabs.com/
 [vagrant-vbguest]: https://github.com/dotless-de/vagrant-vbguest
 [librarian-puppet]: http://librarian-puppet.com/
-
-**Continuous integration**
-
-As well as Travis CI for pull request validation
-
-[![Build Status](https://travis-ci.org/querydsl/querydsl.svg?branch=master)](https://travis-ci.org/querydsl/querydsl)

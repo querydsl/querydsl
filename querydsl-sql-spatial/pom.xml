@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>4.2.3-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -16,7 +16,6 @@
   <packaging>jar</packaging>
 
   <properties>
-    <bridge-method.version>1.13</bridge-method.version>
     <osgi.import.package>
       org.joda.time.*;version="[1.6,3)",
       ${osgi.import.package.root}
@@ -27,6 +26,26 @@
   <dependencies>
     <dependency>
       <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-codegen</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-sql-codegen</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>20.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -35,19 +54,14 @@
       <artifactId>querydsl-spatial</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.vividsolutions</groupId>
-      <artifactId>jts</artifactId>
-      <version>1.13</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>provided</scope>
-    </dependency>
 
     <!-- test -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>${jodatime.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
@@ -60,6 +74,12 @@
       <version>${hsqldb.version}</version>
       <scope>test</scope>
       <!-- license : TODO -->
+    </dependency>
+    <dependency>
+      <groupId>com.ibm.db2</groupId>
+      <artifactId>jcc</artifactId>
+      <version>${db2.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.derby</groupId>
@@ -78,24 +98,31 @@
       <artifactId>postgresql</artifactId>
       <version>${postgresql.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-simple</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.postgis</groupId>
       <artifactId>postgis-jdbc</artifactId>
       <version>1.3.3</version>
+      <scope>compile</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.oracle</groupId>
       <artifactId>ojdbc6</artifactId>
       <version>${oracle.version}</version>
-      <optional>true</optional>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>oracle</groupId>
       <artifactId>sdoapi</artifactId>
       <version>11.2.0</version>
-      <optional>true</optional>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
@@ -106,14 +133,27 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.opengeo</groupId>
-      <artifactId>geodb</artifactId>
-      <version>0.7</version>
+      <groupId>org.orbisgis</groupId>
+      <artifactId>h2gis</artifactId>
+      <version>${h2gis.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jts-core</artifactId>
+          <groupId>org.locationtech.jts</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -161,17 +201,6 @@
 
     <!-- backwards compatibility -->
     <dependency>
-      <groupId>com.infradna.tool</groupId>
-      <artifactId>bridge-method-annotation</artifactId>
-      <version>${bridge-method.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.jenkins-ci</groupId>
-          <artifactId>annotation-indexer</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>org.jvnet.hudson</groupId>
       <artifactId>annotation-indexer</artifactId>
       <version>1.2</version>
@@ -181,37 +210,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>com.infradna.tool</groupId>
-        <artifactId>bridge-method-injector</artifactId>
-        <version>${bridge-method.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>process</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.infradna.tool</groupId>
-            <artifactId>bridge-method-annotation</artifactId>
-            <version>${bridge-method.version}</version>
-            <optional>true</optional>
-            <exclusions>
-              <exclusion>
-                <groupId>org.jenkins-ci</groupId>
-                <artifactId>annotation-indexer</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>org.jvnet.hudson</groupId>
-            <artifactId>annotation-indexer</artifactId>
-            <version>1.2</version>
-          </dependency>
-        </dependencies>
-      </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
@@ -228,6 +226,13 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.querydsl.sql.spatial</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
@@ -271,16 +276,6 @@
           <artifactId>teradata-config</artifactId>
           <version>${teradata.version}</version>
           <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>db2</id>
-      <dependencies>
-        <dependency>
-          <groupId>com.ibm.db2</groupId>
-          <artifactId>db2-jdbc</artifactId>
-          <version>1.0</version>
         </dependency>
       </dependencies>
     </profile>

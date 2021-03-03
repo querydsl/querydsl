@@ -1,20 +1,24 @@
 package com.querydsl.sql.suites;
 
-import static com.querydsl.sql.domain.QSurvey.survey;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.SQLException;
-
+import com.querydsl.core.QueryException;
+import com.querydsl.core.testutil.H2;
+import com.querydsl.sql.AbstractBaseTest;
+import com.querydsl.sql.Connections;
+import com.querydsl.sql.DefaultSQLExceptionTranslator;
+import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.SQLExceptionTranslator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.google.common.base.Throwables;
-import com.querydsl.core.JavaSpecVersion;
-import com.querydsl.core.QueryException;
-import com.querydsl.core.testutil.H2;
-import com.querydsl.sql.*;
+import java.sql.SQLException;
+
+import static com.querydsl.sql.domain.QSurvey.survey;
+import static org.hamcrest.Matchers.emptyArray;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @Category(H2.class)
 public class H2ExceptionSuiteTest extends AbstractBaseTest {
@@ -63,15 +67,6 @@ public class H2ExceptionSuiteTest extends AbstractBaseTest {
     }
 
     private void inspectExceptionResult(Exception result) {
-        String stackTraceAsString = Throwables.getStackTraceAsString(result);
-        switch (JavaSpecVersion.CURRENT) {
-            case JAVA6:
-                assertTrue(stackTraceAsString
-                        .contains("Detailed SQLException information:"));
-                break;
-            default://Java™ 7 and higher
-                assertTrue(stackTraceAsString
-                        .contains("Suppressed:"));
-        }
+        assertThat(result.getSuppressed(), is(not(emptyArray())));
     }
 }

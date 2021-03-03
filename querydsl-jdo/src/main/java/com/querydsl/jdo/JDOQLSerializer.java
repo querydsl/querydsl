@@ -16,15 +16,14 @@ package com.querydsl.jdo;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.primitives.Primitives;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Param;
+import com.querydsl.core.util.PrimitiveUtils;
 
 /**
  * {@code JDOQLSerializer} serializes Querydsl queries and expressions into JDOQL strings
@@ -93,6 +92,16 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     @Override
     public Map<Object,String> getConstantToLabel() {
+        return getConstantToAllLabels();
+    }
+
+    @Override
+    public Map<Object,String> getConstantToAllLabels() {
+        return constantToLabel.peek();
+    }
+
+    @Override
+    public Map<Object,String> getConstantToNamedLabel() {
         return constantToLabel.peek();
     }
 
@@ -188,7 +197,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
 
         // parameters
-        if (!getConstantToLabel().isEmpty()) {
+        if (!getConstantToAllLabels().isEmpty()) {
             insert(position, serializeParameters(metadata.getParams()));
         }
 
@@ -213,13 +222,13 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         final StringBuilder b = new StringBuilder();
         b.append(PARAMETERS);
         boolean first = true;
-        final List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
-        Collections.sort(entries, comparator);
+        final List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToAllLabels().entrySet());
+        entries.sort(comparator);
         for (Map.Entry<Object, String> entry : entries) {
             if (!first) {
                 b.append(COMMA);
             }
-            if (Param.class.isInstance(entry.getKey())) {
+            if (entry.getKey() instanceof Param) {
                 Object constant = params.get(entry.getKey());
                 if (constant == null) {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
@@ -291,7 +300,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 regex = ExpressionUtils.toLower(regex);
             }
             super.visitOperation(type, Ops.MATCHES,
-                ImmutableList.of(string, regex));
+                Arrays.asList(string, regex));
 
         // exists
         } else if (operator == Ops.EXISTS && args.get(0) instanceof SubQueryExpression) {
@@ -312,15 +321,15 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             @SuppressWarnings("unchecked") //This is the expected type for castToNum
             Constant<Class<?>> rightArg = (Constant<Class<?>>) args.get(1);
             Class<?> clazz = rightArg.getConstant();
-            if (Number.class.isAssignableFrom(clazz) && Primitives.isWrapperType(clazz)) {
-                clazz = Primitives.unwrap(clazz);
+            if (Number.class.isAssignableFrom(clazz) && PrimitiveUtils.isWrapperType(clazz)) {
+                clazz = PrimitiveUtils.unwrap(clazz);
             }
             append("(" + clazz.getSimpleName() + ")").handle(args.get(0));
 
         } else if (operator == Ops.ALIAS) {
             if (args.get(1) instanceof Path && !((Path<?>) args.get(1)).getMetadata().isRoot()) {
                 Path<?> path = (Path<?>) args.get(1);
-                args = ImmutableList.of(args.get(0),
+                args = Arrays.asList(args.get(0),
                         ExpressionUtils.path(path.getType(), path.getMetadata().getName()));
             }
             super.visitOperation(type, operator, args);

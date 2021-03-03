@@ -16,9 +16,10 @@ package com.querydsl.jpa;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
-import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -26,9 +27,9 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Maps;
 import com.querydsl.jpa.domain.QAnimal;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.sql.SQLExpressions;
 
 public class JPAQueryFactoryTest {
 
@@ -42,18 +43,13 @@ public class JPAQueryFactoryTest {
 
     private JPAQueryFactory queryFactory3;
 
-    private Map<String, Object> properties = Maps.newHashMap();
+    private Map<String, Object> properties = new HashMap<>();
 
     @Before
     public void setUp() {
         factoryMock = EasyMock.createMock(EntityManagerFactory.class);
         mock = EasyMock.createMock(EntityManager.class);
-        Provider<EntityManager> provider = new Provider<EntityManager>() {
-            @Override
-            public EntityManager get() {
-                return mock;
-            }
-        };
+        Supplier<EntityManager> provider = () -> mock;
         queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, provider);
         queryFactory2 = queryFactory;
 
@@ -75,7 +71,8 @@ public class JPAQueryFactoryTest {
     public void query3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
-        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.expect(mock.unwrap(EasyMock.anyObject(Class.class))).andReturn(mock).atLeastOnce();
+
         EasyMock.replay(mock, factoryMock);
 
         queryFactory3.query().from(QAnimal.animal);
@@ -103,7 +100,7 @@ public class JPAQueryFactoryTest {
     public void delete3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
-        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.expect(mock.unwrap(EasyMock.anyObject(Class.class))).andReturn(mock).atLeastOnce();
         EasyMock.replay(mock, factoryMock);
 
         assertNotNull(queryFactory3.delete(QAnimal.animal));
@@ -127,12 +124,41 @@ public class JPAQueryFactoryTest {
     public void update3() {
         EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
         EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
-        EasyMock.expect(mock.getDelegate()).andReturn(mock).atLeastOnce();
+        EasyMock.expect(mock.unwrap(EasyMock.anyObject(Class.class))).andReturn(mock).atLeastOnce();
         EasyMock.replay(mock, factoryMock);
 
         assertNotNull(queryFactory3.update(QAnimal.animal));
 
         EasyMock.verify(mock, factoryMock);
+    }
+
+    @Test
+    public void insert() {
+        assertNotNull(queryFactory.insert(QAnimal.animal));
+    }
+
+    @Test
+    public void insert2() {
+        queryFactory2.insert(QAnimal.animal)
+        .set(QAnimal.animal.birthdate, new Date());
+    }
+
+    @Test
+    public void insert3() {
+        EasyMock.expect(mock.getEntityManagerFactory()).andReturn(factoryMock);
+        EasyMock.expect(factoryMock.getProperties()).andReturn(properties);
+        EasyMock.expect(mock.unwrap(EasyMock.anyObject(Class.class))).andReturn(mock).atLeastOnce();
+        EasyMock.replay(mock, factoryMock);
+
+        assertNotNull(queryFactory3.insert(QAnimal.animal));
+
+        EasyMock.verify(mock, factoryMock);
+    }
+
+    @Test
+    public void insert4() {
+        queryFactory.insert(QAnimal.animal).columns(QAnimal.animal.id, QAnimal.animal.birthdate)
+        .select(SQLExpressions.select(QAnimal.animal.id, QAnimal.animal.birthdate).from(QAnimal.animal));
     }
 
 }

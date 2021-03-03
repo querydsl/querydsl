@@ -1,0 +1,13 @@
+package com.querydsl.codegen.utils;
+
+import java.io.*;
+import java.io.*;
+
+@Entity
+public class JavaWriterTest {
+
+    @org.junit.Test
+    public void test() {
+    }
+
+}

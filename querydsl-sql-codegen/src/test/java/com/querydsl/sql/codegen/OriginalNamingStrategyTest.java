@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.codegen.model.Types;
+import com.querydsl.codegen.utils.model.Types;
 import com.querydsl.codegen.EntityType;
 
 public class OriginalNamingStrategyTest {

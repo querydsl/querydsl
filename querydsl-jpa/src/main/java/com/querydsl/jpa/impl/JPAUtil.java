@@ -53,7 +53,7 @@ public final class JPAUtil {
                     }
                 }
             }
-            query.setParameter(Integer.valueOf(key), val);
+            query.setParameter(Integer.parseInt(key), val);
         }
     }
 

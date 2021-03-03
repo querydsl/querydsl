@@ -20,8 +20,8 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Types;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Types;
 
 public class DelegateTest {
 

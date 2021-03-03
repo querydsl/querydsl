@@ -15,10 +15,9 @@ package com.querydsl.core.types.dsl;
 
 import java.util.List;
 
-import javax.annotation.Nonnegative;
-
 import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.Expression;
+import org.jetbrains.annotations.Range;
 
 /**
  * {@code ListExpression} represents {@link java.util.List} typed expressions
@@ -47,5 +46,5 @@ public interface ListExpression<E, Q extends SimpleExpression<? super E>> extend
      * @return this.get(index)
      * @see java.util.List#get(int)
      */
-    Q get(@Nonnegative int index);
+    Q get(@Range(from = 0, to = Integer.MAX_VALUE) int index);
 }

@@ -1,12 +1,12 @@
 package com.querydsl.jpa;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 
@@ -40,7 +40,7 @@ public final class OrderHelper {
     @SuppressWarnings("unchecked")
     public static void orderBy(JPQLQuery<?> query, EntityPath<?> entity, List<String> order) {
         PathBuilder<?> builder = new PathBuilder(entity.getType(), entity.getMetadata());
-        Map<String, PathBuilder<?>> joins = Maps.newHashMap();
+        Map<String, PathBuilder<?>> joins = new HashMap<>();
 
         for (String entry : order) {
             String[] tokens = DOT.split(entry);

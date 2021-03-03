@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.*;
 
@@ -94,13 +94,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
                 return (U) casts.get(clazz);
             }
 
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (InvocationTargetException e) {
-            throw new ExpressionException(e.getMessage(), e);
-        } catch (NoSuchMethodException e) {
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             throw new ExpressionException(e.getMessage(), e);
         }
     }

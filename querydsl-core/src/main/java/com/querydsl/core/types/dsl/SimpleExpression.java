@@ -13,12 +13,13 @@
  */
 package com.querydsl.core.types.dsl;
 
+import java.util.Arrays;
 import java.util.Collection;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code SimpleExpression} is the base class for {@link Expression} implementations.
@@ -205,7 +206,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.length == 1) {
             return eq(right[0]);
         } else {
-            return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(ImmutableList.copyOf(right)));
+            return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(CollectionUtils.unmodifiableList(Arrays.asList(right))));
         }
     }
 
@@ -307,7 +308,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         if (right.length == 1) {
             return ne(right[0]);
         } else {
-            return Expressions.booleanOperation(Ops.NOT_IN, mixin, ConstantImpl.create(ImmutableList.copyOf(right)));
+            return Expressions.booleanOperation(Ops.NOT_IN, mixin, ConstantImpl.create(Arrays.asList(right)));
         }
     }
 
@@ -317,7 +318,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @param right rhs of the comparison
      * @return this not in right
      */
-    public final BooleanExpression notIn(CollectionExpression<?,? extends T> right) {
+    public BooleanExpression notIn(CollectionExpression<?,? extends T> right) {
         return Expressions.booleanOperation(Ops.NOT_IN, mixin, right);
     }
 
@@ -327,7 +328,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @param right rhs of the comparison
      * @return this not in right
      */
-    public final BooleanExpression notIn(SubQueryExpression<? extends T> right) {
+    public BooleanExpression notIn(SubQueryExpression<? extends T> right) {
         return Expressions.booleanOperation(Ops.NOT_IN, mixin, right);
     }
 
@@ -337,7 +338,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @param right rhs of the comparison
      * @return this not in right
      */
-    public final BooleanExpression notIn(Expression<? extends T>... right) {
+    public BooleanExpression notIn(Expression<? extends T>... right) {
         return Expressions.booleanOperation(Ops.NOT_IN, mixin, Expressions.list(right));
     }
 

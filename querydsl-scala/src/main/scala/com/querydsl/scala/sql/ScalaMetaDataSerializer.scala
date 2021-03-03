@@ -17,8 +17,8 @@ package com.querydsl.scala.sql
 import java.util._
 import javax.inject.Inject
 
-import com.mysema.codegen.model._
-import com.mysema.codegen.{CodeWriter, ScalaWriter}
+import com.querydsl.codegen.utils.model._
+import com.querydsl.codegen.utils.{CodeWriter, ScalaWriter}
 import com.querydsl.codegen._
 import com.querydsl.scala.ScalaEntitySerializer
 import com.querydsl.sql._

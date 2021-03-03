@@ -18,6 +18,8 @@ import static org.junit.Assert.fail;
 
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -42,7 +44,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.Sets;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.MatchingFiltersFactory;
@@ -97,8 +98,8 @@ public class LuceneSerializerTest {
     private IndexWriter writer;
     private IndexSearcher searcher;
 
-    private static final Set<? extends Operator> UNSUPPORTED_OPERATORS = Sets.immutableEnumSet(Ops.STARTS_WITH_IC,
-            Ops.EQ_IGNORE_CASE, Ops.ENDS_WITH_IC, Ops.STRING_CONTAINS_IC);
+    private static final Set<? extends Operator> UNSUPPORTED_OPERATORS = Collections.unmodifiableSet(EnumSet.of(Ops.STARTS_WITH_IC,
+            Ops.EQ_IGNORE_CASE, Ops.ENDS_WITH_IC, Ops.STRING_CONTAINS_IC));
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 

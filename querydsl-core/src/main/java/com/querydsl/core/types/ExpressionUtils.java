@@ -15,11 +15,11 @@ package com.querydsl.core.types;
 
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryException;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code ExpressionUtils} provides utilities for constructing common operation instances. This class is
@@ -52,7 +52,7 @@ public final class ExpressionUtils {
      */
     public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
                                              Expression<?>... args) {
-        return operation(type, operator, ImmutableList.copyOf(args));
+        return operation(type, operator, Arrays.asList(args));
     }
 
     /**
@@ -65,7 +65,7 @@ public final class ExpressionUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Operation<T> operation(Class<? extends T> type, Operator operator,
-                                             ImmutableList<Expression<?>> args) {
+                                             List<Expression<?>> args) {
         if (type.equals(Boolean.class)) {
             return (Operation<T>) new PredicateOperation(operator, args);
         } else {
@@ -81,7 +81,7 @@ public final class ExpressionUtils {
      * @return operation expression
      */
     public static PredicateOperation predicate(Operator operator, Expression<?>... args) {
-        return predicate(operator, ImmutableList.copyOf(args));
+        return predicate(operator, Arrays.asList(args));
     }
 
     /**
@@ -91,7 +91,7 @@ public final class ExpressionUtils {
      * @param args operation arguments
      * @return operation expression
      */
-    public static PredicateOperation predicate(Operator operator, ImmutableList<Expression<?>> args) {
+    public static PredicateOperation predicate(Operator operator, List<Expression<?>> args) {
         return new PredicateOperation(operator, args);
     }
 
@@ -138,21 +138,7 @@ public final class ExpressionUtils {
      * @return template expression
      */
     public static PredicateTemplate predicateTemplate(String template, Object... args) {
-        return predicateTemplate(TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
-    }
-
-    /**
-     * Create a new Template expression
-     *
-     * @deprecated Use {@link #predicateTemplate(String, List)} instead.
-     *
-     * @param template template
-     * @param args template parameters
-     * @return template expression
-     */
-    @Deprecated
-    public static PredicateTemplate predicateTemplate(String template, ImmutableList<?> args) {
-        return predicateTemplate(TemplateFactory.DEFAULT.create(template), args);
+        return predicateTemplate(TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
     /**
@@ -174,21 +160,7 @@ public final class ExpressionUtils {
      * @return template expression
      */
     public static PredicateTemplate predicateTemplate(Template template, Object... args) {
-        return predicateTemplate(template, ImmutableList.copyOf(args));
-    }
-
-    /**
-     * Create a new Template expression
-     *
-     * @deprecated Use {@link #predicateTemplate(Template, List)} instead.
-     *
-     * @param template template
-     * @param args template parameters
-     * @return template expression
-     */
-    @Deprecated
-    public static PredicateTemplate predicateTemplate(Template template, ImmutableList<?> args) {
-        return new PredicateTemplate(template, args);
+        return predicateTemplate(template, Arrays.asList(args));
     }
 
     /**
@@ -199,7 +171,7 @@ public final class ExpressionUtils {
      * @return template expression
      */
     public static PredicateTemplate predicateTemplate(Template template, List<?> args) {
-        return new PredicateTemplate(template, ImmutableList.copyOf(args));
+        return new PredicateTemplate(template, args);
     }
 
     /**
@@ -211,22 +183,7 @@ public final class ExpressionUtils {
      * @return template expression
      */
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, Object... args) {
-        return template(cl, TemplateFactory.DEFAULT.create(template), ImmutableList.copyOf(args));
-    }
-
-    /**
-     * Create a new Template expression
-     *
-     * @deprecated Use {@link #template(Class, String, List)} instead.
-     *
-     * @param cl type of expression
-     * @param template template
-     * @param args template parameters
-     * @return template expression
-     */
-    @Deprecated
-    public static <T> TemplateExpression<T> template(Class<? extends T> cl, String template, ImmutableList<?> args) {
-        return template(cl, TemplateFactory.DEFAULT.create(template), args);
+        return template(cl, TemplateFactory.DEFAULT.create(template), Arrays.asList(args));
     }
 
     /**
@@ -250,27 +207,7 @@ public final class ExpressionUtils {
      * @return template expression
      */
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, Object... args) {
-        return template(cl, template, ImmutableList.copyOf(args));
-    }
-
-    /**
-     * Create a new Template expression
-     *
-     * @deprecated Use {@link #template(Class, Template, List)} instead.
-     *
-     * @param cl type of expression
-     * @param template template
-     * @param args template parameters
-     * @return template expression
-     */
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, ImmutableList<?> args) {
-        if (cl.equals(Boolean.class)) {
-            return (TemplateExpression<T>) new PredicateTemplate(template, args);
-        } else {
-            return new TemplateExpressionImpl<T>(cl, template, args);
-        }
+        return template(cl, template, Arrays.asList(args));
     }
 
     /**
@@ -284,9 +221,9 @@ public final class ExpressionUtils {
     @SuppressWarnings("unchecked")
     public static <T> TemplateExpression<T> template(Class<? extends T> cl, Template template, List<?> args) {
         if (cl.equals(Boolean.class)) {
-            return (TemplateExpression<T>) new PredicateTemplate(template, ImmutableList.copyOf(args));
+            return (TemplateExpression<T>) new PredicateTemplate(template, args);
         } else {
-            return new TemplateExpressionImpl<T>(cl, template, ImmutableList.copyOf(args));
+            return new TemplateExpressionImpl<T>(cl, template, args);
         }
     }
 
@@ -299,7 +236,7 @@ public final class ExpressionUtils {
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> all(CollectionExpression<?, ? super T> col) {
         return new OperationImpl<T>((Class<T>) col.getParameter(0), Ops.QuantOps.ALL,
-                ImmutableList.<Expression<?>>of(col));
+                Collections.singletonList(col));
     }
 
     /**
@@ -311,7 +248,7 @@ public final class ExpressionUtils {
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> any(CollectionExpression<?, ? super T> col) {
         return new OperationImpl<T>((Class<T>) col.getParameter(0), Ops.QuantOps.ANY,
-                ImmutableList.<Expression<?>>of(col));
+                Collections.singletonList(col));
     }
 
     /**
@@ -322,7 +259,7 @@ public final class ExpressionUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> all(SubQueryExpression<? extends T> col) {
-        return new OperationImpl<T>(col.getType(), Ops.QuantOps.ALL, ImmutableList.<Expression<?>>of(col));
+        return new OperationImpl<T>(col.getType(), Ops.QuantOps.ALL, Collections.singletonList(col));
     }
 
     /**
@@ -333,7 +270,7 @@ public final class ExpressionUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Expression<T> any(SubQueryExpression<? extends T> col) {
-        return new OperationImpl<T>(col.getType(), Ops.QuantOps.ANY, ImmutableList.<Expression<?>>of(col));
+        return new OperationImpl<T>(col.getType(), Ops.QuantOps.ANY, Collections.singletonList(col));
     }
 
     /**
@@ -623,7 +560,7 @@ public final class ExpressionUtils {
      * @return list expression
      */
     public static <T> Expression<T> list(Class<T> clazz, Expression<?>... exprs) {
-        return list(clazz, ImmutableList.copyOf(exprs));
+        return list(clazz, Arrays.asList(exprs));
     }
 
 
@@ -801,15 +738,9 @@ public final class ExpressionUtils {
      * @param args elements
      * @return list with distinct elements
      */
-    public static ImmutableList<Expression<?>> distinctList(Expression<?>... args) {
-        final ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
-        final Set<Expression<?>> set = new HashSet<Expression<?>>(args.length);
-        for (Expression<?> arg : args) {
-            if (set.add(arg)) {
-                builder.add(arg);
-            }
-        }
-        return builder.build();
+    public static List<Expression<?>> distinctList(Expression<?>... args) {
+        final Set<Expression<?>> set = new LinkedHashSet<>(Arrays.asList(args));
+        return CollectionUtils.unmodifiableList(new ArrayList<>(set));
     }
 
     /**
@@ -818,17 +749,12 @@ public final class ExpressionUtils {
      * @param args elements
      * @return list with distinct elements
      */
-    public static ImmutableList<Expression<?>> distinctList(Expression<?>[]... args) {
-        final ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
-        final Set<Expression<?>> set = new HashSet<Expression<?>>();
+    public static List<Expression<?>> distinctList(Expression<?>[]... args) {
+        final Set<Expression<?>> set = new LinkedHashSet<>();
         for (Expression<?>[] arr : args) {
-            for (Expression<?> arg : arr) {
-                if (set.add(arg)) {
-                    builder.add(arg);
-                }
-            }
+            Collections.addAll(set, arr);
         }
-        return builder.build();
+        return CollectionUtils.unmodifiableList(new ArrayList<>(set));
     }
 
     /**

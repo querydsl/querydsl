@@ -70,13 +70,13 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
         serializer.serializeForDelete(queryMixin.getMetadata());
-        Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
         for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()) {
             query.setLockMode(entry.getKey().toString(), entry.getValue());
         }
-        HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
+        HibernateUtil.setConstants(query, serializer.getConstantToNamedLabel(), serializer.getConstantToNumberedLabel(),
+                queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
 

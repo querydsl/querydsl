@@ -15,7 +15,7 @@ package com.querydsl.core;
 
 import java.io.Serializable;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;

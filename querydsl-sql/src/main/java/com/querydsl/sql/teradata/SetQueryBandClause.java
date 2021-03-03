@@ -17,14 +17,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
-import javax.inject.Provider;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLBindings;
 import com.querydsl.sql.SQLTemplates;
@@ -40,7 +37,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
 
     private boolean forSession = true;
 
-    private final Map<String, String> values = Maps.newLinkedHashMap();
+    private final Map<String, String> values = new LinkedHashMap<>();
 
     private transient String queryString;
 
@@ -54,7 +51,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
         super(configuration, connection);
     }
 
-    public SetQueryBandClause(Provider<Connection> connection, Configuration configuration) {
+    public SetQueryBandClause(Supplier<Connection> connection, Configuration configuration) {
         super(configuration, connection);
     }
 
@@ -97,7 +94,7 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
             }
             return 1;
         } catch (SQLException e) {
-            List<Object> bindings = parameter != null ? ImmutableList.<Object>of(parameter) : ImmutableList.of();
+            List<Object> bindings = parameter != null ? Collections.singletonList(parameter) : Collections.emptyList();
             throw configuration.translate(queryString, bindings, e);
         } finally {
             if (stmt != null) {
@@ -112,9 +109,9 @@ public class SetQueryBandClause extends AbstractSQLClause<SetQueryBandClause> {
         if (configuration.getUseLiterals() || forSession) {
             bindings = new SQLBindings(toString(), Collections.emptyList());
         } else {
-            bindings = new SQLBindings(toString(), Lists.<Object>newArrayList(parameter));
+            bindings = new SQLBindings(toString(), Collections.singletonList(parameter));
         }
-        return ImmutableList.of(bindings);
+        return Collections.singletonList(bindings);
     }
 
     @Override

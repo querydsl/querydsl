@@ -13,9 +13,9 @@
  */
 package com.querydsl.spatial.jts;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.vividsolutions.jts.geom.Point;
 
@@ -34,10 +34,10 @@ public class JTSPointOperation<T extends Point> extends JTSPointExpression<T> im
     private final OperationImpl<T> opMixin;
 
     protected JTSPointOperation(Class<T> type, Operator op, Expression<?>... args) {
-        this(type, op, ImmutableList.copyOf(args));
+        this(type, op, Arrays.asList(args));
     }
 
-    protected JTSPointOperation(Class<T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected JTSPointOperation(Class<T> type, Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>) mixin;
     }

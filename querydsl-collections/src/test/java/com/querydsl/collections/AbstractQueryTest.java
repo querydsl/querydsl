@@ -84,9 +84,7 @@ public abstract class AbstractQueryTest {
         @Override
         public List<T> fetch() {
             List<T> rv = super.fetch();
-            for (T o : rv) {
-                res.add(o);
-            }
+            res.addAll(rv);
             return rv;
         }
 

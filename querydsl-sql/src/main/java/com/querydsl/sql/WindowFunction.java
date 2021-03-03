@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
@@ -62,7 +61,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
     public SimpleExpression<A> getValue() {
         if (value == null) {
             int size = 0;
-            ImmutableList.Builder<Expression<?>> args = ImmutableList.builder();
+            List<Expression<?>> args = new ArrayList<>();
             StringBuilder builder = new StringBuilder();
             builder.append("{0} over (");
             args.add(target);
@@ -74,7 +73,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                     if (!first) {
                         builder.append(", ");
                     }
-                    builder.append("{" + size + "}");
+                    builder.append("{").append(size).append("}");
                     args.add(expr);
                     size++;
                     first = false;
@@ -86,7 +85,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                     builder.append(" ");
                 }
                 builder.append(ORDER_BY);
-                builder.append("{" + size + "}");
+                builder.append("{").append(size).append("}");
                 args.add(ExpressionUtils.orderBy(orderBy));
                 size++;
             }
@@ -96,7 +95,7 @@ public class WindowFunction<A> extends MutableExpressionBase<A> {
                 size += rowsOrRangeArgs.size();
             }
             builder.append(")");
-            value = Expressions.template(target.getType(), builder.toString(), args.build());
+            value = Expressions.template(target.getType(), builder.toString(), Collections.unmodifiableList(args));
         }
         return value;
     }

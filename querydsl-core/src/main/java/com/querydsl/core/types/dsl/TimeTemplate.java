@@ -15,7 +15,6 @@ package com.querydsl.core.types.dsl;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -36,7 +35,7 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
         this.templateMixin = mixin;
     }
 
-    protected TimeTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
+    protected TimeTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;
     }

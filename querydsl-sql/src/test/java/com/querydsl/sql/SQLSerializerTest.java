@@ -20,6 +20,7 @@ import static org.junit.Assert.assertFalse;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -206,7 +207,7 @@ public class SQLSerializerTest {
         QSurvey s1 = new QSurvey("s1");
         serializer.handle(s1.name.startsWith("X"));
         assertEquals("s1.NAME like ? escape '\\'", serializer.toString());
-        assertEquals(Arrays.asList("X%"), serializer.getConstants());
+        assertEquals(Collections.singletonList("X%"), serializer.getConstants());
     }
 
     @Test

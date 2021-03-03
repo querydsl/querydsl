@@ -15,7 +15,6 @@ package com.querydsl.core.types.dsl;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -35,7 +34,7 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
         this.templateMixin = mixin;
     }
 
-    protected StringTemplate(Template template, ImmutableList<?> args) {
+    protected StringTemplate(Template template, List<?> args) {
         super(ExpressionUtils.template(String.class, template, args));
         this.templateMixin = (TemplateExpressionImpl<String>) mixin;
     }

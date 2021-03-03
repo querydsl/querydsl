@@ -13,20 +13,10 @@
  */
 package com.querydsl.apt;
 
-import java.util.*;
-
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
-
-import com.google.common.collect.ImmutableList;
-import com.mysema.codegen.model.Constructor;
-import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.model.Constructor;
+import com.querydsl.codegen.utils.model.Parameter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.codegen.EntityType;
 import com.querydsl.codegen.Property;
 import com.querydsl.codegen.QueryTypeFactory;
@@ -36,6 +26,21 @@ import com.querydsl.core.annotations.QueryInit;
 import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.BeanUtils;
+
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * {@code TypeElementHandler} is an APT visitor for entity types
@@ -161,7 +166,7 @@ public class TypeElementHandler {
         // inits
         List<String> inits = Collections.emptyList();
         if (annotations.isAnnotationPresent(QueryInit.class)) {
-            inits = ImmutableList.copyOf(annotations.getAnnotation(QueryInit.class).value());
+            inits = Arrays.asList(annotations.getAnnotation(QueryInit.class).value());
         }
 
         return new Property(entityType, name, propertyType, inits);

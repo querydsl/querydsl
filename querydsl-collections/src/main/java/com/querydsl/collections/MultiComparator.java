@@ -16,14 +16,13 @@ package com.querydsl.collections;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import com.mysema.codegen.Evaluator;
+import com.querydsl.codegen.utils.Evaluator;
 import com.querydsl.core.util.NullSafeComparableComparator;
 
 /**
  * {@code MultiComparator} compares arrays
  *
  * @param <T> element type
- *
  * @author tiwe
  */
 public class MultiComparator<T> implements Comparator<T>, Serializable {
@@ -35,16 +34,19 @@ public class MultiComparator<T> implements Comparator<T>, Serializable {
 
     private final boolean[] asc;
 
+    private final boolean[] nullsLast;
+
     private final transient Evaluator<Object[]> ev;
 
-    public MultiComparator(Evaluator<Object[]> ev, boolean[] directions) {
+    public MultiComparator(Evaluator<Object[]> ev, boolean[] directions, boolean[] nullsLast) {
         this.ev = ev;
         this.asc = directions.clone();
+        this.nullsLast = nullsLast.clone();
     }
 
     @Override
     public int compare(T o1, T o2) {
-        if (o1.getClass().isArray()) {
+        if (o1 instanceof Object[]) {
             return innerCompare(ev.evaluate((Object[]) o1), ev.evaluate((Object[]) o2));
         } else {
             return innerCompare(ev.evaluate(o1), ev.evaluate(o2));
@@ -53,16 +55,16 @@ public class MultiComparator<T> implements Comparator<T>, Serializable {
 
     private int innerCompare(Object[] o1, Object[] o2) {
         for (int i = 0; i < o1.length; i++) {
-            int res;
             if (o1[i] == null) {
-                res = o2[i] == null ? 0 : -1;
+                return o2[i] == null ? 0 : nullsLast[i] ? 1 : -1;
             } else if (o2[i] == null) {
-                res = 1;
+                return nullsLast[i] ? -1 : 1;
             } else {
+                int res;
                 res = naturalOrder.compare(o1[i], o2[i]);
-            }
-            if (res != 0) {
-                return asc[i] ? res : -res;
+                if (res != 0) {
+                    return asc[i] ? res : -res;
+                }
             }
         }
         return 0;

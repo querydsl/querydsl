@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class BeanMapTest {
 
@@ -78,7 +78,7 @@ public class BeanMapTest {
 
     @Test
     public void keySet() {
-        assertEquals(Sets.newHashSet("id", "class", "firstName", "lastName"), beanMap.keySet());
+        assertEquals(new HashSet<>(Arrays.asList("id", "class", "firstName", "lastName")), beanMap.keySet());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class BeanMapTest {
     @Ignore
     public void values() {
         beanMap.put("firstName", "John");
-        assertEquals(Lists.newArrayList(0, null, Entity.class, "John"), beanMap.values());
+        assertEquals(Arrays.asList(0, null, Entity.class, "John"), beanMap.values());
     }
 
     @Test

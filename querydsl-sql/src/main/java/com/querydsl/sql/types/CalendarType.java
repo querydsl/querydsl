@@ -14,6 +14,8 @@
 package com.querydsl.sql.types;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Calendar;
 
 /**
@@ -34,7 +36,7 @@ public class CalendarType extends AbstractDateTimeType<Calendar> {
 
     @Override
     public String getLiteral(Calendar value) {
-        return dateTimeFormatter.print(value.getTimeInMillis());
+        return dateTimeFormatter.format(LocalDateTime.ofInstant(value.toInstant(), ZoneOffset.UTC));
     }
 
     @Override

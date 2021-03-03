@@ -13,9 +13,9 @@
  */
 package com.querydsl.codegen;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.Type;
 
 /**
  * {@code Supertype} defines a tuple of a {@link Type} and an optional {@link EntityType} instance used for

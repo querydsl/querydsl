@@ -14,17 +14,18 @@
 package com.querydsl.sql;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code ForeignKey} defines a foreign key on a table to another table
@@ -40,22 +41,22 @@ public final class ForeignKey<E> implements Serializable, ProjectionRole<Tuple> 
 
     private final RelationalPath<?> entity;
 
-    private final ImmutableList<? extends Path<?>> localColumns;
+    private final List<? extends Path<?>> localColumns;
 
-    private final ImmutableList<String> foreignColumns;
+    private final List<String> foreignColumns;
 
     @Nullable
     private transient volatile Expression<Tuple> mixin;
 
     public ForeignKey(RelationalPath<?> entity, Path<?> localColumn, String foreignColumn) {
-        this(entity, ImmutableList.of(localColumn), ImmutableList.of(foreignColumn));
+        this(entity, Collections.singletonList(localColumn), Collections.singletonList(foreignColumn));
     }
 
-    public ForeignKey(RelationalPath<?> entity, ImmutableList<? extends Path<?>> localColumns,
-            ImmutableList<String> foreignColumns) {
+    public ForeignKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns,
+            List<String> foreignColumns) {
         this.entity = entity;
-        this.localColumns = localColumns;
-        this.foreignColumns = foreignColumns;
+        this.localColumns = CollectionUtils.unmodifiableList(localColumns);
+        this.foreignColumns = CollectionUtils.unmodifiableList(foreignColumns);
     }
 
     public RelationalPath<?> getEntity() {

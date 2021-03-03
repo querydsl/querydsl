@@ -13,22 +13,18 @@
  */
 package com.querydsl.codegen;
 
-import static com.mysema.codegen.Symbols.*;
+import static com.querydsl.codegen.utils.Symbols.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.*;
+import java.util.function.Function;
 
-import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.model.*;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.model.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 
@@ -40,8 +36,6 @@ import com.querydsl.core.types.dsl.*;
  */
 public class EntitySerializer implements Serializer {
 
-    private static final Joiner JOINER = Joiner.on("\", \"");
-
     private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class));
 
     private static final Parameter PATH_INITS = new Parameter("inits", new ClassType(PathInits.class));
@@ -52,16 +46,34 @@ public class EntitySerializer implements Serializer {
 
     protected final Collection<String> keywords;
 
+    protected final Class<? extends Annotation> generatedAnnotationClass;
+
+    /**
+     * Create a new {@code EntitySerializer} instance
+     *
+     * @param mappings type mappings to be used
+     * @param keywords keywords to be used
+     * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
+     * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
+     */
+    @Inject
+    public EntitySerializer(
+            TypeMappings mappings,
+            @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+        this.typeMappings = mappings;
+        this.keywords = keywords;
+        this.generatedAnnotationClass = generatedAnnotationClass;
+    }
+
     /**
      * Create a new {@code EntitySerializer} instance
      *
      * @param mappings type mappings to be used
      * @param keywords keywords to be used
      */
-    @Inject
-    public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords) {
-        this.typeMappings = mappings;
-        this.keywords = keywords;
+    public EntitySerializer(TypeMappings mappings, Collection<String> keywords) {
+        this(mappings, keywords, GeneratedAnnotationResolver.resolveDefault());
     }
 
     private boolean superTypeHasEntityFields(EntityType model) {
@@ -310,7 +322,7 @@ public class EntitySerializer implements Serializer {
             writer.annotation(annotation);
         }
 
-        writer.line("@Generated(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));
@@ -337,7 +349,7 @@ public class EntitySerializer implements Serializer {
     protected void introFactoryMethods(CodeWriter writer, final EntityType model) throws IOException {
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
-        Set<Integer> sizes = Sets.newHashSet();
+        Set<Integer> sizes = new HashSet<>();
 
         for (Constructor c : model.getConstructors()) {
             // begin
@@ -387,7 +399,7 @@ public class EntitySerializer implements Serializer {
             writer.append("}");
 
             for (Parameter p : c.getParameters()) {
-                writer.append(COMMA + p.getName());
+                writer.append(COMMA).append(p.getName());
             }
 
             // end
@@ -420,7 +432,10 @@ public class EntitySerializer implements Serializer {
         writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = Lists.<Class<?>>newArrayList(PathMetadata.class, Generated.class);
+        List<Class<?>> classes = new ArrayList<>();
+        classes.add(PathMetadata.class);
+        classes.add(generatedAnnotationClass);
+
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
         }
@@ -433,7 +448,7 @@ public class EntitySerializer implements Serializer {
         if (model.hasEntityFields() || model.hasInits()) {
             inits = true;
         } else {
-            Set<TypeCategory> collections = Sets.newHashSet(TypeCategory.COLLECTION, TypeCategory.LIST, TypeCategory.SET);
+            Set<TypeCategory> collections = EnumSet.of(TypeCategory.COLLECTION, TypeCategory.LIST, TypeCategory.SET);
             for (Property property : model.getProperties()) {
                 if (!property.isInherited() && collections.contains(property.getType().getCategory())) {
                     inits = true;
@@ -444,11 +459,11 @@ public class EntitySerializer implements Serializer {
         if (inits) {
             classes.add(PathInits.class);
         }
-        writer.imports(classes.toArray(new Class<?>[classes.size()]));
+        writer.imports(classes.toArray(new Class<?>[0]));
     }
 
     private Set<String> getUsedClassNames(EntityType model) {
-        Set<String> result = Sets.newHashSet();
+        Set<String> result = new HashSet<>();
         result.add(model.getSimpleName());
         for (Property property : model.getProperties()) {
             result.add(property.getType().getSimpleName());
@@ -490,7 +505,7 @@ public class EntitySerializer implements Serializer {
                 packages.add(delegate.getDelegateType().getPackageName());
             }
         }
-        writer.importPackages(packages.toArray(new String[packages.size()]));
+        writer.importPackages(packages.toArray(new String[0]));
     }
 
     protected void introInits(CodeWriter writer, EntityType model) throws IOException {
@@ -502,7 +517,7 @@ public class EntitySerializer implements Serializer {
         }
         if (!inits.isEmpty()) {
             inits.add(0, STAR);
-            String initsAsString = QUOTE + JOINER.join(inits) + QUOTE;
+            String initsAsString = QUOTE + String.join("\", \"", inits) + QUOTE;
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
         } else if (model.hasEntityFields() || superTypeHasEntityFields(model)) {
             writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT2");
@@ -558,7 +573,7 @@ public class EntitySerializer implements Serializer {
 
     private void delegate(final EntityType model, Delegate delegate, SerializerConfig config,
             CodeWriter writer) throws IOException {
-        Parameter[] params = delegate.getParameters().toArray(new Parameter[delegate.getParameters().size()]);
+        Parameter[] params = delegate.getParameters().toArray(new Parameter[0]);
         writer.beginPublicMethod(delegate.getReturnType(), delegate.getName(), params);
 
         // body start
@@ -576,7 +591,7 @@ public class EntitySerializer implements Serializer {
             }
         }
         for (Parameter parameter : delegate.getParameters()) {
-            writer.append(COMMA + parameter.getName());
+            writer.append(COMMA).append(parameter.getName());
         }
         writer.append(");\n");
 
@@ -625,12 +640,12 @@ public class EntitySerializer implements Serializer {
         StringBuilder value = new StringBuilder();
         if (field.isInherited() && superType != null) {
             if (!superType.getEntityType().hasEntityFields()) {
-                value.append("_super." + field.getEscapedName());
+                value.append("_super.").append(field.getEscapedName());
             }
         } else {
-            value.append(factoryMethod + "(\"" + field.getName() + QUOTE);
+            value.append(factoryMethod).append("(\"").append(field.getName()).append(QUOTE);
             for (String arg : args) {
-                value.append(COMMA + arg);
+                value.append(COMMA).append(arg);
             }
             value.append(")");
         }

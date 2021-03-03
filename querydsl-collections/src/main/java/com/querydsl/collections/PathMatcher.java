@@ -13,15 +13,15 @@
  */
 package com.querydsl.collections;
 
-import static org.hamcrest.core.IsNull.notNullValue;
-
+import com.querydsl.core.types.Path;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import com.google.common.base.Function;
-import com.querydsl.core.types.Path;
+import java.util.function.Function;
+
+import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
  * Matches based on the current value of a path.
@@ -41,7 +41,7 @@ public class PathMatcher<T, V> extends TypeSafeDiagnosingMatcher<T> {
     private final Path<V> path;
 
     public PathMatcher(Path<V> path, Matcher<? super V> matcher) {
-        this(path, matcher, GuavaHelpers.<T,V>wrap(path));
+        this(path, matcher, FunctionalHelpers.<T,V>wrap(path));
     }
 
     public PathMatcher(Path<V> path, Matcher<? super V> matcher, Function<T, V> accessor) {

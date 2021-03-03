@@ -14,8 +14,7 @@
 package com.querydsl.sql;
 
 import java.sql.Connection;
-
-import javax.inject.Provider;
+import java.util.function.Supplier;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;
@@ -38,9 +37,9 @@ public abstract class AbstractSQLQueryFactory<Q extends SQLCommonQuery<?>> imple
 
     protected final Configuration configuration;
 
-    protected final Provider<Connection> connection;
+    protected final Supplier<Connection> connection;
 
-    public AbstractSQLQueryFactory(Configuration configuration, Provider<Connection> connProvider) {
+    public AbstractSQLQueryFactory(Configuration configuration, Supplier<Connection> connProvider) {
         this.configuration = configuration;
         this.connection = connProvider;
     }

@@ -17,12 +17,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.logging.Logger;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.hql.internal.ast.HqlParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
@@ -38,7 +37,7 @@ import antlr.collections.AST;
 
 class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
 
-    private static final Logger logger = LoggerFactory.getLogger(QueryHelper.class);
+    private static final Logger logger = Logger.getLogger(QueryHelper.class.getName());
 
     public QueryHelper(JPQLTemplates templates) {
         this(new DefaultQueryMetadata(), templates);
@@ -75,7 +74,7 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
 
     public void parse() throws RecognitionException, TokenStreamException {
         String input = toString();
-        logger.debug("input: " + input.replace('\n', ' '));
+        logger.fine("input: " + input.replace('\n', ' '));
         HqlParser parser = HqlParser.getInstance(input);
         parser.setFilter(false);
         parser.statement();

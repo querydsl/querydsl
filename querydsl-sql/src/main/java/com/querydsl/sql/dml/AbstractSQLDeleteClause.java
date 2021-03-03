@@ -17,16 +17,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.function.Supplier;
 
-import javax.annotation.Nonnegative;
-import javax.inject.Provider;
+import org.jetbrains.annotations.Range;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.DeleteClause;
@@ -47,7 +42,7 @@ import com.querydsl.sql.SQLSerializer;
  */
 public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<C>> extends AbstractSQLClause<C> implements DeleteClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractSQLDeleteClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractSQLDeleteClause.class.getName());
 
     protected static final ValidatingVisitor validatingVisitor = new ValidatingVisitor("Undeclared path '%s'. " +
             "A delete operation can only reference a single table. " +
@@ -70,7 +65,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
         metadata.setValidatingVisitor(validatingVisitor);
     }
 
-    public AbstractSQLDeleteClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+    public AbstractSQLDeleteClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
@@ -84,7 +79,6 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -97,7 +91,6 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -108,7 +101,6 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired =  true)
     public C addBatch() {
         batches.add(metadata);
         metadata = new DefaultQueryMetadata();
@@ -156,7 +148,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
         context.addSQL(createBindings(metadata, serializer));
         listeners.rendered(context);
 
-        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+        Map<String, PreparedStatement> stmts = new HashMap<>();
 
         // add first batch
         listeners.prePrepare(context);
@@ -238,26 +230,24 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeDelete(metadata, entity);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (QueryMetadata metadata : batches) {
                 SQLSerializer serializer = createSerializer();
                 serializer.serializeDelete(metadata, entity);
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return Collections.unmodifiableList(builder);
         }
     }
 
-    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C where(Predicate p) {
         metadata.addWhere(p);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
     public C where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);
@@ -265,8 +255,7 @@ public abstract class AbstractSQLDeleteClause<C extends AbstractSQLDeleteClause<
         return (C) this;
     }
 
-    @WithBridgeMethods(value = SQLDeleteClause.class, castRequired = true)
-    public C limit(@Nonnegative long limit) {
+    public C limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
     }

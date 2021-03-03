@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.Type;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class Generic2Test {

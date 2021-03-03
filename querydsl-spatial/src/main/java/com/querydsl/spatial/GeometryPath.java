@@ -49,8 +49,6 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
 
     private transient volatile PolygonPath<Polygon> polygon;
 
-    private transient volatile PolyhedralSurfacePath<PolyHedralSurface> polyhedralSurface;
-
     protected GeometryPath(PathImpl<T> mixin) {
         super(mixin);
         this.pathMixin = mixin;
@@ -134,13 +132,6 @@ public class GeometryPath<T extends Geometry> extends GeometryExpression<T> impl
             polygon = new PolygonPath<Polygon>(pathMixin.getMetadata());
         }
         return polygon;
-    }
-
-    public PolyhedralSurfacePath<PolyHedralSurface> asPolyHedralSurface() {
-        if (polyhedralSurface == null) {
-            polyhedralSurface = new PolyhedralSurfacePath<PolyHedralSurface>(pathMixin.getMetadata());
-        }
-        return polyhedralSurface;
     }
 
     @Override

@@ -14,11 +14,10 @@
 package com.querydsl.core.types;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
-import com.google.common.base.Objects;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
 /**
  * {@code PathMetadata} provides metadata for {@link Path} expressions.
@@ -55,7 +54,7 @@ public final class PathMetadata implements Serializable {
             PathMetadata p = (PathMetadata) obj;
             return element.equals(p.element) &&
                     pathType == p.pathType &&
-                    Objects.equal(parent, p.parent);
+                    Objects.equals(parent, p.parent);
         } else {
             return false;
         }

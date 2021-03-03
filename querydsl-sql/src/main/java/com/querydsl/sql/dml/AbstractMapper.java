@@ -13,9 +13,9 @@
  */
 package com.querydsl.sql.dml;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.Path;
 import com.querydsl.sql.RelationalPath;
 
@@ -29,7 +29,7 @@ import com.querydsl.sql.RelationalPath;
 public abstract class AbstractMapper<T> implements Mapper<T> {
 
     protected Map<String, Path<?>> getColumns(RelationalPath<?> path) {
-        Map<String, Path<?>> columns = Maps.newLinkedHashMap();
+        Map<String, Path<?>> columns = new LinkedHashMap<>();
         for (Path<?> column : path.getColumns()) {
             columns.put(column.getMetadata().getName(), column);
         }
