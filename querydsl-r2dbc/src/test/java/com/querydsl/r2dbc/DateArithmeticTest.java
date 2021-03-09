@@ -1,6 +1,5 @@
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.testutil.ReportingOnly;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.DateTimePath;
@@ -9,6 +8,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Category(ReportingOnly.class)
@@ -22,7 +22,7 @@ public class DateArithmeticTest {
 
     @Test
     public void test() {
-        List<SQLTemplates> list = Lists.newArrayList();
+        List<SQLTemplates> list = new ArrayList<>();
         list.add(new H2Templates());
         list.add(new MySQLTemplates());
         list.add(new PostgreSQLTemplates());
@@ -30,7 +30,7 @@ public class DateArithmeticTest {
         list.add(new SQLServer2005Templates());
         list.add(new SQLServer2012Templates());
 
-        List<Expression<?>> exprs = Lists.newArrayList();
+        List<Expression<?>> exprs = new ArrayList<>();
         DateTimePath<LocalDateTime> path = Expressions.dateTimePath(LocalDateTime.class, "date");
         exprs.add(R2DBCExpressions.addYears(path, 2));
         exprs.add(R2DBCExpressions.addMonths(path, 2));

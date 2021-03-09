@@ -19,6 +19,7 @@ import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.Keywords;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLExpressions;
 import com.querydsl.sql.WindowFunction;

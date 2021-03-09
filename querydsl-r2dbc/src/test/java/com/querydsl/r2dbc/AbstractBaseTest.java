@@ -22,6 +22,7 @@ import com.querydsl.r2dbc.dml.R2DBCInsertClause;
 import com.querydsl.r2dbc.dml.R2DBCUpdateClause;
 import com.querydsl.sql.RelationalPath;
 import io.r2dbc.spi.Connection;
+import org.jetbrains.annotations.Nullable;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
@@ -31,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

@@ -13,8 +13,6 @@
  */
 package com.querydsl.r2dbc.dml;
 
-import com.google.common.collect.ImmutableList;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.ReactiveDeleteClause;
@@ -32,14 +30,14 @@ import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLBindings;
 import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.Statement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.Range;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nonnegative;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Provides a base class for dialect-specific DELETE clauses.
@@ -49,7 +47,7 @@ import java.util.List;
  */
 public abstract class AbstractR2DBCDeleteClause<C extends AbstractR2DBCDeleteClause<C>> extends AbstractR2DBCClause<C> implements ReactiveDeleteClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractR2DBCDeleteClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractR2DBCDeleteClause.class.getName());
 
     protected static final ValidatingVisitor validatingVisitor = new ValidatingVisitor("Undeclared path '%s'. " +
             "A delete operation can only reference a single table. " +
@@ -86,7 +84,6 @@ public abstract class AbstractR2DBCDeleteClause<C extends AbstractR2DBCDeleteCla
      * @param flag     query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCDeleteClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -99,7 +96,6 @@ public abstract class AbstractR2DBCDeleteClause<C extends AbstractR2DBCDeleteCla
      * @param flag     query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCDeleteClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -110,7 +106,6 @@ public abstract class AbstractR2DBCDeleteClause<C extends AbstractR2DBCDeleteCla
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCDeleteClause.class, castRequired = true)
     public C addBatch() {
         batches.add(metadata);
         metadata = new DefaultQueryMetadata();
@@ -218,26 +213,24 @@ public abstract class AbstractR2DBCDeleteClause<C extends AbstractR2DBCDeleteCla
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer(true);
             serializer.serializeDelete(metadata, entity);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         }
 
-        ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+        List<SQLBindings> builder = new ArrayList<>();
         for (QueryMetadata metadata : batches) {
             SQLSerializer serializer = createSerializer(true);
             serializer.serializeDelete(metadata, entity);
             builder.add(createBindings(metadata, serializer));
         }
-        return builder.build();
+        return Collections.unmodifiableList(builder);
     }
 
-    @WithBridgeMethods(value = R2DBCDeleteClause.class, castRequired = true)
     public C where(Predicate p) {
         metadata.addWhere(p);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCDeleteClause.class, castRequired = true)
     public C where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);
@@ -245,8 +238,7 @@ public abstract class AbstractR2DBCDeleteClause<C extends AbstractR2DBCDeleteCla
         return (C) this;
     }
 
-    @WithBridgeMethods(value = R2DBCDeleteClause.class, castRequired = true)
-    public C limit(@Nonnegative long limit) {
+    public C limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
     }

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * Defines reserved keywords for the supported dialects
  */
-final class Keywords {
+public final class Keywords {
 
     private Keywords() { }
 

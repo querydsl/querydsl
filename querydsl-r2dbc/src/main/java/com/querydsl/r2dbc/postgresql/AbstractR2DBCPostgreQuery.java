@@ -13,7 +13,6 @@
  */
 package com.querydsl.r2dbc.postgresql;
 
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -49,7 +48,6 @@ public abstract class AbstractR2DBCPostgreQuery<T, C extends AbstractR2DBCPostgr
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCPostgreQuery.class, castRequired = true)
     public C forShare() {
         // global forShare support was added later, delegating to super implementation
         return super.forShare();
@@ -61,7 +59,6 @@ public abstract class AbstractR2DBCPostgreQuery<T, C extends AbstractR2DBCPostgr
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCPostgreQuery.class, castRequired = true)
     public C noWait() {
         QueryFlag noWaitFlag = configuration.getTemplates().getNoWaitFlag();
         return addFlag(noWaitFlag);
@@ -73,7 +70,6 @@ public abstract class AbstractR2DBCPostgreQuery<T, C extends AbstractR2DBCPostgr
      * @param paths tables
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCPostgreQuery.class, castRequired = true)
     public C of(RelationalPath<?>... paths) {
         StringBuilder builder = new StringBuilder(" of ");
         for (RelationalPath<?> path : paths) {
@@ -91,7 +87,6 @@ public abstract class AbstractR2DBCPostgreQuery<T, C extends AbstractR2DBCPostgr
      * @param exprs
      * @return
      */
-    @WithBridgeMethods(value = R2DBCPostgreQuery.class, castRequired = true)
     public C distinctOn(Expression<?>... exprs) {
         return addFlag(Position.AFTER_SELECT,
                 Expressions.template(Object.class, "distinct on({0}) ",

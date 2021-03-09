@@ -13,15 +13,16 @@
  */
 package com.querydsl.r2dbc.dml;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.util.ReflectionUtils;
 import com.querydsl.r2dbc.types.Null;
 import com.querydsl.sql.RelationalPath;
+import com.querydsl.sql.dml.AbstractMapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -50,7 +51,7 @@ public class DefaultMapper extends AbstractMapper<Object> {
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> entity, Object bean) {
         try {
-            Map<Path<?>, Object> values = Maps.newLinkedHashMap();
+            Map<Path<?>, Object> values = new LinkedHashMap<>();
             Class<?> beanClass = bean.getClass();
             Map<String, Path<?>> columns = getColumns(entity);
             // populate in column order

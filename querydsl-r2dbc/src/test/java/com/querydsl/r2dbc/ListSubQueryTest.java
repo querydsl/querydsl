@@ -1,12 +1,12 @@
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.Sets;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.r2dbc.domain.QSurvey;
 import org.junit.Test;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +20,7 @@ public class ListSubQueryTest {
         SubQueryExpression<Tuple> query1 = R2DBCExpressions.select(survey.all()).from(survey);
         SubQueryExpression<Tuple> query2 = R2DBCExpressions.select(survey2.all()).from(survey2);
 
-        Set<SubQueryExpression<Tuple>> queries = Sets.newHashSet();
+        Set<SubQueryExpression<Tuple>> queries = new HashSet<>();
         queries.add(query1);
         queries.add(query2);
         assertEquals(2, queries.size());
@@ -33,7 +33,7 @@ public class ListSubQueryTest {
         SubQueryExpression<Integer> query1 = R2DBCExpressions.select(survey.id).from(survey);
         SubQueryExpression<Integer> query2 = R2DBCExpressions.select(employee.id).from(employee);
 
-        Set<SubQueryExpression<Integer>> queries = Sets.newHashSet();
+        Set<SubQueryExpression<Integer>> queries = new HashSet<>();
         queries.add(query1);
         queries.add(query2);
         assertEquals(1, queries.size());

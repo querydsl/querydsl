@@ -13,9 +13,8 @@
  */
 package com.querydsl.r2dbc.codegen.ant;
 
-import com.google.common.collect.Lists;
-import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
+import com.querydsl.codegen.utils.model.SimpleType;
 import com.querydsl.r2dbc.Configuration;
 import com.querydsl.r2dbc.SQLTemplates;
 import com.querydsl.r2dbc.codegen.MetaDataExporter;
@@ -33,6 +32,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -175,7 +175,7 @@ public class AntMetaDataExporter extends Task {
     /**
      * custom types to use
      */
-    private final List<CustomType> customTypes = Lists.newArrayList();
+    private final List<CustomType> customTypes = new ArrayList<>();
 
     /**
      * scala generation mode
@@ -258,17 +258,17 @@ public class AntMetaDataExporter extends Task {
     /**
      * custom type mappings to use
      */
-    private final List<TypeMapping> typeMappings = Lists.newArrayList();
+    private final List<TypeMapping> typeMappings = new ArrayList<>();
 
     /**
      * custom numeric mappings
      */
-    private final List<NumericMapping> numericMappings = Lists.newArrayList();
+    private final List<NumericMapping> numericMappings = new ArrayList<>();
 
     /**
      * custom rename mappings
      */
-    private final List<RenameMapping> renameMappings = Lists.newArrayList();
+    private final List<RenameMapping> renameMappings = new ArrayList<>();
 
 
     @Override

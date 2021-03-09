@@ -26,6 +26,7 @@ import com.querydsl.r2dbc.domain.QEmployee;
 import com.querydsl.r2dbc.domain.QEmployeeNoPK;
 import com.querydsl.r2dbc.domain.QSurvey;
 import com.querydsl.sql.DatePart;
+import com.querydsl.sql.Keywords;
 import io.r2dbc.spi.Connection;
 import org.easymock.EasyMock;
 import org.junit.Test;

@@ -20,6 +20,7 @@ import com.querydsl.r2dbc.types.Null;
 import com.querydsl.sql.Column;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPath;
+import com.querydsl.sql.dml.Mapper;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

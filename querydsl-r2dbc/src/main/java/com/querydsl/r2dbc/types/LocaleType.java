@@ -14,8 +14,8 @@
 package com.querydsl.r2dbc.types;
 
 import io.r2dbc.spi.Row;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.sql.Types;
 import java.util.Locale;
 import java.util.regex.Pattern;

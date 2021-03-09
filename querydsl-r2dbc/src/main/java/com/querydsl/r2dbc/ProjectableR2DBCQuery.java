@@ -13,8 +13,6 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.support.QueryMixin;
@@ -23,15 +21,10 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.sql.*;
+import org.jetbrains.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static com.google.common.collect.Lists.newArrayList;
+import java.util.*;
 
 /**
  * {@code ProjectableSQLQuery} is the base type for SQL query implementations
@@ -291,7 +284,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
 
     @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
-        return innerUnion((List) ImmutableList.copyOf(sq));
+        return innerUnion((List) Arrays.asList(sq));
     }
 
     @SuppressWarnings("unchecked")
@@ -346,7 +339,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
      */
     @SuppressWarnings("unchecked")
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return (Q)  from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, false));
+        return from((Expression) UnionUtils.union(Arrays.asList(sq), (Path) alias, false));
     }
 
     /**
@@ -384,7 +377,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
      */
     @SuppressWarnings("unchecked")
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return (Q) from(UnionUtils.union(ImmutableList.copyOf(sq), (Path) alias, true));
+        return from((Expression) UnionUtils.union(Arrays.asList(sq), (Path) alias, true));
     }
 
     @Override
@@ -445,7 +438,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
     protected abstract SQLSerializer createSerializer();
 
     private Set<Path<?>> getRootPaths(Collection<? extends Expression<?>> exprs) {
-        Set<Path<?>> paths = Sets.newHashSet();
+        Set<Path<?>> paths = new HashSet<>();
         for (Expression<?> e : exprs) {
             Path<?> path = e.accept(PathExtractor.DEFAULT, null);
             if (path != null && !path.getMetadata().isRoot()) {
@@ -460,7 +453,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
         if (expr instanceof FactoryExpression) {
             return ((FactoryExpression) expr).getArgs();
         } else {
-            return ImmutableList.of(expr);
+            return Collections.singletonList(expr);
         }
     }
 
@@ -500,7 +493,7 @@ public abstract class ProjectableR2DBCQuery<T, Q extends ProjectableR2DBCQuery<T
     }
 
     protected SQLBindings getSQL(SQLSerializer serializer) {
-        List<Object> args = newArrayList();
+        List<Object> args = new ArrayList<>();
         Map<ParamExpression<?>, Object> params = getMetadata().getParams();
         for (Object o : serializer.getConstants()) {
             if (o instanceof ParamExpression) {

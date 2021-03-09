@@ -13,7 +13,6 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class LocalDateTimeTemplate<T extends Comparable<?>> extends LocalDateTim
         this.templateMixin = mixin;
     }
 
-    protected LocalDateTimeTemplate(Class<? extends T> type, Template template, ImmutableList<?> args) {
+    protected LocalDateTimeTemplate(Class<? extends T> type, Template template, List<?> args) {
         super(ExpressionUtils.template(type, template, args));
         templateMixin = (TemplateExpressionImpl<T>) mixin;
     }

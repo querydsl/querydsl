@@ -13,7 +13,6 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.Target;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.r2dbc.binding.BindMarkers;
@@ -31,6 +30,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -145,7 +145,7 @@ public final class Connections {
     }
 
     public static Map<Integer, String> getSpatialData() {
-        Map<Integer, String> m = Maps.newHashMap();
+        Map<Integer, String> m = new HashMap<>();
         // point
         m.put(1, "POINT (2 2)");
         m.put(2, "POINT (8 7)");

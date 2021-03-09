@@ -13,8 +13,6 @@
  */
 package com.querydsl.r2dbc.mysql;
 
-import com.google.common.base.Joiner;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -56,8 +54,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
 
     protected static final String SQL_BIG_RESULT = "sql_big_result ";
 
-    protected static final Joiner JOINER = Joiner.on(", ");
-
     public AbstractR2DBCMySQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
     }
@@ -72,7 +68,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C bigResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BIG_RESULT);
     }
@@ -85,7 +80,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C bufferResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BUFFER_RESULT);
     }
@@ -96,7 +90,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C cache() {
         return addFlag(Position.AFTER_SELECT, SQL_CACHE);
     }
@@ -107,7 +100,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C calcFoundRows() {
         return addFlag(Position.AFTER_SELECT, SQL_CALC_FOUND_ROWS);
     }
@@ -118,7 +110,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C highPriority() {
         return addFlag(Position.AFTER_SELECT, HIGH_PRIORITY);
     }
@@ -129,7 +120,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      * @param var variable name
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C into(String var) {
         return addFlag(Position.END, "\ninto " + var);
     }
@@ -140,7 +130,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      * @param file file to write to
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C intoDumpfile(File file) {
         return addFlag(Position.END, "\ninto dumpfile '" + file.getPath() + "'");
     }
@@ -152,7 +141,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      * @param file file to write to
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C intoOutfile(File file) {
         return addFlag(Position.END, "\ninto outfile '" + file.getPath() + "'");
     }
@@ -163,7 +151,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C lockInShareMode() {
         return addFlag(Position.END, LOCK_IN_SHARE_MODE);
     }
@@ -174,7 +161,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C noCache() {
         return addFlag(Position.AFTER_SELECT, SQL_NO_CACHE);
     }
@@ -185,7 +171,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C smallResult() {
         return addFlag(Position.AFTER_SELECT, SQL_SMALL_RESULT);
     }
@@ -197,7 +182,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C straightJoin() {
         return addFlag(Position.AFTER_SELECT, STRAIGHT_JOIN);
     }
@@ -210,9 +194,8 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      * @param indexes index names
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C forceIndex(String... indexes) {
-        return addJoinFlag(" force index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
+        return addJoinFlag(" force index (" + String.join(", ", indexes) + ")", JoinFlag.Position.END);
     }
 
     /**
@@ -222,9 +205,8 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      * @param indexes index names
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C ignoreIndex(String... indexes) {
-        return addJoinFlag(" ignore index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
+        return addJoinFlag(" ignore index (" + String.join(", ", indexes) + ")", JoinFlag.Position.END);
     }
 
     /**
@@ -234,9 +216,8 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      * @param indexes index names
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C useIndex(String... indexes) {
-        return addJoinFlag(" use index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
+        return addJoinFlag(" use index (" + String.join(", ", indexes) + ")", JoinFlag.Position.END);
     }
 
     /**
@@ -247,7 +228,6 @@ public abstract class AbstractR2DBCMySQLQuery<T, C extends AbstractR2DBCMySQLQue
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCMySQLQuery.class, castRequired = true)
     public C withRollup() {
         return addFlag(Position.AFTER_GROUP_BY, WITH_ROLLUP);
     }

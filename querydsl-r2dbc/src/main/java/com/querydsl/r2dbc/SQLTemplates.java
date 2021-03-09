@@ -13,29 +13,20 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
 import com.querydsl.r2dbc.binding.BindMarkersFactory;
 import com.querydsl.r2dbc.dml.R2DBCInsertBatch;
 import com.querydsl.r2dbc.types.Type;
+import com.querydsl.sql.Keywords;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLOps;
 import com.querydsl.sql.SchemaAndTable;
 
 import java.lang.reflect.Field;
 import java.sql.Types;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static com.google.common.base.CharMatcher.inRange;
+import java.util.*;
 
 /**
  * {@code SQLTemplates} extends {@link Templates} to provides SQL specific extensions
@@ -47,11 +38,11 @@ public class SQLTemplates extends Templates {
 
 
     protected static final Expression<?> FOR_SHARE = ExpressionUtils.operation(
-            Object.class, SQLOps.FOR_SHARE, ImmutableList.of());
+            Object.class, SQLOps.FOR_SHARE, Collections.emptyList());
     protected static final Expression<?> FOR_UPDATE = ExpressionUtils.operation(
-            Object.class, SQLOps.FOR_UPDATE, ImmutableList.of());
+            Object.class, SQLOps.FOR_UPDATE, Collections.emptyList());
     protected static final Expression<?> NO_WAIT = ExpressionUtils.operation(
-            Object.class, SQLOps.NO_WAIT, ImmutableList.of());
+            Object.class, SQLOps.NO_WAIT, Collections.emptyList());
 
     protected static final int TIME_WITH_TIMEZONE = 2013;
 
@@ -67,77 +58,30 @@ public class SQLTemplates extends Templates {
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"", '\\', false, ANONYMOUS);
 
     protected static final Set<? extends Operator> OTHER_LIKE_CASES
-            = Sets.immutableEnumSet(Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
+            = Collections.unmodifiableSet(EnumSet.of(Ops.ENDS_WITH, Ops.ENDS_WITH_IC,
             Ops.LIKE_IC, Ops.LIKE_ESCAPE_IC,
             Ops.STARTS_WITH, Ops.STARTS_WITH_IC,
-            Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC);
-
-    private static final CharMatcher NON_UNDERSCORE_ALPHA_NUMERIC =
-            CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).or(inRange('0', '9'))
-                    .negate().precomputed();
-
-    private static final CharMatcher NON_UNDERSCORE_ALPHA =
-            CharMatcher.is('_').or(inRange('a', 'z').or(inRange('A', 'Z'))).negate().precomputed();
+            Ops.STRING_CONTAINS, Ops.STRING_CONTAINS_IC));
 
     private final Set<String> reservedWords;
 
     private final BindMarkersFactory bindMarkerFactory;
+    private final Map<String, Integer> typeNameToCode = new HashMap<>();
+    private final Map<Integer, String> codeToTypeName = new HashMap<>();
+    private final Map<SchemaAndTable, SchemaAndTable> tableOverrides = new HashMap<>();
+    private final List<Type<?, ?>> customTypes = new ArrayList<>();
 
-    /**
-     * Fluent builder for {@code SQLTemplates} instances     *
-     */
-    public abstract static class Builder {
-
-        protected boolean printSchema, quote, newLineToSingleSpace;
-        protected char escape = '\\';
-        protected BindMarkersFactory bindMarkerFactory = ANONYMOUS;
-
-        public Builder printSchema() {
-            printSchema = true;
-            return this;
+    protected boolean requiresQuotes(final String identifier, final boolean precededByDot) {
+        if (identifier.matches(".*[^A-z0-9_].*")) {
+            return true;
+        } else if (identifier.matches("^[^A-z_].*")) {
+            return true;
+        } else if (precededByDot && supportsUnquotedReservedWordsAsIdentifier) {
+            return false;
+        } else {
+            return isReservedWord(identifier);
         }
-
-        public Builder quote() {
-            quote = true;
-            return this;
-        }
-
-        public Builder newLineToSingleSpace() {
-            newLineToSingleSpace = true;
-            return this;
-        }
-
-        public Builder bindMarkerFactory(BindMarkersFactory bindMarkerFactory) {
-            this.bindMarkerFactory = bindMarkerFactory;
-            return this;
-        }
-
-        public Builder escape(char ch) {
-            escape = ch;
-            return this;
-        }
-
-        protected abstract SQLTemplates build(char escape, boolean quote);
-
-        public SQLTemplates build() {
-            SQLTemplates templates = build(escape, quote);
-            if (newLineToSingleSpace) {
-                templates.newLineToSingleSpace();
-            }
-//            templates.setBindMarkerFactory(bindMarkerFactory)
-            templates.setPrintSchema(printSchema);
-            return templates;
-        }
-
     }
-
-    private final Map<String, Integer> typeNameToCode = Maps.newHashMap();
-
-    private final Map<Integer, String> codeToTypeName = Maps.newHashMap();
-
-    private final Map<SchemaAndTable, SchemaAndTable> tableOverrides = Maps.newHashMap();
-
-    private final List<Type<?, ?>> customTypes = Lists.newArrayList();
 
     private final String quoteStr;
 
@@ -852,16 +796,46 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    protected boolean requiresQuotes(final String identifier, final boolean precededByDot) {
-        if (NON_UNDERSCORE_ALPHA_NUMERIC.matchesAnyOf(identifier)) {
-            return true;
-        } else if (NON_UNDERSCORE_ALPHA.matches(identifier.charAt(0))) {
-            return true;
-        } else if (precededByDot && supportsUnquotedReservedWordsAsIdentifier) {
-            return false;
-        } else {
-            return isReservedWord(identifier);
+    /**
+     * Fluent builder for {@code SQLTemplates} instances     *
+     */
+    public abstract static class Builder {
+
+        protected boolean printSchema, quote, newLineToSingleSpace;
+
+        protected char escape = '\\';
+
+        public Builder printSchema() {
+            printSchema = true;
+            return this;
         }
+
+        public Builder quote() {
+            quote = true;
+            return this;
+        }
+
+        public Builder newLineToSingleSpace() {
+            newLineToSingleSpace = true;
+            return this;
+        }
+
+        public Builder escape(char ch) {
+            escape = ch;
+            return this;
+        }
+
+        protected abstract SQLTemplates build(char escape, boolean quote);
+
+        public SQLTemplates build() {
+            SQLTemplates templates = build(escape, quote);
+            if (newLineToSingleSpace) {
+                templates.newLineToSingleSpace();
+            }
+            templates.setPrintSchema(printSchema);
+            return templates;
+        }
+
     }
 
     private boolean isReservedWord(String identifier) {

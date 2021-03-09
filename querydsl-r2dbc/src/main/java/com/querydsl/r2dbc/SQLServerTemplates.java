@@ -13,7 +13,6 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -22,9 +21,11 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.sql.Keywords;
 import com.querydsl.sql.SQLOps;
 
 import java.sql.Types;
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -35,7 +36,7 @@ import java.util.Set;
 public class SQLServerTemplates extends SQLTemplates {
 
     protected static final Expression<?> WITH_REPEATABLE_READ = ExpressionUtils.operation(
-            Object.class, SQLOps.WITH_REPEATABLE_READ, ImmutableList.of());
+            Object.class, SQLOps.WITH_REPEATABLE_READ, Collections.emptyList());
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLServerTemplates DEFAULT = new SQLServerTemplates();

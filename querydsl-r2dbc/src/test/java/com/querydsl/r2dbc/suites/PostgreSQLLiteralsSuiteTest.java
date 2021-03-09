@@ -3,7 +3,6 @@ package com.querydsl.r2dbc.suites;
 import com.querydsl.core.testutil.PostgreSQL;
 import com.querydsl.r2dbc.*;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 
 //TODO r2dbc-postgres drops some inserts, readd after fix

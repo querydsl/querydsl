@@ -13,17 +13,14 @@
  */
 package com.querydsl.r2dbc.codegen;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Files;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.ScalaWriter;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
 import com.querydsl.codegen.*;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.ScalaWriter;
+import com.querydsl.codegen.utils.model.ClassType;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.r2dbc.Configuration;
 import com.querydsl.r2dbc.SQLTemplates;
 import com.querydsl.r2dbc.SQLTemplatesRegistry;
@@ -33,18 +30,19 @@ import com.querydsl.sql.SchemaAndTable;
 import com.querydsl.sql.codegen.KeyDataFactory;
 import com.querydsl.sql.codegen.NamingStrategy;
 import com.querydsl.sql.codegen.support.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.function.Function;
+import java.util.logging.Logger;
 
 /**
  * {@code MetadataExporter} exports JDBC metadata to Querydsl query types
@@ -62,7 +60,7 @@ import java.util.*;
  */
 public class MetaDataExporter {
 
-    private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
+    private static final Logger logger = Logger.getLogger(MetaDataExporter.class.getName());
 
     private final SQLTemplatesRegistry sqlTemplatesRegistry = new SQLTemplatesRegistry();
 
@@ -237,11 +235,11 @@ public class MetaDataExporter {
 
         List<String> schemas = Arrays.asList(schemaPattern);
         if (schemaPattern != null && schemaPattern.contains(",")) {
-            schemas = ImmutableList.copyOf(schemaPattern.split(","));
+            schemas = Arrays.asList(schemaPattern.split(","));
         }
         List<String> tables = Arrays.asList(tableNamePattern);
         if (tableNamePattern != null && tableNamePattern.contains(",")) {
-            tables = ImmutableList.copyOf(tableNamePattern.split(","));
+            tables = Arrays.asList(tableNamePattern.split(","));
         }
 
         for (String schema : schemas) {
@@ -439,7 +437,7 @@ public class MetaDataExporter {
         boolean generate = true;
         byte[] bytes = w.toString().getBytes(sourceEncoding);
         if (targetFile.exists() && targetFile.length() == bytes.length) {
-            String str = Files.toString(targetFile, Charset.forName(sourceEncoding));
+            String str = new String(Files.readAllBytes(targetFile.toPath()), Charset.forName(sourceEncoding));
             if (str.equals(w.toString())) {
                 generate = false;
             }
@@ -448,7 +446,7 @@ public class MetaDataExporter {
         }
 
         if (generate) {
-            Files.write(bytes, targetFile);
+            Files.write(targetFile.toPath(), bytes);
         }
     }
 

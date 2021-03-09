@@ -1,6 +1,5 @@
 package com.querydsl.r2dbc.binding;
 
-import com.google.common.base.Strings;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -16,14 +15,14 @@ public interface BindMarkersFactory {
     BindMarkers create();
 
     static BindMarkersFactory indexed(String prefix, int beginWith) {
-        if (Strings.isNullOrEmpty(prefix)) {
+        if (Objects.isNull(prefix) || prefix.isEmpty()) {
             throw new IllegalArgumentException("Prefix must not be null!");
         }
         return () -> new IndexedBindMarkers(prefix, beginWith);
     }
 
     static BindMarkersFactory anonymous(String placeholder) {
-        if (Strings.isNullOrEmpty(placeholder)) {
+        if (Objects.isNull(placeholder) || placeholder.isEmpty()) {
             throw new IllegalArgumentException("Placeholder must not be empty!");
         }
 
@@ -36,10 +35,10 @@ public interface BindMarkersFactory {
 
     static BindMarkersFactory named(String prefix, String namePrefix, int maxLength,
                                     Function<String, String> hintFilterFunction) {
-        if (Strings.isNullOrEmpty(prefix)) {
+        if (Objects.isNull(prefix) || prefix.isEmpty()) {
             throw new IllegalArgumentException("Prefix must not be null!");
         }
-        if (Strings.isNullOrEmpty(namePrefix)) {
+        if (Objects.isNull(namePrefix) || namePrefix.isEmpty()) {
             throw new IllegalArgumentException("Index prefix must not be null!");
         }
         if (Objects.isNull(hintFilterFunction)) {

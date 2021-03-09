@@ -13,12 +13,12 @@
  */
 package com.querydsl.r2dbc.types;
 
-import com.google.common.primitives.Primitives;
+import com.querydsl.core.util.PrimitiveUtils;
 import com.querydsl.r2dbc.binding.BindMarker;
 import com.querydsl.r2dbc.binding.BindTarget;
 import io.r2dbc.spi.Row;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.sql.Types;
 
 /**
@@ -78,7 +78,7 @@ public class ArrayType<T> extends AbstractType<T, T> {
         if (convertPrimitives) {
             // primitives in
             int length = java.lang.reflect.Array.getLength(value);
-            Object value2 = java.lang.reflect.Array.newInstance(Primitives.wrap(type.getComponentType()), length);
+            Object value2 = java.lang.reflect.Array.newInstance(PrimitiveUtils.wrap(type.getComponentType()), length);
             copy(value, value2, length);
             value = (T) value2;
         }

@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.tools.JavaCompiler;
 import javax.validation.constraints.NotNull;
 
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.core.util.ReflectionUtils;
 import com.querydsl.r2dbc.Configuration;
 import com.querydsl.r2dbc.SQLTemplates;
@@ -37,7 +38,6 @@ import com.querydsl.sql.codegen.OriginalNamingStrategy;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
-import com.mysema.codegen.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.core.util.FileUtils;
 

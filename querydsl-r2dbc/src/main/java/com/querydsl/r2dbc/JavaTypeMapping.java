@@ -13,11 +13,11 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.primitives.Primitives;
+import com.querydsl.core.util.PrimitiveUtils;
 import com.querydsl.core.util.ReflectionUtils;
 import com.querydsl.r2dbc.types.*;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -80,7 +80,7 @@ class JavaTypeMapping {
 
     private static void registerDefault(Type<?, ?> type) {
         defaultTypes.put(type.getReturnedClass(), type);
-        Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
+        Class<?> primitive = PrimitiveUtils.unwrap(type.getReturnedClass());
         if (primitive != null) {
             defaultTypes.put(primitive, type);
         }
@@ -143,7 +143,7 @@ class JavaTypeMapping {
 
     public void register(Type<?, ?> type) {
         typeByClass.put(type.getReturnedClass(), type);
-        Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
+        Class<?> primitive = PrimitiveUtils.unwrap(type.getReturnedClass());
         if (primitive != null) {
             typeByClass.put(primitive, type);
         }

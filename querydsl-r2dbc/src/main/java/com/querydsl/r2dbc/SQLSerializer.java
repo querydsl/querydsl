@@ -13,11 +13,6 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
@@ -27,11 +22,13 @@ import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.Template.Element;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.CollectionUtils;
+import com.querydsl.core.util.StringUtils;
 import com.querydsl.r2dbc.dml.R2DBCInsertBatch;
 import com.querydsl.r2dbc.types.Null;
 import com.querydsl.sql.*;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.sql.Types;
 import java.util.*;
 
@@ -54,7 +51,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     protected final List<Object> constants = new ArrayList<Object>();
 
-    protected final Set<Path<?>> withAliases = Sets.newHashSet();
+    protected final Set<Path<?>> withAliases = new HashSet<>();
 
     protected final boolean dml;
 
@@ -136,7 +133,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
 
         } else {
-            List<Expression<?>> rv = Lists.newArrayList();
+            List<Expression<?>> rv = new ArrayList<>();
             int counter = 0;
             for (JoinExpression join : joins) {
                 if (join.getTarget() instanceof RelationalPath) {
@@ -175,8 +172,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public final SQLSerializer handleSelect(final String sep, final List<? extends Expression<?>> expressions) {
         if (inSubquery) {
-            Set<String> names = Sets.newHashSet();
-            List<Expression<?>> replacements = Lists.newArrayList();
+            Set<String> names = new HashSet<>();
+            List<Expression<?>> replacements = new ArrayList<>();
             for (Expression<?> expr : expressions) {
                 if (expr instanceof Path) {
                     String name = ColumnMetadata.getName((Path<?>) expr);
@@ -243,14 +240,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (select instanceof FactoryExpression) {
             sqlSelect = ((FactoryExpression<?>) select).getArgs();
         } else if (select != null) {
-            sqlSelect = ImmutableList.of(select);
+            sqlSelect = Collections.singletonList(select);
         } else {
-            sqlSelect = ImmutableList.of();
+            sqlSelect = Collections.emptyList();
         }
 
         // with
         if (hasFlags) {
-            List<Expression<?>> withFlags = Lists.newArrayList();
+            List<Expression<?>> withFlags = new ArrayList<>();
             boolean recursive = false;
             for (QueryFlag flag : flags) {
                 if (flag.getPosition() == Position.WITH) {
@@ -662,7 +659,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     protected void serializeSources(List<JoinExpression> joins) {
         if (joins.isEmpty()) {
             String dummyTable = templates.getDummyTable();
-            if (!Strings.isNullOrEmpty(dummyTable)) {
+            if (!StringUtils.isNullOrEmpty(dummyTable)) {
                 append(templates.getFrom());
                 append(dummyTable);
             }
@@ -826,7 +823,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                     && configuration.getTemplates().isWrapSelectParameters()) {
                 String typeName = configuration.getTypeNameForCast(constant.getClass());
                 Expression type = Expressions.constant(typeName);
-                super.visitOperation(constant.getClass(), SQLOps.CAST, ImmutableList.<Expression<?>>of(Q, type));
+                super.visitOperation(constant.getClass(), SQLOps.CAST, Arrays.<Expression<?>>asList(Q, type));
             } else {
                 append("?");
             }
@@ -949,30 +946,35 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             final String escape = String.valueOf(templates.getEscapeChar());
             final String escaped = args.get(1).toString().replace(escape, escape + escape);
             super.visitOperation(String.class, Ops.LIKE,
-                    ImmutableList.of(args.get(0), ConstantImpl.create(escaped)));
+                    Arrays.asList(args.get(0), ConstantImpl.create(escaped)));
 
         } else if (operator == Ops.STRING_CAST) {
             final String typeName = configuration.getTypeNameForCast(String.class);
             super.visitOperation(String.class, SQLOps.CAST,
-                    ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
+                    Arrays.asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.NUMCAST) {
             @SuppressWarnings("unchecked") //this is the second argument's type
-                    Constant<Class<?>> expectedConstant = (Constant<Class<?>>) args.get(1);
+            Constant<Class<?>> expectedConstant = (Constant<Class<?>>) args.get(1);
 
             final Class<?> targetType = expectedConstant.getConstant();
             final String typeName = configuration.getTypeNameForCast(targetType);
             super.visitOperation(targetType, SQLOps.CAST,
-                    ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
+                    Arrays.asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator == Ops.ALIAS) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {
-                if (args.get(1) instanceof Path && !((Path<?>) args.get(1)).getMetadata().isRoot()) {
-                    Path<?> path = (Path<?>) args.get(1);
-                    args = ImmutableList.of(args.get(0),
-                            ExpressionUtils.path(path.getType(), path.getMetadata().getName()));
+                if (stage == SQLSerializer.Stage.SELECT || stage == SQLSerializer.Stage.FROM) {
+                    if (args.get(1) instanceof Path && !((Path<?>) args.get(1)).getMetadata().isRoot()) {
+                        Path<?> path = (Path<?>) args.get(1);
+                        args = Arrays.asList(args.get(0),
+                                ExpressionUtils.path(path.getType(), path.getMetadata().getName()));
+                    }
+                    super.visitOperation(type, operator, args);
+                } else {
+                    // handle only target
+                    handle(args.get(1));
                 }
-                super.visitOperation(type, operator, args);
             } else {
                 // handle only target
                 handle(args.get(1));
@@ -987,29 +989,32 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             Collection<Object> coll = ((Constant<Collection<Object>>) args.get(1)).getConstant();
             if (coll.isEmpty()) {
                 super.visitOperation(type, operator == Ops.IN ? Ops.EQ : Ops.NE,
-                        ImmutableList.of(Expressions.ONE, Expressions.TWO));
+                        Arrays.asList(Expressions.ONE, Expressions.TWO));
             } else {
                 if (templates.getListMaxSize() == 0 || coll.size() <= templates.getListMaxSize()) {
                     super.visitOperation(type, operator, args);
                 } else {
-                    //The type of the path is compatible with the constant
-                    //expression, since the compile time checking mandates it to be
-                    @SuppressWarnings("unchecked")
-                    Expression<Object> path = (Expression<Object>) args.get(0);
-                    if (pathAdded) {
-                        constantPaths.removeLast();
-                    }
-                    Iterable<List<Object>> partitioned = Iterables
-                            .partition(coll, templates.getListMaxSize());
-                    Predicate result;
-                    if (operator == Ops.IN) {
-                        result = ExpressionUtils.inAny(path, partitioned);
+                    if (templates.getListMaxSize() == 0 || coll.size() <= templates.getListMaxSize()) {
+                        super.visitOperation(type, operator, args);
                     } else {
-                        result = ExpressionUtils.notInAny(path, partitioned);
+                        //The type of the path is compatible with the constant
+                        //expression, since the compile time checking mandates it to be
+                        @SuppressWarnings("unchecked")
+                        Expression<Object> path = (Expression<Object>) args.get(0);
+                        if (pathAdded) {
+                            constantPaths.removeLast();
+                        }
+                        Iterable<List<Object>> partitioned = CollectionUtils.partition(new ArrayList<>(coll), templates.getListMaxSize());
+                        Predicate result;
+                        if (operator == Ops.IN) {
+                            result = ExpressionUtils.inAny(path, partitioned);
+                        } else {
+                            result = ExpressionUtils.notInAny(path, partitioned);
+                        }
+                        append("(");
+                        result.accept(this, null);
+                        append(")");
                     }
-                    append("(");
-                    result.accept(this, null);
-                    append(")");
                 }
             }
 

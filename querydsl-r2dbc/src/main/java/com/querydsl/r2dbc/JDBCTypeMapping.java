@@ -13,20 +13,17 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.ImmutableSet;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.sql.types.Null;
 import io.r2dbc.spi.Blob;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * {@code JDBCTypeMapping} defines a mapping from JDBC types to Java classes.
@@ -98,13 +95,13 @@ final class JDBCTypeMapping {
         registerDefault(Types.ROWID, Object.class);
         registerDefault(Types.STRUCT, Object.class);
 
-        ImmutableSet.Builder<Integer> builder = ImmutableSet.builder();
+        Set<Integer> builder = new HashSet<>();
         for (Map.Entry<Integer, Class<?>> entry : defaultTypes.entrySet()) {
             if (Number.class.isAssignableFrom(entry.getValue())) {
                 builder.add(entry.getKey());
             }
         }
-        NUMERIC_TYPES = builder.build();
+        NUMERIC_TYPES = Collections.unmodifiableSet(builder);
     }
 
     private static void registerDefault(int sqlType, Class<?> javaType) {

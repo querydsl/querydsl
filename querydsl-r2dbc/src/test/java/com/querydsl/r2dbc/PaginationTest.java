@@ -1,6 +1,5 @@
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.support.QueryMixin;
@@ -9,6 +8,7 @@ import com.querydsl.r2dbc.domain.QEmployee;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Category(ReportingOnly.class)
@@ -22,7 +22,7 @@ public class PaginationTest {
 
     @Test
     public void test() {
-        List<SQLTemplates> list = Lists.newArrayList();
+        List<SQLTemplates> list = new ArrayList<>();
         list.add(new H2Templates());
         list.add(new MySQLTemplates());
         list.add(new PostgreSQLTemplates());

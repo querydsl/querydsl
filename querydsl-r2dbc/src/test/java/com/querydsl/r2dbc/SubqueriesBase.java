@@ -1,6 +1,5 @@
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.*;
@@ -25,11 +24,11 @@ public abstract class SubqueriesBase extends AbstractBaseTest {
     public void keys() {
         QEmployee employee2 = new QEmployee("employee2");
         ForeignKey<Employee> nameKey1 = new ForeignKey<Employee>(employee,
-                ImmutableList.of(employee.firstname, employee.lastname),
-                ImmutableList.of("a", "b"));
+                Arrays.asList(employee.firstname, employee.lastname),
+                Arrays.asList("a", "b"));
         ForeignKey<Employee> nameKey2 = new ForeignKey<Employee>(employee,
-                ImmutableList.of(employee.firstname, employee.lastname),
-                ImmutableList.of("a", "b"));
+                Arrays.asList(employee.firstname, employee.lastname),
+                Arrays.asList("a", "b"));
 
         query().from(employee)
                 .where(nameKey1.in(query().from(employee2).select(nameKey2.getProjection())))

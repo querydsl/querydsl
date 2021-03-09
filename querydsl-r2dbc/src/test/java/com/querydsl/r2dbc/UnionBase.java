@@ -1,6 +1,5 @@
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.Expression;
@@ -42,7 +41,7 @@ public abstract class UnionBase extends AbstractBaseTest {
         SubQueryExpression<Integer> sq1 = query().from(employee).select(employee.id.max().as("ID"));
         SubQueryExpression<Integer> sq2 = query().from(employee).select(employee.id.min().as("ID"));
         assertEquals(
-                ImmutableList.of(
+                Arrays.asList(
                         query().select(employee.id.min()).from(employee).fetchFirst().block(),
                         query().select(employee.id.max()).from(employee).fetchFirst().block()
                 ),

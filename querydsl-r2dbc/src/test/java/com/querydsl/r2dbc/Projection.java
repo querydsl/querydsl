@@ -14,8 +14,7 @@
 package com.querydsl.r2dbc;
 
 import com.querydsl.core.types.Expression;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface Projection {
 

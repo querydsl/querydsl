@@ -13,15 +13,16 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
+import com.querydsl.sql.Keywords;
 import com.querydsl.sql.SQLOps;
 
 import java.sql.Types;
+import java.util.Collections;
 
 /**
  * {@code MySQLTemplates} is an SQL dialect for MySQL
@@ -33,7 +34,7 @@ import java.sql.Types;
 public class MySQLTemplates extends SQLTemplates {
 
     protected static final Expression<?> LOCK_IN_SHARE_MODE = ExpressionUtils.operation(
-            Object.class, SQLOps.LOCK_IN_SHARE_MODE, ImmutableList.of());
+            Object.class, SQLOps.LOCK_IN_SHARE_MODE, Collections.emptyList());
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final MySQLTemplates DEFAULT = new MySQLTemplates();

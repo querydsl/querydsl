@@ -13,8 +13,9 @@
  */
 package com.querydsl.r2dbc.codegen.support;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.r2dbc.Configuration;
+
+import java.util.Arrays;
 
 /**
  * {@code RenameMapping} overrides schemas, tables, columns and combinations of the three.
@@ -58,8 +59,8 @@ public class RenameMapping implements Mapping {
 
     private void insufficientArgs() {
         throw new IllegalArgumentException("Insufficient args " +
-                ImmutableList.of(fromSchema, fromTable, fromColumn) + " to " +
-                ImmutableList.of(toSchema, toTable, toColumn));
+                Arrays.asList(fromSchema, fromTable, fromColumn) + " to " +
+                Arrays.asList(toSchema, toTable, toColumn));
     }
 
     public String getFromSchema() {

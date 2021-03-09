@@ -13,7 +13,6 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryFlag;
@@ -28,14 +27,14 @@ import com.querydsl.r2dbc.binding.BindTarget;
 import com.querydsl.r2dbc.binding.StatementWrapper;
 import com.querydsl.sql.StatementOptions;
 import io.r2dbc.spi.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * {@code AbstractSQLQuery} is the base type for SQL query implementations
@@ -48,7 +47,7 @@ public abstract class AbstractR2DBCQuery<T, Q extends AbstractR2DBCQuery<T, Q>> 
 
     protected static final String PARENT_CONTEXT = AbstractR2DBCQuery.class.getName() + "#PARENT_CONTEXT";
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractR2DBCQuery.class);
+    private static final Logger logger = Logger.getLogger(AbstractR2DBCQuery.class.getName());
 
     private static final QueryFlag rowCountFlag = new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() ");
 
@@ -228,7 +227,6 @@ public abstract class AbstractR2DBCQuery<T, Q extends AbstractR2DBCQuery<T, Q>> 
         }
     }
 
-    @Nonnull
     private T newInstance(FactoryExpression<T> c, Row rs, int offset) {
         Object[] args = new Object[c.getArgs().size()];
         for (int i = 0; i < args.length; i++) {
@@ -237,9 +235,10 @@ public abstract class AbstractR2DBCQuery<T, Q extends AbstractR2DBCQuery<T, Q>> 
         return Objects.requireNonNull(c.newInstance(args), "Null result");
     }
 
-    @Nonnull
     private T toWildcardObjectArray(Row row, RowMetadata meta) {
-        ArrayList<? extends ColumnMetadata> metaList = Lists.newArrayList(meta.getColumnMetadatas());
+        ArrayList<ColumnMetadata> metaList = new ArrayList<>();
+        meta.getColumnMetadatas().forEach(metaList::add);
+
         Object[] args = new Object[metaList.size()];
         for (int i = 0; i < args.length; i++) {
             ColumnMetadata columnMetadata = metaList.get(i);
@@ -317,9 +316,9 @@ public abstract class AbstractR2DBCQuery<T, Q extends AbstractR2DBCQuery<T, Q>> 
     }
 
     protected void logQuery(String queryString, Collection<Object> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
     }
 
@@ -359,7 +358,7 @@ public abstract class AbstractR2DBCQuery<T, Q extends AbstractR2DBCQuery<T, Q>> 
 
     @FunctionalInterface
     private interface Mapper<T> {
-        @Nonnull
+        @NotNull
         T map(Row row, RowMetadata metadata);
     }
 

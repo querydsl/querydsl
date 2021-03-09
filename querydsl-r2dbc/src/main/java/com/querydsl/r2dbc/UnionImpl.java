@@ -17,10 +17,9 @@ import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.Query;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.types.*;
+import org.jetbrains.annotations.Nullable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.Nullable;
 
 /**
  * Default implementation of the Union interface

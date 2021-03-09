@@ -13,8 +13,6 @@
  */
 package com.querydsl.r2dbc.group;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 import com.querydsl.core.ReactiveFetchableQuery;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.group.Group;
@@ -26,7 +24,9 @@ import com.querydsl.core.types.FactoryExpressionUtils;
 import com.querydsl.core.types.Projections;
 import reactor.core.publisher.Flux;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Provides aggregated results as a list
@@ -57,7 +57,7 @@ public class ReactiveGroupByList<K, V> extends ReactiveAbstractGroupByTransforme
         return result
                 .collectList()
                 .flatMapMany(tuples -> {
-                    List<V> list = Lists.newArrayList();
+                    List<V> list = new ArrayList<>();
                     GroupImpl group = null;
                     K groupId = null;
 
@@ -66,7 +66,7 @@ public class ReactiveGroupByList<K, V> extends ReactiveAbstractGroupByTransforme
                         if (group == null) {
                             group = new GroupImpl(groupExpressions, maps);
                             groupId = row[0];
-                        } else if (!Objects.equal(groupId, row[0])) {
+                        } else if (!Objects.equals(groupId, row[0])) {
                             list.add(transform(group));
                             group = new GroupImpl(groupExpressions, maps);
                             groupId = row[0];

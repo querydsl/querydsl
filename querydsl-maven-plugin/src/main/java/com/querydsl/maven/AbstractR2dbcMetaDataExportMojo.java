@@ -13,9 +13,9 @@
  */
 package com.querydsl.maven;
 
-import com.google.common.base.Strings;
-import com.mysema.codegen.model.SimpleType;
 import com.querydsl.codegen.BeanSerializer;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.core.util.StringUtils;
 import com.querydsl.r2dbc.Configuration;
 import com.querydsl.r2dbc.SQLTemplates;
 import com.querydsl.r2dbc.codegen.MetaDataExporter;
@@ -421,9 +421,9 @@ public class AbstractR2dbcMetaDataExportMojo extends AbstractMojo {
 
             MetaDataExporter exporter = new MetaDataExporter();
             exporter.setNamePrefix(emptyIfSetToBlank(namePrefix));
-            exporter.setNameSuffix(Strings.nullToEmpty(nameSuffix));
-            exporter.setBeanPrefix(Strings.nullToEmpty(beanPrefix));
-            exporter.setBeanSuffix(Strings.nullToEmpty(beanSuffix));
+            exporter.setNameSuffix(StringUtils.nullToEmpty(nameSuffix));
+            exporter.setBeanPrefix(StringUtils.nullToEmpty(beanPrefix));
+            exporter.setBeanSuffix(StringUtils.nullToEmpty(beanSuffix));
             if (beansTargetFolder != null) {
                 exporter.setBeansTargetFolder(new File(beansTargetFolder));
             }

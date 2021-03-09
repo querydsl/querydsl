@@ -1,11 +1,12 @@
 package com.querydsl.r2dbc.dml;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.r2dbc.KeyAccessorsTest.QEmployee;
 import com.querydsl.r2dbc.SQLTemplates;
 import com.querydsl.sql.SQLBindings;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,7 +28,7 @@ public class R2DBCInsertClauseTest {
 
         SQLBindings sql = insert.getSQL().get(0);
         assertEquals("insert into EMPLOYEE (ID)\nvalues (?)", sql.getSQL());
-        assertEquals(ImmutableList.of(1), sql.getBindings());
+        assertEquals(Collections.singletonList(1), sql.getNullFriendlyBindings());
     }
 
     @Test

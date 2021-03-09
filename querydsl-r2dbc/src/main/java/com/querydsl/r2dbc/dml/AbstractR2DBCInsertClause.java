@@ -13,8 +13,6 @@
  */
 package com.querydsl.r2dbc.dml;
 
-import com.google.common.collect.ImmutableList;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryFlag;
@@ -22,6 +20,7 @@ import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.ReactiveInsertClause;
 import com.querydsl.core.types.*;
+import com.querydsl.core.util.CollectionUtils;
 import com.querydsl.r2dbc.*;
 import com.querydsl.r2dbc.binding.BindTarget;
 import com.querydsl.r2dbc.binding.StatementWrapper;
@@ -29,15 +28,16 @@ import com.querydsl.r2dbc.types.Null;
 import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLBindings;
+import com.querydsl.sql.dml.DefaultMapper;
+import com.querydsl.sql.dml.Mapper;
 import io.r2dbc.spi.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertClause<C>> extends AbstractR2DBCClause<C> implements ReactiveInsertClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractR2DBCInsertClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractR2DBCInsertClause.class.getName());
 
     protected final RelationalPath<?> entity;
 
@@ -101,7 +101,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
      * @param flag     query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -114,7 +113,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
      * @param flag     query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -125,7 +123,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public C addBatch() {
         if (subQueryBuilder != null) {
             subQuery = subQueryBuilder.select(values.toArray(new Expression[values.size()])).clone();
@@ -155,7 +152,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public C columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return (C) this;
@@ -359,24 +355,23 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer(true);
             serializer.serializeInsert(metadata, entity, columns, values, subQuery);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else if (batchToBulk) {
             SQLSerializer serializer = createSerializer(true);
             serializer.serializeInsert(metadata, entity, batches);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (R2DBCInsertBatch batch : batches) {
                 SQLSerializer serializer = createSerializer(true);
                 serializer.serializeInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return CollectionUtils.unmodifiableList(builder);
         }
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public C select(SubQueryExpression<?> sq) {
         subQuery = sq;
         for (Map.Entry<ParamExpression<?>, Object> entry : sq.getMetadata().getParams().entrySet()) {
@@ -386,7 +381,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public <T> C set(Path<T> path, T value) {
         columns.add(path);
         if (value instanceof Expression<?>) {
@@ -400,7 +394,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public <T> C set(Path<T> path, Expression<? extends T> expression) {
         columns.add(path);
         values.add(expression);
@@ -408,7 +401,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public <T> C setNull(Path<T> path) {
         columns.add(path);
         values.add(Null.CONSTANT);
@@ -416,7 +408,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public C values(Object... v) {
         for (Object value : v) {
             if (value instanceof Expression<?>) {
@@ -460,7 +451,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
      * @param bean bean to use for population
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public C populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
     }
@@ -474,7 +464,6 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
      * @return the current object
      */
     @SuppressWarnings("rawtypes")
-    @WithBridgeMethods(value = R2DBCInsertClause.class, castRequired = true)
     public <T> C populate(T obj, Mapper<T> mapper) {
         Map<Path<?>, Object> values = mapper.createMap(entity, obj);
         for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {
@@ -504,7 +493,7 @@ public abstract class AbstractR2DBCInsertClause<C extends AbstractR2DBCInsertCla
 
     @FunctionalInterface
     private interface RowMapper<T> {
-        @Nonnull
+        @NotNull
         T map(Row row, RowMetadata metadata);
     }
 

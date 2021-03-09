@@ -14,6 +14,8 @@
 package com.querydsl.r2dbc;
 
 
+import com.querydsl.sql.Keywords;
+
 import java.util.Set;
 
 /**

@@ -4,8 +4,8 @@ import com.querydsl.r2dbc.binding.BindMarker;
 import com.querydsl.r2dbc.binding.BindTarget;
 import io.r2dbc.spi.Row;
 import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.*;

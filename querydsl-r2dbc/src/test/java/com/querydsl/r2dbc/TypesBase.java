@@ -1,6 +1,5 @@
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.r2dbc.ddl.CreateTableClause;
@@ -11,13 +10,14 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class TypesBase extends AbstractBaseTest {
 
     @Test
     public void create_tables() {
-        Map<Class<?>, Object> instances = Maps.newLinkedHashMap();
+        Map<Class<?>, Object> instances = new LinkedHashMap<>();
         instances.put(BigInteger.class, BigInteger.valueOf(1));
         instances.put(Long.class, 1L);
         instances.put(Integer.class, 1);

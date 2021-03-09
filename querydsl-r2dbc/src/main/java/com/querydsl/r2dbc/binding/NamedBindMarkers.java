@@ -1,7 +1,6 @@
 package com.querydsl.r2dbc.binding;
 
-import com.google.common.base.Strings;
-
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.function.Function;
 
@@ -45,7 +44,7 @@ class NamedBindMarkers implements BindMarkers {
 
     @Override
     public BindMarker next(String hint) {
-        if (Strings.isNullOrEmpty(prefix)) {
+        if (Objects.isNull(prefix) || prefix.isEmpty()) {
             throw new IllegalArgumentException("Name hint must not be null");
         }
 

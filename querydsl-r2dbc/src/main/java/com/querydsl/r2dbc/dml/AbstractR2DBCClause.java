@@ -25,15 +25,15 @@ import com.querydsl.r2dbc.binding.BindMarkers;
 import com.querydsl.r2dbc.binding.BindTarget;
 import com.querydsl.sql.SQLBindings;
 import io.r2dbc.spi.Connection;
-import org.slf4j.Logger;
+import org.jetbrains.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.collect.Lists.newArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * {@code AbstractSQLClause} is a superclass for SQL based DMLClause implementations
@@ -75,7 +75,7 @@ public abstract class AbstractR2DBCClause<C extends AbstractR2DBCClause<C>> impl
 
     protected SQLBindings createBindings(QueryMetadata metadata, SQLSerializer serializer) {
         String queryString = serializer.toString();
-        List<Object> args = newArrayList();
+        List<Object> args = new ArrayList<>();
         Map<ParamExpression<?>, Object> params = metadata.getParams();
         for (Object o : serializer.getConstants()) {
             if (o instanceof ParamExpression) {
@@ -144,7 +144,7 @@ public abstract class AbstractR2DBCClause<C extends AbstractR2DBCClause<C>> impl
     }
 
     protected void logQuery(Logger logger, String queryString, Collection<Object> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
             logger.info(normalizedQuery);
         }

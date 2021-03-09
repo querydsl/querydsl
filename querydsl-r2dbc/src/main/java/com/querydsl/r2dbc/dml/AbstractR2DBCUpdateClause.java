@@ -13,9 +13,6 @@
  */
 package com.querydsl.r2dbc.dml;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.ReactiveUpdateClause;
@@ -33,15 +30,15 @@ import com.querydsl.r2dbc.binding.StatementWrapper;
 import com.querydsl.r2dbc.types.Null;
 import com.querydsl.sql.RelationalPath;
 import com.querydsl.sql.SQLBindings;
+import com.querydsl.sql.dml.Mapper;
 import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.Statement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.Range;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nonnegative;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -52,13 +49,13 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateClause<C>> extends AbstractR2DBCClause<C> implements ReactiveUpdateClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractR2DBCUpdateClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractR2DBCUpdateClause.class.getName());
 
     protected final RelationalPath<?> entity;
 
     protected final List<R2DBCUpdateBatch> batches = new ArrayList<R2DBCUpdateBatch>();
 
-    protected Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
+    protected Map<Path<?>, Expression<?>> updates = new LinkedHashMap<>();
 
     protected QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -85,7 +82,6 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
      * @param flag     query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -98,7 +94,6 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
      * @param flag     query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -109,10 +104,9 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public C addBatch() {
         batches.add(new R2DBCUpdateBatch(metadata, updates));
-        updates = Maps.newLinkedHashMap();
+        updates = new LinkedHashMap<>();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
         return (C) this;
@@ -121,7 +115,7 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
     @Override
     public void clear() {
         batches.clear();
-        updates = Maps.newLinkedHashMap();
+        updates = new LinkedHashMap<>();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
@@ -180,20 +174,19 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer(true);
             serializer.serializeUpdate(metadata, entity, updates);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (R2DBCUpdateBatch batch : batches) {
                 SQLSerializer serializer = createSerializer(true);
                 serializer.serializeUpdate(batch.getMetadata(), entity, batch.getUpdates());
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return Collections.unmodifiableList(builder);
         }
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public <T> C set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
             updates.put(path, (Expression<?>) value);
@@ -206,7 +199,6 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public <T> C set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
             updates.put(path, expression);
@@ -217,14 +209,12 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public <T> C setNull(Path<T> path) {
         updates.put(path, Null.CONSTANT);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public C set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) instanceof Expression) {
@@ -238,14 +228,12 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
         return (C) this;
     }
 
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public C where(Predicate p) {
         metadata.addWhere(p);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public C where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);
@@ -253,8 +241,7 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
         return (C) this;
     }
 
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
-    public C limit(@Nonnegative long limit) {
+    public C limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
     }
@@ -275,7 +262,6 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
      * @return the current object
      */
     @SuppressWarnings("unchecked")
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public C populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
     }
@@ -288,7 +274,6 @@ public abstract class AbstractR2DBCUpdateClause<C extends AbstractR2DBCUpdateCla
      * @return the current object
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    @WithBridgeMethods(value = R2DBCUpdateClause.class, castRequired = true)
     public <T> C populate(T obj, Mapper<T> mapper) {
         Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null
                 ? entity.getPrimaryKey().getLocalColumns()

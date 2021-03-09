@@ -14,6 +14,7 @@
 package com.querydsl.r2dbc;
 
 import com.querydsl.core.types.Ops;
+import com.querydsl.sql.Keywords;
 import com.querydsl.sql.SQLOps;
 
 import java.sql.Types;

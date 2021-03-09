@@ -13,7 +13,6 @@
  */
 package com.querydsl.r2dbc.mssql;
 
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.r2dbc.AbstractR2DBCQuery;
@@ -43,7 +42,6 @@ public abstract class AbstractR2DBCSQLServerQuery<T, C extends AbstractR2DBCSQLS
      * @param tableHints table hints
      * @return the current object
      */
-    @WithBridgeMethods(value = R2DBCSQLServerQuery.class, castRequired = true)
     public C tableHints(SQLServerTableHints... tableHints) {
         if (tableHints.length > 0) {
             String hints = SQLServerGrammar.tableHints(tableHints);

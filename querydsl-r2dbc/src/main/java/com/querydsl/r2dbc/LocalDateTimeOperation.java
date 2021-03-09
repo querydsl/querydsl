@@ -13,9 +13,9 @@
  */
 package com.querydsl.r2dbc;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,10 +36,10 @@ public class LocalDateTimeOperation<T extends Comparable<?>> extends LocalDateTi
     }
 
     protected LocalDateTimeOperation(Class<? extends T> type, Operator op, Expression<?>... args) {
-        this(type, op, ImmutableList.copyOf(args));
+        this(type, op, Arrays.asList(args));
     }
 
-    protected LocalDateTimeOperation(Class<? extends T> type, Operator op, ImmutableList<Expression<?>> args) {
+    protected LocalDateTimeOperation(Class<? extends T> type, Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.operation(type, op, args));
         this.opMixin = (OperationImpl<T>) mixin;
     }
