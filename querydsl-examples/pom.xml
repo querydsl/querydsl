@@ -27,7 +27,6 @@
     <module>querydsl-example-kotlin-jpa</module>
     <module>querydsl-example-kotlin-mongodb</module>
     <module>querydsl-example-r2dbc-sql-codegen</module>
-    <module>querydsl-example-r2dbc-apt-codegen</module>
   </modules>
 
   <build>
