@@ -17,10 +17,11 @@ import static com.querydsl.jpa.Constants.*;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.TemplateFactory;
 import com.querydsl.core.types.dsl.StringTemplate;
+
+import java.util.Arrays;
 
 public class CustomExpressionsTest extends AbstractQueryTest {
 
@@ -29,7 +30,7 @@ public class CustomExpressionsTest extends AbstractQueryTest {
         private static final long serialVersionUID = 1L;
 
         public MyCustomExpr(Expression<?>... args) {
-            super(TemplateFactory.DEFAULT.create("myCustom({0},{1})"), ImmutableList.copyOf(args));
+            super(TemplateFactory.DEFAULT.create("myCustom({0},{1})"), Arrays.asList(args));
         }
     }
 

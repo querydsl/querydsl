@@ -13,10 +13,10 @@
  */
 package com.querydsl.core.types;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 /**
  * {@code PredicateTemplate} provides a Boolean typed {@link TemplateExpression} implementation
@@ -32,7 +32,7 @@ public class PredicateTemplate extends TemplateExpressionImpl<Boolean> implement
     @Nullable
     private transient volatile Predicate not;
 
-    protected PredicateTemplate(Template template, ImmutableList<?> args) {
+    protected PredicateTemplate(Template template, List<?> args) {
         super(Boolean.class, template, args);
     }
 

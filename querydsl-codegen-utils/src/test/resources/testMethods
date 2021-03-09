@@ -1,0 +1,11 @@
+public class JavaWriterTest {
+
+    public String publicMethod(String a) {
+        return null;
+    }
+
+    public static String staticMethod(String a) {
+        return null;
+    }
+
+}

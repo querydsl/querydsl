@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>codegen-utils</artifactId>
+  <version>5.0.0-SNAPSHOT</version>
+  <name>Querydsl - Codegen utils</name>
+  <description>Code generation and compilation for Java</description>
+
+  <parent>
+    <groupId>com.querydsl</groupId>
+    <artifactId>querydsl-root</artifactId>
+    <version>5.0.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  
+  <packaging>jar</packaging>
+
+  <inceptionYear>2010</inceptionYear>
+  
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  
+  <scm>
+    <connection>scm:git:git@github.com:querydsl/codegen.git</connection>
+    <url>git@github.com:querydsl/codegen.git</url>
+  </scm>    
+  
+  <properties>
+    <commons.collections.version>4.01</commons.collections.version>
+    <commons.lang.version>3.0.1</commons.lang.version>
+    <ecj.version>4.6.1</ecj.version>
+    <osgi.import.package>javax.annotation.*;version="0",javax.tools.*;version="0",org.eclipse.jdt.*;version="3.7.2"${osgi.import.package.root}</osgi.import.package>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.jdt.core.compiler</groupId>
+      <artifactId>ecj</artifactId>
+      <version>${ecj.version}</version>
+    </dependency>    
+         
+    <!-- test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <useDefaultManifestFile>true</useDefaultManifestFile>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.querydsl.codegen.utils</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>com.springsource.repository.bundles.release</id>
+      <url>http://repository.springsource.com/maven/bundles/release</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+
+  <developers>
+    <developer>
+      <id>tiwe</id>
+      <name>Timo Westkämper</name>
+      <email>timo.westkamper@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      <roles>
+        <role>Architect</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>laim</id>
+      <name>Lassi Immonen</name>
+      <email>lassi.immonen@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      <roles>
+        <role>Consultant</role>
+      </roles>
+    </developer>
+  </developers>
+</project>

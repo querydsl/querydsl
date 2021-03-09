@@ -17,16 +17,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.function.Supplier;
 
-import javax.annotation.Nonnegative;
-import javax.inject.Provider;
+import org.jetbrains.annotations.Range;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import com.infradna.tool.bridge_method_injector.WithBridgeMethods;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.dml.UpdateClause;
@@ -49,13 +44,13 @@ import com.querydsl.sql.types.Null;
  */
 public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<C>> extends AbstractSQLClause<C> implements UpdateClause<C> {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractSQLUpdateClause.class);
+    protected static final Logger logger = Logger.getLogger(AbstractSQLUpdateClause.class.getName());
 
     protected final RelationalPath<?> entity;
 
     protected final List<SQLUpdateBatch> batches = new ArrayList<SQLUpdateBatch>();
 
-    protected Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
+    protected Map<Path<?>, Expression<?>> updates = new LinkedHashMap<>();
 
     protected QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -69,7 +64,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
-    public AbstractSQLUpdateClause(Provider<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
+    public AbstractSQLUpdateClause(Supplier<Connection> connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration, connection);
         this.entity = entity;
         metadata.addJoin(JoinType.DEFAULT, entity);
@@ -82,7 +77,6 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -95,7 +89,6 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      * @param flag query flag
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return (C) this;
@@ -106,10 +99,9 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      *
      * @return the current object
      */
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C addBatch() {
         batches.add(new SQLUpdateBatch(metadata, updates));
-        updates = Maps.newLinkedHashMap();
+        updates = new LinkedHashMap<>();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
         return (C) this;
@@ -118,7 +110,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
     @Override
     public void clear() {
         batches.clear();
-        updates = Maps.newLinkedHashMap();
+        updates = new LinkedHashMap<>();
         metadata = new DefaultQueryMetadata();
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
@@ -153,7 +145,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         context.addSQL(createBindings(metadata, serializer));
         listeners.rendered(context);
 
-        Map<String, PreparedStatement> stmts = Maps.newHashMap();
+        Map<String, PreparedStatement> stmts = new HashMap<>();
 
         // add first batch
         listeners.prePrepare(context);
@@ -236,20 +228,19 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         if (batches.isEmpty()) {
             SQLSerializer serializer = createSerializer();
             serializer.serializeUpdate(metadata, entity, updates);
-            return ImmutableList.of(createBindings(metadata, serializer));
+            return Collections.singletonList(createBindings(metadata, serializer));
         } else {
-            ImmutableList.Builder<SQLBindings> builder = ImmutableList.builder();
+            List<SQLBindings> builder = new ArrayList<>();
             for (SQLUpdateBatch batch : batches) {
                 SQLSerializer serializer = createSerializer();
                 serializer.serializeUpdate(batch.getMetadata(), entity, batch.getUpdates());
                 builder.add(createBindings(metadata, serializer));
             }
-            return builder.build();
+            return Collections.unmodifiableList(builder);
         }
     }
 
     @Override
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public <T> C set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
             updates.put(path, (Expression<?>) value);
@@ -262,7 +253,6 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public <T> C set(Path<T> path, Expression<? extends T> expression) {
         if (expression != null) {
             updates.put(path, expression);
@@ -273,14 +263,12 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
     }
 
     @Override
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public <T> C setNull(Path<T> path) {
         updates.put(path, Null.CONSTANT);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) instanceof Expression) {
@@ -294,14 +282,12 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         return (C) this;
     }
 
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C where(Predicate p) {
         metadata.addWhere(p);
         return (C) this;
     }
 
     @Override
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C where(Predicate... o) {
         for (Predicate p : o) {
             metadata.addWhere(p);
@@ -309,8 +295,7 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
         return (C) this;
     }
 
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
-    public C limit(@Nonnegative long limit) {
+    public C limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         metadata.setModifiers(QueryModifiers.limit(limit));
         return (C) this;
     }
@@ -331,7 +316,6 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      * @return the current object
      */
     @SuppressWarnings("unchecked")
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public C populate(Object bean) {
         return populate(bean, DefaultMapper.DEFAULT);
     }
@@ -344,7 +328,6 @@ public abstract class AbstractSQLUpdateClause<C extends AbstractSQLUpdateClause<
      * @return the current object
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    @WithBridgeMethods(value = SQLUpdateClause.class, castRequired = true)
     public <T> C populate(T obj, Mapper<T> mapper) {
         Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null
                 ? entity.getPrimaryKey().getLocalColumns()

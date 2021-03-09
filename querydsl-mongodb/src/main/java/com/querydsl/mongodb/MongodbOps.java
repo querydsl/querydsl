@@ -23,7 +23,9 @@ import com.querydsl.core.types.Operator;
  */
 public enum MongodbOps implements Operator {
     NEAR(Boolean.class),
+    GEO_WITHIN_BOX(Boolean.class),
     ELEM_MATCH(Boolean.class),
+    NO_MATCH(Boolean.class),
     NEAR_SPHERE(Boolean.class);
 
     private final Class<?> type;

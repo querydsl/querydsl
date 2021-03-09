@@ -16,6 +16,7 @@ package com.querydsl.jpa.hibernate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.support.QueryMixin;
@@ -49,7 +49,7 @@ public class HibernateInsertClause implements
 
     private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
-    private final Map<Path<?>, Expression<?>> inserts = Maps.newLinkedHashMap();
+    private final Map<Path<?>, Expression<?>> inserts = new LinkedHashMap<>();
 
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
@@ -85,7 +85,7 @@ public class HibernateInsertClause implements
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, values, subQuery, inserts);
+        serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
         Map<Object, String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
@@ -121,7 +121,7 @@ public class HibernateInsertClause implements
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, null);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, values, subQuery, inserts);
+        serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
         return serializer.toString();
     }
 
@@ -158,8 +158,8 @@ public class HibernateInsertClause implements
 
     @Override
     public HibernateInsertClause values(Object... v)  {
-        // TODO Auto-generated method stub
-        return null;
+        this.values.addAll(Arrays.asList(v));
+        return this;
     }
 
 

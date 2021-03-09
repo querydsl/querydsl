@@ -22,12 +22,11 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 import com.querydsl.core.util.BeanUtils;
 import com.querydsl.core.util.ReflectionUtils;
@@ -49,9 +48,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     private final AliasFactory aliasFactory;
 
-    private final Map<Object, Expression<?>> propToExpr = new HashMap<Object, Expression<?>>();
+    private final Map<Object, Expression<?>> propToExpr = new ConcurrentHashMap<>();
 
-    private final Map<Object, Object> propToObj = new HashMap<Object, Object>();
+    private final Map<Object, Object> propToObj = new ConcurrentHashMap<>();
 
     private final PathFactory pathFactory;
 
@@ -101,7 +100,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (methodType == MethodType.LIST_ACCESS || methodType == MethodType.SCALA_LIST_ACCESS) {
             // TODO : manage cases where the argument is based on a property invocation
-            Object propKey = ImmutableList.of(MethodType.LIST_ACCESS, args[0]);
+            Object propKey = Arrays.asList(MethodType.LIST_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
@@ -112,7 +111,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
         } else if (methodType == MethodType.MAP_ACCESS || methodType == MethodType.SCALA_MAP_ACCESS) {
-            Object propKey = ImmutableList.of(MethodType.MAP_ACCESS, args[0]);
+            Object propKey = Arrays.asList(MethodType.MAP_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
@@ -246,7 +245,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                 rv = null;
             }
         }
-        propToObj.put(propKey, rv);
+
+        if (rv == null) {
+            propToObj.remove(propKey);
+        } else {
+            propToObj.put(propKey, rv);
+        }
         propToExpr.put(propKey, path);
         return (T) rv;
     }

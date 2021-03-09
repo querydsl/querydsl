@@ -13,8 +13,9 @@
  */
 package com.querydsl.sql.namemapping;
 
-import com.google.common.base.Optional;
 import com.querydsl.sql.SchemaAndTable;
+
+import java.util.Optional;
 
 /**
  * A {@link NameMapping} implementation that accepts zero or more
@@ -44,7 +45,7 @@ public class ChainedNameMapping implements NameMapping {
                 return overriddenColumnName;
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     @Override
@@ -55,7 +56,7 @@ public class ChainedNameMapping implements NameMapping {
                 return overridden;
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
 }

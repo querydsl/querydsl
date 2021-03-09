@@ -12,12 +12,6 @@ The Mongodb module provides integration with the Mongodb API.
   <artifactId>querydsl-mongodb</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
-
-<dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-log4j12</artifactId>
-  <version>1.6.1</version>
-</dependency>
 ```
 
 And now, configure the Maven APT plugin which generates the query types used by Querydsl :

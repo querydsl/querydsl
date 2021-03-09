@@ -1,0 +1,10 @@
+public class JavaWriterTest {
+
+    public class Test {
+
+    }
+
+    public JavaWriterTest(String a) {
+    }
+
+}

@@ -14,8 +14,9 @@
 package com.querydsl.sql;
 
 import java.util.List;
+import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.NonUniqueResultException;
@@ -63,6 +64,11 @@ public class UnionImpl<T, Q extends ProjectableSQLQuery<T, Q> & Query<Q>>  imple
     @Override
     public CloseableIterator<T> iterate() {
         return query.iterate();
+    }
+
+    @Override
+    public Stream<T> stream() {
+        return query.stream();
     }
 
     @Override

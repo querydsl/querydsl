@@ -15,8 +15,8 @@ package com.querydsl.core.types;
 
 import java.lang.reflect.AnnotatedElement;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
 import com.querydsl.core.util.ReflectionUtils;
 

@@ -2,13 +2,12 @@ package com.querydsl.apt.domain;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
 import org.junit.Test;
-
-import com.google.common.collect.Lists;
 
 public class Generic12Test {
 
@@ -39,7 +38,7 @@ public class Generic12Test {
     public abstract static class Role<T extends Permission> {
 
         @ManyToMany(targetEntity = Permission.class)
-        private final List<T> permissions = Lists.newArrayList();
+        private final List<T> permissions = new ArrayList<>();
 
     }
 

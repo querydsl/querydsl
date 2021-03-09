@@ -15,14 +15,12 @@ package com.querydsl.jpa;
 
 import java.util.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.persistence.*;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
@@ -38,12 +36,12 @@ import com.querydsl.core.util.MathUtils;
  */
 public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
-    private static final Set<? extends Operator> NUMERIC = Sets.immutableEnumSet(
+    private static final Set<? extends Operator> NUMERIC = Collections.unmodifiableSet(EnumSet.of(
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
-            Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN);
+            Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN));
 
-    private static final Set<? extends Operator> CASE_OPS = Sets.immutableEnumSet(
-            Ops.CASE_EQ_ELSE, Ops.CASE_ELSE);
+    private static final Set<? extends Operator> CASE_OPS = Collections.unmodifiableSet(EnumSet.of(
+            Ops.CASE_EQ_ELSE, Ops.CASE_ELSE));
 
     private static final String COMMA = ", ";
 
@@ -262,16 +260,30 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
     }
 
-    public void serializeForInsert(QueryMetadata md, List<Path<?>> columns, List<Object> values, SubQueryExpression<?> query, Map<Path<?>, Expression<?>> inserts) {
+    private static String relativePathString(Expression<?> root, Path<?> path) {
+        StringBuilder pathString = new StringBuilder(path.getMetadata().getName().length());
+        while (path.getMetadata().getParent() != null && !path.equals(root)) {
+            if (pathString.length() > 0) {
+                pathString.insert(0, '.');
+            }
+            pathString.insert(0, path.getMetadata().getName());
+            path = path.getMetadata().getParent();
+        }
+        return pathString.toString();
+    }
+
+    public void serializeForInsert(QueryMetadata md, Collection<Path<?>> columns, List<Object> values, SubQueryExpression<?> query, Map<Path<?>, Expression<?>> inserts) {
         append(INSERT);
-        handleJoinTarget(md.getJoins().get(0));
+        final JoinExpression root = md.getJoins().get(0);
+        append(getEntityName(root.getTarget().getType()));
         append(" (");
         boolean first = true;
         for (Path<?> path : columns) {
             if (!first) {
                 append(", ");
             }
-            handle(path);
+
+            append(relativePathString(root.getTarget(), path));
             first = false;
         }
         append(")\n");
@@ -287,9 +299,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 handle(value);
                 first = false;
             }
-        }
-
-        if (inserts != null && inserts.entrySet().size() > 0) {
+            append(")");
+        } else if (inserts != null && inserts.entrySet().size() > 0) {
             first = true;
             for (Map.Entry<Path<?>, Expression<?>> entry : inserts.entrySet()) {
                 if (!first) {
@@ -433,12 +444,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         if (operator == Ops.EQ && args.get(1) instanceof Operation &&
                 ((Operation) args.get(1)).getOperator() == Ops.QuantOps.ANY) {
-            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation) args.get(1)).getArg(0));
+            args = Arrays.<Expression<?>> asList(args.get(0), ((Operation) args.get(1)).getArg(0));
             visitOperation(type, Ops.IN, args);
 
         } else if (operator == Ops.NE && args.get(1) instanceof Operation &&
                 ((Operation) args.get(1)).getOperator() == Ops.QuantOps.ANY) {
-            args = ImmutableList.<Expression<?>>of(args.get(0), ((Operation) args.get(1)).getArg(0));
+            args = Arrays.<Expression<?>> asList(args.get(0), ((Operation) args.get(1)).getArg(0));
             visitOperation(type, Ops.NOT_IN, args);
 
         } else if (operator == Ops.IN || operator == Ops.NOT_IN) {
@@ -461,13 +472,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         } else if (operator == Ops.MATCHES || operator == Ops.MATCHES_IC) {
             super.visitOperation(type, Ops.LIKE,
-                    ImmutableList.of(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
+                    Arrays.asList(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
         } else if (operator == Ops.LIKE && args.get(1) instanceof Constant<?>) {
             final String escape = String.valueOf(templates.getEscapeChar());
             final String escaped = args.get(1).toString().replace(escape, escape + escape);
             super.visitOperation(String.class, Ops.LIKE,
-                    ImmutableList.of(args.get(0), ConstantImpl.create(escaped)));
+                    Arrays.asList(args.get(0), ConstantImpl.create(escaped)));
 
         } else if (NUMERIC.contains(operator)) {
             super.visitOperation(type, operator, normalizeNumericArgs(args));
@@ -475,13 +486,28 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         } else if (operator == Ops.ALIAS) {
             if (args.get(1) instanceof Path && !((Path<?>) args.get(1)).getMetadata().isRoot()) {
                 Path<?> path = (Path<?>) args.get(1);
-                args = ImmutableList.of(args.get(0),
+                args = Arrays.asList(args.get(0),
                         ExpressionUtils.path(path.getType(), path.getMetadata().getName()));
             }
             super.visitOperation(type, operator, args);
 
         } else {
-            super.visitOperation(type, operator, args);
+            try {
+                super.visitOperation(type, operator, args);
+            } catch (IllegalArgumentException e) {
+                if (operator.getClass().getName().endsWith("SQLOps")) {
+                    throw new IllegalArgumentException(String.format("SQL Expressions like %s are not supported in JPQL - the query language for JPA. " +
+                            "SQLExpressions.* can only be used in JPQL queries when these functions are registered as custom function in your ORM.%n" +
+                            "\tTo fix this issue, you have three options:%n" +
+                            "\t1) If you do want to use advanced, dialect specific, SQL functions within JPQL, make sure to make these functions available to " +
+                            "your ORM through custom functions and register these with your JPATemplates instance.%n" +
+                            "\t2) Use JPASQLQuery instead. This allows you to generate a pure SQL query based on your JPA metamodel.%n" +
+                            "\t3) Consider using the Blaze-Persistence QueryDSL integration. Blaze-Persistence is an extension on top of " +
+                            "JPA that makes various SQL specific functions like window functions available to JPQL.", operator.name()), e);
+                } else {
+                    throw e;
+                }
+            }
         }
 
         inCaseOperation = oldInCaseOperation;
@@ -494,7 +520,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         final Class<?> targetType = rightArg.getConstant();
         final String typeName = templates.getTypeForCast(targetType);
-        visitOperation(targetType, JPQLOps.CAST, ImmutableList.of(args.get(0), ConstantImpl.create(typeName)));
+        visitOperation(targetType, JPQLOps.CAST, Arrays.asList(args.get(0), ConstantImpl.create(typeName)));
     }
 
     private void visitPathInCollection(Class<?> type, Operator operator,
@@ -504,7 +530,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         Constant<? extends Collection<?>> rhs = (Constant<? extends Collection<?>>) args.get(1);
         if (rhs.getConstant().isEmpty()) {
             operator = operator == Ops.IN ? Ops.EQ : Ops.NE;
-            args = ImmutableList.of(Expressions.ONE, Expressions.TWO);
+            args = Arrays.<Expression<?>> asList(Expressions.ONE, Expressions.TWO);
         } else if (entityManager != null && !templates.isPathInEntitiesSupported() && args.get(0).getType().isAnnotationPresent(Entity.class)) {
             final Metamodel metamodel = entityManager.getMetamodel();
             final PersistenceUnitUtil util = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
@@ -519,7 +545,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                     ids.add(util.getIdentifier(entity));
                 }
                 rhs = ConstantImpl.create(ids);
-                args = ImmutableList.of(lhs, rhs);
+                args = Arrays.asList(lhs, rhs);
             }
         }
 

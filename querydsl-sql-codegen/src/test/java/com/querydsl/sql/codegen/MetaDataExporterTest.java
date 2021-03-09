@@ -28,10 +28,11 @@ import javax.tools.JavaCompiler;
 import javax.validation.constraints.NotNull;
 
 import com.querydsl.core.util.ReflectionUtils;
+import com.querydsl.sql.Connections;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.core.util.FileUtils;
 
@@ -61,9 +62,8 @@ public class MetaDataExporterTest {
     }
 
     static void createTables(Connection connection) throws SQLException {
-        Statement stmt = connection.createStatement();
 
-        try {
+        try (Statement stmt = connection.createStatement()) {
             // reserved words
             stmt.execute("create table reserved (id int, while int)");
 
@@ -118,8 +118,6 @@ public class MetaDataExporterTest {
                     + "m_product_bom_id int, "
                     + "m_productbom_id int, "
                     + "constraint product_bom foreign key (m_productbom_id) references product(id))");
-        } finally {
-            stmt.close();
         }
     }
 
@@ -156,6 +154,7 @@ public class MetaDataExporterTest {
     @Test
     public void explicit_configuration() throws SQLException {
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setCatalogPattern("%TESTDB%");
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
         exporter.setPackageName("test");
@@ -173,7 +172,7 @@ public class MetaDataExporterTest {
     @Test
     public void validation_annotations_are_not_added_to_columns_with_default_values() throws SQLException, ClassNotFoundException, MalformedURLException {
         Statement stmt = connection.createStatement();
-        stmt.execute("CREATE TABLE table ("
+        stmt.execute("CREATE TABLE foo ("
                 + "id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,"
                 + "name VARCHAR(255) NOT NULL DEFAULT 'some default')");
 
@@ -181,25 +180,25 @@ public class MetaDataExporterTest {
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
         exporter.setPackageName("test");
-        exporter.setTableNamePattern("TABLE");
+        exporter.setTableNamePattern("FOO");
         exporter.setTargetFolder(folder.getRoot());
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setValidationAnnotations(true);
         exporter.export(metadata);
 
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] {folder.getRoot().toURI().toURL()});
-        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Table.java");
-        Class<?> cls = Class.forName("test.Table", true, classLoader);
+        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Foo.java");
+        Class<?> cls = Class.forName("test.Foo", true, classLoader);
         assertThat(ReflectionUtils.getAnnotatedElement(cls, "id", Integer.class).getAnnotation(NotNull.class), is(nullValue()));
         assertThat(ReflectionUtils.getAnnotatedElement(cls, "name", String.class).getAnnotation(NotNull.class), is(nullValue()));
 
-        stmt.execute("DROP TABLE table");
+        stmt.execute("DROP TABLE foo");
     }
 
     @Test
     public void validation_annotations_are_added_to_columns_without_default_values() throws SQLException, ClassNotFoundException, MalformedURLException {
         Statement stmt = connection.createStatement();
-        stmt.execute("CREATE TABLE table ("
+        stmt.execute("CREATE TABLE bar ("
                 + "id VARCHAR(10) PRIMARY KEY NOT NULL,"
                 + "name VARCHAR(255) NOT NULL)");
 
@@ -207,19 +206,19 @@ public class MetaDataExporterTest {
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
         exporter.setPackageName("test");
-        exporter.setTableNamePattern("TABLE");
+        exporter.setTableNamePattern("BAR");
         exporter.setTargetFolder(folder.getRoot());
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setValidationAnnotations(true);
         exporter.export(metadata);
 
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] {folder.getRoot().toURI().toURL()});
-        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Table.java");
-        Class<?> cls = Class.forName("test.Table", true, classLoader);
+        compiler.run(null, null, null, folder.getRoot().getAbsoluteFile()  + "/test/Bar.java");
+        Class<?> cls = Class.forName("test.Bar", true, classLoader);
         assertThat(ReflectionUtils.getAnnotatedElement(cls, "id", Integer.class).getAnnotation(NotNull.class), is(notNullValue()));
         assertThat(ReflectionUtils.getAnnotatedElement(cls, "name", String.class).getAnnotation(NotNull.class), is(notNullValue()));
 
-        stmt.execute("DROP TABLE table");
+        stmt.execute("DROP TABLE bar");
     }
 
     @Test
@@ -376,6 +375,47 @@ public class MetaDataExporterTest {
         assertTrue(new File(folder.getRoot(), "beans/test/DateTestBean.java").exists());
     }
 
+    @Test
+    public void catalog_pattern() throws SQLException, IOException, ClassNotFoundException {
+        Connections.initMySQL();
+        Connection connection = Connections.getConnection();
+        Statement stmt = Connections.getStatement();
+        try {
+            stmt.execute("CREATE DATABASE IF NOT EXISTS catalog_test_one");
+            stmt.execute("CREATE TABLE IF NOT EXISTS catalog_test_one.test_catalog_table_one(id INT PRIMARY KEY, foo VARCHAR(32) NOT NULL)");
+            stmt.execute("CREATE DATABASE IF NOT EXISTS catalog_test_two");
+            stmt.execute("CREATE TABLE IF NOT EXISTS catalog_test_two.test_catalog_table_two(id INT PRIMARY KEY, foo VARCHAR(32) NOT NULL)");
+
+            MetaDataExporter exporter = new MetaDataExporter();
+            exporter.setSchemaPattern("PUBLIC");
+            exporter.setCatalogPattern("catalog_test_one");
+            exporter.setPackageName("test");
+            exporter.setNamePrefix("");
+            exporter.setBeanSuffix("Bean");
+            exporter.setBeanSerializer(new BeanSerializer());
+            exporter.setTargetFolder(folder.getRoot());
+            exporter.setBeansTargetFolder(folder.newFolder("beans"));
+
+            exporter.export(connection.getMetaData());
+            assertTrue(new File(folder.getRoot(), "test/TestCatalogTableOne.java").exists());
+            assertTrue(new File(folder.getRoot(), "beans/test/TestCatalogTableOneBean.java").exists());
+
+            assertFalse(new File(folder.getRoot(), "test/TestCatalogTableTwo.java").exists());
+            assertFalse(new File(folder.getRoot(), "beans/test/TestCatalogTableTwoBean.java").exists());
+
+            exporter.setCatalogPattern("catalog_test_two");
+            exporter.export(connection.getMetaData());
+
+            assertTrue(new File(folder.getRoot(), "test/TestCatalogTableTwo.java").exists());
+            assertTrue(new File(folder.getRoot(), "beans/test/TestCatalogTableTwoBean.java").exists());
+        } finally {
+            stmt.execute("DROP DATABASE IF EXISTS catalog_test_one");
+            stmt.execute("DROP DATABASE IF EXISTS catalog_test_two");
+            stmt.close();
+            Connections.close();
+        }
+    }
+
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix,
             NamingStrategy namingStrategy, File targetDir, boolean withBeans,
             boolean withInnerClasses, boolean withOrdinalPositioning) throws SQLException {
@@ -412,7 +452,7 @@ public class MetaDataExporterTest {
 
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, System.out, System.err,
-                classes.toArray(new String[classes.size()]));
+                classes.toArray(new String[0]));
         if (compilationResult != 0) {
             Assert.fail("Compilation Failed for " + targetDir.getAbsolutePath());
         }

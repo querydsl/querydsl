@@ -15,9 +15,8 @@ package com.querydsl.sql.namemapping;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.Maps;
 import com.querydsl.sql.SchemaAndTable;
 
 /**
@@ -25,18 +24,18 @@ import com.querydsl.sql.SchemaAndTable;
  */
 public class PreConfiguredNameMapping implements NameMapping {
 
-    private final Map<SchemaAndTable, SchemaAndTable> schemaTables = Maps.newHashMap();
+    private final Map<SchemaAndTable, SchemaAndTable> schemaTables = new HashMap<>();
 
-    private final Map<String, String> tables = Maps.newHashMap();
+    private final Map<String, String> tables = new HashMap<>();
 
-    private final Map<SchemaAndTable, Map<String, String>> schemaTableColumns = Maps.newHashMap();
+    private final Map<SchemaAndTable, Map<String, String>> schemaTableColumns = new HashMap<>();
 
-    private final Map<String, Map<String, String>> tableColumns = Maps.newHashMap();
+    private final Map<String, Map<String, String>> tableColumns = new HashMap<>();
 
     public Optional<SchemaAndTable> getOverride(SchemaAndTable key) {
         if (!schemaTables.isEmpty() && key.getSchema() != null) {
             if (schemaTables.containsKey(key)) {
-                return Optional.of(schemaTables.get(key));
+                return Optional.ofNullable(schemaTables.get(key));
             }
         }
 
@@ -44,7 +43,7 @@ public class PreConfiguredNameMapping implements NameMapping {
             String table = tables.get(key.getTable());
             return Optional.of(new SchemaAndTable(key.getSchema(), table));
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public Optional<String> getColumnOverride(SchemaAndTable key, String column) {
@@ -58,7 +57,7 @@ public class PreConfiguredNameMapping implements NameMapping {
         if (columnOverrides != null && (newColumn = columnOverrides.get(column)) != null) {
             return Optional.of(newColumn);
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public String registerTableOverride(String oldTable, String newTable) {
@@ -71,20 +70,12 @@ public class PreConfiguredNameMapping implements NameMapping {
 
     public String registerColumnOverride(String schema, String table, String oldColumn, String newColumn) {
         SchemaAndTable key = new SchemaAndTable(schema, table);
-        Map<String, String> columnOverrides = schemaTableColumns.get(key);
-        if (columnOverrides == null) {
-            columnOverrides = new HashMap<String, String>();
-            schemaTableColumns.put(key, columnOverrides);
-        }
+        Map<String, String> columnOverrides = schemaTableColumns.computeIfAbsent(key, k -> new HashMap<String, String>());
         return columnOverrides.put(oldColumn, newColumn);
     }
 
     public String registerColumnOverride(String table, String oldColumn, String newColumn) {
-        Map<String, String> columnOverrides = tableColumns.get(table);
-        if (columnOverrides == null) {
-            columnOverrides = new HashMap<String, String>();
-            tableColumns.put(table, columnOverrides);
-        }
+        Map<String, String> columnOverrides = tableColumns.computeIfAbsent(table, k -> new HashMap<String, String>());
         return columnOverrides.put(oldColumn, newColumn);
     }
 

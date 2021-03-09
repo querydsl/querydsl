@@ -22,12 +22,10 @@ public final class StoredProcedures {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         String url = "jdbc:derby:target/procedure_test;create=true";
-        Connection connection = DriverManager.getConnection(url, "", "");
 
-        try {
+        try (Connection connection = DriverManager.getConnection(url, "", "")) {
             DatabaseMetaData md = connection.getMetaData();
-            ResultSet procedures = md.getProcedures(null, null, null);
-            try {
+            try (ResultSet procedures = md.getProcedures(null, null, null)) {
                 while (procedures.next()) {
                     String cat = procedures.getString(1);
                     String schema = procedures.getString(2);
@@ -37,8 +35,7 @@ public final class StoredProcedures {
                     String specificName = procedures.getString(9);
                     System.out.println(name + "\n" + remarks + "\n" + type + "\n" + specificName);
 
-                    ResultSet procedureColumns = md.getProcedureColumns(cat, schema, name, null);
-                    try {
+                    try (ResultSet procedureColumns = md.getProcedureColumns(cat, schema, name, null)) {
                         while (procedureColumns.next()) {
                             String columnName = procedureColumns.getString(4);
                             int columnType = procedureColumns.getInt(5);
@@ -48,15 +45,9 @@ public final class StoredProcedures {
                             System.out.println(" " + columnName + " " + columnType + " " + dataType + " " + typeName + " " + nullable);
                         }
                         System.out.println();
-                    } finally {
-                        procedureColumns.close();
                     }
                 }
-            } finally {
-                procedures.close();
             }
-        } finally {
-            connection.close();
         }
     }
 

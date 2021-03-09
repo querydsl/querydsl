@@ -40,7 +40,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.Sets;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryModifiers;
@@ -442,7 +441,7 @@ public class LuceneQueryTest {
 
     @Test
     public void load_list_fieldSelector() {
-        Document document = query.where(title.ne("")).load(Sets.newHashSet("title")).fetch().get(0);
+        Document document = query.where(title.ne("")).load(Collections.singleton("title")).fetch().get(0);
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));
     }
@@ -456,7 +455,7 @@ public class LuceneQueryTest {
 
     @Test
     public void load_singleResult_fieldSelector() {
-        Document document = query.where(title.ne("")).load(Sets.newHashSet("title")).fetchFirst();
+        Document document = query.where(title.ne("")).load(Collections.singleton("title")).fetchFirst();
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));
     }

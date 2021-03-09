@@ -21,7 +21,6 @@ import java.util.*;
 
 import org.junit.Test;
 
-import com.google.common.collect.Ordering;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.Tuple;
@@ -63,7 +62,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void set_by_sorted_reverse() {
         Map<Integer, Group> results = BASIC_RESULTS_UNORDERED
-                .transform(groupBy(postId).as(postName, sortedSet(commentId, Ordering.natural().reverse())));
+                .transform(groupBy(postId).as(postName, sortedSet(commentId, Comparator.reverseOrder())));
 
         Group group = results.get(1);
         Iterator<Integer> it = group.getSet(commentId).iterator();
@@ -143,7 +142,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
     @Test
     public void map_sorted_reverse() {
         Map<Integer, Group> results = MAP_RESULTS.transform(
-                groupBy(postId).as(postName, sortedMap(commentId, commentText, Ordering.natural().reverse())));
+                groupBy(postId).as(postName, sortedMap(commentId, commentText, Comparator.reverseOrder())));
 
         Group group = results.get(1);
 
@@ -182,11 +181,7 @@ public class GroupByMapTest extends AbstractGroupByTest {
             @SuppressWarnings("unchecked")
             Pair<Integer, Pair<Integer, String>> pair = (Pair<Integer, Pair<Integer, String>>) array[1];
             Integer first = pair.getFirst();
-            Map<Integer, String> comments = posts.get(first);
-            if (comments == null) {
-                comments = new LinkedHashMap<Integer, String>();
-                posts.put(first, comments);
-            }
+            Map<Integer, String> comments = posts.computeIfAbsent(first, k -> new LinkedHashMap<Integer, String>());
             Pair<Integer, String> second = pair.getSecond();
             comments.put(second.getFirst(), second.getSecond());
         }
@@ -330,8 +325,8 @@ public class GroupByMapTest extends AbstractGroupByTest {
                 GroupBy.sortedMap(bigd,
                         GroupBy.sortedMap(bigd,
                                 GroupBy.map(str, str),
-                                Ordering.natural().nullsLast()),
-                           Ordering.natural().nullsFirst()));
+                                Comparator.nullsLast(Comparator.naturalOrder())),
+                           Comparator.nullsFirst(Comparator.naturalOrder())));
         assertNotNull(resultTransformer);
     }
 

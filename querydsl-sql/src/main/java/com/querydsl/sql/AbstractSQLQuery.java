@@ -20,17 +20,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-import javax.inject.Provider;
+import org.jetbrains.annotations.Nullable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
-import com.google.common.collect.ImmutableList;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
@@ -52,12 +50,12 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
     protected static final String PARENT_CONTEXT = AbstractSQLQuery.class.getName() + "#PARENT_CONTEXT";
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
+    private static final Logger logger = Logger.getLogger(AbstractSQLQuery.class.getName());
 
     private static final QueryFlag rowCountFlag = new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() ");
 
     @Nullable
-    private Provider<Connection> connProvider;
+    private Supplier<Connection> connProvider;
 
     @Nullable
     private Connection conn;
@@ -85,11 +83,11 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         this.useLiterals = configuration.getUseLiterals();
     }
 
-    public AbstractSQLQuery(Provider<Connection> connProvider, Configuration configuration) {
+    public AbstractSQLQuery(Supplier<Connection> connProvider, Configuration configuration) {
         this(connProvider, configuration, new DefaultQueryMetadata());
     }
 
-    public AbstractSQLQuery(Provider<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
+    public AbstractSQLQuery(Supplier<Connection> connProvider, Configuration configuration, QueryMetadata metadata) {
         super(new QueryMixin<Q>(metadata, false), configuration);
         this.connProvider = connProvider;
         this.listeners = new SQLListeners(configuration.getListeners());
@@ -132,7 +130,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             return unsafeCount();
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
+            logger.log(Level.SEVERE, error, e);
             throw configuration.translate(e);
         }
     }
@@ -270,7 +268,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     public ResultSet getResults() {
         final SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
-        List<Object> constants = ImmutableList.of();
+        List<Object> constants = Collections.emptyList();
 
         try {
             listeners.preRender(context);
@@ -346,7 +344,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private CloseableIterator<T> iterateSingle(QueryMetadata metadata, @Nullable final Expression<T> expr) {
         SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
-        List<Object> constants = ImmutableList.of();
+        List<Object> constants = Collections.emptyList();
 
         try {
             listeners.preRender(context);
@@ -409,7 +407,9 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             endContext(context);
             throw configuration.translate(queryString, constants, e);
         } catch (RuntimeException e) {
-            logger.error("Caught " + e.getClass().getName() + " for " + queryString);
+            logger.log(Level.SEVERE, "Caught " + e.getClass().getName() + " for " + queryString);
+            onException(context, e);
+            endContext(context);
             throw e;
         } finally {
             reset();
@@ -422,7 +422,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         Expression<T> expr = (Expression<T>) queryMixin.getMetadata().getProjection();
         SQLListenerContextImpl context = startContext(connection(), queryMixin.getMetadata());
         String queryString = null;
-        List<Object> constants = ImmutableList.of();
+        List<Object> constants = Collections.emptyList();
 
         try {
             listeners.preRender(context);
@@ -436,16 +436,14 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
             constants = serializer.getConstants();
 
             listeners.prePrepare(context);
-            final PreparedStatement stmt = getPreparedStatement(queryString);
-            try {
+            try (PreparedStatement stmt = getPreparedStatement(queryString)) {
                 setParameters(stmt, constants, serializer.getConstantPaths(), queryMixin.getMetadata().getParams());
                 context.addPreparedStatement(stmt);
                 listeners.prepared(context);
 
                 listeners.preExecute(context);
-                final ResultSet rs = stmt.executeQuery();
-                listeners.executed(context);
-                try {
+                try (ResultSet rs = stmt.executeQuery()) {
+                    listeners.executed(context);
                     lastCell = null;
                     final List<T> rv = new ArrayList<T>();
                     if (expr instanceof FactoryExpression) {
@@ -479,23 +477,13 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                         }
                     }
                     return rv;
-                } catch (IllegalAccessException e) {
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
                     onException(context, e);
                     throw new QueryException(e);
-                } catch (InvocationTargetException e) {
-                    onException(context,e);
-                    throw new QueryException(e);
-                } catch (InstantiationException e) {
-                    onException(context,e);
-                    throw new QueryException(e);
                 } catch (SQLException e) {
-                    onException(context,e);
+                    onException(context, e);
                     throw configuration.translate(queryString, constants, e);
-                } finally {
-                    rs.close();
                 }
-            } finally {
-                stmt.close();
             }
         } catch (SQLException e) {
             onException(context, e);
@@ -563,7 +551,6 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     private void reset() {
-        cleanupMDC();
     }
 
     protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths,
@@ -591,7 +578,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private long unsafeCount() throws SQLException {
         SQLListenerContextImpl context = startContext(connection(), getMetadata());
         String queryString = null;
-        List<Object> constants = ImmutableList.of();
+        List<Object> constants = Collections.emptyList();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -636,22 +623,14 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
                 }
             }
             endContext(context);
-            cleanupMDC();
         }
     }
 
     protected void logQuery(String queryString, Collection<Object> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
-    }
-
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
     }
 
     private Connection connection() {

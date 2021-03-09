@@ -14,9 +14,9 @@
 package com.querydsl.sql;
 
 import java.sql.Types;
+import java.util.Collections;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.QueryMetadata;
@@ -35,7 +35,7 @@ import com.querydsl.core.types.dsl.Expressions;
 public class SQLServerTemplates extends SQLTemplates {
 
     protected static final Expression<?> WITH_REPEATABLE_READ = ExpressionUtils.operation(
-        Object.class, SQLOps.WITH_REPEATABLE_READ, ImmutableList.<Expression<?>>of());
+        Object.class, SQLOps.WITH_REPEATABLE_READ, Collections.emptyList());
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass") //Intentional
     public static final SQLServerTemplates DEFAULT = new SQLServerTemplates();

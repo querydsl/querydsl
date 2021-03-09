@@ -19,8 +19,8 @@ import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.PluralAttribute;
 
-import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.dsl.PathBuilderValidator;
+import com.querydsl.core.util.PrimitiveUtils;
 
 /**
  * JPAPathBuilderValidator implements PathBuilderValidator using a JPA Metamodel instance
@@ -45,7 +45,7 @@ public class JPAPathBuilderValidator implements PathBuilderValidator {
             if (attribute instanceof PluralAttribute) {
                 return ((PluralAttribute) attribute).getElementType().getJavaType();
             } else {
-                return Primitives.wrap(attribute.getJavaType());
+                return PrimitiveUtils.wrap(attribute.getJavaType());
             }
         } catch (IllegalArgumentException e) {
             return null;

@@ -2,7 +2,7 @@ package com.querydsl.collections;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -63,7 +63,7 @@ public class MathTest {
 
     private <T> T unique(Expression<T> expr) {
         //return query().fetchOne(expr);
-        return CollQueryFactory.from(num, Arrays.asList(0.5)).select(expr).fetchOne();
+        return CollQueryFactory.<Double> from(num, Collections.singletonList(0.5)).select(expr).fetchOne();
     }
 
 }

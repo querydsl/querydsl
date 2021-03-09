@@ -16,7 +16,6 @@ package com.querydsl.scala.sql
 
 import java.util.{ArrayList, HashMap, List => JavaList, Map => JavaMap}
 
-import com.google.common.collect.ImmutableList._
 import com.querydsl.core.types.PathMetadataFactory._
 import com.querydsl.core.types._
 import com.querydsl.scala._
@@ -78,7 +77,7 @@ class RelationalPathImpl[T](md: PathMetadata, schema: String, table: String)(imp
   }
 
   def createForeignKey[F](local: List[_ <: Path[_]], foreign: List[String]) = {
-    val foreignKey = new ForeignKey[F](this, copyOf(local.iterator), copyOf(foreign.iterator))
+    val foreignKey = new ForeignKey[F](this, local, foreign)
     foreignKeys.add(foreignKey)
     foreignKey
   }
@@ -90,7 +89,7 @@ class RelationalPathImpl[T](md: PathMetadata, schema: String, table: String)(imp
   }
 
   def createInvForeignKey[F](local: List[_ <: Path[_]], foreign: List[String]) = {
-    val foreignKey = new ForeignKey[F](this, copyOf(local.iterator), copyOf(foreign.iterator))
+    val foreignKey = new ForeignKey[F](this, local, foreign)
     inverseForeignKeys.add(foreignKey)
     foreignKey
   }

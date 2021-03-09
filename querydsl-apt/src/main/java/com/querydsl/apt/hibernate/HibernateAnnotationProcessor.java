@@ -29,7 +29,7 @@ import com.querydsl.apt.jpa.JPAAnnotationProcessor;
  * @author tiwe
  * @see JPAAnnotationProcessor
  */
-@SupportedAnnotationTypes({"com.querydsl.core.annotations.*","javax.persistence.*", "org.hibernate.annotations.*"})
+@SupportedAnnotationTypes({"com.querydsl.core.annotations.*", "javax.persistence.*", "jakarta.persistence.*", "org.hibernate.annotations.*"})
 public class HibernateAnnotationProcessor extends JPAAnnotationProcessor {
 
     @Override

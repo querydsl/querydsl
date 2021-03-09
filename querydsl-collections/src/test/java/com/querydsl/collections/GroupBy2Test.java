@@ -4,13 +4,14 @@ import static com.querydsl.core.group.GroupBy.list;
 import static com.querydsl.core.group.GroupBy.map;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.group.GroupBy;
@@ -66,9 +67,9 @@ public class GroupBy2Test {
         public UserDto(Long id, String name, Map<Long, String> roles, Map<Long, String> groups) {
             this.id = id;
             this.name = name;
-            this.roleIds = Lists.newArrayList(roles.keySet());
-            this.roleNames = Lists.newArrayList(roles.values());
-            this.secIds = Lists.newArrayList(groups.keySet());
+            this.roleIds = new ArrayList<>(roles.keySet());
+            this.roleNames = new ArrayList<>(roles.values());
+            this.secIds = new ArrayList<>(groups.keySet());
         }
     }
 
@@ -79,25 +80,25 @@ public class GroupBy2Test {
         Role r1 = new Role();
         r1.id = 1L;
         r1.name = "User";
-        r1.groups = Lists.newArrayList(new SecurityGroup(1L, "User 1"));
+        r1.groups = Arrays.asList(new SecurityGroup(1L, "User 1"));
 
         Role r2 = new Role();
         r2.id = 2L;
         r2.name = null; // NOTE this is null on purpose
-        r2.groups = Lists.newArrayList(new SecurityGroup(2L, "Admin 1"),
+        r2.groups = Arrays.asList(new SecurityGroup(2L, "Admin 1"),
                                        new SecurityGroup(3L, "Admin 2"));
 
         User u1 = new User();
         u1.id = 3L;
         u1.name = "Bob";
-        u1.roles = Lists.newArrayList(r1);
+        u1.roles = Arrays.asList(r1);
 
         User u2 = new User();
         u2.id = 32L;
         u2.name = "Ann";
-        u2.roles = Lists.newArrayList(r1, r2);
+        u2.roles = Arrays.asList(r1, r2);
 
-        users = Lists.newArrayList(u1, u2);
+        users = Arrays.asList(u1, u2);
     }
 
     @Test

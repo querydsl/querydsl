@@ -16,7 +16,7 @@ package com.querydsl.sql;
 
 import java.sql.Statement;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 /**
  * {@code StatementOptions} holds parameters that should be applied to {@link Statement}s.

@@ -14,16 +14,17 @@
 package com.querydsl.sql;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import org.jetbrains.annotations.Nullable;
+import com.querydsl.core.annotations.Immutable;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code PrimaryKey} defines a primary key on table
@@ -39,18 +40,18 @@ public final class PrimaryKey<E> implements Serializable, ProjectionRole<Tuple> 
 
     private final RelationalPath<?> entity;
 
-    private final ImmutableList<? extends Path<?>> localColumns;
+    private final List<? extends Path<?>> localColumns;
 
     @Nullable
     private transient volatile Expression<Tuple> mixin;
 
     public PrimaryKey(RelationalPath<?> entity, Path<?>... localColumns) {
-        this(entity, ImmutableList.copyOf(localColumns));
+        this(entity, Arrays.asList(localColumns));
     }
 
-    public PrimaryKey(RelationalPath<?> entity, ImmutableList<? extends Path<?>> localColumns) {
+    public PrimaryKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns) {
         this.entity = entity;
-        this.localColumns = localColumns;
+        this.localColumns = CollectionUtils.unmodifiableList(localColumns);
         this.mixin = ExpressionUtils.list(Tuple.class, localColumns);
     }
 

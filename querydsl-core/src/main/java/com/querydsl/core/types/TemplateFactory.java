@@ -13,17 +13,20 @@
  */
 package com.querydsl.core.types;
 
+import com.querydsl.core.types.Template.Element;
+import com.querydsl.core.util.CollectionUtils;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.WeakHashMap;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.querydsl.core.types.Template.Element;
 
 /**
  * {@code TemplateFactory} is a factory for {@link Template} instances
@@ -33,8 +36,16 @@ import com.querydsl.core.types.Template.Element;
  */
 public class TemplateFactory {
 
-    private static final Map<String, Operator> OPERATORS = ImmutableMap.<String, Operator>of(
-            "+", Ops.ADD, "-", Ops.SUB, "*", Ops.MULT, "/", Ops.DIV);
+    private static final Map<String, Operator> OPERATORS;
+
+    static {
+        HashMap<String, Operator> operators = new HashMap<>();
+        operators.put("+", Ops.ADD);
+        operators.put("-", Ops.SUB);
+        operators.put("*", Ops.MULT);
+        operators.put("/", Ops.DIV);
+        OPERATORS = Collections.unmodifiableMap(operators);
+    }
 
     public static final TemplateFactory DEFAULT = new TemplateFactory('\\');
 
@@ -47,7 +58,7 @@ public class TemplateFactory {
             + "([slu%]?%?)"
             + "\\}");
 
-    private final Map<String,Template> cache = new ConcurrentHashMap<String,Template>();
+    private final Map<String, Template> cache = Collections.synchronizedMap(new WeakHashMap<>());;
 
     private final char escape;
 
@@ -177,7 +188,7 @@ public class TemplateFactory {
             return cache.get(template);
         } else {
             Matcher m = elementPattern.matcher(template);
-            final ImmutableList.Builder<Element> elements = ImmutableList.builder();
+            final List<Element> elements = new ArrayList<>();
             int end = 0;
             while (m.find()) {
                 if (m.start() > end) {
@@ -250,7 +261,7 @@ public class TemplateFactory {
             if (end < template.length()) {
                 elements.add(new Template.StaticText(template.substring(end)));
             }
-            Template rv = new Template(template, elements.build());
+            Template rv = new Template(template, CollectionUtils.unmodifiableList(elements));
             cache.put(template, rv);
             return rv;
         }

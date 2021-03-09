@@ -1,12 +1,12 @@
 package com.querydsl.example.dao;
 
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.example.dto.CustomerPaymentMethod;
 import com.querydsl.example.dto.Order;
 import com.querydsl.example.dto.OrderProduct;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -43,7 +43,7 @@ public class OrderDaoTest extends AbstractDaoTest {
 
         Order order = new Order();
         order.setCustomerPaymentMethod(paymentMethod);
-        order.setOrderProducts(ImmutableSet.of(orderProduct));
+        order.setOrderProducts(Collections.singleton(orderProduct));
         orderDao.save(order);
         assertNotNull(order.getId());
         orderDao.delete(order);

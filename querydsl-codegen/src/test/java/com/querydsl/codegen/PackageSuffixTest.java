@@ -21,9 +21,9 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.TypeCategory;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.TypeCategory;
 
 public class PackageSuffixTest {
 

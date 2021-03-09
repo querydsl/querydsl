@@ -13,29 +13,23 @@
  */
 package com.querydsl.jpa.codegen;
 
-import java.io.*;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.nio.charset.Charset;
-import java.util.*;
-
-import javax.annotation.Nullable;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.JavaWriter;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeCategory;
-import com.querydsl.codegen.*;
+import com.querydsl.codegen.CodegenModule;
+import com.querydsl.codegen.EmbeddableSerializer;
+import com.querydsl.codegen.EntitySerializer;
+import com.querydsl.codegen.EntityType;
+import com.querydsl.codegen.Property;
+import com.querydsl.codegen.QueryTypeFactory;
+import com.querydsl.codegen.Serializer;
+import com.querydsl.codegen.SerializerConfig;
+import com.querydsl.codegen.SimpleSerializerConfig;
+import com.querydsl.codegen.Supertype;
+import com.querydsl.codegen.SupertypeSerializer;
+import com.querydsl.codegen.TypeFactory;
+import com.querydsl.codegen.TypeMappings;
+import com.querydsl.codegen.utils.CodeWriter;
+import com.querydsl.codegen.utils.JavaWriter;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeCategory;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.PropertyType;
@@ -43,6 +37,30 @@ import com.querydsl.core.annotations.QueryInit;
 import com.querydsl.core.annotations.QueryType;
 import com.querydsl.core.util.Annotations;
 import com.querydsl.core.util.ReflectionUtils;
+import org.jetbrains.annotations.Nullable;
+
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * {@code AbstractDomainExporter} is a common supertype for domain exporters
@@ -52,19 +70,19 @@ import com.querydsl.core.util.ReflectionUtils;
  */
 public abstract class AbstractDomainExporter {
 
-    private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
+    private static final Logger logger = Logger.getLogger(AbstractDomainExporter.class.getName());
 
     private final File targetFolder;
 
-    private final Map<Class<?>, EntityType> allTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> allTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> entityTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> entityTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> embeddableTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> embeddableTypes = new HashMap<>();
 
-    private final Map<Class<?>, EntityType> superTypes = Maps.newHashMap();
+    private final Map<Class<?>, EntityType> superTypes = new HashMap<>();
 
-    private final Map<Class<?>, SerializerConfig> typeToConfig = Maps.newHashMap();
+    private final Map<Class<?>, SerializerConfig> typeToConfig = new HashMap<>();
 
     private final Set<EntityType> serialized = new HashSet<EntityType>();
 
@@ -100,6 +118,7 @@ public abstract class AbstractDomainExporter {
         module.bind(CodegenModule.PREFIX, namePrefix);
         module.bind(CodegenModule.SUFFIX, nameSuffix);
         module.bind(CodegenModule.KEYWORDS, Constants.keywords);
+        module.loadExtensions();
         this.queryTypeFactory = module.get(QueryTypeFactory.class);
         this.typeMappings = module.get(TypeMappings.class);
         this.embeddableSerializer = module.get(EmbeddableSerializer.class);
@@ -122,7 +141,7 @@ public abstract class AbstractDomainExporter {
         }
 
         // go through supertypes
-        Set<Supertype> additions = Sets.newHashSet();
+        Set<Supertype> additions = new HashSet<>();
         for (Map.Entry<Class<?>, EntityType> entry : allTypes.entrySet()) {
             EntityType entityType = entry.getValue();
             if (entityType.getSuperType() != null && !allTypes.containsKey(entityType.getSuperType().getType().getJavaClass())) {
@@ -246,7 +265,7 @@ public abstract class AbstractDomainExporter {
             AnnotatedElement annotated) {
         List<String> inits = Collections.emptyList();
         if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = ImmutableList.copyOf(annotated.getAnnotation(QueryInit.class).value());
+            inits = Collections.unmodifiableList(Arrays.asList(annotated.getAnnotation(QueryInit.class).value()));
         }
         return new Property(entityType, propertyName, propertyType, inits);
     }
@@ -311,22 +330,19 @@ public abstract class AbstractDomainExporter {
     private void write(Serializer serializer, String path, EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         generatedFiles.add(targetFile);
-        Writer w = writerFor(targetFile);
-        try {
+        try (Writer w = writerFor(targetFile)) {
             CodeWriter writer = new JavaWriter(w);
             if (typeToConfig.containsKey(type.getJavaClass())) {
                 serializer.serialize(type, typeToConfig.get(type.getJavaClass()), writer);
             } else {
                 serializer.serialize(type, serializerConfig, writer);
             }
-        } finally {
-            w.close();
         }
     }
 
     private Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            logger.error("Folder " + file.getParent() + " could not be created");
+            logger.log(Level.WARNING, "Folder " + file.getParent() + " could not be created");
         }
         try {
             return new OutputStreamWriter(new FileOutputStream(file), charset);

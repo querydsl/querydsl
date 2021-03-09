@@ -5,6 +5,7 @@ import static com.querydsl.sql.Constants.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -92,7 +93,7 @@ public abstract class SelectWindowFunctionsBase extends AbstractBaseTest {
         System.out.println("#4");
         SQLQuery<Tuple> sub3 = query().from(employee).select(employee.firstname, employee.lastname, rowNumber);
         for (Tuple row : query().from(sub3.as(employee2)).select(employee2.firstname, employee2.lastname).fetch()) {
-            System.out.println(Arrays.asList(row));
+            System.out.println(Collections.singletonList(row));
         }
     }
 

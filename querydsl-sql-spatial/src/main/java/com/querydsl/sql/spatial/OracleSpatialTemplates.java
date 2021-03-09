@@ -46,7 +46,7 @@ public class OracleSpatialTemplates extends OracleTemplates {
 
     public OracleSpatialTemplates(char escape, boolean quote) {
         super(escape, quote);
-        addCustomType(JGeometryType.DEFAULT);
+        addCustomType(SDOGeometryType.DEFAULT);
         // TODO
     }
 

@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.primitives.Primitives;
+import com.querydsl.core.util.PrimitiveUtils;
 import com.querydsl.core.util.ReflectionUtils;
 import com.querydsl.sql.types.*;
 
@@ -61,11 +61,20 @@ class JavaTypeMapping {
         registerDefault(new UtilDateType());
         registerDefault(new UtilUUIDType(false));
 
-        // Joda time types
-        registerDefault(new DateTimeType());
-        registerDefault(new LocalDateTimeType());
-        registerDefault(new LocalDateType());
-        registerDefault(new LocalTimeType());
+        // initialize Joda-Time converters only if Joda-Time is available
+        try {
+            Class.forName("org.joda.time.Instant");
+            registerDefault((Type<?>) Class.forName("com.querydsl.sql.types.DateTimeType").newInstance());
+            registerDefault((Type<?>) Class.forName("com.querydsl.sql.types.LocalDateTimeType").newInstance());
+            registerDefault((Type<?>) Class.forName("com.querydsl.sql.types.LocalDateType").newInstance());
+            registerDefault((Type<?>) Class.forName("com.querydsl.sql.types.LocalTimeType").newInstance());
+        } catch (ClassNotFoundException e) {
+            // converters for Joda-Time are not loaded
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
 
         // initialize java time api (JSR 310) converters only if java 8 is available
         try {
@@ -79,16 +88,14 @@ class JavaTypeMapping {
             registerDefault((Type<?>) Class.forName("com.querydsl.sql.types.JSR310ZonedDateTimeType").newInstance());
         } catch (ClassNotFoundException e) {
             // converters for JSR 310 are not loaded
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
     private static void registerDefault(Type<?> type) {
         defaultTypes.put(type.getReturnedClass(), type);
-        Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
+        Class<?> primitive = PrimitiveUtils.unwrap(type.getReturnedClass());
         if (primitive != null) {
             defaultTypes.put(primitive, type);
         }
@@ -151,7 +158,7 @@ class JavaTypeMapping {
 
     public void register(Type<?> type) {
         typeByClass.put(type.getReturnedClass(), type);
-        Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
+        Class<?> primitive = PrimitiveUtils.unwrap(type.getReturnedClass());
         if (primitive != null) {
             typeByClass.put(primitive, type);
         }
@@ -160,11 +167,7 @@ class JavaTypeMapping {
     }
 
     public void setType(String table, String column, Type<?> type) {
-        Map<String,Type<?>> columns = typeByColumn.get(table);
-        if (columns == null) {
-            columns = new HashMap<String, Type<?>>();
-            typeByColumn.put(table, columns);
-        }
+        Map<String, Type<?>> columns = typeByColumn.computeIfAbsent(table, k -> new HashMap<String, Type<?>>());
         columns.put(column, type);
     }
 

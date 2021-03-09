@@ -2,8 +2,8 @@ package com.querydsl.scala
 
 import java.io.StringWriter
 
-import com.mysema.codegen._
-import com.mysema.codegen.model._
+import com.querydsl.codegen.utils._
+import com.querydsl.codegen.utils.model._
 import com.querydsl.codegen._
 import org.junit.Assert._
 import org.junit.{Before, Test}

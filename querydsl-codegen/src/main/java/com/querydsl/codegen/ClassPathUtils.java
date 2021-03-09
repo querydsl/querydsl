@@ -54,10 +54,12 @@ public final class ClassPathUtils {
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .addUrls(ClasspathHelper.forPackage(pkg, classLoader))
                 .addClassLoader(classLoader)
-                .filterInputsBy(new FilterBuilder().includePackage(pkg))
+                .filterInputsBy(new FilterBuilder().includePackage(pkg).excludePackage("com.sun.*").excludePackage("com.apple.*"))
                 .setScanners(new SubTypesScanner(false)));
+
         Set<Class<?>> classes = new HashSet<Class<?>>();
-        for (String typeNames : reflections.getStore().get(SubTypesScanner.class.getSimpleName()).values()) {
+        final Set<String> allTypes = reflections.getStore().getAll(SubTypesScanner.class, reflections.getStore().keys(SubTypesScanner.class.getSimpleName()));
+        for (String typeNames : allTypes) {
             Class<?> clazz = safeClassForName(classLoader, typeNames);
             if (clazz != null) {
                 classes.add(clazz);
@@ -80,9 +82,7 @@ public final class ClassPathUtils {
             } else {
                 return Class.forName(className, true, classLoader);
             }
-        } catch (ClassNotFoundException e) {
-            return null;
-        } catch (NoClassDefFoundError e) {
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
             return null;
         }
     }

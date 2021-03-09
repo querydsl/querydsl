@@ -16,14 +16,15 @@ package com.querydsl.jdo;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.types.Expression;
@@ -88,8 +89,8 @@ public class BasicsTest extends AbstractJDOTest {
     public void list_distinct() {
         // XXX List implementation of JDO provider has weird equals implementation
         assertEquals(
-                ImmutableList.copyOf(query().from(product).orderBy(product.name.asc()).select(product.name).fetch()),
-                ImmutableList.copyOf(query().from(product).orderBy(product.name.asc()).distinct().select(product.name).fetch()));
+                new ArrayList<>(query().from(product).orderBy(product.name.asc()).select(product.name).fetch()),
+                new ArrayList<>(query().from(product).orderBy(product.name.asc()).distinct().select(product.name).fetch()));
     }
 
     @Test
@@ -97,8 +98,8 @@ public class BasicsTest extends AbstractJDOTest {
         try {
             // XXX List implementation of JDO provider has weird equals implementation
             assertEquals(
-                    ImmutableList.copyOf(query().from(product, product2).select(product, product2).fetch()),
-                    ImmutableList.copyOf(query().from(product, product2).distinct().select(product, product2).fetch()));
+                    new ArrayList<>(query().from(product, product2).select(product, product2).fetch()),
+                    new ArrayList<>(query().from(product, product2).distinct().select(product, product2).fetch()));
         } catch (AssertionError e) {
             Assume.assumeNoException("Unreliable test, but keep around", e);
         }
@@ -201,13 +202,13 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void in_empty() {
-        assertEquals(0, query(product, product.name.in(ImmutableList.<String>of())).size());
+        assertEquals(0, query(product, product.name.in(Collections.emptyList())).size());
     }
 
     @Test
     public void not_in_empty() {
         int count = query(product, product.name.isNotNull()).size();
-        assertEquals(count, query(product, product.name.notIn(ImmutableList.<String>of())).size());
+        assertEquals(count, query(product, product.name.notIn(Collections.emptyList())).size());
     }
 
     @Test

@@ -18,11 +18,6 @@ The Collections module provides integration with Java Collections and Beans.
   <artifactId>querydsl-collections</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
-<dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-log4j12</artifactId>
-  <version>1.6.1</version>
-</dependency>   
 ```
 
 If you are not using JPA or JDO you can generate Querydsl query types for your domain types by annotating them with the com.querydsl.core.annotations.QueryEntity annotation and adding the following plugin configuration into your Maven configuration (pom.xml) :

@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,8 +33,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.google.common.io.Files;
-import com.mysema.codegen.SimpleCompiler;
+import com.querydsl.codegen.utils.SimpleCompiler;
 import com.querydsl.codegen.BeanSerializer;
 import com.querydsl.sql.AbstractJDBCTest;
 import com.querydsl.sql.Configuration;
@@ -104,7 +104,9 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         // validation of output
         try {
             //
-            assertMethodsPresent("test/QSurvey.java",
+            assertFileContainsInOrder("test/QSurvey.java",
+                    "import javax.annotation.Generated;",
+                    "@Generated(\"com.querydsl.sql.codegen.MetaDataSerializer\")\npublic class QSurvey",
                     // variable + schema constructor
                     "    public QSurvey(String variable, String schema) {\n"
                     + "        super(Survey.class, forVariable(variable), schema, \"SURVEY\");\n"
@@ -145,6 +147,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         exporter.setTargetFolder(folder.getRoot());
         exporter.setNamingStrategy(namingStrategy);
         exporter.setConfiguration(conf);
+        exporter.setGeneratedAnnotationClass("com.querydsl.core.annotations.Generated");
         exporter.export(connection.getMetaData());
 
         compile(exporter);
@@ -152,7 +155,9 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         // validation of output
         try {
             //
-            assertMethodsPresent("test/QSurvey.java",
+            assertFileContainsInOrder("test/QSurvey.java",
+                    "import com.querydsl.core.annotations.Generated;",
+                    "@Generated(\"com.querydsl.sql.codegen.MetaDataSerializer\")\npublic class QSurvey",
                     // variable + schema constructor
                     "    public QSurvey(String variable, String schema) {\n"
                     + "        super(Survey.class, forVariable(variable), schema, \"SURVEY\");\n"
@@ -167,7 +172,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
     private void compile(MetaDataExporter exporter) {
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
-        int compilationResult = compiler.run(null, null, null, classes.toArray(new String[classes.size()]));
+        int compilationResult = compiler.run(null, null, null, classes.toArray(new String[0]));
         if (compilationResult == 0) {
             System.out.println("Compilation is successful");
         } else {
@@ -175,8 +180,9 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         }
     }
 
-    private void assertMethodsPresent(String path, String... methods) throws IOException {
-        String content = Files.toString(folder.getRoot().toPath().resolve(path).toFile(), UTF_8);
+    private void assertFileContainsInOrder(String path, String... methods) throws IOException {
+        String content = new String(Files.readAllBytes(folder.getRoot().toPath().resolve(path)), UTF_8);
         assertThat(content, stringContainsInOrder(asList(methods)));
     }
+
 }

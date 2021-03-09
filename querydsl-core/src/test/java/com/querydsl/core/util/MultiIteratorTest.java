@@ -44,7 +44,7 @@ public class MultiIteratorTest {
 
     @Test
     public void oneLevel() {
-        it = new MultiIterator(Arrays.asList(list1));
+        it = new MultiIterator(Collections.singletonList(list1));
         assertIteratorEquals(Arrays.asList(row(1), row(2)).iterator(), it);
     }
 

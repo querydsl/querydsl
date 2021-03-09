@@ -32,9 +32,6 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
@@ -230,7 +227,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     public void between() {
         // 11-13
-        assertEquals(ImmutableList.of(11, 12, 13),
+        assertEquals(Arrays.asList(11, 12, 13),
                 query().from(employee).where(employee.id.between(11, 13)).orderBy(employee.id.asc())
                        .select(employee.id).fetch());
     }
@@ -251,7 +248,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     public void case_() {
         NumberExpression<Float> numExpression = employee.salary.floatValue().divide(employee2.salary.floatValue()).multiply(100.1);
         NumberExpression<Float> numExpression2 = employee.id.when(0).then(0.0F).otherwise(numExpression);
-        assertEquals(ImmutableList.of(87, 90, 88, 87, 83, 80, 75),
+        assertEquals(Arrays.asList(87, 90, 88, 87, 83, 80, 75),
                 query().from(employee, employee2)
                         .where(employee.id.eq(employee2.id.add(1)))
                         .orderBy(employee.id.asc(), employee2.id.asc())
@@ -261,7 +258,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     public void casts() throws SQLException {
         NumberExpression<?> num = employee.id;
-        List<Expression<?>> exprs = Lists.newArrayList();
+        List<Expression<?>> exprs = new ArrayList<>();
 
         add(exprs, num.byteValue(), MYSQL);
         add(exprs, num.doubleValue());
@@ -281,7 +278,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     public void coalesce() {
         Coalesce<String> c = new Coalesce<String>(employee.firstname, employee.lastname).add("xxx");
-        assertEquals(Arrays.asList(),
+        assertEquals(Collections.emptyList(),
                 query().from(employee).where(c.getValue().eq("xxx")).select(employee.id).fetch());
     }
 
@@ -422,7 +419,7 @@ public abstract class SelectBase extends AbstractBaseTest {
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
         long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
 
-        List<Object> data = Lists.newArrayList();
+        List<Object> data = new ArrayList<>();
         data.add(Constants.date);
         data.add(Constants.time);
         data.add(new java.util.Date(ts));
@@ -463,7 +460,7 @@ public abstract class SelectBase extends AbstractBaseTest {
         data.add(javaTime.atOffset(java.time.ZoneOffset.UTC));      //java.time.OffsetTime
         data.add(javaDateTime.atZone(java.time.ZoneId.of("Z")));    //java.time.ZonedDateTime
 
-        Map<Object, Object> failures = Maps.newIdentityHashMap();
+        Map<Object, Object> failures = new IdentityHashMap<>();
         for (Object dt : data) {
             Object dt2 = firstResult(Expressions.constant(dt));
             if (!dt.equals(dt2)) {
@@ -530,7 +527,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({SQLITE})
     public void date_add_Timestamp() {
-        List<Expression<?>> exprs = Lists.newArrayList();
+        List<Expression<?>> exprs = new ArrayList<>();
         DateTimeExpression<java.util.Date> dt = Expressions.currentTimestamp();
 
         add(exprs, SQLExpressions.addYears(dt, 1));
@@ -553,7 +550,7 @@ public abstract class SelectBase extends AbstractBaseTest {
         SQLQuery<?> query2 = query().from(employee, employee2)
                 .orderBy(employee.id.asc(), employee2.id.desc());
 
-        List<DatePart> dps = Lists.newArrayList();
+        List<DatePart> dps = new ArrayList<>();
         add(dps, DatePart.year);
         add(dps, DatePart.month);
         add(dps, DatePart.week);
@@ -609,7 +606,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     public void date_trunc() {
         DateTimeExpression<java.util.Date> expr = DateTimeExpression.currentTimestamp();
 
-        List<DatePart> dps = Lists.newArrayList();
+        List<DatePart> dps = new ArrayList<>();
         add(dps, DatePart.year);
         add(dps, DatePart.month);
         add(dps, DatePart.week, DERBY, FIREBIRD, SQLSERVER);
@@ -806,7 +803,7 @@ public abstract class SelectBase extends AbstractBaseTest {
 
     @Test
     public void groupBy_yearMonth() {
-        assertEquals(Arrays.asList(10L), query().from(employee)
+        assertEquals(Collections.singletonList(10L), query().from(employee)
                .groupBy(employee.datefield.yearMonth())
                .orderBy(employee.datefield.yearMonth().asc())
                .select(employee.id.count()).fetch());
@@ -877,7 +874,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER, TERADATA})
     public void in_long_list() {
-        List<Integer> ids = Lists.newArrayList();
+        List<Integer> ids = new ArrayList<>();
         for (int i = 0; i < 20000; i++) {
             ids.add(i);
         }
@@ -889,7 +886,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DERBY, FIREBIRD, SQLITE, SQLSERVER, TERADATA})
     public void notIn_long_list() {
-        List<Integer> ids = Lists.newArrayList();
+        List<Integer> ids = new ArrayList<>();
         for (int i = 0; i < 20000; i++) {
             ids.add(i);
         }
@@ -898,7 +895,7 @@ public abstract class SelectBase extends AbstractBaseTest {
 
     @Test
     public void in_empty() {
-        assertEquals(0, query().from(employee).where(employee.id.in(ImmutableList.<Integer>of())).fetchCount());
+        assertEquals(0, query().from(employee).where(employee.id.in(Collections.emptyList())).fetchCount());
     }
 
     @Test
@@ -921,7 +918,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     public void notIn_empty() {
         long count = query().from(employee).fetchCount();
-        assertEquals(count, query().from(employee).where(employee.id.notIn(ImmutableList.<Integer>of())).fetchCount());
+        assertEquals(count, query().from(employee).where(employee.id.notIn(Collections.emptyList())).fetchCount());
     }
 
     @Test
@@ -979,7 +976,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(FIREBIRD)
     public void like_escape() {
-        List<String> strs = ImmutableList.of("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen", "a\nb");
+        List<String> strs = Arrays.asList("%a", "a%", "%a%", "_a", "a_", "_a_", "[C-P]arsen", "a\nb");
 
         for (String str : strs) {
             assertTrue(str, query()
@@ -1316,21 +1313,21 @@ public abstract class SelectBase extends AbstractBaseTest {
 
     @Test
     public void operation_in_constant_list() {
-        assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a'))).fetchCount());
+        assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Collections.singletonList('a'))).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b'))).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b','c'))).fetchCount());
     }
 
     @Test
     public void order_nullsFirst() {
-        assertEquals(Arrays.asList("Hello World"), query().from(survey)
+        assertEquals(Collections.singletonList("Hello World"), query().from(survey)
             .orderBy(survey.name.asc().nullsFirst())
             .select(survey.name).fetch());
     }
 
     @Test
     public void order_nullsLast() {
-        assertEquals(Arrays.asList("Hello World"), query().from(survey)
+        assertEquals(Collections.singletonList("Hello World"), query().from(survey)
             .orderBy(survey.name.asc().nullsLast())
             .select(survey.name).fetch());
     }
@@ -1378,7 +1375,7 @@ public abstract class SelectBase extends AbstractBaseTest {
 
     @Test
     public void path_in_constant_list() {
-        assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a"))).fetchCount());
+        assertEquals(0, query().from(survey).where(survey.name.in(Collections.singletonList("a"))).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).fetchCount());
         assertEquals(0, query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).fetchCount());
     }
@@ -1815,7 +1812,7 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     public void templateExpression() {
         NumberExpression<Integer> one = Expressions.numberTemplate(Integer.class, "1");
-        assertEquals(Arrays.asList(1), query().from(survey).select(one.as("col1")).fetch());
+        assertEquals(Collections.singletonList(1), query().from(survey).select(one.as("col1")).fetch());
     }
 
     @Test
@@ -2127,9 +2124,9 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DB2, DERBY, ORACLE, SQLSERVER})
     public void groupConcat() {
-        List<String> expected = ImmutableList.of("Mike,Mary", "Joe,Peter,Steve,Jim", "Jennifer,Helen,Daisy,Barbara");
+        List<String> expected = Arrays.asList("Mike,Mary", "Joe,Peter,Steve,Jim", "Jennifer,Helen,Daisy,Barbara");
         if (Connections.getTarget() == POSTGRESQL) {
-            expected = ImmutableList.of("Steve,Jim,Joe,Peter", "Barbara,Helen,Daisy,Jennifer", "Mary,Mike");
+            expected = Arrays.asList("Steve,Jim,Joe,Peter", "Barbara,Helen,Daisy,Jennifer", "Mary,Mike");
         }
         assertEquals(
                 expected,
@@ -2141,9 +2138,9 @@ public abstract class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DB2, DERBY, ORACLE, SQLSERVER})
     public void groupConcat2() {
-        List<String> expected = ImmutableList.of("Mike-Mary", "Joe-Peter-Steve-Jim", "Jennifer-Helen-Daisy-Barbara");
+        List<String> expected = Arrays.asList("Mike-Mary", "Joe-Peter-Steve-Jim", "Jennifer-Helen-Daisy-Barbara");
         if (Connections.getTarget() == POSTGRESQL) {
-            expected = ImmutableList.of("Steve-Jim-Joe-Peter", "Barbara-Helen-Daisy-Jennifer", "Mary-Mike");
+            expected = Arrays.asList("Steve-Jim-Joe-Peter", "Barbara-Helen-Daisy-Jennifer", "Mary-Mike");
         }
         assertEquals(
                 expected,

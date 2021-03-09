@@ -1,11 +1,8 @@
 package com.querydsl.scala
 
-import java.io.File
+import java.io.{File, FileOutputStream, OutputStreamWriter}
 import java.io.File.pathSeparator
-
-import com.google.common.base.Charsets
-import com.google.common.io.Files
-
+import java.nio.charset.StandardCharsets
 import scala.tools.nsc._
 import scala.tools.nsc.reporters.ConsoleReporter
 
@@ -41,7 +38,10 @@ object CompileTestUtils {
   def assertCompileSuccess(source: String): Unit = {
     val file = File.createTempFile("source", ".scala")
     try {
-      Files.write(source, file, Charsets.UTF_8)
+      val writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+      writer.write(source);
+      writer.flush()
+      writer.close();
       assertCompileSuccess(file)
     } finally {
         file.delete()

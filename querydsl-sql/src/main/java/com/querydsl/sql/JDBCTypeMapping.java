@@ -19,13 +19,14 @@ import java.sql.Blob;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableSet;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.sql.types.Null;
 
@@ -100,13 +101,13 @@ final class JDBCTypeMapping {
         registerDefault(Types.ROWID, Object.class);
         registerDefault(Types.STRUCT, Object.class);
 
-        ImmutableSet.Builder<Integer> builder = ImmutableSet.builder();
+        Set<Integer> builder = new HashSet<>();
         for (Map.Entry<Integer, Class<?>> entry : defaultTypes.entrySet()) {
             if (Number.class.isAssignableFrom(entry.getValue())) {
                 builder.add(entry.getKey());
             }
         }
-        NUMERIC_TYPES = builder.build();
+        NUMERIC_TYPES = Collections.unmodifiableSet(builder);
     }
 
     private static void registerDefault(int sqlType, Class<?> javaType) {

@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.support;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
@@ -48,7 +48,7 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata {
     @Override
     public List<JoinExpression> getJoins() {
         if (joins == null) {
-            joins = Lists.newArrayList();
+            joins = new ArrayList<>();
             int separator = 0;
             for (JoinExpression j : super.getJoins()) {
                 if (j.getType() == JoinType.DEFAULT) {

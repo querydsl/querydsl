@@ -2,7 +2,7 @@ package com.querydsl.core.support;
 
 import java.util.List;
 
-import javax.annotation.Nonnegative;
+import org.jetbrains.annotations.Range;
 
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.QueryModifiers;
@@ -37,12 +37,12 @@ public class DummyFetchableQuery<T> extends DummyFetchable<T> implements Fetchab
     }
 
     @Override
-    public DummyFetchableQuery<T> limit(@Nonnegative long limit) {
+    public DummyFetchableQuery<T> limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit) {
         return this;
     }
 
     @Override
-    public DummyFetchableQuery<T> offset(@Nonnegative long offset) {
+    public DummyFetchableQuery<T> offset(@Range(from = 0, to = Integer.MAX_VALUE) long offset) {
         return this;
     }
 

@@ -13,9 +13,9 @@
  */
 package com.querydsl.core.types.dsl;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.*;
 
 /**
@@ -36,10 +36,10 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
     }
 
     protected BooleanOperation(Operator op, Expression<?>... args) {
-        this(op, ImmutableList.copyOf(args));
+        this(op, Arrays.asList(args));
     }
 
-    protected BooleanOperation(Operator op, ImmutableList<Expression<?>> args) {
+    protected BooleanOperation(Operator op, List<Expression<?>> args) {
         super(ExpressionUtils.predicate(op, args));
         opMixin = (PredicateOperation) mixin;
     }

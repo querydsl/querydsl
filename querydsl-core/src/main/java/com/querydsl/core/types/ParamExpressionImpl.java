@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 import java.util.UUID;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
 /**
  * {@code ParamExpressionImpl} defines a parameter in a query with an optional name

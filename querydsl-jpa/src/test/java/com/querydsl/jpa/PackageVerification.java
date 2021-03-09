@@ -19,14 +19,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Scanner;
 
 import javax.persistence.Entity;
 
 import org.junit.Test;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-import com.mysema.codegen.CodeWriter;
+import com.querydsl.codegen.utils.CodeWriter;
 import com.querydsl.apt.hibernate.HibernateAnnotationProcessor;
 import com.querydsl.apt.jpa.JPAAnnotationProcessor;
 import com.querydsl.codegen.CodegenModule;
@@ -59,7 +58,7 @@ public class PackageVerification {
         Class cl = oneJarClassLoader.loadClass(processor.getName()); // querydsl-apt
         cl.newInstance();
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
-        assertEquals(processor.getName(), Resources.toString(oneJarClassLoader.findResource(resourceKey), Charsets.UTF_8));
+        assertEquals(processor.getName(), new Scanner(oneJarClassLoader.findResource(resourceKey).openStream()).nextLine());
     }
 
 }

@@ -14,16 +14,18 @@
 package com.querydsl.core.types;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.concurrent.Immutable;
+import com.querydsl.core.annotations.Immutable;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.util.CollectionUtils;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * {@code QTuple} represents a projection of type {@link Tuple}
@@ -55,8 +57,8 @@ import com.querydsl.core.Tuple;
 @Immutable
 public class QTuple extends FactoryExpressionBase<Tuple> {
 
-    private static ImmutableMap<Expression<?>, Integer> createBindings(List<Expression<?>> exprs) {
-        Map<Expression<?>, Integer> map = Maps.newHashMap();
+    private static Map<Expression<?>, Integer> createBindings(List<Expression<?>> exprs) {
+        Map<Expression<?>, Integer> map = new LinkedHashMap<>();
         for (int i = 0; i < exprs.size(); i++) {
             Expression<?> e = exprs.get(i);
             if (e instanceof Operation && ((Operation<?>) e).getOperator() == Ops.ALIAS) {
@@ -64,7 +66,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
             }
             map.put(e, i);
         }
-        return ImmutableMap.copyOf(map);
+        return Collections.unmodifiableMap(map);
     }
 
     private final class TupleImpl implements Tuple, Serializable {
@@ -128,9 +130,10 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
 
     private static final long serialVersionUID = -2640616030595420465L;
 
-    private final ImmutableList<Expression<?>> args;
+    @Unmodifiable
+    private final List<Expression<?>> args;
 
-    private final ImmutableMap<Expression<?>, Integer> bindings;
+    private final Map<Expression<?>, Integer> bindings;
 
     /**
      * Create a new QTuple instance
@@ -138,9 +141,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
      * @param args
      */
     protected QTuple(Expression<?>... args) {
-        super(Tuple.class);
-        this.args = ImmutableList.copyOf(args);
-        this.bindings = createBindings(this.args);
+        this(Arrays.asList(args));
     }
 
     /**
@@ -148,9 +149,9 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
      *
      * @param args
      */
-    protected QTuple(ImmutableList<Expression<?>> args) {
+    protected QTuple(List<Expression<?>> args) {
         super(Tuple.class);
-        this.args = args;
+        this.args = CollectionUtils.unmodifiableList(args);
         this.bindings = createBindings(this.args);
     }
 
@@ -161,11 +162,11 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
      */
     protected QTuple(Expression<?>[]... args) {
         super(Tuple.class);
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        ArrayList<Expression<?>> builder = new ArrayList<>();
         for (Expression<?>[] exprs: args) {
-            builder.add(exprs);
+            Collections.addAll(builder, exprs);
         }
-        this.args = builder.build();
+        this.args = CollectionUtils.unmodifiableList(builder);
         this.bindings = createBindings(this.args);
     }
 
@@ -192,6 +193,7 @@ public class QTuple extends FactoryExpressionBase<Tuple> {
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

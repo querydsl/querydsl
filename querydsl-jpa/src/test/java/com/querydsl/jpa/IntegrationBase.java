@@ -147,6 +147,22 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     }
 
     @Test
+    public void insert3() {
+        session.save(new Cat("Bob",10));
+
+        QCat cat = QCat.cat;
+        QCat bob = new QCat("Bob");
+
+        long amount = insert(cat)
+                .columns(cat.name, cat.alive)
+                .select(JPAExpressions.select(bob.name, bob.alive).from(bob))
+                .execute();
+        assertEquals(1, amount);
+
+        assertEquals(1L, query().from(cat).where(cat.name.eq("Bobby")).fetchCount());
+    }
+
+    @Test
     public void update() {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));

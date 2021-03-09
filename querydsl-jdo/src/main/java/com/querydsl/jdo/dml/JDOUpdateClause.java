@@ -13,10 +13,10 @@
  */
 package com.querydsl.jdo.dml;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.dml.UpdateClause;
@@ -35,7 +35,7 @@ public class JDOUpdateClause implements UpdateClause<JDOUpdateClause> {
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
-    private final Map<Path<?>, Expression<?>> updates = Maps.newLinkedHashMap();
+    private final Map<Path<?>, Expression<?>> updates = new LinkedHashMap<>();
 
     @Override
     public long execute() {

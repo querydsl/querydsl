@@ -13,14 +13,15 @@
  */
 package com.querydsl.core.support;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.util.CollectionUtils;
 
 /**
  * {@code ReplaceVisitor} is a deep visitor that can be customized to replace segments of
@@ -47,7 +48,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
 
     @Override
     public Expression<?> visit(Operation<?> expr, C context) {
-        ImmutableList<Expression<?>> args = visit(expr.getArgs(), context);
+        List<Expression<?>> args = visit(expr.getArgs(), context);
         if (args.equals(expr.getArgs())) {
             return expr;
         } else if (expr instanceof Predicate) {
@@ -73,7 +74,7 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
             if (element instanceof Expression<?>) {
                 element = ((Expression<?>) element).accept(this, context);
             }
-            if (parent.equals(metadata.getParent()) && Objects.equal(element, metadata.getElement())) {
+            if (parent.equals(metadata.getParent()) && Objects.equals(element, metadata.getElement())) {
                 return expr;
             } else {
                 metadata = new PathMetadata(parent, element, metadata.getPathType());
@@ -135,15 +136,14 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(TemplateExpression<?> expr, C context) {
-        ImmutableList.Builder builder = ImmutableList.builder();
+        ArrayList args = new ArrayList<>();
         for (Object arg : expr.getArgs()) {
             if (arg instanceof Expression) {
-                builder.add(((Expression<?>) arg).accept(this, context));
+                args.add(((Expression<?>) arg).accept(this, context));
             } else {
-                builder.add(arg);
+                args.add(arg);
             }
         }
-        ImmutableList args = builder.build();
         if (args.equals(expr.getArgs())) {
             return expr;
         } else {
@@ -155,11 +155,11 @@ public class ReplaceVisitor<C> implements Visitor<Expression<?>, C> {
         }
     }
 
-    private ImmutableList<Expression<?>> visit(List<Expression<?>> args, C context) {
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+    private List<Expression<?>> visit(List<Expression<?>> args, C context) {
+        List<Expression<?>> result = new ArrayList<>();
         for (Expression<?> arg : args) {
-            builder.add(arg.accept(this, context));
+            result.add(arg.accept(this, context));
         }
-        return builder.build();
+        return CollectionUtils.unmodifiableList(result);
     }
 }

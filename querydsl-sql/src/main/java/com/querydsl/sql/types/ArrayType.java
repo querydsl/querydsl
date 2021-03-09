@@ -15,9 +15,9 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.primitives.Primitives;
+import com.querydsl.core.util.PrimitiveUtils;
 
 /**
  *{@code ArrayType} maps Java arrays to JDBC arrays
@@ -78,7 +78,7 @@ public class ArrayType<T> extends AbstractType<T> {
         if (convertPrimitives) {
             // primitives in
             int length = java.lang.reflect.Array.getLength(value);
-            Object value2 = java.lang.reflect.Array.newInstance(Primitives.wrap(type.getComponentType()), length);
+            Object value2 = java.lang.reflect.Array.newInstance(PrimitiveUtils.wrap(type.getComponentType()), length);
             copy(value, value2, length);
             value = (T) value2;
         }

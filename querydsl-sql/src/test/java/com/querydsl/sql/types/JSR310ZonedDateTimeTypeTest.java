@@ -1,7 +1,7 @@
 package com.querydsl.sql.types;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.easymock.EasyMock;
+import org.junit.Test;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
-import org.easymock.EasyMock;
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class JSR310ZonedDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<ZonedDateTime> {
 
@@ -21,7 +21,7 @@ public class JSR310ZonedDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<
     @Test
     public void set() throws SQLException {
         ZonedDateTime value = ZonedDateTime.now();
-        Timestamp ts = new Timestamp(value.toInstant().toEpochMilli());
+        Timestamp ts = Timestamp.from(value.toInstant());
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         stmt.setTimestamp(1, ts, UTC);
@@ -34,7 +34,7 @@ public class JSR310ZonedDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<
     @Test
     public void jodaSet() throws SQLException {
         ZonedDateTime value = ZonedDateTime.now();
-        Timestamp ts = new Timestamp(value.toInstant().toEpochMilli());
+        Timestamp ts = Timestamp.from(value.toInstant());
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         stmt.setTimestamp(1, ts);
@@ -47,7 +47,7 @@ public class JSR310ZonedDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<
     @Test
     public void get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
-        EasyMock.expect(resultSet.getTimestamp(1, UTC)).andReturn(new Timestamp(UTC.getTimeInMillis()));
+        EasyMock.expect(resultSet.getTimestamp(1, UTC)).andReturn(Timestamp.from(UTC.toInstant()));
         EasyMock.replay(resultSet);
 
         ZonedDateTime result = type.getValue(resultSet, 1);

@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.Operator;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Templates;
@@ -77,7 +76,7 @@ public class JPQLTemplatesTest {
 
     @Test
     public void generic_precedence() {
-        for (JPQLTemplates templates : ImmutableList.of(
+        for (JPQLTemplates templates : Arrays.asList(
                 JPQLTemplates.DEFAULT, HQLTemplates.DEFAULT, EclipseLinkTemplates.DEFAULT)) {
             TemplatesTestUtils.testPrecedence(templates);
         }

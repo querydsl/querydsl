@@ -19,10 +19,10 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
+import com.querydsl.codegen.utils.model.SimpleType;
+import com.querydsl.codegen.utils.model.Type;
 import com.querydsl.sql.SchemaAndTable;
 import com.querydsl.sql.codegen.support.ForeignKeyData;
 import com.querydsl.sql.codegen.support.InverseForeignKeyData;
@@ -71,9 +71,8 @@ public class KeyDataFactory {
 
     public Map<String, InverseForeignKeyData> getExportedKeys(DatabaseMetaData md,
             String catalog, String schema, String tableName) throws SQLException {
-        ResultSet foreignKeys = md.getExportedKeys(catalog, schema, tableName);
-        Map<String,InverseForeignKeyData> inverseForeignKeyData = new TreeMap<String,InverseForeignKeyData>();
-        try {
+        try (ResultSet foreignKeys = md.getExportedKeys(catalog, schema, tableName)) {
+            Map<String, InverseForeignKeyData> inverseForeignKeyData = new TreeMap<String, InverseForeignKeyData>();
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
                 String parentColumnName = namingStrategy.normalizeColumnName(foreignKeys.getString(FK_PARENT_COLUMN_NAME));
@@ -93,16 +92,13 @@ public class KeyDataFactory {
                 data.add(parentColumnName, foreignColumn);
             }
             return inverseForeignKeyData;
-        } finally {
-            foreignKeys.close();
         }
     }
 
     public Map<String, ForeignKeyData> getImportedKeys(DatabaseMetaData md,
             String catalog, String schema, String tableName) throws SQLException {
-        ResultSet foreignKeys = md.getImportedKeys(catalog, schema, tableName);
-        Map<String,ForeignKeyData> foreignKeyData = new TreeMap<String,ForeignKeyData>();
-        try {
+        try (ResultSet foreignKeys = md.getImportedKeys(catalog, schema, tableName)) {
+            Map<String, ForeignKeyData> foreignKeyData = new TreeMap<String, ForeignKeyData>();
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
                 String parentSchemaName = namingStrategy.normalizeSchemaName(foreignKeys.getString(FK_PARENT_SCHEMA_NAME));
@@ -122,16 +118,13 @@ public class KeyDataFactory {
                 data.add(foreignColumn, parentColumnName);
             }
             return foreignKeyData;
-        } finally {
-            foreignKeys.close();
         }
     }
 
     public Map<String, PrimaryKeyData> getPrimaryKeys(DatabaseMetaData md,
             String catalog, String schema, String tableName) throws SQLException {
-        ResultSet primaryKeys = md.getPrimaryKeys(catalog, schema, tableName);
-        Map<String,PrimaryKeyData> primaryKeyData = new TreeMap<String,PrimaryKeyData>();
-        try {
+        try (ResultSet primaryKeys = md.getPrimaryKeys(catalog, schema, tableName)) {
+            Map<String, PrimaryKeyData> primaryKeyData = new TreeMap<String, PrimaryKeyData>();
             while (primaryKeys.next()) {
                 String name = primaryKeys.getString(PK_NAME);
                 String columnName = primaryKeys.getString(PK_COLUMN_NAME);
@@ -147,8 +140,6 @@ public class KeyDataFactory {
                 data.add(columnName);
             }
             return primaryKeyData;
-        } finally {
-            primaryKeys.close();
         }
     }
 

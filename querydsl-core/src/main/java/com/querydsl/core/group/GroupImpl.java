@@ -13,11 +13,11 @@
  */
 package com.querydsl.core.group;
 
+import java.util.*;
+
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Operation;
 import com.querydsl.core.types.Ops;
-
-import java.util.*;
 
 /**
  * Default implementation of the Group interface
@@ -38,8 +38,7 @@ public class GroupImpl implements Group {
     public GroupImpl(List<GroupExpression<?, ?>> columnDefinitions, List<QPair<?, ?>> maps) {
         this.groupExpressions = columnDefinitions;
         this.maps = maps;
-        for (int i = 0; i < columnDefinitions.size(); i++) {
-            GroupExpression<?, ?> coldef = columnDefinitions.get(i);
+        for (GroupExpression<?, ?> coldef : columnDefinitions) {
             GroupCollector<?, ?> collector = groupCollectorMap.get(coldef.getExpression());
             if (collector == null) {
                 collector = coldef.createGroupCollector();

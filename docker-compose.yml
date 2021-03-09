@@ -1,0 +1,104 @@
+version: "2.4"
+services:
+  # Provides an easy way to ensure slow-starting databases are ready when the tests run
+  block-until-healthy:
+    image: alpine:latest
+    depends_on:
+      cubrid:
+        condition: service_healthy
+      db2:
+        condition: service_healthy
+      sqlserver:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:5.6.38
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/mysql.sh:/docker-entrypoint-initdb.d/mysql.sh
+    environment:
+      - MYSQL_ROOT_PASSWORD=querydsl
+      - MYSQL_USER=querydsl
+      - MYSQL_PASSWORD=querydsl
+
+  postgresql:
+    image: mdillon/postgis:9.3-alpine
+    ports:
+      - "5433:5432"
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
+    volumes:
+      - ./db/postgresql.sql:/docker-entrypoint-initdb.d/postgresql.sql
+    environment:
+      - POSTGRES_USER=querydsl
+      - POSTGRES_PASSWORD=querydsl
+      - POSTGRES_DB=querydsl
+
+  oracle:
+    image: wnameless/oracle-xe-11g-r2:latest
+    ports:
+      - "1521:1521"
+    volumes:
+    - "./devops/sql-snippets/oracle.sql:/docker-entrypoint-initdb.d/oracle.sql"
+
+  cubrid:
+    image: lighthopper/cubrid:9.2.26.0004
+    command: "./create-start-demodb.sh"
+    ports:
+      - "33000:33000"
+      - "30000:30000"
+      - "8001:8001"
+      - "8002:8002"
+      - "1523:1523"
+    healthcheck:
+      test: csql demodb -c "SELECT 1"
+      interval: 5s
+      timeout: 60s
+      start_period: 60s
+
+  mongo:
+    image: mongo:3.6.1
+    ports:
+      - "27017:27017"
+
+  db2:
+    image: ibmcom/db2:11.5.0.0
+    privileged: true
+    ports:
+      - "50000:50000"
+    environment:
+      - DB2INST1_PASSWORD=a3sd!fDj
+      - DB2INSTANCE=db2inst1
+      - DBNAME=sample
+      - LICENSE=accept
+      - ARCHIVE_LOGS=false
+      - AUTOCONFIG=false
+    healthcheck:
+      test: /opt/ibm/db2/V11.5/bin/db2 CONNECT TO $$DBNAME
+      interval: 5s
+      timeout: 240s
+      start_period: 240s
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password1!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -Q "SELECT 1" || exit 1
+      interval: 5s
+      timeout: 60s
+      start_period: 60s
+
+  firebird:
+    image: jacobalberty/firebird:2.5.9-ss
+    ports:
+      - "3050:3050"
+    environment:
+      - ISC_PASSWORD=masterkey
+      - FIREBIRD_DATABASE=querydsl.fdb
+      - FIREBIRD_USER=querydsl
+      - FIREBIRD_PASSWORD=querydsl

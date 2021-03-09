@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-        <!ENTITY versionNumber "4.3.1">
-        <!ENTITY copyrightYear "2007-2016">
+        <!ENTITY versionNumber "4.4.0">
+        <!ENTITY copyrightYear "2007-2020">
         <!ENTITY copyrightHolder "The Querydsl Team">
 ]>
 <book xmlns:xi="http://www.w3.org/2001/XInclude">
@@ -38,6 +38,14 @@
           <author>
             <firstname>Robert</firstname>
             <surname>Bain</surname>
+          </author>
+          <author>
+            <firstname>Ido</firstname>
+            <surname>Salomon</surname>
+          </author>
+          <author>
+            <firstname>Jan-Willem</firstname>
+            <surname>Gmelig Meyling</surname>
           </author>
         </authorgroup>
         <mediaobject>

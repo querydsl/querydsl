@@ -18,17 +18,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.querydsl.core.util.PrimitiveUtils;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import com.google.common.primitives.Primitives;
 import com.querydsl.core.types.Path;
 import com.querydsl.sql.namemapping.ChainedNameMapping;
 import com.querydsl.sql.namemapping.NameMapping;
@@ -45,7 +44,7 @@ import com.querydsl.sql.types.Type;
  */
 public final class Configuration {
 
-    private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
+    private static final Logger logger = Logger.getLogger(Configuration.class.getName());
 
     static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
 
@@ -57,9 +56,9 @@ public final class Configuration {
 
     private NameMapping nameMapping = internalNameMapping;
 
-    private final Map<String, String> schemaMapping = Maps.newHashMap();
+    private final Map<String, String> schemaMapping = new HashMap<>();
 
-    private final Map<String, Class<?>> typeToName = Maps.newHashMap();
+    private final Map<String, Class<?>> typeToName = new HashMap<>();
 
     private SQLTemplates templates;
 
@@ -88,7 +87,7 @@ public final class Configuration {
 
         if (templates.isArraysSupported()) {
             // register array types
-            List<Class<?>> classes = ImmutableList.<Class<?>>of(String.class, Long.class, Integer.class, Short.class,
+            List<Class<?>> classes = Arrays.asList(String.class, Long.class, Integer.class, Short.class,
                     Byte.class, Boolean.class, java.sql.Date.class, java.sql.Timestamp.class,
                     java.sql.Time.class, Double.class, Float.class);
             for (Class<?> cl : classes) {
@@ -96,8 +95,8 @@ public final class Configuration {
                 String name = templates.getTypeNameForCode(code);
                 Class<?> arrType = Array.newInstance(cl, 0).getClass();
                 javaTypeMapping.register(new ArrayType(arrType, name));
-                if (Primitives.isWrapperType(cl) && !cl.equals(Byte.class)) {
-                    cl = Primitives.unwrap(cl);
+                if (PrimitiveUtils.isWrapperType(cl) && !cl.equals(Byte.class)) {
+                    cl = PrimitiveUtils.unwrap(cl);
                     arrType = Array.newInstance(cl, 0).getClass();
                     javaTypeMapping.register(new ArrayType(arrType, name));
                 }
@@ -168,7 +167,7 @@ public final class Configuration {
 
                 Integer sqlComponentType = templates.getCodeForTypeName(typeName);
                 if (sqlComponentType == null) {
-                    logger.warn("Found no JDBC type for " + typeName + " using OTHER instead");
+                    logger.warning("Found no JDBC type for " + typeName + " using OTHER instead");
                     sqlComponentType = Types.OTHER;
                 }
                 Class<?> componentType = jdbcTypeMapping.get(sqlComponentType, size, digits);
@@ -203,7 +202,7 @@ public final class Configuration {
      */
     @Nullable
     public SchemaAndTable getOverride(SchemaAndTable key) {
-        SchemaAndTable result = nameMapping.getOverride(key).or(key);
+        SchemaAndTable result = nameMapping.getOverride(key).orElse(key);
         if (schemaMapping.containsKey(key.getSchema())) {
             result = new SchemaAndTable(schemaMapping.get(key.getSchema()), result.getTable());
         }
@@ -218,7 +217,7 @@ public final class Configuration {
      * @return overridden column
      */
     public String getColumnOverride(SchemaAndTable key, String column) {
-        return nameMapping.getColumnOverride(key, column).or(column);
+        return nameMapping.getColumnOverride(key, column).orElse(column);
     }
 
     /**

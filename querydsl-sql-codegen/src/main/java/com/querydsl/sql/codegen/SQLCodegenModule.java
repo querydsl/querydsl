@@ -48,6 +48,8 @@ public class SQLCodegenModule extends CodegenModule {
 
     public static final String COLUMN_COMPARATOR = "columnComparator";
 
+    static final String JAVADOC_SUFFIX = CodegenModule.JAVADOC_SUFFIX;
+
     @Override
     protected void configure() {
         super.configure();

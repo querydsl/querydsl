@@ -14,21 +14,19 @@
 package com.querydsl.jpa.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
@@ -48,9 +46,9 @@ import com.querydsl.jpa.QueryHandler;
  */
 public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> extends JPAQueryBase<T, Q> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
+    private static final Logger logger = Logger.getLogger(JPAQuery.class.getName());
 
-    protected final Multimap<String,Object> hints = LinkedHashMultimap.create();
+    protected final Map<String, Object> hints = new LinkedHashMap<>();
 
     protected final EntityManager entityManager;
 
@@ -75,9 +73,42 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         this.entityManager = em;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated {@code fetchCount} requires a count query to be computed. In {@code querydsl-sql}, this is done
+     * by wrapping the query in a subquery, like so: {@code SELECT COUNT(*) FROM (&lt;original query&gt;)}. Unfortunately,
+     * JPQL - the query language of JPA - does not allow queries to project from subqueries. As a result there isn't a
+     * universal way to express count queries in JPQL. Historically QueryDSL attempts at producing a modified query
+     * to compute the number of results instead.
+     *
+     * However, this approach only works for simple queries. Specifically
+     * queries with multiple group by clauses and queries with a having clause turn out to be problematic. This is because
+     * {@code COUNT(DISTINCT a, b, c)}, while valid SQL in most dialects, is not valid JPQL. Furthermore, a having
+     * clause may refer select elements or aggregate functions and therefore cannot be emulated by moving the predicate
+     * to the where clause instead.
+     *
+     * In order to support {@code fetchCount} for queries with multiple group by elements or a having clause, we
+     * generate the count in memory instead. This means that the method simply falls back to returning the size of
+     * {@link #fetch()}. For large result sets this may come at a severe performance penalty.
+     *
+     * For very specific domain models where {@link #fetchCount()} has to be used in conjunction with complex queries
+     * containing multiple group by elements and/or a having clause, we recommend using the
+     * <a href="https://persistence.blazebit.com/documentation/1.5/core/manual/en_US/index.html#querydsl-integration">Blaze-Persistence</a>
+     * integration for QueryDSL. Among other advanced query features, Blaze-Persistence makes it possible to select
+     * from subqueries in JPQL. As a result the {@code BlazeJPAQuery} provided with the integration, implements
+     * {@code fetchCount} properly and always executes a proper count query.
+     */
     @Override
+    @Deprecated
     public long fetchCount() {
         try {
+            if (getMetadata().getGroupBy().size() > 1 || getMetadata().getHaving() != null) {
+                logger.warning("Fetchable#fetchCount() was computed in memory! See the Javadoc for AbstractJPAQuery#fetchCount for more details.");
+                Query query = createQuery(null, false);
+                return query.getResultList().size();
+            }
+
             Query query = createQuery(null, true);
             return (Long) query.getSingleResult();
         } finally {
@@ -117,7 +148,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
             query.setFlushMode(flushMode);
         }
 
-        for (Map.Entry<String, Object> entry : hints.entries()) {
+        for (Map.Entry<String, Object> entry : hints.entrySet()) {
             query.setHint(entry.getKey(), entry.getValue());
         }
 
@@ -152,7 +183,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
                     }
                     rv.add(projection.newInstance((Object[]) o));
                 } else {
-                    rv.add(null);
+                    rv.add(projection.newInstance(new Object[] {null}));
                 }
             }
             return rv;
@@ -195,6 +226,16 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     }
 
     @Override
+    public Stream<T> stream() {
+        try {
+            Query query = createQuery();
+            return queryHandler.stream(query, projection);
+        } finally {
+            reset();
+        }
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<T> fetch() {
         try {
@@ -205,13 +246,53 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated {@code fetchResults} requires a count query to be computed. In {@code querydsl-sql}, this is done
+     * by wrapping the query in a subquery, like so: {@code SELECT COUNT(*) FROM (&lt;original query&gt;)}. Unfortunately,
+     * JPQL - the query language of JPA - does not allow queries to project from subqueries. As a result there isn't a
+     * universal way to express count queries in JPQL. Historically QueryDSL attempts at producing a modified query
+     * to compute the number of results instead.
+     *
+     * However, this approach only works for simple queries. Specifically
+     * queries with multiple group by clauses and queries with a having clause turn out to be problematic. This is because
+     * {@code COUNT(DISTINCT a, b, c)}, while valid SQL in most dialects, is not valid JPQL. Furthermore, a having
+     * clause may refer select elements or aggregate functions and therefore cannot be emulated by moving the predicate
+     * to the where clause instead.
+     *
+     * In order to support {@code fetchResults} for queries with multiple group by elements or a having clause, we
+     * generate the count in memory instead. This means that the method simply falls back to returning the size of
+     * {@link #fetch()}. For large result sets this may come at a severe performance penalty.
+     *
+     * For very specific domain models where {@link #fetchResults()} has to be used in conjunction with complex queries
+     * containing multiple group by elements and/or a having clause, we recommend using the
+     * <a href="https://persistence.blazebit.com/documentation/1.5/core/manual/en_US/index.html#querydsl-integration">Blaze-Persistence</a>
+     * integration for QueryDSL. Among other advanced query features, Blaze-Persistence makes it possible to select
+     * from subqueries in JPQL. As a result the {@code BlazeJPAQuery} provided with the integration, implements
+     * {@code fetchResults} properly and always executes a proper count query.
+     *
+     * Mind that for any scenario where the count is not strictly needed separately, we recommend to use {@link #fetch()}
+     * instead.
+     */
     @Override
+    @Deprecated
     public QueryResults<T> fetchResults() {
         try {
+            QueryModifiers modifiers = getMetadata().getModifiers();
+            if (getMetadata().getGroupBy().size() > 1 || getMetadata().getHaving() != null) {
+                logger.warning("Fetchable#fetchResults() was computed in memory! See the Javadoc for AbstractJPAQuery#fetchResults for more details.");
+                Query query = createQuery(null, false);
+                @SuppressWarnings("unchecked")
+                List<T> resultList = query.getResultList();
+                int offset = modifiers.getOffsetAsInteger() == null ? 0 : modifiers.getOffsetAsInteger();
+                int limit = modifiers.getLimitAsInteger() == null ? resultList.size() : modifiers.getLimitAsInteger();
+                return new QueryResults<T>(resultList.subList(offset, Math.min(resultList.size(), offset + limit)), modifiers, resultList.size());
+            }
+
             Query countQuery = createQuery(null, true);
             long total = (Long) countQuery.getSingleResult();
             if (total > 0) {
-                QueryModifiers modifiers = getMetadata().getModifiers();
                 Query query = createQuery(modifiers, false);
                 @SuppressWarnings("unchecked")
                 List<T> list = (List<T>) getResultList(query);
@@ -226,22 +307,14 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINEST)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.finest(normalizedQuery);
         }
-    }
-
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
     }
 
     @Override
     protected void reset() {
-        cleanupMDC();
     }
 
     @Nullable
@@ -252,7 +325,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
             Query query = createQuery(getMetadata().getModifiers(), false);
             return (T) getSingleResult(query);
         } catch (javax.persistence.NoResultException e) {
-            logger.trace(e.getMessage(),e);
+            logger.log(Level.FINEST, e.getMessage(), e);
             return null;
         } catch (javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException(e);

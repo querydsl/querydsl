@@ -13,20 +13,19 @@
  */
 package com.querydsl.jpa.hibernate.sql;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.Query;
 import org.hibernate.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.NonUniqueResultException;
@@ -53,7 +52,7 @@ import com.querydsl.sql.SQLSerializer;
  */
 public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQLQuery<T, Q>> extends AbstractSQLQuery<T, Q> {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractHibernateSQLQuery.class);
+    private static final Logger logger = Logger.getLogger(AbstractHibernateSQLQuery.class.getName());
 
     protected Boolean cacheable, readOnly;
 
@@ -92,8 +91,8 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
                 queryMixin.getMetadata().getParams());
 
         if (!forCount) {
-            ListMultimap<Expression<?>, String> aliases = serializer.getAliases();
-            Set<String> used = Sets.newHashSet();
+            Map<Expression<?>, List<String>> aliases = serializer.getAliases();
+            Set<String> used = new HashSet<>();
             // set entity paths
             Expression<?> projection = queryMixin.getMetadata().getProjection();
             if (projection instanceof FactoryExpression) {
@@ -173,6 +172,16 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     }
 
     @Override
+    public Stream<T> stream() {
+        try {
+            Query query = createQuery();
+            return query.getResultStream();
+        } finally {
+            reset();
+        }
+    }
+
+    @Override
     public QueryResults<T> fetchResults() {
         // TODO : handle entity projections as well
         try {
@@ -193,21 +202,13 @@ public abstract class AbstractHibernateSQLQuery<T, Q extends AbstractHibernateSQ
     }
 
     protected void logQuery(String queryString, Map<Object, String> parameters) {
-        if (logger.isDebugEnabled()) {
+        if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            MDC.put(MDC_QUERY, normalizedQuery);
-            MDC.put(MDC_PARAMETERS, String.valueOf(parameters));
-            logger.debug(normalizedQuery);
+            logger.fine(normalizedQuery);
         }
     }
 
-    protected void cleanupMDC() {
-        MDC.remove(MDC_QUERY);
-        MDC.remove(MDC_PARAMETERS);
-    }
-
     protected void reset() {
-        cleanupMDC();
     }
 
     @SuppressWarnings("unchecked")

@@ -70,37 +70,5 @@ Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for L
 
   </sect1>
 
-
-  <sect1>
-    <title>JDK5 usage</title>
-
-    <para>
-      When compiling your project with JDK 5, you might get the following compilation failure:
-    </para>
-
-    <programlisting><![CDATA[
-[INFO] ------------------------------------------------------------------------
-[ERROR] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Compilation failure
-...
-class file has wrong version 50.0, should be 49.0
-]]></programlisting>
-
-    <para>
-      The class file version 50.0 is used by Java 6.0, and 49.0 is used by Java 5.0.
-    </para>
-
-    <para>
-      Querydsl is tested against JDK 6.0 only, as we use APT extensively, which is available only
-      since JDK 6.0.
-    </para>
-
-    <para>
-      If you want to use it with JDK 5.0 you might want to try to compile Querydsl yourself.
-    </para>
-
-  </sect1>
-
 </chapter>
 

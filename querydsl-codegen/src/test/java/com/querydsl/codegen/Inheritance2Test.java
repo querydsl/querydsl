@@ -8,8 +8,8 @@ import java.lang.reflect.Field;
 
 import org.junit.Test;
 
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.TypeExtends;
+import com.querydsl.codegen.utils.model.Type;
+import com.querydsl.codegen.utils.model.TypeExtends;
 import com.querydsl.core.annotations.QueryEntity;
 
 public class Inheritance2Test {

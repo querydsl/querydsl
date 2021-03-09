@@ -15,15 +15,15 @@ package com.querydsl.jpa.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.support.QueryMixin;
@@ -46,7 +46,7 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
 
     private final QueryMixin<?> queryMixin = new JPAQueryMixin<Void>();
 
-    private final Map<Path<?>, Expression<?>> inserts = Maps.newLinkedHashMap();
+    private final Map<Path<?>, Expression<?>> inserts = new LinkedHashMap<>();
 
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
@@ -74,7 +74,7 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     @Override
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, values, subQuery, inserts);
+        serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
@@ -93,7 +93,7 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     @Override
     public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
-        serializer.serializeForInsert(queryMixin.getMetadata(), columns, values, subQuery, inserts);
+        serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
         return serializer.toString();
     }
 

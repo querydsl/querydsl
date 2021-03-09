@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>4.4.0-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -23,28 +23,28 @@
   </scm>
 
   <properties>   
-    <dn.version>3.2.0-release</dn.version>
-    <dn.plugin.version>3.2.0-release</dn.plugin.version>
+    <dn.version>5.2.4</dn.version>
+    <dn.plugin.version>5.2.1</dn.plugin.version>
   </properties>
 
   <dependencies>
-  
+
+
     <dependency>
-      <groupId>javax.jdo</groupId>
-      <artifactId>jdo-api</artifactId>
-      <version>${jdo.version}</version>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>javax.jdo</artifactId>
+      <scope>provided</scope>
     </dependency>
-    <!-- 
-    <dependency>
-      <groupId>javax.jdo</groupId>
-      <artifactId>jdo2-api</artifactId>
-      <version>2.3-eb</version>
-   </dependency>
-     -->        
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>20.1.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
@@ -65,16 +65,7 @@
       <version>${project.version}</version>
       <scope>compile</scope>
       <optional>true</optional> 
-    </dependency>      
-    
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-    </dependency>    
 
     <!-- test -->
 
@@ -106,7 +97,6 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>    
     
@@ -149,6 +139,13 @@
             </configuration>              
           </execution>            
         </executions>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.querydsl.jdo</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin> 
         
       <!-- this plugin does the JDO class enhancement -->

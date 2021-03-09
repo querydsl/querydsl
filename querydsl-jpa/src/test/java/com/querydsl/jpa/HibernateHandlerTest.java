@@ -22,9 +22,11 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hibernate.ScrollMode.FORWARD_ONLY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class HibernateHandlerTest {
@@ -97,10 +99,11 @@ public class HibernateHandlerTest {
         ScrollableResultsImplementor scrollableResultsImplementor = createMock(ScrollableResultsImplementor.class);
         FactoryExpression<?> factoryExpression = createMock(FactoryExpression.class);
 
-        expect(nativeQuery.unwrap(NativeQuery.class)).andReturn(nativeQuery);
+        expect(nativeQuery.unwrap(org.hibernate.query.Query.class)).andReturn(nativeQuery);
         expect(nativeQuery.scroll(FORWARD_ONLY)).andReturn(scrollableResultsImplementor);
+        replay(nativeQuery);
 
-        assertEquals(TransformingIterator.class, hibernateHandler.iterate(nativeQuery, factoryExpression).getClass());
+        assertThat(hibernateHandler.iterate(nativeQuery, factoryExpression), instanceOf(TransformingIterator.class));
     }
 
     @Test
@@ -109,6 +112,7 @@ public class HibernateHandlerTest {
         List queryResultList = createMock(List.class);
         Iterator iterator = createMock(Iterator.class);
 
+        expect(query.unwrap(org.hibernate.query.Query.class)).andThrow(new PersistenceException("Cannot unwrap Query"));
         expect(query.getResultList()).andReturn(queryResultList);
         expect(queryResultList.iterator()).andReturn(iterator);
         replay(query);
@@ -123,6 +127,7 @@ public class HibernateHandlerTest {
         List queryResultList = createMock(List.class);
         Iterator iterator = createMock(Iterator.class);
 
+        expect(query.unwrap(org.hibernate.query.Query.class)).andThrow(new PersistenceException("Cannot unwrap Query"));
         expect(query.getResultList()).andReturn(queryResultList);
         expect(queryResultList.iterator()).andReturn(iterator);
         replay(query);
@@ -134,7 +139,7 @@ public class HibernateHandlerTest {
     public void should_transform() {
         FactoryExpression<?> projection = createMock(FactoryExpression.class);
 
-        expect(nativeQuery.unwrap(NativeQuery.class)).andReturn(nativeQuery);
+        expect(nativeQuery.unwrap(org.hibernate.query.Query.class)).andReturn(nativeQuery);
         expect(nativeQuery.setResultTransformer(anyObject(ResultTransformer.class))).andReturn(nativeQuery);
         replay(nativeQuery);
 

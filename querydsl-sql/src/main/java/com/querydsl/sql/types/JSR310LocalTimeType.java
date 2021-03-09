@@ -4,16 +4,13 @@ import java.sql.*;
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
 
-import javax.annotation.Nullable;
-
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * JSR310LocalTimeType maps {@linkplain java.time.LocalTime}
  * to {@linkplain java.sql.Time} on the JDBC level
  *
  */
-@IgnoreJRERequirement //conditionally included
 public class JSR310LocalTimeType extends AbstractJSR310DateTimeType<LocalTime> {
 
     public JSR310LocalTimeType() {

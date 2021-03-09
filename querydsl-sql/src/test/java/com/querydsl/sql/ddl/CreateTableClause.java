@@ -10,11 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Joiner;
 import com.querydsl.core.QueryException;
 import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
@@ -27,9 +24,7 @@ import com.querydsl.sql.SQLTemplates;
  */
 public class CreateTableClause {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreateTableClause.class);
-
-    private static final Joiner COMMA_JOINER = Joiner.on(", ");
+    private static final Logger logger = Logger.getLogger(CreateTableClause.class.getName());
 
     private final Connection connection;
 
@@ -156,14 +151,14 @@ public class CreateTableClause {
     @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     public void execute() {
         StringBuilder builder = new StringBuilder();
-        builder.append(templates.getCreateTable() + table + " (\n");
+        builder.append(templates.getCreateTable()).append(table).append(" (\n");
         List<String> lines = new ArrayList<String>(columns.size() + foreignKeys.size() + 1);
         // columns
         for (ColumnData column : columns) {
             StringBuilder line = new StringBuilder();
-            line.append(column.getName() + " " + column.getType().toUpperCase());
+            line.append(column.getName()).append(" ").append(column.getType().toUpperCase());
             if (column.getSize() != null) {
-                line.append("(" + column.getSize() + ")");
+                line.append("(").append(column.getSize()).append(")");
             }
             if (!column.isNullAllowed()) {
                 line.append(templates.getNotNull().toUpperCase());
@@ -177,31 +172,29 @@ public class CreateTableClause {
         // primary key
         if (primaryKey != null) {
             StringBuilder line = new StringBuilder();
-            line.append("CONSTRAINT " + primaryKey.getName() + " ");
-            line.append("PRIMARY KEY(" + COMMA_JOINER.join(primaryKey.getColumns()) + ")");
+            line.append("CONSTRAINT ").append(primaryKey.getName()).append(" ");
+            line.append("PRIMARY KEY(").append(String.join(", ", primaryKey.getColumns())).append(")");
             lines.add(line.toString());
         }
 
         // foreign keys
         for (ForeignKeyData foreignKey : foreignKeys) {
             StringBuilder line = new StringBuilder();
-            line.append("CONSTRAINT " + foreignKey.getName() + " ");
-            line.append("FOREIGN KEY(" + COMMA_JOINER.join(foreignKey.getForeignColumns()) + ") ");
-            line.append("REFERENCES " + foreignKey.getTable() + "(" + COMMA_JOINER.join(foreignKey.getParentColumns()) + ")");
+            line.append("CONSTRAINT ").append(foreignKey.getName()).append(" ");
+            line.append("FOREIGN KEY(").append(String.join(", ", foreignKey.getForeignColumns())).append(") ");
+            line.append("REFERENCES ").append(foreignKey.getTable()).append("(").append(String.join(", ", foreignKey.getParentColumns())).append(")");
             lines.add(line.toString());
         }
-        builder.append("  " + Joiner.on(",\n  ").join(lines));
+        builder.append("  ").append(String.join(",\n  ", lines));
         builder.append("\n)\n");
         logger.info(builder.toString());
 
-        Statement stmt = null;
-        try {
-            stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
             stmt.execute(builder.toString());
 
             // indexes
             for (IndexData index : indexes) {
-                String indexColumns = COMMA_JOINER.join(index.getColumns());
+                String indexColumns = String.join(", ", index.getColumns());
                 String prefix = templates.getCreateIndex();
                 if (index.isUnique()) {
                     prefix = templates.getCreateUniqueIndex();
@@ -213,14 +206,6 @@ public class CreateTableClause {
         } catch (SQLException e) {
             System.err.println(builder.toString());
             throw new QueryException(e.getMessage(), e);
-        } finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    throw new QueryException(e);
-                }
-            }
         }
     }
 

@@ -19,15 +19,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.*;
@@ -50,7 +48,7 @@ import com.querydsl.sql.SQLSerializer;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> extends ProjectableSQLQuery<T, Q> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
+    private static final Logger logger = Logger.getLogger(JDOSQLQuery.class.getName());
 
     private final Closeable closeable = new Closeable() {
         @Override
@@ -114,8 +112,8 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
 
 
         // create Query
-        if (logger.isDebugEnabled()) {
-            logger.debug(serializer.toString());
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine(serializer.toString());
         }
         Query query = persistenceManager.newQuery("javax.jdo.query.SQL", serializer.toString());
         orderedConstants = serializer.getConstants();
@@ -166,7 +164,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         if (projection != null && !forCount) {
             if (rv instanceof List) {
                 List<?> original = (List<?>) rv;
-                rv = Lists.newArrayList();
+                rv = new ArrayList<>();
                 for (Object o : original) {
                     ((List) rv).add(project(projection, o));
                 }

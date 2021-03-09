@@ -13,11 +13,12 @@
  */
 package com.querydsl.core.types;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 class AppendingFactoryExpression<T> extends FactoryExpressionBase<T> {
 
@@ -25,18 +26,20 @@ class AppendingFactoryExpression<T> extends FactoryExpressionBase<T> {
 
     private final Expression<T> base;
 
+    @Unmodifiable
     private final List<Expression<?>> args;
 
     protected AppendingFactoryExpression(Expression<T> base, Expression<?>... rest) {
         super(base.getType());
         this.base = base;
-        ImmutableList.Builder<Expression<?>> builder = ImmutableList.builder();
+        List<Expression<?>> builder = new ArrayList<>();
         builder.add(base);
-        builder.add(rest);
-        this.args = builder.build();
+        Collections.addAll(builder, rest);
+        this.args = Collections.unmodifiableList(builder);
     }
 
     @Override
+    @Unmodifiable
     public List<Expression<?>> getArgs() {
         return args;
     }

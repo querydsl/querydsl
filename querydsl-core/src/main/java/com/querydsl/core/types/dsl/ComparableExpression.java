@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.*;
 
@@ -51,7 +51,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @param to inclusive end of range
      * @return this between from and to
      */
-    public final BooleanExpression between(@Nullable T from, @Nullable T to) {
+    public BooleanExpression between(@Nullable T from, @Nullable T to) {
         if (from == null) {
             if (to != null) {
                 return Expressions.booleanOperation(Ops.LOE, mixin, ConstantImpl.create(to));
@@ -74,7 +74,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @param to inclusive end of range
      * @return this between from and to
      */
-    public final BooleanExpression between(@Nullable Expression<T> from, @Nullable Expression<T> to) {
+    public BooleanExpression between(@Nullable Expression<T> from, @Nullable Expression<T> to) {
         if (from == null) {
             if (to != null) {
                 return Expressions.booleanOperation(Ops.LOE, mixin, to);
@@ -98,7 +98,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @param to inclusive end of range
      * @return this not between from and to
      */
-    public final BooleanExpression notBetween(T from, T to) {
+    public BooleanExpression notBetween(T from, T to) {
         return between(from, to).not();
     }
 
@@ -111,7 +111,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @param to inclusive end of range
      * @return this not between from and to
      */
-    public final BooleanExpression notBetween(Expression<T> from, Expression<T> to) {
+    public BooleanExpression notBetween(Expression<T> from, Expression<T> to) {
         return between(from, to).not();
     }
 
@@ -246,7 +246,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return this &lt; right
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final BooleanExpression lt(T right) {
+    public BooleanExpression lt(T right) {
         return lt(ConstantImpl.create(right));
     }
 
@@ -257,7 +257,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return this &lt; right
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final BooleanExpression lt(Expression<T> right) {
+    public BooleanExpression lt(Expression<T> right) {
         return Expressions.booleanOperation(Ops.LT, mixin, right);
     }
 
@@ -308,7 +308,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return this &lt;= right
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final BooleanExpression loe(T right) {
+    public BooleanExpression loe(T right) {
         return Expressions.booleanOperation(Ops.LOE, mixin, ConstantImpl.create(right));
     }
 
@@ -319,7 +319,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return this &lt;= right
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final BooleanExpression loe(Expression<T> right) {
+    public BooleanExpression loe(Expression<T> right) {
         return Expressions.booleanOperation(Ops.LOE, mixin, right);
     }
 
@@ -361,6 +361,30 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      */
     public BooleanExpression loeAny(SubQueryExpression<? extends T> right) {
         return loe(ExpressionUtils.any(right));
+    }
+
+    /**
+     * Create a {@code min(this)} expression
+     *
+     * <p>Get the minimum value of this expression (aggregation)</p>
+     *
+     * @return min(this)
+     */
+    @Override
+    public ComparableExpression<T> min() {
+        return Expressions.comparableOperation(getType(), Ops.AggOps.MIN_AGG, mixin);
+    }
+
+    /**
+     * Create a {@code max(this)} expression
+     *
+     * <p>Get the maximum value of this expression (aggregation)</p>
+     *
+     * @return max(this)
+     */
+    @Override
+    public ComparableExpression<T> max() {
+        return Expressions.comparableOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
     }
 
 }

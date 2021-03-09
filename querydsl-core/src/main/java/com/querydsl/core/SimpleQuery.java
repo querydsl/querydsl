@@ -13,7 +13,7 @@
  */
 package com.querydsl.core;
 
-import javax.annotation.Nonnegative;
+import org.jetbrains.annotations.Range;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
@@ -34,7 +34,7 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>
      * @param limit max rows
      * @return the current object
      */
-    Q limit(@Nonnegative long limit);
+    Q limit(@Range(from = 0, to = Integer.MAX_VALUE) long limit);
 
     /**
      * Set the offset for the query results
@@ -42,7 +42,7 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>
      * @param offset row offset
      * @return the current object
      */
-    Q offset(@Nonnegative long offset);
+    Q offset(@Range(from = 0, to = Integer.MAX_VALUE) long offset);
 
     /**
      * Set both limit and offset of the query results

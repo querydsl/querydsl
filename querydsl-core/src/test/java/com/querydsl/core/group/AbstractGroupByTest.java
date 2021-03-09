@@ -1,11 +1,11 @@
 package com.querydsl.core.group;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.support.DummyFetchableQuery;
@@ -157,7 +157,7 @@ public abstract class AbstractGroupByTest {
     }
 
     protected static List<Tuple> toTuples(Object[]... rows) {
-        List<Tuple> tuples = Lists.newArrayList();
+        List<Tuple> tuples = new ArrayList<>();
         for (Object[] row : rows) {
             tuples.add(new MockTuple(row));
         }

@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.*;
 
@@ -563,6 +563,7 @@ public abstract class StringExpression extends LiteralExpression<String> {
      *
      * @return min(this)
      */
+    @Override
     public StringExpression min() {
         if (min == null) {
             min = Expressions.stringOperation(Ops.AggOps.MIN_AGG, mixin);

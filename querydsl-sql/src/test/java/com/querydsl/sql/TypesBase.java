@@ -8,11 +8,11 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
 
-import com.google.common.collect.Maps;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.Expressions;
@@ -23,7 +23,7 @@ public abstract class TypesBase extends AbstractBaseTest {
 
     @Test
     public void create_tables() {
-        Map<Class<?>, Object> instances = Maps.newLinkedHashMap();
+        Map<Class<?>, Object> instances = new LinkedHashMap<>();
         instances.put(BigInteger.class, BigInteger.valueOf(1));
         instances.put(Long.class, 1L);
         instances.put(Integer.class, 1);
@@ -60,8 +60,7 @@ public abstract class TypesBase extends AbstractBaseTest {
         DatabaseMetaData md = conn.getMetaData();
 
         // types
-        ResultSet rs = md.getUDTs(null, null, null, null);
-        try {
+        try (ResultSet rs = md.getUDTs(null, null, null, null)) {
             while (rs.next()) {
                 // cat, schema, name, classname, datatype, remarks, base_type
                 String cat = rs.getString(1);
@@ -72,11 +71,10 @@ public abstract class TypesBase extends AbstractBaseTest {
                 String remarks = rs.getString(6);
                 String baseType = rs.getString(7);
                 System.out.println(name + " " + classname + " " + datatype + " " +
-                                   remarks + " " + baseType);
+                        remarks + " " + baseType);
 
                 // attributes
-                ResultSet rs2 = md.getAttributes(cat, schema, name, null);
-                try {
+                try (ResultSet rs2 = md.getAttributes(cat, schema, name, null)) {
                     while (rs2.next()) {
                         // cat, schema, name, attr_name, data_type, attr_type_name, attr_size
                         // decimal_digits, num_prec_radix, nullable, remarks, attr_def, sql_data_type, ordinal_position
@@ -91,12 +89,8 @@ public abstract class TypesBase extends AbstractBaseTest {
 
                         System.out.println(" " + attrName2 + " " + dataType2 + " " + attrTypeName2 + " " + attrSize2);
                     }
-                } finally {
-                    rs2.close();
                 }
             }
-        } finally {
-            rs.close();
         }
     }
 

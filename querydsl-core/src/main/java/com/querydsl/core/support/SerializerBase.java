@@ -14,13 +14,13 @@
 package com.querydsl.core.support;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.types.*;
@@ -35,8 +35,8 @@ import static java.util.Collections.unmodifiableMap;
  */
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void, Void> {
 
-    private static final Set<Operator> SAME_PRECEDENCE = ImmutableSet.<Operator>of(Ops.CASE,
-            Ops.CASE_WHEN, Ops.CASE_ELSE, Ops.CASE_EQ, Ops.CASE_EQ_WHEN, Ops.CASE_EQ_ELSE);
+    private static final Set<? extends Operator> SAME_PRECEDENCE = Collections.unmodifiableSet(EnumSet.of(Ops.CASE,
+            Ops.CASE_WHEN, Ops.CASE_ELSE, Ops.CASE_EQ, Ops.CASE_EQ_WHEN, Ops.CASE_EQ_ELSE));
 
     private final StringBuilder builder = new StringBuilder(128);
 
@@ -270,9 +270,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         final Object element = path.getMetadata().getElement();
         List<Object> args;
         if (path.getMetadata().getParent() != null) {
-            args = ImmutableList.of(path.getMetadata().getParent(), element);
+            args = Arrays.asList(path.getMetadata().getParent(), element);
         } else {
-            args = ImmutableList.of(element);
+            args = Collections.singletonList(element);
         }
         handleTemplate(template, args);
         return null;
@@ -308,7 +308,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 }
             }
         } else if (strict) {
-            throw new IllegalArgumentException("No pattern found for " + operator);
+            throw new IllegalArgumentException(String.format("No pattern found for %s. Make sure to register any custom functions with %s.", operator, templates.getClass()));
         } else {
             append(operator.toString());
             append("(");
