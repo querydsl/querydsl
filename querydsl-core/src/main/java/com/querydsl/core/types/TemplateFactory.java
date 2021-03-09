@@ -58,7 +58,7 @@ public class TemplateFactory {
             + "([slu%]?%?)"
             + "\\}");
 
-    private final Map<String, Template> cache = Collections.synchronizedMap(new WeakHashMap<>());;
+    private final Map<String, Template> cache = Collections.synchronizedMap(new WeakHashMap<>());
 
     private final char escape;
 

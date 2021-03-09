@@ -3,7 +3,7 @@ package com.querydsl.core.dml;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 
-import org.jetbrains.annotations.Nullable;;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Parent interface for {@link ReactiveInsertClause} and {@link ReactiveUpdateClause}
