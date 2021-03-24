@@ -254,7 +254,14 @@
             </goals>
           </execution>               
         </executions>
-      </plugin>            
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.querydsl.jpa</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
