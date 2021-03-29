@@ -58,7 +58,7 @@ open class KotlinProjectionSerializer @Inject constructor(private val mappings: 
                     .addParameters(c.parameters.map {
                         ParameterSpec.builder(it.name, when {
                             !asExpr -> mappings.getExprType(it.type, model, false, false, true).asTypeName()
-                            it.type.isFinal -> Expression::class.parameterizedBy(it.type)
+                            it.type.isFinal -> Expression::class.parameterizedBy(it.type.asTypeName())
                             else -> Expression::class.asClassName().parameterizedBy(WildcardTypeName.producerOf(it.type.asTypeName()))
                         }).build()
                     })
