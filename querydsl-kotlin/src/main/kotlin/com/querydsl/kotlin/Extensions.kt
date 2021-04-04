@@ -29,6 +29,9 @@ fun Type.asClassName(): ClassName = when (this.fullName) {
     "java.lang.Float" -> Float::class.asClassName()
     "java.lang.Double" -> Double::class.asClassName()
     "java.lang.String" -> String::class.asClassName()
+    "java.util.List" -> List::class.asClassName()
+    "java.util.Map" -> Map::class.asClassName()
+    "java.util.Set" -> Set::class.asClassName()
     else -> ClassName(packageName, *enclosingTypeHierarchy().toTypedArray())
 }
 
