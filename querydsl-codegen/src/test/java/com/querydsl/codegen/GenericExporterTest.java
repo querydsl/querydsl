@@ -72,7 +72,7 @@ public class GenericExporterTest {
     @Test
     public void override_serializer() {
         exporter.setTargetFolder(folder.getRoot());
-        exporter.setSerializerClass(EntitySerializer.class);
+        exporter.setSerializerClass(DefaultEntitySerializer.class);
         exporter.export(getClass().getPackage());
         assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbeddable.java").exists());
         assertTrue(new File(folder.getRoot(), "com/querydsl/codegen/QExampleEmbedded.java").exists());

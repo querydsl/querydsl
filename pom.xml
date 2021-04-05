@@ -688,6 +688,7 @@
         <module>querydsl-jpa-codegen</module>
         <module>querydsl-jdo</module>
         <module>querydsl-bom</module>
+        <module>querydsl-kotlin-codegen</module>
 
         <!-- Lucene related -->
         <module>querydsl-lucene3</module>

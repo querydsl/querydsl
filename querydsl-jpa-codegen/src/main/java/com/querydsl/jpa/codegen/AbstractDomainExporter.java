@@ -13,19 +13,7 @@
  */
 package com.querydsl.jpa.codegen;
 
-import com.querydsl.codegen.CodegenModule;
-import com.querydsl.codegen.EmbeddableSerializer;
-import com.querydsl.codegen.EntitySerializer;
-import com.querydsl.codegen.EntityType;
-import com.querydsl.codegen.Property;
-import com.querydsl.codegen.QueryTypeFactory;
-import com.querydsl.codegen.Serializer;
-import com.querydsl.codegen.SerializerConfig;
-import com.querydsl.codegen.SimpleSerializerConfig;
-import com.querydsl.codegen.Supertype;
-import com.querydsl.codegen.SupertypeSerializer;
-import com.querydsl.codegen.TypeFactory;
-import com.querydsl.codegen.TypeMappings;
+import com.querydsl.codegen.*;
 import com.querydsl.codegen.utils.CodeWriter;
 import com.querydsl.codegen.utils.JavaWriter;
 import com.querydsl.codegen.utils.model.Type;
@@ -121,9 +109,9 @@ public abstract class AbstractDomainExporter {
         module.loadExtensions();
         this.queryTypeFactory = module.get(QueryTypeFactory.class);
         this.typeMappings = module.get(TypeMappings.class);
-        this.embeddableSerializer = module.get(EmbeddableSerializer.class);
-        this.entitySerializer = module.get(EntitySerializer.class);
-        this.supertypeSerializer = module.get(SupertypeSerializer.class);
+        this.embeddableSerializer = module.get(DefaultEmbeddableSerializer.class);
+        this.entitySerializer = module.get(DefaultEntitySerializer.class);
+        this.supertypeSerializer = module.get(DefaultSupertypeSerializer.class);
         this.variableNameFunction = module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS);
     }
 

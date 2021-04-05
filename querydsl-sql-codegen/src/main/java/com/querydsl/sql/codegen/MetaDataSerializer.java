@@ -13,12 +13,7 @@
  */
 package com.querydsl.sql.codegen;
 
-import com.querydsl.codegen.EntitySerializer;
-import com.querydsl.codegen.EntityType;
-import com.querydsl.codegen.GeneratedAnnotationResolver;
-import com.querydsl.codegen.Property;
-import com.querydsl.codegen.SerializerConfig;
-import com.querydsl.codegen.TypeMappings;
+import com.querydsl.codegen.*;
 import com.querydsl.codegen.utils.CodeWriter;
 import com.querydsl.codegen.utils.model.ClassType;
 import com.querydsl.codegen.utils.model.Parameter;
@@ -60,7 +55,7 @@ import static com.querydsl.codegen.utils.Symbols.SUPER;
  * @author tiwe
  *
  */
-public class MetaDataSerializer extends EntitySerializer {
+public class MetaDataSerializer extends DefaultEntitySerializer {
 
     private static final Map<Integer, String> typeConstants = new HashMap<>();
 

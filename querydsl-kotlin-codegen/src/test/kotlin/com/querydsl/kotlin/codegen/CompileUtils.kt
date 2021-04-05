@@ -11,13 +11,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.codegen;
+package com.querydsl.kotlin.codegen
 
-/**
- * {@code SupertypeSerializer} is a {@link Serializer} for supertypes
- *
- * @author tiwe
- *
- */
-public interface SupertypeSerializer extends EntitySerializer {
+import javax.script.ScriptEngineManager
+
+object CompileUtils {
+    fun assertCompiles(name: String, code: String) {
+        val engine = ScriptEngineManager().getEngineByExtension("kts")!!
+        engine.eval(code)
+    }
 }

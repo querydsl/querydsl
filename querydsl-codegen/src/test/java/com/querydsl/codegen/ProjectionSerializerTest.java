@@ -46,7 +46,7 @@ public class ProjectionSerializerTest {
         type.addConstructor(new Constructor(Arrays.asList(firstName, lastName, age)));
 
         Writer writer = new StringWriter();
-        ProjectionSerializer serializer = new ProjectionSerializer(new JavaTypeMappings());
+        ProjectionSerializer serializer = new DefaultProjectionSerializer(new JavaTypeMappings());
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("Expression<String> firstName"));
         assertTrue(writer.toString().contains("Expression<String> lastName"));
@@ -59,7 +59,7 @@ public class ProjectionSerializerTest {
         EntityType type = new EntityType(typeModel);
 
         Writer writer = new StringWriter();
-        ProjectionSerializer serializer = new ProjectionSerializer(new JavaTypeMappings());
+        ProjectionSerializer serializer = new DefaultProjectionSerializer(new JavaTypeMappings());
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSource = writer.toString();
         assertThat(generatedSource, containsString("import javax.annotation.Generated"));
@@ -72,7 +72,7 @@ public class ProjectionSerializerTest {
         EntityType type = new EntityType(typeModel);
 
         Writer writer = new StringWriter();
-        ProjectionSerializer serializer = new ProjectionSerializer(new JavaTypeMappings(), Generated.class);
+        ProjectionSerializer serializer = new DefaultProjectionSerializer(new JavaTypeMappings(), Generated.class);
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSource = writer.toString();
         assertThat(generatedSource, containsString("import com.querydsl.core.annotations.Generated"));

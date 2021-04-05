@@ -11,13 +11,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.codegen;
-
-/**
- * {@code SupertypeSerializer} is a {@link Serializer} for supertypes
- *
- * @author tiwe
- *
- */
-public interface SupertypeSerializer extends EntitySerializer {
+class Entity2 {
+    var name: String? = null
 }

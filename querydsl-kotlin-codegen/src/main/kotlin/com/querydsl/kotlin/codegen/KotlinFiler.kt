@@ -11,13 +11,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.querydsl.codegen;
+package com.querydsl.kotlin.codegen
 
-/**
- * {@code SupertypeSerializer} is a {@link Serializer} for supertypes
- *
- * @author tiwe
- *
- */
-public interface SupertypeSerializer extends EntitySerializer {
+import com.querydsl.codegen.Filer
+import java.io.File
+import java.io.Writer
+import java.lang.Appendable
+import javax.annotation.processing.ProcessingEnvironment
+import javax.lang.model.element.Element
+
+class KotlinFiler : Filer {
+    override fun createFile(processingEnvironment: ProcessingEnvironment, classname: String, elements: MutableCollection<out Element>): Writer {
+        val file = File("${processingEnvironment.options["kapt.kotlin.generated"]}/${classname.replace(".", "/")}.kt")
+        file.parentFile.mkdirs()
+        return file.writer()
+    }
 }
