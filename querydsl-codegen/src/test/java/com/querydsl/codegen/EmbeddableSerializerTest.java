@@ -186,7 +186,7 @@ public class EmbeddableSerializerTest {
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         final String generatedSource = writer.toString();
         assertThat(generatedSource, containsString("import javax.annotation.Generated;"));
-        assertThat(generatedSource, containsString("@Generated(\"com.querydsl.codegen.EmbeddableSerializer\")\npublic class"));
+        assertThat(generatedSource, containsString("@Generated(\"com.querydsl.codegen.DefaultEmbeddableSerializer\")\npublic class"));
         CompileUtils.assertCompiles("QEntity", generatedSource);
     }
 
@@ -198,7 +198,7 @@ public class EmbeddableSerializerTest {
 
         new DefaultEmbeddableSerializer(typeMappings, Collections.<String>emptySet(), com.querydsl.core.annotations.Generated.class).serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSourceCode = writer.toString();
-        assertThat(generatedSourceCode, containsString("@Generated(\"com.querydsl.codegen.EmbeddableSerializer\")\npublic class"));
+        assertThat(generatedSourceCode, containsString("@Generated(\"com.querydsl.codegen.DefaultEmbeddableSerializer\")\npublic class"));
         CompileUtils.assertCompiles("QEntity", generatedSourceCode);
     }
 }

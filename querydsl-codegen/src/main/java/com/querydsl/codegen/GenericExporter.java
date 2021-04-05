@@ -292,10 +292,10 @@ public class GenericExporter {
                 embeddableSerializer = serializer;
                 projectionSerializer = serializer;
             } else {
-                supertypeSerializer = codegenModule.get(DefaultSupertypeSerializer.class);
-                entitySerializer = codegenModule.get(DefaultEntitySerializer.class);
-                embeddableSerializer = codegenModule.get(DefaultEmbeddableSerializer.class);
-                projectionSerializer = codegenModule.get(DefaultProjectionSerializer.class);
+                supertypeSerializer = codegenModule.get(SupertypeSerializer.class);
+                entitySerializer = codegenModule.get(EntitySerializer.class);
+                embeddableSerializer = codegenModule.get(EmbeddableSerializer.class);
+                projectionSerializer = codegenModule.get(ProjectionSerializer.class);
             }
 
             // serialize super types

@@ -109,9 +109,9 @@ public abstract class AbstractDomainExporter {
         module.loadExtensions();
         this.queryTypeFactory = module.get(QueryTypeFactory.class);
         this.typeMappings = module.get(TypeMappings.class);
-        this.embeddableSerializer = module.get(DefaultEmbeddableSerializer.class);
-        this.entitySerializer = module.get(DefaultEntitySerializer.class);
-        this.supertypeSerializer = module.get(DefaultSupertypeSerializer.class);
+        this.embeddableSerializer = module.get(EmbeddableSerializer.class);
+        this.entitySerializer = module.get(EntitySerializer.class);
+        this.supertypeSerializer = module.get(SupertypeSerializer.class);
         this.variableNameFunction = module.get(Function.class, CodegenModule.VARIABLE_NAME_FUNCTION_CLASS);
     }
 
