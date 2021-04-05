@@ -14,6 +14,7 @@
 
     <properties>
         <kotlin.version>1.4.32</kotlin.version>
+        <surefire.useManifestOnlyJar>false</surefire.useManifestOnlyJar>
     </properties>
 
     <dependencies>
@@ -44,6 +45,15 @@
             <groupId>com.squareup</groupId>
             <artifactId>kotlinpoet</artifactId>
             <version>1.5.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-stdlib-jdk8</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-reflect</artifactId>
+                </exclusion></exclusions>
         </dependency>
         <dependency>
             <groupId>com.querydsl</groupId>
@@ -56,6 +66,23 @@
             <artifactId>kotlin-scripting-jsr223</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-stdlib-common</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-script-runtime</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
     </dependencies>
     <build>
