@@ -19,102 +19,102 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-codegen</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-codegen-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-spatial</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-apt</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-collections</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-sql</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-sql-spatial</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-sql-codegen</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-sql-spring</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-jpa</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-jpa-codegen</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-jdo</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-lucene3</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-lucene4</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-lucene5</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-hibernate-search</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-mongodb</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-scala</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.version}</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-kotlin</artifactId>
                 <version>${project.version}</version>
             </dependency>
