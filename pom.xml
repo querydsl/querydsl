@@ -653,7 +653,7 @@
   <repositories>
     <repository>
       <id>querydsl</id>
-      <url>http://www.querydsl.com/maven</url>
+      <url>https://www.querydsl.com/maven</url>
     </repository>
   </repositories>
 
