@@ -16,8 +16,6 @@ package com.querydsl.codegen;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import javax.annotation.Generated;
-
 import org.junit.Test;
 
 import java.lang.annotation.Annotation;

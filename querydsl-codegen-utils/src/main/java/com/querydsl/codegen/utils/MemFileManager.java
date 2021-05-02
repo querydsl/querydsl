@@ -86,12 +86,6 @@ public class MemFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     }
 
     @Override
-    public JavaFileObject getJavaFileForInput(JavaFileManager.Location location, String className,
-            JavaFileObject.Kind kind) throws IOException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public JavaFileObject getJavaFileForOutput(Location location, String name, Kind kind,
             FileObject sibling) throws IOException {
         JavaFileObject javaFileObject = null;
