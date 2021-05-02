@@ -104,8 +104,8 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.reflections</groupId>
-      <artifactId>reflections</artifactId>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -154,9 +154,9 @@
         <version>4.6.1</version>
       </dependency>
       <dependency>
-        <groupId>org.reflections</groupId>
-        <artifactId>reflections</artifactId>
-        <version>0.9.12</version>
+        <groupId>io.github.classgraph</groupId>
+        <artifactId>classgraph</artifactId>
+        <version>4.8.105</version>
         <exclusions>
           <exclusion>
             <groupId>org.javassist</groupId>
@@ -456,7 +456,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.5.201505241946</version>
+        <version>0.8.6</version>
         <executions>
           <execution>
             <id>prepare-agent</id>
