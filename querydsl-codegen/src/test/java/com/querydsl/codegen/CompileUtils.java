@@ -9,7 +9,6 @@ import java.util.List;
 import javax.tools.JavaCompiler;
 import javax.tools.SimpleJavaFileObject;
 
-import io.github.classgraph.ClassGraph;
 import org.junit.Assert;
 
 import com.querydsl.codegen.utils.MemFileManager;
@@ -24,7 +23,7 @@ public final class CompileUtils {
         ClassLoader parent = CompileUtils.class.getClassLoader();
         SimpleCompiler compiler = new SimpleCompiler();
         MemFileManager fileManager = new MemFileManager(parent, compiler.getStandardFileManager(null, null, null));
-        String classpath = new ClassGraph().overrideClassLoaders(parent).getClasspath();
+        String classpath = SimpleCompiler.getClassPath(parent);
         List<String> compilationOptions = Arrays.asList("-classpath", classpath, "-g:none");
 
         // compile

@@ -42,7 +42,11 @@
       <groupId>org.eclipse.jdt.core.compiler</groupId>
       <artifactId>ecj</artifactId>
       <version>${ecj.version}</version>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
+    </dependency>
          
     <!-- test -->
     <dependency>
