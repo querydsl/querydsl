@@ -62,8 +62,8 @@ public class OriginalNamingStrategyTest {
 
     @Test
     public void getPropertyName_with_dashes() {
-        assertEquals("A_FOOBAR", namingStrategy.getPropertyName("A-FOOBAR" , entityModel));
-        assertEquals("A_FOOBAR", namingStrategy.getPropertyName("A_FOOBAR" , entityModel));
+        assertEquals("A_FOOBAR", namingStrategy.getPropertyName("A-FOOBAR", entityModel));
+        assertEquals("A_FOOBAR", namingStrategy.getPropertyName("A_FOOBAR", entityModel));
     }
 
     @Test

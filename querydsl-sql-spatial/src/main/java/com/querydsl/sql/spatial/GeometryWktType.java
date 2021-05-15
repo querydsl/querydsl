@@ -29,7 +29,7 @@ class GeometryWktType extends AbstractType<Geometry> {
 
     public static final GeometryWktType DEFAULT = new GeometryWktType();
 
-    public GeometryWktType() {
+    GeometryWktType() {
         super(Types.VARCHAR);
     }
 

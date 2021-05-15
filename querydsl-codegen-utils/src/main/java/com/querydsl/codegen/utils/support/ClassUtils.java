@@ -46,7 +46,7 @@ public final class ClassUtils {
         final String name = cl.getName();
         final int i = name.lastIndexOf('.');
         if (i > 0) {
-            return name.substring(0, i); 
+            return name.substring(0, i);
         } else {
             return "";
         }

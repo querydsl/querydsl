@@ -47,7 +47,7 @@ public final class CaseBuilder {
 
         private final Expression<A> target;
 
-        public CaseElement(@Nullable Predicate condition, Expression<A> target) {
+        CaseElement(@Nullable Predicate condition, Expression<A> target) {
             this.condition = condition;
             this.target = target;
         }
@@ -68,6 +68,7 @@ public final class CaseBuilder {
      * @author tiwe
      *
      * @param <A>
+     * @param <Q>
      */
     public abstract static class Cases<A, Q extends Expression<A>> {
 
@@ -128,6 +129,7 @@ public final class CaseBuilder {
      * @author tiwe
      *
      * @param <A>
+     * @param <Q>
      */
     public static class CaseWhen<A,Q extends Expression<A>> {
 

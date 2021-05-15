@@ -606,11 +606,11 @@ public class MongodbQueryTest {
     // - test with empty values and nulls
     // - test more complex ands
 
-    private void assertQuery(Predicate e, User ... expected) {
+    private void assertQuery(Predicate e, User... expected) {
         assertQuery(where(e).orderBy(user.lastName.asc(), user.firstName.asc()), expected);
     }
 
-    private void assertQuery(Predicate e, OrderSpecifier<?> orderBy, User ... expected) {
+    private void assertQuery(Predicate e, OrderSpecifier<?> orderBy, User... expected) {
         assertQuery(where(e).orderBy(orderBy), expected);
     }
 
@@ -618,7 +618,7 @@ public class MongodbQueryTest {
         return new MorphiaQuery<T>(morphia, ds, entity).where(e);
     }
 
-    private MorphiaQuery<User> where(Predicate ... e) {
+    private MorphiaQuery<User> where(Predicate... e) {
         return query().where(e);
     }
 
@@ -635,7 +635,7 @@ public class MongodbQueryTest {
         return new MorphiaQuery<T>(morphia, ds, clazz);
     }
 
-    private void assertQuery(MorphiaQuery<User> query, User ... expected) {
+    private void assertQuery(MorphiaQuery<User> query, User... expected) {
         String toString = query.toString();
         List<User> results = query.fetch();
 

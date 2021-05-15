@@ -25,7 +25,7 @@ public class TypeSuperTest {
     public void Comparable() {
         // T extends Comparable<? super T>
         Type comparable = new ClassType(Comparable.class);
-        Type type = new TypeExtends("T", 
+        Type type = new TypeExtends("T",
                 new SimpleType(comparable, new TypeSuper(new TypeExtends("T", comparable))));
         assertEquals("? extends java.lang.Comparable<?>", type.getGenericName(false));
     }

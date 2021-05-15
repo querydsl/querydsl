@@ -79,7 +79,7 @@ public enum MethodType {
 
     private final Class<?>[] paramTypes;
 
-    private MethodType(String namePattern, Class<?> returnType, Class<?> ownerType, Class<?>... paramTypes) {
+    MethodType(String namePattern, Class<?> returnType, Class<?> ownerType, Class<?>... paramTypes) {
         this.pattern = Pattern.compile(namePattern);
         this.returnType = returnType;
         this.ownerType = ownerType;

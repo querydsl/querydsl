@@ -23,7 +23,7 @@ class GAvg<T extends Number> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3518868612387641383L;
 
-    public GAvg(Expression<T> expr) {
+    GAvg(Expression<T> expr) {
         super((Class) expr.getType(), expr);
     }
 

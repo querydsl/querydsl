@@ -32,7 +32,7 @@ public interface EvaluatorFactory {
      * @param constants
      * @return
      */
-    <T> Evaluator<T> createEvaluator(String source, Class<? extends T> projectionType, 
+    <T> Evaluator<T> createEvaluator(String source, Class<? extends T> projectionType,
             String[] names, Class<?>[] classes, Map<String, Object> constants);
 
     /**

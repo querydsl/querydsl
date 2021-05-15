@@ -30,7 +30,7 @@ public enum MongodbOps implements Operator {
 
     private final Class<?> type;
 
-    private MongodbOps(Class<?> type) {
+    MongodbOps(Class<?> type) {
         this.type = type;
     }
 

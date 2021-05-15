@@ -64,7 +64,7 @@ public class SimpleCompiler implements JavaCompiler {
             } else {
                 ClassLoader c = cl;
                 while (c instanceof URLClassLoader) {
-                    for (URL url : ((URLClassLoader)c).getURLs()) {
+                    for (URL url : ((URLClassLoader) c).getURLs()) {
                         String decodedPath = URLDecoder.decode(url.getPath(), "UTF-8");
                         paths.add(new File(decodedPath).getAbsolutePath());
                     }

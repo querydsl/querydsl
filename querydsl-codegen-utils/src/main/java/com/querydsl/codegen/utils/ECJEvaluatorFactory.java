@@ -75,7 +75,7 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
     public ECJEvaluatorFactory(ClassLoader parent, CompilerOptions compilerOptions) {
         this.parentClassLoader = parent;
         this.fileManager = new MemFileManager(parent, new EclipseFileManager(Locale.getDefault(), Charset.defaultCharset()));
-        this.loader = fileManager.getClassLoader(StandardLocation.CLASS_OUTPUT);        
+        this.loader = fileManager.getClassLoader(StandardLocation.CLASS_OUTPUT);
         this.compilerOptions = compilerOptions;
     }
 
@@ -96,16 +96,17 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
             @Override
             public char[] getMainTypeName() {
                 int dot = targetName.lastIndexOf('.');
-                if (dot > 0)
+                if (dot > 0) {
                     return targetName.substring(dot + 1).toCharArray();
-                else
+                } else {
                     return targetName.toCharArray();
+                }
             }
 
             @Override
             public char[][] getPackageName() {
                 StringTokenizer tok = new StringTokenizer(targetName, ".");
-                char[][] result = new char[tok.countTokens() - 1][];                
+                char[][] result = new char[tok.countTokens() - 1][];
                 for (int j = 0; j < result.length; j++) {
                     result[j] = tok.nextToken().toCharArray();
                 }
@@ -150,11 +151,11 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
             private boolean isClass(String result) {
                 if (result == null || result.isEmpty()) {
                     return false;
-                }                    
+                }
                 
                 // if it's the class we're compiling, then of course it's a class
                 if (result.equals(targetName)) {
-                    return true; 
+                    return true;
                 }
                 InputStream is = null;
                 try {
@@ -169,12 +170,12 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
                             is = parentClassLoader.getResourceAsStream("java/lang/" + resourceName);
                         }
                     }
-                    return is != null;   
+                    return is != null;
                 } finally {
                     if (is != null) {
                         try {
                             is.close();
-                        } catch (IOException ex) {}
+                        } catch (IOException ex) { }
                     }
                 }
             }
@@ -183,8 +184,9 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
             public boolean isPackage(char[][] parentPackageName, char[] packageName) {
                 // if the parent is a class, the child can't be a package
                 String parent = join(parentPackageName, '.');
-                if (isClass(parent))
+                if (isClass(parent)) {
                     return false;
+                }
 
                 // if the child is a class, it's not a package
                 String qualifiedName = (parent.isEmpty() ? "" : parent + ".") + new String(packageName);
@@ -229,8 +231,8 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
                 } finally {
                     if (is != null) {
                         try {
-                            is.close();                            
-                        } catch (IOException e) {}
+                            is.close();
+                        } catch (IOException e) { }
                     }
                 }
                 
@@ -247,11 +249,11 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
                             problemList.add(problem.getMessage());
                         }
                     }
-                } else {                    
+                } else {
                     for (ClassFile clazz: result.getClassFiles()) {
                         try {
                             MemJavaFileObject jfo = (MemJavaFileObject) fileManager
-                                    .getJavaFileForOutput(StandardLocation.CLASS_OUTPUT, 
+                                    .getJavaFileForOutput(StandardLocation.CLASS_OUTPUT,
                                             new String(clazz.fileName()), JavaFileObject.Kind.CLASS, null);
                             OutputStream os = jfo.openOutputStream();
                             os.write(clazz.getBytes());
@@ -277,8 +279,8 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
                 for (String problem: problemList) {
                     sb.append("\t").append(problem).append("\n");
                 }
-                throw new CodegenException("Compilation of " + id + " failed:\n" + source + "\n" + sb.toString());            
-            }            
+                throw new CodegenException("Compilation of " + id + " failed:\n" + source + "\n" + sb.toString());
+            }
         } catch (RuntimeException ex) {
             // if we encountered an IOException, unbox and throw it;
             // if we encountered a ClassFormatException, box it as an IOException and throw it
@@ -287,13 +289,13 @@ public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
             Throwable cause = ex.getCause();
             if (cause != null) {
                 if (cause instanceof IOException) {
-                    throw (IOException)cause;
+                    throw (IOException) cause;
                 } else if (cause instanceof ClassFormatException) {
                     throw new IOException(cause);
                 }
             }
             throw ex;
-        } 
+        }
     }
 
     public CompilerOptions getCompilerOptions() {

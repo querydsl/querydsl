@@ -293,7 +293,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
             throws IOException {
         return line(
                 modifier, type.getGenericName(true, packages, classes), Symbols.SPACE, name,
-                Symbols.ASSIGN , value, Symbols.SEMICOLON).nl();
+                Symbols.ASSIGN, value, Symbols.SEMICOLON).nl();
     }
 
 

@@ -23,7 +23,7 @@ import java.util.Set;
  */
 public final class ScalaSyntaxUtils {
 
-    private ScalaSyntaxUtils() {}
+    private ScalaSyntaxUtils() { }
 
     private static final Set<String> reserved = new HashSet<String>(Arrays.asList("abstract", "do",
             "finally", "import", "object", "return", "trait", "var", "_", ":", "case", "else",

@@ -39,7 +39,7 @@ public class RelationalFunctionCallTest {
         final PathBuilder<String> alias;
         final StringPath token;
 
-        public TokenizeFunction(String alias, String... tokens) {
+        TokenizeFunction(String alias, String... tokens) {
            super(String.class, "tokenize", serializeCollection(tokens));
            this.alias = new PathBuilder<String>(String.class, alias);
            this.token = Expressions.stringPath(this.alias, "token");

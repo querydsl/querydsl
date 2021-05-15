@@ -28,9 +28,9 @@ public class ClassUtilsTest {
     
     @Test
     public void GetName_Packge() {
-        assertEquals("Locale", ClassUtils.getName(Locale.class, 
+        assertEquals("Locale", ClassUtils.getName(Locale.class,
                 Collections.singleton("java.util"), Collections.<String>emptySet()));
-        assertEquals("java.util.Locale", ClassUtils.getName(Locale.class, 
+        assertEquals("java.util.Locale", ClassUtils.getName(Locale.class,
                 Collections.singleton("java.util.gen"), Collections.<String>emptySet()));
     }
 

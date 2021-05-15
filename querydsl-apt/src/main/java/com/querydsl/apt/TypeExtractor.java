@@ -26,7 +26,7 @@ class TypeExtractor extends SimpleTypeVisitorAdapter<TypeElement, Void> {
 
     private final boolean skipEnum;
 
-    public TypeExtractor(boolean skipEnum) {
+    TypeExtractor(boolean skipEnum) {
         this.skipEnum = skipEnum;
     }
 

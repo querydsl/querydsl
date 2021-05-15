@@ -33,7 +33,7 @@ class SQLServerGeometryType extends AbstractType<Geometry> {
 
     private static final int DEFAULT_SRID = 4326;
 
-    public SQLServerGeometryType() {
+    SQLServerGeometryType() {
         super(Types.BLOB);
     }
 

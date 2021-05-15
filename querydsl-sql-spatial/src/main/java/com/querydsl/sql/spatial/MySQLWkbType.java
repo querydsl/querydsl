@@ -36,7 +36,7 @@ class MySQLWkbType extends AbstractType<Geometry> {
 
     private final ByteOrder byteOrder = ByteOrder.NDR;
 
-    public MySQLWkbType() {
+    MySQLWkbType() {
         super(Types.BLOB);
     }
 

@@ -34,7 +34,7 @@ class H2GISWkbType extends AbstractType<Geometry> {
 
     private final ByteOrder byteOrder = ByteOrder.NDR;
 
-    public H2GISWkbType() {
+    H2GISWkbType() {
         super(Types.BLOB);
     }
 

@@ -56,7 +56,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     private final TypeSystem typeSystem;
 
-    public PropertyAccessInvocationHandler(Expression<?> host, AliasFactory aliasFactory,
+    PropertyAccessInvocationHandler(Expression<?> host, AliasFactory aliasFactory,
             PathFactory pathFactory, TypeSystem typeSystem) {
         this.hostExpression = host;
         this.aliasFactory = aliasFactory;

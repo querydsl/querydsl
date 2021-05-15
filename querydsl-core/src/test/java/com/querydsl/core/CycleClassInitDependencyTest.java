@@ -41,7 +41,7 @@ public class CycleClassInitDependencyTest {
 
         private final String classToLoad;
 
-        public LoadClassRunnable(String classToLoad) {
+        LoadClassRunnable(String classToLoad) {
             this.classToLoad = classToLoad;
         }
 

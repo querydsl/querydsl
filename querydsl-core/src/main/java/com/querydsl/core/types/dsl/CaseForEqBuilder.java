@@ -49,7 +49,7 @@ public final class CaseForEqBuilder<D> {
 
         private final Expression<?> target;
 
-        public CaseElement(@Nullable Expression<? extends D> eq, Expression<?> target) {
+        CaseElement(@Nullable Expression<? extends D> eq, Expression<?> target) {
             this.eq = eq;
             this.target = target;
         }

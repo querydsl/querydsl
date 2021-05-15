@@ -30,7 +30,7 @@ public class MixinGroupExpression<E, F, R> extends AbstractGroupExpression<E, R>
 
         private GroupCollector<E, F> groupCollector;
 
-        public GroupCollectorImpl() {
+        GroupCollectorImpl() {
             mixinGroupCollector = mixin.createGroupCollector();
         }
 

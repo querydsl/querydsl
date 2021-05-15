@@ -17,7 +17,7 @@ public class Parallelized extends Parameterized {
     private static class ThreadPoolScheduler implements RunnerScheduler {
         private ExecutorService executor;
 
-        public ThreadPoolScheduler() {
+        ThreadPoolScheduler() {
             int numThreads = Runtime.getRuntime().availableProcessors();
             executor = Executors.newFixedThreadPool(numThreads);
         }

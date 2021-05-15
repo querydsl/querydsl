@@ -31,7 +31,7 @@ class SDOGeometryType extends AbstractType<Geometry> {
 
     public static final SDOGeometryType DEFAULT = new SDOGeometryType();
 
-    public SDOGeometryType() {
+    SDOGeometryType() {
         super(Types.OTHER);
     }
 

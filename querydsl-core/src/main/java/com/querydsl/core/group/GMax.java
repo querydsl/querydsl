@@ -20,7 +20,7 @@ class GMax<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T
     private static final long serialVersionUID = 3815394663181131511L;
 
     @SuppressWarnings("unchecked")
-    public GMax(Expression<T> expr) {
+    GMax(Expression<T> expr) {
         super((Class) expr.getType(), expr);
     }
 

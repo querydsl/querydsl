@@ -53,8 +53,8 @@ public class TypeSuper extends TypeAdapter {
             if (superType instanceof TypeExtends) {
                 return "?";
             } else {
-                return "? super " + superType.getGenericName(true, packages, classes);    
-            }            
+                return "? super " + superType.getGenericName(true, packages, classes);
+            }
             
         } else {
             return super.getGenericName(asArgType, packages, classes);

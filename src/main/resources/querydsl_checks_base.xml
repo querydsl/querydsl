@@ -15,18 +15,16 @@
     <property name="eachLine" value="true"/>
   </module>
 
-  <!-- no trailing whitespace -->
-  <module name="RegexpSingleline">
-    <property name="format" value="\s+$"/>
-    <property name="message" value="Line has trailing spaces."/>
-  </module>
-
   <module name="TreeWalker">
 
-    <property name="cacheFile" value="${checkstyle.cache.file}"/>
+    <!-- no trailing whitespace -->
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="\S+\s+$"/>
+      <property name="message" value="Line has trailing spaces."/>
+      <property name="ignoreComments" value="true"/>
+    </module>
 
     <module name="SuppressWarningsHolder"/>
-    <module name="FileContentsHolder"/>
 
     <!-- <module name="ConstantName"/> -->
     <module name="LocalFinalVariableName"/>
@@ -61,7 +59,9 @@
 
     <module name="EmptyForIteratorPad"/>
     <module name="MethodParamPad"/>
-    <module name="NoWhitespaceAfter"/>
+    <module name="NoWhitespaceAfter">
+      <property name="tokens" value="AT , INC , DEC , UNARY_MINUS , UNARY_PLUS , BNOT , LNOT , DOT , ARRAY_DECLARATOR , INDEX_OP"/>
+    </module>
     <module name="NoWhitespaceBefore"/>
     <module name="ParenPad"/>
     <module name="TypecastParenPad"/>
@@ -94,7 +94,7 @@
   </module>
 
   <module name="SuppressWarningsFilter"/>
-  <module name="SuppressionCommentFilter">
+  <module name="SuppressWithPlainTextCommentFilter">
     <property name="offCommentFormat" value="CHECKSTYLERULE:OFF: ([\w\|]+)"/>
     <property name="onCommentFormat" value="CHECKSTYLERULE:ON: ([\w\|]+)"/>
     <property name="checkFormat" value="$1"/>

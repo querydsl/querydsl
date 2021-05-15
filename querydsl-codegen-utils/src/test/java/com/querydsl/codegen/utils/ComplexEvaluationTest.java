@@ -43,10 +43,10 @@ public class ComplexEvaluationTest {
                 new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
 
-        List<String> a_ = Arrays.asList("1", "2", "3", "4");
-        List<String> b_ = Arrays.asList("2", "4", "6", "8");
+        List<String> a = Arrays.asList("1", "2", "3", "4");
+        List<String> b = Arrays.asList("2", "4", "6", "8");
 
-        assertEquals(Arrays.asList("2", "4"), evaluator.evaluate(a_, b_));
+        assertEquals(Arrays.asList("2", "4"), evaluator.evaluate(a, b));
     }
 
     @Test
@@ -67,8 +67,8 @@ public class ComplexEvaluationTest {
         Cat mittens = new Cat("mittens");
         Cat sparkles = new Cat("sparkles");
 
-        List<Cat> a_ = Arrays.asList(fuzzy, spot);
-        List<Cat> b_ = Arrays.asList(mittens, sparkles);
+        List<Cat> a = Arrays.asList(fuzzy, spot);
+        List<Cat> b = Arrays.asList(mittens, sparkles);
 
         ClassType argType = new ClassType(TypeCategory.LIST, List.class, new ClassType(Cat.class));
         @SuppressWarnings("rawtypes") // cannot specify further than List.class
@@ -77,7 +77,7 @@ public class ComplexEvaluationTest {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
         
         Object[][] expResults = { {fuzzy, mittens}, {fuzzy, sparkles}, {spot, mittens}, {spot, sparkles} };
-        List<Object[]> result = evaluator.evaluate(a_, b_);
+        List<Object[]> result = evaluator.evaluate(a, b);
         assertEquals(expResults.length, result.size());
         
         for (int i = 0; i < expResults.length; i++) {
@@ -88,7 +88,7 @@ public class ComplexEvaluationTest {
         }
     }
     
-    @Test(expected=CodegenException.class)
+    @Test(expected = CodegenException.class)
     @SuppressWarnings("unchecked")
     public void ComplexClassLoadingFailure() {
         ClassType resultType = new ClassType(TypeCategory.LIST, List.class, Types.STRING);
@@ -108,10 +108,10 @@ public class ComplexEvaluationTest {
                 new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
 
-        List<String> a_ = Arrays.asList("1", "2", "3", "4");
-        List<String> b_ = Arrays.asList("2", "4", "6", "8");
+        List<String> a = Arrays.asList("1", "2", "3", "4");
+        List<String> b = Arrays.asList("2", "4", "6", "8");
 
-        assertEquals(Arrays.asList("2", "4"), evaluator.evaluate(a_, b_));
+        assertEquals(Arrays.asList("2", "4"), evaluator.evaluate(a, b));
     }
 
     @Test
@@ -134,10 +134,10 @@ public class ComplexEvaluationTest {
                 new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
 
-        List<Boolean> a_ = Arrays.asList(true, true, true);
-        List<Boolean> b_ = Arrays.asList(false, false, true);
+        List<Boolean> a = Arrays.asList(true, true, true);
+        List<Boolean> b = Arrays.asList(false, false, true);
 
-        assertEquals(Arrays.asList(true, true, true), evaluator.evaluate(a_, b_));
+        assertEquals(Arrays.asList(true, true, true), evaluator.evaluate(a, b));
     }
     
     @Test
@@ -160,13 +160,13 @@ public class ComplexEvaluationTest {
                 new String[] { "a_", "b_" }, new Type[] { resultType, resultType }, new Class<?>[] {
                         List.class, List.class }, Collections.<String, Object> emptyMap());
 
-        List<Boolean> a_ = Arrays.asList(true, true, true);
-        List<Boolean> b_ = Arrays.asList(false, false, true);
+        List<Boolean> a = Arrays.asList(true, true, true);
+        List<Boolean> b = Arrays.asList(false, false, true);
 
-        assertEquals(Arrays.asList(true, true, true), evaluator.evaluate(a_, b_));
+        assertEquals(Arrays.asList(true, true, true), evaluator.evaluate(a, b));
     }
 
-    public static class SuperCat extends Cat {
+    public static final class SuperCat extends Cat {
         private SuperCat(String name) {
             super(name);
         }

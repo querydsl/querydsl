@@ -28,7 +28,7 @@ public enum LuceneOps implements Operator {
 
     private final Class<?> type;
 
-    private LuceneOps(Class<?> type) {
+    LuceneOps(Class<?> type) {
         this.type = type;
     }
 

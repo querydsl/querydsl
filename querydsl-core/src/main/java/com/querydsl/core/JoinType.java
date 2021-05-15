@@ -46,7 +46,7 @@ public enum JoinType {
 
     private final boolean inner, outer;
 
-    private JoinType(boolean inner, boolean outer) {
+    JoinType(boolean inner, boolean outer) {
         this.inner = inner;
         this.outer = outer;
     }

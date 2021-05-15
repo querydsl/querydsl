@@ -23,7 +23,7 @@ class MultiSuppressWarnings implements SuppressWarnings {
 
     private final String[] values;
 
-    public MultiSuppressWarnings(String... values) {
+    MultiSuppressWarnings(String... values) {
         this.values = Arrays.copyOf(values, values.length);
     }
 
