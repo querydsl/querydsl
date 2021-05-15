@@ -139,7 +139,13 @@ public class ExtendedTypeFactory {
                     case ANNOTATION_TYPE:
                     case CLASS:     return createClassType(declaredType, typeElement, p);
                     case INTERFACE: return createInterfaceType(declaredType, typeElement, p);
-                    default: throw new IllegalArgumentException("Illegal type " + typeElement);
+                    default: {
+                        if (typeElement.getKind().name().equals("RECORD")) {
+                            return createClassType(declaredType, typeElement, p);
+                        }
+
+                        throw new IllegalArgumentException("Illegal type " + typeElement);
+                    }
                 }
             } else {
                 throw new IllegalArgumentException("Unsupported element type " + declaredType.asElement());

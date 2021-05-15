@@ -113,7 +113,7 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.oracle</groupId>
+      <groupId>com.oracle.database.jdbc</groupId>
       <artifactId>ojdbc6</artifactId>
       <version>${oracle.version}</version>
       <scope>test</scope>
@@ -157,9 +157,9 @@
     </dependency>
 
     <dependency>
-      <groupId>cubrid</groupId>
-      <artifactId>cubrid-jdbc</artifactId>
-      <version>${cubrid.version}</version>
+      <groupId>com.github.jinahya</groupId>
+      <artifactId>cubrid-jdbc-driver-${cubrid.version}</artifactId>
+      <version>1.0.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -280,5 +280,13 @@
       </dependencies>
     </profile>
   </profiles>
+
+  <!--TODO upgrade dependencies and get rid of repositories and pluginRepositories -->
+  <repositories>
+    <repository>
+      <id>datanucleus</id>
+      <url>https://www.datanucleus.org/downloads/maven2</url>
+    </repository>
+  </repositories>
 
 </project>
