@@ -13,14 +13,12 @@
  */
 package com.querydsl.spatial;
 
-import org.jetbrains.annotations.Nullable;
-
-import org.geolatte.geom.GeometryCollection;
-
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import org.geolatte.geom.AbstractGeometryCollection;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A MultiCurve is a 1-dimensional GeometryCollection whose elements are Curves.
@@ -29,7 +27,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  *
  * @param <T>
  */
-public abstract class MultiCurveExpression<T extends GeometryCollection> extends GeometryCollectionExpression<T> {
+public abstract class MultiCurveExpression<T extends AbstractGeometryCollection> extends AbstractGeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 6983316799469849656L;
 

@@ -13,14 +13,12 @@
  */
 package com.querydsl.spatial;
 
-import org.jetbrains.annotations.Nullable;
-
-import org.geolatte.geom.GeometryCollection;
-import org.geolatte.geom.Point;
-
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import org.geolatte.geom.AbstractGeometryCollection;
+import org.geolatte.geom.Point;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A MultiSurface is a 2-dimensional GeometryCollection whose elements are Surfaces, all using coordinates from
@@ -33,7 +31,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  *
  * @param <T>
  */
-public abstract class MultiSurfaceExpression<T extends GeometryCollection> extends GeometryCollectionExpression<T> {
+public abstract class MultiSurfaceExpression<T extends AbstractGeometryCollection> extends AbstractGeometryCollectionExpression<T> {
 
     private static final long serialVersionUID = 4133386816772862010L;
 
