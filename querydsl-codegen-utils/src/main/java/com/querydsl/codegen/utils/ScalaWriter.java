@@ -404,7 +404,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         }
         String packageName = type.getPackageName();
         if (packageName != null && packageName.length() > 0) {
-            fullName = packageName + "." + fullName.substring(packageName.length()+1).replace('.', '$');
+            fullName = packageName + "." + fullName.substring(packageName.length() + 1).replace('.', '$');
         } else {
             fullName = fullName.replace('.', '$');
         }

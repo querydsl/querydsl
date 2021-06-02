@@ -217,7 +217,7 @@ public class ScalaWriterTest {
 
     @Test
     public void AnnotationConstant() throws IOException {
-        Max annotation = new MaxImpl(0l) {
+        Max annotation = new MaxImpl(0L) {
             @Override
             public Class<?>[] groups() {
                 return new Class<?>[] { Object.class, String.class, int.class };

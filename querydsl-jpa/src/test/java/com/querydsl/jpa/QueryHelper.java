@@ -39,11 +39,11 @@ class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
 
     private static final Logger logger = Logger.getLogger(QueryHelper.class.getName());
 
-    public QueryHelper(JPQLTemplates templates) {
+    QueryHelper(JPQLTemplates templates) {
         this(new DefaultQueryMetadata(), templates);
     }
 
-    public QueryHelper(QueryMetadata metadata, JPQLTemplates templates) {
+    QueryHelper(QueryMetadata metadata, JPQLTemplates templates) {
         super(metadata, templates);
     }
 

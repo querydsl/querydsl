@@ -21,7 +21,7 @@ abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pa
 
     private static final long serialVersionUID = 7106389414200843920L;
 
-    public GMap(QPair<K,V> qpair) {
+    GMap(QPair<K,V> qpair) {
         super(Map.class, qpair);
     }
 
@@ -85,7 +85,7 @@ abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pa
 
             private final Map<GroupCollector<K, T>, GroupCollector<V, U>> valueCollectors = new HashMap<GroupCollector<K, T>, GroupCollector<V, U>>();
 
-            public GroupCollectorImpl() {
+            GroupCollectorImpl() {
                 this.groupCollector = mixin.createGroupCollector();
             }
 
@@ -127,7 +127,7 @@ abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pa
         private final GroupExpression<V, U> valueExpression;
 
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public Mixin(GroupExpression<K, T> keyExpression, GroupExpression<V, U> valueExpression, AbstractGroupExpression<Pair<T, U>, R> mixin) {
+        Mixin(GroupExpression<K, T> keyExpression, GroupExpression<V, U> valueExpression, AbstractGroupExpression<Pair<T, U>, R> mixin) {
             super((Class) mixin.getType(), QPair.create(keyExpression.getExpression(), valueExpression.getExpression()));
             this.keyExpression = keyExpression;
             this.valueExpression = valueExpression;

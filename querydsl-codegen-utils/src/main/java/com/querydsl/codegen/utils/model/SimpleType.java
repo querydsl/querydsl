@@ -29,7 +29,7 @@ public class SimpleType implements Type {
     private static final Map<String, Class<?>> PRIMITIVES = new HashMap<String, Class<?>>();
     
     static {
-        for (Class<?> cl : Arrays.<Class<?>>asList(byte.class, int.class, long.class, short.class, 
+        for (Class<?> cl : Arrays.<Class<?>>asList(byte.class, int.class, long.class, short.class,
                 float.class, double.class, boolean.class, char.class)) {
             PRIMITIVES.put(cl.getName(), cl);
         }
@@ -207,13 +207,13 @@ public class SimpleType implements Type {
                 } else if (PRIMITIVES.containsKey(className)) {
                     javaClass = PRIMITIVES.get(className);
                 } else {
-                    javaClass = Class.forName(className);    
-                }                
+                    javaClass = Class.forName(className);
+                }
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
-            }    
+            }
         }
-        return javaClass;        
+        return javaClass;
     }
 
     @Override

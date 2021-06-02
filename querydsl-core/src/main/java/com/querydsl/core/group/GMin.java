@@ -20,7 +20,7 @@ class GMin<T extends Comparable<? super T>> extends AbstractGroupExpression<T, T
     private static final long serialVersionUID = 8312168556148122576L;
 
     @SuppressWarnings("unchecked")
-    public GMin(Expression<T> expr) {
+    GMin(Expression<T> expr) {
         super((Class) expr.getType(), expr);
     }
 

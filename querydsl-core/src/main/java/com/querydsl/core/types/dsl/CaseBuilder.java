@@ -47,7 +47,7 @@ public final class CaseBuilder {
 
         private final Expression<A> target;
 
-        public CaseElement(@Nullable Predicate condition, Expression<A> target) {
+        CaseElement(@Nullable Predicate condition, Expression<A> target) {
             this.condition = condition;
             this.target = target;
         }

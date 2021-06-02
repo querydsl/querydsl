@@ -22,7 +22,7 @@ class GList<T> extends AbstractGroupExpression<T, List<T>> {
 
     private static final long serialVersionUID = -5613861506383727078L;
 
-    public GList(Expression<T> expr) {
+    GList(Expression<T> expr) {
         super(List.class, expr);
     }
 

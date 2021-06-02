@@ -36,7 +36,7 @@ class GeoDBWkbType extends AbstractType<Geometry> {
 
     private final ByteOrder byteOrder = ByteOrder.NDR;
 
-    public GeoDBWkbType() {
+    GeoDBWkbType() {
         super(Types.BLOB);
     }
 

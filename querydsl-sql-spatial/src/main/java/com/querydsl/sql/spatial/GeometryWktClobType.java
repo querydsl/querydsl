@@ -26,7 +26,7 @@ class GeometryWktClobType extends AbstractType<Geometry> {
 
     public static final GeometryWktClobType DEFAULT = new GeometryWktClobType();
 
-    public GeometryWktClobType() {
+    GeometryWktClobType() {
         super(Types.CLOB);
     }
 

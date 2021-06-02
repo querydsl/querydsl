@@ -35,7 +35,7 @@ public class SQLQueryFactory extends AbstractSQLQueryFactory<SQLQuery<?>> {
 
         private final DataSource ds;
 
-        public DataSourceProvider(DataSource ds) {
+        DataSourceProvider(DataSource ds) {
             this.ds = ds;
         }
 

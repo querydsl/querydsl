@@ -170,7 +170,7 @@ public final class ConstructorUtils {
 
         protected final Class<?> componentType;
 
-        public VarArgsTransformer(Constructor<?> constructor) {
+        VarArgsTransformer(Constructor<?> constructor) {
             super(constructor);
 
             if (paramTypes.length > 0) {
@@ -218,7 +218,7 @@ public final class ConstructorUtils {
 
         private final Set<Integer> primitiveLocations;
 
-        public PrimitiveTransformer(Constructor<?> constructor) {
+        PrimitiveTransformer(Constructor<?> constructor) {
             super(constructor);
             Set<Integer> builder = new TreeSet<>();
             Class<?>[] parameterTypes = constructor.getParameterTypes();
@@ -257,7 +257,7 @@ public final class ConstructorUtils {
 
         private final Object defaultInstance;
 
-        public PrimitiveAwareVarArgsTransformer(Constructor<?> constructor) {
+        PrimitiveAwareVarArgsTransformer(Constructor<?> constructor) {
             super(constructor);
             defaultInstance = (componentType != null) ? defaultPrimitives.get(componentType) : null;
         }

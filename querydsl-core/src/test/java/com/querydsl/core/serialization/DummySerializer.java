@@ -21,7 +21,7 @@ import com.querydsl.core.types.Templates;
 
 class DummySerializer extends SerializerBase<DummySerializer> {
 
-    public DummySerializer(Templates templates) {
+    DummySerializer(Templates templates) {
         super(templates);
     }
 

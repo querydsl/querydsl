@@ -30,7 +30,7 @@ class PGgeometryType extends AbstractType<Geometry> {
 
     public static final PGgeometryType DEFAULT = new PGgeometryType();
 
-    public PGgeometryType() {
+    PGgeometryType() {
         super(Types.STRUCT);
     }
 

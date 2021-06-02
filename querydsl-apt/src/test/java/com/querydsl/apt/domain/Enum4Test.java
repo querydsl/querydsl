@@ -40,7 +40,7 @@ public class Enum4Test {
         private final int code;
         private final Integer factor; // to minutes
 
-        private ExportUnit(int code, Integer factor) {
+        ExportUnit(int code, Integer factor) {
             this.code = code;
             this.factor = factor;
         }

@@ -27,7 +27,7 @@ public abstract class FactoryExpressionBase<T> extends ExpressionBase<T> impleme
     private static class FactoryExpressionWrapper<T> extends ExpressionBase<T> implements FactoryExpression<T> {
         private final FactoryExpression<T> expr;
 
-        public FactoryExpressionWrapper(FactoryExpression<T> expr) {
+        FactoryExpressionWrapper(FactoryExpression<T> expr) {
             super(expr.getType());
             this.expr = expr;
         }

@@ -122,7 +122,7 @@ public enum SpatialOps implements Operator {
 
     private final Class<?> type;
 
-    private SpatialOps(Class<?> type) {
+    SpatialOps(Class<?> type) {
         this.type = type;
     }
 

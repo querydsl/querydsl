@@ -36,7 +36,7 @@ public class SimpleCompilerTest {
     public void Run() throws UnsupportedEncodingException {
         new File("target/out").mkdir();
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        URLClassLoader classLoader = (URLClassLoader)Thread.currentThread().getContextClassLoader();
+        URLClassLoader classLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
         
         // create classpath
         StringBuilder path = new StringBuilder();
@@ -51,7 +51,7 @@ public class SimpleCompilerTest {
         
         // compile
         List<String> options = Arrays.asList(
-          "-classpath", path.toString(),      
+          "-classpath", path.toString(),
           "-s", "target/out",
           "src/test/java/com/querydsl/codegen/utils/SimpleCompilerTest.java");
         int compilationResult = compiler.run(null, null, null,

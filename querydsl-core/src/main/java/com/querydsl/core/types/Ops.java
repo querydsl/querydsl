@@ -122,7 +122,7 @@ public enum Ops implements Operator {
 
     private final Class<?> type;
 
-    private Ops(Class<?> type) {
+    Ops(Class<?> type) {
         this.type = type;
     }
 
@@ -162,7 +162,7 @@ public enum Ops implements Operator {
 
         private final Class<?> type;
 
-        private AggOps(Class<?> type) {
+        AggOps(Class<?> type) {
             this.type = type;
         }
 
@@ -184,7 +184,7 @@ public enum Ops implements Operator {
 
         private final Class<?> type;
 
-        private QuantOps(Class<?> type) {
+        QuantOps(Class<?> type) {
             this.type = type;
         }
 
@@ -239,7 +239,7 @@ public enum Ops implements Operator {
 
         private final Class<?> type;
 
-        private DateTimeOps(Class<?> type) {
+        DateTimeOps(Class<?> type) {
             this.type = type;
         }
 
@@ -285,7 +285,7 @@ public enum Ops implements Operator {
 
         private final Class<?> type;
 
-        private MathOps(Class<?> type) {
+        MathOps(Class<?> type) {
             this.type = type;
         }
 
@@ -312,7 +312,7 @@ public enum Ops implements Operator {
 
         private final Class<?> type;
 
-        private StringOps(Class<?> type) {
+        StringOps(Class<?> type) {
             this.type = type;
         }
 

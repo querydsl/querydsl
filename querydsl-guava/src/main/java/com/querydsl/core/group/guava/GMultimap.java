@@ -32,7 +32,7 @@ abstract class GMultimap<K, V, M extends Multimap<K,V>> extends AbstractGroupExp
 
     private static final long serialVersionUID = 7106389414200843920L;
 
-    public GMultimap(QPair<K,V> qpair) {
+    GMultimap(QPair<K,V> qpair) {
         super(Multimap.class, qpair);
     }
 
@@ -96,7 +96,7 @@ abstract class GMultimap<K, V, M extends Multimap<K,V>> extends AbstractGroupExp
 
             private final Map<GroupCollector<K, T>, GroupCollector<V, U>> valueCollectors = new HashMap<GroupCollector<K, T>, GroupCollector<V, U>>();
 
-            public GroupCollectorImpl() {
+            GroupCollectorImpl() {
                 this.groupCollector = mixin.createGroupCollector();
             }
 
@@ -138,7 +138,7 @@ abstract class GMultimap<K, V, M extends Multimap<K,V>> extends AbstractGroupExp
         private final GroupExpression<V, U> valueExpression;
 
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public Mixin(GroupExpression<K, T> keyExpression, GroupExpression<V, U> valueExpression, AbstractGroupExpression<Pair<T, U>, R> mixin) {
+        Mixin(GroupExpression<K, T> keyExpression, GroupExpression<V, U> valueExpression, AbstractGroupExpression<Pair<T, U>, R> mixin) {
             super((Class) mixin.getType(), QPair.create(keyExpression.getExpression(), valueExpression.getExpression()));
             this.keyExpression = keyExpression;
             this.valueExpression = valueExpression;

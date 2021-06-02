@@ -30,7 +30,7 @@ abstract class GTable<R, C, V, M extends Table<R, C, V>> extends AbstractGroupEx
 
     private static final long serialVersionUID = 7106389414200843920L;
 
-    public GTable(QPair<Pair<R,C>, V> qpair) {
+    GTable(QPair<Pair<R,C>, V> qpair) {
         super(Table.class, qpair);
     }
 
@@ -94,7 +94,7 @@ abstract class GTable<R, C, V, M extends Table<R, C, V>> extends AbstractGroupEx
             private final Map<GroupCollector<R, T>, GroupCollector<C, U>> columnCollectors = new HashMap<GroupCollector<R, T>, GroupCollector<C, U>>();
             private final Map<GroupCollector<C, U>, GroupCollector<V, W>> valueCollectors = new HashMap<GroupCollector<C, U>, GroupCollector<V, W>>();
 
-            public GroupCollectorImpl() {
+            GroupCollectorImpl() {
                 this.groupCollector = mixin.createGroupCollector();
             }
 
@@ -148,7 +148,7 @@ abstract class GTable<R, C, V, M extends Table<R, C, V>> extends AbstractGroupEx
         private final GroupExpression<V, W> valueExpression;
 
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public Mixin(GroupExpression<R, T> rowExpression, GroupExpression<C, U> columnExpression, GroupExpression<V, W> valueExpression, AbstractGroupExpression<Pair<Pair<T, U>, W>, RES> mixin) {
+        Mixin(GroupExpression<R, T> rowExpression, GroupExpression<C, U> columnExpression, GroupExpression<V, W> valueExpression, AbstractGroupExpression<Pair<Pair<T, U>, W>, RES> mixin) {
             super((Class) mixin.getType(), QPair.create(QPair.create(rowExpression.getExpression(), columnExpression.getExpression()), valueExpression.getExpression()));
             this.rowExpression = rowExpression;
             this.columnExpression = columnExpression;

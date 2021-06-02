@@ -41,7 +41,7 @@ class AliasFactory {
 
     private final ConcurrentHashMap<Class<?>, Map<Expression<?>, ManagedObject>> proxyCache = new ConcurrentHashMap<>();
 
-    public AliasFactory(final PathFactory pathFactory, TypeSystem typeSystem) {
+    AliasFactory(final PathFactory pathFactory, TypeSystem typeSystem) {
         this.pathFactory = pathFactory;
         this.typeSystem = typeSystem;
     }

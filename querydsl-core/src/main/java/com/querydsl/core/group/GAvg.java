@@ -26,11 +26,11 @@ class GAvg<T extends Number> extends AbstractGroupExpression<T, T> {
 
     private final MathContext mathContext;
 
-    public GAvg(Expression<T> expr) {
+    GAvg(Expression<T> expr) {
         this(expr, MathContext.DECIMAL128);
     }
 
-    public GAvg(Expression<T> expr, MathContext mathContext) {
+    GAvg(Expression<T> expr, MathContext mathContext) {
         super((Class) expr.getType(), expr);
         this.mathContext = mathContext;
     }

@@ -22,7 +22,7 @@ class GOne<T> extends AbstractGroupExpression<T, T> {
     private static final long serialVersionUID = 3518868612387641383L;
 
     @SuppressWarnings("unchecked")
-    public GOne(Expression<T> expr) {
+    GOne(Expression<T> expr) {
         super((Class) expr.getType(), expr);
     }
 

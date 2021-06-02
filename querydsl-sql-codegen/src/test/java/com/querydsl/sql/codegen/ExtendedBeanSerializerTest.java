@@ -97,7 +97,7 @@ public class ExtendedBeanSerializerTest {
     private static class ReflectionHelper {
         private final Map<String, Method> methodByName = new HashMap<String, Method>();
 
-        public ReflectionHelper(Class<?> cls) {
+        ReflectionHelper(Class<?> cls) {
             for (Method m : cls.getDeclaredMethods()) {
                 methodByName.put(m.getName(), m);
             }

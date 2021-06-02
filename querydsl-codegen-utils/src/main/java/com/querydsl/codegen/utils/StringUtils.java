@@ -25,7 +25,7 @@ public final class StringUtils {
         return str.substring(0, 1).toLowerCase() + str.substring(1);
     }
 
-    public static String escapeJava(String str) {        
+    public static String escapeJava(String str) {
         str = str.replace("\\", "\\\\");
         str = str.replace("\"", "\\\"");
         str = str.replace("\r", "\\\r");
@@ -40,6 +40,6 @@ public final class StringUtils {
         return new String(chars);
     }
     
-    private StringUtils() {}
+    private StringUtils() { }
 
 }

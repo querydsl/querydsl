@@ -38,7 +38,7 @@ class GeometryWkbType extends AbstractType<Geometry> {
 
     private final ByteOrder byteOrder;
 
-    public GeometryWkbType(ByteOrder byteOrder) {
+    GeometryWkbType(ByteOrder byteOrder) {
         super(Types.OTHER);
         this.byteOrder = byteOrder;
     }
