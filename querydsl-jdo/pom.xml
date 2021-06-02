@@ -23,7 +23,7 @@
   </scm>
 
   <properties>   
-    <dn.version>5.2.4</dn.version>
+    <dn.version>5.2.7</dn.version>
     <dn.plugin.version>5.2.1</dn.plugin.version>
   </properties>
 
