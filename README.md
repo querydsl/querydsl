@@ -28,7 +28,8 @@ Use these tutorials to get started
 
 **Support**
 
-Free support is provided in the [Querydsl Google Group](https://groups.google.com/forum/#!forum/querydsl) and on [StackOverflow](http://stackoverflow.com/questions/tagged/querydsl).
+Free support is provided in the [Discussion Section](https://github.com/querydsl/querydsl/discussions) and on [StackOverflow](http://stackoverflow.com/questions/tagged/querydsl).
+Please do not post questions as issue. Such issues will be closed immediately.
 
 **How to build**
 
@@ -39,30 +40,26 @@ $ mvn -Pquickbuild,{projectname} clean install
 ```
 Where projectname is one of the Maven profiles (e.g. `jpa`, `sql`, `mongodb`, etc. or `all`)
 
-For more information visit the project homepage at http://www.querydsl.com/.
+For more information visit the project homepage at https://querydsl.github.io.
 
 **Vagrant/Puppet setup**
 
-For running tests, a Vagrant/Puppet setup is provided. It is based on Ubuntu 12.04 and comes with the following databases:
+For running tests, a Docker Compose setup is provided. It comes with the following databases:
 
 * Oracle Express Edition 11g
 * PostgreSQL 9.1.10
 * MySQL 5.5.34
 * Cubrid 9.2
 
-You will need to install [VirtualBox], [Puppet], [Vagrant], the [vagrant-vbguest] plugin and [librarian-puppet]. You will also need to 
-download the Oracle XE 11g installer file (```oracle-xe-11.2.0-1.0.x86_64.rpm.zip```) manually and 
-place it in the ```devops``` directory.
+You will need to install [Docker] and [docker-compose].
 
-To launch the virtual machine:
+To launch the database containers:
 
 ```BASH
-$ cd devops
-$ librarian-puppet install
-$ vagrant up
+$ docker-compose up -d
 ``` 
 
-All of the databases' default ports are forwarded to the host machine. See the Vagrantfile for details.
+All of the databases' default ports are forwarded to the host machine.
 
 
 **How to contribute**
@@ -71,8 +68,5 @@ GitHub pull requests are the way to contribute to Querydsl.
 
 If you are unsure about the details of a contribution, ask on the Querydsl Google Group or create a ticket on GitHub.
 
-[VirtualBox]: https://www.virtualbox.org/
-[Vagrant]: http://www.vagrantup.com/
-[Puppet]: http://puppetlabs.com/
-[vagrant-vbguest]: https://github.com/dotless-de/vagrant-vbguest
-[librarian-puppet]: http://librarian-puppet.com/
+[Docker]: https://www.docker.com/products/docker-desktop
+[docker-compose]: https://docs.docker.com/compose/
