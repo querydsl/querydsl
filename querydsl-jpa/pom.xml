@@ -68,7 +68,7 @@
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.version}</version>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
@@ -197,7 +197,13 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
-    
+
+    <dependency>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>jdepend</groupId>
       <artifactId>jdepend</artifactId>

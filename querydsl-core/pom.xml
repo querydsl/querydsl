@@ -33,7 +33,12 @@
       <groupId>com.mysema.commons</groupId>
       <artifactId>mysema-commons-lang</artifactId>
       <version>${mysema.lang.version}</version>
-    </dependency>     
+    </dependency>
+    <dependency>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
+      <scope>test</scope>
+    </dependency>
     
     <!-- alias dependencies -->
     <dependency>
