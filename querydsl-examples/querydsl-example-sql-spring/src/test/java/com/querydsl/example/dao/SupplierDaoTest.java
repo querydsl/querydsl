@@ -2,15 +2,16 @@ package com.querydsl.example.dao;
 
 import com.querydsl.example.dto.Supplier;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class SupplierDaoTest extends AbstractDaoTest {
 
-    @Resource SupplierDao supplierDao;
+    @Autowired
+    SupplierDao supplierDao;
 
     @Test
     public void findAll() {

@@ -284,7 +284,7 @@ public class MongodbDocumentSerializerTest {
     }
 
 
-    private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {
+    private List<OrderSpecifier<?>> sortList(OrderSpecifier<?>... order) {
         return Arrays.asList(order);
     }
 

@@ -88,7 +88,7 @@ public class AntMetaDataExporterTest {
         exporter.setNameSuffix("");
         exporter.setBeanPrefix("");
         exporter.setBeanSuffix("Bean");
-        exporter.setImports(new String[]{"com.pck1" , "com.pck2" , "com.Q1" , "com.Q2"});
+        exporter.setImports(new String[]{"com.pck1", "com.pck2", "com.Q1", "com.Q2"});
         exporter.execute();
 
         assertTrue(new File("target/AntMetaDataExporterTest3").exists());

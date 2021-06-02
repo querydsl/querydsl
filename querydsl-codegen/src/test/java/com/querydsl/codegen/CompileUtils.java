@@ -2,7 +2,6 @@ package com.querydsl.codegen;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +20,7 @@ public final class CompileUtils {
     private CompileUtils() { }
 
     public static void assertCompiles(String name, String source) {
-        URLClassLoader parent = (URLClassLoader) CompileUtils.class.getClassLoader();
+        ClassLoader parent = CompileUtils.class.getClassLoader();
         SimpleCompiler compiler = new SimpleCompiler();
         MemFileManager fileManager = new MemFileManager(parent, compiler.getStandardFileManager(null, null, null));
         String classpath = SimpleCompiler.getClassPath(parent);

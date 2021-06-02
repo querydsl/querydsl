@@ -150,9 +150,9 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
 
     /**
-     * Return the query results as an <tt>Iterator</tt>. If the query
+     * Return the query results as an {@code Iterator}. If the query
      * contains multiple results pre row, the results are returned in
-     * an instance of <tt>Object[]</tt>.<br>
+     * an instance of {@code Object[]}.<br>
      * <br>
      * Entities returned as results are initialized on demand. The first
      * SQL query returns identifiers only.<br>
@@ -220,9 +220,9 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
     }
 
     /**
-     * Return the query results as <tt>ScrollableResults</tt>. The
+     * Return the query results as {@code ScrollableResults}. The
      * scrollability of the returned results depends upon JDBC driver
-     * support for scrollable <tt>ResultSet</tt>s.<br>
+     * support for scrollable {@code ResultSet}s.<br>
      *
      * @param mode scroll mode
      * @return scrollable results
@@ -247,7 +247,7 @@ public abstract class AbstractHibernateQuery<T, Q extends AbstractHibernateQuery
 
     /**
      * Set the name of the cache region.
-     * @param cacheRegion the name of a query cache region, or <tt>null</tt>
+     * @param cacheRegion the name of a query cache region, or {@code null}
      * for the default query cache
      */
     @SuppressWarnings("unchecked")

@@ -231,7 +231,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
      * This method reinitializes the bean map to have default values for the
      * bean's properties.  This is accomplished by constructing a new instance
      * of the bean which the map uses as its underlying data source.  This
-     * behavior for {@link Map#clear() clear()} differs from the Map contract in that
+     * behavior for {@code Map#clear()} differs from the Map contract in that
      * the mappings are not actually removed from the map (the mappings for a
      * BeanMap are fixed).
      */
@@ -272,7 +272,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     /**
      * Returns the value of the bean's property with the given name.
      * <p>
-     * The given name must be a {@link String} and must not be
+     * The given name must be a {@code String} and must not be
      * null; otherwise, this method returns {@code null}.
      * If the bean defines a property with the given name, the value of
      * that property is returned. Otherwise, {@code null} is

@@ -16,8 +16,6 @@ package com.querydsl.codegen;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import javax.annotation.Generated;
-
 import org.junit.Test;
 
 import java.lang.annotation.Annotation;
@@ -44,7 +42,7 @@ public class CodegenModuleTest {
     @Test
     public void defaultGeneratedClass() {
         Class<? extends Annotation> o = module.get(Class.class, CodegenModule.GENERATED_ANNOTATION_CLASS);
-        assertEquals(o, Generated.class);
+        assertEquals(o, GeneratedAnnotationResolver.resolveDefault());
     }
 
     @Test

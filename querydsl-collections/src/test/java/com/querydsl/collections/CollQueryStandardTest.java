@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.querydsl.core.Fetchable;
-import com.querydsl.core.Module;
+import com.querydsl.core.QuerydslModule;
 import com.querydsl.core.QueryExecution;
 import com.querydsl.core.Target;
 import com.querydsl.core.Tuple;
@@ -59,7 +59,7 @@ public class CollQueryStandardTest {
 
     private static final Expression<?>[] NO_EXPRESSIONS = new Expression[0];
 
-    private QueryExecution standardTest = new QueryExecution(Module.COLLECTIONS, Target.MEM) {
+    private QueryExecution standardTest = new QueryExecution(QuerydslModule.COLLECTIONS, Target.MEM) {
         @Override
         protected Fetchable<?> createQuery() {
             return CollQueryFactory.from(cat, data).from(otherCat, data);

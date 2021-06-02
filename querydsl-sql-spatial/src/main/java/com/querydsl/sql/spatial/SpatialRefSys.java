@@ -13,12 +13,9 @@
  */
 package com.querydsl.sql.spatial;
 
-import javax.annotation.Generated;
-
 /**
  * SpatialRefSys is a Querydsl bean type
  */
-@Generated("com.querydsl.codegen.BeanSerializer")
 public class SpatialRefSys {
 
     private String authName;

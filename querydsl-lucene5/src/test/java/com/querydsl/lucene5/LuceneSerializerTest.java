@@ -47,7 +47,7 @@ import org.junit.Test;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.MatchingFiltersFactory;
-import com.querydsl.core.Module;
+import com.querydsl.core.QuerydslModule;
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.StringConstant;
 import com.querydsl.core.Target;
@@ -724,7 +724,7 @@ public class LuceneSerializerTest {
     @Test
     public void various() throws Exception {
         MatchingFiltersFactory filters = new MatchingFiltersFactory(
-                Module.LUCENE, Target.LUCENE);
+                QuerydslModule.LUCENE, Target.LUCENE);
         for (Predicate filter : filters.string(title,
                 StringConstant.create("jurassic park"))) {
             if (unsupportedOperation(filter)) {

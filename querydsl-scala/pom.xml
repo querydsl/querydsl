@@ -19,10 +19,19 @@
     <argLine>-Xms256m -Xmx512m -Xss2m</argLine>
     <checkstyle.skip>true</checkstyle.skip>
 
-    <scala.version>2.10</scala.version>
-    <scala.full.version>2.10.5</scala.full.version>
+    <scala.full.version>2.11.12</scala.full.version>
     <hibernate.version>3.5.1-Final</hibernate.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.full.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   
   <dependencies>
     <dependency>
@@ -139,6 +148,7 @@
             <!-- <arg>-target:jvm-1.6</arg> -->
             <arg>-unchecked</arg>
             <arg>-deprecation</arg>
+            <arg>-nobootcp</arg>
             <!-- <arg>-feature</arg> -->
             <!-- <arg>-explaintypes</arg> -->
             <!-- <arg>-verbose</arg> -->

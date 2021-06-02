@@ -62,7 +62,7 @@ public class ProjectionSerializerTest {
         ProjectionSerializer serializer = new ProjectionSerializer(new JavaTypeMappings());
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSource = writer.toString();
-        assertThat(generatedSource, containsString("import javax.annotation.Generated"));
+        assertThat(generatedSource, containsString(String.format("import %s;", GeneratedAnnotationResolver.resolveDefault().getName())));
         assertThat(generatedSource, containsString("@Generated(\"com.querydsl.codegen.ProjectionSerializer\")\npublic class"));
     }
 
