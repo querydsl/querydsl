@@ -17,7 +17,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failIfNoTests>false</failIfNoTests>
-    <guice.version>3.0</guice.version>
+    <guice.version>5.0.1</guice.version>
     <h2.version>1.4.186</h2.version>
   </properties>
 
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
-      <version>1.1</version>
+      <version>1.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
