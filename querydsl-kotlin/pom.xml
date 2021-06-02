@@ -13,7 +13,7 @@
     <name>Querydsl - Kotlin extensions</name>
 
     <properties>
-        <kotlin.version>1.4.20-M1</kotlin.version>
+        <kotlin.version>1.4.30-RC</kotlin.version>
     </properties>
 
     <dependencies>
