@@ -430,7 +430,7 @@ public class SQLSerializerTest {
         defaultWithPrintSchema.getTemplates().setPrintSchema(true);
 
         QEmployee e = QEmployee.employee;
-        SQLDeleteClause delete = new SQLDeleteClause(EasyMock.createNiceMock(Connection.class), defaultWithPrintSchema, e);
+        SQLDeleteClause delete = new SQLDeleteClause(EasyMock.<Connection> createNiceMock(Connection.class), defaultWithPrintSchema, e);
         delete.where(e.id.gt(100));
 
         assertEquals("delete from PUBLIC.EMPLOYEE\n" +
@@ -442,7 +442,7 @@ public class SQLSerializerTest {
         Configuration derbyWithPrintSchema = new Configuration(DerbyTemplates.builder().printSchema().build());
 
         QEmployee e = QEmployee.employee;
-        SQLDeleteClause delete = new SQLDeleteClause(EasyMock.createNiceMock(Connection.class), derbyWithPrintSchema, e);
+        SQLDeleteClause delete = new SQLDeleteClause(EasyMock.<Connection> createNiceMock(Connection.class), derbyWithPrintSchema, e);
         delete.where(e.id.gt(100));
 
         assertEquals("delete from \"PUBLIC\".EMPLOYEE\n" +

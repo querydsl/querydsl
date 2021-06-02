@@ -31,7 +31,7 @@ public class PostgreSQLQueryFactoryTest {
 
     @Before
     public void setUp() {
-        Supplier<Connection> provider = () -> EasyMock.createNiceMock(Connection.class);
+        Supplier<Connection> provider = () -> EasyMock.<Connection> createNiceMock(Connection.class);
         queryFactory = new PostgreSQLQueryFactory(SQLTemplates.DEFAULT, provider);
     }
 
