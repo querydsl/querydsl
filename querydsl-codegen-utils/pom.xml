@@ -69,7 +69,6 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.2.0</version>
         <configuration>
-          <useDefaultManifestFile>true</useDefaultManifestFile>
           <archive>
             <manifestEntries>
               <Automatic-Module-Name>com.querydsl.codegen.utils</Automatic-Module-Name>
