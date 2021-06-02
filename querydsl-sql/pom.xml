@@ -172,6 +172,11 @@
       <type>test-jar</type>
     </dependency>
     <dependency>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-spatial</artifactId>
       <version>${project.version}</version>
