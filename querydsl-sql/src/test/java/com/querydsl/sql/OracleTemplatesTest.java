@@ -13,15 +13,6 @@
  */
 package com.querydsl.sql;
 
-import static com.querydsl.sql.SQLExpressions.select;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-
 import com.querydsl.core.QueryFlag;
 import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.ExpressionUtils;
@@ -30,6 +21,14 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.SimpleExpression;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.querydsl.sql.SQLExpressions.select;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
 
@@ -127,4 +126,13 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest {
         assertTrue(p7 < p8);
     }
 
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void truncateWeek() {
+        final SQLQuery<Comparable> expression = query.select(
+                SQLExpressions.datetrunc(DatePart.week,
+                        Expressions.dateTimeTemplate(Comparable.class, "dateExpression")));
+        assertEquals("select trunc(dateExpression, 'iw') from dual",
+                expression.toString());
+    }
 }

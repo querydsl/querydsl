@@ -151,7 +151,7 @@ public class SQLServerTemplates extends SQLTemplates {
         // truncates timestamps by replacing suffix
         add(Ops.DateTimeOps.TRUNC_YEAR,   "CONVERT(DATETIME, CONVERT(VARCHAR(4), {0}, 120) + '-01-01')");
         add(Ops.DateTimeOps.TRUNC_MONTH,  "CONVERT(DATETIME, CONVERT(VARCHAR(7), {0}, 120) + '-01')");
-        // TODO week
+        add(Ops.DateTimeOps.TRUNC_WEEK, "DATEADD(WEEK, DATEDIFF(WEEK, 0, {0} - 1), 0)");
         add(Ops.DateTimeOps.TRUNC_DAY,    "CONVERT(DATETIME, CONVERT(VARCHAR(10), {0}, 120))");
         add(Ops.DateTimeOps.TRUNC_HOUR,   "CONVERT(DATETIME, CONVERT(VARCHAR(13), {0}, 120) + ':00:00')");
         add(Ops.DateTimeOps.TRUNC_MINUTE, "CONVERT(DATETIME, CONVERT(VARCHAR(16), {0}, 120) + ':00')");
