@@ -42,7 +42,7 @@ Where projectname is one of the Maven profiles (e.g. `jpa`, `sql`, `mongodb`, et
 
 For more information visit the project homepage at https://querydsl.github.io.
 
-**Vagrant/Puppet setup**
+**Docker Compose setup**
 
 For running tests, a Docker Compose setup is provided. It comes with the following databases:
 
