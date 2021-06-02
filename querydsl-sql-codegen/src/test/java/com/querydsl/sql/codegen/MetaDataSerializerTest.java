@@ -27,6 +27,7 @@ import java.util.Set;
 
 import javax.tools.JavaCompiler;
 
+import com.querydsl.codegen.GeneratedAnnotationResolver;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -105,7 +106,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest {
         try {
             //
             assertFileContainsInOrder("test/QSurvey.java",
-                    "import javax.annotation.Generated;",
+                    String.format("import %s;", GeneratedAnnotationResolver.resolveDefault().getName()),
                     "@Generated(\"com.querydsl.sql.codegen.MetaDataSerializer\")\npublic class QSurvey",
                     // variable + schema constructor
                     "    public QSurvey(String variable, String schema) {\n"

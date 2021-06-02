@@ -4,8 +4,8 @@ import com.querydsl.example.dto.CustomerPaymentMethod;
 import com.querydsl.example.dto.Order;
 import com.querydsl.example.dto.OrderProduct;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,7 +13,8 @@ import static org.junit.Assert.*;
 
 public class OrderDaoTest extends AbstractDaoTest {
 
-    @Resource OrderDao orderDao;
+    @Autowired
+    OrderDao orderDao;
 
     @Test
     public void findAll() {

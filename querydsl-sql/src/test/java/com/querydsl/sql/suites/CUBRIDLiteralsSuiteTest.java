@@ -1,11 +1,13 @@
 package com.querydsl.sql.suites;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.experimental.categories.Category;
 
 import com.querydsl.core.testutil.CUBRID;
 import com.querydsl.sql.*;
 
+@Ignore
 @Category(CUBRID.class)
 public class CUBRIDLiteralsSuiteTest extends AbstractSuite {
 

@@ -185,7 +185,7 @@ public class EmbeddableSerializerTest {
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         final String generatedSource = writer.toString();
-        assertThat(generatedSource, containsString("import javax.annotation.Generated;"));
+        assertThat(generatedSource, containsString(String.format("import %s;", GeneratedAnnotationResolver.resolveDefault().getName())));
         assertThat(generatedSource, containsString("@Generated(\"com.querydsl.codegen.EmbeddableSerializer\")\npublic class"));
         CompileUtils.assertCompiles("QEntity", generatedSource);
     }

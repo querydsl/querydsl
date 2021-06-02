@@ -26,7 +26,7 @@ import com.querydsl.core.support.FetchableQueryBase;
 import com.querydsl.core.types.*;
 
 /**
- * {@code AbstractCollQuery} provides a base class for {@link Collection} query implementations.
+ * {@code AbstractCollQuery} provides a base class for {@code Collection} query implementations.
  *
  * @param <T> result type
  * @param <Q> concrete subtype

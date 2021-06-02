@@ -10,10 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>querydsl-kotlin</artifactId>
-    <name>Querydsl example - Kotlin extensions</name>
+    <name>Querydsl - Kotlin extensions</name>
 
     <properties>
-        <kotlin.version>1.4.20-M1</kotlin.version>
+        <kotlin.version>1.4.30-RC</kotlin.version>
     </properties>
 
     <dependencies>

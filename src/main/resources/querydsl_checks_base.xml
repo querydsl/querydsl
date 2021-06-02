@@ -8,7 +8,7 @@
   <property name="fileExtensions" value="java, properties, xml"/>
 
   <!-- maximum file length 2000 lines -->
-  <module name="FileLength"/>
+  <!-- <module name="FileLength"/> -->
 
   <!-- check that there are no tab characters in the file -->
   <module name="FileTabCharacter">
@@ -72,7 +72,7 @@
     <module name="WhitespaceAround"/>
 
     <module name="ModifierOrder"/>
-    <module name="RedundantModifier"/>
+<!--    <module name="RedundantModifier"/>-->
 
     <module name="EmptyBlock"/>
     <module name="LeftCurly"/>
@@ -99,6 +99,9 @@
     <property name="onCommentFormat" value="CHECKSTYLERULE:ON: ([\w\|]+)"/>
     <property name="checkFormat" value="$1"/>
   </module>
+
+  <module name="SuppressWarningsFilter"/>
+
   <module name="UniqueProperties"/>
 
 </module>

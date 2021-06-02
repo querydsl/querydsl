@@ -13,6 +13,9 @@
  */
 package com.querydsl.sql;
 
+import org.junit.Ignore;
+
+@Ignore
 public class CUBRIDTemplatesTest extends AbstractSQLTemplatesTest {
 
     @Override

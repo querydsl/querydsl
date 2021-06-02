@@ -55,7 +55,7 @@ public class JavaWriterTest {
                 textBuilder.append((char) c);
             }
         }
-        String expected = textBuilder.toString().replace("\r\n", "\n").trim();
+        String expected = textBuilder.toString().replace("\r\n", System.lineSeparator()).trim();
         String actual = text.trim();
         assertEquals(expected, actual);
     }

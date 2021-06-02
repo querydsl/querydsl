@@ -3,8 +3,10 @@ package com.querydsl.scala
 import java.io.{File, FileOutputStream, OutputStreamWriter}
 import java.io.File.pathSeparator
 import java.nio.charset.StandardCharsets
+import io.github.classgraph.ClassGraph
 import scala.tools.nsc._
 import scala.tools.nsc.reporters.ConsoleReporter
+import collection.JavaConverters._
 
 object CompileTestUtils {
 
@@ -12,8 +14,8 @@ object CompileTestUtils {
     Class.forName(className).getProtectionDomain.getCodeSource.getLocation
   }
 
-  private val currentLibraries = this.getClass.getClassLoader.asInstanceOf[java.net.URLClassLoader].getURLs.toList
-  private val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
+  private val currentLibraries = new ClassGraph().getClasspathURLs.asScala.toList
+  private val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.AnyVal") :: currentLibraries
 
   private val env = new Settings()
   env.classpath.value = cp.mkString(pathSeparator)

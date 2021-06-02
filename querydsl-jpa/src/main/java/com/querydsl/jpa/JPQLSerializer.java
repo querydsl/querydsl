@@ -112,7 +112,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         final Entity entityAnnotation = clazz.getAnnotation(Entity.class);
         if (entityAnnotation != null && entityAnnotation.name().length() > 0) {
             return entityAnnotation.name();
-        } else if (clazz.getPackage() != null) {
+        } else if (clazz.getPackage() != null && clazz.getPackage().getName().length() > 0) {
             String pn = clazz.getPackage().getName();
             return clazz.getName().substring(pn.length() + 1);
         } else {

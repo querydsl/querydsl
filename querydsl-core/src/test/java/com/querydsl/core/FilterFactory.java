@@ -29,11 +29,11 @@ public class FilterFactory {
 
     private final ProjectionsFactory projections;
 
-    private final Module module;
+    private final QuerydslModule module;
 
     private final Target target;
 
-    public FilterFactory(ProjectionsFactory projections, Module module, Target target) {
+    public FilterFactory(ProjectionsFactory projections, QuerydslModule module, Target target) {
         this.projections = projections;
         this.module = module;
         this.target = target;
@@ -55,7 +55,7 @@ public class FilterFactory {
         rv.add(expr.contains(knownElement));
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
-        if (!module.equals(Module.RDFBEAN)) {
+        if (!module.equals(QuerydslModule.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
         return Collections.unmodifiableSet(rv);
@@ -64,7 +64,7 @@ public class FilterFactory {
     public <A> Collection<Predicate> array(ArrayExpression<A[], A> expr, ArrayExpression<A[], A> other,
             A knownElement) {
         HashSet<Predicate> rv = new HashSet<Predicate>();
-        if (!module.equals(Module.RDFBEAN)) {
+        if (!module.equals(QuerydslModule.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
         rv.add(expr.get(0).eq(knownElement));
@@ -110,7 +110,7 @@ public class FilterFactory {
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));
         rv.add(expr.yearMonth().eq(other.yearMonth()));
-        if (module.equals(Module.SQL) || module.equals(Module.COLLECTIONS)) {
+        if (module.equals(QuerydslModule.SQL) || module.equals(QuerydslModule.COLLECTIONS)) {
             if (target != Target.DERBY) {
                 rv.add(expr.yearWeek().eq(other.yearWeek()));
             }
@@ -135,7 +135,7 @@ public class FilterFactory {
 
         rv.add(expr.yearMonth().eq(other.yearMonth()));
 
-        if (module.equals(Module.SQL) || module.equals(Module.COLLECTIONS)) {
+        if (module.equals(QuerydslModule.SQL) || module.equals(QuerydslModule.COLLECTIONS)) {
             if (target != Target.DERBY) {
                 rv.add(expr.yearWeek().eq(other.yearWeek()));
             }
@@ -179,7 +179,7 @@ public class FilterFactory {
         rv.add(expr.get(knownKey).ne(knownValue));
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
-        if (!module.equals(Module.RDFBEAN)) {
+        if (!module.equals(QuerydslModule.RDFBEAN)) {
             rv.add(expr.size().gt(0));
         }
         return Collections.unmodifiableSet(rv);
@@ -326,7 +326,7 @@ public class FilterFactory {
         rv.add(expr.notBetween("A", "Z"));
         rv.add(expr.notBetween(other, other));
 
-        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO)) {
+        if (!target.equals(Target.DERBY) && !module.equals(QuerydslModule.JDO)) {
             // https://issues.apache.org/jira/browse/DERBY-4389
             rv.add(new Coalesce<String>(String.class, expr, other).getValue().eq("xxx"));
         }

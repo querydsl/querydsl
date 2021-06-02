@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
-"-//Hibernate/Hibernate Configuration DTD//EN"
-"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-<session-factory>
-	<property name="hibernate.dialect">com.querydsl.jpa.support.ExtendedDerbyDialect</property>
-	<property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
-	<property name="hibernate.connection.url">jdbc:derby:target/derbydb;create=true</property>
-</session-factory>
+    <session-factory>
+        <property name="hibernate.dialect">com.querydsl.jpa.support.ExtendedDerbyDialect</property>
+        <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
+        <property name="hibernate.connection.url">jdbc:derby:target/derbydb;create=true</property>
+    </session-factory>
 </hibernate-configuration>

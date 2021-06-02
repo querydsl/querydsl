@@ -106,6 +106,15 @@ public abstract class AbstractGroupByTest {
             row("John", "John", 1, "post 1", comment(3))
     );
 
+    protected static final DummyFetchableQuery<Tuple> POSTS_W_COMMENTS_SCORE = projectable(
+        row(null, 1.5),
+        row(1, 1.5),
+        row(1, 2.0),
+        row(1, 0.5),
+        row(2, 1.0),
+        row(2, 2.0)
+    );
+
 //    protected static final Projectable USERS_W_LATEST_POST_AND_COMMENTS2 = projectable(
 //            row("John", 1, "post 1", comment(1)),
 //            row("Jane", 2, "post 2", comment(4)),
@@ -130,7 +139,9 @@ public abstract class AbstractGroupByTest {
 
     protected static final StringExpression commentText = Expressions.stringPath(comment, "text");
 
-    protected static final ConstructorExpression<Comment> qComment = Projections.constructor(Comment.class, commentId, commentText);
+    protected static final NumberExpression<Double> score = Expressions.numberPath(Double.class, comment, "score");
+
+    protected static final ConstructorExpression<Comment> qComment = Projections.constructor(Comment.class, commentId, commentText, score);
 
     protected static <K, V> Pair<K, V> pair(K key, V value) {
         return new Pair<K, V>(key, value);
@@ -145,7 +156,7 @@ public abstract class AbstractGroupByTest {
     }
 
     protected static Comment comment(Integer id) {
-        return new Comment(id, "comment " + id);
+        return new Comment(id, "comment " + id, 0.0);
     }
 
     protected static DummyFetchableQuery<Tuple> projectable(final Object[]... rows) {

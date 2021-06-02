@@ -30,6 +30,9 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.StringPath;
 
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 public class GroupByMapTest extends AbstractGroupByTest {
 
     @Test
@@ -330,4 +333,22 @@ public class GroupByMapTest extends AbstractGroupByTest {
         assertNotNull(resultTransformer);
     }
 
+    @Test
+    public void average_with_default_math_context() {
+        Map<Integer, Double> results = POSTS_W_COMMENTS_SCORE
+                .transform(groupBy(postId).as(avg(score)));
+        assertEquals(1.5, results.get(null), 0.0);
+        assertEquals(((1.5 + 2.0 + 0.5) / 3), results.get(1), 0.0);
+        assertEquals(((1.0 + 2.0) / 2), results.get(2), 0.0);
+    }
+
+    @Test
+    public void average_with_user_provided_math_context() {
+        MathContext oneDigitMathContext = new MathContext(2, RoundingMode.HALF_EVEN);
+        Map<Integer, Double> results = POSTS_W_COMMENTS_SCORE
+                .transform(groupBy(postId).as(avg(score, oneDigitMathContext)));
+        assertEquals(1.5, results.get(null), 0.0);
+        assertEquals(1.3, results.get(1), 0.0);
+        assertEquals(1.5, results.get(2), 0.0);
+    }
 }
