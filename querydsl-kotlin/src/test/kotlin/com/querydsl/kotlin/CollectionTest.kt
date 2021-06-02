@@ -69,10 +69,10 @@ class CollectionTest {
         val someIndex = Expressions.numberPath(Int::class.java, "idx")
 
         val firstChar = someString[0]
-        assertEquals(someString.charAt(0), firstChar)
+        assertEquals<SimpleExpression<out Any>?>(someString.charAt(0), firstChar)
 
         val firstCharExpr = someString[someIndex];
-        assertEquals(someString.charAt(someIndex), firstCharExpr)
+        assertEquals<SimpleExpression<out Any>?>(someString.charAt(someIndex), firstCharExpr)
 
         val stringConcat = someString + someOtherString + "c"
         assertEquals(someString.concat(someOtherString).concat("c"), stringConcat)
