@@ -98,7 +98,7 @@ A huge thanks goes out to all contributors that made this release possible in th
 * `cglib:cglib` to 3.3.0 for Java 8+ support
 * `org.eclipse.jdt.core.compiler:ecj` to 4.6.1 for Java 8+ support
 * `joda-time:joda-time` to 2.10.8 for better interoperability with other frameworks that use more recent versions than QueryDSL.
-* `org.geolatte:geolatte-geom` to 1.4.0 for better interopability with Hibernate Spatial.
+* `org.geolatte:geolatte-geom` to 1.8.1 for better interopability with Hibernate Spatial.
   `querydsl-spatial` is still backwards compatible with older versions of Geolatte, however, `querydsl-sql-spatial` is not and requires 1.4.0 or newer.
 * `com.vividsolutions:jts` to `org.locationtech:jts` for better interopability with Hibernate Spatial.
   `com.vividsolutions:jts` is still supported for `querydsl-spatial` if an older version of `org.geolatte:geolatte-geom` is provided.
