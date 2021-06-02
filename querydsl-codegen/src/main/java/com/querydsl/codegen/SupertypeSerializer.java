@@ -1,5 +1,5 @@
 /*
- * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
+ * Copyright 2021, The Querydsl Team (http://www.querydsl.com/team)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,42 +13,11 @@
  */
 package com.querydsl.codegen;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 /**
- * {@code SupertypeSerializer} is a {@link Serializer} implementation for supertypes
+ * {@code SupertypeSerializer} is a {@link Serializer} for supertypes
  *
  * @author tiwe
  *
  */
-public final class SupertypeSerializer extends EntitySerializer {
-
-    /**
-     * Create a new SupertypeSerializer instance
-     *
-     * @param typeMappings type mappings to be used
-     * @param keywords keywords to be used
-     * @param generatedAnnotationClass fully qualified class name to be used as class level "@Generated" annotation.
-     */
-    @Inject
-    public SupertypeSerializer(
-            TypeMappings typeMappings,
-            @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
-        super(typeMappings, keywords, generatedAnnotationClass);
-    }
-    /**
-     * Create a new SupertypeSerializer instance
-     *
-     * @param typeMappings type mappings to be used
-     * @param keywords keywords to be used
-     */
-    public SupertypeSerializer(TypeMappings typeMappings, Collection<String> keywords) {
-        super(typeMappings, keywords, GeneratedAnnotationResolver.resolveDefault());
-    }
-
+public interface SupertypeSerializer extends EntitySerializer {
 }

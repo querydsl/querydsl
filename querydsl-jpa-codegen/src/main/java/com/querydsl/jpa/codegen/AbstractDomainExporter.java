@@ -13,19 +13,7 @@
  */
 package com.querydsl.jpa.codegen;
 
-import com.querydsl.codegen.CodegenModule;
-import com.querydsl.codegen.EmbeddableSerializer;
-import com.querydsl.codegen.EntitySerializer;
-import com.querydsl.codegen.EntityType;
-import com.querydsl.codegen.Property;
-import com.querydsl.codegen.QueryTypeFactory;
-import com.querydsl.codegen.Serializer;
-import com.querydsl.codegen.SerializerConfig;
-import com.querydsl.codegen.SimpleSerializerConfig;
-import com.querydsl.codegen.Supertype;
-import com.querydsl.codegen.SupertypeSerializer;
-import com.querydsl.codegen.TypeFactory;
-import com.querydsl.codegen.TypeMappings;
+import com.querydsl.codegen.*;
 import com.querydsl.codegen.utils.CodeWriter;
 import com.querydsl.codegen.utils.JavaWriter;
 import com.querydsl.codegen.utils.model.Type;

@@ -13,11 +13,7 @@
  */
 package com.querydsl.apt;
 
-import com.querydsl.codegen.EntityType;
-import com.querydsl.codegen.QueryTypeFactory;
-import com.querydsl.codegen.Serializer;
-import com.querydsl.codegen.SerializerConfig;
-import com.querydsl.codegen.TypeMappings;
+import com.querydsl.codegen.*;
 import com.querydsl.core.util.Annotations;
 
 import org.jetbrains.annotations.Nullable;
@@ -117,4 +113,5 @@ public interface Configuration {
 
     Function<EntityType, String> getVariableNameFunction();
 
+    Filer getFiler();
 }

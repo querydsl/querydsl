@@ -13,20 +13,8 @@
  */
 package com.querydsl.apt;
 
-import com.querydsl.codegen.GeneratedAnnotationResolver;
+import com.querydsl.codegen.*;
 import com.querydsl.codegen.utils.model.ClassType;
-import com.querydsl.codegen.CodegenModule;
-import com.querydsl.codegen.DefaultVariableNameFunction;
-import com.querydsl.codegen.EmbeddableSerializer;
-import com.querydsl.codegen.EntitySerializer;
-import com.querydsl.codegen.EntityType;
-import com.querydsl.codegen.ProjectionSerializer;
-import com.querydsl.codegen.QueryTypeFactory;
-import com.querydsl.codegen.Serializer;
-import com.querydsl.codegen.SerializerConfig;
-import com.querydsl.codegen.SimpleSerializerConfig;
-import com.querydsl.codegen.SupertypeSerializer;
-import com.querydsl.codegen.TypeMappings;
 import com.querydsl.core.annotations.Config;
 import com.querydsl.core.annotations.QueryProjection;
 import com.querydsl.core.annotations.QueryType;
@@ -582,4 +570,8 @@ public class DefaultConfiguration implements Configuration {
         return variableNameFunction;
     }
 
+    @Override
+    public Filer getFiler() {
+        return module.get(Filer.class);
+    }
 }

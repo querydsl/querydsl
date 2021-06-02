@@ -30,7 +30,6 @@ import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
-import javax.tools.JavaFileObject;
 
 import com.querydsl.codegen.utils.JavaWriter;
 import com.querydsl.codegen.utils.model.Parameter;
@@ -604,9 +603,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 }
 
                 logInfo("Generating " + className + " for " + elements);
-                JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(className,
-                        elements.toArray(new Element[0]));
-                try (Writer writer = fileObject.openWriter()) {
+                try (Writer writer = conf.getFiler().createFile(processingEnv, className, elements)) {
                     SerializerConfig serializerConfig = conf.getSerializerConfig(model);
                     serializer.serialize(model, serializerConfig, new JavaWriter(writer));
                 }

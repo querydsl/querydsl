@@ -26,6 +26,7 @@
     <module>querydsl-example-jpa-guice</module>
     <module>querydsl-example-kotlin-jpa</module>
     <module>querydsl-example-kotlin-mongodb</module>
+    <module>querydsl-example-kotlin-codegen</module>
   </modules>
 
   <build>
