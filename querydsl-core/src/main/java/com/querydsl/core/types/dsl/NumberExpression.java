@@ -811,10 +811,10 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return coalesce
      */
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public NumberExpression<T> coalesce(Expression<?>... exprs) {
+    @SuppressWarnings({"unchecked"})
+    public NumberExpression<T> coalesce(Expression<T>... exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression expr : exprs) {
+        for (Expression<T> expr : exprs) {
             coalesce.add(expr);
         }
         return (NumberExpression<T>) coalesce.asNumber();

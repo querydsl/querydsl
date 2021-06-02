@@ -184,9 +184,9 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
      * @return coalesce
      */
     @Override
-    public BooleanExpression coalesce(Expression<?>... exprs) {
+    public BooleanExpression coalesce(Expression<Boolean>... exprs) {
         Coalesce<Boolean> coalesce = new Coalesce<Boolean>(getType(), mixin);
-        for (Expression expr : exprs) {
+        for (Expression<Boolean> expr : exprs) {
             coalesce.add(expr);
         }
         return coalesce.asBoolean();

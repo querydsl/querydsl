@@ -235,9 +235,9 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return coalesce
      */
     @Override
-    public DateExpression<T> coalesce(Expression<?>... exprs) {
+    public DateExpression<T> coalesce(Expression<T>... exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression expr : exprs) {
+        for (Expression<T> expr : exprs) {
             coalesce.add(expr);
         }
         return coalesce.asDate();
