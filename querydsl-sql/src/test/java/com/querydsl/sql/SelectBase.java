@@ -1175,12 +1175,13 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({HSQLDB}) // FIXME
     public void math() {
         math(Expressions.numberTemplate(Double.class, "0.50"));
     }
 
     @Test
-    @ExcludeIn({FIREBIRD, SQLSERVER}) // FIXME
+    @ExcludeIn({FIREBIRD, SQLSERVER, HSQLDB}) // FIXME
     public void math2() {
         math(Expressions.constant(0.5));
     }
