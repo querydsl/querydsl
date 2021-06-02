@@ -71,6 +71,7 @@
     <jodatime.version>2.10.8</jodatime.version>
     <h2gis.version>1.5.0</h2gis.version>
     <morphia.version>1.3.2</morphia.version>
+    <jmh.version>1.32</jmh.version>
     
     <!-- Import-Package definitions for maven-bundle-plugin -->
     <osgi.import.package.root>
@@ -639,7 +640,7 @@
           </dependency>
         </dependencies>
         <configuration>
-          <excludes>**/generated/**/*,**/com/querydsl/codegen/utils/**/*</excludes>
+          <excludes>**/generated/**/*,**/jmh_generated/**/*,**/com/querydsl/codegen/utils/**/*</excludes>
         </configuration>
       </plugin>
     </plugins>
