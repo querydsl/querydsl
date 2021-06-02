@@ -35,7 +35,6 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.WildcardTypeName
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.joinToCode
-import javax.annotation.Generated
 import javax.inject.Inject
 import javax.inject.Named
 

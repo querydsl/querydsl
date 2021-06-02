@@ -13,31 +13,29 @@
  */
 package com.querydsl.kotlin.codegen
 
-import com.querydsl.kotlin.codegen.CompileUtils.assertCompiles
+import com.querydsl.codegen.Delegate
+import com.querydsl.codegen.EntitySerializer
+import com.querydsl.codegen.EntityType
+import com.querydsl.codegen.GeneratedAnnotationResolver
+import com.querydsl.codegen.Property
 import com.querydsl.codegen.QueryTypeFactory
 import com.querydsl.codegen.QueryTypeFactoryImpl
-import com.querydsl.codegen.TypeMappings
-import com.querydsl.codegen.JavaTypeMappings
-import com.querydsl.codegen.EntitySerializer
-import com.querydsl.codegen.DefaultEmbeddableSerializer
-import com.querydsl.codegen.Delegate
-import com.querydsl.codegen.EntityType
-import com.querydsl.codegen.Property
-import java.io.StringWriter
-import java.io.IOException
-import com.querydsl.codegen.utils.model.TypeCategory
 import com.querydsl.codegen.SimpleSerializerConfig
 import com.querydsl.codegen.Supertype
+import com.querydsl.codegen.TypeMappings
 import com.querydsl.codegen.utils.JavaWriter
 import com.querydsl.codegen.utils.model.ClassType
 import com.querydsl.codegen.utils.model.SimpleType
+import com.querydsl.codegen.utils.model.TypeCategory
 import com.querydsl.codegen.utils.model.Types
 import com.querydsl.core.annotations.Generated
 import com.querydsl.core.annotations.PropertyType
+import com.querydsl.kotlin.codegen.CompileUtils.assertCompiles
 import org.hamcrest.Matchers
 import org.junit.Assert
 import org.junit.Ignore
 import org.junit.Test
+import java.io.StringWriter
 import java.sql.Time
 import java.util.*
 
@@ -179,7 +177,7 @@ class EmbeddableSerializerTest {
         typeMappings.register(entityType, queryTypeFactory.create(entityType))
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSource = writer.toString()
-        Assert.assertThat(generatedSource, Matchers.containsString("import javax.annotation.Generated"))
+        Assert.assertThat(generatedSource, Matchers.containsString("import ${GeneratedAnnotationResolver.resolveDefault().name}"))
         Assert.assertThat(generatedSource, Matchers.containsString("@Generated(\"com.querydsl.kotlin.codegen.KotlinEmbeddableSerializer\")\nclass"))
         assertCompiles("QEntity", generatedSource)
     }

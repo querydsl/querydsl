@@ -16,6 +16,7 @@ package com.querydsl.kotlin.codegen
 import com.querydsl.codegen.Delegate
 import com.querydsl.codegen.EntitySerializer
 import com.querydsl.codegen.EntityType
+import com.querydsl.codegen.GeneratedAnnotationResolver
 import com.querydsl.codegen.Property
 import com.querydsl.codegen.QueryTypeFactory
 import com.querydsl.codegen.QueryTypeFactoryImpl
@@ -185,7 +186,7 @@ class EntitySerializerTest {
         typeMappings.register(entityType, queryTypeFactory.create(entityType))
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSourceCode = writer.toString()
-        Assert.assertTrue(generatedSourceCode.contains("import javax.annotation.Generated"))
+        Assert.assertTrue(generatedSourceCode.contains("import ${GeneratedAnnotationResolver.resolveDefault().name}"))
         Assert.assertTrue(generatedSourceCode.contains("@Generated(\"com.querydsl.kotlin.codegen.KotlinEntitySerializer\")\nclass"))
         assertCompiles("QEntitySerializerTest_Entity", generatedSourceCode)
     }
