@@ -782,4 +782,58 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         return list;
     }
 
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public NumberExpression<T> nullif(Expression<T> other) {
+        return Expressions.numberOperation(getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public NumberExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public NumberExpression<T> coalesce(Expression<T>... exprs) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (Expression<T> expr : exprs) {
+            coalesce.add(expr);
+        }
+        return (NumberExpression<T>) coalesce.asNumber();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public NumberExpression<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return (NumberExpression<T>) coalesce.asNumber();
+    }
+
 }

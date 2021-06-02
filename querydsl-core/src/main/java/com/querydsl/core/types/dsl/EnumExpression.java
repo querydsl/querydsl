@@ -13,6 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Ops;
@@ -57,4 +58,55 @@ public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpressio
         return ordinal;
     }
 
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public EnumExpression<T> nullif(Expression<T> other) {
+        return Expressions.enumOperation(getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public EnumExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    public EnumExpression<T> coalesce(Expression<T>... exprs) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (Expression<T> expr : exprs) {
+            coalesce.add(expr);
+        }
+        return (EnumExpression<T>) coalesce.asEnum();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    public EnumExpression<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return (EnumExpression<T>) coalesce.asEnum();
+    }
 }

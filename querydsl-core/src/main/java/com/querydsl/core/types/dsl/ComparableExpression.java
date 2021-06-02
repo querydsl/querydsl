@@ -387,4 +387,57 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
         return Expressions.comparableOperation(getType(), Ops.AggOps.MAX_AGG, mixin);
     }
 
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public ComparableExpression<T> nullif(Expression<T> other) {
+        return Expressions.comparableOperation(this.getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public ComparableExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    public ComparableExpression<T> coalesce(Expression<T>... exprs) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (Expression<T> expr : exprs) {
+            coalesce.add(expr);
+        }
+        return coalesce.getValue();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public ComparableExpression<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return coalesce.getValue();
+    }
+
 }

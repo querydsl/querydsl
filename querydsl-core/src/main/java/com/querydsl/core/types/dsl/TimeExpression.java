@@ -15,6 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import java.sql.Time;
 
+import com.querydsl.core.types.ConstantImpl;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
@@ -119,6 +120,59 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
      */
     public static <T extends Comparable> TimeExpression<T> currentTime(Class<T> cl) {
         return Expressions.timeOperation(cl, Ops.DateTimeOps.CURRENT_TIME);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public TimeExpression<T> nullif(Expression<T> other) {
+        return Expressions.timeOperation(getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public TimeExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    public TimeExpression<T> coalesce(Expression<T>... exprs) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (Expression<T> expr : exprs) {
+            coalesce.add(expr);
+        }
+        return coalesce.asTime();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public TimeExpression<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return coalesce.asTime();
     }
 
 }

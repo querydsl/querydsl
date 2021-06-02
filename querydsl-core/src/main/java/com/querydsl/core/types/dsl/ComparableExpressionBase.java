@@ -13,6 +13,7 @@
  */
 package com.querydsl.core.types.dsl;
 
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Ops;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,13 +58,12 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @param exprs additional arguments
      * @return coalesce
      */
-    @SuppressWarnings("unchecked")
-    public Coalesce<T> coalesce(Expression<?>...exprs) {
+    public ComparableExpressionBase<T> coalesce(Expression<T>...exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression expr : exprs) {
+        for (Expression<T> expr : exprs) {
             coalesce.add(expr);
         }
-        return coalesce;
+        return coalesce.getValue();
     }
 
     /**
@@ -72,12 +72,34 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @param args additional arguments
      * @return coalesce
      */
-    public Coalesce<T> coalesce(T... args) {
+    public ComparableExpressionBase<T> coalesce(T... args) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (T arg : args) {
             coalesce.add(arg);
         }
-        return coalesce;
+        return coalesce.getValue();
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public ComparableExpressionBase<T> nullif(Expression<T> other) {
+        return Expressions.comparableOperation(this.getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public ComparableExpressionBase<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
     }
 
     /**

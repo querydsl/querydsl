@@ -15,6 +15,7 @@ package com.querydsl.core.types.dsl;
 
 import java.util.Date;
 
+import com.querydsl.core.types.ConstantImpl;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Expression;
@@ -204,4 +205,57 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
         }
         return yearWeek;
     }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public DateExpression<T> nullif(Expression<T> other) {
+        return Expressions.dateOperation(getType(), Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public DateExpression<T> nullif(T other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    public DateExpression<T> coalesce(Expression<T>... exprs) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (Expression<T> expr : exprs) {
+            coalesce.add(expr);
+        }
+        return coalesce.asDate();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    public DateExpression<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return coalesce.asDate();
+    }
+
 }

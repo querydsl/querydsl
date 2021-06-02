@@ -840,4 +840,57 @@ public abstract class StringExpression extends LiteralExpression<String> {
         return upper;
     }
 
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public StringExpression nullif(Expression<String> other) {
+        return Expressions.stringOperation(Ops.NULLIF, mixin, other);
+    }
+
+    /**
+     * Create a {@code nullif(this, other)} expression
+     *
+     * @param other
+     * @return nullif(this, other)
+     */
+    @Override
+    public StringExpression nullif(String other) {
+        return nullif(ConstantImpl.create(other));
+    }
+
+    /**
+     * Create a {@code coalesce(this, exprs...)} expression
+     *
+     * @param exprs additional arguments
+     * @return coalesce
+     */
+    @Override
+    public StringExpression coalesce(Expression<String>... exprs) {
+        Coalesce<String> coalesce = new Coalesce<String>(getType(), mixin);
+        for (Expression<String> expr : exprs) {
+            coalesce.add(expr);
+        }
+        return coalesce.asString();
+    }
+
+    /**
+     * Create a {@code coalesce(this, args...)} expression
+     *
+     * @param args additional arguments
+     * @return coalesce
+     */
+    @Override
+    public StringExpression coalesce(String... args) {
+        Coalesce<String> coalesce = new Coalesce<String>(getType(), mixin);
+        for (String arg : args) {
+            coalesce.add(arg);
+        }
+        return coalesce.asString();
+    }
+
 }
