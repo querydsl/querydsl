@@ -190,7 +190,7 @@ public class BeanSerializerTest {
         Serializer serializer = new BeanSerializer();
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSource = String.valueOf(writer);
-        assertThat(generatedSource, containsString("import javax.annotation.Generated;"));
+        assertThat(generatedSource, containsString(String.format("import %s;", GeneratedAnnotationResolver.resolveDefault().getName())));
         assertThat(generatedSource, containsString("@Generated(\"com.querydsl.codegen.BeanSerializer\")\npublic class"));
     }
 

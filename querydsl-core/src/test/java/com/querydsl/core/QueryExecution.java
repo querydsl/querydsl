@@ -53,7 +53,7 @@ public abstract class QueryExecution {
 
     private int total;
 
-    public QueryExecution(Module module, Target target) {
+    public QueryExecution(QuerydslModule module, Target target) {
         projections = new ProjectionsFactory(module, target);
         filters = new FilterFactory(projections, module, target);
         matchers = new MatchingFiltersFactory(module, target);

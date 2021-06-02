@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * {@code BooleanExpression} represents {@link java.lang.Boolean} expressions
+ * {@code BooleanExpression} represents {@code java.lang.Boolean} expressions
  *
  * @author tiwe
  * @see java.lang.Boolean

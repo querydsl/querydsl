@@ -5,13 +5,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
+import io.github.classgraph.ClassGraph;
 import org.junit.Test;
-import org.reflections.Reflections;
 
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryMetadata;
@@ -50,8 +47,8 @@ public class SerializationTest {
         args.put(QueryMetadata.class, new DefaultQueryMetadata());
         args.put(String.class, "obj");
 
-        Reflections reflections = new Reflections();
-        Set<Class<? extends Expression>> types = reflections.getSubTypesOf(Expression.class);
+        ClassGraph reflections = new ClassGraph().enableClassInfo();
+        List<Class<?>> types = reflections.scan().getSubclasses(Expression.class.getName()).loadClasses();
         for (Class<?> type : types) {
             if (!type.isInterface() && !type.isMemberClass() && !Modifier.isAbstract(type.getModifiers())) {
                 for (Constructor<?> c : type.getConstructors()) {

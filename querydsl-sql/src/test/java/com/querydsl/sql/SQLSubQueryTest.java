@@ -56,7 +56,7 @@ public class SQLSubQueryTest {
         SubQueryExpression<?> subQuery = select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
         List<? extends Expression<?>> exprs = ((FactoryExpression) subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
-        assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
+        assertEquals(ConstantImpl.create("XXX"), exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
     }
 
@@ -103,7 +103,7 @@ public class SQLSubQueryTest {
         SubQueryExpression<?> subQuery = select(employee.id, Expressions.constant("XXX"), employee.firstname).from(employee);
         List<? extends Expression<?>> exprs = ((FactoryExpression) subQuery.getMetadata().getProjection()).getArgs();
         assertEquals(employee.id, exprs.get(0));
-        assertEquals(ConstantImpl.create("XXX") , exprs.get(1));
+        assertEquals(ConstantImpl.create("XXX"), exprs.get(1));
         assertEquals(employee.firstname, exprs.get(2));
     }
 

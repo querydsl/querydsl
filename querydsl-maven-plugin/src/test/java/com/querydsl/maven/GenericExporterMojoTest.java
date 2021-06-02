@@ -20,11 +20,13 @@ public class GenericExporterMojoTest {
     private GenericExporterMojo prepareMojo() {
         MavenProject mavenProject = new MavenProject();
         mavenProject.getBuild().setOutputDirectory("target/classes");
+        mavenProject.getBuild().setTestOutputDirectory("target/test-classes");
 
         GenericExporterMojo mojo = new GenericExporterMojo();
         mojo.setTargetFolder(new File("target/generated-test-data"));
         mojo.setPackages(new String[] {"com.querydsl.maven"});
         mojo.setProject(mavenProject);
+        mojo.setTestClasspath(true);
         return mojo;
     }
 

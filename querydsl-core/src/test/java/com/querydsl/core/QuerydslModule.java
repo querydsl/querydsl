@@ -17,7 +17,7 @@ package com.querydsl.core;
  * @author tiwe
  *
  */
-public enum Module {
+public enum QuerydslModule {
     /**
      *
      */

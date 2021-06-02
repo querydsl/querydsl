@@ -86,7 +86,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
         doPersist(entities);
     }
 
-    private final QueryExecution standardTest = new QueryExecution(Module.JDO, Target.H2) {
+    private final QueryExecution standardTest = new QueryExecution(QuerydslModule.JDO, Target.H2) {
         @Override
         protected Fetchable createQuery() {
             return query().from(store, product, otherProduct).select(store, product, otherProduct);

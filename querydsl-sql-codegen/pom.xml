@@ -91,9 +91,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.oracle</groupId>
+      <groupId>com.oracle.database.jdbc</groupId>
       <artifactId>ojdbc6</artifactId>
-      <version>11.1.0.7.0</version>
+      <version>${oracle.version}</version>
       <scope>test</scope>
     </dependency>
           
@@ -135,7 +135,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
+      <version>1.7.30</version>
       <scope>test</scope>
     </dependency>
 

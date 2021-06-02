@@ -3,9 +3,9 @@ package com.querydsl.example.config;
 import com.querydsl.example.dao.*;
 import com.querydsl.example.dto.*;
 import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,11 +13,11 @@ import java.util.HashSet;
 @Transactional
 public class TestDataServiceImpl implements TestDataService {
 
-    @Resource CustomerDao customerDao;
-    @Resource OrderDao orderDao;
-    @Resource PersonDao personDao;
-    @Resource ProductDao productDao;
-    @Resource SupplierDao supplierDao;
+    @Autowired CustomerDao customerDao;
+    @Autowired OrderDao orderDao;
+    @Autowired PersonDao personDao;
+    @Autowired ProductDao productDao;
+    @Autowired SupplierDao supplierDao;
 
     @Override
     public void addTestData() {

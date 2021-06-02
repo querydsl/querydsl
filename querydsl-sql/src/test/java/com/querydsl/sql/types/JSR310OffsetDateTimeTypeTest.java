@@ -34,7 +34,7 @@ public class JSR310OffsetDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest
     @Test
     public void jodaSet() throws SQLException {
         OffsetDateTime value = OffsetDateTime.now();
-        Timestamp ts = Timestamp.from(value.toInstant());
+        Timestamp ts = new Timestamp(value.toInstant().toEpochMilli());
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
         stmt.setTimestamp(1, ts);

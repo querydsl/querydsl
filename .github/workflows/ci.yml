@@ -22,6 +22,7 @@ jobs:
     strategy:
       matrix:
         target: [test]
+        java: [1.8, 11]
         include:
           - target: test
             containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
@@ -32,10 +33,10 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 1.8
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: ${{ matrix.java }}
 
       - name: Start test databases
         if: ${{ matrix.containers }}

@@ -197,7 +197,7 @@ public class EntitySerializerTest {
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSourceCode = writer.toString();
-        assertTrue(generatedSourceCode.contains("import javax.annotation.Generated;"));
+        assertTrue(generatedSourceCode.contains(String.format("import %s;", GeneratedAnnotationResolver.resolveDefault().getName())));
         assertTrue(generatedSourceCode.contains("@Generated(\"com.querydsl.codegen.DefaultEntitySerializer\")\npublic class"));
         CompileUtils.assertCompiles("QEntitySerializerTest_Entity", generatedSourceCode);
     }

@@ -131,10 +131,10 @@ public class TeradataDialect extends Dialect {
     }
 
     /**
-     * Does this dialect support the <tt>FOR UPDATE</tt> syntax?
+     * Does this dialect support the {@code FOR UPDATE} syntax?
      *
      * @return empty string ... Teradata does not support
-     *         <tt>FOR UPDATE<tt> syntax
+     *         {@code FOR UPDATE} syntax
      */
     @Override
     public String getForUpdateString() {
@@ -173,10 +173,10 @@ public class TeradataDialect extends Dialect {
 
     /**
      * Get the name of the database type associated with the given
-     * <tt>java.sql.Types</tt> typecode.
+     * {@code java.sql.Types} typecode.
      *
      * @param code
-     *            <tt>java.sql.Types</tt> typecode
+     *            {@link java.sql.Types} typecode
      * @param length
      *            the length or precision of the column
      * @param precision

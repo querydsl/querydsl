@@ -3,8 +3,8 @@ package com.querydsl.example.dao;
 import com.querydsl.example.dto.Product;
 import com.querydsl.example.dto.ProductL10n;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,9 +12,10 @@ import static org.junit.Assert.*;
 
 public class ProductDaoTest extends AbstractDaoTest {
 
-    @Resource SupplierDao supplierDao;
+    @Autowired
+    SupplierDao supplierDao;
 
-    @Resource ProductDao productDao;
+    @Autowired ProductDao productDao;
 
     @Test
     public void findAll() {

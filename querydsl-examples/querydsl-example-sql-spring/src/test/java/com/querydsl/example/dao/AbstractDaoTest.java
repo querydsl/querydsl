@@ -4,12 +4,11 @@ import com.querydsl.example.config.TestConfiguration;
 import com.querydsl.example.config.TestDataService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfiguration.class})
@@ -17,7 +16,8 @@ import javax.annotation.Resource;
 @Transactional
 public abstract class AbstractDaoTest {
 
-    @Resource TestDataService testDataService;
+    @Autowired
+    TestDataService testDataService;
 
     @Before
     public void setUp() {

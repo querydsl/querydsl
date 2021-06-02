@@ -29,18 +29,18 @@ import com.querydsl.core.types.dsl.*;
  */
 public class ProjectionsFactory {
 
-    private final Module module;
+    private final QuerydslModule module;
 
     private final Target target;
 
-    public ProjectionsFactory(Module module, Target target) {
+    public ProjectionsFactory(QuerydslModule module, Target target) {
         this.module = module;
         this.target = target;
     }
 
     public <A> Collection<Expression<?>> array(ArrayExpression<A[], A> expr, ArrayExpression<A[], A> other, A knownElement) {
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
-        if (!module.equals(Module.RDFBEAN)) {
+        if (!module.equals(QuerydslModule.RDFBEAN)) {
             rv.add(expr.size());
         }
         return Collections.unmodifiableSet(rv);
@@ -48,7 +48,7 @@ public class ProjectionsFactory {
 
     public <A> Collection<Expression<?>> collection(CollectionExpressionBase<?,A> expr, CollectionExpression<?,A> other, A knownElement) {
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
-        if (!module.equals(Module.RDFBEAN)) {
+        if (!module.equals(QuerydslModule.RDFBEAN)) {
             rv.add(expr.size());
         }
         return Collections.unmodifiableSet(rv);
@@ -62,7 +62,7 @@ public class ProjectionsFactory {
         rv.add(expr.year());
         rv.add(expr.yearMonth());
 
-        if (module != Module.COLLECTIONS && module != Module.RDFBEAN) {
+        if (module != QuerydslModule.COLLECTIONS && module != QuerydslModule.RDFBEAN) {
             rv.add(expr.min());
             rv.add(expr.max());
         }
@@ -81,7 +81,7 @@ public class ProjectionsFactory {
         rv.add(expr.minute());
         rv.add(expr.second());
 
-        if (module != Module.COLLECTIONS && module != Module.RDFBEAN) {
+        if (module != QuerydslModule.COLLECTIONS && module != QuerydslModule.RDFBEAN) {
             rv.add(expr.min());
             rv.add(expr.max());
         }
@@ -92,7 +92,7 @@ public class ProjectionsFactory {
     public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement) {
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         rv.add(expr.get(0));
-        if (!module.equals(Module.RDFBEAN)) {
+        if (!module.equals(QuerydslModule.RDFBEAN)) {
             rv.add(expr.size());
         }
         return Collections.unmodifiableSet(rv);
@@ -101,7 +101,7 @@ public class ProjectionsFactory {
     public <K,V> Collection<Expression<?>> map(MapExpressionBase<K,V,?> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         rv.add(expr.get(knownKey));
-        if (!module.equals(Module.RDFBEAN)) {
+        if (!module.equals(QuerydslModule.RDFBEAN)) {
             rv.add(expr.size());
         }
         return Collections.unmodifiableSet(rv);
@@ -129,7 +129,7 @@ public class ProjectionsFactory {
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
 
-        if (!forFilter && module != Module.COLLECTIONS && module != Module.RDFBEAN) {
+        if (!forFilter && module != QuerydslModule.COLLECTIONS && module != QuerydslModule.RDFBEAN) {
             rv.add(expr.min());
             rv.add(expr.max());
             rv.add(expr.avg());
@@ -137,7 +137,7 @@ public class ProjectionsFactory {
             rv.add(expr.countDistinct());
         }
 
-        if (!(other instanceof Constant<?> || module == Module.JDO || module == Module.RDFBEAN)) {
+        if (!(other instanceof Constant<?> || module == QuerydslModule.JDO || module == QuerydslModule.RDFBEAN)) {
             CaseBuilder cases = new CaseBuilder();
             rv.add(NumberConstant.create(1).add(cases
                 .when(expr.gt(10)).then(expr)
@@ -194,7 +194,7 @@ public class ProjectionsFactory {
         rv.add(expr.substring(1));
         rv.add(expr.substring(0, 1));
 
-        if (!(other instanceof Constant<?> || module == Module.JDO || module == Module.RDFBEAN)) {
+        if (!(other instanceof Constant<?> || module == QuerydslModule.JDO || module == QuerydslModule.RDFBEAN)) {
             CaseBuilder cases = new CaseBuilder();
             rv.add(cases.when(expr.eq("A")).then(other)
                         .when(expr.eq("B")).then(expr)
@@ -209,7 +209,7 @@ public class ProjectionsFactory {
 
         rv.add(expr.upper());
 
-        if (module != Module.JDO) {
+        if (module != QuerydslModule.JDO) {
             rv.add(expr.nullif("xxx"));
         }
 

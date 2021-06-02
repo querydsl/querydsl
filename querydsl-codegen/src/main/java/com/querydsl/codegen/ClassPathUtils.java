@@ -13,15 +13,11 @@
  */
 package com.querydsl.codegen;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import io.github.classgraph.ClassGraph;
 
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
+import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * {@code ClassPathUtils} provides classpath scanning functionality
@@ -51,21 +47,15 @@ public final class ClassPathUtils {
      * @throws IOException
      */
     public static Set<Class<?>> scanPackage(ClassLoader classLoader, String pkg) throws IOException {
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .addUrls(ClasspathHelper.forPackage(pkg, classLoader))
-                .addClassLoader(classLoader)
-                .filterInputsBy(new FilterBuilder().includePackage(pkg).excludePackage("com.sun.*").excludePackage("com.apple.*"))
-                .setScanners(new SubTypesScanner(false)));
-
-        Set<Class<?>> classes = new HashSet<Class<?>>();
-        final Set<String> allTypes = reflections.getStore().getAll(SubTypesScanner.class, reflections.getStore().keys(SubTypesScanner.class.getSimpleName()));
-        for (String typeNames : allTypes) {
-            Class<?> clazz = safeClassForName(classLoader, typeNames);
-            if (clazz != null) {
-                classes.add(clazz);
-            }
-        }
-        return classes;
+        return new ClassGraph()
+                .enableClassInfo()
+                .acceptPackages(pkg)
+                .rejectPackages("com.sun", "com.apple")
+                .overrideClassLoaders(classLoader)
+                .scan()
+                .getAllClasses()
+                .stream().map(info -> safeClassForName(classLoader, info.getName()))
+                .collect(Collectors.toSet());
     }
 
     /**
