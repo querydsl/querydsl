@@ -31,7 +31,7 @@ public class HibernateQueryFactoryTest {
 
     @Before
     public void setUp() {
-        Supplier<Session> provider = () -> EasyMock.createNiceMock(Session.class);
+        Supplier<Session> provider = () -> EasyMock.<Session> createNiceMock(Session.class);
         queryFactory = new HibernateQueryFactory(JPQLTemplates.DEFAULT, provider);
     }
 

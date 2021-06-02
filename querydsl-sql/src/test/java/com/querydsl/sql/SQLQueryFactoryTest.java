@@ -30,7 +30,7 @@ public class SQLQueryFactoryTest {
 
     @Before
     public void setUp() {
-        Supplier<Connection> provider = () -> EasyMock.createNiceMock(Connection.class);
+        Supplier<Connection> provider = () -> EasyMock.<Connection> createNiceMock(Connection.class);
         queryFactory = new SQLQueryFactory(SQLTemplates.DEFAULT, provider);
     }
 

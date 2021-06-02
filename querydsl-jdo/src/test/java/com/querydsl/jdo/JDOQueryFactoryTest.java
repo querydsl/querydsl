@@ -31,7 +31,7 @@ public class JDOQueryFactoryTest {
 
     @Before
     public void setUp() {
-        Supplier<PersistenceManager> provider = () -> EasyMock.createNiceMock(PersistenceManager.class);
+        Supplier<PersistenceManager> provider = () -> EasyMock.<PersistenceManager> createNiceMock(PersistenceManager.class);
         queryFactory = new JDOQueryFactory(provider);
     }
 
