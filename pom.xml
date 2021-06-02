@@ -45,7 +45,7 @@
     <!-- SQL deps -->
     <db2.version>11.5.5.0</db2.version>
     <derby.version>10.11.1.1</derby.version>
-    <hsqldb.version>2.3.2</hsqldb.version>
+    <hsqldb.version>2.6.0</hsqldb.version>
     <h2.version>1.4.197</h2.version>
     <postgresql.version>42.2.18</postgresql.version>
     <oracle.version>11.2.0.4</oracle.version>
@@ -846,6 +846,16 @@
         <checkstyle.skip>true</checkstyle.skip>
         <enforcer.skip>true</enforcer.skip>
         <animal.sniffer.skip>true</animal.sniffer.skip>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>java-8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+        <hsqldb.version>2.5.2</hsqldb.version>
       </properties>
     </profile>
 

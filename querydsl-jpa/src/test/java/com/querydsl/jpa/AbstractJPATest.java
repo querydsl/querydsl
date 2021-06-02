@@ -1511,7 +1511,7 @@ public abstract class AbstractJPATest {
 
     @Test
     @NoBatooJPA
-    @ExcludeIn({ORACLE, SQLSERVER})
+    @ExcludeIn({ORACLE, SQLSERVER, HSQLDB})
     public void substring2() {
         QCompany company = QCompany.company;
         StringExpression name = company.name;
