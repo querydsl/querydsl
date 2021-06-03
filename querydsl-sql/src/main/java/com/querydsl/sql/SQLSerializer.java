@@ -47,8 +47,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     protected final LinkedList<Path<?>> constantPaths = new LinkedList<Path<?>>();
 
-    protected final List<Object> constants = new ArrayList<Object>();
-
     protected final Set<Path<?>> withAliases = new HashSet<>();
 
     protected final boolean dml;
@@ -103,10 +101,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     protected void appendTableName(String table, boolean precededByDot) {
         append(templates.quoteIdentifier(table, precededByDot));
-    }
-
-    public List<Object> getConstants() {
-        return constants;
     }
 
     public List<Path<?>> getConstantPaths() {
@@ -801,7 +795,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 if (!first) {
                     append(COMMA);
                 }
-                append("?");
+                serializeConstant(constants.size() + 1, null);
                 constants.add(o);
                 if (first && (constantPaths.size() < constants.size())) {
                     constantPaths.add(null);
@@ -823,7 +817,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 Expression type = Expressions.constant(typeName);
                 super.visitOperation(constant.getClass(), SQLOps.CAST, Arrays.<Expression<?>> asList(Q, type));
             } else {
-                append("?");
+                serializeConstant(constants.size() + 1, null);
             }
             constants.add(constant);
             if (constantPaths.size() < constants.size()) {
@@ -834,12 +828,17 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     public Void visit(ParamExpression<?> param, Void context) {
-        append("?");
         constants.add(param);
+        serializeConstant(constants.size(), null);
         if (constantPaths.size() < constants.size()) {
             constantPaths.add(null);
         }
         return null;
+    }
+
+    @Override
+    protected void serializeConstant(int parameterIndex, String constantLabel) {
+        append("?");
     }
 
     @Override

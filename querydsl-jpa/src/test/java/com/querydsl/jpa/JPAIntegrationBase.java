@@ -51,7 +51,7 @@ public class JPAIntegrationBase extends ParsingTest implements JPATest {
                 JPQLSerializer serializer = new JPQLSerializer(templates);
                 serializer.serialize(getMetadata(), false, null);
                 Query query = em.createQuery(serializer.toString());
-                JPAUtil.setConstants(query, serializer.getConstantToAllLabels(), getMetadata().getParams());
+                JPAUtil.setConstants(query, serializer.getConstants(), getMetadata().getParams());
                 try {
                     query.getResultList();
                 } catch (Exception e) {

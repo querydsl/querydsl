@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
-import org.hibernate.query.Query;
 import org.hibernate.type.*;
 
 import com.querydsl.core.types.ParamExpression;
@@ -61,47 +60,26 @@ public final class HibernateUtil {
     }
 
     public static void setConstants(
-            Query<?> query,
-            Map<Object, String> namedConstants,
+            org.hibernate.query.Query<?> query,
+            List<Object> constants,
             Map<ParamExpression<?>, Object> params
     ) {
-        setConstants(query, namedConstants, new HashMap<Object, Integer>(), params);
-    }
+        for (int i = 0; i < constants.size(); i++) {
+            Object val = constants.get(i);
 
-    public static void setConstants(
-            Query<?> query,
-            Map<Object, String> namedConstants,
-            Map<Object, Integer> numberedConstants,
-            Map<ParamExpression<?>, Object> params
-    ) {
-        for (Map.Entry<Object, String> entry : namedConstants.entrySet()) {
-            String key = entry.getValue();
-            Object val = entry.getKey();
             if (val instanceof Param) {
+                Param<?> param = (Param<?>) val;
                 val = params.get(val);
                 if (val == null) {
-                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                    throw new ParamNotSetException(param);
                 }
             }
 
-            setValueWithNamedLabel(query, key, val);
-        }
-
-        for (Map.Entry<Object, Integer> entry : numberedConstants.entrySet()) {
-            Integer key = entry.getValue();
-            Object val = entry.getKey();
-            if (val instanceof Param) {
-                val = params.get(val);
-                if (val == null) {
-                    throw new ParamNotSetException((Param<?>) entry.getKey());
-                }
-            }
-
-            setValueWithNumberedLabel(query, key, val);
+            setValueWithNumberedLabel(query, i + 1, val);
         }
     }
 
-    private static void setValueWithNamedLabel(Query<?> query, String key, Object val) {
+    private static void setValueWithNumberedLabel(org.hibernate.query.Query<?> query, Integer key, Object val) {
         if (val instanceof Collection<?>) {
             query.setParameterList(key, (Collection<?>) val);
         } else if (val instanceof Object[] && !BUILT_IN.contains(val.getClass())) {
@@ -113,16 +91,8 @@ public final class HibernateUtil {
         }
     }
 
-    private static void setValueWithNumberedLabel(Query<?> query, Integer key, Object val) {
-        if (val instanceof Number && TYPES.containsKey(val.getClass())) {
-            query.setParameter(key, val, getType(val.getClass()));
-        } else {
-            query.setParameter(key, val);
-        }
-    }
-
-
     public static Type getType(Class<?> clazz) {
         return TYPES.get(clazz);
     }
+
 }

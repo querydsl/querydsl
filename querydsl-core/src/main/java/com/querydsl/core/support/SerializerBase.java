@@ -13,19 +13,31 @@
  */
 package com.querydsl.core.support;
 
+import com.querydsl.core.JoinFlag;
+import com.querydsl.core.QueryFlag;
+import com.querydsl.core.types.Constant;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.types.Operation;
+import com.querydsl.core.types.Operator;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.ParamExpression;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathType;
+import com.querydsl.core.types.Template;
+import com.querydsl.core.types.TemplateExpression;
+import com.querydsl.core.types.Templates;
+import com.querydsl.core.types.Visitor;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.querydsl.core.JoinFlag;
-import com.querydsl.core.QueryFlag;
-import com.querydsl.core.types.*;
-
-import static java.util.Collections.unmodifiableMap;
 
 /**
  * {@code SerializerBase} is a stub for Serializer implementations which serialize query metadata to Strings
@@ -46,8 +58,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private String anonParamPrefix = "_";
 
-    private Map<Object, String> constantToNamedLabel;
-    private Map<Object, Integer> constantToNumberedLabel;
+    protected final List<Object> constants = new LinkedList<>();
+
+    protected final Map<Object, String> constantToLabel = new IdentityHashMap<>();
 
     @SuppressWarnings("unchecked")
     private final S self = (S) this;
@@ -79,35 +92,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return constantPrefix;
     }
 
-    @Deprecated
     public Map<Object, String> getConstantToLabel() {
-        return getConstantToAllLabels();
-    }
-
-    public Map<Object, String> getConstantToNamedLabel() {
-        if (constantToNamedLabel == null) {
-            constantToNamedLabel = new HashMap<Object, String>(4);
-        }
-        return constantToNamedLabel;
-    }
-
-    public Map<Object, Integer> getConstantToNumberedLabel() {
-        if (constantToNumberedLabel == null) {
-            constantToNumberedLabel = new HashMap<Object, Integer>(4);
-        }
-        return constantToNumberedLabel;
-    }
-
-    public Map<Object, String> getConstantToAllLabels() {
-        Map<Object, String> namedLabels = getConstantToNamedLabel();
-        Map<Object, Integer> numberedLabels = getConstantToNumberedLabel();
-
-        Map<Object, String> allLabels = new HashMap<Object, String>(namedLabels);
-        for (Map.Entry<Object, Integer> entry : numberedLabels.entrySet()) {
-            allLabels.put(entry.getKey(), entry.getValue().toString());
-        }
-
-        return unmodifiableMap(allLabels);
+        return constantToLabel;
     }
 
     protected int getLength() {
@@ -223,13 +209,37 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     public void visitConstant(Object constant) {
-        if (!getConstantToAllLabels().containsKey(constant)) {
-            final String constLabel = constantPrefix + (getConstantToNamedLabel().size() + 1);
-            getConstantToNamedLabel().put(constant, constLabel);
-            append(constLabel);
-        } else {
-            append(getConstantToNamedLabel().get(constant));
-        }
+        final String constantLabel = getConstantToLabel().computeIfAbsent(constant, this::getConstantLabel);
+        constants.add(constant);
+        serializeConstant(constants.size(), constantLabel);
+    }
+
+    /**
+     * Serialize the constant as parameter to the query. The default implementation writes the
+     * label name for the constants. Some dialects may replace this by indexed based or
+     * positional parameterization.
+     * Dialects may also use this to prefix the parameter with for example ":" or "?".
+     *
+     * @param parameterIndex index at which this constant occurs in {@link #getConstants()}
+     * @param constantLabel label under which this constant occurs in {@link #getConstantToLabel()}
+     */
+    protected void serializeConstant(int parameterIndex, String constantLabel) {
+        append(constantLabel);
+    }
+
+    /**
+     * Generate a constant value under which to register a new constant in {@link #getConstantToLabel()}.
+     *
+     * @param value the constant value or parameter to create a constant for
+     * @return the generated label
+     */
+    @NotNull
+    protected String getConstantLabel(Object value) {
+        return constantPrefix + (getConstantToLabel().size() + 1);
+    }
+
+    public List<Object> getConstants() {
+        return constants;
     }
 
     @Override
@@ -240,8 +250,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         } else {
             paramLabel = paramPrefix + param.getName();
         }
-        getConstantToNamedLabel().put(param, paramLabel);
-        append(paramLabel);
+        getConstantToLabel().put(param, paramLabel);
+        constants.add(param);
+        serializeConstant(constants.size(), paramLabel);
         return null;
     }
 

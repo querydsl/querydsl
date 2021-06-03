@@ -75,13 +75,12 @@ public class JPAInsertClause implements InsertClause<JPAInsertClause> {
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
         serializer.serializeForInsert(queryMixin.getMetadata(), inserts.isEmpty() ? columns : inserts.keySet(), values, subQuery, inserts);
-        Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
         if (lockMode != null) {
             query.setLockMode(lockMode);
         }
-        JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
+        JPAUtil.setConstants(query, serializer.getConstants(), queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
 

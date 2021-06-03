@@ -56,6 +56,10 @@ A huge thanks goes out to all contributors that made this release possible in th
 * [#2663](https://github.com/querydsl/querydsl/issues/2663) - Fix issues with the JPA implementation of `InsertClause`.
 * [#2706](https://github.com/querydsl/querydsl/pull/2706) - Fix a memory leak in `TemplateFactory`.
 * [#2467](https://github.com/querydsl/querydsl/issues/2467) - Prevent `ExtendedBeanSerializer` from generating `toString` method twice
+* [#2326](https://github.com/querydsl/querydsl/issues/2326) - Use JPA indexed parameters instead of HQL's legacy positional parameters
+* [#2816](https://github.com/querydsl/querydsl/issues/2816) - Generated JPA query with incorrect argument binding indexes
+* [#1413](https://github.com/querydsl/querydsl/issues/1413) - Incorrect parameter values with Hibernate custom types
+* [#1429](https://github.com/querydsl/querydsl/issues/1429) - Reusing of constants in JPQL generation causes issues with hibernate query caching
 
 #### Breaking changes
 
@@ -91,6 +95,8 @@ A huge thanks goes out to all contributors that made this release possible in th
 * Removal of `HibernateDomainExporter` in `querysql-jpa-codegen`. `HibernateDomainExporter` only supported Hibernate 4, which QueryDSL no longer actively supports. Instead, use the `JPADomainExporter` with Hibernate.
 * `ComparableExpression#coalesce` (and subtypes) no longer return a mutable `Coalesce` expression, but instead return a typed expression.
   If you need the Coalesce builder, use `new Coalesce<T>().add(expression)` instead.
+* `getConstantToNamedLabel`, `getConstantToNumberedLabel` and `getConstantToAllLabels` that were temporarily introduced to `SerializerBase` and `JPQLSerializer` 
+  in QueryDSL 4.3.0 to eventually replace `getConstantToLabel` are now removed in favor of `getConstants`.
 
 #### Deprecations
 * `AbstractJPAQuery#fetchResults` and `AbstractJPAQuery#fetchCount` are now deprecated for queries that have multiple group by
@@ -99,6 +105,7 @@ A huge thanks goes out to all contributors that made this release possible in th
   If you want a reliable way of computing the result count for a paginated result for even the most complicated queries,
   we recommend using the [Blaze-Persistence QueryDSL integration](https://persistence.blazebit.com/documentation/1.5/core/manual/en_US/#querydsl-integration).
   `BlazeJPAQuery` properly implements both `fetchResults` and `fetchCount` and even comes with a `page` method.
+* `getConstantToLabel` which was deprecated in QueryDSL 4.3.0 is no longer deprecated.
 
 #### Dependency updates
 
