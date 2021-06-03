@@ -13,7 +13,7 @@
     <name>Querydsl - Kotlin codegen support</name>
 
     <properties>
-        <kotlin.version>1.4.32</kotlin.version>
+        <kotlin.version>1.5.10</kotlin.version>
         <surefire.useManifestOnlyJar>false</surefire.useManifestOnlyJar>
     </properties>
 

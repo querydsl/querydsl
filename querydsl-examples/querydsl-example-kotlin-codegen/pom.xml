@@ -12,7 +12,7 @@
     <name>Querydsl example - Kotlin Codegen</name>
 
     <properties>
-        <kotlin.version>1.4.32</kotlin.version>
+        <kotlin.version>1.5.10</kotlin.version>
     </properties>
 
     <dependencies>
