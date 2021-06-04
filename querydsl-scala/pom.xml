@@ -19,7 +19,7 @@
     <argLine>-Xms256m -Xmx512m -Xss2m</argLine>
     <checkstyle.skip>true</checkstyle.skip>
 
-    <scala.full.version>2.11.12</scala.full.version>
+    <scala.full.version>2.12.14</scala.full.version>
     <hibernate.version>3.5.6-Final</hibernate.version>
   </properties>
 
