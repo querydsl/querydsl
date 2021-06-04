@@ -38,7 +38,6 @@ jobs:
         include:
           - target: test
             containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
-            maven-args: --activate-profiles all,travis,examples
 
     runs-on: ubuntu-latest
     steps:
@@ -64,7 +63,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Run tests
-        run: mvn --batch-mode install -am jacoco:report ${{ matrix.maven-args }}
+        run: mvn --batch-mode install -am jacoco:report --activate-profiles all,travis,examples
 
       - name: Upload test reports
         uses: actions/upload-artifact@v2
@@ -77,7 +76,7 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: mvn --batch-mode coveralls:report ${{ matrix.maven-args }}
+        run: mvn --batch-mode coveralls:report --activate-profiles all,travis
 
       - name: Deploy snapshot 🚀
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
