@@ -17,7 +17,19 @@ env:
   MAVEN_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
 jobs:
+  check_duplicate:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          concurrent_skipping: 'same_content_newer'
+
   build:
+    needs: check_duplicate
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
 
     strategy:
       matrix:
