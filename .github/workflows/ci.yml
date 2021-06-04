@@ -73,11 +73,11 @@ jobs:
           name: test-reports
           path: './**/target/surefire-reports/'
 
-#       - name: Report coverage
-#         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-#         env:
-#           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-#         run: mvn --batch-mode coveralls:report
+      - name: Report coverage
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: mvn --batch-mode coveralls:report ${{ matrix.maven-args }}
 
       - name: Deploy snapshot 🚀
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
