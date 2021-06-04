@@ -70,3 +70,7 @@ If you are unsure about the details of a contribution, ask on the Querydsl Googl
 
 [Docker]: https://www.docker.com/products/docker-desktop
 [docker-compose]: https://docs.docker.com/compose/
+
+### Slack
+
+If you want to join Slack workspace for Querydsl contributors join by following [this link](https://join.slack.com/t/querydsl/shared_invite/zt-r7ufzz6q-zxIHgpOSSMFvoU3YU4SclQ).
