@@ -429,10 +429,10 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @return coalesce
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public ComparableExpression<T> coalesce(Expression<T>... exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public ComparableExpression<T> coalesce(Expression<?>... exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression<T> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
         return coalesce.getValue();

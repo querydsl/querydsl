@@ -101,10 +101,10 @@ public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpressio
      * @return coalesce
      */
     @Override
-    @SuppressWarnings({"unchecked"})
-    public EnumExpression<T> coalesce(Expression<T>... exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public EnumExpression<T> coalesce(Expression<?>... exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression<T> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
         return (EnumExpression<T>) coalesce.asEnum();

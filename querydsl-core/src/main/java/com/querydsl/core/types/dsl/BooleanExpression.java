@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * {@code BooleanExpression} represents {@code java.lang.Boolean} expressions
+ * {@code BooleanExpression} represents {@link java.lang.Boolean} expressions
  *
  * @author tiwe
  * @see java.lang.Boolean
@@ -197,10 +197,10 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
      * @return coalesce
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public BooleanExpression coalesce(Expression<Boolean>... exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public BooleanExpression coalesce(Expression<?>... exprs) {
         Coalesce<Boolean> coalesce = new Coalesce<Boolean>(getType(), mixin);
-        for (Expression<Boolean> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
         return coalesce.asBoolean();

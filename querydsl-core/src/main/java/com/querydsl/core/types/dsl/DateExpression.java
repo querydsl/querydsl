@@ -248,10 +248,10 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return coalesce
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public DateExpression<T> coalesce(Expression<T>... exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public DateExpression<T> coalesce(Expression<?>... exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression<T> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
         return coalesce.asDate();

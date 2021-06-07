@@ -70,10 +70,10 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @param exprs additional arguments
      * @return coalesce
      */
-    @SuppressWarnings("unchecked")
-    public ComparableExpressionBase<T> coalesce(Expression<T>...exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public ComparableExpressionBase<T> coalesce(Expression<?>...exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression<T> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
         return coalesce.getValue();

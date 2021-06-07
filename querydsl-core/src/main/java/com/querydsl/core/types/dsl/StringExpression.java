@@ -883,10 +883,10 @@ public abstract class StringExpression extends LiteralExpression<String> {
      * @return coalesce
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public StringExpression coalesce(Expression<String>... exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public StringExpression coalesce(Expression<?>... exprs) {
         Coalesce<String> coalesce = new Coalesce<String>(getType(), mixin);
-        for (Expression<String> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
         return coalesce.asString();
