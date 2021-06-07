@@ -16,6 +16,8 @@ A huge thanks goes out to all contributors that made this release possible in th
 * **[@harshtuna](https://github.com/harshtuna)**, for working on NullsLast ordering in `querydsl-collections`;
 * **[@kherrala](https://github.com/kherrala)**, **[@ridoo](https://github.com/ridoo)** and **[@NikitaKochkurov](https://github.com/NikitaKochkurov)** for working on the JTS and GeoLatte upgrade for `querydsl-spatial`;
 * **[@ridoo](https://github.com/ridoo)**, for working on Spatial support in `HibernateDomainExporter` and `JPADomainExporter`;
+* **[@lpandzic](https://github.com/lpandzic)**, for working on codegen support for Java 15 records and general improvements;
+* **[@F43nd1r](https://github.com/F43nd1r)**, for working on Kotlin Code generation, Java 11 support, general improvements and Continuous Integration;
 * **[@jwgmeligmeyling](https://github.com/jwgmeligmeyling)**, **[@Shredder121](https://github.com/Shredder121)**, **[@johnktims](https://github.com/johnktims)**, **[@idosal](https://github.com/idosal)** and **[@robertandrewbain](https://github.com/robertandrewbain)**.
 
 #### New features
@@ -42,6 +44,8 @@ A huge thanks goes out to all contributors that made this release possible in th
 * [#2320](https://github.com/querydsl/querydsl/issues/2320) - Make Spatial support available to `HibernateDomainExporter` and `JPADomainExporter`. 
 * [#2612](https://github.com/querydsl/querydsl/issues/2612) - Support jakarta.* packages for new Jakarta EE releases (available through the`jakarta` classifiers for Maven)
 * [#1376](https://github.com/querydsl/querydsl/issues/1376) - Return typed expression from `nullif` and `coalesce` methods.
+* [#1828](https://github.com/querydsl/querydsl/issues/1828) - Kotlin Codegen support
+* [#2798](https://github.com/querydsl/querydsl/pull/2798) - Java Record support
 
 #### Bugfixes
 
