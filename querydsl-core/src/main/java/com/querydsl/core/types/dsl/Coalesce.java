@@ -39,6 +39,11 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
 
     private transient volatile ComparableExpression<T> value;
 
+    public Coalesce(Class<? extends T> type, Expression<T> expr) {
+        super(type);
+        add(expr);
+    }
+
     public Coalesce(Class<? extends T> type, Expression<?>... exprs) {
         super(type);
         // NOTE : type parameters for the varargs, would result in compiler warnings

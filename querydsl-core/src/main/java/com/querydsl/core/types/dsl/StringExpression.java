@@ -864,17 +864,44 @@ public abstract class StringExpression extends LiteralExpression<String> {
     }
 
     /**
+     * Create a {@code coalesce(this, expr)} expression
+     *
+     * @param expr additional argument
+     * @return coalesce
+     */
+    @Override
+    public StringExpression coalesce(Expression<String> expr) {
+        Coalesce<String> coalesce = new Coalesce<String>(getType(), mixin);
+        coalesce.add(expr);
+        return coalesce.asString();
+    }
+
+    /**
      * Create a {@code coalesce(this, exprs...)} expression
      *
      * @param exprs additional arguments
      * @return coalesce
      */
     @Override
-    public StringExpression coalesce(Expression<String>... exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public StringExpression coalesce(Expression<?>... exprs) {
         Coalesce<String> coalesce = new Coalesce<String>(getType(), mixin);
-        for (Expression<String> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
+        return coalesce.asString();
+    }
+
+    /**
+     * Create a {@code coalesce(this, arg)} expression
+     *
+     * @param arg additional argument
+     * @return coalesce
+     */
+    @Override
+    public StringExpression coalesce(String arg) {
+        Coalesce<String> coalesce = new Coalesce<String>(getType(), mixin);
+        coalesce.add(arg);
         return coalesce.asString();
     }
 

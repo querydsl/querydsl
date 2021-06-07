@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import com.querydsl.core.types.*;
 
 /**
- * {@code BooleanExpression} represents {@code java.lang.Boolean} expressions
+ * {@code BooleanExpression} represents {@link java.lang.Boolean} expressions
  *
  * @author tiwe
  * @see java.lang.Boolean
@@ -178,17 +178,44 @@ public abstract class BooleanExpression extends LiteralExpression<Boolean> imple
     }
 
     /**
+     * Create a {@code coalesce(this, expr)} expression
+     *
+     * @param expr additional argument
+     * @return coalesce
+     */
+    @Override
+    public BooleanExpression coalesce(Expression<Boolean> expr) {
+        Coalesce<Boolean> coalesce = new Coalesce<Boolean>(getType(), mixin);
+        coalesce.add(expr);
+        return coalesce.asBoolean();
+    }
+
+    /**
      * Create a {@code coalesce(this, exprs...)} expression
      *
      * @param exprs additional arguments
      * @return coalesce
      */
     @Override
-    public BooleanExpression coalesce(Expression<Boolean>... exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public BooleanExpression coalesce(Expression<?>... exprs) {
         Coalesce<Boolean> coalesce = new Coalesce<Boolean>(getType(), mixin);
-        for (Expression<Boolean> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
+        return coalesce.asBoolean();
+    }
+
+    /**
+     * Create a {@code coalesce(this, arg)} expression
+     *
+     * @param arg additional argument
+     * @return coalesce
+     */
+    @Override
+    public BooleanExpression coalesce(Boolean arg) {
+        Coalesce<Boolean> coalesce = new Coalesce<Boolean>(getType(), mixin);
+        coalesce.add(arg);
         return coalesce.asBoolean();
     }
 

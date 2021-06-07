@@ -145,17 +145,44 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
+     * Create a {@code coalesce(this, expr)} expression
+     *
+     * @param expr additional argument
+     * @return coalesce
+     */
+    @Override
+    public TimeExpression<T> coalesce(Expression<T> expr) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        coalesce.add(expr);
+        return coalesce.asTime();
+    }
+
+    /**
      * Create a {@code coalesce(this, exprs...)} expression
      *
      * @param exprs additional arguments
      * @return coalesce
      */
     @Override
-    public TimeExpression<T> coalesce(Expression<T>... exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public TimeExpression<T> coalesce(Expression<?>... exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression<T> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
+        return coalesce.asTime();
+    }
+
+    /**
+     * Create a {@code coalesce(this, arg)} expression
+     *
+     * @param arg additional argument
+     * @return coalesce
+     */
+    @Override
+    public TimeExpression<T> coalesce(T arg) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        coalesce.add(arg);
         return coalesce.asTime();
     }
 

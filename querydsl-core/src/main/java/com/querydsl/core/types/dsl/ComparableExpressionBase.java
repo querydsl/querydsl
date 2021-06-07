@@ -53,16 +53,41 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     }
 
     /**
+     * Create a {@code coalesce(this, expr)} expression
+     *
+     * @param expr additional argument
+     * @return coalesce
+     */
+    public ComparableExpressionBase<T> coalesce(Expression<T> expr) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        coalesce.add(expr);
+        return coalesce.getValue();
+    }
+
+    /**
      * Create a {@code coalesce(this, exprs...)} expression
      *
      * @param exprs additional arguments
      * @return coalesce
      */
-    public ComparableExpressionBase<T> coalesce(Expression<T>...exprs) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public ComparableExpressionBase<T> coalesce(Expression<?>...exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
-        for (Expression<T> expr : exprs) {
+        for (Expression expr : exprs) {
             coalesce.add(expr);
         }
+        return coalesce.getValue();
+    }
+
+    /**
+     * Create a {@code coalesce(this, arg)} expression
+     *
+     * @param arg additional argument
+     * @return coalesce
+     */
+    public ComparableExpressionBase<T> coalesce(T arg) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        coalesce.add(arg);
         return coalesce.getValue();
     }
 
@@ -72,6 +97,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @param args additional arguments
      * @return coalesce
      */
+    @SuppressWarnings("unchecked")
     public ComparableExpressionBase<T> coalesce(T... args) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (T arg : args) {
