@@ -187,7 +187,7 @@ class EntitySerializerTest {
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSourceCode = writer.toString()
         Assert.assertTrue(generatedSourceCode.contains("import ${GeneratedAnnotationResolver.resolveDefault().name}"))
-        Assert.assertTrue(generatedSourceCode.contains("@Generated(\"com.querydsl.kotlin.codegen.KotlinEntitySerializer\")\nclass"))
+        Assert.assertTrue(generatedSourceCode.contains("@Generated(\"com.querydsl.kotlin.codegen.KotlinEntitySerializer\")\npublic class"))
         assertCompiles("QEntitySerializerTest_Entity", generatedSourceCode)
     }
 
@@ -198,7 +198,7 @@ class EntitySerializerTest {
         KotlinEntitySerializer(typeMappings, emptySet(), Generated::class.java).serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSourceCode = writer.toString()
         Assert.assertTrue(generatedSourceCode.contains("import " + Generated::class.java.name))
-        Assert.assertTrue(generatedSourceCode.contains("@${Generated::class.java.simpleName}(\"com.querydsl.kotlin.codegen.KotlinEntitySerializer\")\nclass"))
+        Assert.assertTrue(generatedSourceCode.contains("@${Generated::class.java.simpleName}(\"com.querydsl.kotlin.codegen.KotlinEntitySerializer\")\npublic class"))
         assertCompiles("QEntitySerializerTest_Entity", generatedSourceCode)
     }
 }
