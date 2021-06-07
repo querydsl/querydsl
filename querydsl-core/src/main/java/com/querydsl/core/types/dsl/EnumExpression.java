@@ -81,17 +81,46 @@ public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpressio
     }
 
     /**
+     * Create a {@code coalesce(this, expr)} expression
+     *
+     * @param expr additional argument
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public EnumExpression<T> coalesce(Expression<T> expr) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        coalesce.add(expr);
+        return (EnumExpression<T>) coalesce.asEnum();
+    }
+
+    /**
      * Create a {@code coalesce(this, exprs...)} expression
      *
      * @param exprs additional arguments
      * @return coalesce
      */
     @Override
+    @SuppressWarnings({"unchecked"})
     public EnumExpression<T> coalesce(Expression<T>... exprs) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (Expression<T> expr : exprs) {
             coalesce.add(expr);
         }
+        return (EnumExpression<T>) coalesce.asEnum();
+    }
+
+    /**
+     * Create a {@code coalesce(this, arg)} expression
+     *
+     * @param arg additional argument
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public EnumExpression<T> coalesce(T arg) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        coalesce.add(arg);
         return (EnumExpression<T>) coalesce.asEnum();
     }
 
@@ -102,6 +131,7 @@ public abstract class EnumExpression<T extends Enum<T>> extends LiteralExpressio
      * @return coalesce
      */
     @Override
+    @SuppressWarnings({"unchecked"})
     public EnumExpression<T> coalesce(T... args) {
         Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
         for (T arg : args) {

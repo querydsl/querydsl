@@ -805,6 +805,20 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
+     * Create a {@code coalesce(this, expr)} expression
+     *
+     * @param expr additional argument
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public NumberExpression<T> coalesce(Expression<T> expr) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        coalesce.add(expr);
+        return (NumberExpression<T>) coalesce.asNumber();
+    }
+
+    /**
      * Create a {@code coalesce(this, exprs...)} expression
      *
      * @param exprs additional arguments
@@ -817,6 +831,20 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
         for (Expression<T> expr : exprs) {
             coalesce.add(expr);
         }
+        return (NumberExpression<T>) coalesce.asNumber();
+    }
+
+    /**
+     * Create a {@code coalesce(this, arg)} expression
+     *
+     * @param arg additional argument
+     * @return coalesce
+     */
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public NumberExpression<T> coalesce(T arg) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), mixin);
+        coalesce.add(arg);
         return (NumberExpression<T>) coalesce.asNumber();
     }
 
