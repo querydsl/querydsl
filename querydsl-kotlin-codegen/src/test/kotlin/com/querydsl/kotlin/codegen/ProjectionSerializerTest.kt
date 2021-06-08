@@ -59,7 +59,7 @@ class ProjectionSerializerTest {
         val serializer: ProjectionSerializer = KotlinProjectionSerializer(KotlinTypeMappings())
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSource = writer.toString()
-        Assert.assertThat(generatedSource, Matchers.containsString("import ${GeneratedAnnotationResolver.resolveDefault().name}"))
+        Assert.assertThat(generatedSource, Matchers.containsString("import $generatedAnnotationImport"))
         Assert.assertThat(generatedSource, Matchers.containsString("@Generated(\"com.querydsl.kotlin.codegen.KotlinProjectionSerializer\")\npublic class"))
     }
 
