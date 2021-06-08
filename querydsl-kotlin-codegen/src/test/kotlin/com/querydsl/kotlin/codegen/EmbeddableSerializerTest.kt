@@ -177,8 +177,8 @@ class EmbeddableSerializerTest {
         typeMappings.register(entityType, queryTypeFactory.create(entityType))
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSource = writer.toString()
-        Assert.assertThat(generatedSource, Matchers.containsString("import ${GeneratedAnnotationResolver.resolveDefault().name}"))
-        Assert.assertThat(generatedSource, Matchers.containsString("@Generated(\"com.querydsl.kotlin.codegen.KotlinEmbeddableSerializer\")\nclass"))
+        Assert.assertThat(generatedSource, Matchers.containsString("import $generatedAnnotationImport"))
+        Assert.assertThat(generatedSource, Matchers.containsString("@Generated(\"com.querydsl.kotlin.codegen.KotlinEmbeddableSerializer\")\npublic class"))
         assertCompiles("QEntity", generatedSource)
     }
 
@@ -189,7 +189,7 @@ class EmbeddableSerializerTest {
         typeMappings.register(entityType, queryTypeFactory.create(entityType))
         KotlinEmbeddableSerializer(typeMappings, emptySet(), Generated::class.java).serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSourceCode = writer.toString()
-        Assert.assertThat(generatedSourceCode, Matchers.containsString("@Generated(\"com.querydsl.kotlin.codegen.KotlinEmbeddableSerializer\")\nclass"))
+        Assert.assertThat(generatedSourceCode, Matchers.containsString("@Generated(\"com.querydsl.kotlin.codegen.KotlinEmbeddableSerializer\")\npublic class"))
         assertCompiles("QEntity", generatedSourceCode)
     }
 }

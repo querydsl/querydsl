@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>kotlinpoet</artifactId>
-            <version>1.5.0</version>
+            <version>1.8.0</version>
         </dependency>
         <dependency>
             <groupId>com.querydsl</groupId>
