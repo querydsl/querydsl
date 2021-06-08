@@ -104,10 +104,16 @@ A huge thanks goes out to all contributors that made this release possible in th
 
 * `cglib:cglib` to 3.3.0 for Java 8+ support
 * `org.eclipse.jdt.core.compiler:ecj` to 4.6.1 for Java 8+ support
-* `joda-time:joda-time` to 2.10.8 for better interoperability with other frameworks that use more recent versions than QueryDSL.
+* `joda-time:joda-time` to 2.10.10 for better interoperability with other frameworks that use more recent versions than QueryDSL.
+    `joda-time:joda-time` is also no longer a required dependency and as such is no longer provided transitively to your application.
+    If your application relies on `joda-time:joda-time` being available, make sure to add the dependency to your project. 
 * `org.geolatte:geolatte-geom` to 1.8.1 for better interopability with Hibernate Spatial.
   `querydsl-spatial` is still backwards compatible with older versions of Geolatte, however, `querydsl-sql-spatial` is not and requires 1.4.0 or newer.
 * `com.vividsolutions:jts` to `org.locationtech:jts` for better interopability with Hibernate Spatial.
   `com.vividsolutions:jts` is still supported for `querydsl-spatial` if an older version of `org.geolatte:geolatte-geom` is provided.
 * DataNucleus 5.2.x for Java 8+ support
   * JDO now uses `org.datanucleus:javax.jdo` instead of `javax.jdo:jdo-api`
+* `com.google.guava:guava` is no longer a dependency of QueryDSL  and as such is no longer provided transitively to your application.
+    If your application relies on `com.google.guava:guava` being available, make sure to add the dependency to your project.
+* `com.google.code.findbugs:jsr305` is no longer a dependency of QueryDSL  and as such is no longer provided transitively to your application.
+    If your application relies on `com.google.code.findbugs:jsr305` being available, make sure to add the dependency to your project.
