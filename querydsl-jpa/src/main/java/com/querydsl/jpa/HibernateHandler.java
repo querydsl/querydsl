@@ -56,7 +56,7 @@ public class HibernateHandler implements QueryHandler {
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
         try {
-            org.hibernate.query.Query unwrappedQuery = query.unwrap(org.hibernate.query.Query.class);
+            org.hibernate.query.Query<?> unwrappedQuery = query.unwrap(org.hibernate.query.Query.class);
             ScrollableResults results = unwrappedQuery.scroll(ScrollMode.FORWARD_ONLY);
             CloseableIterator<T> iterator = new ScrollableResultsIterator<T>(results);
             if (projection != null) {
@@ -74,6 +74,7 @@ public class HibernateHandler implements QueryHandler {
     }
 
     @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public <T> Stream<T> stream(Query query, @Nullable FactoryExpression<?> projection) {
         final Stream resultStream = query.getResultStream();
         if (projection != null) {
@@ -82,7 +83,6 @@ public class HibernateHandler implements QueryHandler {
         return resultStream;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean transform(Query query, FactoryExpression<?> projection) {
         try {

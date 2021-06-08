@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.*;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
