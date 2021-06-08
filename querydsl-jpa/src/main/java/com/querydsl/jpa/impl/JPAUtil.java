@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Parameter;
@@ -33,19 +34,22 @@ public final class JPAUtil {
 
     private JPAUtil() { }
 
-    public static void setConstants(Query query, Map<Object,String> constants, Map<ParamExpression<?>, Object> params) {
+    public static void setConstants(Query query, List<Object> constants, Map<ParamExpression<?>, Object> params) {
         boolean hasParameters = !query.getParameters().isEmpty();
-        for (Map.Entry<Object,String> entry : constants.entrySet()) {
-            String key = entry.getValue();
-            Object val = entry.getKey();
-            if (Param.class.isInstance(val)) {
+
+        for (int i = 0; i < constants.size(); i++) {
+            Object val = constants.get(i);
+
+            if (val instanceof Param) {
+                Param<?> param = (Param<?>) val;
                 val = params.get(val);
                 if (val == null) {
-                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                    throw new ParamNotSetException(param);
                 }
             }
+
             if (hasParameters) {
-                Parameter parameter = query.getParameter(Integer.parseInt(key));
+                Parameter parameter = query.getParameter(i + 1);
                 Class parameterType = parameter != null ? parameter.getParameterType() : null;
                 if (parameterType != null && !parameterType.isInstance(val)) {
                     if (val instanceof Number && Number.class.isAssignableFrom(parameterType)) {
@@ -53,7 +57,8 @@ public final class JPAUtil {
                     }
                 }
             }
-            query.setParameter(Integer.parseInt(key), val);
+
+            query.setParameter(i + 1, val);
         }
     }
 

@@ -13,16 +13,6 @@
  */
 package com.querydsl.jpa.hibernate;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.hibernate.LockMode;
-import org.hibernate.query.Query;
-import org.hibernate.Session;
-import org.hibernate.StatelessSession;
-
 import com.querydsl.core.JoinType;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.support.QueryMixin;
@@ -35,6 +25,15 @@ import com.querydsl.jpa.HQLTemplates;
 import com.querydsl.jpa.JPAQueryMixin;
 import com.querydsl.jpa.JPQLSerializer;
 import com.querydsl.jpa.JPQLTemplates;
+import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.hibernate.StatelessSession;
+import org.hibernate.query.Query;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * UpdateClause implementation for Hibernate
@@ -83,8 +82,7 @@ public class HibernateUpdateClause implements
         for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()) {
             query.setLockMode(entry.getKey().toString(), entry.getValue());
         }
-        HibernateUtil.setConstants(query, serializer.getConstantToNamedLabel(), serializer.getConstantToNumberedLabel(),
-                queryMixin.getMetadata().getParams());
+        HibernateUtil.setConstants(query, serializer.getConstants(), queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
 

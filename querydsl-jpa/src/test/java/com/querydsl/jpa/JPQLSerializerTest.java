@@ -58,7 +58,7 @@ public class JPQLSerializerTest {
                 .when(cat.toes.eq(3)).then(3)
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when (cat.toes = ?1) then ?1 when (cat.toes = ?2) then ?2 else ?3 end", serializer.toString());
+        assertEquals("case when (cat.toes = ?1) then ?2 when (cat.toes = ?3) then ?4 else ?5 end", serializer.toString());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class JPQLSerializerTest {
                 .when(cat.toes.eq(3)).then(3)
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when (cat.toes = ?1) then ?1 when (cat.toes = ?2) then ?2 else 4 end", serializer.toString());
+        assertEquals("case when (cat.toes = ?1) then ?2 when (cat.toes = ?3) then ?4 else 4 end", serializer.toString());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class JPQLSerializerTest {
                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else ?3 end", serializer.toString());
+        assertEquals("case when (cat.toes = ?1) then (cat.id * ?2) when (cat.toes = ?3) then (cat.id * ?4) else ?5 end", serializer.toString());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class JPQLSerializerTest {
                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
                 .otherwise(4);
         serializer.handle(expr);
-        assertEquals("case when (cat.toes = ?1) then (cat.id * ?1) when (cat.toes = ?2) then (cat.id * ?2) else 4 end", serializer.toString());
+        assertEquals("case when (cat.toes = ?1) then (cat.id * ?2) when (cat.toes = ?3) then (cat.id * ?4) else 4 end", serializer.toString());
     }
 
     @Test
@@ -140,7 +140,7 @@ public class JPQLSerializerTest {
         serializer.handle(doublePath.add(1));
         serializer.handle(doublePath.between((float) 1.0, 1L));
         serializer.handle(doublePath.lt((byte) 1));
-        for (Object constant : serializer.getConstantToAllLabels().keySet()) {
+        for (Object constant : serializer.getConstants()) {
             assertEquals(Double.class, constant.getClass());
         }
     }
@@ -194,7 +194,7 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.handle(Expressions.stringPath("str").contains("abc!"));
         assertEquals("str like ?1 escape '!'", serializer.toString());
-        assertEquals("%abc!!%", serializer.getConstantToAllLabels().keySet().iterator().next().toString());
+        assertEquals("%abc!!%", serializer.getConstants().get(0).toString());
     }
 
     @Test
@@ -202,7 +202,7 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.handle(Expressions.stringPath("str").containsIgnoreCase("ABc!"));
         assertEquals("lower(str) like ?1 escape '!'", serializer.toString());
-        assertEquals("%abc!!%", serializer.getConstantToAllLabels().keySet().iterator().next().toString());
+        assertEquals("%abc!!%", serializer.getConstants().get(0).toString());
     }
 
     @Test
@@ -210,7 +210,7 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QCat cat = QCat.cat;
         serializer.handle(cat.name.substring(cat.name.length().subtract(1), 1));
-        assertEquals("substring(cat.name,length(cat.name) + ?1,?2 - (length(cat.name) - ?2))", serializer.toString());
+        assertEquals("substring(cat.name,length(cat.name) + ?1,?2 - (length(cat.name) - ?3))", serializer.toString());
     }
 
     @Test

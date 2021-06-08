@@ -94,7 +94,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
     private Query createQuery(boolean forCount) {
         NativeSQLSerializer serializer = (NativeSQLSerializer) serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstantToAllLabels());
+        logQuery(queryString);
         Expression<?> projection = queryMixin.getMetadata().getProjection();
         Query query;
 
@@ -152,7 +152,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
 
 
         // set constants
-        JPAUtil.setConstants(query, serializer.getConstantToAllLabels(), queryMixin.getMetadata().getParams());
+        JPAUtil.setConstants(query, serializer.getConstants(), queryMixin.getMetadata().getParams());
         this.projection = null; // necessary when query is reused
 
         if (!forCount && projection instanceof FactoryExpression) {
@@ -280,7 +280,7 @@ public abstract class AbstractJPASQLQuery<T, Q extends AbstractJPASQLQuery<T, Q>
 
     }
 
-    protected void logQuery(String queryString, Map<Object, String> parameters) {
+    protected void logQuery(String queryString) {
         if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
             logger.fine(normalizedQuery);

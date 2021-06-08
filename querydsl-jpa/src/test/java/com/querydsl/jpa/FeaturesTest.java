@@ -57,7 +57,7 @@ public class FeaturesTest extends AbstractQueryTest {
     public void argumentHandling() {
         // Kitty is reused, so it should be used via one named parameter
         assertToString(
-                "cat.name = ?1 or cust.name.firstName = ?2 or kitten.name = ?1",
+                "cat.name = ?1 or cust.name.firstName = ?2 or kitten.name = ?3",
                 cat.name.eq("Kitty").or(cust.name.firstName.eq("Hans")).or(kitten.name.eq("Kitty")));
     }
 

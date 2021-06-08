@@ -128,9 +128,9 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
     protected Query createQuery(@Nullable QueryModifiers modifiers, boolean forCount) {
         JPQLSerializer serializer = serialize(forCount);
         String queryString = serializer.toString();
-        logQuery(queryString, serializer.getConstantToAllLabels());
+        logQuery(queryString);
         Query query = entityManager.createQuery(queryString);
-        JPAUtil.setConstants(query, serializer.getConstantToAllLabels(), getMetadata().getParams());
+        JPAUtil.setConstants(query, serializer.getConstants(), getMetadata().getParams());
         if (modifiers != null && modifiers.isRestricting()) {
             Integer limit = modifiers.getLimitAsInteger();
             Integer offset = modifiers.getOffsetAsInteger();
@@ -306,7 +306,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
 
     }
 
-    protected void logQuery(String queryString, Map<Object, String> parameters) {
+    protected void logQuery(String queryString) {
         if (logger.isLoggable(Level.FINEST)) {
             String normalizedQuery = queryString.replace('\n', ' ');
             logger.finest(normalizedQuery);

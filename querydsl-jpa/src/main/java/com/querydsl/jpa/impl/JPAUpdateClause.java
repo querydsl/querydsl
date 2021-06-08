@@ -67,13 +67,12 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause> {
     public long execute() {
         JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
         serializer.serializeForUpdate(queryMixin.getMetadata(), updates);
-        Map<Object,String> constants = serializer.getConstantToAllLabels();
 
         Query query = entityManager.createQuery(serializer.toString());
         if (lockMode != null) {
             query.setLockMode(lockMode);
         }
-        JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
+        JPAUtil.setConstants(query, serializer.getConstants(), queryMixin.getMetadata().getParams());
         return query.executeUpdate();
     }
 

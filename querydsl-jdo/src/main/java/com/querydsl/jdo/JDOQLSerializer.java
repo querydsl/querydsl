@@ -79,29 +79,20 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     public JDOQLSerializer(JDOQLTemplates templates, Expression<?> candidate) {
         super(templates);
         this.candidatePath = candidate;
-        this.constantToLabel.push(new HashMap<Object,String>());
+        this.constantToLabel.push(new LinkedHashMap<>());
     }
 
     public Expression<?> getCandidatePath() {
         return candidatePath;
     }
 
+    @Override
     public List<Object> getConstants() {
         return constants;
     }
 
     @Override
     public Map<Object,String> getConstantToLabel() {
-        return getConstantToAllLabels();
-    }
-
-    @Override
-    public Map<Object,String> getConstantToAllLabels() {
-        return constantToLabel.peek();
-    }
-
-    @Override
-    public Map<Object,String> getConstantToNamedLabel() {
         return constantToLabel.peek();
     }
 
@@ -114,7 +105,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         final Predicate having = metadata.getHaving();
         final List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
-        constantToLabel.push(new HashMap<Object,String>());
+        constantToLabel.push(new LinkedHashMap<Object,String>());
 
         // select
         boolean skippedSelect = false;
@@ -197,7 +188,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
 
         // parameters
-        if (!getConstantToAllLabels().isEmpty()) {
+        if (!getConstantToLabel().isEmpty()) {
             insert(position, serializeParameters(metadata.getParams()));
         }
 
@@ -222,8 +213,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         final StringBuilder b = new StringBuilder();
         b.append(PARAMETERS);
         boolean first = true;
-        final List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToAllLabels().entrySet());
-        entries.sort(comparator);
+        final Collection<Map.Entry<Object, String>> entries = getConstantToLabel().entrySet();
         for (Map.Entry<Object, String> entry : entries) {
             if (!first) {
                 b.append(COMMA);

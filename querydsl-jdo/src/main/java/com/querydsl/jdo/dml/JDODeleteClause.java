@@ -64,7 +64,7 @@ public class JDODeleteClause implements DeleteClause<JDODeleteClause> {
             JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
             serializer.handle(metadata.getWhere());
             query.setFilter(serializer.toString());
-            Map<Object,String> constToLabel = serializer.getConstantToAllLabels();
+            Map<Object,String> constToLabel = serializer.getConstantToLabel();
 
             try {
                 if (!constToLabel.isEmpty()) {
