@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.type.*;
 
 import com.querydsl.core.types.ParamExpression;
@@ -61,7 +61,7 @@ public final class HibernateUtil {
     }
 
     public static void setConstants(
-            Query query,
+            Query<?> query,
             Map<Object, String> namedConstants,
             Map<ParamExpression<?>, Object> params
     ) {
@@ -69,7 +69,7 @@ public final class HibernateUtil {
     }
 
     public static void setConstants(
-            Query query,
+            Query<?> query,
             Map<Object, String> namedConstants,
             Map<Object, Integer> numberedConstants,
             Map<ParamExpression<?>, Object> params
@@ -77,7 +77,7 @@ public final class HibernateUtil {
         for (Map.Entry<Object, String> entry : namedConstants.entrySet()) {
             String key = entry.getValue();
             Object val = entry.getKey();
-            if (Param.class.isInstance(val)) {
+            if (val instanceof Param) {
                 val = params.get(val);
                 if (val == null) {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
@@ -90,7 +90,7 @@ public final class HibernateUtil {
         for (Map.Entry<Object, Integer> entry : numberedConstants.entrySet()) {
             Integer key = entry.getValue();
             Object val = entry.getKey();
-            if (Param.class.isInstance(val)) {
+            if (val instanceof Param) {
                 val = params.get(val);
                 if (val == null) {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
@@ -101,7 +101,7 @@ public final class HibernateUtil {
         }
     }
 
-    private static void setValueWithNamedLabel(Query query, String key, Object val) {
+    private static void setValueWithNamedLabel(Query<?> query, String key, Object val) {
         if (val instanceof Collection<?>) {
             query.setParameterList(key, (Collection<?>) val);
         } else if (val instanceof Object[] && !BUILT_IN.contains(val.getClass())) {
@@ -113,7 +113,7 @@ public final class HibernateUtil {
         }
     }
 
-    private static void setValueWithNumberedLabel(Query query, Integer key, Object val) {
+    private static void setValueWithNumberedLabel(Query<?> query, Integer key, Object val) {
         if (val instanceof Number && TYPES.containsKey(val.getClass())) {
             query.setParameter(key, val, getType(val.getClass()));
         } else {

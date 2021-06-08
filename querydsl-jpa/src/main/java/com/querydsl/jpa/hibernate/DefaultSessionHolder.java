@@ -13,8 +13,8 @@
  */
 package com.querydsl.jpa.hibernate;
 
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
+import org.hibernate.query.Query;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.Session;
 
 /**
@@ -32,12 +32,12 @@ public class DefaultSessionHolder implements SessionHolder {
     }
 
     @Override
-    public Query createQuery(String queryString) {
+    public Query<?> createQuery(String queryString) {
         return session.createQuery(queryString);
     }
 
     @Override
-    public SQLQuery createSQLQuery(String queryString) {
+    public NativeQuery<?> createSQLQuery(String queryString) {
         return session.createSQLQuery(queryString);
     }
 
