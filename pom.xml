@@ -181,6 +181,16 @@
         <artifactId>geolatte-geom</artifactId>
         <version>1.8.1</version>
       </dependency>
+      <dependency>
+        <groupId>com.fasterxml</groupId>
+        <artifactId>classmate</artifactId>
+        <version>1.5.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging</artifactId>
+        <version>3.4.1.Final</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
