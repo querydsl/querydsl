@@ -15,7 +15,6 @@ package com.querydsl.collections;
 
 import com.querydsl.core.types.Path;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
@@ -50,12 +49,10 @@ public class PathMatcher<T, V> extends TypeSafeDiagnosingMatcher<T> {
         this.accessor = accessor;
     }
 
-    @Factory
     public static <T,P> Matcher<T> hasValue(Path<P> path) {
         return new PathMatcher<T,P>(path, notNullValue());
     }
 
-    @Factory
     public static <T,P> Matcher<T> hasValue(Path<P> path, Matcher<? super P> matcher) {
         return new PathMatcher<T,P>(path, matcher);
     }

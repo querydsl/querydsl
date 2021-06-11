@@ -144,11 +144,6 @@
       <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-all</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>

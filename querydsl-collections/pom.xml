@@ -43,7 +43,8 @@
     
     <dependency>
       <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
+      <artifactId>hamcrest</artifactId>
+      <scope>compile</scope>
       <optional>true</optional>
     </dependency>    
     
