@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
+  <version>5.0.0.M1</version>
     <modules>
         <module>querydsl-guava</module>
     </modules>
