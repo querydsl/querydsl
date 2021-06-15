@@ -5,9 +5,6 @@
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
   <version>5.0.0.M1</version>
-    <modules>
-        <module>querydsl-guava</module>
-    </modules>
     <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>https://querydsl.github.io/</url>
@@ -698,6 +695,7 @@
         <module>querydsl-spatial</module>
         <module>querydsl-apt</module>
         <module>querydsl-collections</module>
+        <module>querydsl-guava</module>
         <module>querydsl-sql</module>
         <module>querydsl-sql-spatial</module>
         <module>querydsl-sql-codegen</module>
