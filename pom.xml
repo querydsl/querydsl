@@ -70,7 +70,9 @@
     <morphia.version>1.3.2</morphia.version>
     <jmh.version>1.32</jmh.version>
     <hamcrest.veresion>2.2</hamcrest.veresion>
-    
+    <kotlin.version>1.5.10</kotlin.version>
+    <dokka.version>1.4.32</dokka.version>
+
     <!-- Import-Package definitions for maven-bundle-plugin -->
     <osgi.import.package.root>
       *
@@ -202,6 +204,18 @@
         <artifactId>geolatte-geom</artifactId>
         <version>1.8.2</version>
       </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-scripting-jsr223</artifactId>
+        <version>${kotlin.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -332,6 +346,27 @@
               </configuration>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.jetbrains.dokka</groupId>
+          <artifactId>dokka-maven-plugin</artifactId>
+          <version>${dokka.version}</version>
+          <executions>
+            <execution>
+              <phase>prepare-package</phase>
+              <goals>
+                <goal>javadocJar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-maven-plugin</artifactId>
+          <version>${kotlin.version}</version>
+          <configuration>
+            <jvmTarget>1.8</jvmTarget>
+          </configuration>
         </plugin>
       </plugins>      
     </pluginManagement>
