@@ -20,10 +20,10 @@ doit() {
   git checkout master
   git pull --ff-only
   export GPG_TTY=$(tty)
-  mvn clean deploy -DskipTests -Dgpg.skip=false -Dgpg.keyname=57312C37B064EE0FDAB0130490D5CE79E1DE6A2C -Denforcer.skip=true
+  mvn clean deploy -DskipTests -Pall -Dgpg.skip=false -Dgpg.keyname=57312C37B064EE0FDAB0130490D5CE79E1DE6A2C -Denforcer.skip=true
   ./dist.sh
-  ssh -i ~/.ssh/querydsl.com john@querydsl.com "mkdir /var/www/html/static/querydsl/$VERSION"
-  scp -r -i ~/.ssh/querydsl.com target/dist/* john@querydsl.com:/var/www/html/static/querydsl/$VERSION/
+  ssh -i ~/.ssh/querydsl.com root@querydsl.com "mkdir /var/www/html/static/querydsl/$VERSION"
+  scp -r -i ~/.ssh/querydsl.com target/dist/* root@querydsl.com:/var/www/html/static/querydsl/$VERSION/
   ssh root@querydsl.com "cd /var/www/html/static/querydsl && unlink latest && ln -sT $VERSION latest"
   git tag $TAG
   git push --tags
