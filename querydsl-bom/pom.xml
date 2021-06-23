@@ -144,6 +144,7 @@
                             <pomElements>
                                 <properties>keep</properties>
                                 <repositories>remove</repositories>
+                                <dependencies>remove</dependencies>
                             </pomElements>
                         </configuration>
                     </execution>
