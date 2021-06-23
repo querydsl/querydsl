@@ -8,18 +8,18 @@
     <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>https://querydsl.github.io/</url>
-  
+
   <parent>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-parent</artifactId>
     <version>0.1.0</version>
   </parent>
-  
+
   <packaging>pom</packaging>
 
   <inceptionYear>2007</inceptionYear>
-  
-  <properties>    
+
+  <properties>
     <failIfNoTests>false</failIfNoTests>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.homepage>http://www.querydsl.com</project.homepage>
@@ -36,7 +36,7 @@
 
     <!-- groups to run with surefire plugin - intended to be overridden on the command line -->
     <includedGroups></includedGroups>
-    
+
     <argLine>-Xms256m -Xmx512m</argLine>
 
     <!-- SQL deps -->
@@ -128,7 +128,6 @@
         <groupId>jakarta.persistence</groupId>
         <artifactId>jakarta.persistence-api</artifactId>
         <version>2.2.3</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.datanucleus</groupId>
@@ -368,9 +367,9 @@
             <jvmTarget>1.8</jvmTarget>
           </configuration>
         </plugin>
-      </plugins>      
+      </plugins>
     </pluginManagement>
-    
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -494,7 +493,7 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin>       
+      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
@@ -590,7 +589,7 @@
             <group>
               <title>Mongodb</title>
               <packages>com.querydsl.mongodb*</packages>
-            </group>            
+            </group>
           </groups>
         </configuration>
       </plugin>
@@ -599,10 +598,10 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.14.0</version>
         <configuration>
-          <targetJdk>1.6</targetJdk>   
-          <includeTests>true</includeTests>     
+          <targetJdk>1.6</targetJdk>
+          <includeTests>true</includeTests>
         </configuration>
-      </plugin>      
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -618,12 +617,12 @@
         <executions>
           <execution>
             <phase>package</phase>
-            <goals>            
+            <goals>
               <goal>jar</goal>
             </goals>
           </execution>
         </executions>
-      </plugin>  
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -718,7 +717,7 @@
       <url>http://repository.springsource.com/maven/bundles/external</url>
     </pluginRepository>
   </pluginRepositories>
- 
+
   <profiles>
     <profile>
       <id>all</id>
@@ -979,5 +978,5 @@
       </plugin>
     </plugins>
   </reporting>
-  
+
 </project>
