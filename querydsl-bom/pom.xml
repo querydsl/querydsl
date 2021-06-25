@@ -54,6 +54,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>querydsl-guava</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-sql</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -85,6 +90,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>querydsl-jdo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>querydsl-kotlin-codegen</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
