@@ -142,7 +142,7 @@
                             <updatePomFile>true</updatePomFile>
                             <flattenMode>bom</flattenMode>
                             <pomElements>
-                                <properties>keep</properties>
+                                <properties>remove</properties>
                                 <repositories>remove</repositories>
                                 <dependencies>remove</dependencies>
                             </pomElements>
