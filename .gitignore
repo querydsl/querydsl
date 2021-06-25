@@ -19,3 +19,4 @@ derby.log
 /devops/*.rpm.zip
 /devops/**/*.semaphore
 /devops/test-connection/.lein-repl-history
+**/.flattened-pom.xml
