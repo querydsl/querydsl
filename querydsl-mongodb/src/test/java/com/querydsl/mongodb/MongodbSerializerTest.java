@@ -126,7 +126,7 @@ public class MongodbSerializerTest {
         assertQuery(gross.eq(1.0D), dbo("gross", 1.0D));
         assertQuery(longField.eq(1L), dbo("longField", 1L));
         assertQuery(shortField.eq((short) 1), dbo("shortField", 1));
-        assertQuery(byteField.eq((byte) 1), dbo("byteField", 1L));
+        assertQuery(byteField.eq((byte) 1), dbo("byteField", (byte) 1));
         assertQuery(floatField.eq(1.0F), dbo("floatField", 1.0F));
 
         assertQuery(date.eq(dateVal), dbo("date", dateVal));
@@ -203,12 +203,12 @@ public class MongodbSerializerTest {
     @Test
     public void regexCases() {
         assertQuery(title.startsWith("A"),
-                dbo("title", dbo("$regex", "^\\QA\\E")));
+                dbo("title", dbo("$regex", "^\\QA\\E").append("$options", "")));
         assertQuery(title.startsWithIgnoreCase("A"),
                 dbo("title", dbo("$regex", "^\\QA\\E").append("$options", "i")));
 
         assertQuery(title.endsWith("A"),
-                dbo("title", dbo("$regex", "\\QA\\E$")));
+                dbo("title", dbo("$regex", "\\QA\\E$").append("$options", "")));
         assertQuery(title.endsWithIgnoreCase("A"),
                 dbo("title", dbo("$regex", "\\QA\\E$").append("$options", "i")));
 
@@ -216,12 +216,12 @@ public class MongodbSerializerTest {
                 dbo("title", dbo("$regex", "^\\QA\\E$").append("$options", "i")));
 
         assertQuery(title.contains("A"),
-                dbo("title", dbo("$regex", ".*\\QA\\E.*")));
+                dbo("title", dbo("$regex", ".*\\QA\\E.*").append("$options", "")));
         assertQuery(title.containsIgnoreCase("A"),
                 dbo("title", dbo("$regex", ".*\\QA\\E.*").append("$options", "i")));
 
         assertQuery(title.matches(".*A^"),
-                dbo("title", dbo("$regex", ".*A^")));
+                dbo("title", dbo("$regex", ".*A^").append("$options", "")));
 
     }
 
