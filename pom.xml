@@ -873,8 +873,7 @@
           com.querydsl.core.testutil.Performance,
 
           com.querydsl.core.testutil.DB2,
-          com.querydsl.core.testutil.SQLServer,
-          com.querydsl.core.testutil.Teradata
+          com.querydsl.core.testutil.SQLServer
         </excludedGroups>
       </properties>
     </profile>
