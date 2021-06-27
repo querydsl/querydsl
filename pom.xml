@@ -857,6 +857,7 @@
       </activation>
       <properties>
         <hsqldb.version>2.5.2</hsqldb.version>
+        <derby.version>10.14.2.0</derby.version>
       </properties>
     </profile>
 
