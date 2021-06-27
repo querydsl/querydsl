@@ -23,7 +23,7 @@
   </scm>
   
   <properties>
-    <hibernate.version>4.1.7.Final</hibernate.version>
+    <hibernate.version>5.5.3.Final</hibernate.version>
     <hibernate.validator.version>7.0.1.Final</hibernate.validator.version>
     <hibernate.search.version>5.10.1.Final</hibernate.search.version>
     <lucene.version>3.6.2</lucene.version>
@@ -90,7 +90,7 @@
     </dependency>   
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-search</artifactId>
+      <artifactId>hibernate-search-orm</artifactId>
       <version>${hibernate.search.version}</version>
       <scope>provided</scope>
       <exclusions>
