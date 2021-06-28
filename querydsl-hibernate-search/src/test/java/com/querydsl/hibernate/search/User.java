@@ -36,6 +36,7 @@ public class User implements Serializable {
     @DocumentId
     private Long id;
 
+    @SortableField
     @Field(analyze = Analyze.NO, index = Index.YES, store = Store.YES)
     private String firstName;
 

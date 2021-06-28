@@ -15,6 +15,7 @@ package com.querydsl.hibernate.search;
 
 import java.util.List;
 
+import com.querydsl.lucene5.LuceneSerializer;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.hibernate.Session;
 import org.hibernate.search.FullTextQuery;
@@ -29,7 +30,6 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.lucene3.LuceneSerializer;
 
 /**
  * Abstract base class for Hibernate Search query classes

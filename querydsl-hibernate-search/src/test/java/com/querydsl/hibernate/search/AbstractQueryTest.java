@@ -74,11 +74,12 @@ public abstract class AbstractQueryTest {
         for (User user : users) {
             session.delete(user);
         }
+        session.flush();
     }
 
     @After
     public void tearDown() throws HibernateException, SQLException {
-        if (session.getTransaction().getStatus() != TransactionStatus.ROLLED_BACK) {
+        if (session.getTransaction().getStatus().isNotOneOf(TransactionStatus.ROLLED_BACK, TransactionStatus.ROLLING_BACK, TransactionStatus.MARKED_ROLLBACK)) {
             session.getTransaction().commit();
         }
         session.close();

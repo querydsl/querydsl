@@ -52,7 +52,7 @@
   <dependencies> 
     <dependency>
       <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-lucene3</artifactId>
+      <artifactId>querydsl-lucene5</artifactId>
       <version>${project.version}</version>
     </dependency>
     
