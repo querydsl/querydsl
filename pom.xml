@@ -55,7 +55,7 @@
 
     <!-- JPA deps -->
     <hibernate.version>5.4.8.Final</hibernate.version>
-    <hibernate.validator.version>6.0.18.Final</hibernate.validator.version>
+    <hibernate.validator.version>7.0.1.Final</hibernate.validator.version>
     <eclipselink.version>2.7.8</eclipselink.version>
 
     <guava.version>30.1.1-jre</guava.version>
@@ -214,6 +214,16 @@
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-scripting-jsr223</artifactId>
         <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml</groupId>
+        <artifactId>classmate</artifactId>
+        <version>1.5.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.logging</groupId>
+        <artifactId>jboss-logging</artifactId>
+        <version>3.4.1.Final</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
