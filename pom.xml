@@ -49,7 +49,7 @@
     <mysql.version>8.0.25</mysql.version>
     <jtds.version>1.3.1</jtds.version>
     <cubrid.version>9.3.9.0002</cubrid.version>
-    <sqlite.version>3.34.0</sqlite.version>
+    <sqlite.version>3.36.0</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
     <firebird.version>2.2.15</firebird.version>
 
