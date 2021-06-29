@@ -41,7 +41,7 @@
 
     <!-- SQL deps -->
     <db2.version>11.5.5.0</db2.version>
-    <derby.version>10.11.1.1</derby.version>
+    <derby.version>10.15.2.0</derby.version>
     <hsqldb.version>2.6.0</hsqldb.version>
     <h2.version>1.4.197</h2.version>
     <postgresql.version>42.2.22</postgresql.version>
@@ -919,6 +919,7 @@
       </activation>
       <properties>
         <hsqldb.version>2.5.2</hsqldb.version>
+        <derby.version>10.14.2.0</derby.version>
       </properties>
     </profile>
 
