@@ -13,10 +13,10 @@
  */
 package com.querydsl.hibernate.search;
 
+import com.querydsl.lucene5.LuceneSerializer;
 import org.hibernate.search.annotations.Field;
 
 import com.querydsl.core.types.Path;
-import com.querydsl.lucene3.LuceneSerializer;
 
 /**
  * {@code SearchSerializer} extends the {@link LuceneSerializer} to use {@link Field} annotation data from paths

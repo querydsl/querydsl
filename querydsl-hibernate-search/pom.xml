@@ -23,21 +23,36 @@
   </scm>
   
   <properties>
-    <hibernate.version>4.1.7.Final</hibernate.version>
+    <hibernate.version>5.5.3.Final</hibernate.version>
     <hibernate.validator.version>7.0.1.Final</hibernate.validator.version>
-    <hibernate.search.version>4.2.0.Final</hibernate.search.version>
-    <lucene.version>3.6.2</lucene.version>
+    <hibernate.search.version>5.10.1.Final</hibernate.search.version>
+    <lucene.version>5.5.5</lucene.version>
     <osgi.import.package>
       org.apache.lucene.*;version="[3.6,4)",
       org.hibernate.*;version="[4,5)",
       ${osgi.import.package.root}
     </osgi.import.package>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.lucene</groupId>
+        <artifactId>lucene-core</artifactId>
+        <version>${lucene.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate.common</groupId>
+        <artifactId>hibernate-commons-annotations</artifactId>
+        <version>5.1.2.Final</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   
   <dependencies> 
     <dependency>
       <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-lucene3</artifactId>
+      <artifactId>querydsl-lucene5</artifactId>
       <version>${project.version}</version>
     </dependency>
     
@@ -63,7 +78,7 @@
       <scope>provided</scope>      
     </dependency>   
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>${hibernate.validator.version}</version>
       <scope>provided</scope>
@@ -90,7 +105,7 @@
     </dependency>   
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-search</artifactId>
+      <artifactId>hibernate-search-orm</artifactId>
       <version>${hibernate.search.version}</version>
       <scope>provided</scope>
       <exclusions>
@@ -143,7 +158,12 @@
       <version>2.3.1</version>
       <scope>test</scope>
     </dependency>
-    
+
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   
   <build>
