@@ -707,6 +707,7 @@ public class SelectBase extends AbstractBaseTest {
     }
 
     @Test
+    @ExcludeIn({SQLITE})
     public void dateTime_to_date() {
         firstResult(SQLExpressions.date(DateTimeExpression.currentTimestamp()));
     }
@@ -1242,6 +1243,7 @@ public class SelectBase extends AbstractBaseTest {
 
 
     @Test
+    @ExcludeIn({SQLITE})
     public void no_from() {
         assertNotNull(firstResult(DateExpression.currentDate()));
     }
