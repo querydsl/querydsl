@@ -450,6 +450,7 @@
           </execution>
         </executions>
       </plugin>
+      <!-- TODO make this work or find replacement
       <plugin>
         <groupId>com.github.siom79.japicmp</groupId>
         <artifactId>japicmp-maven-plugin</artifactId>
@@ -458,7 +459,8 @@
           <parameter>
             <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
             <breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
-            <!-- not compatible with Mx versions <breakBuildBasedOnSemanticVersioning>true</breakBuildBasedOnSemanticVersioning>-->
+            <breakBuildBasedOnSemanticVersioning>true</breakBuildBasedOnSemanticVersioning>
+            <ignoreMissingClasses>true</ignoreMissingClasses>
           </parameter>
         </configuration>
         <executions>
@@ -469,7 +471,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin> -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -885,7 +887,7 @@
         <checkstyle.skip>true</checkstyle.skip>
         <enforcer.skip>true</enforcer.skip>
         <animal.sniffer.skip>true</animal.sniffer.skip>
-        <japicmp.skip>true</japicmp.skip>
+        <!--<japicmp.skip>true</japicmp.skip>-->
       </properties>
     </profile>
 
