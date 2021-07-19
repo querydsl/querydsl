@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
+  <version>5.0.0</version>
     <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>https://querydsl.github.io/</url>
@@ -448,61 +448,30 @@
               </rules>
             </configuration>
           </execution>
+        </executions>
+      </plugin>
+      <!-- TODO make this work or find replacement
+      <plugin>
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <version>0.15.3</version>
+        <configuration>
+          <parameter>
+            <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
+            <breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
+            <breakBuildBasedOnSemanticVersioning>true</breakBuildBasedOnSemanticVersioning>
+            <ignoreMissingClasses>true</ignoreMissingClasses>
+          </parameter>
+        </configuration>
+        <executions>
           <execution>
-            <id>check</id>
             <phase>verify</phase>
             <goals>
-              <goal>enforce</goal>
+              <goal>cmp</goal>
             </goals>
-            <configuration>
-              <rules>
-                <requireBackwardCompatibility implementation="org.semver.enforcer.RequireBackwardCompatibility">
-                  <excludes>
-                    <exclude>com/querydsl/sql/types/AbstractJodaTimeDateTimeType</exclude>
-                    <exclude>com/querydsl/sql/types/DateTimeType</exclude>
-                    <exclude>com/querydsl/sql/types/LocalDateTimeType</exclude>
-                    <exclude>com/querydsl/sql/types/LocalDateType</exclude>
-                    <exclude>com/querydsl/sql/types/LocalTimeType</exclude>
-                    <exclude>com/querydsl/jpa/Hibernate5Templates</exclude>
-                    <exclude>com/querydsl/jpa/HibernateHandler</exclude>
-                    <exclude>com/querydsl/jpa/JPAExpressions</exclude>
-                  </excludes>
-                  <compatibilityType>BACKWARD_COMPATIBLE_USER</compatibilityType>
-                  <dumpDetails>true</dumpDetails>
-                  <publicOnly>true</publicOnly>
-                </requireBackwardCompatibility>
-              </rules>
-            </configuration>
           </execution>
         </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.semver</groupId>
-            <artifactId>enforcer-rule</artifactId>
-            <version>0.9.33</version>
-            <exclusions>
-              <exclusion>
-                <groupId>org.ow2.asm</groupId>
-                <artifactId>asm</artifactId>
-              </exclusion>
-              <exclusion>
-                <groupId>org.ow2.asm</groupId>
-                <artifactId>asm-commons</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>9.2</version>
-          </dependency>
-          <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-commons</artifactId>
-            <version>9.2</version>
-          </dependency>
-        </dependencies>
-      </plugin>
+      </plugin> -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -918,6 +887,7 @@
         <checkstyle.skip>true</checkstyle.skip>
         <enforcer.skip>true</enforcer.skip>
         <animal.sniffer.skip>true</animal.sniffer.skip>
+        <!--<japicmp.skip>true</japicmp.skip>-->
       </properties>
     </profile>
 
