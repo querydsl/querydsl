@@ -40,7 +40,7 @@
     <argLine>-Xms256m -Xmx512m</argLine>
 
     <!-- SQL deps -->
-    <db2.version>11.5.5.0</db2.version>
+    <db2.version>11.5.6.0</db2.version>
     <derby.version>10.15.2.0</derby.version>
     <hsqldb.version>2.6.0</hsqldb.version>
     <h2.version>1.4.197</h2.version>
