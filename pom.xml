@@ -462,6 +462,7 @@
             <ignoreMissingClasses>true</ignoreMissingClasses>
             <excludeModules>
               <excludeModule>querydsl-maven-plugin</excludeModule>
+              <excludeModule>querydsl-example.*</excludeModule>
             </excludeModules>
           </parameter>
         </configuration>
