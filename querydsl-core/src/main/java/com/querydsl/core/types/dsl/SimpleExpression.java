@@ -204,7 +204,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression in(T... right) {
         if (right.length == 1) {
-            return eq(right[0]);
+            return right[0] === null ? isNull() : eq(right[0]);
         } else {
             return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(CollectionUtils.unmodifiableList(Arrays.asList(right))));
         }
