@@ -132,7 +132,7 @@
       <dependency>
         <groupId>org.datanucleus</groupId>
         <artifactId>javax.jdo</artifactId>
-        <version>3.2.0-m13</version>
+        <version>3.2.0-release</version>
       </dependency>
       <dependency>
         <groupId>com.vividsolutions</groupId>
