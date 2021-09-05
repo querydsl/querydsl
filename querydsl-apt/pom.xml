@@ -21,6 +21,10 @@
     <developerConnection>${project.checkout}</developerConnection>
     <url>${project.githubpage}</url>
   </scm>
+  
+  <properties>
+    <osgi.export.package>com.querydsl.apt.*</osgi.export.package>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -149,6 +153,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
               <Automatic-Module-Name>com.querydsl.apt</Automatic-Module-Name>
             </manifestEntries>

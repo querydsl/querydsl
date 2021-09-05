@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.6.0"
+          name="query-dsl-osgi-itest-jpa">
+
+  <repository>mvn:org.apache.aries.jpa/jpa-features/2.7.2/xml/features</repository>
+  <repository>mvn:org.ops4j.pax.jdbc/pax-jdbc-features/1.5.1/xml/features</repository>
+
+  <feature name="query-dsl-osgi-itest-jpa" version="${project.version}">
+    <config name="org.ops4j.datasource-querydsl" override="true">
+      osgi.jdbc.driver.class = org.h2.Driver
+      url=jdbc:h2:mem:querydsl;DB_CLOSE_DELAY=-1
+      user=sa
+      password=
+      dataSourceName=querydsl
+    </config>    
+    
+    <feature prerequisite="true">wrap</feature>
+    <feature>transaction</feature>    
+    <feature>jpa</feature>
+    <feature>jdbc</feature>
+    <feature>aries-blueprint</feature>
+    <feature>pax-jdbc-pool-dbcp2</feature>
+    <feature>hibernate</feature>
+    <bundle>mvn:com.h2database/h2/1.4.200</bundle>
+    <bundle>mvn:com.querydsl/querydsl-core/${project.version}</bundle>
+    <bundle>mvn:com.querydsl/querydsl-jpa/${project.version}</bundle>
+    <bundle>mvn:com.mysema.commons/mysema-commons-lang/${mysema.lang.version}</bundle>
+    <bundle>mvn:com.querydsl/querydsl-osgi-itest-jpa/${project.version}</bundle>
+  </feature>  
+
+</features>

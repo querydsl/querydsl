@@ -5,7 +5,7 @@
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
   <version>5.0.0</version>
-    <name>Querydsl</name>
+  <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>https://querydsl.github.io/</url>
 
@@ -52,6 +52,8 @@
     <sqlite.version>3.36.0.1</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
     <firebird.version>2.2.15</firebird.version>
+    <org.ops4j.pax.exam.version>4.13.4</org.ops4j.pax.exam.version>
+    <org.apache.karaf.version>4.3.2</org.apache.karaf.version>
 
     <!-- JPA deps -->
     <hibernate.version>5.4.8.Final</hibernate.version>
@@ -74,9 +76,7 @@
     <dokka.version>1.5.0</dokka.version>
 
     <!-- Import-Package definitions for maven-bundle-plugin -->
-    <osgi.import.package.root>
-      *
-    </osgi.import.package.root>
+    <osgi.import.package.root>*</osgi.import.package.root>
     <osgi.import.package>${osgi.import.package.root}</osgi.import.package>
   </properties>
 
@@ -87,9 +87,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest</artifactId>
-        <scope>test</scope>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
@@ -337,6 +337,7 @@
           <groupId>org.apache.felix</groupId>
           <artifactId>maven-bundle-plugin</artifactId>
           <version>5.1.2</version>
+          <extensions>true</extensions>
           <executions>
             <execution>
               <id>bundle-manifest</id>
@@ -350,7 +351,8 @@
                   <Import-Package>
                     ${osgi.import.package}
                   </Import-Package>
-                  <Export-Package>com.querydsl.*</Export-Package>
+                  <Export-Package>${osgi.export.package}</Export-Package>
+                  <_failok>false</_failok>
                 </instructions>
               </configuration>
             </execution>
@@ -570,6 +572,13 @@
               <packages>com.querydsl.mongodb*</packages>
             </group>
           </groups>
+          <additionalDependencies>
+            <additionalDependency>
+              <groupId>javax.interceptor</groupId>
+              <artifactId>javax.interceptor-api</artifactId>
+              <version>1.2.2</version>
+            </additionalDependency>
+          </additionalDependencies>          
         </configuration>
       </plugin>
       <plugin>
@@ -656,7 +665,10 @@
             </goals>
             <configuration>
               <configLocation>src/main/resources/querydsl_checks_base.xml</configLocation>
-              <includeTestSourceDirectory>true</includeTestSourceDirectory>
+              <sourceDirectories>
+                <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory> 
+                <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory> 
+              </sourceDirectories>
               <failOnViolation>true</failOnViolation>
             </configuration>
           </execution>
@@ -669,6 +681,9 @@
             <configuration>
               <configLocation>src/main/resources/querydsl_checks_main.xml</configLocation>
               <failOnViolation>true</failOnViolation>
+              <sourceDirectories>
+                <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory> 
+              </sourceDirectories>            
             </configuration>
           </execution>
         </executions>
@@ -700,7 +715,9 @@
   <profiles>
     <profile>
       <id>all</id>
-      <activation><activeByDefault>true</activeByDefault></activation>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <modules>
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
@@ -819,6 +836,16 @@
         <module>querydsl-maven-plugin</module>
       </modules>
     </profile>
+    
+    <profile>
+      <id>osgi</id>
+      <modules>
+        <module>querydsl-core</module>
+        <module>querydsl-apt</module>
+        <module>querydsl-jpa</module>
+        <module>querydsl-osgi-itest</module>
+      </modules>
+    </profile>    
 
     <profile>
       <id>collections</id>
@@ -863,7 +890,6 @@
         <excludedGroups>
           com.querydsl.core.testutil.Performance,
           com.querydsl.core.testutil.ReportingOnly,
-
           com.querydsl.core.testutil.Teradata
         </excludedGroups>
       </properties>
