@@ -29,7 +29,6 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;

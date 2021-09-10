@@ -15,7 +15,7 @@ package com.querydsl.sql;
 
 import java.util.List;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.CloseableIterator;
 import com.querydsl.core.Fetchable;
 import com.querydsl.core.types.*;
 

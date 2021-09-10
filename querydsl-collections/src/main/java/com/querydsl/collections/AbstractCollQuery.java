@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.*;
 import com.querydsl.core.support.FetchableQueryBase;
 import com.querydsl.core.types.*;
@@ -173,7 +171,7 @@ public abstract class AbstractCollQuery<T, Q extends AbstractCollQuery<T, Q>> ex
     public CloseableIterator<T> iterate() {
         @SuppressWarnings("unchecked") // This is the built type
         Expression<T> projection = (Expression<T>) queryMixin.getMetadata().getProjection();
-        return new IteratorAdapter<T>(fetch().iterator());
+        return CloseableIterator.fromIterator(fetch().iterator());
     }
 
     @Override

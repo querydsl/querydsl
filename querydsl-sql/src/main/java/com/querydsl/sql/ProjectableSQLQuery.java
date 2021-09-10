@@ -22,14 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.querydsl.core.*;
 import org.jetbrains.annotations.Nullable;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.FetchableQuery;
-import com.querydsl.core.JoinFlag;
-import com.querydsl.core.NonUniqueResultException;
-import com.querydsl.core.Query;
-import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.support.FetchableSubQueryBase;
 import com.querydsl.core.support.QueryMixin;

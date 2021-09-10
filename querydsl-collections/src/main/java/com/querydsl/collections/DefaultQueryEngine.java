@@ -14,7 +14,6 @@
 package com.querydsl.collections;
 
 import com.querydsl.codegen.utils.Evaluator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
@@ -168,7 +167,9 @@ public class DefaultQueryEngine implements QueryEngine {
         if (iterable instanceof List) {
             list = (List) iterable;
         } else {
-            list = IteratorAdapter.asList(iterable.iterator());
+            List raw = new ArrayList();
+            iterable.iterator().forEachRemaining(e -> raw.add(e));
+            list = raw;
         }
 
         // from & where

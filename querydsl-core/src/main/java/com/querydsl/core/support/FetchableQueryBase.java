@@ -15,14 +15,9 @@ package com.querydsl.core.support;
 
 import java.util.List;
 
+import com.querydsl.core.*;
 import org.jetbrains.annotations.Nullable;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.Fetchable;
-import com.querydsl.core.FetchableQuery;
-import com.querydsl.core.NonUniqueResultException;
-import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.types.SubQueryExpression;
 
 /**
@@ -43,7 +38,7 @@ public abstract class FetchableQueryBase<T, Q extends FetchableQueryBase<T, Q>>
 
     @Override
     public List<T> fetch() {
-        return IteratorAdapter.asList(iterate());
+        return iterate().asList();
     }
 
     @Override

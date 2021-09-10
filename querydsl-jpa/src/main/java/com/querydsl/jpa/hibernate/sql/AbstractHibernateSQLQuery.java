@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import org.hibernate.query.Query;
 import org.hibernate.*;
 
-import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.types.Expression;

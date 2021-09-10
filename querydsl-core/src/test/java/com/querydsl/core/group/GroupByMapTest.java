@@ -19,9 +19,9 @@ import static org.junit.Assert.*;
 import java.math.BigDecimal;
 import java.util.*;
 
+import com.querydsl.core.util.Pair;
 import org.junit.Test;
 
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;

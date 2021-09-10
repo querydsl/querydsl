@@ -7,9 +7,9 @@ import static org.easymock.EasyMock.*;
 import java.util.Map;
 import java.util.Set;
 
+import com.querydsl.core.CloseableIterator;
 import org.junit.Test;
 
-import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.annotations.QueryEntity;

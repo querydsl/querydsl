@@ -17,7 +17,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.CloseableIterator;
 import com.querydsl.core.types.FactoryExpression;
 
 /**

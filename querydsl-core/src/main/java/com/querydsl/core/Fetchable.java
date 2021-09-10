@@ -19,8 +19,6 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import com.mysema.commons.lang.CloseableIterator;
-
 /**
  * {@code Fetchable} defines default projection methods for {@link Query} implementations.
  * All Querydsl query implementations should implement this interface.

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import com.querydsl.core.CloseableIterator;
 import org.batoo.jpa.core.impl.criteria.QueryImpl;
 import org.eclipse.persistence.internal.localization.ExceptionLocalization;
 import org.hibernate.query.NativeQuery;
@@ -13,7 +14,6 @@ import org.hibernate.query.spi.ScrollableResultsImplementor;
 import org.hibernate.transform.ResultTransformer;
 import org.junit.Test;
 
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.jpa.domain4.Library;
 
@@ -107,7 +107,7 @@ public class HibernateHandlerTest {
     }
 
     @Test
-    public void should_return_iterator_adapter_when_call_iterate_function() {
+    public void should_return_closeable_iterator_when_call_iterate_function() {
         Query query = createMock(Query.class);
         List queryResultList = createMock(List.class);
         Iterator iterator = createMock(Iterator.class);
@@ -117,7 +117,7 @@ public class HibernateHandlerTest {
         expect(queryResultList.iterator()).andReturn(iterator);
         replay(query);
 
-        assertEquals(IteratorAdapter.class, hibernateHandler.iterate(query, null).getClass());
+        assertTrue(hibernateHandler.iterate(query, null) instanceof CloseableIterator);
     }
 
     @Test

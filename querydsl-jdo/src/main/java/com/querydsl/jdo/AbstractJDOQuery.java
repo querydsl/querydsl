@@ -25,8 +25,6 @@ import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.*;
 import com.querydsl.core.support.FetchableSubQueryBase;
 import com.querydsl.core.types.*;
@@ -230,7 +228,7 @@ public abstract class AbstractJDOQuery<T, Q extends AbstractJDOQuery<T, Q>> exte
 
     @Override
     public CloseableIterator<T> iterate() {
-        return new IteratorAdapter<T>(fetch().iterator(), closeable);
+        return CloseableIterator.combine(fetch().iterator(), closeable);
     }
 
     @Override

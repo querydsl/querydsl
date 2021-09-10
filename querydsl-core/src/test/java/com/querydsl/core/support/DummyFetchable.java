@@ -2,14 +2,8 @@ package com.querydsl.core.support;
 
 import java.util.List;
 
+import com.querydsl.core.*;
 import org.jetbrains.annotations.Nullable;
-
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.Fetchable;
-import com.querydsl.core.NonUniqueResultException;
-import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.QueryResults;
 
 public class DummyFetchable<T> implements Fetchable<T> {
 
@@ -21,7 +15,7 @@ public class DummyFetchable<T> implements Fetchable<T> {
 
     @Override
     public CloseableIterator<T> iterate() {
-        return new IteratorAdapter<T>(results.iterator());
+        return CloseableIterator.fromIterator(results.iterator());
     }
 
     @Override

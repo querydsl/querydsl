@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.Expressions;
@@ -57,7 +56,7 @@ public class PagingTest extends AbstractQueryTest {
         assertEquals(total, createQuery(modifiers).fetchCount());
 
         // via iterator
-        assertEquals(size, IteratorAdapter.asList(createQuery(modifiers).select(var).iterate()).size());
+        assertEquals(size, createQuery(modifiers).select(var).iterate().asList().size());
     }
 
     private CollQuery<?> createQuery(QueryModifiers modifiers) {

@@ -17,11 +17,11 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
-import com.mysema.commons.lang.Pair;
 import com.querydsl.core.group.AbstractGroupExpression;
 import com.querydsl.core.group.GroupCollector;
 import com.querydsl.core.group.GroupExpression;
 import com.querydsl.core.group.QPair;
+import com.querydsl.core.util.Pair;
 
 import java.util.Comparator;
 import java.util.HashMap;

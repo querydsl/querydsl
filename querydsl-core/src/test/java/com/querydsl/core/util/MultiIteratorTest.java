@@ -20,8 +20,6 @@ import java.util.*;
 
 import org.junit.Test;
 
-import com.mysema.commons.lang.IteratorAdapter;
-
 @SuppressWarnings("unchecked")
 public class MultiIteratorTest {
 
@@ -113,7 +111,8 @@ public class MultiIteratorTest {
         List<Integer> list1 = asList(1, 2, 3, 4);
         List<Integer> list2 = asList(10, 20, 30);
         MultiIterator<Integer> iterator = new MultiIterator<Integer>(asList(list1, list2));
-        List<Object[]> list = IteratorAdapter.asList(iterator);
+        List<Object[]> list = new ArrayList<>();
+        iterator.forEachRemaining(list::add);
 
         assertEquals(asList(1, 10), asList(list.get(0)));
         assertEquals(asList(1, 20), asList(list.get(1)));

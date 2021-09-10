@@ -22,8 +22,6 @@ import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.EntityPath;
@@ -104,7 +102,7 @@ public abstract class AbstractSearchQuery<T, Q extends AbstractSearchQuery<T,Q>>
     @Override
     @SuppressWarnings("unchecked")
     public CloseableIterator<T> iterate() {
-        return new IteratorAdapter<T>(createQuery(false).iterate());
+        return CloseableIterator.fromIterator(createQuery(false).iterate());
     }
 
     @Override

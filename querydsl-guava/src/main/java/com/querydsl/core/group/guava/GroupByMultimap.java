@@ -15,7 +15,7 @@ package com.querydsl.core.group.guava;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.group.AbstractGroupByTransformer;

@@ -26,6 +26,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
+import com.querydsl.core.util.Pair;
 import org.easymock.EasyMock;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -33,7 +34,6 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Test;
 
-import com.mysema.commons.lang.Pair;
 
 public class TypeTest implements InvocationHandler {
 

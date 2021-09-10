@@ -21,13 +21,12 @@ import java.util.stream.Stream;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import com.querydsl.core.CloseableIterator;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.jpa.JpaQuery;
 import org.eclipse.persistence.queries.Cursor;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
 import org.jetbrains.annotations.Nullable;
 
@@ -97,7 +96,7 @@ class EclipseLinkHandler implements QueryHandler {
         if (projection != null) {
             return new TransformingIterator<T>(iterator, closeable, projection);
         } else {
-            return new IteratorAdapter<T>(iterator, closeable);
+            return CloseableIterator.combine(iterator, closeable);
         }
     }
 

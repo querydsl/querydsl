@@ -13,7 +13,7 @@
  */
 package com.querydsl.lucene5;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.CloseableIterator;
 import com.querydsl.core.QueryException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;

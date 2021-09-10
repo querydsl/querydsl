@@ -19,7 +19,6 @@ import com.mongodb.ReadPreference;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;

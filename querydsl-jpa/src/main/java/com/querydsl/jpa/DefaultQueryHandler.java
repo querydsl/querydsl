@@ -16,11 +16,10 @@ package com.querydsl.jpa;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
+import com.querydsl.core.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 import javax.persistence.Query;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
 
 /**
@@ -55,7 +54,7 @@ public final class DefaultQueryHandler implements QueryHandler {
         if (projection != null) {
             return new TransformingIterator<T>(iterator, projection);
         } else {
-            return new IteratorAdapter<T>(iterator);
+            return CloseableIterator.fromIterator(iterator);
         }
     }
 

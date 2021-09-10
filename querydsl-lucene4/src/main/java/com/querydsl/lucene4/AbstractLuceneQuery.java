@@ -13,17 +13,7 @@
  */
 package com.querydsl.lucene4;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.EmptyCloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.Fetchable;
-import com.querydsl.core.NonUniqueResultException;
-import com.querydsl.core.QueryException;
-import com.querydsl.core.QueryMetadata;
-import com.querydsl.core.QueryModifiers;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.SimpleQuery;
+import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
@@ -189,7 +179,7 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
         try {
             limit = maxDoc();
             if (limit == 0) {
-                return new EmptyCloseableIterator<T>();
+                return CloseableIterator.fromIterator(Collections.emptyIterator());
             }
         } catch (IOException | IllegalArgumentException e) {
             throw new QueryException(e);
@@ -215,14 +205,14 @@ public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> 
             if (offset < scoreDocs.length) {
                 return new ResultIterator<T>(scoreDocs, offset, searcher, fieldsToLoad, transformer);
             }
-            return new EmptyCloseableIterator<T>();
+            return CloseableIterator.fromIterator(Collections.emptyIterator());
         } catch (final IOException e) {
             throw new QueryException(e);
         }
     }
 
     private List<T> innerList() {
-        return new IteratorAdapter<T>(iterate()).asList();
+        return iterate().asList();
     }
 
     @Override

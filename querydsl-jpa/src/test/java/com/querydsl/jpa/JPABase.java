@@ -30,8 +30,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.Tuple;
+import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.Expressions;
 import org.junit.ClassRule;
@@ -41,9 +40,6 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.DefaultQueryMetadata;
-import com.querydsl.core.Target;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.dsl.BooleanExpression;

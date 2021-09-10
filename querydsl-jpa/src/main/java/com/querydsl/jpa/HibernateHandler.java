@@ -19,13 +19,12 @@ import java.util.stream.Stream;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import com.querydsl.core.CloseableIterator;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.ResultTransformer;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
 import com.querydsl.core.types.FactoryExpression;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,7 +67,7 @@ public class HibernateHandler implements QueryHandler {
             if (projection != null) {
                 return new TransformingIterator<T>(iterator, projection);
             } else {
-                return new IteratorAdapter<T>(iterator);
+                return CloseableIterator.fromIterator(iterator);
             }
         }
     }

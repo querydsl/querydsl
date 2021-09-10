@@ -15,7 +15,7 @@ package com.querydsl.core.group;
 
 import java.util.*;
 
-import com.mysema.commons.lang.Pair;
+import com.querydsl.core.util.Pair;
 
 abstract class GMap<K, V, M extends Map<K,V>> extends AbstractGroupExpression<Pair<K, V>, M> {
 

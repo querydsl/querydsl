@@ -24,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.function.Function;
 import com.mongodb.*;
-import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;

@@ -29,11 +29,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.mysema.commons</groupId>
-      <artifactId>mysema-commons-lang</artifactId>
-      <version>${mysema.lang.version}</version>
-    </dependency>
-    <dependency>
       <groupId>io.github.classgraph</groupId>
       <artifactId>classgraph</artifactId>
       <scope>test</scope>
