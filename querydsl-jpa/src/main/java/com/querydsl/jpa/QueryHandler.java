@@ -13,10 +13,10 @@
  */
 package com.querydsl.jpa;
 
-import com.mysema.commons.lang.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 import javax.persistence.Query;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.types.FactoryExpression;
 
 import java.util.stream.Stream;

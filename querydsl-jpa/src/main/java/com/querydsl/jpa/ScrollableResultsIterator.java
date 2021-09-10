@@ -15,10 +15,11 @@ package com.querydsl.jpa;
 
 import java.util.NoSuchElementException;
 
-import com.mysema.commons.lang.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.ScrollableResults;
+
+import com.mysema.commons.lang.CloseableIterator;
 
 /**
  * {@code ScrollableResultsIterator} is a {@link CloseableIterator} adapter for ScrollableResults

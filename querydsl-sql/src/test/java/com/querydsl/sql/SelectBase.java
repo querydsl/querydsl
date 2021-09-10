@@ -27,13 +27,13 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.Pair;
 import org.joda.time.*;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
 import com.querydsl.core.group.Group;
 import com.querydsl.core.group.GroupBy;

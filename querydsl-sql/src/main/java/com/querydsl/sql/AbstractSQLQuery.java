@@ -27,9 +27,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.function.Supplier;
 
-import com.mysema.commons.lang.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.*;

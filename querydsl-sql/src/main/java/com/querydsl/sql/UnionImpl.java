@@ -16,10 +16,13 @@ package com.querydsl.sql;
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
 import org.jetbrains.annotations.Nullable;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.Query;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.*;
 
 /**

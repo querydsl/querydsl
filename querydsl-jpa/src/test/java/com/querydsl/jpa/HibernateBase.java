@@ -18,7 +18,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.List;
 
-import com.mysema.commons.lang.CloseableIterator;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.junit.ClassRule;
@@ -27,6 +26,7 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.EntityPath;

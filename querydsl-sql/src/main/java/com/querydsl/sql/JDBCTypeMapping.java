@@ -25,9 +25,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.mysema.commons.lang.Pair;
 import org.jetbrains.annotations.Nullable;
 
+import com.mysema.commons.lang.Pair;
 import com.querydsl.sql.types.Null;
 
 /**

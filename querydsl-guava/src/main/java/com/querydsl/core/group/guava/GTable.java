@@ -16,11 +16,11 @@ package com.querydsl.core.group.guava;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
+import com.mysema.commons.lang.Pair;
 import com.querydsl.core.group.AbstractGroupExpression;
 import com.querydsl.core.group.GroupCollector;
 import com.querydsl.core.group.GroupExpression;
 import com.querydsl.core.group.QPair;
-import com.mysema.commons.lang.Pair;
 
 import java.util.Comparator;
 import java.util.HashMap;
