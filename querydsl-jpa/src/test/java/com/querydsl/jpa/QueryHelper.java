@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.logging.Logger;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import org.jetbrains.annotations.Nullable;
 

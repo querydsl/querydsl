@@ -18,8 +18,8 @@ import static com.querydsl.core.group.GroupBy.*;
 
 import java.util.*;
 
-import com.querydsl.core.CloseableIterator;
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.Pair;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;

@@ -15,6 +15,7 @@ package com.querydsl.hibernate.search;
 
 import java.util.List;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.lucene5.LuceneSerializer;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.hibernate.Session;

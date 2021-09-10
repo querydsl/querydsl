@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import com.mysema.commons.lang.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;

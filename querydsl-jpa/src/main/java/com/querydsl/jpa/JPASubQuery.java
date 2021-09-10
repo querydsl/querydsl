@@ -13,6 +13,7 @@
  */
 package com.querydsl.jpa;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
 

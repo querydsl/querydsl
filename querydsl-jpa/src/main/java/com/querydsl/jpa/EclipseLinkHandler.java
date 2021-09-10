@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
-import com.querydsl.core.CloseableIterator;
+import com.mysema.commons.lang.CloseableIterator;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.jpa.JpaQuery;

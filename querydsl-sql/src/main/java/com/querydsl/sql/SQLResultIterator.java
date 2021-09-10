@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.NoSuchElementException;
 
-import com.querydsl.core.CloseableIterator;
+import com.mysema.commons.lang.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.QueryException;

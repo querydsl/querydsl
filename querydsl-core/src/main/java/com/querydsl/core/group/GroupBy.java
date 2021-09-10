@@ -19,7 +19,7 @@ import java.util.*;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 
 /**
  * {@code GroupBy} provides factory methods for {@link ResultTransformer} and {@link GroupExpression} creation

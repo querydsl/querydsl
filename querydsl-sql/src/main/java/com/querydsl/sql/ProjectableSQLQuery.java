@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import org.jetbrains.annotations.Nullable;
 

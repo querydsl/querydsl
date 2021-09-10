@@ -13,6 +13,7 @@
  */
 package com.querydsl.lucene5;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.OrderSpecifier;

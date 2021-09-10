@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.querydsl.core.CloseableIterator;
+import com.mysema.commons.lang.CloseableIterator;
 import org.junit.Ignore;
 import org.junit.Test;
 

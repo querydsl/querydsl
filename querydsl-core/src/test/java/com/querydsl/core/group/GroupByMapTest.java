@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 import java.math.BigDecimal;
 import java.util.*;
 
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 import org.junit.Test;
 
 import com.querydsl.core.ResultTransformer;

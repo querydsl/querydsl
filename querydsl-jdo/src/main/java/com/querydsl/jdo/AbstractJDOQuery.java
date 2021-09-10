@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import com.mysema.commons.lang.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;

@@ -16,7 +16,7 @@ package com.querydsl.core.group;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import com.querydsl.core.CloseableIterator;
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Expression;

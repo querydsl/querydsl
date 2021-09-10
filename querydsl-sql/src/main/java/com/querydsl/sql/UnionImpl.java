@@ -16,6 +16,7 @@ package com.querydsl.sql;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import org.jetbrains.annotations.Nullable;
 

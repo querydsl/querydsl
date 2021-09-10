@@ -23,7 +23,7 @@ import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.group.GroupExpression;
 import com.querydsl.core.group.QPair;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 
 import java.util.Comparator;
 

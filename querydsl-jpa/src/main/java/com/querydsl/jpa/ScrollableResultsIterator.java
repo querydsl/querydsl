@@ -15,7 +15,7 @@ package com.querydsl.jpa;
 
 import java.util.NoSuchElementException;
 
-import com.querydsl.core.CloseableIterator;
+import com.mysema.commons.lang.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.ScrollableResults;

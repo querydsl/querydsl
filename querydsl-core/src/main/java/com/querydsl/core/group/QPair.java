@@ -15,7 +15,7 @@ package com.querydsl.core.group;
 
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 
 /**
  * A pair of (Map) key and value

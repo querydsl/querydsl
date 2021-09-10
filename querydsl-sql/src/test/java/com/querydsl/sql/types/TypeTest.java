@@ -26,7 +26,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 import org.easymock.EasyMock;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;

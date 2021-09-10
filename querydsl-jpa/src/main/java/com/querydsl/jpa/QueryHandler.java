@@ -13,7 +13,7 @@
  */
 package com.querydsl.jpa;
 
-import com.querydsl.core.CloseableIterator;
+import com.mysema.commons.lang.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 import javax.persistence.Query;
 

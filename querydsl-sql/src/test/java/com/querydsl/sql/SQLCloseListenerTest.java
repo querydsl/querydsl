@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.sql.SQLException;
 
-import com.querydsl.core.CloseableIterator;
+import com.mysema.commons.lang.CloseableIterator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

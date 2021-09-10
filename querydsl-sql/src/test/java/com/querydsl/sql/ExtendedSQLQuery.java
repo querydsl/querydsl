@@ -16,6 +16,7 @@ package com.querydsl.sql;
 import java.sql.Connection;
 import java.util.List;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;

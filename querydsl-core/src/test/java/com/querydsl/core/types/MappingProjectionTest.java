@@ -15,7 +15,7 @@ package com.querydsl.core.types;
 
 import static org.junit.Assert.assertEquals;
 
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 import org.junit.Test;
 
 import com.querydsl.core.Tuple;

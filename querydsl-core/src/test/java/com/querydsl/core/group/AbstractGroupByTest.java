@@ -11,7 +11,7 @@ import com.querydsl.core.support.DummyFetchableQuery;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 
 public abstract class AbstractGroupByTest {
 

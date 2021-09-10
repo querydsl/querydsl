@@ -21,7 +21,7 @@ import com.querydsl.core.group.AbstractGroupExpression;
 import com.querydsl.core.group.GroupCollector;
 import com.querydsl.core.group.GroupExpression;
 import com.querydsl.core.group.QPair;
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 
 import java.util.Comparator;
 import java.util.HashMap;

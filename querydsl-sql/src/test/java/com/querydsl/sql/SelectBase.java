@@ -27,7 +27,8 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.Pair;
 import org.joda.time.*;
 import org.junit.Assert;
 import org.junit.Ignore;

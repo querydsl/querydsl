@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.Calendar;
 import java.util.Map.Entry;
 
-import com.querydsl.core.util.Pair;
+import com.mysema.commons.lang.Pair;
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;

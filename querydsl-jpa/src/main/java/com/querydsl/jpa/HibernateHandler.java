@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
-import com.querydsl.core.CloseableIterator;
+import com.mysema.commons.lang.CloseableIterator;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.query.NativeQuery;
