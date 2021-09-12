@@ -13,22 +13,37 @@
  */
 package com.querydsl.jdo;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
-
 import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryException;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.support.FetchableSubQueryBase;
+import com.querydsl.core.types.CollectionExpression;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.types.Path;
 import org.jetbrains.annotations.Nullable;
+
 import javax.jdo.JDOUserException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-
-import com.querydsl.core.*;
-import com.querydsl.core.support.FetchableSubQueryBase;
-import com.querydsl.core.types.*;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  * Abstract base class for custom implementations of the {@link JDOQLQuery} interface.

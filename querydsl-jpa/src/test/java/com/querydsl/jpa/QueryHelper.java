@@ -13,23 +13,24 @@
  */
 package com.querydsl.jpa;
 
-import static org.junit.Assert.assertEquals;
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
+import antlr.collections.AST;
+import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import org.hibernate.hql.internal.ast.HqlParser;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.logging.Logger;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
-import org.jetbrains.annotations.Nullable;
-
-import org.hibernate.hql.internal.ast.HqlParser;
-
-import com.querydsl.core.types.Expression;
-
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
-import antlr.collections.AST;
+import static org.junit.Assert.assertEquals;
 
 class QueryHelper<T> extends JPAQueryBase<T, QueryHelper<T>> {
 

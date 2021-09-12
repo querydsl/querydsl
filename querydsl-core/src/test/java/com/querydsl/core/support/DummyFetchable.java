@@ -1,10 +1,13 @@
 package com.querydsl.core.support;
 
-import java.util.List;
-
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
+import com.querydsl.core.Fetchable;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.QueryResults;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class DummyFetchable<T> implements Fetchable<T> {
 

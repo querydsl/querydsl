@@ -13,16 +13,25 @@
  */
 package com.querydsl.collections;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.FetchableQuery;
+import com.querydsl.core.JoinType;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.support.FetchableQueryBase;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.MapExpression;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.Predicate;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
-import com.querydsl.core.support.FetchableQueryBase;
-import com.querydsl.core.types.*;
 
 /**
  * {@code AbstractCollQuery} provides a base class for {@code Collection} query implementations.

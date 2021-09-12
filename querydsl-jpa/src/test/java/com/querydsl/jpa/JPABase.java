@@ -13,27 +13,25 @@
  */
 package com.querydsl.jpa;
 
-import static com.querydsl.jpa.JPAExpressions.selectFrom;
-import static com.querydsl.jpa.JPAExpressions.selectOne;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
-
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.Target;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.testutil.ExcludeIn;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.domain.Cat;
+import com.querydsl.jpa.domain.QCat;
+import com.querydsl.jpa.domain.QCatSummary;
+import com.querydsl.jpa.domain.QChild;
+import com.querydsl.jpa.domain.QGroup;
+import com.querydsl.jpa.domain.QParent;
+import com.querydsl.jpa.impl.JPADeleteClause;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.testutil.JPATestRunner;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -41,13 +39,21 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
-import com.querydsl.core.testutil.ExcludeIn;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.domain.*;
-import com.querydsl.jpa.impl.JPADeleteClause;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.testutil.JPATestRunner;
+import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.querydsl.jpa.JPAExpressions.selectFrom;
+import static com.querydsl.jpa.JPAExpressions.selectOne;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author tiwe

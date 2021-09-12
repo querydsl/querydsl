@@ -14,7 +14,14 @@
 package com.querydsl.lucene5;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.Fetchable;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryException;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.SimpleQuery;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
@@ -35,7 +42,11 @@ import org.apache.lucene.search.TotalHitCountCollector;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 /**

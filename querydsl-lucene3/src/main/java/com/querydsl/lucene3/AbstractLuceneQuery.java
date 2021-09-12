@@ -14,7 +14,14 @@
 package com.querydsl.lucene3;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.Fetchable;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.QueryException;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.SimpleQuery;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;

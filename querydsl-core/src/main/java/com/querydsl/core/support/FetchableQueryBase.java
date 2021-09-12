@@ -13,13 +13,15 @@
  */
 package com.querydsl.core.support;
 
-import java.util.List;
-
 import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
+import com.querydsl.core.Fetchable;
+import com.querydsl.core.FetchableQuery;
+import com.querydsl.core.NonUniqueResultException;
+import com.querydsl.core.ResultTransformer;
+import com.querydsl.core.types.SubQueryExpression;
 import org.jetbrains.annotations.Nullable;
 
-import com.querydsl.core.types.SubQueryExpression;
+import java.util.List;
 
 /**
  * {@code FetchableQueryBase} extends the {@link QueryBase} class to provide default

@@ -13,6 +13,25 @@
  */
 package com.querydsl.sql;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.DefaultQueryMetadata;
+import com.querydsl.core.QueryException;
+import com.querydsl.core.QueryFlag;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.support.QueryMixin;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.FactoryExpression;
+import com.querydsl.core.types.ParamExpression;
+import com.querydsl.core.types.ParamNotSetException;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.core.types.dsl.Wildcard;
+import com.querydsl.core.util.ResultSetAdapter;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,20 +42,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.function.Supplier;
-
-import org.jetbrains.annotations.Nullable;
-
-import com.mysema.commons.lang.CloseableIterator;
-import com.querydsl.core.*;
-import com.querydsl.core.support.QueryMixin;
-import com.querydsl.core.types.*;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.SimpleExpression;
-import com.querydsl.core.types.dsl.Wildcard;
-import com.querydsl.core.util.ResultSetAdapter;
 
 /**
  * {@code AbstractSQLQuery} is the base type for SQL query implementations
