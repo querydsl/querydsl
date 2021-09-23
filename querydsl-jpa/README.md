@@ -22,27 +22,34 @@ And now, configure the Maven APT plugin :
     <plugins>
       ...
       <plugin>
-        <groupId>com.mysema.maven</groupId>
-        <artifactId>apt-maven-plugin</artifactId>
-        <version>1.1.3</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>process</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-apt</artifactId>
-            <version>${querydsl.version}</version>
-          </dependency>
-        </dependencies>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+            <annotationProcessors>
+                <annotationProcessor>com.querydsl.apt.jpa.JPAAnnotationProcessor</annotationProcessor>
+            </annotationProcessors>
+            <annotationProcessorPaths>
+                <path>
+                    <groupId>com.querydsl</groupId>
+                    <artifactId>querydsl-apt</artifactId>
+                    <version>${querydsl.version}</version>
+                    <classifier>jpa</classifier>
+                </path>
+                <path>
+                    <groupId>jakarta.persistence</groupId>
+                    <artifactId>jakarta.persistence-api</artifactId>
+                    <version>2.2.3</version>
+                </path>
+                <!-- Only necessary when using JDK 11+ -->
+                <path>
+                    <groupId>jakarta.annotation</groupId>
+                    <artifactId>jakarta.annotation-api</artifactId>
+                    <version>1.3.5</version>
+                </path>
+            </annotationProcessorPaths>
+        </configuration>
+        ...
       </plugin>
       ...
     </plugins>
