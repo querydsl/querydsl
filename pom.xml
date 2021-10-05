@@ -180,7 +180,7 @@
       <dependency>
         <groupId>io.github.classgraph</groupId>
         <artifactId>classgraph</artifactId>
-        <version>4.8.116</version>
+        <version>4.8.123</version>
         <exclusions>
           <exclusion>
             <groupId>org.javassist</groupId>
