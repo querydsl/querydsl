@@ -7,6 +7,8 @@ import com.querydsl.core.Target;
 import com.querydsl.core.testutil.Oracle;
 import com.querydsl.jpa.*;
 
+import static org.junit.Assume.assumeTrue;
+
 @Category(Oracle.class)
 public class OracleSuiteTest extends AbstractSuite {
 
@@ -19,6 +21,8 @@ public class OracleSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
+        assumeTrue("OracleSuiteTest is disabled (Maven Profile 'enable-jpa-oracle-test' is not enabled)",
+                "true".equalsIgnoreCase(System.getProperty("querydsl-enable-jpa-oracle-test", "false")));
         Mode.mode.set("oracle");
         Mode.target.set(Target.ORACLE);
     }

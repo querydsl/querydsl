@@ -7,6 +7,8 @@ import com.querydsl.core.Target;
 import com.querydsl.core.testutil.MySQL;
 import com.querydsl.jpa.*;
 
+import static org.junit.Assume.assumeTrue;
+
 @Category(MySQL.class)
 public class MySQLEclipseLinkTest extends AbstractJPASuite {
 
@@ -51,6 +53,8 @@ public class MySQLEclipseLinkTest extends AbstractJPASuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
+        assumeTrue("MySQLEclipseLinkTest is disabled (Maven Profile 'enable-jpa-mysql-test' is not enabled)",
+                "true".equalsIgnoreCase(System.getProperty("querydsl-enable-jpa-mysql-test", "false")));
         Mode.mode.set("mysql-eclipselink");
         Mode.target.set(Target.MYSQL);
     }

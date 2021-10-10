@@ -7,6 +7,8 @@ import com.querydsl.core.Target;
 import com.querydsl.core.testutil.MySQL;
 import com.querydsl.jpa.*;
 
+import static org.junit.Assume.assumeTrue;
+
 @Category(MySQL.class)
 public class MySQLSuiteTest extends AbstractSuite {
 
@@ -29,6 +31,8 @@ public class MySQLSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
+        assumeTrue("MySQLSuiteTest is disabled (Maven Profile 'enable-jpa-mysql-test' is not enabled)",
+                "true".equalsIgnoreCase(System.getProperty("querydsl-enable-jpa-mysql-test", "false")));
         Mode.mode.set("mysql");
         Mode.target.set(Target.MYSQL);
     }

@@ -7,6 +7,8 @@ import com.querydsl.core.Target;
 import com.querydsl.core.testutil.PostgreSQL;
 import com.querydsl.jpa.*;
 
+import static org.junit.Assume.assumeTrue;
+
 @Category(PostgreSQL.class)
 public class PostgreSQLSuiteTest extends AbstractSuite {
 
@@ -19,6 +21,8 @@ public class PostgreSQLSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
+        assumeTrue("PostgreSQLSuiteTest is disabled (Maven Profile 'enable-jpa-postgresql-test' is not enabled)",
+                "true".equalsIgnoreCase(System.getProperty("querydsl-enable-jpa-postgresql-test", "false")));
         Mode.mode.set("postgresql");
         Mode.target.set(Target.POSTGRESQL);
     }

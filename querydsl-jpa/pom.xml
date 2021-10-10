@@ -313,7 +313,7 @@
         <configuration>
           <includes>
             <include>**/*Test.java</include>
-          </includes> 
+          </includes>
           <systemProperties>
             <property>
                 <name>derby.stream.error.file</name>
@@ -322,6 +322,22 @@
             <property>
                 <name>org.jboss.logging.provider</name>
                 <value>slf4j</value>
+            </property>
+            <property>
+              <name>querydsl-enable-jpa-postgresql-test</name>
+              <value>${querydsl-enable-jpa-postgresql-test.value}</value>
+            </property>
+            <property>
+              <name>querydsl-enable-jpa-oracle-test</name>
+              <value>${querydsl-enable-jpa-oracle-test.value}</value>
+            </property>
+            <property>
+              <name>querydsl-enable-jpa-mysql-test</name>
+              <value>${querydsl-enable-jpa-mysql-test.value}</value>
+            </property>
+            <property>
+              <name>querydsl-enable-jpa-mssql-test</name>
+              <value>${querydsl-enable-jpa-mssql-test.value}</value>
             </property>
           </systemProperties>
         </configuration>
@@ -405,6 +421,30 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>enable-jpa-postgresql-test</id>
+      <properties>
+        <querydsl-enable-jpa-postgresql-test.value>true</querydsl-enable-jpa-postgresql-test.value>
+      </properties>
+    </profile>
+    <profile>
+      <id>enable-jpa-oracle-test</id>
+      <properties>
+        <querydsl-enable-jpa-oracle-test.value>true</querydsl-enable-jpa-oracle-test.value>
+      </properties>
+    </profile>
+    <profile>
+      <id>enable-jpa-mysql-test</id>
+      <properties>
+        <querydsl-enable-jpa-mysql-test.value>true</querydsl-enable-jpa-mysql-test.value>
+      </properties>
+    </profile>
+    <profile>
+      <id>enable-jpa-mssql-test</id>
+      <properties>
+        <querydsl-enable-jpa-mssql-test.value>true</querydsl-enable-jpa-mssql-test.value>
+      </properties>
+    </profile>
     <profile>
       <id>java-11</id>
       <activation>

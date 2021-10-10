@@ -7,6 +7,8 @@ import com.querydsl.core.Target;
 import com.querydsl.core.testutil.SQLServer;
 import com.querydsl.jpa.*;
 
+import static org.junit.Assume.assumeTrue;
+
 @Category(SQLServer.class)
 public class MSSQLSuiteTest extends AbstractSuite {
 
@@ -19,6 +21,8 @@ public class MSSQLSuiteTest extends AbstractSuite {
 
     @BeforeClass
     public static void setUp() throws Exception {
+        assumeTrue("MSSQLSuiteTest is disabled (Maven Profile 'enable-jpa-mssql-test' is not enabled)",
+                "true".equalsIgnoreCase(System.getProperty("querydsl-enable-jpa-mssql-test", "false")));
         Mode.mode.set("mssql");
         Mode.target.set(Target.SQLSERVER);
     }
