@@ -71,7 +71,7 @@
     <jmh.version>1.33</jmh.version>
     <hamcrest.veresion>2.2</hamcrest.veresion>
     <kotlin.version>1.5.31</kotlin.version>
-    <dokka.version>1.5.0</dokka.version>
+    <dokka.version>1.5.31</dokka.version>
 
     <!-- Import-Package definitions for maven-bundle-plugin -->
     <osgi.import.package.root>
