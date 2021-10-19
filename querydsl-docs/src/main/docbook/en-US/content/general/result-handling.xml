@@ -18,7 +18,7 @@
     <title>Returning multiple columns</title>
 
     <para>Since Querydsl 3.0 the default type for multi-column results is <code>com.querydsl.core.Tuple</code>.
-    Tuple provides provides a typesafe Map like interface to access column data from a Tuple row object.</para>
+    Tuple provides a typesafe Map like interface to access column data from a Tuple row object.</para>
 
     <programlisting language="java"><![CDATA[
 List<Tuple> result = query.select(employee.firstName, employee.lastName)
