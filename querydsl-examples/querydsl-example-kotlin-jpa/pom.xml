@@ -12,7 +12,7 @@
     <name>Querydsl example - Kotlin JPA</name>
 
     <properties>
-        <kotlin.version>1.5.30</kotlin.version>
+        <kotlin.version>1.5.31</kotlin.version>
     </properties>
 
     <dependencies>
