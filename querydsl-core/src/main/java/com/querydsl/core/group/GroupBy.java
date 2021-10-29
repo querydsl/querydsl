@@ -352,6 +352,28 @@ public class GroupBy {
         return new GMap.Mixin<K, V, T, U, SortedMap<T, U>>(key, value, GMap.createSorted(QPair.create(key, value), comparator));
     }
 
+    /**
+     * Create a new concat string from group expressions
+     *
+     * @param expression values for this expression will be concat
+     * @param delimiter spliterator to combine values
+     * @return concat expressions
+     */
+    public static <E> AbstractGroupExpression<E, String> concat(Expression<E> expression, String delimiter) {
+        return new GConcat<E>(expression, delimiter);
+    }
+
+    /**
+     * Create a new concat string from group expressions
+     * with default delimiter is ' '
+     *
+     * @param expression values for this expression will be concat
+     * @return concat expressions
+     */
+    public static <E> AbstractGroupExpression<E, String> concat(Expression<E> expression) {
+        return new GConcat<>(expression, " ");
+    }
+
     protected GroupBy() { }
 
 }
