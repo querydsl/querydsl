@@ -55,6 +55,7 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.WildcardTypeName
 import com.squareup.kotlinpoet.asTypeName
 import com.squareup.kotlinpoet.buildCodeBlock
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.reflect.KClass
@@ -128,10 +129,10 @@ open class KotlinEntitySerializer @Inject constructor(
     }
 
     protected open fun TypeSpec.Builder.introDefaultInstance(model: EntityType, defaultName: String): TypeSpec.Builder = apply {
-        val simpleName = if (defaultName.isNotEmpty()) defaultName else model.modifiedSimpleName
+        val simpleName = defaultName.ifEmpty { model.modifiedSimpleName }
         val queryType = mappings.getPathClassName(model, model)
-        val alias = if (keywords.contains(simpleName.toUpperCase())) "${simpleName}1" else simpleName
-        addProperty(PropertySpec.builder(simpleName, queryType, KModifier.PUBLIC).initializer("%T(%S)", queryType, alias).build())
+        val alias = if (keywords.contains(simpleName.uppercase(Locale.getDefault()))) "${simpleName}1" else simpleName
+        addProperty(PropertySpec.builder(simpleName, queryType, KModifier.PUBLIC).initializer("%T(%S)", queryType, alias).addAnnotation(JvmField::class).build())
     }
 
     protected open fun TypeSpec.Builder.introSuper(model: EntityType): TypeSpec.Builder = apply {
