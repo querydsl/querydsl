@@ -377,6 +377,11 @@
             <jvmTarget>1.8</jvmTarget>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <version>3.13.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -955,6 +960,11 @@
         <configuration>
           <aggregate>true</aggregate>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.13.0</version>
       </plugin>
     </plugins>
   </reporting>

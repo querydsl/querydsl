@@ -18,6 +18,10 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Ops.MathOps;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Extended Math expressions, supported by the SQL module
  *
@@ -165,7 +169,19 @@ public final class MathExpressions {
      * @return max(left, right)
      */
     public static <A extends Number & Comparable<?>> NumberExpression<A> max(Expression<A> left, Expression<A> right) {
-        return NumberExpression.max(left, right);
+            return NumberExpression.max(left, right);
+    }
+    /**
+     * Return the greater one of the given values
+     *
+     * @return max(left, right)
+     */
+    public static Date max(Date left, Date right) throws ParseException {
+        if (left.getTime()>right.getTime()){
+            return left;
+        }else{
+            return right;
+        }
     }
 
     /**
@@ -177,6 +193,18 @@ public final class MathExpressions {
      */
     public static <A extends Number & Comparable<?>> NumberExpression<A> min(Expression<A> left, Expression<A> right) {
         return NumberExpression.min(left, right);
+    }
+    /**
+     * Return the smaller one  of the given date
+     * @return min(left, right)
+     * date input as date
+     */
+    public static Date min(Date left, Date right) throws ParseException {
+        if (left.getTime()>right.getTime()){
+            return right;
+        }else{
+            return left;
+        }
     }
 
     /**
