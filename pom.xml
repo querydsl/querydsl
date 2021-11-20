@@ -686,16 +686,7 @@
     </plugins>
   </build>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>com.springsource.repository.bundles.release</id>
-      <url>http://repository.springsource.com/maven/bundles/release</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>com.springsource.repository.bundles.external</id>
-      <url>http://repository.springsource.com/maven/bundles/external</url>
-    </pluginRepository>
-  </pluginRepositories>
+  <pluginRepositories />
 
   <profiles>
     <profile>

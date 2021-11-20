@@ -259,12 +259,6 @@
     </plugins>
   </build>
 
-  <repositories>
-    <!--for org.springframework.roo:org.springframework.roo.annotations -->
-    <repository>
-      <id>spring roo repository</id>
-      <url>https://spring-roo-repository.springsource.org/release</url>
-    </repository>
-  </repositories>
+  <repositories />
   
 </project>
