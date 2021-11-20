@@ -19,7 +19,6 @@ import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.Ops.MathOps;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**

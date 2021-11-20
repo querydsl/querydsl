@@ -1,15 +1,8 @@
 package com.querydsl.core.types.dsl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
-
-import org.easymock.EasyMock;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
