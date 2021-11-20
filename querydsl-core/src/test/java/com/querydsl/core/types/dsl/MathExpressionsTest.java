@@ -88,6 +88,7 @@ public class MathExpressionsTest {
      * @throws ParseException
      * dummyNull() is testing MathExpressions.max() and MathExpressions.min() using null
      * both functions can handle input as null
+     * this test can be used as negative test scenario
      */
     @Test
     public void dummyNull() throws ParseException {

@@ -491,6 +491,7 @@
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>4.3.0</version>
         <configuration>
+          <!--suppress UnresolvedMavenProperty -->
           <repoToken>${env.COVERALLS_REPO_TOKEN}</repoToken>
         </configuration>
       </plugin>
@@ -937,6 +938,11 @@
                 <version>2.3.2</version>
               </dependency>
             </dependencies>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>3.13.0</version>
           </plugin>
         </plugins>
       </build>
