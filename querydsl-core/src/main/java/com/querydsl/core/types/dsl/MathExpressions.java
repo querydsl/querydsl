@@ -171,9 +171,10 @@ public final class MathExpressions {
             return NumberExpression.max(left, right);
     }
     /**
+     * issue #2812 MathExpressions.max/min support Date
      * Return the greater one of the given values
-     *
      * @return max(left, right)
+     * dates input as java.util.date
      */
     public static Date max(Date left, Date right) throws ParseException {
         if (left ==null || right ==null) return null;
@@ -195,9 +196,10 @@ public final class MathExpressions {
         return NumberExpression.min(left, right);
     }
     /**
+     * issue #2812 MathExpressions.max/min support Date
      * Return the smaller one  of the given date
      * @return min(left, right)
-     * date input as date
+     * dates input as java.util.date
      */
     public static Date min(Date left, Date right) throws ParseException {
         if (left ==null || right ==null) return null;
