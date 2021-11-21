@@ -177,15 +177,16 @@ public final class MathExpressions {
      * dates input as java.util.date
      */
     public static Date max(Date left, Date right) throws ParseException {
+        Date res = null;
         if (left ==null || right ==null) {
             System.out.println("Invalid Input");
-            return null;
         }
-        if (left.getTime()>right.getTime()){
-            return left;
+        else if (left.getTime()>right.getTime()){
+            res =  left;
         }else{
-            return right;
+            res =  right;
         }
+        return res;
     }
 
     /**
@@ -205,15 +206,16 @@ public final class MathExpressions {
      * dates input as java.util.date
      */
     public static Date min(Date left, Date right) throws ParseException {
+        Date res = null;
         if (left ==null || right ==null) {
             System.out.println("Invalid Input");
-            return null;
         }
-        if (left.getTime()>right.getTime()){
-            return right;
+        else if (left.getTime()>right.getTime()){
+            res =right;
         }else{
-            return left;
+            res =left;
         }
+        return res;
     }
 
     /**
