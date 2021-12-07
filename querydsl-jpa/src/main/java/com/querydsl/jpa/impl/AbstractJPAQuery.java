@@ -30,8 +30,6 @@ import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
