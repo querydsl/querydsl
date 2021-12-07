@@ -27,6 +27,8 @@ import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.mysema.commons.lang.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
@@ -46,9 +48,9 @@ import com.querydsl.jpa.QueryHandler;
  */
 public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> extends JPAQueryBase<T, Q> {
 
-    private static final Logger logger = Logger.getLogger(JPAQuery.class.getName());
+    private static final Logger logger = Logger.getLogger(AbstractJPAQuery.class.getName());
 
-    protected final Map<String, Object> hints = new LinkedHashMap<>();
+    protected final Multimap<String, Object> hints = LinkedHashMultimap.create();
 
     protected final EntityManager entityManager;
 
@@ -148,7 +150,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
             query.setFlushMode(flushMode);
         }
 
-        for (Map.Entry<String, Object> entry : hints.entrySet()) {
+        for (Map.Entry<String, Object> entry : hints.entries()) {
             query.setHint(entry.getKey(), entry.getValue());
         }
 
