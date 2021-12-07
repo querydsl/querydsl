@@ -14,9 +14,12 @@
 package com.querydsl.jpa.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -50,7 +53,7 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
 
     private static final Logger logger = Logger.getLogger(AbstractJPAQuery.class.getName());
 
-    protected final Multimap<String, Object> hints = LinkedHashMultimap.create();
+    protected final Map<String, Collection<Object>> hints = new LinkedHashMap<>();
 
     protected final EntityManager entityManager;
 
@@ -150,8 +153,8 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
             query.setFlushMode(flushMode);
         }
 
-        for (Map.Entry<String, Object> entry : hints.entries()) {
-            query.setHint(entry.getKey(), entry.getValue());
+        for (Map.Entry<String, Collection<Object>> entry : hints.entrySet()) {
+            entry.getValue().forEach(value -> query.setHint(entry.getKey(), value));
         }
 
         // set transformer, if necessary and possible
@@ -350,7 +353,8 @@ public abstract class AbstractJPAQuery<T, Q extends AbstractJPAQuery<T, Q>> exte
 
     @SuppressWarnings("unchecked")
     public Q setHint(String name, Object value) {
-        hints.put(name, value);
+        hints.computeIfAbsent(name,key -> new LinkedHashSet<>());
+        hints.get(name).add(value);
         return (Q) this;
     }
 
