@@ -90,9 +90,9 @@ public class WindowFunctionTest {
 
         assertEquals("sum(path) over (order by path asc rows between current row and unbounded following)",
                 toString(wf.rows().between().currentRow().unboundedFollowing()));
-        assertEquals("sum(path) over (order by path asc rows between preceding intPath and following intPath)",
+        assertEquals("sum(path) over (order by path asc rows between intPath preceding and intPath following)",
                 toString(wf.rows().between().preceding(intPath).following(intPath)));
-        assertEquals("sum(path) over (order by path asc rows between preceding ? and following ?)",
+        assertEquals("sum(path) over (order by path asc rows between ? preceding and ? following)",
                 toString(wf.rows().between().preceding(1).following(3)));
     }
 
@@ -120,9 +120,9 @@ public class WindowFunctionTest {
         NumberPath<Integer> intPath = Expressions.numberPath(Integer.class, "intPath");
         WindowFunction<Long> wf = SQLExpressions.sum(path).over().orderBy(path);
 
-        assertEquals("sum(path) over (order by path asc rows preceding intPath)",
+        assertEquals("sum(path) over (order by path asc rows intPath preceding)",
                 toString(wf.rows().preceding(intPath)));
-        assertEquals("sum(path) over (order by path asc rows preceding ?)",
+        assertEquals("sum(path) over (order by path asc rows ? preceding)",
                 toString(wf.rows().preceding(3)));
     }
 
