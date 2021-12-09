@@ -1,17 +1,17 @@
 package com.querydsl.sql.types;
 
 import org.easymock.EasyMock;
+
 import org.junit.Test;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
 
 public class JSR310LocalDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<LocalDateTime> {
 
@@ -57,4 +57,8 @@ public class JSR310LocalDateTimeTypeTest extends AbstractJSR310DateTimeTypeTest<
         assertNotNull(result);
         assertTrue(result.getDayOfYear() == 1);
     }
+
+
 }
+
+

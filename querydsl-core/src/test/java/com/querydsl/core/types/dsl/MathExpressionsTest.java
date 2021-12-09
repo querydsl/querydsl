@@ -105,7 +105,5 @@ public class MathExpressionsTest {
 
         assertNull(result_max);
         assertNull(result_min);
-
     }
-
 }
