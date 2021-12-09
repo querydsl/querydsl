@@ -627,6 +627,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     }
 
     /**
+     * loqQuery is to log queryString and it's parameters
      * @param queryString, list of parameters
      * @return void, this is to log input parameters
      */
