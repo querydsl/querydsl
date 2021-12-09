@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 public class MathExpressionsTest {
 
     /**
+     * CS427 Issue link: https://github.com/mz4987/querydsl/MathExpressions.max/minsupportDate/#2812
      * @throws ParseException
      * dummyTest_max() is testing if the MathExpressions.max() function can return larger value of two date
      */
@@ -34,6 +35,7 @@ public class MathExpressionsTest {
 
     }
     /**
+     * CS427 Issue link: https://github.com/mz4987/querydsl/MathExpressions.max/minsupportDate/#2812
      * @throws ParseException
      * dummyTest_min() is testing if the MathExpressions.max() function can return smaller value of two dates
      */
@@ -60,6 +62,7 @@ public class MathExpressionsTest {
         assertTrue(result_min2  == date4);
     }
     /**
+     * CS427 Issue link: https://github.com/mz4987/querydsl/MathExpressions.max/minsupportDate/#2812
      * @throws ParseException
      * dummyTest() is testing MathExpressions.max() and MathExpressions.min() using same values
      * both functions can handle same inputs
@@ -85,6 +88,7 @@ public class MathExpressionsTest {
     }
 
     /**
+     * CS427 Issue link: https://github.com/mz4987/querydsl/MathExpressions.max/minsupportDate/#2812
      * @throws ParseException
      * dummyNull() is testing MathExpressions.max() and MathExpressions.min() using null
      * both functions can handle input as null
