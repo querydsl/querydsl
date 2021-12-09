@@ -665,9 +665,10 @@ public final class SQLExpressions {
      * @param delimiter delimiter
      * @return listagg(expr, delimiter)
      */
-    public static WithinGroup<Object> listagg(Expression<?> expr, String delimiter) {
-        return new WithinGroup<Object>(Object.class, SQLOps.LISTAGG, expr, ConstantImpl.create(delimiter));
+    public static WithinGroup<String> listagg(Expression<?> expr, String delimiter) {
+        return new WithinGroup<String>(String.class, SQLOps.LISTAGG, expr, ConstantImpl.create(delimiter));
     }
+
 
     /**
      * NTH_VALUE returns the expr value of the nth row in the window defined by the analytic clause.
