@@ -633,7 +633,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     protected void logQuery(String queryString, Collection<Object> parameters) {
         if (logger.isLoggable(Level.FINE)) {
             String normalizedQuery = queryString.replace('\n', ' ');
-            logger.info(normalizedQuery);
+            logger.fine(normalizedQuery);
             Object[] parametersArray = parameters.toArray();
             for (int i = 0; i < parameters.size(); i++) {
                 logger.fine("Query Parameter:" + String.valueOf(i) + "-->" + parametersArray[i].toString());
