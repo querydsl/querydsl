@@ -179,13 +179,12 @@ public final class MathExpressions {
      */
     public static Date max(Date left, Date right) throws ParseException {
         Date res = null;
-        if (left ==null || right ==null) {
-            System.out.println("Invalid Input");
-        }
-        else if (left.getTime()>right.getTime()){
-            res =  left;
-        }else{
-            res =  right;
+        if (left !=null && right !=null) {
+            if (left.getTime()>right.getTime()){
+                res =  left;
+            }else{
+                res =  right;
+            }
         }
         return res;
     }
@@ -209,13 +208,12 @@ public final class MathExpressions {
      */
     public static Date min(Date left, Date right) throws ParseException {
         Date res = null;
-        if (left ==null || right ==null) {
-            System.out.println("Invalid Input");
-        }
-        else if (left.getTime()>right.getTime()){
-            res =right;
-        }else{
-            res =left;
+        if (left !=null && right !=null) {
+            if (left.getTime() > right.getTime()) {
+                res = right;
+            } else {
+                res = left;
+            }
         }
         return res;
     }
