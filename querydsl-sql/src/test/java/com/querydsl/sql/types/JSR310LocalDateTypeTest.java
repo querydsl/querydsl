@@ -11,12 +11,39 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 import org.easymock.EasyMock;
+import org.easymock.Mock;
 import org.junit.Test;
 
 public class JSR310LocalDateTypeTest extends AbstractJSR310DateTimeTypeTest<LocalDate> {
 
     public JSR310LocalDateTypeTest() {
         super(new JSR310LocalDateType());
+    }
+
+    @Mock
+    private ResultSet resultSet;
+
+    /**
+     * testIncorrectLocalDateTypeBug is to prove that date conversion issue has been resolved
+     * @param
+     * @return void
+     */
+
+    @Test
+    public void testIncorrectLocalDateTypeBug() throws SQLException {
+        JSR310LocalDateType jSR310LocalDateType = new JSR310LocalDateType();
+        resultSet = Mockito.mock(ResultSet.class);
+        Mockito.when(resultSet.getString("id")).thenReturn("myId");
+        Mockito.when(resultSet.getString("sysname")).thenReturn("myHost");
+        Mockito.when(resultSet.getString("zos")).thenReturn("myOS");
+        Mockito.when(resultSet.getString("customer_name")).thenReturn("myCustomerName");
+        String str="2021-08-10";
+        Date date=Date.valueOf(str);//converting string into sql date
+        Mockito.when(resultSet.getDate(0, utc())).thenReturn(date);
+        LocalDate localDate = jSR310LocalDateType.getValue(resultSet, 0);
+        assertEquals( 2021, localDate.getYear());
+        assertEquals(Month.AUGUST, localDate.getMonth());
+        assertEquals( 10, localDate.getDayOfMonth());
     }
 
     @Test
