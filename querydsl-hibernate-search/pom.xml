@@ -109,10 +109,10 @@
       <version>${hibernate.search.version}</version>
       <scope>provided</scope>
       <exclusions>
-       <exclusion> 
-         <groupId>hsqldb</groupId>
-         <artifactId>hsqldb</artifactId>
-       </exclusion>
+        <exclusion> 
+          <groupId>hsqldb</groupId>
+          <artifactId>hsqldb</artifactId>
+        </exclusion>
         <exclusion>
           <artifactId>hibernate-core</artifactId>
           <groupId>org.hibernate</groupId>
@@ -131,7 +131,7 @@
     </dependency>    
     
     <!-- test -->
-   <dependency>
+    <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
       <version>${derby.version}</version>
@@ -173,6 +173,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
               <Automatic-Module-Name>com.querydsl.hibernate.search</Automatic-Module-Name>
             </manifestEntries>
@@ -189,8 +190,8 @@
         <configuration>
           <systemProperties>
             <property>
-                <name>derby.stream.error.file</name>
-                <value>target/derby.log</value>
+              <name>derby.stream.error.file</name>
+              <value>target/derby.log</value>
             </property>
           </systemProperties>
         </configuration>

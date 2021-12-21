@@ -238,6 +238,7 @@
         </executions>
         <configuration>
           <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
               <Automatic-Module-Name>com.querydsl.sql</Automatic-Module-Name>
             </manifestEntries>

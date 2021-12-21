@@ -23,7 +23,11 @@
   </scm>
   
   <properties>
-    <osgi.import.package>javax.persistence.*;version="[1.1,3)",${osgi.import.package.root}</osgi.import.package>
+    <osgi.import.package>
+      com.querydsl.spatial.hibernate;resolution:=optional,
+      ${osgi.import.package.root}
+    </osgi.import.package>    
+    <osgi.export.package>com.querydsl.jpa.*</osgi.export.package>
   </properties>
   
   <dependencies>
@@ -142,18 +146,18 @@
     </dependency>   
     -->  
      
-     <dependency>
-       <groupId>org.batoo.jpa</groupId>
-       <artifactId>batoo-jpa</artifactId>
+    <dependency>
+      <groupId>org.batoo.jpa</groupId>
+      <artifactId>batoo-jpa</artifactId>
       <version>2.0.1.2</version>
       <scope>test</scope>
-       <exclusions>
-         <exclusion>
-           <artifactId>guava</artifactId>
-           <groupId>com.google.guava</groupId>
-         </exclusion>
-       </exclusions>
-     </dependency>
+      <exclusions>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     
     <dependency>
       <groupId>org.hsqldb</groupId>
@@ -231,19 +235,19 @@
       </plugin>   
           
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
         <executions>
-           <execution>
-             <id>apt</id>
-             <goals>
-               <goal>jar</goal>                
-             </goals>    
-             <configuration>
-               <classifier>apt</classifier>
-               <classesDirectory>src/apt</classesDirectory>                                    
-             </configuration>              
-           </execution>        
+          <execution>
+            <id>apt</id>
+            <goals>
+              <goal>jar</goal>                
+            </goals>    
+            <configuration>
+              <classifier>apt</classifier>
+              <classesDirectory>src/apt</classesDirectory>                                    
+            </configuration>              
+          </execution>        
           <execution>
             <id>test-jar</id>
             <goals>
@@ -253,6 +257,7 @@
         </executions>
         <configuration>
           <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
               <Automatic-Module-Name>com.querydsl.jpa</Automatic-Module-Name>
             </manifestEntries>
@@ -291,12 +296,12 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
-              <id>one-jars</id>
+            <id>one-jars</id>
             <goals>
               <goal>single</goal>    
             </goals>
             <phase>package</phase>
-              <configuration>
+            <configuration>
               <descriptors>
                 <descriptor>src/main/assembly.xml</descriptor>
                 <descriptor>src/main/assembly-hibernate.xml</descriptor>
@@ -316,33 +321,33 @@
           </includes> 
           <systemProperties>
             <property>
-                <name>derby.stream.error.file</name>
-                <value>target/derby.log</value>
+              <name>derby.stream.error.file</name>
+              <value>target/derby.log</value>
             </property>
             <property>
-                <name>org.jboss.logging.provider</name>
-                <value>slf4j</value>
+              <name>org.jboss.logging.provider</name>
+              <value>slf4j</value>
             </property>
           </systemProperties>
         </configuration>
         <executions>
           <execution>
-          <id>verification</id>    
-          <goals>
-            <goal>test</goal>    
-          </goals>
-          <phase>verify</phase>
-          <configuration>
+            <id>verification</id>    
+            <goals>
+              <goal>test</goal>    
+            </goals>
+            <phase>verify</phase>
+            <configuration>
               <systemProperties>
-              <property>
+                <property>
                   <name>version</name>
-                <value>${project.version}</value>
-              </property>                  
-            </systemProperties>    
-            <includes>
-              <include>com/querydsl/jpa/PackageVerification.java</include>
-            </includes>
-          </configuration>
+                  <value>${project.version}</value>
+                </property>                  
+              </systemProperties>    
+              <includes>
+                <include>com/querydsl/jpa/PackageVerification.java</include>
+              </includes>
+            </configuration>
           </execution>
         </executions>        
       </plugin>
@@ -383,10 +388,10 @@
           <packageName>com.querydsl.jpa.domain.sql</packageName>
           <targetFolder>src/test/java</targetFolder>
           <namePrefix>S</namePrefix>
-            <imports>
-                <import>java.io</import>
-                <import>java.io.File</import>
-            </imports>
+          <imports>
+            <import>java.io</import>
+            <import>java.io.File</import>
+          </imports>
         </configuration>
         <dependencies>
           <dependency>

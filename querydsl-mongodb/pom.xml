@@ -86,6 +86,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
               <Automatic-Module-Name>com.querydsl.mongodb</Automatic-Module-Name>
             </manifestEntries>

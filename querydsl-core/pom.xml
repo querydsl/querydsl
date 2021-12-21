@@ -21,6 +21,14 @@
     <developerConnection>${project.checkout}</developerConnection>
     <url>${project.githubpage}</url>
   </scm>
+
+  <properties>
+    <osgi.import.package>
+      com.google.common.collect;resolution:=optional,
+      ${osgi.import.package.root}
+    </osgi.import.package>
+    <osgi.export.package>com.querydsl.core.*</osgi.export.package>
+  </properties>
   
   <dependencies>
     <dependency>
@@ -47,7 +55,7 @@
       <optional>true</optional>
     </dependency>
     
-     <!-- backwards compatibility -->
+    <!-- backwards compatibility -->
     <dependency>
       <groupId>org.jvnet.hudson</groupId>
       <artifactId>annotation-indexer</artifactId>
@@ -83,6 +91,7 @@
         </executions>
         <configuration>
           <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
             <manifestEntries>
               <Automatic-Module-Name>com.querydsl.core</Automatic-Module-Name>
             </manifestEntries>

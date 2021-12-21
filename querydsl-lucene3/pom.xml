@@ -89,6 +89,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
+          <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
           <archive>
             <manifestEntries>
               <Automatic-Module-Name>com.querydsl.lucene3</Automatic-Module-Name>

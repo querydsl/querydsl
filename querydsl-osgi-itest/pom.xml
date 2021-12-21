@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.querydsl</groupId>
+    <artifactId>querydsl-root</artifactId>
+    <version>5.0.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.querydsl</groupId>
+  <artifactId>querydsl-osgi-itest</artifactId>
+  <name>Querydsl - OSGI integration tests</name>
+  <description>OSGI integration tests</description>
+  <packaging>pom</packaging>
+
+  <modules>
+  <module>querydsl-osgi-itest-jpa</module>
+  <module>querydsl-osgi-itest-test</module>
+  </modules>
+
+</project>
