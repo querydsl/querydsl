@@ -18,7 +18,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <failIfNoTests>false</failIfNoTests>
     <guice.version>5.1.0</guice.version>
-    <h2.version>1.4.186</h2.version>
+    <h2.version>2.1.210</h2.version>
   </properties>
 
   <dependencies>
