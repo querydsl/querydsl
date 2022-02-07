@@ -142,6 +142,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo {
      *      is stored in the database; "" retrieves those without a catalog;
      *      <code>null</code> means that the catalog name should not be used to narrow
      *      the search
+     * @parameter
      */
     private String catalogPattern;
 
