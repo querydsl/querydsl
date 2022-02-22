@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+import com.querydsl.core.QueryMetadata;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.types.Operator;
@@ -231,4 +232,9 @@ public class JPQLTemplates extends Templates {
         }
         return builder.toString();
     }
+
+    public <T> JPAQueryMixin<T> createQueryMixin(T self, QueryMetadata metadata) {
+        return new JPAQueryMixin<T>(self, metadata);
+    }
+
 }

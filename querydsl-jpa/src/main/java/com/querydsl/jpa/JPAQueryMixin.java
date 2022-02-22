@@ -46,24 +46,9 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
 
     private final Map<Expression<?>, Path<?>> aliases = new HashMap<>();
 
-    private final JPAMapAccessVisitor mapAccessVisitor;
+    protected JPAMapAccessVisitor mapAccessVisitor;
 
-    private final JPAListAccessVisitor listAccessVisitor;
-
-    private final JPACollectionAnyVisitor collectionAnyVisitor;
-
-    private final ReplaceVisitor<Void> replaceVisitor =  new ReplaceVisitor<Void>() {
-        @Override
-        public Expression<?> visit(Path<?> expr, Void context) {
-            return convertPathForOrder(expr);
-        }
-        @Override
-        public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
-            // don't shorten paths inside subquery expressions
-            return expr;
-        }
-    };
-
+    protected JPAListAccessVisitor listAccessVisitor;
 
     public static final JoinFlag FETCH = new JoinFlag("fetch ");
 
@@ -82,6 +67,17 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         mapAccessVisitor = new JPAMapAccessVisitor(metadata, aliases);
         listAccessVisitor = new JPAListAccessVisitor(metadata, aliases);
         collectionAnyVisitor = new JPACollectionAnyVisitor();
+        replaceVisitor =  new ReplaceVisitor<Void>() {
+            @Override
+            public Expression<?> visit(Path<?> expr, Void context) {
+                return convertPathForOrder(expr);
+            }
+            @Override
+            public Expression<?> visit(SubQueryExpression<?> expr, @Nullable Void context) {
+                // don't shorten paths inside subquery expressions
+                return expr;
+            }
+        };
     }
 
     public T fetchJoin() {
@@ -100,7 +96,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         return super.createAlias(expr, alias);
     }
 
-    static boolean isEntityPath(Path<?> path) {
+    protected static boolean isEntityPath(Path<?> path) {
         if (path instanceof CollectionPathBase) {
             return isEntityPath((Path<?>) ((CollectionPathBase) path).any());
         } else {
@@ -110,7 +106,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     @SuppressWarnings("unchecked")
-    static <T> Class<T> getElementTypeOrType(Path<T> path) {
+    protected static <T> Class<T> getElementTypeOrType(Path<T> path) {
         if (path instanceof CollectionExpression) {
             return ((CollectionExpression) path).getParameter(0);
         } else {
@@ -119,7 +115,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Path<T> shorten(Path<T> path, List<Path<?>> paths) {
+    protected <T> Path<T> shorten(Path<T> path, List<Path<?>> paths) {
         PathMetadata metadata = path.getMetadata();
         if (metadata.isRoot() || paths.contains(path)) {
             return path;
@@ -152,7 +148,7 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
         }
     }
 
-    private <T> Path<T> convertPathForOrder(Path<T> path) {
+    protected <T> Path<T> convertPathForOrder(Path<T> path) {
         PathMetadata metadata = path.getMetadata();
         // at least three levels
         if (metadata.getParent() != null && !metadata.getParent().getMetadata().isRoot()) {
@@ -214,24 +210,6 @@ public class JPAQueryMixin<T> extends QueryMixin<T> {
             return predicate;
         } else {
             return null;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addCondition(Context context, int i, Path<?> path, boolean where) {
-        paths.add(path);
-        EntityPath<?> alias = context.replacements.get(i);
-        leftJoin((Expression) path.getMetadata().getParent(), context.replacements.get(i));
-        Expression index = ExpressionUtils.operation(Integer.class, JPQLOps.INDEX, alias);
-        Object element = path.getMetadata().getElement();
-        if (!(element instanceof Expression)) {
-            element = ConstantImpl.create(element);
-        }
-        Predicate condition = ExpressionUtils.eq(index, (Expression) element);
-        if (where) {
-            super.where(condition);
-        } else {
-            super.having(condition);
         }
     }
 

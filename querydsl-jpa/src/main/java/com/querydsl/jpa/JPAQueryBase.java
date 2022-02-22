@@ -32,9 +32,13 @@ public abstract class JPAQueryBase<T, Q extends JPAQueryBase<T, Q>> extends Fetc
 
     private final JPQLTemplates templates;
 
-    @SuppressWarnings("unchecked")
     public JPAQueryBase(QueryMetadata md, JPQLTemplates templates) {
-        super(new JPAQueryMixin<Q>(md));
+        this(templates.createQueryMixin(null, md), templates);
+    }
+
+    @SuppressWarnings("unchecked")
+    public JPAQueryBase(JPAQueryMixin<Q> mixin, JPQLTemplates templates) {
+        super(mixin);
         super.queryMixin.setSelf((Q) this);
         this.queryMixin = (JPAQueryMixin<Q>) super.queryMixin;
         this.templates = templates;

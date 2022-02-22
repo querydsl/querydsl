@@ -31,7 +31,7 @@ import com.querydsl.core.types.dsl.SimplePath;
  * @author tiwe
  *
  */
-class JPACollectionAnyVisitor extends CollectionAnyVisitor {
+public class JPACollectionAnyVisitor extends CollectionAnyVisitor {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -62,7 +62,7 @@ class JPACollectionAnyVisitor extends CollectionAnyVisitor {
         return ExpressionUtils.predicate(Ops.EXISTS, asExpression(query.getMetadata()));
     }
 
-    private Expression<?> asExpression(QueryMetadata metadata) {
+    protected Expression<?> asExpression(QueryMetadata metadata) {
         return new SubQueryExpressionImpl<Object>(metadata.getProjection().getType(), metadata);
     }
 

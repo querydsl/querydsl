@@ -33,18 +33,18 @@ public class QueryMixin<T> {
      */
     public enum Role { SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY }
 
-    private final QueryMetadata metadata;
+    protected final QueryMetadata metadata;
 
-    private final boolean expandAnyPaths;
+    protected final boolean expandAnyPaths;
 
-    private final ReplaceVisitor<Void> replaceVisitor = new ReplaceVisitor<Void>() {
+    protected ReplaceVisitor<Void> replaceVisitor = new ReplaceVisitor<Void>() {
         @Override
         public Expression<?> visit(Path<?> expr, @Nullable Void context) {
             return normalizePath(expr);
         }
     };
 
-    protected final CollectionAnyVisitor collectionAnyVisitor = new CollectionAnyVisitor();
+    protected CollectionAnyVisitor collectionAnyVisitor = new CollectionAnyVisitor();
 
     private T self;
 

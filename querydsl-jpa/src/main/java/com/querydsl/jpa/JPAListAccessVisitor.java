@@ -24,7 +24,7 @@ import com.querydsl.core.support.ReplaceVisitor;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
 
-class JPAListAccessVisitor extends ReplaceVisitor<Void> {
+public class JPAListAccessVisitor extends ReplaceVisitor<Void> {
 
     private final QueryMetadata metadata;
 
@@ -32,7 +32,7 @@ class JPAListAccessVisitor extends ReplaceVisitor<Void> {
 
     private final Map<Path<?>, Path<?>> replacements = new HashMap<>();
 
-    JPAListAccessVisitor(QueryMetadata metadata, Map<Expression<?>, Path<?>> aliases) {
+    public JPAListAccessVisitor(QueryMetadata metadata, Map<Expression<?>, Path<?>> aliases) {
         this.metadata = metadata;
         this.aliases = aliases;
     }
@@ -65,7 +65,7 @@ class JPAListAccessVisitor extends ReplaceVisitor<Void> {
     /**
      * Shorten the parent path to a length of max 2 elements
      */
-    private Path<?> shorten(Path<?> path, boolean outer) {
+    protected Path<?> shorten(Path<?> path, boolean outer) {
         if (aliases.containsKey(path)) {
             return aliases.get(path);
         } else if (path.getMetadata().isRoot()) {
