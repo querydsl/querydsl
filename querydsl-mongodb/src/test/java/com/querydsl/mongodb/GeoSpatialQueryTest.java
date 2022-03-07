@@ -83,10 +83,21 @@ public class GeoSpatialQueryTest {
         ds.save(new GeoEntity(30.0, 50.0));
 
         List<GeoEntity> entities = query().where(MongodbExpressions.withinBox(geoEntity.location, 0, 0, 20, 50)).fetch();
-        assertEquals(2,entities.size());
+        assertEquals(2, entities.size());
         assertEquals(10.0, entities.get(0).getLocation()[0], 0.1);
         assertEquals(20.0, entities.get(1).getLocation()[0], 0.1);
 
+    }
+
+    @Test
+    public void geo_intersects() {
+        ds.save(new GeoEntity(10.0, 50.0));
+        ds.save(new GeoEntity(20.0, 50.0));
+        ds.save(new GeoEntity(30.0, 50.0));
+
+        List<GeoEntity> entities = query().where(MongodbExpressions.geoIntersects(geoEntity.location, 20.0, 50.0)).fetch();
+        assertEquals(1, entities.size());
+        assertEquals(20.0, entities.get(0).getLocation()[0], 0.1);
     }
 
     private MorphiaQuery<GeoEntity> query() {
