@@ -13,7 +13,6 @@
  */
 package com.querydsl.codegen;
 
-import java.lang.annotation.Annotation;
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -38,7 +37,7 @@ public final class DefaultSupertypeSerializer extends DefaultEntitySerializer im
     public DefaultSupertypeSerializer(
             TypeMappings typeMappings,
             @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) GeneratedAnnotationClass generatedAnnotationClass) {
         super(typeMappings, keywords, generatedAnnotationClass);
     }
     /**

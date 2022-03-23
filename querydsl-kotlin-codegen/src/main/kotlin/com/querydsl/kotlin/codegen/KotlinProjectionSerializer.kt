@@ -15,6 +15,7 @@ package com.querydsl.kotlin.codegen
 
 import com.querydsl.codegen.CodegenModule
 import com.querydsl.codegen.EntityType
+import com.querydsl.codegen.GeneratedAnnotationClass
 import com.querydsl.codegen.GeneratedAnnotationResolver
 import com.querydsl.codegen.ProjectionSerializer
 import com.querydsl.codegen.SerializerConfig
@@ -24,6 +25,7 @@ import com.querydsl.codegen.utils.model.Type
 import com.querydsl.core.types.ConstructorExpression
 import com.querydsl.core.types.Expression
 import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -41,15 +43,18 @@ import javax.inject.Named
 open class KotlinProjectionSerializer @Inject constructor(
     private val mappings: TypeMappings,
     @Named(CodegenModule.GENERATED_ANNOTATION_CLASS)
-    private val generatedAnnotationClass: Class<out Annotation> = GeneratedAnnotationResolver.resolveDefault()
+    private val generatedAnnotationClass: GeneratedAnnotationClass = GeneratedAnnotationResolver.resolveDefault()
 ) : ProjectionSerializer {
 
     protected open fun intro(model: EntityType): TypeSpec.Builder {
         val queryType = mappings.getPathClassName(model, model)
+        val generatedAnnotationSpec = AnnotationSpec.builder(ClassName.bestGuess(generatedAnnotationClass.name))
+                .addMember("%L",  generatedAnnotationClass.buildAnnotationArgs(GeneratedAnnotationClass.Context.of(javaClass.name)))
+                .build()
         return TypeSpec.classBuilder(queryType)
             .superclass(ConstructorExpression::class.parameterizedBy(model))
             .addKdoc("${queryType.canonicalName} is a Querydsl Projection type for ${model.simpleName}")
-            .addAnnotation(AnnotationSpec.builder(generatedAnnotationClass).addMember("%S", javaClass.name).build())
+            .addAnnotation(generatedAnnotationSpec)
             .addType(introCompanion(model))
     }
 

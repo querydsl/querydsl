@@ -16,6 +16,7 @@ package com.querydsl.kotlin.codegen
 import com.querydsl.codegen.CodegenModule
 import com.querydsl.codegen.EntitySerializer
 import com.querydsl.codegen.EntityType
+import com.querydsl.codegen.GeneratedAnnotationClass
 import com.querydsl.codegen.GeneratedAnnotationResolver
 import com.querydsl.codegen.Property
 import com.querydsl.codegen.SerializerConfig
@@ -44,6 +45,7 @@ import com.querydsl.core.types.dsl.StringPath
 import com.querydsl.core.types.dsl.TimePath
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
@@ -65,7 +67,7 @@ open class KotlinEntitySerializer @Inject constructor(
     @Named(CodegenModule.KEYWORDS)
     protected val keywords: Collection<String>,
     @Named(CodegenModule.GENERATED_ANNOTATION_CLASS)
-    private val generatedAnnotationClass: Class<out Annotation> = GeneratedAnnotationResolver.resolveDefault()
+    private val generatedAnnotationClass: GeneratedAnnotationClass = GeneratedAnnotationResolver.resolveDefault()
 ) : EntitySerializer {
 
     override fun serialize(model: EntityType, config: SerializerConfig, writer: CodeWriter) {
@@ -108,9 +110,12 @@ open class KotlinEntitySerializer @Inject constructor(
             TypeCategory.BOOLEAN, TypeCategory.STRING -> pathType.asTypeName()
             else -> pathType.parameterizedBy(model)
         }
+        val generatedAnnotationSpec = AnnotationSpec.builder(ClassName.bestGuess(generatedAnnotationClass.name))
+                .addMember("%L",  generatedAnnotationClass.buildAnnotationArgs(GeneratedAnnotationClass.Context.of(javaClass.name)))
+                .build()
         return TypeSpec.classBuilder(mappings.getPathClassName(model, model))
             .addAnnotations(model.annotations.map { AnnotationSpec.get(it) })
-            .addAnnotation(AnnotationSpec.builder(generatedAnnotationClass).addMember("%S", javaClass.name).build())
+            .addAnnotation(generatedAnnotationSpec)
             .superclass(superType)
             .addType(introCompanion(model, config))
     }

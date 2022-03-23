@@ -16,7 +16,6 @@ package com.querydsl.codegen;
 import java.io.IOException;
 
 import java.util.HashSet;
-import java.lang.annotation.Annotation;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -37,7 +36,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  */
 public final class DefaultProjectionSerializer implements ProjectionSerializer {
 
-    private final Class<? extends Annotation> generatedAnnotationClass;
+    private final GeneratedAnnotationClass generatedAnnotationClass;
     private final TypeMappings typeMappings;
 
     /**
@@ -59,7 +58,7 @@ public final class DefaultProjectionSerializer implements ProjectionSerializer {
     @Inject
     public DefaultProjectionSerializer(
             TypeMappings typeMappings,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS)GeneratedAnnotationClass generatedAnnotationClass) {
         this.typeMappings = typeMappings;
         this.generatedAnnotationClass = generatedAnnotationClass;
     }
@@ -75,7 +74,8 @@ public final class DefaultProjectionSerializer implements ProjectionSerializer {
 
         // imports
         writer.imports(NumberExpression.class.getPackage());
-        writer.imports(ConstructorExpression.class, generatedAnnotationClass);
+        writer.imports(ConstructorExpression.class);
+        writer.imports(generatedAnnotationClass.getName());
 
         Set<Integer> sizes = new HashSet<>();
         for (Constructor c : model.getConstructors()) {
@@ -88,7 +88,7 @@ public final class DefaultProjectionSerializer implements ProjectionSerializer {
         // javadoc
         writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);
 
-        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.buildAnnotation(GeneratedAnnotationClass.Context.of(getClass().getName())));
 
         // class header
 //        writer.suppressWarnings("serial");

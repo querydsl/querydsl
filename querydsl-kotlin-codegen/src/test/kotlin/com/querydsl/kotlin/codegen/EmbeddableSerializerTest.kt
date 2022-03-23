@@ -28,7 +28,6 @@ import com.querydsl.codegen.utils.model.ClassType
 import com.querydsl.codegen.utils.model.SimpleType
 import com.querydsl.codegen.utils.model.TypeCategory
 import com.querydsl.codegen.utils.model.Types
-import com.querydsl.core.annotations.Generated
 import com.querydsl.core.annotations.PropertyType
 import com.querydsl.kotlin.codegen.CompileUtils.assertCompiles
 import org.hamcrest.Matchers
@@ -187,7 +186,7 @@ class EmbeddableSerializerTest {
         val type = SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity", false, false)
         val entityType = EntityType(type)
         typeMappings.register(entityType, queryTypeFactory.create(entityType))
-        KotlinEmbeddableSerializer(typeMappings, emptySet(), Generated::class.java).serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
+        KotlinEmbeddableSerializer(typeMappings, emptySet(), GeneratedAnnotationResolver.qeryDSLGenerated()).serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSourceCode = writer.toString()
         Assert.assertThat(generatedSourceCode, Matchers.containsString("@Generated(\"com.querydsl.kotlin.codegen.KotlinEmbeddableSerializer\")\npublic class"))
         assertCompiles("QEntity", generatedSourceCode)

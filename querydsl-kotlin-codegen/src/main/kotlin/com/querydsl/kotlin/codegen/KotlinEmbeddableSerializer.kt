@@ -15,6 +15,7 @@ package com.querydsl.kotlin.codegen
 
 import com.querydsl.codegen.CodegenModule
 import com.querydsl.codegen.EmbeddableSerializer
+import com.querydsl.codegen.GeneratedAnnotationClass
 import com.querydsl.codegen.GeneratedAnnotationResolver
 import com.querydsl.codegen.TypeMappings
 import com.querydsl.core.types.Path
@@ -28,7 +29,7 @@ class KotlinEmbeddableSerializer @Inject constructor(
     @Named(CodegenModule.KEYWORDS)
     keywords: Collection<String>,
     @Named(CodegenModule.GENERATED_ANNOTATION_CLASS)
-    generatedAnnotationClass: Class<out Annotation> = GeneratedAnnotationResolver.resolveDefault()
+    generatedAnnotationClass: GeneratedAnnotationClass = GeneratedAnnotationResolver.resolveDefault()
 ) : KotlinEntitySerializer(mappings, keywords, generatedAnnotationClass), EmbeddableSerializer {
     override fun defaultSuperType(): KClass<out Path<*>> = BeanPath::class
 }

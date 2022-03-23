@@ -50,7 +50,7 @@ public final class DefaultEmbeddableSerializer extends DefaultEntitySerializer i
     public DefaultEmbeddableSerializer(
             TypeMappings typeMappings,
             @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) GeneratedAnnotationClass generatedAnnotationClass) {
         super(typeMappings, keywords, generatedAnnotationClass);
     }
 
@@ -93,7 +93,7 @@ public final class DefaultEmbeddableSerializer extends DefaultEntitySerializer i
             writer.annotation(annotation);
         }
 
-        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.buildAnnotation(GeneratedAnnotationClass.Context.of(getClass().getName())));
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));

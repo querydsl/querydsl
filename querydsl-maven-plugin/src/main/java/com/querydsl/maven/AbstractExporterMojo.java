@@ -19,6 +19,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -113,8 +114,29 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     private boolean skip;
 
     /**
-     * The fully qualified class name of the <em>Single-Element Annotation</em> (with <code>String</code> element) to put on the generated sources. Defaults to
-     * <code>javax.annotation.Generated</code> or <code>javax.annotation.processing.Generated</code> depending on the java version.
+     * The annotation (usually: {@code @Generated}) that will get attached to generated classes.
+     * <br>
+     * <p>
+     * Specify one of:
+     * <ul>
+     *  <li>The fully qualified class name of the <em>Single-Element Annotation</em> (with <code>String</code> element)</li>
+     *  <li>A code template in the form <code>fully.qualified.Annotation()</code></li>
+     *  <li>or <code>fully.qualified.Annotation("with params")</code></li>
+     *  <li>or <code>fully.qualified.Annotation(say="Hello", toWhom="World")</code>.</li>
+     * </ul>
+     * </p>
+     * <p>
+     * Defaults to <code>javax.annotation.Generated</code> or <code>javax.annotation.processing.Generated</code> depending on the java version.
+     * </p>
+     * <p>
+     * Parameterized forms also support placeholders for parameters:
+     * <ul>
+     *     <li>"{@code {{queryDSL.generator.className}}}" - the class name of the generator</li>
+     *     <li>"{@code {{queryDSL.timestamp}}}" - A timestamp as returned by {@link Date#getTime()}.</li>
+     * </ul>
+     * Example: {@code fully.qualified.Annotation("{{queryDSL.generator.className}}")} results in e.g. {@code fully.qualified.Annotation("com.querydsl.sql.codegen.ExtendedBeanSerializer")}
+     * </p>
+     * <br>
      * <em>See also</em> <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
      *
      * @parameter
