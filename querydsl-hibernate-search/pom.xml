@@ -24,7 +24,7 @@
   
   <properties>
     <hibernate.version>5.5.3.Final</hibernate.version>
-    <hibernate.validator.version>7.0.2.Final</hibernate.validator.version>
+    <hibernate.validator.version>7.0.4.Final</hibernate.validator.version>
     <hibernate.search.version>5.11.10.Final</hibernate.search.version>
     <lucene.version>5.5.5</lucene.version>
     <osgi.import.package>
