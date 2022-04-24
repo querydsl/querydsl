@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import com.mysema.commons.lang.CloseableIterator;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@code Fetchable} defines default projection methods for {@link Query} implementations.
@@ -42,6 +43,7 @@ public interface Fetchable<T> {
      *
      * @return first result or null
      */
+    @Nullable
     T fetchFirst();
 
     /**
@@ -50,6 +52,7 @@ public interface Fetchable<T> {
      * @throws NonUniqueResultException if there is more than one matching result
      * @return first result or null
      */
+    @Nullable
     T fetchOne() throws NonUniqueResultException;
 
     /**
