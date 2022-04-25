@@ -26,7 +26,8 @@ public enum MongodbOps implements Operator {
     GEO_WITHIN_BOX(Boolean.class),
     ELEM_MATCH(Boolean.class),
     NO_MATCH(Boolean.class),
-    NEAR_SPHERE(Boolean.class);
+    NEAR_SPHERE(Boolean.class),
+    GEO_INTERSECTS(Boolean.class);
 
     private final Class<?> type;
 

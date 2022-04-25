@@ -70,4 +70,15 @@ public final class MongodbExpressions {
         );
     }
 
+    /**
+     * Finds documents whose geospatial data intersects
+     *
+     * @param expr location
+     * @param latVal latitude
+     * @param longVal longitude
+     * @return predicate
+     */
+    public static BooleanExpression geoIntersects(Expression<Double[]> expr, double latVal, double longVal) {
+        return Expressions.booleanOperation(MongodbOps.GEO_INTERSECTS, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
+    }
 }
