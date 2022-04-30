@@ -19,7 +19,7 @@ import com.querydsl.core.types.Operator;
  * MongoDB specific operators
  *
  * @author tiwe
- *
+ * @author sangyong choi
  */
 public enum MongodbOps implements Operator {
     NEAR(Boolean.class),
@@ -27,7 +27,8 @@ public enum MongodbOps implements Operator {
     ELEM_MATCH(Boolean.class),
     NO_MATCH(Boolean.class),
     NEAR_SPHERE(Boolean.class),
-    GEO_INTERSECTS(Boolean.class);
+    GEO_INTERSECTS(Boolean.class),
+    ALL(Boolean.class);
 
     private final Class<?> type;
 
