@@ -37,8 +37,7 @@ public class JSR310LocalDateType extends AbstractJSR310DateTimeType<LocalDate> {
     @Override
     public LocalDate getValue(ResultSet rs, int startIndex) throws SQLException {
         Date date = rs.getDate(startIndex, utc());
-        return date != null ? LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()),
-                ZoneOffset.UTC).toLocalDate() : null;
+        return date != null ? date.toLocalDate() : null;
     }
 
     @Override

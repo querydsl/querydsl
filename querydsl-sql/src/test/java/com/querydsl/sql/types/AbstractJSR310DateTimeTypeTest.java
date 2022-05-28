@@ -103,4 +103,16 @@ public abstract class AbstractJSR310DateTimeTypeTest<T extends Temporal> {
         get();
     }
 
+    @Test
+    public void get_europe_paris() throws SQLException {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris")); // +2:00
+        get();
+    }
+
+    @Test
+    public void set_europe_paris() throws SQLException {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris")); // +2:00
+        set();
+    }
+
 }
