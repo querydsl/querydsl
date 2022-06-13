@@ -6,6 +6,6 @@ contact_links:
   - name: Querydsl's Google Group
     url: https://groups.google.com/forum/#!forum/querydsl
     about: Ask questions, suggest changes and provide feedback.
-- name: Querydsl on Stackoverflow
+  - name: Querydsl on Stackoverflow
     url: https://stackoverflow.com/questions/tagged/querydsl
     about: Seek help on setup and usage.
