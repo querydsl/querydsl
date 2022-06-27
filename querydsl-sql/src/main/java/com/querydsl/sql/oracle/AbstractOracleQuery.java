@@ -56,6 +56,7 @@ public abstract class AbstractOracleQuery<T, C extends AbstractOracleQuery<T, C>
      * @param cond condition
      * @return the current object
      */
+
     public C connectByPrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }

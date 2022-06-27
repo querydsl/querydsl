@@ -118,7 +118,10 @@ public enum Ops implements Operator {
     NULLIF(Object.class),
 
     // subquery operations
-    EXISTS(Boolean.class);
+    EXISTS(Boolean.class),
+
+    // Oracle specific
+    PRIOR(Object.class);
 
     private final Class<?> type;
 

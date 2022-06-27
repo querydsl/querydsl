@@ -79,6 +79,7 @@ public class OracleTemplates extends SQLTemplates {
         setCountViaAnalytics(true);
         setListMaxSize(1000);
 
+        setPrecedence(Precedence.HIGHEST, Ops.PRIOR);
         setPrecedence(Precedence.COMPARISON, Ops.EQ, Ops.EQ_IGNORE_CASE, Ops.NE);
         setPrecedence(Precedence.COMPARISON + 1, Ops.IS_NULL, Ops.IS_NOT_NULL, Ops.LIKE, Ops.LIKE_ESCAPE, Ops.BETWEEN,
                 Ops.IN, Ops.NOT_IN, Ops.EXISTS);
@@ -87,6 +88,9 @@ public class OracleTemplates extends SQLTemplates {
 
         add(Ops.ALIAS, "{0} {1}");
         add(SQLOps.NEXTVAL, "{0s}.nextval");
+
+        // Oracle specific
+        add(Ops.PRIOR, "prior {0}");
 
         // String
         add(Ops.INDEX_OF, "instrb({0},{1})-1", Precedence.ARITH_LOW);

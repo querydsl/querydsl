@@ -74,6 +74,7 @@ public class Templates {
         add(Ops.SINGLETON, "{0}", Precedence.LIST);
         add(Ops.WRAPPED, "({0})");
         add(Ops.ORDER, "order()");
+        add(Ops.PRIOR, "{0}", Precedence.NOT_HIGH);
 
         // boolean
         add(Ops.AND, "{0} && {1}", Precedence.AND);

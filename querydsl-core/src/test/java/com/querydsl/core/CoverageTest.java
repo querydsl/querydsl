@@ -120,6 +120,7 @@ public class CoverageTest {
             Ops.COALESCE,
             Ops.ORDINAL, // TODO: add support
             Ops.MATCHES_IC,
+            Ops.PRIOR,
 
             // aggregation
             Ops.AggOps.AVG_AGG,

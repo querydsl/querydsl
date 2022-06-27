@@ -13,11 +13,10 @@
  */
 package com.querydsl.sql.oracle;
 
-import java.util.Date;
-
 import com.querydsl.core.types.dsl.DateExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
+import java.util.Date;
 
 /**
  * Convenience functions and constants for Oracle DB usage
@@ -35,5 +34,4 @@ public final class OracleGrammar {
     public static final NumberExpression<Integer> rowid = Expressions.numberTemplate(Integer.class, "rowid");
 
     public static final DateExpression<Date> sysdate = Expressions.dateTemplate(Date.class, "sysdate");
-
 }

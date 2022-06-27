@@ -382,4 +382,13 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         return new CaseForEqBuilder<T>(mixin, other);
     }
 
+    /**
+     * Create a {@code PRIOR this} expression
+     *
+     * @return PRIOR this
+     */
+    public SimpleExpression<T> prior() {
+        return Expressions.operation(this.getType(), Ops.PRIOR, this);
+    }
+
 }

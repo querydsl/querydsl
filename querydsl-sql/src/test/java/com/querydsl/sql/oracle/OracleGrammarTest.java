@@ -24,6 +24,7 @@ public class OracleGrammarTest {
         assertNotNull(OracleGrammar.level);
         assertNotNull(OracleGrammar.rownum);
         assertNotNull(OracleGrammar.sysdate);
+        assertNotNull(OracleGrammar.rowid);
     }
 
 }
