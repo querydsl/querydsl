@@ -190,7 +190,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression in(Collection<? extends T> right) {
         if (right.size() == 1) {
-            return eq(right.iterator().next());
+            return  right.iterator().next() != null ? eq(right.iterator().next()) : isNull();
         } else {
             return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(right));
         }
@@ -204,7 +204,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      */
     public BooleanExpression in(T... right) {
         if (right.length == 1) {
-            return eq(right[0]);
+            return right[0] != null ? eq(right[0]) : isNull();
         } else {
             return Expressions.booleanOperation(Ops.IN, mixin, ConstantImpl.create(CollectionUtils.unmodifiableList(Arrays.asList(right))));
         }
