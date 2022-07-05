@@ -29,8 +29,8 @@
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>cglib</groupId>
-          <artifactId>cglib</artifactId>
+          <groupId>net.bytebuddy</groupId>
+          <artifactId>byte-buddy</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

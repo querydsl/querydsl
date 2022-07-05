@@ -26,7 +26,7 @@
     <dependencySet>
       <unpack>true</unpack>
       <excludes>
-        <exclude>cglib:cglib</exclude>
+        <exclude>net.bytebuddy:byte-buddy</exclude>
       </excludes>
     </dependencySet>
     <dependencySet>

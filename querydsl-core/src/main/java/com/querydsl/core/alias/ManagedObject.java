@@ -16,7 +16,7 @@ package com.querydsl.core.alias;
 import com.querydsl.core.types.Path;
 
 /**
- * {@code ManagedObject} is a tagging interface for CGLIB alias proxies
+ * {@code ManagedObject} is a tagging interface for ByteBuddy alias proxies
  *
  */
 public interface ManagedObject {

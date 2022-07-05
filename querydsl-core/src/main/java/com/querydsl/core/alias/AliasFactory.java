@@ -17,19 +17,24 @@ import com.querydsl.core.QueryException;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadataFactory;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
+import java.lang.reflect.InvocationTargetException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  * {@code AliasFactory} is a factory class for alias creation
  *
  * @author tiwe
+ * @author persapiens
  */
 class AliasFactory {
 
@@ -99,18 +104,20 @@ class AliasFactory {
      */
     @SuppressWarnings("unchecked")
     protected <A> A createProxy(Class<A> cl, Expression<?> path) {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setClassLoader(AliasFactory.class.getClassLoader());
-        if (cl.isInterface()) {
-            enhancer.setInterfaces(new Class<?>[] {cl, ManagedObject.class});
-        } else {
-            enhancer.setSuperclass(cl);
-            enhancer.setInterfaces(new Class<?>[] {ManagedObject.class});
+        Class<? extends A> loaded = new ByteBuddy()
+                .subclass(cl)
+                .implement(ManagedObject.class)
+                .method(ElementMatchers.any())
+                .intercept(MethodDelegation.to(new PropertyAccessInvocationHandler(path, this, pathFactory, typeSystem)))
+                .make()
+                .load(getClass().getClassLoader())
+                .getLoaded();
+        try {
+            return (A) loaded.getDeclaredConstructors()[0].newInstance();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(AliasFactory.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        // creates one handler per proxy
-        MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this, pathFactory, typeSystem);
-        enhancer.setCallback(handler);
-        return (A) enhancer.create();
     }
 
     /**
