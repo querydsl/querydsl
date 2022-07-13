@@ -17,6 +17,7 @@ import com.querydsl.core.QueryException;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadataFactory;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import org.jetbrains.annotations.Nullable;
 
@@ -112,12 +113,26 @@ class AliasFactory {
                 .make()
                 .load(getClass().getClassLoader())
                 .getLoaded();
-        try {
-            return (A) loaded.getDeclaredConstructors()[0].newInstance();
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(AliasFactory.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+            Constructor<?> constructor = null;
+            // search constructor, prefer default one
+            for (Constructor<?> declaredConstructor : loaded.getDeclaredConstructors()) {
+                if (declaredConstructor.getParameterCount() == 0) {
+                    constructor = declaredConstructor;
+                    break;
+                } else {
+                    constructor = declaredConstructor;
+                }
+            }
+            A result = null;
+            if (constructor != null) {
+                Object[] initargs = new Object[constructor.getParameterCount()];
+                try {
+                    result = (A) constructor.newInstance(initargs);
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(AliasFactory.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            return result;
     }
 
     /**
