@@ -41,10 +41,10 @@
 
     <!-- SQL deps -->
     <db2.version>11.5.7.0</db2.version>
-    <derby.version>10.15.2.0</derby.version>
-    <hsqldb.version>2.6.0</hsqldb.version>
-    <h2.version>1.4.197</h2.version>
-    <postgresql.version>42.3.4</postgresql.version>
+    <derby.version>10.16.1.1</derby.version>
+    <hsqldb.version>2.6.1</hsqldb.version>
+    <h2.version>2.1.214</h2.version>
+    <postgresql.version>42.4.0</postgresql.version>
     <oracle.version>11.2.0.4</oracle.version>
     <mysql.version>8.0.29</mysql.version>
     <jtds.version>1.3.1</jtds.version>
@@ -54,9 +54,10 @@
     <firebird.version>2.2.15</firebird.version>
 
     <!-- JPA deps -->
-    <hibernate.version>5.4.8.Final</hibernate.version>
+    <hibernate.version>6.1.1.Final</hibernate.version>
+    <hibernate.ehcache.version>5.6.10.Final</hibernate.ehcache.version>
     <hibernate.validator.version>7.0.4.Final</hibernate.validator.version>
-    <eclipselink.version>2.7.8</eclipselink.version>
+    <eclipselink.version>4.0.0-M3</eclipselink.version>
 
     <guava.version>31.1-jre</guava.version>
     <codegen.version>0.6.8</codegen.version>
@@ -64,9 +65,9 @@
     <cglib.version>3.3.0</cglib.version>
     <slf4j.version>1.7.35</slf4j.version>
     <surefire.version>2.22.2</surefire.version>
-    <animal-sniffer.version>1.20</animal-sniffer.version>
+    <animal-sniffer.version>1.21</animal-sniffer.version>
     <jodatime.version>2.10.14</jodatime.version>
-    <h2gis.version>1.5.0</h2gis.version>
+    <h2gis.version>2.1.0</h2gis.version>
     <morphia.version>1.3.2</morphia.version>
     <jmh.version>1.35</jmh.version>
     <hamcrest.veresion>2.2</hamcrest.veresion>
@@ -127,7 +128,7 @@
       <dependency>
         <groupId>jakarta.persistence</groupId>
         <artifactId>jakarta.persistence-api</artifactId>
-        <version>2.2.3</version>
+        <version>3.1.0</version>
       </dependency>
       <dependency>
         <groupId>org.datanucleus</groupId>
