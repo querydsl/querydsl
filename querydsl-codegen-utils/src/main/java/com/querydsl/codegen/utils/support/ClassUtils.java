@@ -80,8 +80,8 @@ public final class ClassUtils {
             return Collection.class;
         } else if (Map.class.isAssignableFrom(clazz)) {
             return Map.class;
-        // check for Byte Buddy generated classes
-        } else if (clazz.getName().contains("$ByteBuddy$")) {
+        // check for Byte Buddy or CGLIB generated classes
+        } else if (clazz.getName().contains("$ByteBuddy$") || clazz.getName().contains("$$")) {
             Class<?> zuper = clazz.getSuperclass();
             if (zuper != null && !Object.class.equals(zuper)) {
                 return zuper;
