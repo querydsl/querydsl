@@ -15,6 +15,7 @@ package com.querydsl.kotlin.codegen
 
 import com.querydsl.codegen.EntityType
 import com.querydsl.codegen.TypeMappings
+import com.querydsl.codegen.utils.model.ClassType
 import com.querydsl.codegen.utils.model.Type
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -49,6 +50,7 @@ fun Type.asClassName(): ClassName = when (this.fullName) {
     "long[]" -> LongArray::class.asClassName()
     "float[]" -> FloatArray::class.asClassName()
     "double[]" -> DoubleArray::class.asClassName()
+    "java.lang.Object" -> Any::class.asClassName()
     "java.lang.String" -> String::class.asClassName()
     "java.util.List" -> List::class.asClassName()
     "java.util.Map" -> Map::class.asClassName()
@@ -63,9 +65,17 @@ private fun Type.enclosingTypeHierarchy(): List<String> {
     return generateSequence { current?.also { current = it.enclosingType }?.simpleName }.toList().asReversed()
 }
 
-fun ClassName.asClassStatement() = CodeBlock.of("%T::class.java", this)
+fun ClassName.asClassStatementForJavaObjectType():CodeBlock =
+    CodeBlock.of("%T::class.javaObjectType", this)
+fun ClassName.asClassStatement(): CodeBlock =
+    CodeBlock.of("%T::class.java", this)
+fun ClassName.asClassStatement(classType: KotlinClassType): CodeBlock =
+    CodeBlock.of("%T::class.${classType.value}", this)
 
-fun Type.asClassNameStatement() = asClassName().asClassStatement()
+fun Type.asClassNameStatementForJavaObjectType() = asClassName().asClassStatement(KotlinClassType.JAVA_OBJECT_TYPE)
+fun Type.asClassNameStatement() = asClassName().asClassStatement(KotlinClassType.JAVA)
+
+fun Type.asClassNameStatement(classType: KotlinClassType) = asClassName().asClassStatement(classType)
 
 fun TypeMappings.getPathClassName(type: Type, model: EntityType) = getPathType(type, model, true).asClassName()
 
@@ -84,3 +94,10 @@ fun Collection<String>.joinToCode(
 fun Any.asCodeBlock(format: String = "%L") = CodeBlock.of(format, this)
 
 fun ParameterSpec.asCodeBlock(format: String = "%N") = (this as Any).asCodeBlock(format)
+
+enum class KotlinClassType(val value: String) {
+    JAVA("java"),
+    JAVA_CLASS("javaClass"),
+    JAVA_OBJECT_TYPE("javaObjectType"),
+    JAVA_PRIMITIVE_TYPE("javaPrimitiveType");
+}

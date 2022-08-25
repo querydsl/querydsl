@@ -169,7 +169,10 @@ open class KotlinEntitySerializer @Inject constructor(
                     TypeCategory.DATE -> serialize(model, property, queryType, "createDate", classStatement)
                     TypeCategory.DATETIME -> serialize(model, property, queryType, "createDateTime", classStatement)
                     TypeCategory.TIME -> serialize(model, property, queryType, "createTime", classStatement)
-                    TypeCategory.NUMERIC -> serialize(model, property, queryType, "createNumber", classStatement)
+                    TypeCategory.NUMERIC -> {
+                        val numberClassStatement = property.type.asClassNameStatement(KotlinClassType.JAVA_OBJECT_TYPE)
+                        serialize(model, property, queryType, "createNumber", numberClassStatement)
+                    }
                     TypeCategory.CUSTOM -> customField(model, property, config)
                     TypeCategory.ARRAY -> serialize(model, property, ArrayPath::class.parameterizedBy(property.type, property.type.componentType), "createArray", classStatement)
                     TypeCategory.COLLECTION -> collectionField(model, property, "createCollection", CollectionPath::class)
