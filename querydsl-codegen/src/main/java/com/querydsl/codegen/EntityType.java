@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 /**
@@ -44,7 +43,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     private final Set<Delegate> delegates = new HashSet<Delegate>();
 
-    private final Set<Property> properties = new TreeSet<Property>();
+    private final Set<Property> properties = new LinkedHashSet<>();
 
     private final Set<String> propertyNames = new HashSet<String>();
 
