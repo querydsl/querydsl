@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>5.0.0</version>
+  <version>5.0.1-SNAPSHOT</version>
     <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>https://querydsl.github.io/</url>
@@ -450,7 +450,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- TODO make this work or find replacement
       <plugin>
         <groupId>com.github.siom79.japicmp</groupId>
         <artifactId>japicmp-maven-plugin</artifactId>
@@ -461,6 +460,10 @@
             <breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
             <breakBuildBasedOnSemanticVersioning>true</breakBuildBasedOnSemanticVersioning>
             <ignoreMissingClasses>true</ignoreMissingClasses>
+            <excludeModules>
+              <excludeModule>querydsl-maven-plugin</excludeModule>
+              <excludeModule>querydsl-example.*</excludeModule>
+            </excludeModules>
           </parameter>
         </configuration>
         <executions>
@@ -471,7 +474,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin> -->
+      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -878,7 +881,7 @@
         <checkstyle.skip>true</checkstyle.skip>
         <enforcer.skip>true</enforcer.skip>
         <animal.sniffer.skip>true</animal.sniffer.skip>
-        <!--<japicmp.skip>true</japicmp.skip>-->
+        <japicmp.skip>true</japicmp.skip>
       </properties>
     </profile>
 
