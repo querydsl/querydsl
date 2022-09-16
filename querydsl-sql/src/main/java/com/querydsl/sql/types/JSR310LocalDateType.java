@@ -1,16 +1,13 @@
 package com.querydsl.sql.types;
 
 import java.sql.*;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import org.jetbrains.annotations.Nullable;
 
 /**
  * JSR310LocalDateType maps {@linkplain java.time.LocalDate}
- * to {@linkplain java.sql.Date} on the JDBC level
+ * to {@linkplain java.time.LocalDate} on the JDBC level
  *
  */
 public class JSR310LocalDateType extends AbstractJSR310DateTimeType<LocalDate> {
@@ -36,14 +33,11 @@ public class JSR310LocalDateType extends AbstractJSR310DateTimeType<LocalDate> {
     @Nullable
     @Override
     public LocalDate getValue(ResultSet rs, int startIndex) throws SQLException {
-        Date date = rs.getDate(startIndex, utc());
-        return date != null ? LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()),
-                ZoneOffset.UTC).toLocalDate() : null;
+        return rs.getObject(startIndex, LocalDate.class);
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalDate value) throws SQLException {
-        Instant i = value.atStartOfDay(ZoneOffset.UTC).toInstant();
-        st.setDate(startIndex, new Date(i.toEpochMilli()), utc());
+        st.setObject(startIndex, value);
     }
 }

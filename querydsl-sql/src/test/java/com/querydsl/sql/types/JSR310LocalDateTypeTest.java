@@ -7,7 +7,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import org.easymock.EasyMock;
@@ -21,11 +23,10 @@ public class JSR310LocalDateTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
 
     @Test
     public void set() throws SQLException {
-        LocalDate value = LocalDate.now();
-        Date date = new Date(value.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli());
+        LocalDate value = LocalDate.now(Clock.systemUTC());
 
         PreparedStatement stmt = EasyMock.createNiceMock(PreparedStatement.class);
-        stmt.setDate(1, date, UTC);
+        stmt.setObject(1, value);
         EasyMock.replay(stmt);
 
         type.setValue(stmt, 1, value);
@@ -48,7 +49,9 @@ public class JSR310LocalDateTypeTest extends AbstractJSR310DateTimeTypeTest<Loca
     @Test
     public void get() throws SQLException {
         ResultSet resultSet = EasyMock.createNiceMock(ResultSet.class);
-        EasyMock.expect(resultSet.getDate(1, UTC)).andReturn(new Date(UTC.getTimeInMillis()));
+        EasyMock.expect(resultSet.getObject(1, LocalDate.class))
+                .andReturn(LocalDateTime.ofInstant(UTC.toInstant(),
+                        UTC.getTimeZone().toZoneId()).toLocalDate());
         EasyMock.replay(resultSet);
 
         LocalDate result = type.getValue(resultSet, 1);
