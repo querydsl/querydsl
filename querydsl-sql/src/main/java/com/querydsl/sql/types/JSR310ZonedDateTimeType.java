@@ -4,18 +4,16 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
-import java.time.ZoneOffset;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 
-/**
- * JSR310ZonedDateTimeType maps {@linkplain java.time.ZonedDateTime}
- * to {@linkplain java.sql.Timestamp} on the JDBC level
- *
- */
 public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDateTime> {
 
+    // JDBC 4.2 does not define any support for ZonedDateTime, unlike most other JSR-310 types
+    // but many drivers support it anyway
+    // if the driver does not support it, fall back to OffsetDateTime
+    
     public JSR310ZonedDateTimeType() {
         super(Types.TIMESTAMP_WITH_TIMEZONE);
     }
@@ -37,12 +35,20 @@ public class JSR310ZonedDateTimeType extends AbstractJSR310DateTimeType<ZonedDat
     @Nullable
     @Override
     public ZonedDateTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Timestamp ts = rs.getTimestamp(startIndex, utc());
-        return ts != null ? ZonedDateTime.ofInstant(ts.toInstant(), ZoneOffset.UTC) : null;
+        try {
+            return rs.getObject(startIndex, ZonedDateTime.class);
+        } catch (SQLException e) {
+            OffsetDateTime odt = rs.getObject(startIndex, OffsetDateTime.class);
+            return odt != null ? odt.toZonedDateTime() : null;
+        }
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, ZonedDateTime value) throws SQLException {
-        st.setTimestamp(startIndex, Timestamp.from(value.toInstant()), utc());
+        try {
+            st.setObject(startIndex, value);
+        } catch (SQLException e) {
+            st.setObject(startIndex, value.toOffsetDateTime());
+        }
     }
 }
