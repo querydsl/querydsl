@@ -16,7 +16,6 @@ package com.querydsl.sql;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.hsqldb.types.Types;
 
