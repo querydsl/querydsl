@@ -1687,8 +1687,7 @@ public class SelectBase extends AbstractBaseTest {
 
         standardTest.runStringTests(employee.firstname, employee2.firstname, "Jennifer");
         Target target = Connections.getTarget();
-        if (target != SQLITE && target != SQLSERVER) {
-            // jTDS driver does not support TIME SQL data type
+        if (target != SQLITE) {
             standardTest.runTimeTests(employee.timefield, employee2.timefield, time);
         }
 

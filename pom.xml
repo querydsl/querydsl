@@ -47,7 +47,7 @@
     <postgresql.version>42.3.4</postgresql.version>
     <oracle.version>11.2.0.4</oracle.version>
     <mysql.version>8.0.29</mysql.version>
-    <jtds.version>1.3.1</jtds.version>
+    <mssql.version>11.2.1.jre8</mssql.version>
     <cubrid.version>9.3.9.0002</cubrid.version>
     <sqlite.version>3.36.0.3</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
@@ -431,7 +431,7 @@
                     <exclude>com.h2database:h2:*:*:compile</exclude>
                     <exclude>org.apche.derby:derby:*:*:compile</exclude>
                     <exclude>mysql:mysql-connector-java:*:*:compile</exclude>
-                    <exclude>net.sourceforge.jtds:jtds:*:*:compile</exclude>
+                    <exclude>com.microsoft.sqlserver:mssql-jdbc:*:*:compile</exclude>
                     <exclude>com.oracle:ojdbc6:*:*:compile</exclude>
                     <exclude>org.postgresql:postgresql:*:*:compile</exclude>
                     <exclude>cubrid:cubrid-jdbc:*:*:compile</exclude>
