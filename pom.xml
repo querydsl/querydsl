@@ -51,7 +51,7 @@
     <cubrid.version>9.3.9.0002</cubrid.version>
     <sqlite.version>3.36.0.3</sqlite.version>
     <teradata.version>13.10.00.35</teradata.version>
-    <firebird.version>2.2.15</firebird.version>
+    <firebird.version>4.0.6.java8</firebird.version>
 
     <!-- JPA deps -->
     <hibernate.version>5.4.8.Final</hibernate.version>
@@ -435,7 +435,7 @@
                     <exclude>com.oracle:ojdbc6:*:*:compile</exclude>
                     <exclude>org.postgresql:postgresql:*:*:compile</exclude>
                     <exclude>cubrid:cubrid-jdbc:*:*:compile</exclude>
-                    <exclude>org.firebirdsql.jdbc:jaybird-jdk16:*:*:compile</exclude>
+                    <exclude>org.firebirdsql.jdbc:jaybird:*:*:compile</exclude>
                     <exclude>org.xerial:sqlite-jdbc:*:*:compile</exclude>
                     <!-- hibernate-entitymanager is a legacy artefact and should not be used anymore -->
                     <exclude>org.hibernate:hibernate-entitymanager</exclude>
