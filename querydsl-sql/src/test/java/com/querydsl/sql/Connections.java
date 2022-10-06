@@ -16,7 +16,6 @@ package com.querydsl.sql;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.hsqldb.types.Types;
 
@@ -136,14 +135,9 @@ public final class Connections {
     }
 
     private static Connection getSQLServer() throws ClassNotFoundException, SQLException {
-        Class.forName("net.sourceforge.jtds.jdbc.Driver");
-        Properties props = new Properties();
-        props.put("user", "sa");
-        props.put("password", "Password1!");
-        props.put("sendTimeAsDatetime", "false");
-        String url = "jdbc:jtds:sqlserver://localhost:1433/tempdb";
-//        return DriverManager.getConnection(url, "querydsl", "querydsl");
-        return DriverManager.getConnection(url, props);
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=tempdb;sendTimeAsDatetime=false;trustServerCertificate=true";
+        return DriverManager.getConnection(url, "sa", "Password1!");
     }
 
     private static Connection getCubrid() throws ClassNotFoundException, SQLException {

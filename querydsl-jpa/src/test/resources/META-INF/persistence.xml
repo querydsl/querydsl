@@ -235,8 +235,8 @@
     <properties>
       <property name="hibernate.archive.autodetection" value="class" />
       <property name="hibernate.dialect" value="com.querydsl.jpa.support.QSQLServer2008Dialect" />
-      <property name="hibernate.connection.driver_class" value="net.sourceforge.jtds.jdbc.Driver" />
-      <property name="hibernate.connection.url" value="jdbc:jtds:sqlserver://localhost:1433/tempdb" />
+      <property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+      <property name="hibernate.connection.url" value="jdbc:sqlserver://localhost:1433;databaseName=tempdb;sendTimeAsDatetime=false;trustServerCertificate=true" />
       <property name="hibernate.connection.username" value="sa" />
       <property name="hibernate.connection.password" value="Password1!" />
       <!-- <property name="hibernate.show_sql" value="true"/> -->

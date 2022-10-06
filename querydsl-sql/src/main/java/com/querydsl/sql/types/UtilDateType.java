@@ -17,8 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 /**
@@ -39,7 +37,7 @@ public class UtilDateType extends AbstractDateTimeType<Date> {
 
     @Override
     public String getLiteral(Date value) {
-        return dateTimeFormatter.format(LocalDateTime.ofInstant(value.toInstant(), ZoneOffset.UTC));
+        return dateTimeFormatter.format(new java.sql.Timestamp(value.getTime()).toLocalDateTime());
     }
 
     @Override
