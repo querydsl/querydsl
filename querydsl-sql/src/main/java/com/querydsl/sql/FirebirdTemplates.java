@@ -72,6 +72,8 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.StringOps.LOCATE2, "position({0},{1},{2})");
         add(Ops.STRING_LENGTH, "char_length({0})");
         add(Ops.STRING_IS_EMPTY, "char_length({0}) = 0");
+        add(Ops.StringOps.LTRIM, "trim (leading from {0})");
+        add(Ops.StringOps.RTRIM, "trim (trailing from {0})");
 
         add(Ops.AggOps.BOOLEAN_ANY, "any({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "all({0})");
