@@ -489,8 +489,11 @@ public class SelectBase extends AbstractBaseTest {
         }
         if (supportsTimeZones) {
             // java.time.OffsetTime
-            data.add(javaTime.atOffset(java.time.ZoneOffset.UTC));
-            data.add(javaTime.atOffset(java.time.ZoneOffset.ofHours(-6)));
+            // SQL Server does not support TIME WITH TIME ZONE
+            if (target != SQLSERVER) {
+                data.add(javaTime.atOffset(java.time.ZoneOffset.UTC));
+                data.add(javaTime.atOffset(java.time.ZoneOffset.ofHours(-6)));
+            }
             
             /*
              * TIMESTAMP WITH TIME ZONE is complicated.
