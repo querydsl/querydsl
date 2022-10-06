@@ -414,7 +414,21 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLITE, TERADATA})
-    public void dates() {
+    public void dates() throws SQLException {
+        if (!configuration.getUseLiterals()) {
+            dates(false);
+        }
+    }
+    
+    @Test
+    @ExcludeIn({CUBRID, DB2, DERBY, SQLITE, TERADATA})
+    public void dates_literals() throws SQLException {
+        if (configuration.getUseLiterals()) {
+            dates(true);
+        }
+    }
+    
+    private void dates(boolean literals) throws SQLException {
         long ts = ((long) Math.floor(System.currentTimeMillis() / 1000)) * 1000;
         long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
         long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
@@ -456,9 +470,51 @@ public class SelectBase extends AbstractBaseTest {
         data.add(javaDateTime);                                     //java.time.LocalDateTime
         data.add(javaDate);                                         //java.time.LocalDate
         data.add(javaTime);                                         //java.time.LocalTime
-        data.add(javaDateTime.atOffset(java.time.ZoneOffset.UTC));  //java.time.OffsetDateTime
-        data.add(javaTime.atOffset(java.time.ZoneOffset.UTC));      //java.time.OffsetTime
-        data.add(javaDateTime.atZone(java.time.ZoneId.of("Z")));    //java.time.ZonedDateTime
+        
+        // have to explicitly list these
+        // connection.getMetaData().getTypeInfo() is not helpful in this case for most drivers
+        boolean supportsTimeZones;
+        switch (target) {
+        case FIREBIRD:
+        case H2:
+        case HSQLDB:
+        case ORACLE:
+        case POSTGRESQL:
+        case SQLSERVER:
+            supportsTimeZones = true;
+            break;
+        default:
+            supportsTimeZones = false;
+            break;
+        }
+        if (supportsTimeZones) {
+            // java.time.OffsetTime
+            data.add(javaTime.atOffset(java.time.ZoneOffset.UTC));
+            data.add(javaTime.atOffset(java.time.ZoneOffset.ofHours(-6)));
+            
+            /*
+             * TIMESTAMP WITH TIME ZONE is complicated.
+             * Contrary to the name, most databases that support this type do not actually support time zones.
+             * Instead, they support zone offsets which is not the same thing.
+             * E.g. America/New_York could be UTC-5 or UTC-4 depending on the time of year and acts of Congress.
+             * Which means if a database actually stores the zone ID, the time value can change.
+             * E.g. you put an entry in the database for 10 years in the future but then Congress abolishes DST.
+             * Other than Oracle, it does not look like any databases support storing the actual zone ID.
+             * Some databases, like H2, support specifying a time zone but convert it to an offset before storing it.
+             * Also, the JDBC specification does not say anything about ZonedDateTime.
+             * Therefore, we only test ZonedDateTime on Oracle because its behavior is poorly defined on anything else.
+             */
+            
+            // java.time.OffsetDateTime
+            data.add(javaDateTime.atOffset(java.time.ZoneOffset.UTC));
+            data.add(javaDateTime.atOffset(java.time.ZoneOffset.ofHours(-6)));
+            
+            // java.time.ZonedDateTime
+            if (target == ORACLE) {
+                data.add(javaDateTime.atZone(java.time.ZoneId.of("UTC")));
+                data.add(javaDateTime.atZone(java.time.ZoneId.of("America/Chicago")));
+            }
+        }
 
         Map<Object, Object> failures = new IdentityHashMap<>();
         for (Object dt : data) {
@@ -473,40 +529,6 @@ public class SelectBase extends AbstractBaseTest {
                         + ": " + entry.getKey() + " != " + entry.getValue());
             }
             Assert.fail("Failed with " + failures);
-        }
-    }
-
-    @Test
-    @Ignore // FIXME
-    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLITE, TERADATA})
-    public void dates_cST() {
-        TimeZone tz = TimeZone.getDefault();
-        try {
-            TimeZone.setDefault(TimeZone.getTimeZone("CST")); // -6:00
-            dates();
-        } finally {
-            TimeZone.setDefault(tz);
-        }
-    }
-
-    @Test
-    @Ignore // FIXME
-    @ExcludeIn({CUBRID, DB2, DERBY, HSQLDB, POSTGRESQL, SQLITE, TERADATA})
-    public void dates_iOT() {
-        TimeZone tz = TimeZone.getDefault();
-        try {
-            TimeZone.setDefault(TimeZone.getTimeZone("IOT")); // +6:00
-            dates();
-        } finally {
-            TimeZone.setDefault(tz);
-        }
-    }
-
-    @Test
-    @ExcludeIn({CUBRID, SQLITE, TERADATA})
-    public void dates_literals() {
-        if (configuration.getUseLiterals()) {
-            dates();
         }
     }
 

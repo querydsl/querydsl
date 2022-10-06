@@ -11,7 +11,7 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
 
 
     public JSR310OffsetDateTimeType() {
-        super(Types.TIMESTAMP);
+        super(Types.TIMESTAMP_WITH_TIMEZONE);
     }
 
     public JSR310OffsetDateTimeType(int type) {
@@ -20,7 +20,7 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
 
     @Override
     public String getLiteral(OffsetDateTime value) {
-        return dateTimeFormatter.format(value);
+        return dateTimeOffsetFormatter.format(value);
     }
 
     @Override

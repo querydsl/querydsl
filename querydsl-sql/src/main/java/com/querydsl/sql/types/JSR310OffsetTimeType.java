@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime> {
 
     public JSR310OffsetTimeType() {
-        super(Types.TIME);
+        super(Types.TIME_WITH_TIMEZONE);
     }
 
     public JSR310OffsetTimeType(int type) {
@@ -17,7 +17,7 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
 
     @Override
     public String getLiteral(OffsetTime value) {
-        return timeFormatter.format(value);
+        return timeOffsetFormatter.format(value);
     }
 
     @Override
