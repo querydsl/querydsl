@@ -58,11 +58,30 @@ public class ArrayType<T> extends AbstractType<T> {
     public T getValue(ResultSet rs, int startIndex) throws SQLException {
         Array arr = rs.getArray(startIndex);
         if (arr != null) {
-            Object[] rv = (Object[]) arr.getArray();
-            if (convertPrimitives) {
-                // primitives out
-                Object rv2 = java.lang.reflect.Array.newInstance(type.getComponentType(), rv.length);
-                copy(rv, rv2, rv.length);
+            /*
+             * The Javadoc for getArray() is annoyingly ambiguous about what it returns.
+             * 
+             * It says that the method can return a primitive array.
+             * 
+             * But it does not say anything about the type of the array when the method
+             * returns an array of objects.
+             * 
+             * In that case, it could return T[] (Postgres appears to do this)
+             * or it could return Object[] (H2 and HSQLDB appear to do this).
+             * 
+             * The JDBC specification does not offer any additional clarity.
+             * 
+             * In any case, what we need to return is T[]. Otherwise the caller will get
+             * ClassCastExceptions at runtime.
+             * 
+             * Note that we cannot cast arr.getArray() to Object[] because, if the returned
+             * array is a primitive array, that would cause ClassCastException.
+             */
+            Object rv = arr.getArray();
+            if (!type.isAssignableFrom(rv.getClass())) {
+                int length = java.lang.reflect.Array.getLength(rv);
+                Object rv2 = java.lang.reflect.Array.newInstance(type.getComponentType(), length);
+                copy(rv, rv2, length);
                 return (T) rv2;
             } else {
                 return (T) rv;
