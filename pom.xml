@@ -45,7 +45,7 @@
     <hsqldb.version>2.6.0</hsqldb.version>
     <h2.version>1.4.197</h2.version>
     <postgresql.version>42.3.4</postgresql.version>
-    <oracle.version>11.2.0.4</oracle.version>
+    <oracle.version>21.7.0.0</oracle.version>
     <mysql.version>8.0.29</mysql.version>
     <mssql.version>11.2.1.jre8</mssql.version>
     <cubrid.version>9.3.9.0002</cubrid.version>
@@ -432,7 +432,7 @@
                     <exclude>org.apche.derby:derby:*:*:compile</exclude>
                     <exclude>mysql:mysql-connector-java:*:*:compile</exclude>
                     <exclude>com.microsoft.sqlserver:mssql-jdbc:*:*:compile</exclude>
-                    <exclude>com.oracle:ojdbc6:*:*:compile</exclude>
+                    <exclude>com.oracle:ojdbc8:*:*:compile</exclude>
                     <exclude>org.postgresql:postgresql:*:*:compile</exclude>
                     <exclude>cubrid:cubrid-jdbc:*:*:compile</exclude>
                     <exclude>org.firebirdsql.jdbc:jaybird:*:*:compile</exclude>
