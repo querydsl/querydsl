@@ -475,22 +475,23 @@ public class SelectBase extends AbstractBaseTest {
         // connection.getMetaData().getTypeInfo() is not helpful in this case for most drivers
         boolean supportsTimeZones;
         switch (target) {
-        case FIREBIRD:
-        case H2:
-        case HSQLDB:
-        case ORACLE:
-        case POSTGRESQL:
-        case SQLSERVER:
-            supportsTimeZones = true;
-            break;
-        default:
-            supportsTimeZones = false;
-            break;
+            case FIREBIRD:
+            case H2:
+            case HSQLDB:
+            case ORACLE:
+            case POSTGRESQL:
+            case SQLSERVER:
+                supportsTimeZones = true;
+                break;
+            default:
+                supportsTimeZones = false;
+                break;
         }
         if (supportsTimeZones) {
             // java.time.OffsetTime
             // SQL Server does not support TIME WITH TIME ZONE
-            if (target != SQLSERVER) {
+            // H2 supports it starting in 1.4.200 but we are stuck on 1.4.197 due to h2gis
+            if (target != SQLSERVER && target != H2) {
                 data.add(javaTime.atOffset(java.time.ZoneOffset.UTC));
                 data.add(javaTime.atOffset(java.time.ZoneOffset.ofHours(-6)));
             }
