@@ -120,5 +120,18 @@ public class HSQLDBTemplates extends SQLTemplates {
             return super.getCastTypeNameForCode(code);
         }
     }
+    
+    @Override
+    public String serialize(String literal, int jdbcType) {
+        switch (jdbcType) {
+            case TIMESTAMP_WITH_TIMEZONE:
+            case TIME_WITH_TIMEZONE:
+                // HSQLDB does not tolerate space before the time zone, unlike other DBs
+                int tzSeparatorIndex = literal.lastIndexOf(' ');
+                literal = literal.substring(0, tzSeparatorIndex) + literal.substring(tzSeparatorIndex + 1);
+                break;
+        }
+        return super.serialize(literal, jdbcType);
+    }
 
 }

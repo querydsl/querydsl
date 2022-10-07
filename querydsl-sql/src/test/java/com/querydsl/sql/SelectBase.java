@@ -479,7 +479,6 @@ public class SelectBase extends AbstractBaseTest {
             case H2:
             case HSQLDB:
             case ORACLE:
-            case POSTGRESQL:
             case SQLSERVER:
                 supportsTimeZones = true;
                 break;
