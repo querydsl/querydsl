@@ -17,12 +17,16 @@ import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.ListPath;
+import com.querydsl.core.types.dsl.SimpleExpression;
+
+import java.util.Collection;
 
 /**
  * Mongodb specific operations
  *
  * @author tiwe
- *
+ * @author sangyong choi
  */
 public final class MongodbExpressions {
 
@@ -80,5 +84,15 @@ public final class MongodbExpressions {
      */
     public static BooleanExpression geoIntersects(Expression<Double[]> expr, double latVal, double longVal) {
         return Expressions.booleanOperation(MongodbOps.GEO_INTERSECTS, expr, ConstantImpl.create(new Double[]{latVal, longVal}));
+    }
+
+    /**
+     * Find documents where the value of a field is an array that contains all the specific elements.
+     *
+     * @param expr expression
+     * @param params params
+     */
+    public static <T, Q extends SimpleExpression<? super T>> BooleanExpression all(ListPath<T, Q> expr, Collection<T> params) {
+        return Expressions.booleanOperation(MongodbOps.ALL, expr, ConstantImpl.create(params));
     }
 }
