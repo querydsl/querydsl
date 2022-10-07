@@ -124,6 +124,8 @@ public class FirebirdTemplates extends SQLTemplates {
         add(SQLOps.GROUP_CONCAT, "list({0},',')");
         add(SQLOps.GROUP_CONCAT2, "list({0},{1})");
 
+        addTypeNameToCode("time with time zone", Types.TIME_WITH_TIMEZONE, true);
+        addTypeNameToCode("timestamp with time zone", Types.TIMESTAMP_WITH_TIMEZONE, true);
         addTypeNameToCode("smallint", Types.BOOLEAN, true);
         addTypeNameToCode("smallint", Types.BIT, true);
         addTypeNameToCode("smallint", Types.TINYINT, true);

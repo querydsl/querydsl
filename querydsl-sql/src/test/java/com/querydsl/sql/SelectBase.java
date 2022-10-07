@@ -521,9 +521,13 @@ public class SelectBase extends AbstractBaseTest {
 
         Map<Object, Object> failures = new IdentityHashMap<>();
         for (Object dt : data) {
-            Object dt2 = firstResult(Expressions.constant(dt));
-            if (!dt.equals(dt2)) {
-                failures.put(dt, dt2);
+            try {
+                Object dt2 = firstResult(Expressions.constant(dt));
+                if (!dt.equals(dt2)) {
+                    failures.put(dt, dt2);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Error executing query for " + dt.getClass().getName() + " " + dt, e);
             }
         }
         if (!failures.isEmpty()) {
