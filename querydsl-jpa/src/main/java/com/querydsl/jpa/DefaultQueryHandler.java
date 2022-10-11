@@ -16,7 +16,7 @@ package com.querydsl.jpa;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import org.jetbrains.annotations.Nullable;
 import javax.persistence.Query;
 

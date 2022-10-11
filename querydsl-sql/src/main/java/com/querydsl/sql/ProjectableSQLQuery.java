@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.JoinFlag;
 import com.querydsl.core.NonUniqueResultException;

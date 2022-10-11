@@ -16,7 +16,7 @@ package com.querydsl.jpa;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryMetadata;

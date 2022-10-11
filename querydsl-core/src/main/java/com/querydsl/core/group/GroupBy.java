@@ -16,7 +16,7 @@ package com.querydsl.core.group;
 import java.math.MathContext;
 import java.util.*;
 
-import com.mysema.commons.lang.Pair;
+import com.querydsl.core.util.Pair;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;

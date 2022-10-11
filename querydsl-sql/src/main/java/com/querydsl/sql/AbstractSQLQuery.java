@@ -13,7 +13,7 @@
  */
 package com.querydsl.sql;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.QueryException;
 import com.querydsl.core.QueryFlag;

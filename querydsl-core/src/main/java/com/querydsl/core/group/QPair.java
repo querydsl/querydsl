@@ -13,7 +13,7 @@
  */
 package com.querydsl.core.group;
 
-import com.mysema.commons.lang.Pair;
+import com.querydsl.core.util.Pair;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Expression;
 

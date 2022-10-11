@@ -17,7 +17,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
-import com.mysema.commons.lang.Pair;
+import com.querydsl.core.util.Pair;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.group.AbstractGroupExpression;
 import com.querydsl.core.group.GroupBy;

@@ -13,7 +13,7 @@
  */
 package com.querydsl.collections;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.FetchableQuery;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.NonUniqueResultException;

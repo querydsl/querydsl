@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.commons.lang;
+package com.querydsl.core.util;
 
 import java.util.Objects;
 

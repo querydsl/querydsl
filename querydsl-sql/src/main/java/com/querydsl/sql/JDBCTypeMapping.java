@@ -27,7 +27,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mysema.commons.lang.Pair;
+import com.querydsl.core.util.Pair;
 import com.querydsl.sql.types.Null;
 
 /**

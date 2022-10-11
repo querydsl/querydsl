@@ -29,7 +29,7 @@ import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.*;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;

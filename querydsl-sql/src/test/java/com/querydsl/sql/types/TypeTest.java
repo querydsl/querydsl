@@ -33,7 +33,7 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Test;
 
-import com.mysema.commons.lang.Pair;
+import com.querydsl.core.util.Pair;
 
 public class TypeTest implements InvocationHandler {
 

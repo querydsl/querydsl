@@ -485,7 +485,7 @@ public class QDate extends DatePath<java.sql.Date> {
         super(java.sql.Date.class, metadata);
     }
 
-    public BooleanExpression inPeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
+    public BooleanExpression inPeriod(com.querydsl.core.util.Pair<java.sql.Date, java.sql.Date> period) {
         return QueryExtensions.inPeriod(this, period);
     }
 
@@ -501,7 +501,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
         super(java.sql.Timestamp.class, metadata);
     }
 
-    public BooleanExpression inDatePeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
+    public BooleanExpression inDatePeriod(com.querydsl.core.util.Pair<java.sql.Date, java.sql.Date> period) {
         return QueryExtensions.inDatePeriod(this, period);
     }
 

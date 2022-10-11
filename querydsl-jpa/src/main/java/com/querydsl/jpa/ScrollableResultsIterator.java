@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import org.hibernate.ScrollableResults;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 
 /**
  * {@code ScrollableResultsIterator} is a {@link CloseableIterator} adapter for ScrollableResults

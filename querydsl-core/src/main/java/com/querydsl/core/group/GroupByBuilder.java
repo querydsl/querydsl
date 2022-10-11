@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;

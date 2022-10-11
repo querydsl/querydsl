@@ -13,7 +13,7 @@
  */
 package com.querydsl.hibernate.search;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.Fetchable;
 import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.core.QueryMetadata;

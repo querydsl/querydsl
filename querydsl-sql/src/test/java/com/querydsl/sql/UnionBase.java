@@ -13,7 +13,7 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.testutil.ExcludeIn;
 import com.querydsl.core.types.Expression;

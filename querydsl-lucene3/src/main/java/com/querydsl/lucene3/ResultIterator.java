@@ -13,7 +13,7 @@
  */
 package com.querydsl.lucene3;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.QueryException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;

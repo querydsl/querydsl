@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.QueryException;
 
 /**

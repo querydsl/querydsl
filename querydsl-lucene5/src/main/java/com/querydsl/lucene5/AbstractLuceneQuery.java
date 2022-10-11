@@ -13,7 +13,7 @@
  */
 package com.querydsl.lucene5;
 
-import com.mysema.commons.lang.CloseableIterator;
+import com.querydsl.core.util.CloseableIterator;
 import com.querydsl.core.DefaultQueryMetadata;
 import com.querydsl.core.Fetchable;
 import com.querydsl.core.NonUniqueResultException;
