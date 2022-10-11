@@ -12,8 +12,10 @@ class ReflectionUtilsTest {
 
   @Test
   def getImplementedInterfaces {
-    assertEquals(Set(classOf[java.io.Serializable],classOf[Comparable[_]],classOf[CharSequence]),
-        ReflectionUtils.getImplementedInterfaces(classOf[String]))
+    var setToTest = ReflectionUtils.getImplementedInterfaces(classOf[String])
+    assertTrue(setToTest.contains(classOf[java.io.Serializable]))
+    assertTrue(setToTest.contains(classOf[Comparable[_]]))
+    assertTrue(setToTest.contains(classOf[CharSequence]))
   }
 
   @Test
