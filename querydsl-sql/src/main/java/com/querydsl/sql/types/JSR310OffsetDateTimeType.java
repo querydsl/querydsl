@@ -4,21 +4,14 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
-/**
- * JSR310OffsetDateTimeType maps {@linkplain java.time.OffsetDateTime}
- * to {@linkplain java.sql.Timestamp} on the JDBC level
- *
- */
 public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetDateTime> {
 
 
     public JSR310OffsetDateTimeType() {
-        super(Types.TIMESTAMP);
+        super(Types.TIMESTAMP_WITH_TIMEZONE);
     }
 
     public JSR310OffsetDateTimeType(int type) {
@@ -27,7 +20,7 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
 
     @Override
     public String getLiteral(OffsetDateTime value) {
-        return dateTimeFormatter.format(value);
+        return dateTimeOffsetFormatter.format(value);
     }
 
     @Override
@@ -38,12 +31,11 @@ public class JSR310OffsetDateTimeType extends AbstractJSR310DateTimeType<OffsetD
     @Nullable
     @Override
     public OffsetDateTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Timestamp timestamp = rs.getTimestamp(startIndex, utc());
-        return timestamp != null ? OffsetDateTime.ofInstant(timestamp.toInstant(), ZoneOffset.UTC) : null;
+        return rs.getObject(startIndex, OffsetDateTime.class);
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, OffsetDateTime value) throws SQLException {
-        st.setTimestamp(startIndex, Timestamp.from(value.toInstant()), utc());
+        st.setObject(startIndex, value);
     }
 }

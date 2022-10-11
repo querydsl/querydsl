@@ -39,8 +39,14 @@ public abstract class AbstractDateTimeType<T>  extends AbstractType<T> {
     protected static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    protected static final DateTimeFormatter dateTimeOffsetFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss xxx");
+    
+    protected static final DateTimeFormatter dateTimeZoneFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss VV");
 
     protected static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    
+    protected static final DateTimeFormatter timeOffsetFormatter = DateTimeFormatter.ofPattern("HH:mm:ss xxx");
 
     public AbstractDateTimeType(int type) {
         super(type);

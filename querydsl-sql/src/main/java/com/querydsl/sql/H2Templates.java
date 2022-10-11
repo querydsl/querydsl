@@ -83,4 +83,16 @@ public class H2Templates extends SQLTemplates {
         add(Ops.DateTimeOps.TRUNC_SECOND, "parsedatetime(formatdatetime({0},'yyyy-MM-dd HH:mm:ss'),'yyyy-MM-dd HH:mm:ss')");
     }
 
+    @Override
+    public String serialize(String literal, int jdbcType) {
+        switch (jdbcType) {
+            case TIMESTAMP_WITH_TIMEZONE:
+                return "(timestamp with time zone '" + literal + "')";
+            case TIME_WITH_TIMEZONE:
+                return "(time with time zone '" + literal + "')";
+            default:
+                return super.serialize(literal, jdbcType);
+        }
+    }
+
 }
