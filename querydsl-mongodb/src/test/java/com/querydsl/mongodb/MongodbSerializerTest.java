@@ -13,29 +13,26 @@
  */
 package com.querydsl.mongodb;
 
-import static org.junit.Assert.assertEquals;
-
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
-import org.mongodb.morphia.Morphia;
-
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.*;
-import com.querydsl.mongodb.domain.QAddress;
-import com.querydsl.mongodb.domain.QDummyEntity;
-import com.querydsl.mongodb.domain.QPerson;
-import com.querydsl.mongodb.domain.QUser;
+import com.querydsl.mongodb.domain.*;
 import com.querydsl.mongodb.morphia.MorphiaSerializer;
+import org.bson.types.ObjectId;
+import org.junit.Before;
+import org.junit.Test;
+import org.mongodb.morphia.Morphia;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class MongodbSerializerTest {
 
@@ -96,33 +93,33 @@ public class MongodbSerializerTest {
     @Test
     public void collectionAny() {
         QUser user = QUser.user;
-        assertQuery(user.addresses.any().street.eq("Aakatu"), dbo("addresses.street","Aakatu"));
+        assertQuery(user.addresses.any().street.eq("Aakatu"), dbo("addresses.street", "Aakatu"));
     }
 
     @Test
     public void collectionIsEmpty() {
         BasicDBObject expected = dbo("$or",
-            dblist(
-                dbo("addresses", dblist()),
-                dbo("addresses",
-                    dbo("$exists", false))));
+                dblist(
+                        dbo("addresses", dblist()),
+                        dbo("addresses",
+                                dbo("$exists", false))));
         assertQuery(QUser.user.addresses.isEmpty(), expected);
     }
 
     @Test
     public void collectionIsNotEmpty() {
         BasicDBObject expected = dbo("$nor",
-            dblist(
-                dbo("addresses", dblist()),
-                dbo("addresses",
-                    dbo("$exists", false))));
+                dblist(
+                        dbo("addresses", dblist()),
+                        dbo("addresses",
+                                dbo("$exists", false))));
         assertQuery(QUser.user.addresses.isNotEmpty(), expected);
     }
 
     @Test
     public void equals() {
-        assertQuery(title.eq("A"), dbo("title","A"));
-        assertQuery(year.eq(1), dbo("year",1));
+        assertQuery(title.eq("A"), dbo("title", "A"));
+        assertQuery(year.eq(1), dbo("year", 1));
         assertQuery(gross.eq(1.0D), dbo("gross", 1.0D));
         assertQuery(longField.eq(1L), dbo("longField", 1L));
         assertQuery(shortField.eq((short) 1), dbo("shortField", 1));
@@ -136,13 +133,13 @@ public class MongodbSerializerTest {
     @Test
     public void eqAndEq() {
         assertQuery(
-            title.eq("A").and(year.eq(1)),
-            dbo("title","A").append("year", 1)
+                title.eq("A").and(year.eq(1)),
+                dbo("title", "A").append("year", 1)
         );
 
         assertQuery(
-            title.eq("A").and(year.eq(1).and(gross.eq(1.0D))),
-            dbo("title","A").append("year", 1).append("gross", 1.0D)
+                title.eq("A").and(year.eq(1).and(gross.eq(1.0D))),
+                dbo("title", "A").append("year", 1).append("gross", 1.0D)
         );
     }
 
@@ -167,8 +164,8 @@ public class MongodbSerializerTest {
         assertQuery(
                 year.gt(1).and(year.lt(10)),
                 dbo("$and", dblist(
-                  dbo("year", dbo("$gt", 1)),
-                  dbo("year", dbo("$lt", 10))))
+                        dbo("year", dbo("$gt", 1)),
+                        dbo("year", dbo("$lt", 10))))
         );
 
         assertQuery(
@@ -179,13 +176,13 @@ public class MongodbSerializerTest {
 
     @Test
     public void in() {
-        assertQuery(year.in(1,2,3), dbo("year", dbo("$in", 1,2,3)));
+        assertQuery(year.in(1, 2, 3), dbo("year", dbo("$in", 1, 2, 3)));
     }
 
     @Test
     public void notIn() {
-        assertQuery(year.in(1,2,3).not(), dbo("year", dbo("$nin", 1,2,3)));
-        assertQuery(year.notIn(1,2,3), dbo("year", dbo("$nin", 1,2,3)));
+        assertQuery(year.in(1, 2, 3).not(), dbo("year", dbo("$nin", 1, 2, 3)));
+        assertQuery(year.notIn(1, 2, 3), dbo("year", dbo("$nin", 1, 2, 3)));
     }
 
     @Test
@@ -228,11 +225,11 @@ public class MongodbSerializerTest {
     @Test
     public void and() {
         assertQuery(
-            title.startsWithIgnoreCase("a").and(title.endsWithIgnoreCase("b")),
+                title.startsWithIgnoreCase("a").and(title.endsWithIgnoreCase("b")),
 
-            dbo("$and", dblist(
-                dbo("title", dbo("$regex", "^\\Qa\\E").append("$options", "i")),
-                dbo("title", dbo("$regex", "\\Qb\\E$").append("$options", "i")))));
+                dbo("$and", dblist(
+                        dbo("title", dbo("$regex", "^\\Qa\\E").append("$options", "i")),
+                        dbo("title", dbo("$regex", "\\Qb\\E$").append("$options", "i")))));
 
     }
 
@@ -249,20 +246,36 @@ public class MongodbSerializerTest {
     }
 
     @Test
+    public void all() {
+        QItem item = QItem.item;
+        List<ObjectId> objectIds = new ArrayList<>();
+        ObjectId objectId1 = new ObjectId();
+        ObjectId objectId2 = new ObjectId();
+
+        objectIds.add(objectId1);
+        objectIds.add(objectId2);
+
+        assertQuery(
+                MongodbExpressions.all(item.ctds, objectIds),
+                dbo("ctds", dbo("$all", dblist(objectId1, objectId2)))
+        );
+    }
+
+    @Test
     public void not() {
-        assertQuery(title.eq("A").not(), dbo("title", dbo("$ne","A")));
+        assertQuery(title.eq("A").not(), dbo("title", dbo("$ne", "A")));
 
         assertQuery(title.lt("A").not().and(year.ne(1800)),
-                dbo("title", dbo("$not", dbo("$lt","A"))).
-                append("year", dbo("$ne", 1800)));
+                dbo("title", dbo("$not", dbo("$lt", "A"))).
+                        append("year", dbo("$ne", 1800)));
     }
 
     @Test
     public void objectId() {
         ObjectId id = new ObjectId();
         QPerson person = QPerson.person;
-        assertQuery(person.id.eq(id), dbo("_id",id));
-        assertQuery(person.addressId.eq(id), dbo("addressId",id));
+        assertQuery(person.id.eq(id), dbo("_id", id));
+        assertQuery(person.addressId.eq(id), dbo("addressId", id));
     }
 
     @Test
@@ -273,7 +286,6 @@ public class MongodbSerializerTest {
         assertEquals("mainAddress.street", serializer.visit(user.mainAddress().street, null));
         assertEquals("mainAddress.street", serializer.visit(user.mainAddress().as(QAddress.class).street, null));
     }
-
 
     private List<OrderSpecifier<?>> sortList(OrderSpecifier<?>... order) {
         return Arrays.asList(order);
@@ -290,11 +302,10 @@ public class MongodbSerializerTest {
         }
         return new BasicDBObject(key, value);
     }
+
     public static BasicDBList dblist(Object... contents) {
         BasicDBList list = new BasicDBList();
         list.addAll(Arrays.asList(contents));
         return list;
     }
-
-
 }

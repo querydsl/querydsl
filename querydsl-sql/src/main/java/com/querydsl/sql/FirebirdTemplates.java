@@ -72,6 +72,8 @@ public class FirebirdTemplates extends SQLTemplates {
         add(Ops.StringOps.LOCATE2, "position({0},{1},{2})");
         add(Ops.STRING_LENGTH, "char_length({0})");
         add(Ops.STRING_IS_EMPTY, "char_length({0}) = 0");
+        add(Ops.StringOps.LTRIM, "trim (leading from {0})");
+        add(Ops.StringOps.RTRIM, "trim (trailing from {0})");
 
         add(Ops.AggOps.BOOLEAN_ANY, "any({0})");
         add(Ops.AggOps.BOOLEAN_ALL, "all({0})");
@@ -122,6 +124,8 @@ public class FirebirdTemplates extends SQLTemplates {
         add(SQLOps.GROUP_CONCAT, "list({0},',')");
         add(SQLOps.GROUP_CONCAT2, "list({0},{1})");
 
+        addTypeNameToCode("time with time zone", Types.TIME_WITH_TIMEZONE, true);
+        addTypeNameToCode("timestamp with time zone", Types.TIMESTAMP_WITH_TIMEZONE, true);
         addTypeNameToCode("smallint", Types.BOOLEAN, true);
         addTypeNameToCode("smallint", Types.BIT, true);
         addTypeNameToCode("smallint", Types.TINYINT, true);

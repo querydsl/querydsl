@@ -4,16 +4,9 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
-/**
- * JSR310LocalDateTimeType maps {@linkplain java.time.LocalDateTime}
- * to {@linkplain java.sql.Timestamp} on the JDBC level
- *
- */
 public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDateTime> {
 
     public JSR310LocalDateTimeType() {
@@ -37,12 +30,11 @@ public class JSR310LocalDateTimeType extends AbstractJSR310DateTimeType<LocalDat
     @Nullable
     @Override
     public LocalDateTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Timestamp ts = rs.getTimestamp(startIndex, utc());
-        return ts != null ? LocalDateTime.ofInstant(ts.toInstant(), ZoneOffset.UTC) : null;
+        return rs.getObject(startIndex, LocalDateTime.class);
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, LocalDateTime value) throws SQLException {
-        st.setTimestamp(startIndex, Timestamp.from(value.toInstant(ZoneOffset.UTC)), utc());
+        st.setObject(startIndex, value);
     }
 }

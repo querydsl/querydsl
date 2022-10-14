@@ -1,22 +1,14 @@
 package com.querydsl.sql.types;
 
 import java.sql.*;
-import java.time.Instant;
 import java.time.OffsetTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoField;
 
 import org.jetbrains.annotations.Nullable;
 
-/**
- * JSR310OffsetTimeType maps {@linkplain java.time.OffsetTime}
- * to {@linkplain java.sql.Time} on the JDBC level
- *
- */
 public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime> {
 
     public JSR310OffsetTimeType() {
-        super(Types.TIME);
+        super(Types.TIME_WITH_TIMEZONE);
     }
 
     public JSR310OffsetTimeType(int type) {
@@ -25,7 +17,7 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
 
     @Override
     public String getLiteral(OffsetTime value) {
-        return timeFormatter.format(value);
+        return timeOffsetFormatter.format(value);
     }
 
     @Override
@@ -36,13 +28,11 @@ public class JSR310OffsetTimeType extends AbstractJSR310DateTimeType<OffsetTime>
     @Nullable
     @Override
     public OffsetTime getValue(ResultSet rs, int startIndex) throws SQLException {
-        Time time = rs.getTime(startIndex, utc());
-        return time != null ? OffsetTime.ofInstant(Instant.ofEpochMilli(time.getTime()), ZoneOffset.UTC) : null;
+        return rs.getObject(startIndex, OffsetTime.class);
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, OffsetTime value) throws SQLException {
-        OffsetTime normalized = value.withOffsetSameInstant(ZoneOffset.UTC);
-        st.setTime(startIndex, new Time(normalized.get(ChronoField.MILLI_OF_DAY)), utc());
+        st.setObject(startIndex, value);
     }
 }

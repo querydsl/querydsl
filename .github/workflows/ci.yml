@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         target: [test]
-        java: [1.8, 11]
+        java: [1.8, 11, 17]
         include:
           - target: test
             containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird

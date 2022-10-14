@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * Serializes the given Querydsl query to a DBObject query for MongoDB
  *
  * @author laimw
- *
+ * @author sangyong choi
  */
 public abstract class MongodbSerializer implements Visitor<Object, Void> {
 
@@ -266,6 +266,8 @@ public abstract class MongodbSerializer implements Visitor<Object, Void> {
                     "$geoIntersects",
                     asDBObject("$geometry", asDBValue(expr, 1))
             ));
+        } else if (op == MongodbOps.ALL) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$all", asDBValue(expr, 1)));
         } else if (op == MongodbOps.ELEM_MATCH) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
         }

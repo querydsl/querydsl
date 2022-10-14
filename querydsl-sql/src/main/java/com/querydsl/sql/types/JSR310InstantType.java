@@ -2,18 +2,14 @@ package com.querydsl.sql.types;
 
 import java.sql.*;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import org.jetbrains.annotations.Nullable;
 
-/**
- * JSR310InstantType maps {@linkplain java.time.Instant} to
- * {@linkplain java.sql.Timestamp} on the JDBC level
- *
- */
 public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
 
+    // JDBC 4.2 does not define any support for Instant, unlike most other JSR-310 types
+    // few drivers support it natively, so go through Timestamp to handle it
+    
     public JSR310InstantType() {
         super(Types.TIMESTAMP);
     }
@@ -24,7 +20,7 @@ public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
 
     @Override
     public String getLiteral(Instant value) {
-        return dateTimeFormatter.format(LocalDateTime.ofInstant(value, ZoneId.of("Z")));
+        return dateTimeFormatter.format(Timestamp.from(value).toLocalDateTime());
     }
 
     @Override
@@ -35,12 +31,12 @@ public class JSR310InstantType extends AbstractJSR310DateTimeType<Instant>  {
     @Nullable
     @Override
     public Instant getValue(ResultSet rs, int startIndex) throws SQLException {
-        Timestamp timestamp = rs.getTimestamp(startIndex, utc());
+        Timestamp timestamp = rs.getTimestamp(startIndex);
         return timestamp != null ? timestamp.toInstant() : null;
     }
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Instant value) throws SQLException {
-        st.setTimestamp(startIndex, Timestamp.from(value), utc());
+        st.setTimestamp(startIndex, Timestamp.from(value));
     }
 }
