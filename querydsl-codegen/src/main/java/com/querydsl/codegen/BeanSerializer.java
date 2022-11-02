@@ -13,6 +13,7 @@
  */
 package com.querydsl.codegen;
 
+import com.querydsl.codegen.GeneratedAnnotationClass.Context;
 import com.querydsl.codegen.utils.CodeWriter;
 import com.querydsl.codegen.utils.model.ClassType;
 import com.querydsl.codegen.utils.model.Parameter;
@@ -52,7 +53,7 @@ public class BeanSerializer implements Serializer {
             return new Parameter(input.getName(), input.getType());
         }
     };
-    private final Class<? extends Annotation> generatedAnnotationClass;
+    private final GeneratedAnnotationClass generatedAnnotationClass;
 
     private final boolean propertyAnnotations;
 
@@ -90,7 +91,7 @@ public class BeanSerializer implements Serializer {
     @Inject
     public BeanSerializer(
             @Named(CodegenModule.JAVADOC_SUFFIX) String javadocSuffix,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) GeneratedAnnotationClass generatedAnnotationClass) {
         this(DEFAULT_PROPERTY_ANNOTATIONS, javadocSuffix, generatedAnnotationClass);
     }
 
@@ -121,7 +122,7 @@ public class BeanSerializer implements Serializer {
      * @param generatedAnnotationClass the fully qualified class name of the <em>Single-Element Annotation</em> (with {@code String} element) to be used on the generated classes.
      *      * @see <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.3">Single-Element Annotation</a>
      */
-    public BeanSerializer(boolean propertyAnnotations, String javadocSuffix, Class<? extends Annotation> generatedAnnotationClass) {
+    public BeanSerializer(boolean propertyAnnotations, String javadocSuffix, GeneratedAnnotationClass generatedAnnotationClass) {
         this.propertyAnnotations = propertyAnnotations;
         this.javadocSuffix = javadocSuffix;
         this.generatedAnnotationClass = generatedAnnotationClass;
@@ -169,7 +170,7 @@ public class BeanSerializer implements Serializer {
             writer.annotation(annotation);
         }
 
-        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.buildAnnotation(Context.of(getClass().getName())));
 
         if (!interfaces.isEmpty()) {
             Type superType = null;

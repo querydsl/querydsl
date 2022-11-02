@@ -282,8 +282,8 @@ public class DefaultConfiguration implements Configuration {
 
         module.loadExtensions();
 
-        Class<? extends Annotation> generatedAnnotationClass = GeneratedAnnotationResolver.resolve(options.get(QUERYDSL_GENERATED_ANNOTATION_CLASS));
-        module.bindInstance(CodegenModule.GENERATED_ANNOTATION_CLASS, generatedAnnotationClass);
+        GeneratedAnnotationClass generatedAnnotationClass = GeneratedAnnotationResolver.resolve(options.get(QUERYDSL_GENERATED_ANNOTATION_CLASS));
+        module.bind(CodegenModule.GENERATED_ANNOTATION_CLASS, generatedAnnotationClass);
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors,
                 mapAccessors, createDefaultVariable, "");

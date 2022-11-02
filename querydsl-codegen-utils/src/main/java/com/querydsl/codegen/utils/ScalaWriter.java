@@ -441,6 +441,16 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     @Override
+    public ScalaWriter imports(String... classNames) throws IOException {
+        for (String className : classNames) {
+            classes.add(className);
+            line(IMPORT, className);
+        }
+        nl();
+        return this;
+    }
+
+    @Override
     public ScalaWriter imports(Package... imports) throws IOException {
         for (Package p : imports) {
             packages.add(p.getName());

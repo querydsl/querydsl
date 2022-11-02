@@ -68,7 +68,7 @@ class ProjectionSerializerTest {
         val typeModel: Type = SimpleType(TypeCategory.ENTITY, "com.querydsl.DomainClass", "com.querydsl", "DomainClass", false, false)
         val type = EntityType(typeModel)
         val writer: Writer = StringWriter()
-        val serializer: ProjectionSerializer = KotlinProjectionSerializer(KotlinTypeMappings(), Generated::class.java)
+        val serializer: ProjectionSerializer = KotlinProjectionSerializer(KotlinTypeMappings(), GeneratedAnnotationResolver.qeryDSLGenerated())
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSource = writer.toString()
         Assert.assertThat(generatedSource, Matchers.containsString("import com.querydsl.core.annotations.Generated"))

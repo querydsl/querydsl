@@ -323,6 +323,16 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
     }
 
     @Override
+    public JavaWriter imports(String... classNames) throws IOException {
+        for (String className : classNames) {
+            classes.add(className);
+            line(IMPORT, className, Symbols.SEMICOLON);
+        }
+        nl();
+        return this;
+    }
+
+    @Override
     public JavaWriter imports(Package... imports) throws IOException {
         for (Package p : imports) {
             packages.add(p.getName());

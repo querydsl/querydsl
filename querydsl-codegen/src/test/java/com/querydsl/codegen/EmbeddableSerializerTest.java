@@ -196,7 +196,7 @@ public class EmbeddableSerializerTest {
         EntityType entityType = new EntityType(type);
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
 
-        new DefaultEmbeddableSerializer(typeMappings, Collections.<String>emptySet(), com.querydsl.core.annotations.Generated.class).serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new DefaultEmbeddableSerializer(typeMappings, Collections.<String>emptySet(), GeneratedAnnotationResolver.qeryDSLGenerated()).serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSourceCode = writer.toString();
         assertThat(generatedSourceCode, containsString("@Generated(\"com.querydsl.codegen.DefaultEmbeddableSerializer\")\npublic class"));
         CompileUtils.assertCompiles("QEntity", generatedSourceCode);

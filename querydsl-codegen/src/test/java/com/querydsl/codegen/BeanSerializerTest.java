@@ -196,7 +196,7 @@ public class BeanSerializerTest {
 
     @Test
     public void customGeneratedAnnotation() throws IOException {
-        Serializer serializer = new BeanSerializer(BeanSerializer.DEFAULT_JAVADOC_SUFFIX, Generated.class);
+        Serializer serializer = new BeanSerializer(BeanSerializer.DEFAULT_JAVADOC_SUFFIX, GeneratedAnnotationResolver.forSingleValuedAnnotation(Generated.class));
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSource = String.valueOf(writer);
         assertThat(generatedSource, containsString("import com.querydsl.core.annotations.Generated;"));

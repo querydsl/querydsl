@@ -72,7 +72,7 @@ public class ProjectionSerializerTest {
         EntityType type = new EntityType(typeModel);
 
         Writer writer = new StringWriter();
-        ProjectionSerializer serializer = new DefaultProjectionSerializer(new JavaTypeMappings(), Generated.class);
+        ProjectionSerializer serializer = new DefaultProjectionSerializer(new JavaTypeMappings(), GeneratedAnnotationResolver.forSingleValuedAnnotation(Generated.class));
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String generatedSource = writer.toString();
         assertThat(generatedSource, containsString("import com.querydsl.core.annotations.Generated"));

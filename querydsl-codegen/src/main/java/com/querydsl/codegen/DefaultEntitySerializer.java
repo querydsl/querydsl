@@ -36,6 +36,14 @@ import com.querydsl.core.types.dsl.*;
  */
 public class DefaultEntitySerializer implements EntitySerializer {
 
+    private static final class ClassList extends ArrayList<String> {
+        private static final long serialVersionUID = 7568919895862572764L;
+
+        public void add(Class<?> clazz) {
+            add(clazz.getName());
+        }
+    }
+
     private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class));
 
     private static final Parameter PATH_INITS = new Parameter("inits", new ClassType(PathInits.class));
@@ -46,7 +54,7 @@ public class DefaultEntitySerializer implements EntitySerializer {
 
     protected final Collection<String> keywords;
 
-    protected final Class<? extends Annotation> generatedAnnotationClass;
+    protected final GeneratedAnnotationClass generatedAnnotationClass;
 
     /**
      * Create a new {@code EntitySerializer} instance
@@ -60,7 +68,7 @@ public class DefaultEntitySerializer implements EntitySerializer {
     public DefaultEntitySerializer(
             TypeMappings mappings,
             @Named(CodegenModule.KEYWORDS) Collection<String> keywords,
-            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) Class<? extends Annotation> generatedAnnotationClass) {
+            @Named(CodegenModule.GENERATED_ANNOTATION_CLASS) GeneratedAnnotationClass generatedAnnotationClass) {
         this.typeMappings = mappings;
         this.keywords = keywords;
         this.generatedAnnotationClass = generatedAnnotationClass;
@@ -322,7 +330,7 @@ public class DefaultEntitySerializer implements EntitySerializer {
             writer.annotation(annotation);
         }
 
-        writer.line("@", generatedAnnotationClass.getSimpleName(), "(\"", getClass().getName(), "\")");
+        writer.line("@", generatedAnnotationClass.buildAnnotation(GeneratedAnnotationClass.Context.of(getClass().getName())));
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));
@@ -432,9 +440,9 @@ public class DefaultEntitySerializer implements EntitySerializer {
         writer.imports(SimpleExpression.class.getPackage());
 
         // other classes
-        List<Class<?>> classes = new ArrayList<>();
+        ClassList classes = new ClassList();
         classes.add(PathMetadata.class);
-        classes.add(generatedAnnotationClass);
+        classes.add(generatedAnnotationClass.getName());
 
         if (!getUsedClassNames(model).contains("Path")) {
             classes.add(Path.class);
@@ -459,7 +467,7 @@ public class DefaultEntitySerializer implements EntitySerializer {
         if (inits) {
             classes.add(PathInits.class);
         }
-        writer.imports(classes.toArray(new Class<?>[0]));
+        writer.imports(classes.toArray(new String[0]));
     }
 
     private Set<String> getUsedClassNames(EntityType model) {

@@ -195,7 +195,7 @@ class EntitySerializerTest {
     fun customGeneratedAnnotation() {
         val entityType = EntityType(ClassType(Entity::class.java))
         typeMappings.register(entityType, queryTypeFactory.create(entityType))
-        KotlinEntitySerializer(typeMappings, emptySet(), Generated::class.java).serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
+        KotlinEntitySerializer(typeMappings, emptySet(), GeneratedAnnotationResolver.qeryDSLGenerated()).serialize(entityType, SimpleSerializerConfig.DEFAULT, JavaWriter(writer))
         val generatedSourceCode = writer.toString()
         Assert.assertTrue(generatedSourceCode.contains("import " + Generated::class.java.name))
         Assert.assertTrue(generatedSourceCode.contains("@${Generated::class.java.simpleName}(\"com.querydsl.kotlin.codegen.KotlinEntitySerializer\")\npublic class"))
