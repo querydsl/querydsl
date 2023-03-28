@@ -47,7 +47,13 @@ public final class GeneratedAnnotationResolver {
 
     @SuppressWarnings("unchecked")
     private static Class<? extends Annotation> resolveJavaDefault() {
-        try {
+		    try {
+		        return (Class<? extends Annotation>) Class.forName("jakarta.annotation.Generated");
+		    } catch (Exception e) {
+		        // Try next one
+		    }
+		    
+    		try {
             return (Class<? extends Annotation>) Class.forName("javax.annotation.processing.Generated");
         } catch (Exception e) {
             // Try next one
@@ -55,12 +61,6 @@ public final class GeneratedAnnotationResolver {
 
         try {
             return (Class<? extends Annotation>) Class.forName("javax.annotation.Generated");
-        } catch (Exception e) {
-            // Try next one
-        }
-
-        try {
-            return (Class<? extends Annotation>) Class.forName("jakarta.annotation.Generated");
         } catch (Exception e) {
             // Try next one
         }
