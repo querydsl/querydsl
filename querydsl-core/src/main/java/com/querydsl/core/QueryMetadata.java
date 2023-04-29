@@ -85,6 +85,20 @@ public interface QueryMetadata extends Serializable {
     void addWhere(Predicate o);
 
     /**
+     * Clear the group by expressions
+     */
+    default void clearGroupBy() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Clear the having expressions
+     */
+    default void clearHaving() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Clear the order expressions
      */
     void clearOrderBy();
