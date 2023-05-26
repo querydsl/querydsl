@@ -115,41 +115,28 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
      */
     @SuppressWarnings("unchecked")
     protected List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins, boolean alias) {
-        if (joins.size() == 1) {
-            JoinExpression join = joins.get(0);
-            if (join.getTarget() instanceof RelationalPath) {
-                return ((RelationalPath) join.getTarget()).getColumns();
-            } else {
-                return Collections.emptyList();
-            }
+        List<Expression<?>> rv = new ArrayList<>();
+		int counter = 0;
 
-        } else {
-            List<Expression<?>> rv = new ArrayList<>();
-            int counter = 0;
-            for (JoinExpression join : joins) {
-                if (join.getTarget() instanceof RelationalPath) {
-                    RelationalPath path = (RelationalPath) join.getTarget();
-                    List<Expression<?>> columns;
-                    if (path.getPrimaryKey() != null) {
-                        columns = path.getPrimaryKey().getLocalColumns();
-                    } else {
-                        columns = path.getColumns();
-                    }
-                    if (alias) {
-                        for (Expression<?> column : columns) {
-                            rv.add(ExpressionUtils.as(column, "col" + (++counter)));
-                        }
-                    } else {
-                        rv.addAll(columns);
-                    }
+		for (JoinExpression join : joins) {
+			if (!(join.getTarget() instanceof RelationalPath)) {
+				return Collections.emptyList();
+			}
 
-                } else {
-                    // not able to provide a distinct list of columns
-                    return Collections.emptyList();
-                }
-            }
-            return rv;
-        }
+			RelationalPath<?> path = (RelationalPath<?>)join.getTarget();
+			List<Expression<?>> columns =
+				(path.getPrimaryKey() != null) ? path.getPrimaryKey().getLocalColumns() : path.getColumns();
+
+			if (alias) {
+				for (Expression<?> column : columns) {
+					rv.add(ExpressionUtils.as(column, "col" + (++counter)));
+				}
+			} else {
+				rv.addAll(columns);
+			}
+		}
+
+		return rv;
 
     }
 
@@ -162,22 +149,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public final SQLSerializer handleSelect(final String sep, final List<? extends Expression<?>> expressions) {
-        if (inSubquery) {
-            Set<String> names = new HashSet<>();
-            List<Expression<?>> replacements = new ArrayList<>();
-            for (Expression<?> expr : expressions) {
-                if (expr instanceof Path) {
-                    String name = ColumnMetadata.getName((Path<?>) expr);
-                    if (!names.add(name.toLowerCase())) {
-                        expr = ExpressionUtils.as(expr, "col__" + name + replacements.size());
-                    }
-                }
-                replacements.add(expr);
-            }
-            return handle(sep, replacements);
-        } else {
-            return handle(sep, expressions);
-        }
+        if (!inSubquery) {
+			return handle(sep, expressions);
+		}
+
+		Set<String> names = new HashSet<>();
+		List<Expression<?>> replacements = new ArrayList<>();
+		for (Expression<?> expr : expressions) {
+			if (expr instanceof Path) {
+				String name = ColumnMetadata.getName((Path<?>)expr);
+				if (!names.add(name.toLowerCase())) {
+					expr = ExpressionUtils.as(expr, "col__" + name + replacements.size());
+				}
+			}
+			replacements.add(expr);
+		}
+		return handle(sep, replacements);
     }
 
     protected void handleJoinTarget(JoinExpression je) {
