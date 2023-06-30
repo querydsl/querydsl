@@ -462,6 +462,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         handle(entity);
         dmlWithSchema = originalDmlWithSchema;
 
+        serialize(Position.BEFORE_FILTERS, metadata.getFlags());
         if (metadata.getWhere() != null) {
             serializeForWhere(metadata);
         }
@@ -569,6 +570,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = originalDmlWithSchema;
+        serialize(Position.AFTER_PROJECTION, metadata.getFlags());
         // columns
         if (!columns.isEmpty()) {
             append(" (");
@@ -577,6 +579,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             skipParent = false;
             append(")");
         }
+
+        serialize(Position.BEFORE_FILTERS, metadata.getFlags());
 
         if (subQuery != null) {
             append("\n");
@@ -624,6 +628,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         dmlWithSchema = true;
         handle(entity);
         dmlWithSchema = originalDmlWithSchema;
+        serialize(Position.AFTER_PROJECTION, metadata.getFlags());
         append("\n");
         append(templates.getSet());
         boolean first = true;
