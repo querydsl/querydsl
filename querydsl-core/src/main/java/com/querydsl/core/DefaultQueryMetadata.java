@@ -289,7 +289,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void reset() {
         params = new LinkedHashMap<>();
-        modifiers = QueryModifiers.EMPTY;
+        modifiers = null;
     }
 
     @Override
