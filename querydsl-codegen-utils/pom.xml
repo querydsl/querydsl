@@ -3,14 +3,14 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>codegen-utils</artifactId>
-  <version>5.0.1-SNAPSHOT</version>
+  <version>5.0.1.HL-SNAPSHOT</version>
   <name>Querydsl - Codegen utils</name>
   <description>Code generation and compilation for Java</description>
 
   <parent>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>5.0.1-SNAPSHOT</version>
+    <version>5.0.1.HL-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   
