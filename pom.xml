@@ -805,6 +805,7 @@
         <module>querydsl-core</module>
         <module>querydsl-codegen</module>
         <module>querydsl-codegen-utils</module>
+        <module>querydsl-apt</module>
         <module>querydsl-spatial</module>
         <module>querydsl-sql</module>
         <module>querydsl-sql-spatial</module>
