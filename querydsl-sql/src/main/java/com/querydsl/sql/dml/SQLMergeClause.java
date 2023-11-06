@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.function.Supplier;
 
+import com.querydsl.core.types.dsl.SimpleExpression;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.util.CollectionUtils;
@@ -98,6 +99,11 @@ public class SQLMergeClause extends AbstractSQLClause<SQLMergeClause> implements
     public SQLMergeClause addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
+    }
+
+    public SQLMergeUsingClause using(SimpleExpression<?> dataQuery) {
+        clear();
+        return new SQLMergeUsingClause(connection(), configuration, entity, dataQuery);
     }
 
     protected List<? extends Path<?>> getKeys() {

@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.sql.dml.SQLMergeUsingCase;
 import org.jetbrains.annotations.Nullable;
 
 import com.querydsl.core.QueryMetadata;
@@ -109,6 +112,17 @@ public class SQLListeners implements SQLDetailedListener {
         }
         for (SQLListener listener : listeners) {
             listener.notifyMerges(entity, md, batches);
+        }
+    }
+
+    @Override
+    public void notifyMergeUsing(RelationalPath<?> entity, QueryMetadata md, SimpleExpression<?> usingExpression,
+            Predicate usingOn, List<SQLMergeUsingCase> whens) {
+        if (parent != null) {
+            parent.notifyMergeUsing(entity, md, usingExpression, usingOn, whens);
+        }
+        for (SQLListener listener : listeners) {
+            listener.notifyMergeUsing(entity, md, usingExpression, usingOn, whens);
         }
     }
 

@@ -27,7 +27,9 @@ import java.util.Set;
 import com.querydsl.core.*;
 import com.querydsl.core.QueryFlag.Position;
 import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.sql.dml.SQLInsertBatch;
+import com.querydsl.sql.dml.SQLMergeUsingCase;
 import com.querydsl.sql.types.Type;
 
 /**
@@ -920,6 +922,26 @@ public class SQLTemplates extends Templates {
             List<Path<?>> keys, List<Path<?>> columns, List<Expression<?>> values,
             SubQueryExpression<?> subQuery, SQLSerializer context) {
         context.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
+
+        if (!metadata.getFlags().isEmpty()) {
+            context.serialize(Position.END, metadata.getFlags());
+        }
+    }
+
+    /**
+     * template method for MERGE USING serialization
+     *
+     * @param metadata
+     * @param entity
+     * @param usingExpression
+     * @param usingOn
+     * @param whens
+     * @param context
+     */
+    public void serializeMergeUsing(QueryMetadata metadata, RelationalPath<?> entity, SimpleExpression<?> usingExpression,
+            Predicate usingOn, List<SQLMergeUsingCase> whens,
+            SQLSerializer context) {
+        context.serializeForMergeUsing(metadata, entity, usingExpression, usingOn, whens);
 
         if (!metadata.getFlags().isEmpty()) {
             context.serialize(Position.END, metadata.getFlags());

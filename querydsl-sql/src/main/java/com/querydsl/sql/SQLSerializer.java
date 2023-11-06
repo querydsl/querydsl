@@ -15,14 +15,14 @@ package com.querydsl.sql;
 
 import java.sql.Types;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import com.querydsl.core.*;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.sql.dml.SQLMergeUsingCase;
 import org.jetbrains.annotations.Nullable;
 
-import com.querydsl.core.JoinExpression;
-import com.querydsl.core.JoinFlag;
-import com.querydsl.core.QueryFlag;
 import com.querydsl.core.QueryFlag.Position;
-import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.Template.Element;
@@ -531,6 +531,87 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             // values
             append(templates.getValues());
             append("(").handle(COMMA, values).append(") ");
+        }
+    }
+
+    public void serializeMergeUsing(QueryMetadata metadata, RelationalPath<?> entity, SimpleExpression<?> usingExpression,
+            Predicate usingOn, List<SQLMergeUsingCase> whens) {
+        this.entity = entity;
+        templates.serializeMergeUsing(metadata, entity, usingExpression, usingOn, whens, this);
+    }
+
+    public void serializeForMergeUsing(QueryMetadata metadata, RelationalPath<?> entity, SimpleExpression<?> usingExpression,
+            Predicate usingOn, List<SQLMergeUsingCase> whens) {
+        serialize(Position.START, metadata.getFlags());
+
+        if (!serialize(Position.START_OVERRIDE, metadata.getFlags())) {
+            append(templates.getMergeInto());
+        }
+        serialize(Position.AFTER_SELECT, metadata.getFlags());
+
+        boolean originalDmlWithSchema = dmlWithSchema;
+        dmlWithSchema = true;
+        handle(entity);
+        dmlWithSchema = originalDmlWithSchema;
+        append("\nusing ");
+        handle(usingExpression);
+        append("\n");
+        append(templates.getOn());
+        handle(usingOn);
+
+        for (final SQLMergeUsingCase when : whens) {
+            append("\nwhen ");
+            if (!when.getMatched()) {
+                append("not ");
+            }
+            append("matched ");
+            for (final Predicate matchAnd : when.getMatchAnds()) {
+                append("and ");
+                handle(matchAnd);
+            }
+            append("\nthen ");
+            if (when.getMergeOperation() == SQLMergeUsingCase.MergeOperation.INSERT) {
+                ArrayList<Path<?>> columns = new ArrayList<>(when.getUpdates().keySet());
+                List<Expression<?>> values = columns.stream().map(when.getUpdates()::get).collect(Collectors.toList());
+                append("insert (");
+                skipParent = true;
+                handle(COMMA, columns);
+                skipParent = false;
+                append(")");
+                if (!useLiterals) {
+                    for (int i = 0; i < columns.size(); i++) {
+                        if (values.get(i) instanceof Constant<?>) {
+                            constantPaths.add(columns.get(i));
+                        }
+                    }
+                }
+                // values
+                append(templates.getValues());
+                append("(");
+                handle(COMMA, values);
+                append(")");
+            } else if (when.getMergeOperation() == SQLMergeUsingCase.MergeOperation.UPDATE) {
+                append(templates.getUpdate());
+                append("\n");
+                append(templates.getSet());
+                boolean first = true;
+                for (final Map.Entry<Path<?>,Expression<?>> update : when.getUpdates().entrySet()) {
+                    if (!first) {
+                        append(COMMA);
+                    }
+                    skipParent = true;
+                    handle(update.getKey());
+                    skipParent = false;
+                    append(" = ");
+                    if (!useLiterals && update.getValue() instanceof Constant<?>) {
+                        constantPaths.add(update.getKey());
+                    }
+                    handle(update.getValue());
+                    first = false;
+                }
+            } else if (when.getMergeOperation() == SQLMergeUsingCase.MergeOperation.DELETE) {
+                append(templates.getDelete());
+            }
         }
     }
 

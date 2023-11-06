@@ -6,6 +6,9 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 import java.util.Map;
 
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.sql.dml.SQLMergeUsingCase;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
@@ -168,6 +171,10 @@ public class SQLListenersTest {
 
         @Override
         public void notifyMerges(RelationalPath<?> entity, QueryMetadata md, List<SQLMergeBatch> batches) {
+        }
+
+        @Override
+        public void notifyMergeUsing(RelationalPath<?> entity, QueryMetadata md, SimpleExpression<?> usingExpression, Predicate usingOn, List<SQLMergeUsingCase> whens) {
         }
 
         @Override
