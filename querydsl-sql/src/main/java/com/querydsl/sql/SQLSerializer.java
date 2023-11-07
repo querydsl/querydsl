@@ -613,6 +613,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 append(templates.getDelete());
             }
         }
+        append(";");
     }
 
     public void serializeInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
