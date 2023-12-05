@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>kotlinpoet</artifactId>
-            <version>1.12.0</version>
+            <version>1.15.3</version>
         </dependency>
         <dependency>
             <groupId>com.querydsl</groupId>
