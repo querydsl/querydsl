@@ -55,10 +55,10 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
     private static final QueryFlag rowCountFlag = new QueryFlag(QueryFlag.Position.AFTER_PROJECTION, ", count(*) over() ");
 
     @Nullable
-    private Supplier<Connection> connProvider;
+    protected Supplier<Connection> connProvider;
 
     @Nullable
-    private Connection conn;
+    protected Connection conn;
 
     protected SQLListeners listeners;
 
@@ -633,7 +633,7 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         }
     }
 
-    private Connection connection() {
+    protected Connection connection() {
         if (conn == null) {
             if (connProvider != null) {
                 conn = connProvider.get();
@@ -661,11 +661,17 @@ public abstract class AbstractSQLQuery<T, Q extends AbstractSQLQuery<T, Q>> exte
         super.clone(query);
         this.useLiterals = query.useLiterals;
         this.listeners = new SQLListeners(query.listeners);
+        if (conn == null) {
+            connProvider = query.connProvider;
+            if (connProvider == null) {
+                conn = query.conn;
+            }
+        }
     }
 
     @Override
     public Q clone() {
-        return this.clone(this.conn);
+        return this.clone((Connection) null);
     }
 
     public abstract Q clone(Connection connection);

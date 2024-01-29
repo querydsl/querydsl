@@ -66,9 +66,7 @@ public abstract class AbstractBaseTest {
 
         public TestQuery<T> clone(Connection conn) {
             TestQuery<T> q = new TestQuery<T>(conn, getConfiguration(), getMetadata().clone());
-            q.union = union;
-            q.unionAll = unionAll;
-            q.firstUnionSubQuery = firstUnionSubQuery;
+            q.clone(this);
             return q;
         }
 
