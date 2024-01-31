@@ -15,7 +15,7 @@
   <description>core module for querydsl</description>
   <url>${project.homepage}</url>
   <packaging>jar</packaging>
-  
+
   <scm>
     <connection>${project.checkout}</connection>
     <developerConnection>${project.checkout}</developerConnection>
@@ -41,9 +41,9 @@
     
     <!-- alias dependencies -->
     <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib</artifactId>
-      <version>${cglib.version}</version>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>${bytebuddy.version}</version>
       <optional>true</optional>
     </dependency>
     

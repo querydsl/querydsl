@@ -17,7 +17,7 @@
       <unpack>true</unpack>
       <scope>compile</scope>
       <excludes>
-        <exclude>cglib:cglib</exclude>
+        <exclude>net.bytebuddy:byte-buddy</exclude>
         <exclude>com.querydsl:querydsl-sql</exclude>
         <exclude>com.querydsl:querydsl-jdo</exclude>
       </excludes>

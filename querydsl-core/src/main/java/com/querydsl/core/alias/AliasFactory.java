@@ -17,19 +17,25 @@ import com.querydsl.core.QueryException;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadataFactory;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.matcher.ElementMatchers;
 
 /**
  * {@code AliasFactory} is a factory class for alias creation
  *
  * @author tiwe
+ * @author persapiens
  */
 class AliasFactory {
 
@@ -99,18 +105,34 @@ class AliasFactory {
      */
     @SuppressWarnings("unchecked")
     protected <A> A createProxy(Class<A> cl, Expression<?> path) {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setClassLoader(AliasFactory.class.getClassLoader());
-        if (cl.isInterface()) {
-            enhancer.setInterfaces(new Class<?>[] {cl, ManagedObject.class});
-        } else {
-            enhancer.setSuperclass(cl);
-            enhancer.setInterfaces(new Class<?>[] {ManagedObject.class});
-        }
-        // creates one handler per proxy
-        MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this, pathFactory, typeSystem);
-        enhancer.setCallback(handler);
-        return (A) enhancer.create();
+        Class<? extends A> loaded = new ByteBuddy()
+                .subclass(cl)
+                .implement(ManagedObject.class)
+                .method(ElementMatchers.any())
+                .intercept(MethodDelegation.to(new PropertyAccessInvocationHandler(path, this, pathFactory, typeSystem)))
+                .make()
+                .load(getClass().getClassLoader())
+                .getLoaded();
+            Constructor<?> constructor = null;
+            // search constructor, prefer default one
+            for (Constructor<?> declaredConstructor : loaded.getDeclaredConstructors()) {
+                if (declaredConstructor.getParameterCount() == 0) {
+                    constructor = declaredConstructor;
+                    break;
+                } else {
+                    constructor = declaredConstructor;
+                }
+            }
+            A result = null;
+            if (constructor != null) {
+                Object[] initargs = new Object[constructor.getParameterCount()];
+                try {
+                    result = (A) constructor.newInstance(initargs);
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    Logger.getLogger(AliasFactory.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            return result;
     }
 
     /**
