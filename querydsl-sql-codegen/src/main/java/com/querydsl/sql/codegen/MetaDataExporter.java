@@ -305,9 +305,9 @@ public class MetaDataExporter {
         String typeName = columns.getString("TYPE_NAME");
         Number columnSize = (Number) columns.getObject("COLUMN_SIZE");
         Number columnDigits = (Number) columns.getObject("DECIMAL_DIGITS");
+        String columnDefaultValue = columns.getString("COLUMN_DEF");
         int columnIndex = columns.getInt("ORDINAL_POSITION");
         int nullable = columns.getInt("NULLABLE");
-        String columnDefaultValue = columns.getString("COLUMN_DEF");
 
         String propertyName = namingStrategy.getPropertyName(normalizedColumnName, classModel);
         Class<?> clazz = configuration.getJavaType(columnType,
