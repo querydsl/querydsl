@@ -52,7 +52,7 @@ public class UtilUUIDType extends AbstractType<UUID> {
             String str = rs.getString(startIndex);
             return str != null ? UUID.fromString(str) : null;
         } else {
-            return (UUID) rs.getObject(startIndex);
+            return rs.getObject(startIndex, UUID.class);
         }
     }
 
