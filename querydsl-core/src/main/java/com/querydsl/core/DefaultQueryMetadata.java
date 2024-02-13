@@ -197,6 +197,16 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
+    public void clearGroupBy() {
+        groupBy.clear();
+    }
+
+    @Override
+    public void clearHaving() {
+        having = new BooleanBuilder();
+    }
+
+    @Override
     public void clearOrderBy() {
         orderBy.clear();
     }
