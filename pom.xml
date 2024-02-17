@@ -72,6 +72,7 @@
     <hamcrest.veresion>2.2</hamcrest.veresion>
     <kotlin.version>1.7.20</kotlin.version>
     <dokka.version>1.7.20</dokka.version>
+    <spring-data-elasticsearch.version>5.2.2</spring-data-elasticsearch.version>
 
     <!-- Import-Package definitions for maven-bundle-plugin -->
     <osgi.import.package.root>

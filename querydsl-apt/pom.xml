@@ -78,6 +78,18 @@
       <version>${morphia.version}</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-elasticsearch</artifactId>
+      <version>${spring-data-elasticsearch.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.parsson</groupId>
+          <artifactId>parsson</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     
     <!-- test -->
     <dependency>
