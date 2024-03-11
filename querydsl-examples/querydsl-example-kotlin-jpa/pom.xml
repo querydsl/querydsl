@@ -11,10 +11,6 @@
     <artifactId>querydsl-example-kotlin</artifactId>
     <name>Querydsl example - Kotlin JPA</name>
 
-    <properties>
-        <kotlin.version>1.7.20</kotlin.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>jakarta.persistence</groupId>
