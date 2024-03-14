@@ -48,7 +48,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.24</version>
+      <version>1.18.30</version>
       <scope>provided</scope>
     </dependency>
 
@@ -68,10 +68,9 @@
       <artifactId>h2</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.jolbox</groupId>
-      <artifactId>bonecp</artifactId>
-      <version>0.8.0-beta1</version>
-      <classifier>jdk7</classifier>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>5.1.0</version>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>
@@ -133,7 +132,7 @@
         </executions>
         <configuration>
           <jdbcDriver>org.h2.Driver</jdbcDriver>
-          <jdbcUrl>jdbc:h2:mem:;INIT=runscript from 'file:${project.baseUri}/src/main/sql/001_schema.sql'</jdbcUrl>
+          <jdbcUrl>jdbc:h2:mem:;INIT=runscript from 'file:${project.baseUri}/src/main/resources/sql/001_schema.sql'</jdbcUrl>
           <jdbcUser>sa</jdbcUser>
           <customTypes>
             <customType>com.querydsl.sql.types.DateTimeType</customType>
@@ -189,6 +188,19 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>java-8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.zaxxer</groupId>
+          <artifactId>HikariCP</artifactId>
+          <version>4.0.3</version>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 

@@ -21,7 +21,7 @@ public abstract class AbstractDaoTest {
 
     @Before
     public void setUp() {
+        testDataService.cleanTestData();
         testDataService.addTestData();
     }
-
 }

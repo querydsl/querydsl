@@ -4,14 +4,19 @@ import com.querydsl.example.dao.*;
 import com.querydsl.example.dto.*;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
 @Transactional
 public class TestDataServiceImpl implements TestDataService {
+
+    @Autowired DataSource dataSource;
 
     @Autowired CustomerDao customerDao;
     @Autowired OrderDao orderDao;
@@ -116,6 +121,16 @@ public class TestDataServiceImpl implements TestDataService {
         order.setOrderProducts(Collections.singleton(orderProduct));
         order.setTotalOrderPrice(13124.00);
         orderDao.save(order);
+    }
+
+    @Override
+    public void cleanTestData() {
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScripts(
+                new ClassPathResource("sql/drop_all.sql"),
+                new ClassPathResource("sql/001_schema.sql")
+        );
+        populator.execute(dataSource);
     }
 
 }

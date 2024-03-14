@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         target: [test]
-        java: [1.8, 11, 17]
+        java: [1.8, 11, 17, 21]
         include:
           - target: test
             containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
@@ -63,7 +63,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Run tests
-        run: mvn --batch-mode install -am jacoco:report --activate-profiles all,travis,examples
+        run: mvn --batch-mode install -am jacoco:report --activate-profiles all,travis,examples -Duser.timezone=UTC
 
       - name: Upload test reports
         uses: actions/upload-artifact@v2
