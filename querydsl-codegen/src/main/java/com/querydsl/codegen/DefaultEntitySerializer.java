@@ -354,7 +354,7 @@ public class DefaultEntitySerializer implements EntitySerializer {
         for (Constructor c : model.getConstructors()) {
             // begin
             if (!localName.equals(genericName)) {
-                writer.suppressWarnings(UNCHECKED);
+                writer.suppressWarnings(UNCHECKED, "this-escape");
             }
             Type returnType = new ClassType(ConstructorExpression.class, model);
             final boolean asExpr = sizes.add(c.getParameters().size());
