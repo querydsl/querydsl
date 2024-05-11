@@ -4,4 +4,6 @@ public interface TestDataService {
 
     void addTestData();
 
+    void cleanTestData();
+
 }

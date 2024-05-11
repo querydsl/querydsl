@@ -11,11 +11,6 @@
     <artifactId>querydsl-example-kotlin-mongodb</artifactId>
     <name>Querydsl example - Kotlin MongoDB</name>
 
-    <properties>
-        <kotlin.version>1.7.20</kotlin.version>
-    </properties>
-
-
     <dependencyManagement>
         <dependencies>
             <dependency>
