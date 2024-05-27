@@ -1,7 +1,7 @@
 ; The Oracle JDBC driver is not available in any public Maven repository.
 ; You can however download it and install it in your local Maven repository manually:
 ;
-; mvn install:install-file -Durl=file:repo -Dfile=ojdbc6.jar -DgroupId=com.oracle \
+; ./mvnw install:install-file -Durl=file:repo -Dfile=ojdbc6.jar -DgroupId=com.oracle \
 ;     -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
 ;
 

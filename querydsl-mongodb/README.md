@@ -45,9 +45,9 @@ And now, configure the Maven APT plugin which generates the query types used by 
 
 The MorphiaAnnotationProcessor finds domain types annotated with the com.google.code.morphia.annotations.Entity annotation and generates Querydsl query types for them.
 
-Run `mvn clean install` and you will get your Query types generated into target/generated-sources/java.
+Run `./mvnw clean install` and you will get your Query types generated into target/generated-sources/java.
 
-If you use Eclipse, run `mvn eclipse:eclipse` to update your Eclipse project to include target/generated-sources/java as a source folder.
+If you use Eclipse, run `./mvnw eclipse:eclipse` to update your Eclipse project to include target/generated-sources/java as a source folder.
 
 Now you are able to construct Mongodb queries and instances of the query domain model. 
 
