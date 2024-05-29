@@ -42,7 +42,7 @@ import com.querydsl.core.types.*;
  */
 public final class CaseForEqBuilder<D> {
 
-    private static class CaseElement<D> {
+    private static final class CaseElement<D> {
 
         @Nullable
         private final Expression<? extends D> eq;

@@ -40,7 +40,7 @@ import com.querydsl.core.types.*;
  */
 public final class CaseBuilder {
 
-    private static class CaseElement<A> {
+    private static final class CaseElement<A> {
 
         @Nullable
         private final Predicate condition;

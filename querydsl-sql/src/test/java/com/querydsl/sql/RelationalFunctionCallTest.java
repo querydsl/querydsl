@@ -35,7 +35,7 @@ public class RelationalFunctionCallTest {
         return rv;
     }
 
-    private static class TokenizeFunction extends RelationalFunctionCall<String> {
+    private static final class TokenizeFunction extends RelationalFunctionCall<String> {
         final PathBuilder<String> alias;
         final StringPath token;
 

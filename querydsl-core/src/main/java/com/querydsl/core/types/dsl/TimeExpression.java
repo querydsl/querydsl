@@ -34,7 +34,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
 
     private static final long serialVersionUID = 7360552308332457990L;
 
-    private static class Constants {
+    private static final class Constants {
         private static final TimeExpression<Time> CURRENT_TIME = currentTime(Time.class);
     }
 

@@ -24,7 +24,7 @@ import java.util.List;
  */
 public abstract class FactoryExpressionBase<T> extends ExpressionBase<T> implements FactoryExpression<T> {
 
-    private static class FactoryExpressionWrapper<T> extends ExpressionBase<T> implements FactoryExpression<T> {
+    private static final class FactoryExpressionWrapper<T> extends ExpressionBase<T> implements FactoryExpression<T> {
         private final FactoryExpression<T> expr;
 
         FactoryExpressionWrapper(FactoryExpression<T> expr) {

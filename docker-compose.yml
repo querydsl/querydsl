@@ -16,7 +16,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./db/mysql.sh:/docker-entrypoint-initdb.d/mysql.sh
+      - ./db/mysql.sql:/docker-entrypoint-initdb.d/mysql.sql
     environment:
       - MYSQL_ROOT_PASSWORD=querydsl
       - MYSQL_USER=querydsl

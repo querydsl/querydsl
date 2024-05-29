@@ -214,7 +214,7 @@ public final class ConstructorUtils {
 
     }
 
-    private static class PrimitiveTransformer extends ArgumentTransformer {
+    private static final class PrimitiveTransformer extends ArgumentTransformer {
 
         private final Set<Integer> primitiveLocations;
 
@@ -253,7 +253,7 @@ public final class ConstructorUtils {
 
     }
 
-    private static class PrimitiveAwareVarArgsTransformer extends VarArgsTransformer {
+    private static final class PrimitiveAwareVarArgsTransformer extends VarArgsTransformer {
 
         private final Object defaultInstance;
 
