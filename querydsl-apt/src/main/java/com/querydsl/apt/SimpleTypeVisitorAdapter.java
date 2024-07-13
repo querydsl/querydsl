@@ -14,6 +14,7 @@
 package com.querydsl.apt;
 
 import javax.lang.model.type.IntersectionType;
+import javax.lang.model.type.UnionType;
 import javax.lang.model.util.SimpleTypeVisitor8;
 
 /**
@@ -27,5 +28,10 @@ class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor8<R, P> {
     @Override
     public R visitIntersection(IntersectionType t, P p) {
         return t.getBounds().get(0).accept(this, p);
+    }
+
+    @Override
+    public R visitUnion(UnionType t, P p) {
+        return visitUnknown(t, p);
     }
 }
