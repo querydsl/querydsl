@@ -41,6 +41,7 @@ fun Type.asClassName(): ClassName = when (this.fullName) {
     "java.lang.Long", "long" -> Long::class.asClassName()
     "java.lang.Float", "float" -> Float::class.asClassName()
     "java.lang.Double", "double" -> Double::class.asClassName()
+    "java.lang.Object" -> Any::class.asClassName()
     "boolean[]" -> BooleanArray::class.asClassName()
     "byte[]" -> ByteArray::class.asClassName()
     "char[]" -> CharArray::class.asClassName()
