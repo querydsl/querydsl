@@ -13,6 +13,8 @@
  */
 package com.querydsl.core.types;
 
+import com.querydsl.core.types.dsl.EntityPathBase;
+
 import java.util.List;
 import java.util.Map;
 
@@ -275,6 +277,10 @@ public final class Projections {
      */
     public static QTuple tuple(Expression<?>[]... exprs) {
         return new QTuple(exprs);
+    }
+
+    public static <T> SimpleDTOProjection<T> simpleDTO(Class<? extends T> type, EntityPathBase<?> entity) {
+        return new SimpleDTOProjection<>(type, entity);
     }
 
     private Projections() { }
