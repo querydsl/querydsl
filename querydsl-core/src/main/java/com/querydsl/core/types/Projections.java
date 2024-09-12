@@ -279,7 +279,7 @@ public final class Projections {
         return new QTuple(exprs);
     }
 
-    public static <T> SimpleDTOProjection<T> simpleDTO(Class<? extends T> type, EntityPathBase<?> entity) {
+    public static <T> SimpleDTOProjection<T> fields(Class<? extends T> type, EntityPathBase<?> entity) {
         return new SimpleDTOProjection<>(type, entity);
     }
 
