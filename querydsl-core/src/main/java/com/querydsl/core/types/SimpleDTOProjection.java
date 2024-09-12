@@ -63,4 +63,7 @@ public class SimpleDTOProjection<T> extends FactoryExpressionBase<T> {
     public <R, C> R accept(Visitor<R, C> v, C context) {
         return null;
     }
+    public static <T> SimpleDTOProjection<T> fields(Class<? extends T> type, EntityPathBase<?> entity) {
+        return new SimpleDTOProjection<>(type, entity);
+    }
 }
