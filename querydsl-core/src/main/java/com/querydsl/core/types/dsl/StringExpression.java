@@ -15,6 +15,8 @@ package com.querydsl.core.types.dsl;
 
 import org.jetbrains.annotations.Nullable;
 
+import jakarta.validation.constraints.NotNull;
+
 import com.querydsl.core.types.*;
 
 /**
@@ -149,8 +151,9 @@ public abstract class StringExpression extends LiteralExpression<String> {
      * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
-    public BooleanExpression contains(String str) {
-        return contains(ConstantImpl.create(str));
+    public BooleanExpression contains(@NotNull String str) {
+        // It can return null or throw an exception.
+        str == null ? null : contains(ConstantImpl.create(str));
     }
 
     /**
