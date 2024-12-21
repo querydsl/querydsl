@@ -1,5 +1,5 @@
 /*
- * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
+ * Copyright 2024, The Querydsl Team (http://www.querydsl.com/team)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,20 +40,17 @@ public final class JPAUtil {
         for (int i = 0; i < constants.size(); i++) {
             Object val = constants.get(i);
 
-            if (val instanceof Param) {
-                Param<?> param = (Param<?>) val;
+            if (val instanceof Param<?> param) {
                 val = params.get(val);
                 if (val == null) {
                     throw new ParamNotSetException(param);
                 }
-            }
-
-            if (hasParameters) {
+            } else if (hasParameters) {
                 Parameter parameter = query.getParameter(i + 1);
                 Class parameterType = parameter != null ? parameter.getParameterType() : null;
                 if (parameterType != null && !parameterType.isInstance(val)) {
-                    if (val instanceof Number && Number.class.isAssignableFrom(parameterType)) {
-                        val = MathUtils.cast((Number) val, parameterType);
+                    if (val instanceof Number number && Number.class.isAssignableFrom(parameterType)) {
+                        val = MathUtils.cast(number, parameterType);
                     }
                 }
             }
