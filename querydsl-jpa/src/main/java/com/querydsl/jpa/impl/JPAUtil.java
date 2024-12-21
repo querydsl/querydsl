@@ -40,7 +40,7 @@ public final class JPAUtil {
         for (int i = 0; i < constants.size(); i++) {
             Object val = constants.get(i);
 
-            if (val instanceof Param<?> param) {
+            if (val instanceof Param) {
                 Param<?> param = (Param<?>) val;
                 val = params.get(val);
                 if (val == null) {
