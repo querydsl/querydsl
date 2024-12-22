@@ -48,11 +48,11 @@ public final class JPAUtil {
                 }
             }
 
-            if (hasParameters) {
+            if (hasParameters && val instanceof Number) {
                 Parameter parameter = query.getParameter(i + 1);
                 Class parameterType = parameter != null ? parameter.getParameterType() : null;
                 if (parameterType != null && !parameterType.isInstance(val)) {
-                    if (val instanceof Number && Number.class.isAssignableFrom(parameterType)) {
+                    if (Number.class.isAssignableFrom(parameterType)) {
                         val = MathUtils.cast((Number) val, parameterType);
                     }
                 }
