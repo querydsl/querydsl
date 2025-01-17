@@ -28,6 +28,7 @@ import com.querydsl.core.annotations.QueryExclude;
 
 import org.jetbrains.annotations.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
@@ -159,7 +160,7 @@ public class ExtendedTypeFactory {
 
         @Override
         public Type visitTypeVariable(TypeVariable typeVariable, Boolean p) {
-            String varName = typeVariable.toString();
+            String varName = typeVariable.asElement().getSimpleName().toString();
             if (typeVariable.getUpperBound() != null) {
                 Type type = visit(typeVariable.getUpperBound(), p);
                 return new TypeExtends(varName, type);
@@ -202,11 +203,13 @@ public class ExtendedTypeFactory {
 
         private final List<String> defaultValue = Collections.singletonList("Object");
 
-        private List<String> visitBase(TypeMirror t) {
+        private List<String> visitBase(Element element) {
             List<String> rv = new ArrayList<String>();
-            String name = t.toString();
-            if (name.contains("<")) {
-                name = name.substring(0, name.indexOf('<'));
+            String name;
+            if (element instanceof TypeElement) {
+                name = ((TypeElement) element).getQualifiedName().toString();
+            } else {
+                name = element.getSimpleName().toString();
             }
             rv.add(name);
             return rv;
@@ -231,7 +234,7 @@ public class ExtendedTypeFactory {
 
         @Override
         public List<String> visitDeclared(DeclaredType t, Boolean p) {
-            List<String> rv = visitBase(t);
+            List<String> rv = visitBase(t.asElement());
             for (TypeMirror arg : t.getTypeArguments()) {
                 if (p) {
                     rv.addAll(visit(arg, false));
@@ -249,7 +252,7 @@ public class ExtendedTypeFactory {
 
         @Override
         public List<String> visitTypeVariable(TypeVariable t, Boolean p) {
-            List<String> rv = visitBase(t);
+            List<String> rv = visitBase(t.asElement());
             if (t.getUpperBound() != null) {
                 rv.addAll(visit(t.getUpperBound(), p));
             }
@@ -261,11 +264,14 @@ public class ExtendedTypeFactory {
 
         @Override
         public List<String> visitWildcard(WildcardType t, Boolean p) {
-            List<String> rv = visitBase(t);
+            List<String> rv = new ArrayList<>();
+            rv.add("?");
             if (t.getExtendsBound() != null) {
+                rv.add("extends");
                 rv.addAll(visit(t.getExtendsBound(), p));
             }
             if (t.getSuperBound() != null) {
+                rv.add("super");
                 rv.addAll(visit(t.getSuperBound(), p));
             }
             return rv;
