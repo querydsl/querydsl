@@ -27,7 +27,7 @@ public class TypeExtends extends TypeAdapter {
 
     public TypeExtends(String varName, Type type) {
         super(type);
-        this.varName = varName;
+        this.varName = varName.strip();
     }
 
     public TypeExtends(Type type) {
