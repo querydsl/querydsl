@@ -33,7 +33,7 @@
   <properties>
     <commons.collections.version>4.01</commons.collections.version>
     <commons.lang.version>3.0.1</commons.lang.version>
-    <ecj.version>3.26.0</ecj.version>
+    <ecj.version>3.40.0</ecj.version>
     <osgi.import.package>javax.annotation.*;version="0",javax.tools.*;version="0",org.eclipse.jdt.*;version="3.7.2"${osgi.import.package.root}</osgi.import.package>
   </properties>
   
