@@ -191,7 +191,7 @@ public final class Configuration {
      */
     @Nullable
     public <T> T get(ResultSet rs, @Nullable Path<?> path, int i, Class<T> clazz) throws SQLException {
-        return getType(path, clazz).getValue(rs, i);
+        return getType(path, clazz).getValue(rs, i, clazz);
     }
 
     /**
