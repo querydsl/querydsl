@@ -22,8 +22,8 @@
     <url>${project.githubpage}</url>
   </scm>
 
-  <properties>   
-    <dn.version>5.2.8</dn.version>
+  <properties>
+    <dn.version>5.2.9</dn.version>
     <dn.plugin.version>5.2.1</dn.plugin.version>
   </properties>
 

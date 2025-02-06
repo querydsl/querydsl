@@ -56,7 +56,7 @@ If you use Hibernate annotations in your domain types you should use the APT pro
 
 Run clean install and you will get your Query types generated into target/generated-sources/java.
 
-If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to include target/generated-sources/java as a source folder.
+If you use Eclipse, run ./mvnw eclipse:eclipse to update your Eclipse project to include target/generated-sources/java as a source folder.
 
 Now you are able to construct JPQL query instances and instances of the query domain model.     
 

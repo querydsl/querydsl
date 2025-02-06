@@ -54,7 +54,7 @@ The JDOAnnotationProcessor finds domain types annotated with the javax.jdo.annot
 
 Run clean install and you will get your Query types generated into target/generated-sources/java.
 
-If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to include target/generated-sources/java as a source folder.
+If you use Eclipse, run ./mvnw eclipse:eclipse to update your Eclipse project to include target/generated-sources/java as a source folder.
 
 Now you are able to construct JDOQL query instances and instances of the query domain model. 
 

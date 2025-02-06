@@ -34,7 +34,7 @@ import com.querydsl.core.types.Path;
  */
 public abstract class DateTimeExpression<T extends Comparable> extends TemporalExpression<T> {
 
-    private static class Constants {
+    private static final class Constants {
         private static final DateTimeExpression<Date> CURRENT_DATE = currentDate(Date.class);
         private static final DateTimeExpression<Date> CURRENT_TIMESTAMP = currentTimestamp(Date.class);
     }

@@ -94,7 +94,7 @@ public class ExtendedBeanSerializerTest {
         assertEquals(obj1.toString(), "DomainClass#1;##");
     }
 
-    private static class ReflectionHelper {
+    private static final class ReflectionHelper {
         private final Map<String, Method> methodByName = new HashMap<String, Method>();
 
         ReflectionHelper(Class<?> cls) {

@@ -1,4 +1,3 @@
-version: "2.4"
 services:
   # Provides an easy way to ensure slow-starting databases are ready when the tests run
   block-until-healthy:
@@ -12,18 +11,20 @@ services:
         condition: service_healthy
 
   mysql:
-    image: mysql:5.6.38
+    image: mysql:8
+    init: true
     ports:
       - "3306:3306"
     volumes:
-      - ./db/mysql.sh:/docker-entrypoint-initdb.d/mysql.sh
+      - ./db/mysql.sql:/docker-entrypoint-initdb.d/mysql.sql
     environment:
       - MYSQL_ROOT_PASSWORD=querydsl
       - MYSQL_USER=querydsl
       - MYSQL_PASSWORD=querydsl
 
   postgresql:
-    image: mdillon/postgis:9.3-alpine
+    image: postgis/postgis:16-3.4-alpine
+    init: true
     ports:
       - "5433:5432"
     volumes:
@@ -35,6 +36,7 @@ services:
 
   oracle:
     image: wnameless/oracle-xe-11g-r2:latest
+    init: true
     ports:
       - "1521:1521"
     volumes:
@@ -42,6 +44,7 @@ services:
 
   cubrid:
     image: lighthopper/cubrid:9.2.26.0004
+    init: true
     command: "./create-start-demodb.sh"
     ports:
       - "33000:33000"
@@ -56,12 +59,15 @@ services:
       start_period: 60s
 
   mongo:
-    image: mongo:3.6.1
+    image: mongo:7
+    init: true
     ports:
       - "27017:27017"
 
   db2:
-    image: ibmcom/db2:11.5.0.0
+    image: ibmcom/db2:11.5.8.0
+    platform: linux/amd64
+    init: true
     privileged: true
     ports:
       - "50000:50000"
@@ -79,7 +85,8 @@ services:
       start_period: 240s
 
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    init: true
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Password1!
@@ -93,7 +100,8 @@ services:
       start_period: 60s
 
   firebird:
-    image: jacobalberty/firebird:v4
+    image: jacobalberty/firebird:v5
+    init: true
     ports:
       - "3050:3050"
     environment:

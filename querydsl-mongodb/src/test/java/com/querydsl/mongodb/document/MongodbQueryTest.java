@@ -679,7 +679,7 @@ public class MongodbQueryTest {
         return user;
     }
 
-    private static class SimpleMongodbQuery extends AbstractFetchableMongodbQuery<Document, SimpleMongodbQuery> {
+    private static final class SimpleMongodbQuery extends AbstractFetchableMongodbQuery<Document, SimpleMongodbQuery> {
 
         private final Datastore datastore;
         private final MongoDatabase database;

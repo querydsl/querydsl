@@ -78,7 +78,7 @@
     </para>
 
     <para>
-      If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to
+      If you use Eclipse, run ./mvnw eclipse:eclipse to update your Eclipse project to
       include target/generated-sources/java as a source folder.
     </para>
 

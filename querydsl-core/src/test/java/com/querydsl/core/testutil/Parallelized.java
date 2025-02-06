@@ -14,7 +14,7 @@ public class Parallelized extends Parameterized {
         setScheduler(new ThreadPoolScheduler());
     }
 
-    private static class ThreadPoolScheduler implements RunnerScheduler {
+    private static final class ThreadPoolScheduler implements RunnerScheduler {
         private ExecutorService executor;
 
         ThreadPoolScheduler() {

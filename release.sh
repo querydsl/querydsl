@@ -7,7 +7,7 @@ TAG=QUERYDSL_`sed 's/\./_/g' <<< $VERSION`
 pre() {
   git checkout master
   git pull
-  mvn -Pall,docs versions:set -DgenerateBackupPoms=false -DnewVersion=$VERSION
+  ./mvnw -Pall,docs versions:set -DgenerateBackupPoms=false -DnewVersion=$VERSION
   sed -i '' "s/4\..\../$VERSION/" querydsl-docs/src/main/docbook/en-US/Querydsl_Reference.xml
   git checkout -b querydsl-$VERSION
   git add .
@@ -20,7 +20,7 @@ doit() {
   git checkout master
   git pull --ff-only
   export GPG_TTY=$(tty)
-  mvn clean deploy -DskipTests -Pall -Dgpg.skip=false -Dgpg.keyname=57312C37B064EE0FDAB0130490D5CE79E1DE6A2C -Denforcer.skip=true
+  ./mvnw clean deploy -DskipTests -Pall -Dgpg.skip=false -Dgpg.keyname=57312C37B064EE0FDAB0130490D5CE79E1DE6A2C -Denforcer.skip=true
   ./dist.sh
   ssh -i ~/.ssh/querydsl.com root@querydsl.com "mkdir /var/www/html/static/querydsl/$VERSION"
   scp -r -i ~/.ssh/querydsl.com target/dist/* root@querydsl.com:/var/www/html/static/querydsl/$VERSION/

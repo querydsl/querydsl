@@ -31,7 +31,7 @@ import com.querydsl.sql.ddl.DropTableClause;
 
 public class KeywordQuotingBase extends AbstractBaseTest {
 
-    private static class Quoting extends RelationalPathBase<Quoting> {
+    private static final class Quoting extends RelationalPathBase<Quoting> {
 
         public static final Quoting quoting = new Quoting("quoting");
 

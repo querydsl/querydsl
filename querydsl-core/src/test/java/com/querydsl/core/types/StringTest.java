@@ -28,7 +28,7 @@ import org.junit.Test;
 
 public class StringTest {
 
-    private static class DummyTemplates extends Templates {
+    private static final class DummyTemplates extends Templates {
 
     }
 

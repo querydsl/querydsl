@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         target: [test]
-        java: [1.8, 11, 17, 21]
+        java: [8, 11, 17, 21]
         include:
           - target: test
             containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
@@ -42,12 +42,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
+          distribution: 'temurin'
 
       - name: Start test databases
         if: ${{ matrix.containers }}
@@ -57,16 +58,16 @@ jobs:
           docker ps
 
       - name: Initialize cache
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Run tests
-        run: mvn --batch-mode install -am jacoco:report --activate-profiles all,travis,examples -Duser.timezone=UTC
+        run: ./mvnw --batch-mode install -am jacoco:report --activate-profiles all,travis,examples -Duser.timezone=UTC
 
       - name: Upload test reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-reports
@@ -76,14 +77,14 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: mvn --batch-mode coveralls:report --activate-profiles all,travis
+        run: ./mvnw --batch-mode coveralls:report --activate-profiles all,travis
 
       - name: Deploy snapshot 🚀
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-        run: mvn --batch-mode clean deploy --settings deploy/.m2/settings.xml -DskipTests
+        run: ./mvnw --batch-mode clean deploy --settings deploy/.m2/settings.xml -DskipTests
 
       - name: Clean up before caching
         run: rm -rf ~/.m2/repository/com/querydsl/

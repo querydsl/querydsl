@@ -28,7 +28,7 @@ public final class ConstantImpl<T> extends ExpressionBase<T> implements Constant
 
     private static final int CACHE_SIZE = 256;
 
-    private static class Constants {
+    private static final class Constants {
 
         @SuppressWarnings({"rawtypes", "unchecked"}) //generic array creation not possible
         private static final Constant<Character>[] CHARACTERS = new Constant[CACHE_SIZE];

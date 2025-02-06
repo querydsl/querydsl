@@ -42,7 +42,7 @@ import com.querydsl.core.types.dsl.CollectionPathBase;
 public abstract class AbstractMongodbQuery<K, Q extends AbstractMongodbQuery<K, Q>> implements SimpleQuery<Q>, Fetchable<K> {
 
     @SuppressWarnings("serial")
-    private static class NoResults extends RuntimeException { }
+    private static final class NoResults extends RuntimeException { }
 
     private final MongodbSerializer serializer;
 

@@ -36,7 +36,7 @@ Please do not post questions as issue. Such issues will be closed immediately.
 Querydsl provides releases via public Maven repositories, but you can also build the sources yourself like this
 
 ```BASH
-$ mvn -Pquickbuild,{projectname} clean install
+$ ./mvnw -Pquickbuild,{projectname} clean install
 ```
 Where projectname is one of the Maven profiles (e.g. `jpa`, `sql`, `mongodb`, etc. or `all`)
 
@@ -47,8 +47,8 @@ For more information visit the project homepage at https://querydsl.github.io.
 For running tests, a Docker Compose setup is provided. It comes with the following databases:
 
 * Oracle Express Edition 11g
-* PostgreSQL 9.1.10
-* MySQL 5.5.34
+* PostgreSQL 16
+* MySQL 8
 * Cubrid 9.2
 
 You will need to install [Docker] and [docker-compose].

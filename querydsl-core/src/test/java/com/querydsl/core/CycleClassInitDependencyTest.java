@@ -36,7 +36,7 @@ public class CycleClassInitDependencyTest {
                 new LoadClassRunnable("com.querydsl.core.types.dsl.Expressions"));
     }
 
-    private static class LoadClassRunnable implements Runnable {
+    private static final class LoadClassRunnable implements Runnable {
 
         private final String classToLoad;
 
