@@ -13,12 +13,9 @@
  */
 package com.querydsl.apt;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.SimpleTypeVisitor6;
+import javax.lang.model.type.IntersectionType;
+import javax.lang.model.type.UnionType;
+import javax.lang.model.util.SimpleTypeVisitor8;
 
 /**
  * Converts Java 8 {@link javax.lang.model.type.IntersectionType IntersectionType} instances into their first bound when visiting
@@ -26,40 +23,15 @@ import javax.lang.model.util.SimpleTypeVisitor6;
  * @param <R>
  * @param <P>
  */
-class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor6<R, P> {
+class SimpleTypeVisitorAdapter<R, P> extends SimpleTypeVisitor8<R, P> {
 
-    private static final Class<?> intersectionTypeClass;
-
-    private static final Method getBoundsMethod;
-
-    static {
-        Class<?> availableClass;
-        Method availableMethod;
-        try {
-            availableClass = Class.forName("javax.lang.model.type.IntersectionType");
-            availableMethod = availableClass.getMethod("getBounds");
-        } catch (Exception e) {
-            // Not using Java 8
-            availableClass = null;
-            availableMethod = null;
-        }
-        intersectionTypeClass = availableClass;
-        getBoundsMethod = availableMethod;
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
-    public R visitUnknown(TypeMirror t, P p) {
-        if (intersectionTypeClass != null && intersectionTypeClass.isInstance(t)) {
-            try {
-                List<TypeMirror> bounds = (List<TypeMirror>) getBoundsMethod.invoke(t);
-                return bounds.get(0).accept(this, p);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        } else {
-            return super.visitUnknown(t, p);
-        }
+    public R visitIntersection(IntersectionType t, P p) {
+        return t.getBounds().get(0).accept(this, p);
     }
 
+    @Override
+    public R visitUnion(UnionType t, P p) {
+        return visitUnknown(t, p);
+    }
 }
