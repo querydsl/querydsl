@@ -14,24 +14,6 @@
  */
 package com.querydsl.sql;
 
-import static com.querydsl.core.Target.*;
-import static com.querydsl.sql.Constants.*;
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-
-import org.joda.time.*;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.querydsl.core.*;
@@ -43,6 +25,24 @@ import com.querydsl.core.testutil.Serialization;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.sql.domain.*;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static com.querydsl.core.Target.*;
+import static com.querydsl.sql.Constants.*;
+import static org.junit.Assert.*;
 
 public class SelectBase extends AbstractBaseTest {
 
@@ -430,8 +430,8 @@ public class SelectBase extends AbstractBaseTest {
     
     private void dates(boolean literals) throws SQLException {
         long ts = ((long) Math.floor(System.currentTimeMillis() / 1000)) * 1000;
-        long tsDate = new org.joda.time.LocalDate(ts).toDateMidnight().getMillis();
-        long tsTime = new org.joda.time.LocalTime(ts).getMillisOfDay();
+        long tsDate = new LocalDate(ts).toDateMidnight().getMillis();
+        long tsTime = new LocalTime(ts).getMillisOfDay();
 
         List<Object> data = new ArrayList<>();
         data.add(Constants.date);
@@ -439,13 +439,13 @@ public class SelectBase extends AbstractBaseTest {
         data.add(new java.util.Date(ts));
         data.add(new java.util.Date(tsDate));
         data.add(new java.util.Date(tsTime));
-        data.add(new java.sql.Timestamp(ts));
-        data.add(new java.sql.Timestamp(tsDate));
-        data.add(new java.sql.Date(110, 0, 1));
-        data.add(new java.sql.Date(tsDate));
-        data.add(new java.sql.Time(0, 0, 0));
-        data.add(new java.sql.Time(12, 30, 0));
-        data.add(new java.sql.Time(23, 59, 59));
+        data.add(new Timestamp(ts));
+        data.add(new Timestamp(tsDate));
+        data.add(new Date(110, 0, 1));
+        data.add(new Date(tsDate));
+        data.add(new Time(0, 0, 0));
+        data.add(new Time(12, 30, 0));
+        data.add(new Time(23, 59, 59));
         //data.add(new java.sql.Time(tsTime));
         data.add(new DateTime(ts));
         data.add(new DateTime(tsDate));
@@ -2119,9 +2119,31 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void statementOptions() {
-        StatementOptions options = StatementOptions.builder().setFetchSize(15).setMaxRows(150).build();
-        SQLQuery<?> query = query().from(employee).orderBy(employee.id.asc());
-        query.setStatementOptions(options);
+
+        // Set a query factory with a predefined StatementOptions
+        StatementOptions options1 = StatementOptions.builder().setFetchSize(24).setMaxRows(500).build();
+        Connection connection = Connections.getConnection();
+        Configuration configuration = Connections.getConfiguration();
+        configuration = new Configuration(configuration.getTemplates(), options1);
+        SQLQueryFactory sqlQueryFactory = new SQLQueryFactory(configuration, () -> connection);
+
+        // Check that a query created with the query factory gets the predefined StatementOptions passed to the factory when it was created
+        SQLQuery<?> query = sqlQueryFactory.from(employee).orderBy(employee.id.asc());
+        query.addListener(new SQLBaseListener() {
+            public void preExecute(SQLListenerContext context) {
+                try {
+                    assertEquals(24, context.getPreparedStatement().getFetchSize());
+                    assertEquals(500, context.getPreparedStatement().getMaxRows());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        query.select(employee.id).fetch();
+
+        // Check that we can override the statement options on a per-query basis
+        StatementOptions options2 = StatementOptions.builder().setFetchSize(15).setMaxRows(150).build();
+        query = sqlQueryFactory.from(employee).orderBy(employee.id.asc()).setStatementOptions(options2);
         query.addListener(new SQLBaseListener() {
             public void preExecute(SQLListenerContext context) {
                 try {
@@ -2133,6 +2155,7 @@ public class SelectBase extends AbstractBaseTest {
             }
         });
         query.select(employee.id).fetch();
+
     }
 
     @Test

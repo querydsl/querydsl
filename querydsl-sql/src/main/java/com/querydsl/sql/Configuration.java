@@ -13,6 +13,16 @@
  */
 package com.querydsl.sql;
 
+import com.querydsl.core.types.Path;
+import com.querydsl.core.util.PrimitiveUtils;
+import com.querydsl.sql.namemapping.ChainedNameMapping;
+import com.querydsl.sql.namemapping.NameMapping;
+import com.querydsl.sql.namemapping.PreConfiguredNameMapping;
+import com.querydsl.sql.types.ArrayType;
+import com.querydsl.sql.types.Null;
+import com.querydsl.sql.types.Type;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,18 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import org.jetbrains.annotations.Nullable;
-
-import com.querydsl.core.util.PrimitiveUtils;
-
-import com.querydsl.core.types.Path;
-import com.querydsl.sql.namemapping.ChainedNameMapping;
-import com.querydsl.sql.namemapping.NameMapping;
-import com.querydsl.sql.namemapping.PreConfiguredNameMapping;
-import com.querydsl.sql.types.ArrayType;
-import com.querydsl.sql.types.Null;
-import com.querydsl.sql.types.Type;
 
 /**
  * Configuration for SQLQuery instances
@@ -70,13 +68,17 @@ public final class Configuration {
 
     private boolean useLiterals = false;
 
+    private StatementOptions statementOptions;
+
     /**
      * Create a new Configuration instance
      *
-     * @param templates templates for SQL serialization
+     * @param templates        templates for SQL serialization
+     * @param statementOptions Default options set to the JDBC statements used by queries (JDBC fetch size, query timeout, ...). These settings can be overridden at the query level.
+     *                         The ones provided here will be used by default by all the queries created by a Query Factory configured with this Configuration instance.
      */
     @SuppressWarnings("unchecked")
-    public Configuration(SQLTemplates templates) {
+    public Configuration(SQLTemplates templates, StatementOptions statementOptions) {
         this.templates = templates;
         for (Type<?> customType : templates.getCustomTypes()) {
             javaTypeMapping.register(customType);
@@ -103,6 +105,28 @@ public final class Configuration {
             }
         }
 
+        if (statementOptions == null) {
+            throw new NullPointerException("Statement Options cannot be null");
+        }
+        this.statementOptions = statementOptions;
+    }
+
+    /**
+     * Create a new Configuration instance
+     *
+     * @param templates templates for SQL serialization
+     */
+    public Configuration(SQLTemplates templates) {
+        this(templates, StatementOptions.DEFAULT);
+    }
+
+    /**
+     * Get the {@link StatementOptions} set in this {@link Configuration}.
+     *
+     * @return as described
+     */
+    public StatementOptions getStatementOptions() {
+        return this.statementOptions;
     }
 
     /**
@@ -391,7 +415,6 @@ public final class Configuration {
      * @param oldColumn column
      * @param newColumn override
      * @return previous override
-     *
      * @deprecated Use {@link #setDynamicNameMapping(NameMapping)} instead.
      */
     @Deprecated
