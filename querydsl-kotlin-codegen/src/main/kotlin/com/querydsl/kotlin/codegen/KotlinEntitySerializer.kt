@@ -106,7 +106,7 @@ open class KotlinEntitySerializer @Inject constructor(
         }
         val superType = when (model.originalCategory) {
             TypeCategory.BOOLEAN, TypeCategory.STRING -> pathType.asTypeName()
-            else -> pathType.parameterizedBy(model)
+            else -> pathType.parameterizedByOut(model)
         }
         return TypeSpec.classBuilder(mappings.getPathClassName(model, model))
             .addAnnotations(model.annotations.map { AnnotationSpec.get(it) })
