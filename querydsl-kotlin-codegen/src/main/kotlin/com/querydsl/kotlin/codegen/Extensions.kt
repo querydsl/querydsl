@@ -27,9 +27,10 @@ import com.squareup.kotlinpoet.asTypeName
 import com.squareup.kotlinpoet.joinToCode
 import kotlin.reflect.KClass
 
-fun Type.asTypeName(): TypeName = asClassName().let { className ->
+@JvmOverloads
+fun Type.asTypeName(out: Boolean = false): TypeName = asClassName().let { className ->
     if (parameters.isNotEmpty())
-        className.parameterizedBy(*parameters.map { it.asTypeName() }.toTypedArray()) else className
+        className.parameterizedBy(*parameters.map { if (out) it.asOutTypeName() else it.asTypeName() }.toTypedArray()) else className
 }
 
 fun Type.asClassName(): ClassName = when (this.fullName) {
@@ -56,7 +57,7 @@ fun Type.asClassName(): ClassName = when (this.fullName) {
     else -> ClassName(packageName, *enclosingTypeHierarchy().toTypedArray())
 }
 
-fun Type.asOutTypeName() = WildcardTypeName.producerOf(asTypeName())
+fun Type.asOutTypeName() = WildcardTypeName.producerOf(asTypeName(out = true))
 
 private fun Type.enclosingTypeHierarchy(): List<String> {
     var current: Type? = this
@@ -74,6 +75,8 @@ fun TypeMappings.getPathTypeName(type: Type, model: EntityType) = getPathType(ty
 fun KClass<*>.parameterizedBy(vararg types: TypeName) = asTypeName().parameterizedBy(*types)
 
 fun KClass<*>.parameterizedBy(vararg types: Type) = asTypeName().parameterizedBy(types.map { it.asTypeName() })
+
+fun KClass<*>.parameterizedByOut(vararg types: Type) = asTypeName().parameterizedBy(types.map { it.asTypeName(out = true) })
 
 fun Collection<String>.joinToCode(
         format: String = "%S",
