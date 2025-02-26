@@ -17,7 +17,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
+        <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
