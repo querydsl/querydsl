@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         target: [test]
-        java: [1.8, 11, 17, 21]
+        java: [ '8', '11', '17', '21' ]
         include:
           - target: test
             containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
@@ -45,9 +45,16 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v5
         with:
-          java-version: ${{ matrix.java }}
+          distribution: 'zulu' # https://github.com/actions/setup-java
+          java-version: ${{ matrix.java }}      
+          cache: maven
+
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest          
 
       - name: Start test databases
         if: ${{ matrix.containers }}
