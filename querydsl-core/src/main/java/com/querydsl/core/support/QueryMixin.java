@@ -338,13 +338,7 @@ public class QueryMixin<T> {
     @SuppressWarnings("unchecked")
     public final T orderBy(OrderSpecifier<?> spec) {
         Expression<?> e = convert(spec.getTarget(), Role.ORDER_BY);
-        if (spec.getTarget() instanceof Path) {
-            if (!spec.getTarget().equals(e)) {
-                metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e, spec.getNullHandling()));
-            } else {
-                metadata.addOrderBy(spec);
-            }
-        } else if (callerUsesQueryTemplate()) {
+        if (spec.getTarget() instanceof Path || callerUsesQueryTemplate()) {
             if (!spec.getTarget().equals(e)) {
                 metadata.addOrderBy(new OrderSpecifier(spec.getOrder(), e, spec.getNullHandling()));
             } else {
