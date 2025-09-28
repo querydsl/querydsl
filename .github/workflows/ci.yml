@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         target: [test]
-        java: [1.8, 11, 17, 21]
+        java: [ '8', '11', '17', '21' ]
         include:
           - target: test
             containers: db2 mysql postgresql mongo sqlserver oracle cubrid firebird
@@ -45,28 +45,32 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v5
         with:
+          distribution: 'zulu' # https://github.com/actions/setup-java
           java-version: ${{ matrix.java }}
+          cache: maven
 
       - name: Start test databases
         if: ${{ matrix.containers }}
         run: |
-          docker-compose up --detach ${{ matrix.containers }} &&\
-          time docker-compose up block-until-healthy &&\
+          docker compose up --detach ${{ matrix.containers }} &&\
+          time docker compose up block-until-healthy &&\
           docker ps
 
       - name: Initialize cache
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
       - name: Run tests
         run: mvn --batch-mode install -am jacoco:report --activate-profiles all,travis,examples -Duser.timezone=UTC
 
       - name: Upload test reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-reports
