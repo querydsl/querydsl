@@ -13,23 +13,20 @@
  */
 package com.querydsl.jpa;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.stream.Stream;
-
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
-
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
+import com.querydsl.core.types.FactoryExpression;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.jpa.JpaQuery;
 import org.eclipse.persistence.queries.Cursor;
-
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
-import com.querydsl.core.types.FactoryExpression;
 import org.jetbrains.annotations.Nullable;
+
+import javax.persistence.Query;
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * {@code EclipseLinkHandler} is the {@link QueryHandler} implementation for EclipseLink
@@ -54,27 +51,25 @@ class EclipseLinkHandler implements QueryHandler {
         return true;
     }
 
+
     @SuppressWarnings("unchecked")
     @Override
     public <T> CloseableIterator<T> iterate(Query query, FactoryExpression<?> projection) {
-        boolean canUseCursor = false;
-        try {
-            canUseCursor = query.unwrap(Query.class) instanceof JpaQuery;
-        } catch (PersistenceException e) { } // can't unwrap, just ignore the exception
-
         Iterator<T> iterator = null;
         Closeable closeable = null;
-        if (canUseCursor) {
+        if (query instanceof JpaQuery) {
             query.setHint(QueryHints.CURSOR, HintValues.TRUE);
             final Cursor cursor = (Cursor) query.getSingleResult();
             final int pageSize = cursor.getPageSize();
             closeable = new Closeable() {
+
                 @Override
                 public void close() throws IOException {
                     cursor.close();
                 }
             };
             iterator = new Iterator<T>() {
+
                 private int rowsSinceLastClear = 0;
 
                 @Override
