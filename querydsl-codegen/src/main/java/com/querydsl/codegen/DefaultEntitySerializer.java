@@ -342,8 +342,11 @@ public class DefaultEntitySerializer implements EntitySerializer {
         if (keywords.contains(simpleName.toUpperCase())) {
             alias += "1";
         }
-        writer.publicStaticFinal(queryType, simpleName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");
 
+        writer.append("    @Generated(\"FIS\")\n");
+        writer.append("    public static final class Constants {\n  ");
+        writer.publicStaticFinal(queryType, simpleName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");
+        writer.append("    }\n");
     }
 
     protected void introFactoryMethods(CodeWriter writer, final EntityType model) throws IOException {
