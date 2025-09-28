@@ -27,9 +27,11 @@ import com.querydsl.sql.RelationalPathBase;
 //@Table("SURVEY")
 public class QSurvey extends RelationalPathBase<QSurvey> {
 
-    private static final long serialVersionUID = -7427577079709192842L;
+    public static final class Constants {
+        public static final QSurvey survey = new QSurvey("SURVEY");
+    }
 
-    public static final QSurvey survey = new QSurvey("SURVEY");
+    private static final long serialVersionUID = -7427577079709192842L;
 
     public final StringPath name = createString("name");
 

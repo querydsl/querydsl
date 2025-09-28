@@ -8,7 +8,7 @@ public class MonitoredCompanyTest {
 
     @Test
     public void test() {
-        QMonitoredCompany monitoredCompany = QMonitoredCompany.monitoredCompany;
+        QMonitoredCompany monitoredCompany = QMonitoredCompany.Constants.monitoredCompany;
         assertNotNull(monitoredCompany.companyGroup);
         assertNotNull(monitoredCompany.companyGroup.mainCompany);
     }

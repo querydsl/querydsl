@@ -47,7 +47,7 @@ public class FetchPlanTest extends AbstractJDOTest {
     @SuppressWarnings("unchecked")
     @Test
     public void listProducts() throws Exception {
-        QProduct product = QProduct.product;
+        QProduct product = QProduct.Constants.product;
         query = query();
         query.from(product)
              .where(product.name.startsWith("A"))
@@ -69,7 +69,7 @@ public class FetchPlanTest extends AbstractJDOTest {
     @SuppressWarnings("unchecked")
     @Test
     public void listStores() throws Exception {
-        QStore store = QStore.store;
+        QStore store = QStore.Constants.store;
         query = query();
         query.from(store)
             .addFetchGroup("products")

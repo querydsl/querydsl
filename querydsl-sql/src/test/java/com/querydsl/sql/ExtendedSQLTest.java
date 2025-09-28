@@ -18,9 +18,11 @@ public class ExtendedSQLTest {
 
     public static class QAuthor extends RelationalPathBase<QAuthor> {
 
-        private static final long serialVersionUID = -512402580246687292L;
+        public static class Constants {
+            public static final QAuthor author = new QAuthor("author");
+        }
 
-        public static final QAuthor author = new QAuthor("author");
+        private static final long serialVersionUID = -512402580246687292L;
 
         public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
@@ -43,9 +45,11 @@ public class ExtendedSQLTest {
 
     public static class QBook extends RelationalPathBase<QBook> {
 
-        private static final long serialVersionUID = 4842689279054229095L;
+        public static class Constants {
+            public static final QBook book = new QBook("book");
+        }
 
-        public static final QBook book = new QBook("book");
+        private static final long serialVersionUID = 4842689279054229095L;
 
         public final NumberPath<Integer> authorId = createNumber("authorId", Integer.class);
 
@@ -81,8 +85,8 @@ public class ExtendedSQLTest {
 //         FOR UPDATE
 //          OF FIRST_NAME, LAST_NAME
 
-        QAuthor author = QAuthor.author;
-        QBook book = QBook.book;
+        QAuthor author = QAuthor.Constants.author;
+        QBook book = QBook.Constants.book;
         MySQLQuery<?> query = new MySQLQuery<Void>(null);
         query.from(author)
            .join(book).on(author.id.eq(book.authorId))

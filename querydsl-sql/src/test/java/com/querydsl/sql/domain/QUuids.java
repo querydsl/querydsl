@@ -21,9 +21,10 @@ import com.querydsl.sql.RelationalPathBase;
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
 public class QUuids extends RelationalPathBase<QUuids> {
 
+    public static final class Constants {
+        public static final QUuids uuids = new QUuids("UUIDS");
+    }
     private static final long serialVersionUID = -1780705501;
-
-    public static final QUuids uuids = new QUuids("UUIDS");
 
     public final SimplePath<UUID> field = createSimple("field", UUID.class);
 

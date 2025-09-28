@@ -106,7 +106,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void querydsl1() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
             query.from(companies).where(companies.id.eq((long) ThreadLocalRandom.current().nextLong()))
                     .select(companies.name).fetch();
@@ -118,7 +118,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void querydsl12() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
             try (CloseableIterator<String> it = query.from(companies)
                     .where(companies.id.eq((long) ThreadLocalRandom.current().nextLong())).select(companies.name).iterate()) {
@@ -134,7 +134,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void querydsl13() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
             try (ResultSet rs = query.select(companies.name).from(companies)
                     .where(companies.id.eq((long) ThreadLocalRandom.current().nextLong())).getResults()) {
@@ -150,7 +150,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void querydsl14() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             SQLQuery<?> query = new SQLQuery<Void>(conn, conf, new DefaultQueryMetadata());
             query.from(companies).where(companies.id.eq((long) ThreadLocalRandom.current().nextLong()))
                     .select(companies.name).fetch();
@@ -162,7 +162,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void querydsl15() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
             query.from(companies).where(companies.id.eq((long) ThreadLocalRandom.current().nextLong()))
                     .select(companies.id, companies.name).fetch();
@@ -174,7 +174,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void querydsl2() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
             query.from(companies).where(companies.name.eq(String.valueOf(ThreadLocalRandom.current().nextLong())))
                     .select(companies.name).fetch();
@@ -186,7 +186,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void querydsl22() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             SQLQuery<?> query = new SQLQuery<Void>(conn, conf);
             try (CloseableIterator<String> it = query.from(companies)
                     .where(companies.name.eq(String.valueOf(ThreadLocalRandom.current().nextLong())))
@@ -203,7 +203,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void querydsl23() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             SQLQuery<?> query = new SQLQuery<Void>(conn, conf, new DefaultQueryMetadata());
             query.from(companies)
                     .where(companies.name.eq(String.valueOf(ThreadLocalRandom.current().nextLong())))
@@ -216,7 +216,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void serialization() throws Exception {
         try (Connection conn = Connections.getH2()) {
-            QCompanies companies = QCompanies.companies;
+            QCompanies companies = QCompanies.Constants.companies;
             final QueryMetadata md = new DefaultQueryMetadata();
             md.addJoin(JoinType.DEFAULT, companies);
             md.addWhere(companies.id.eq(1L));

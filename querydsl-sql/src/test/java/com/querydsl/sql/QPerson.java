@@ -23,9 +23,11 @@ import com.querydsl.core.types.dsl.StringPath;
 //@Table("PERSON")
 public class QPerson extends RelationalPathBase<QPerson> {
 
-    private static final long serialVersionUID = 475064746;
+    public static class Constants {
+        public static final QPerson person = new QPerson("PERSON");
+    }
 
-    public static final QPerson person = new QPerson("PERSON");
+    private static final long serialVersionUID = 475064746;
 
     public final StringPath firstname = createString("firstname");
 

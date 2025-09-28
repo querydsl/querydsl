@@ -17,7 +17,7 @@ public class ListSubQueryTest {
 
     @Test
     public void hashCode1() {
-        QSurvey survey = QSurvey.survey;
+        QSurvey survey = QSurvey.Constants.survey;
         QSurvey survey2 = new QSurvey("survey2");
         SubQueryExpression<Tuple> query1 = select(survey.all()).from(survey);
         SubQueryExpression<Tuple> query2 = select(survey2.all()).from(survey2);

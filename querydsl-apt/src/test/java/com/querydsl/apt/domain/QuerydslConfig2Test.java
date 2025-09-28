@@ -53,7 +53,7 @@ public class QuerydslConfig2Test {
 
     @Test
     public void test() {
-        assertNotNull(QQuerydslConfig2Test_Entity.entity);
+        assertNotNull(QQuerydslConfig2Test_Entity.Constants.entity);
     }
 
     @Test(expected = NoSuchFieldException.class)

@@ -23,7 +23,7 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class SQLServerQueryTest {
 
-    private static final QSurvey survey = QSurvey.survey;
+    private static final QSurvey survey = QSurvey.Constants.survey;
 
     @Test
     public void tableHints_single() {
@@ -52,7 +52,7 @@ public class SQLServerQueryTest {
 
     @Test
     public void join_tableHints_single() {
-        QEmployee employee1 = QEmployee.employee;
+        QEmployee employee1 = QEmployee.Constants.employee;
         QEmployee employee2 = new QEmployee("employee2");
         SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
         query.from(employee1).tableHints(SQLServerTableHints.NOLOCK)
@@ -63,7 +63,7 @@ public class SQLServerQueryTest {
 
     @Test
     public void join_tableHints_multiple() {
-        QEmployee employee1 = QEmployee.employee;
+        QEmployee employee1 = QEmployee.Constants.employee;
         QEmployee employee2 = new QEmployee("employee2");
         SQLServerQuery<?> query = new SQLServerQuery<Void>(null, new SQLServerTemplates());
         query.from(employee1).tableHints(SQLServerTableHints.NOLOCK,SQLServerTableHints.READUNCOMMITTED)

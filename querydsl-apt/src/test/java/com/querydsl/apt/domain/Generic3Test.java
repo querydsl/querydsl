@@ -28,7 +28,7 @@ public class Generic3Test extends AbstractTest {
 
     @Test
     public void test() throws NoSuchFieldException {
-        start(QGeneric3Test_MyOrder.class, QGeneric3Test_MyOrder.myOrder);
+        start(QGeneric3Test_MyOrder.class, QGeneric3Test_MyOrder.Constants.myOrder);
         match(StringPath.class, "property1");
         match(StringPath.class, "property2");
     }

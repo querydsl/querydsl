@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.querydsl.example.jpa.model.QTweet.tweet;
+import static com.querydsl.example.jpa.model.QTweet.Constants.tweet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

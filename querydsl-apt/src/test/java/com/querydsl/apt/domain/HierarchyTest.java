@@ -42,7 +42,7 @@ public class HierarchyTest {
     @Entity
     public static class A2 extends A {
 
-        // XXX: uncomment @Comment to break generation - QA2.a2.b() will then
+        // XXX: uncomment @Comment to break generation - QA2.Constants.a2.b() will then
         // return B instead of B2
         @Column
         int foo;
@@ -68,7 +68,7 @@ public class HierarchyTest {
 
     @Test
     public void test() {
-        QHierarchyTest_B2 qb2 = QHierarchyTest_A2.a2.b;
+        QHierarchyTest_B2 qb2 = QHierarchyTest_A2.Constants.a2.b;
         assertNotNull(qb2);
     }
 }

@@ -109,7 +109,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         HibernateQuery<?> query = new HibernateQuery<Void>(session);
         ScrollableResults results = query.from(cat).select(cat).scroll(ScrollMode.SCROLL_INSENSITIVE);
         while (results.next()) {
@@ -122,7 +122,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     public void insert() {
         session.save(new Cat("Bob",10));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         long amount = insert(cat)
             .set(cat.name, "Bobby")
             .set(cat.alive, false)
@@ -136,7 +136,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     public void insert2() {
         session.save(new Cat("Bob",10));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         long amount = insert(cat).columns(cat.name, cat.alive)
             .values("Bobby", false)
             .execute();
@@ -149,7 +149,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
     public void insert3() {
         session.save(new Cat("Bob",10));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QCat bob = new QCat("Bob");
 
         long amount = insert(cat)
@@ -166,7 +166,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         long amount = update(cat).where(cat.name.eq("Bob"))
             .set(cat.name, "Bobby")
             .set(cat.alive, false)
@@ -181,7 +181,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         long amount = update(cat).where(cat.name.eq("Bob"))
             .set(cat.name, (String) null)
             .set(cat.alive, false)
@@ -194,7 +194,7 @@ public class IntegrationBase extends ParsingTest implements HibernateTest {
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         long amount = delete(cat).where(cat.name.eq("Bob"))
             .execute();
         assertEquals(1, amount);

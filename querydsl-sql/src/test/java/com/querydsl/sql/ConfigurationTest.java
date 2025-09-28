@@ -65,7 +65,7 @@ public class ConfigurationTest {
 //        configuration.register(new UntypedNullType());
         configuration.register("SURVEY", "NAME",  new EncryptedString());
         PreparedStatement stmt = EasyMock.<PreparedStatement> createNiceMock(PreparedStatement.class);
-        configuration.set(stmt, QSurvey.survey.name, 0, Null.DEFAULT);
+        configuration.set(stmt, QSurvey.Constants.survey.name, 0, Null.DEFAULT);
     }
 
     @Test

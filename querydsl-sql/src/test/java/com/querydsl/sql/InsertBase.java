@@ -51,7 +51,7 @@ public class InsertBase extends AbstractBaseTest {
         delete(survey).execute();
         insert(survey).values(1, "Hello World", "Hello").execute();
 
-        delete(QDateTest.qDateTest).execute();
+        delete(QDateTest.Constants.qDateTest).execute();
     }
 
     @Before
@@ -67,7 +67,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({CUBRID, SQLITE}) // https://bitbucket.org/xerial/sqlite-jdbc/issue/133/prepstmtsetdate-int-date-calendar-seems
     public void insert_dates() {
-        QDateTest dateTest = QDateTest.qDateTest;
+        QDateTest dateTest = QDateTest.Constants.qDateTest;
         LocalDate localDate = new LocalDate(1978, 1, 2);
 
         Path<LocalDate> localDateProperty = ExpressionUtils.path(LocalDate.class, "DATE_TEST");
@@ -215,7 +215,7 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(ORACLE)
     public void insert_nulls_in_batch() {
-//        QFoo f= QFoo.foo;
+//        QFoo f= QFoo.Constants.foo;
 //        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
 //        sic.columns(f.c1,f.c2).values(null,null).addBatch();
 //        sic.columns(f.c1,f.c2).values(null,1).addBatch();
@@ -231,7 +231,7 @@ public class InsertBase extends AbstractBaseTest {
     @ExcludeIn({DERBY})
     public void insert_nulls_in_batch2() {
         Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS;
-//        QFoo f= QFoo.foo;
+//        QFoo f= QFoo.Constants.foo;
 //        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
 //        Foo f1=new Foo();
 //        sic.populate(f1).addBatch();
@@ -239,7 +239,7 @@ public class InsertBase extends AbstractBaseTest {
 //        f1.setC1(1);
 //        sic.populate(f1).addBatch();
 //        sic.execute();
-        QEmployee employee = QEmployee.employee;
+        QEmployee employee = QEmployee.Constants.employee;
         SQLInsertClause sic = insert(employee);
         Employee e = new Employee();
         sic.populate(e, mapper).addBatch();
@@ -491,8 +491,8 @@ public class InsertBase extends AbstractBaseTest {
     @IncludeIn({H2, POSTGRESQL})
     @SkipForQuoted
     public void uuids() {
-        delete(QUuids.uuids).execute();
-        QUuids uuids = QUuids.uuids;
+        delete(QUuids.Constants.uuids).execute();
+        QUuids uuids = QUuids.Constants.uuids;
         UUID uuid = UUID.randomUUID();
         insert(uuids).set(uuids.field, uuid).execute();
         assertEquals(uuid, query().from(uuids).select(uuids.field).fetchFirst());
@@ -501,8 +501,8 @@ public class InsertBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({ORACLE})
     public void xml() {
-        delete(QXmlTest.xmlTest).execute();
-        QXmlTest xmlTest = QXmlTest.xmlTest;
+        delete(QXmlTest.Constants.xmlTest).execute();
+        QXmlTest xmlTest = QXmlTest.Constants.xmlTest;
         String contents = "<html><head>a</head><body>b</body></html>";
         insert(xmlTest).set(xmlTest.col, contents).execute();
         assertEquals(contents, query().from(xmlTest).select(xmlTest.col).fetchFirst());

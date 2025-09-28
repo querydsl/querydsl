@@ -10,16 +10,16 @@ public class CastTest extends AbstractQueryTest {
 
     @Test
     public void parents() {
-        QCat cat = QAnimal.animal.as(QCat.class);
-        assertEquals(QAnimal.animal, cat.getMetadata().getParent());
+        QCat cat = QAnimal.Constants.animal.as(QCat.class);
+        assertEquals(QAnimal.Constants.animal, cat.getMetadata().getParent());
     }
 
     @Test
     public void cast() {
         assertEquals(Arrays.asList(c1, c2, c3, c4),
-            query().from(QAnimal.animal, cats)
-                .where(QAnimal.animal.as(QCat.class).breed.eq(0))
-                .select(QAnimal.animal).fetch());
+            query().from(QAnimal.Constants.animal, cats)
+                .where(QAnimal.Constants.animal.as(QCat.class).breed.eq(0))
+                .select(QAnimal.Constants.animal).fetch());
     }
 
     @Test
@@ -27,9 +27,9 @@ public class CastTest extends AbstractQueryTest {
          Cat cat = new Cat();
          cat.setEyecolor(Color.TABBY);
          assertEquals(Color.TABBY,
-             CollQueryFactory.from(QAnimal.animal, cat)
-                 .where(QAnimal.animal.instanceOf(Cat.class))
-                 .select(QAnimal.animal.as(QCat.class).eyecolor).fetchFirst());
+             CollQueryFactory.from(QAnimal.Constants.animal, cat)
+                 .where(QAnimal.Constants.animal.instanceOf(Cat.class))
+                 .select(QAnimal.Constants.animal.as(QCat.class).eyecolor).fetchFirst());
     }
 
 }

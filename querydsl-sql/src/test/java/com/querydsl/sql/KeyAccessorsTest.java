@@ -27,9 +27,11 @@ public class KeyAccessorsTest {
 //    @Table("EMPLOYEE")
     public static class QEmployee extends RelationalPathBase<QEmployee> {
 
-        private static final long serialVersionUID = 2020996035;
+        public static class Constants {
+            public static final QEmployee employee = new QEmployee("EMPLOYEE");
+        }
 
-        public static final QEmployee employee = new QEmployee("EMPLOYEE");
+        private static final long serialVersionUID = 2020996035;
 
         public class PrimaryKeys implements Serializable {
 
@@ -71,7 +73,7 @@ public class KeyAccessorsTest {
 
     @Test
     public void keys() {
-        QEmployee employee = QEmployee.employee;
+        QEmployee employee = QEmployee.Constants.employee;
         assertNotNull(employee.pk.sysIdx53);
         assertNotNull(employee.fk.superiorFk);
         assertNotNull(employee.fk._superiorFk);

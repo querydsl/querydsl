@@ -26,9 +26,11 @@ import com.querydsl.sql.ColumnMetadata;
  */
 public class QSpatialRefSys extends RelationalPathSpatial<SpatialRefSys> {
 
-    private static final long serialVersionUID = 1681874658;
+    public static final class Constants {
+        public static final QSpatialRefSys spatialRefSys = new QSpatialRefSys("spatial_ref_sys");
+    }
 
-    public static final QSpatialRefSys spatialRefSys = new QSpatialRefSys("spatial_ref_sys");
+    private static final long serialVersionUID = 1681874658;
 
     public final StringPath authName = createString("authName");
 

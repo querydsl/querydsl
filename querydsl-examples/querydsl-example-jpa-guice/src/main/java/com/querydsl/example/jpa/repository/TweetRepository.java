@@ -6,7 +6,7 @@ import com.querydsl.example.jpa.model.Tweet;
 
 import java.util.List;
 
-import static com.querydsl.example.jpa.model.QTweet.tweet;
+import static com.querydsl.example.jpa.model.QTweet.Constants.tweet;
 
 @Transactional
 public class TweetRepository extends AbstractRepository<Tweet> {

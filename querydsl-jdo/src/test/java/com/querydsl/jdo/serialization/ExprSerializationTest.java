@@ -24,11 +24,11 @@ import com.querydsl.jdo.test.domain.*;
 
 public class ExprSerializationTest {
 
-    private QBook book = QBook.book;
+    private QBook book = QBook.Constants.book;
 
-    private QProduct product = QProduct.product;
+    private QProduct product = QProduct.Constants.product;
 
-    private QStore store = QStore.store;
+    private QStore store = QStore.Constants.store;
 
     @Test
     public void instanceOf() {

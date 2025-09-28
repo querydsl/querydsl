@@ -25,7 +25,7 @@ import com.querydsl.core.types.dsl.PathInits;
 
 public class EntityTest extends AbstractTest {
 
-    private static final QEntityTest_Entity3 entity3 = QEntityTest_Entity3.entity3;
+    private static final QEntityTest_Entity3 entity3 = QEntityTest_Entity3.Constants.entity3;
 
     @QueryEntity
     public static class EntityNoReferences {
@@ -74,7 +74,7 @@ public class EntityTest extends AbstractTest {
 
     @Test
     public void initialization_depth() {
-        assertNotNull(QEntityTest_Entity1.entity1.entity1Ref.entity1Ref.entity1Field);
+        assertNotNull(QEntityTest_Entity1.Constants.entity1.entity1Ref.entity1Ref.entity1Field);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class EntityTest extends AbstractTest {
         assertNotNull(entity3._super.superTypeEntityRef.entity2Ref);
         assertNotNull(entity3._super._super.superTypeEntityRef.entity2Ref);
 
-        assertNotNull(QEntityTest_Entity4.entity4.supertypeField);
+        assertNotNull(QEntityTest_Entity4.Constants.entity4.supertypeField);
     }
 
     @Test

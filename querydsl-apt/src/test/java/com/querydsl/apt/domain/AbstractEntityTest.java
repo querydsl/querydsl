@@ -39,7 +39,7 @@ public class AbstractEntityTest {
 
     @Test
     public void path_is_available() {
-        QAbstractEntityTest_CategoryReference categoryReference = QAbstractEntityTest_CategoryReference.categoryReference;
+        QAbstractEntityTest_CategoryReference categoryReference = QAbstractEntityTest_CategoryReference.Constants.categoryReference;
         assertNotNull(categoryReference.category.defaultChild);
     }
 

@@ -33,8 +33,8 @@ public class Delegate3Test {
 
     @Test
     public void test() {
-        QDelegate3Test_Geometry.geometry.isWithin(null);
-        QDelegate3Test_Point.point.isWithin(null);
-        QDelegate3Test_Polygon.polygon.isWithin(null);
+        QDelegate3Test_Geometry.Constants.geometry.isWithin(null);
+        QDelegate3Test_Point.Constants.point.isWithin(null);
+        QDelegate3Test_Polygon.Constants.polygon.isWithin(null);
     }
 }

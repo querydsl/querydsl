@@ -103,9 +103,9 @@ public class GroupBy2Test {
 
     @Test
     public void test() {
-        QGroupBy2Test_User user = QGroupBy2Test_User.user;
-        QGroupBy2Test_Role role = QGroupBy2Test_Role.role;
-        QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.securityGroup;
+        QGroupBy2Test_User user = QGroupBy2Test_User.Constants.user;
+        QGroupBy2Test_Role role = QGroupBy2Test_Role.Constants.role;
+        QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.Constants.securityGroup;
 
         Map<Long, UserDto> userDtos = CollQueryFactory.from(user, users)
                 .innerJoin(user.roles, role)
@@ -131,9 +131,9 @@ public class GroupBy2Test {
 
     @Test
     public void test2() {
-        QGroupBy2Test_User user = QGroupBy2Test_User.user;
-        QGroupBy2Test_Role role = QGroupBy2Test_Role.role;
-        QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.securityGroup;
+        QGroupBy2Test_User user = QGroupBy2Test_User.Constants.user;
+        QGroupBy2Test_Role role = QGroupBy2Test_Role.Constants.role;
+        QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.Constants.securityGroup;
 
         Map<Long, UserDto> userDtos = CollQueryFactory.from(user, users)
                 .innerJoin(user.roles, role)

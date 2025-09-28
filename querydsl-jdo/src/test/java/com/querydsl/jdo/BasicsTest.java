@@ -38,9 +38,9 @@ public class BasicsTest extends AbstractJDOTest {
 
     private static final JDOQLTemplates templates = new JDOQLTemplates();
 
-    private final QBook book = QBook.book;
+    private final QBook book = QBook.Constants.book;
 
-    private final QProduct product = QProduct.product;
+    private final QProduct product = QProduct.Constants.product;
 
     private final QProduct product2 = new QProduct("product2");
 

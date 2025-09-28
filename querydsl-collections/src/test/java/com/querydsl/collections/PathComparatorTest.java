@@ -14,7 +14,7 @@ public class PathComparatorTest {
 
     @Before
     public void setUpComparator() {
-        comparator = pathComparator(QCar.car.horsePower);
+        comparator = pathComparator(QCar.Constants.car.horsePower);
     }
 
     @Test

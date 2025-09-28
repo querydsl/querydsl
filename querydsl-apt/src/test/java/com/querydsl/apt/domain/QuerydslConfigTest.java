@@ -47,7 +47,7 @@ public class QuerydslConfigTest {
 
     @Test
     public void long_path() {
-        assertEquals("entity.prop1.prop2.prop1", QQuerydslConfigTest_Entity.entity.prop1().prop2().prop1().toString());
+        assertEquals("entity.prop1.prop2.prop1", QQuerydslConfigTest_Entity.Constants.entity.prop1().prop2().prop1().toString());
     }
 
 }

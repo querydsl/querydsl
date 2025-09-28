@@ -16,24 +16,25 @@
 package com.querydsl.sql;
 
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.ddl.CreateTableClause;
 import com.querydsl.sql.ddl.DropTableClause;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class KeywordQuotingBase extends AbstractBaseTest {
 
     private static class Quoting extends RelationalPathBase<Quoting> {
 
-        public static final Quoting quoting = new Quoting("quoting");
+        public static final class Constants {
+            public static final Quoting quoting = new Quoting("quoting");
+        }
 
         public final StringPath from = createString("from");
         public final BooleanPath all = createBoolean("all");
@@ -54,7 +55,7 @@ public class KeywordQuotingBase extends AbstractBaseTest {
         }
     }
 
-    private final Quoting quoting = Quoting.quoting;
+    private final Quoting quoting = Quoting.Constants.quoting;
 
     @Before
     public void setUp() throws Exception {

@@ -74,41 +74,41 @@ public class QueryEmbedded5Test {
 
     @Test
     public void user_rawList() {
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.rawList.any().getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.Constants.user.rawList.any().getClass());
     }
 
     @Test
     public void user_list() {
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.list.any().getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.Constants.user.list.any().getClass());
     }
 
     @Test
     public void user_set() {
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.set.any().getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.Constants.user.set.any().getClass());
     }
 
     @Test
     public void user_collection() {
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.collection.any().getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.Constants.user.collection.any().getClass());
     }
 
     @Test
     public void user_map() {
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.map.get("XXX").getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.Constants.user.map.get("XXX").getClass());
     }
 
     @Test
     public void user_rawMap1() {
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.rawMap1.get("XXX").getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.Constants.user.rawMap1.get("XXX").getClass());
     }
 
     @Test
     public void user_rawMap2() {
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.rawMap2.get("XXX").getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.Constants.user.rawMap2.get("XXX").getClass());
     }
 
     @Test
     public void user_rawMap3() {
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.rawMap3.get("XXX").getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.Constants.user.rawMap3.get("XXX").getClass());
     }
 }

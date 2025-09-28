@@ -31,7 +31,7 @@ import java.util.function.Function;
  * <p>Example</p>
  *
  * <pre>{@code
- * QUser user = QUser.user;
+ * QUser user = QUser.Constants.user;
  * MorphiaQuery<User> query = new MorphiaQuery<User>(morphia, datastore, user);
  * List<User> list = query
  *     .where(user.firstName.eq("Bob"))

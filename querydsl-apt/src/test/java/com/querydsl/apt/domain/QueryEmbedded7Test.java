@@ -37,7 +37,7 @@ public class QueryEmbedded7Test {
 
     @Test
     public void test() {
-        Assert.assertEquals(StringPath.class, QQueryEmbedded7Test_Entity.entity.users.any().getClass());
-        assertEquals(NumberPath.class, QQueryEmbedded7Test_Entity.entity.productRoles.any().getClass());
+        Assert.assertEquals(StringPath.class, QQueryEmbedded7Test_Entity.Constants.entity.users.any().getClass());
+        assertEquals(NumberPath.class, QQueryEmbedded7Test_Entity.Constants.entity.productRoles.any().getClass());
     }
 }

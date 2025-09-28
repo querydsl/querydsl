@@ -27,7 +27,7 @@ public class TupleTest extends AbstractQueryTest {
     @Test
     @Ignore // FIXME
     public void test() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
 
         SubQueryExpression<?> subQuery = select(cat.birthdate, cat.name, cat.mate).from(cat)
         .where(select(cat.mate, cat.birthdate.max())

@@ -28,11 +28,11 @@ public class CatTest {
 
     @Test
     public void stringAsSimple() throws SecurityException, NoSuchFieldException {
-        assertTrue(QCat.cat.stringAsSimple.getClass().equals(SimplePath.class));
+        assertTrue(QCat.Constants.cat.stringAsSimple.getClass().equals(SimplePath.class));
     }
 
     @Test
     public void dateAsSimple() {
-        assertTrue(QCat.cat.dateAsSimple.getClass().equals(SimplePath.class));
+        assertTrue(QCat.Constants.cat.dateAsSimple.getClass().equals(SimplePath.class));
     }
 }

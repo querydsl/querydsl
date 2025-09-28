@@ -12,7 +12,7 @@ import com.querydsl.sql.domain.QEmployee;
 
 public class DefaultMapperTest extends AbstractMapperTest {
 
-    private static final QEmployee emp = QEmployee.employee;
+    private static final QEmployee emp = QEmployee.Constants.employee;
 
     @Test
     public void extract() {

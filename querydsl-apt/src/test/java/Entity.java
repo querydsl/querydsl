@@ -18,6 +18,6 @@ public final class Entity {
 
     private Entity() { }
 
-    static final QEntity entity = QEntity.entity;
+    static final QEntity entity = QEntity.Constants.entity;
 
 }

@@ -24,14 +24,14 @@ public class AnimalTest {
 
     @Test
     public void cast() {
-        QCat cat = QAnimal.animal.as(QCat.class);
-        assertEquals(QAnimal.animal, cat.getMetadata().getElement());
+        QCat cat = QAnimal.Constants.animal.as(QCat.class);
+        assertEquals(QAnimal.Constants.animal, cat.getMetadata().getElement());
         assertEquals("animal", cat.toString());
     }
 
     @Test
     public void date_as_simple() {
-        assertTrue(QAnimal.animal.dateAsSimple.getClass().equals(SimplePath.class));
+        assertTrue(QAnimal.Constants.animal.dateAsSimple.getClass().equals(SimplePath.class));
     }
 
 }

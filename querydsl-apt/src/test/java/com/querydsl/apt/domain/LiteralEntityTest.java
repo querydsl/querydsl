@@ -30,7 +30,7 @@ public class LiteralEntityTest {
 
     @Test
     public void test() {
-        assertNotNull(QLiteralEntityTest_EnumEntity.enumEntity);
+        assertNotNull(QLiteralEntityTest_EnumEntity.Constants.enumEntity);
         assertEquals(EnumPath.class, QLiteralEntityTest_EnumEntity.class.getSuperclass());
     }
 

@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class PathMatcherTest {
 
-    private static final QCar $ = QCar.car;
+    private static final QCar $ = QCar.Constants.car;
 
     @Test
     public void match() {

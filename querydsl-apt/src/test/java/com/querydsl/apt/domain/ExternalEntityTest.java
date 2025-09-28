@@ -29,7 +29,7 @@ public class ExternalEntityTest {
 
     @Test
     public void test() {
-        assertNotNull(QExternalEntityTest_MyEntity.myEntity.id);
+        assertNotNull(QExternalEntityTest_MyEntity.Constants.myEntity.id);
     }
 
 }

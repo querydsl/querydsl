@@ -35,10 +35,10 @@ public class QueryInit5Test {
 
     @Test
     public void test() {
-        //QChild c = QParent.parent.as(QChild.class)
-        assertNotNull(QQueryInit5Test_Parent.parent.z.entity);
+        //QChild c = QParent.Constants.parent.as(QChild.class)
+        assertNotNull(QQueryInit5Test_Parent.Constants.parent.z.entity);
 
-        QQueryInit5Test_Child child = QQueryInit5Test_Parent.parent.as(QQueryInit5Test_Child.class);
+        QQueryInit5Test_Child child = QQueryInit5Test_Parent.Constants.parent.as(QQueryInit5Test_Child.class);
         assertNotNull(child.z.entity);
         assertNotNull(child.y.entity);
 

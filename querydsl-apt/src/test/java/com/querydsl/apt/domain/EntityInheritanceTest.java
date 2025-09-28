@@ -41,7 +41,7 @@ public class EntityInheritanceTest {
     public void test() {
         Assert.assertEquals(
                 QEntityInheritanceTest_TestEntity.class,
-                QEntityInheritanceTest_TestEntity.testEntity.parent.getClass());
+                QEntityInheritanceTest_TestEntity.Constants.testEntity.parent.getClass());
     }
 
 }

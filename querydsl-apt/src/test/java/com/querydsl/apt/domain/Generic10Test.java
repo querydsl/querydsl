@@ -35,17 +35,17 @@ public class Generic10Test extends AbstractTest {
 
     @Test
     public void test() {
-        assertNotNull(QGeneric10Test_FutureTrade.futureTrade);
+        assertNotNull(QGeneric10Test_FutureTrade.Constants.futureTrade);
 
-        start(QGeneric10Test_AbstractTradingMarket.class, QGeneric10Test_AbstractTradingMarket.abstractTradingMarket);
+        start(QGeneric10Test_AbstractTradingMarket.class, QGeneric10Test_AbstractTradingMarket.Constants.abstractTradingMarket);
         assertPresent("ledger");
 
-        start(QGeneric10Test_AbstractFuturesMarket.class, QGeneric10Test_AbstractFuturesMarket.abstractFuturesMarket);
+        start(QGeneric10Test_AbstractFuturesMarket.class, QGeneric10Test_AbstractFuturesMarket.Constants.abstractFuturesMarket);
         assertPresent("ledger");
 
-        start(QGeneric10Test_CommonFuturesMarket.class, QGeneric10Test_CommonFuturesMarket.commonFuturesMarket);
+        start(QGeneric10Test_CommonFuturesMarket.class, QGeneric10Test_CommonFuturesMarket.Constants.commonFuturesMarket);
         assertPresent("ledger");
 
-        start(QGeneric10Test_TradingMarketLedger.class, QGeneric10Test_TradingMarketLedger.tradingMarketLedger);
+        start(QGeneric10Test_TradingMarketLedger.class, QGeneric10Test_TradingMarketLedger.Constants.tradingMarketLedger);
     }
 }

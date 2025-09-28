@@ -25,13 +25,13 @@ public class Generic13Test extends AbstractTest {
 
     @Test
     public void test() throws IllegalAccessException, NoSuchFieldException {
-        start(QGeneric13Test_GenericBase.class, QGeneric13Test_GenericBase.genericBase);
+        start(QGeneric13Test_GenericBase.class, QGeneric13Test_GenericBase.Constants.genericBase);
         matchType(AnotherClass.class, "t");
 
-        start(QGeneric13Test_GenericBaseSubclass.class, QGeneric13Test_GenericBaseSubclass.genericBaseSubclass);
+        start(QGeneric13Test_GenericBaseSubclass.class, QGeneric13Test_GenericBaseSubclass.Constants.genericBaseSubclass);
         matchType(Object.class, "p");
 
-        start(QGeneric13Test_Subclass.class, QGeneric13Test_Subclass.subclass);
+        start(QGeneric13Test_Subclass.class, QGeneric13Test_Subclass.Constants.subclass);
         matchType(Number.class, "p");
     }
 }

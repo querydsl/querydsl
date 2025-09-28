@@ -23,7 +23,7 @@ public class TypeCastTest {
 
     @Test
     public void mappedSuperclass() {
-        QInheritedProperties subClass = QInheritedProperties.inheritedProperties;
+        QInheritedProperties subClass = QInheritedProperties.Constants.inheritedProperties;
         QSuperclass superClass = subClass._super;
 
         assertEquals(InheritedProperties.class, superClass.getType());
@@ -33,7 +33,7 @@ public class TypeCastTest {
 
 //    @Test
 //    public void mappedSuperclass2() {
-//        QInheritedProperties subClass = QInheritedProperties.inheritedProperties;
+//        QInheritedProperties subClass = QInheritedProperties.Constants.inheritedProperties;
 //        QSuperclass superClass = new QSuperclass(subClass.getMetadata());
 //
 //        assertEquals(Superclass.class, superClass.getType());
@@ -43,7 +43,7 @@ public class TypeCastTest {
 
     @Test
     public void subClassToSuper() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QAnimal animal = new QAnimal(cat);
 
         assertEquals(Cat.class, animal.getType());
@@ -53,7 +53,7 @@ public class TypeCastTest {
 
     @Test
     public void subClassToSuper2() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QAnimal animal = new QAnimal(cat.getMetadata());
 
         assertEquals(Animal.class, animal.getType());
@@ -63,7 +63,7 @@ public class TypeCastTest {
 
     @Test
     public void superClassToSub() {
-        QAnimal animal = QAnimal.animal;
+        QAnimal animal = QAnimal.Constants.animal;
         QCat cat = new QCat(animal.getMetadata());
 
         assertEquals(Cat.class, cat.getType());

@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Unmodifiable;
  *
  * <pre>
  * {@code
- * QEmployee employee = QEmployee.employee;
+ * QEmployee employee = QEmployee.Constants.employee;
  * List<EmployeeInfo> result = query.from(employee)
  *   .where(employee.valid.eq(true))
  *   .select(Projections.constructor(EmployeeInfo.class, employee.firstName, employee.lastName))

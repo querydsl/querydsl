@@ -189,7 +189,7 @@ public class QueryInit6Test {
 
     @Test
     public void test() {
-        assertNotNull(QQueryInit6Test_Content.content.container.packaging);
-        assertNotNull(QQueryInit6Test_Content.content.container.packaging.id);
+        assertNotNull(QQueryInit6Test_Content.Constants.content.container.packaging);
+        assertNotNull(QQueryInit6Test_Content.Constants.content.container.packaging.id);
     }
 }

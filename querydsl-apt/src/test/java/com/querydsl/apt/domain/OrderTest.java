@@ -26,7 +26,7 @@ public class OrderTest {
     @Test
     public void test() {
         assertEquals(QOrderTest_OrderItemImpl.class,
-                QOrderTest_Order.order.orderItems.any().getClass());
+                QOrderTest_Order.Constants.order.orderItems.any().getClass());
     }
 
 }

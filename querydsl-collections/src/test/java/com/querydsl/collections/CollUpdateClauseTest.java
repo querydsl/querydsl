@@ -24,7 +24,7 @@ public class CollUpdateClauseTest {
 
     @Test
     public void execute() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         List<Cat> cats = Arrays.asList(new Cat("Ann"), new Cat("Bob"), new Cat("John"), new Cat("Carl"));
 
         CollUpdateClause<Cat> updateClause = new CollUpdateClause<Cat>(cat, cats);

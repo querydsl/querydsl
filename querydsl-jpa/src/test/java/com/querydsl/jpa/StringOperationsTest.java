@@ -45,7 +45,7 @@ public class StringOperationsTest extends AbstractQueryTest {
     @Test
     @SuppressWarnings("rawtypes")
     public void indexOf() {
-        Path path = QCat.cat.name;
+        Path path = QCat.Constants.cat.name;
         Expression startIndex = Expressions.constant(0);
         Expression endIndex = Expressions.numberOperation(Integer.class, Ops.INDEX_OF, path, Expressions.constant("x"));
         Expression substr = Expressions.stringOperation(Ops.SUBSTR_2ARGS, path, startIndex, endIndex);
@@ -54,12 +54,12 @@ public class StringOperationsTest extends AbstractQueryTest {
 
     @Test
     public void indexOf2() {
-        StringPath str = QCat.cat.name;
+        StringPath str = QCat.Constants.cat.name;
         assertToString("substring(cat.name,1,locate(?1,cat.name)-1 - ?2)", str.substring(0, str.indexOf("x")));
     }
 
     @Test
     public void indexOf3() {
-        assertToString("substring(cat.name,2,1)", QCat.cat.name.substring(1,2));
+        assertToString("substring(cat.name,2,1)", QCat.Constants.cat.name.substring(1,2));
     }
 }

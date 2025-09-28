@@ -13,7 +13,7 @@ public class CoalesceTest {
     @Test
     public void coalesce_supports_subquery() {
         Coalesce<String> coalesce =
-                new Coalesce<String>(SQLExpressions.select(QCompanies.companies.name).from(QCompanies.companies), QCompanies.companies.name);
+                new Coalesce<String>(SQLExpressions.select(QCompanies.Constants.companies.name).from(QCompanies.Constants.companies), QCompanies.Constants.companies.name);
         assertThat(SQLExpressions.select(coalesce).toString(),
                 is(equalTo("select coalesce((select COMPANIES.NAME\nfrom COMPANIES COMPANIES), COMPANIES.NAME)\nfrom dual")));
     }

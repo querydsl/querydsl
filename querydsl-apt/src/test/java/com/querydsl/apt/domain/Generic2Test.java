@@ -53,7 +53,7 @@ public class Generic2Test extends AbstractTest {
 
     @Test
     public void test() throws NoSuchFieldException {
-        start(QGeneric2Test_Foo.class, QGeneric2Test_Foo.foo);
+        start(QGeneric2Test_Foo.class, QGeneric2Test_Foo.Constants.foo);
         assertPresent("range");
         match(QGeneric2Test_Range.class, "range");
     }

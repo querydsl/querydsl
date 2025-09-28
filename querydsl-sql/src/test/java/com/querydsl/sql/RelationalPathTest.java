@@ -16,7 +16,7 @@ public class RelationalPathTest {
 
     @Test
     public void path() throws ClassNotFoundException, IOException {
-        QSurvey survey = QSurvey.survey;
+        QSurvey survey = QSurvey.Constants.survey;
         QSurvey survey2 = serialize(survey);
         assertEquals(Arrays.asList(survey.all()), Arrays.asList(survey2.all()));
         assertEquals(survey.getMetadata(), survey2.getMetadata());
@@ -26,7 +26,7 @@ public class RelationalPathTest {
     @Test
     public void in_tuple() throws ClassNotFoundException, IOException {
         //(survey.id, survey.name)
-        QSurvey survey = QSurvey.survey;
+        QSurvey survey = QSurvey.Constants.survey;
         QTuple tuple = Projections.tuple(survey.id, survey.name);
         serialize(tuple);
         serialize(tuple.newInstance(1, "a"));

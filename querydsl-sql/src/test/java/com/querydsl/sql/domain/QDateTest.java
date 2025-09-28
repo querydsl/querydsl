@@ -10,9 +10,11 @@ import com.querydsl.sql.RelationalPathBase;
 
 public class QDateTest extends RelationalPathBase<QDateTest> {
 
-    private static final long serialVersionUID = 1394463749655231079L;
+    public static final class Constants {
+        public static final QDateTest qDateTest = new QDateTest("DATE_TEST");
+    }
 
-    public static final QDateTest qDateTest = new QDateTest("DATE_TEST");
+    private static final long serialVersionUID = 1394463749655231079L;
 
     public final DatePath<Date> dateTest = createDate("dateTest", java.sql.Date.class);
 

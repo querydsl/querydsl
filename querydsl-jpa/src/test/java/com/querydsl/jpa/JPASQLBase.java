@@ -57,7 +57,7 @@ public class JPASQLBase extends AbstractSQLTest implements JPATest {
     private EntityManager entityManager;
 
     private final SAnimal cat = new SAnimal("cat");
-    private final QCat catEntity = QCat.cat;
+    private final QCat catEntity = QCat.Constants.cat;
 
     @Override
     protected JPASQLQuery<?> query() {

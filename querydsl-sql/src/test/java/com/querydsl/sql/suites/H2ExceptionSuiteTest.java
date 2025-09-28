@@ -13,7 +13,7 @@ import org.junit.experimental.categories.Category;
 
 import java.sql.SQLException;
 
-import static com.querydsl.sql.domain.QSurvey.survey;
+import static com.querydsl.sql.domain.QSurvey.Constants.survey;
 import static org.hamcrest.Matchers.emptyArray;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;

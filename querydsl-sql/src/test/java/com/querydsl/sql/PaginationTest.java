@@ -38,7 +38,7 @@ public class PaginationTest {
         list.add(new TeradataTemplates()); // qualify
 
         for (SQLTemplates templates : list) {
-            QEmployee employee = QEmployee.employee;
+            QEmployee employee = QEmployee.Constants.employee;
             QueryMixin<?> query = new QueryMixin<Void>();
             query.from(employee);
             query.orderBy(employee.firstname.asc());

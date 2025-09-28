@@ -18,9 +18,11 @@ import com.querydsl.sql.ColumnMetadata;
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
 public class QShapes extends RelationalPathSpatial<Shapes> {
 
-    private static final long serialVersionUID = 563213127;
+    public static final class Constants {
+        public static final QShapes shapes = new QShapes("SHAPES");
+    }
 
-    public static final QShapes shapes = new QShapes("SHAPES");
+    private static final long serialVersionUID = 563213127;
 
     public final GeometryPath<Geometry> geometry = createGeometry("geometry", Geometry.class);
 

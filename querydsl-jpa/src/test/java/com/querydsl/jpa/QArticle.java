@@ -17,11 +17,13 @@ import com.querydsl.core.types.dsl.StringPath;
 @Generated("com.querydsl.codegen.EntitySerializer")
 public class QArticle extends EntityPathBase<Article> {
 
+    public static final class Constants {
+        public static final QArticle article = new QArticle("article");
+    }
+
     private static final long serialVersionUID = 1732636838L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
-
-    public static final QArticle article = new QArticle("article");
 
     public final QPerson author;
 

@@ -13,7 +13,7 @@ public class DocumentTest {
 
     private Document doc1, doc2, doc3;
 
-    private QDocument qDoc = QDocument.document;
+    private QDocument qDoc = QDocument.Constants.document;
 
     @Before
     public void setUp() {

@@ -24,7 +24,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 
 public class JPQLQueryTest {
 
-    private QCat cat = QCat.cat;
+    private QCat cat = QCat.Constants.cat;
 
     private HibernateQuery<?> query = new HibernateQuery<Void>();
 

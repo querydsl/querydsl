@@ -69,7 +69,7 @@ public class AnyUsageTest {
 
     @Test
     public void test() {
-        QAnyUsageTest_Dealer dealer = QAnyUsageTest_DealerGroup.dealerGroup.dealers.any();
+        QAnyUsageTest_Dealer dealer = QAnyUsageTest_DealerGroup.Constants.dealerGroup.dealers.any();
         assertNotNull(dealer);
         assertNotNull(dealer.company);
     }
@@ -78,7 +78,7 @@ public class AnyUsageTest {
     public void withQDealer() {
         List<Company> companies = new LinkedList<Company>();
         companies.add(new Company());
-        QAnyUsageTest_Dealer qDealer = QAnyUsageTest_Dealer.dealer;
+        QAnyUsageTest_Dealer qDealer = QAnyUsageTest_Dealer.Constants.dealer;
         BooleanExpression expression = qDealer.company.in(companies);
         assertNotNull(expression);
     }
@@ -87,7 +87,7 @@ public class AnyUsageTest {
     public void withQDealerGroup() {
         List<Company> companies = new LinkedList<Company>();
         companies.add(new Company());
-        QAnyUsageTest_Dealer qDealer = QAnyUsageTest_DealerGroup.dealerGroup.dealers.any();
+        QAnyUsageTest_Dealer qDealer = QAnyUsageTest_DealerGroup.Constants.dealerGroup.dealers.any();
         BooleanExpression expression = qDealer.company.in(companies);
         assertNotNull(expression);
     }

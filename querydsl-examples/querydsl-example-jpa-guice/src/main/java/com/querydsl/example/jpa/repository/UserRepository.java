@@ -6,7 +6,7 @@ import com.querydsl.example.jpa.model.User;
 
 import java.util.List;
 
-import static com.querydsl.example.jpa.model.QUser.user;
+import static com.querydsl.example.jpa.model.QUser.Constants.user;
 
 @Transactional
 public class UserRepository extends AbstractRepository<User> {

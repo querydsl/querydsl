@@ -45,7 +45,7 @@ public class JodaTimeSupportTest extends AbstractTest {
 
     @Test
     public void test() throws IllegalAccessException, NoSuchFieldException {
-        start(QJodaTimeSupportTest_JodaTimeSupport.class, QJodaTimeSupportTest_JodaTimeSupport.jodaTimeSupport);
+        start(QJodaTimeSupportTest_JodaTimeSupport.class, QJodaTimeSupportTest_JodaTimeSupport.Constants.jodaTimeSupport);
         match(DateTimePath.class, "dateMidnight");
         matchType(DateMidnight.class, "dateMidnight");
         match(DateTimePath.class, "dateTime");

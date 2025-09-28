@@ -26,9 +26,11 @@ import com.querydsl.core.types.dsl.*;
  */
 public class QAnimal extends EntityPathBase<Animal> {
 
-    private static final long serialVersionUID = 781156670;
+    public static final class Constants {
+        public static final QAnimal animal = new QAnimal("animal");
+    }
 
-    public static final QAnimal animal = new QAnimal("animal");
+    private static final long serialVersionUID = 781156670;
 
     public final BooleanPath alive = createBoolean("alive");
 

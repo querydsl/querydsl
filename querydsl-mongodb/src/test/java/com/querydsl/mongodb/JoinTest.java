@@ -27,7 +27,7 @@ public class JoinTest {
     private final Datastore ds;
 
     private final String dbname = "testdb";
-    private final QUser user = QUser.user;
+    private final QUser user = QUser.Constants.user;
     private final QUser friend = new QUser("friend");
     private final QUser friend2 = new QUser("friend2");
     private final QUser enemy = new QUser("enemy");

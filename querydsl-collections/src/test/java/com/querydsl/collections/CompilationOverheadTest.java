@@ -23,7 +23,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 public class CompilationOverheadTest {
 
-    private static final QCat cat = QCat.cat;
+    private static final QCat cat = QCat.Constants.cat;
 
     @Test
     public void test() {

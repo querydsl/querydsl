@@ -26,7 +26,7 @@ import com.querydsl.core.types.Predicate;
 
 public class CollectionAnyVisitorTest {
 
-    private QCat cat = QCat.cat;
+    private QCat cat = QCat.Constants.cat;
 
     @Test
     public void path() {

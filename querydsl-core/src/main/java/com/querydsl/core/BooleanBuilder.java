@@ -29,7 +29,7 @@ import java.util.Objects;
  * <p>Usage example:</p>
  *
  * <pre>
- * QEmployee employee = QEmployee.employee;
+ * QEmployee employee = QEmployee.Constants.employee;
  * BooleanBuilder builder = new BooleanBuilder();
  * for (String name : names) {
  *     builder.or(employee.name.equalsIgnoreCase(name));

@@ -33,7 +33,7 @@ public class ArrayTest {
 
     @Test
     public void test() {
-        QArrayTest_ArrayTestEntity entity = QArrayTest_ArrayTestEntity.arrayTestEntity;
+        QArrayTest_ArrayTestEntity entity = QArrayTest_ArrayTestEntity.Constants.arrayTestEntity;
         assertEquals(ArrayTestEntity[].class, entity.entityArray.getType());
         assertEquals(ArrayTestEntity.class, entity.entityArray.get(0).getType());
     }

@@ -31,7 +31,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QCat catMate = new QCat("cat_mate");
         mixin.from(cat);
         mixin.orderBy(cat.mate.name.asc());
@@ -47,7 +47,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_nonRoot_twice() {
-        QDepartment department = QDepartment.department;
+        QDepartment department = QDepartment.Constants.department;
         QCompany departmentCompany = new QCompany("department_company");
         QEmployee departmentCompanyCeo = new QEmployee("department_company_ceo");
         mixin.from(department);
@@ -65,7 +65,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_where() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         mixin.from(cat);
         mixin.where(cat.mate.name.isNotNull());
         mixin.orderBy(cat.mate.name.asc());
@@ -77,7 +77,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_groupBy() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         mixin.from(cat);
         mixin.groupBy(cat.mate.name);
         mixin.orderBy(cat.mate.name.asc());
@@ -89,7 +89,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_operation() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QCat catMate = new QCat("cat_mate");
         mixin.from(cat);
         mixin.orderBy(cat.mate.name.lower().asc());
@@ -105,7 +105,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_long() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QCat catMate = new QCat("cat_mate");
         QCat catMateMate = new QCat("cat_mate_mate");
         mixin.from(cat);
@@ -123,7 +123,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_reuse() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QCat mate = new QCat("mate");
         mixin.from(cat);
         mixin.leftJoin(cat.mate, mate);
@@ -140,7 +140,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_long_reuse() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QCat mate = new QCat("mate");
         QCat mateMate = new QCat("mate_mate");
         mixin.from(cat);
@@ -159,7 +159,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_any() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QCat catKittens = new QCat("cat_kittens");
         mixin.from(cat);
         mixin.orderBy(cat.kittens.any().name.asc());
@@ -175,7 +175,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_embeddable() {
-        QBookVersion bookVersion = QBookVersion.bookVersion;
+        QBookVersion bookVersion = QBookVersion.Constants.bookVersion;
         mixin.from(bookVersion);
         mixin.orderBy(bookVersion.definition.name.asc());
 
@@ -189,7 +189,7 @@ public class JPAQueryMixinTest {
     @SuppressWarnings("unchecked")
     @Test
     public void orderBy_embeddable2() {
-        QArticle article = QArticle.article;
+        QArticle article = QArticle.Constants.article;
         QArticle articleContentArticle = new QArticle("article_content_article");
         mixin.from(article);
         mixin.orderBy(article.content.article.name.asc());
@@ -206,7 +206,7 @@ public class JPAQueryMixinTest {
     @SuppressWarnings("unchecked")
     @Test
     public void orderBy_embeddable_collection() {
-        QBookVersion bookVersion = QBookVersion.bookVersion;
+        QBookVersion bookVersion = QBookVersion.Constants.bookVersion;
         QBookMark bookMark = new QBookMark("bookVersion_definition_bookMarks");
         mixin.from(bookVersion);
         mixin.orderBy(bookVersion.definition.bookMarks.any().comment.asc());
@@ -220,7 +220,7 @@ public class JPAQueryMixinTest {
 
     @Test
     public void orderBy_nullsLast() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         mixin.from(cat);
         mixin.orderBy(cat.mate.name.asc().nullsLast());
         assertEquals(

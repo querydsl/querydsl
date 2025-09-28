@@ -35,6 +35,6 @@ public class JodaTest {
 
     @Test
     public void test() {
-        assertEquals(Date.class, QJodaTest_BaseEntity.baseEntity.createdDate.getType());
+        assertEquals(Date.class, QJodaTest_BaseEntity.Constants.baseEntity.createdDate.getType());
     }
 }

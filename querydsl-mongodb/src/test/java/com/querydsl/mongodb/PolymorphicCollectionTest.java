@@ -45,19 +45,19 @@ public class PolymorphicCollectionTest {
 
     @Test
     public void countFishFromName() {
-        assertEquals(where(QFood.food.name.eq("f1")).fetchCount(), 1);
+        assertEquals(where(QFood.Constants.food.name.eq("f1")).fetchCount(), 1);
     }
 
     @Test
     public void countFishFromNameAndBreed() {
-        assertEquals(where(QFood.food.name.eq("f1")
-            .and(QFish.fish.breed.eq("unknown"))).fetchCount(), 1);
+        assertEquals(where(QFood.Constants.food.name.eq("f1")
+            .and(QFish.Constants.fish.breed.eq("unknown"))).fetchCount(), 1);
     }
 
     @Test
     public void countFishFromNameAndBreedWithCast() {
-        assertEquals(where(QFood.food.name.eq("f1")
-                .and(QFood.food.as(QFish.class).breed.eq("unknown"))).fetchCount(), 1);
+        assertEquals(where(QFood.Constants.food.name.eq("f1")
+                .and(QFood.Constants.food.as(QFish.class).breed.eq("unknown"))).fetchCount(), 1);
     }
 
     @Test
@@ -66,11 +66,11 @@ public class PolymorphicCollectionTest {
     }
 
     private Predicate isFish() {
-        return QFood.food.name.startsWith("f");
+        return QFood.Constants.food.name.startsWith("f");
     }
 
     private MorphiaQuery<Food> query() {
-        return new MorphiaQuery<Food>(morphia, ds, QFood.food);
+        return new MorphiaQuery<Food>(morphia, ds, QFood.Constants.food);
     }
 
     private MorphiaQuery<Food> where(final Predicate... e) {

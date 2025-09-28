@@ -40,7 +40,7 @@ public class QueryEmbedded6Test {
 
     @Test
     public void user_list_any() {
-        assertEquals(QQueryEmbedded6Test_User.class, QQueryEmbedded6Test_User.user.list.any().getClass());
+        assertEquals(QQueryEmbedded6Test_User.class, QQueryEmbedded6Test_User.Constants.user.list.any().getClass());
     }
 
 }

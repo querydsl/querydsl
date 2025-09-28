@@ -51,8 +51,8 @@ public class ConstructorTest {
 
     @Test
     public void category_super_reference_is_correct() {
-        assertEquals(QConstructorTest_CategorySuperclass.class, QConstructorTest_Category.category._super.getClass());
-        assertEquals(Category.class, QConstructorTest_Category.category._super.getType());
+        assertEquals(QConstructorTest_CategorySuperclass.class, QConstructorTest_Category.Constants.category._super.getClass());
+        assertEquals(Category.class, QConstructorTest_Category.Constants.category._super.getType());
     }
 
 }

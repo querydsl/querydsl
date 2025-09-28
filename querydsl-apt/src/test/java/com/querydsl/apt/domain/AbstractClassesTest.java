@@ -86,14 +86,14 @@ public class AbstractClassesTest {
 
     @Test
     public void grant_id_type() {
-        Assert.assertEquals(QAbstractClassesTest_Party.class, QAbstractClassesTest_Grant.grant.id.getClass());
-        assertEquals(Party.class, QAbstractClassesTest_Grant.grant.id.getType());
+        Assert.assertEquals(QAbstractClassesTest_Party.class, QAbstractClassesTest_Grant.Constants.grant.id.getClass());
+        assertEquals(Party.class, QAbstractClassesTest_Grant.Constants.grant.id.getType());
     }
 
     @Test
     public void party_id_type() {
-        assertEquals(NumberPath.class, QAbstractClassesTest_Party.party.id.getClass());
-        assertEquals(Long.class, QAbstractClassesTest_Party.party.id.getType());
+        assertEquals(NumberPath.class, QAbstractClassesTest_Party.Constants.party.id.getClass());
+        assertEquals(Long.class, QAbstractClassesTest_Party.Constants.party.id.getType());
     }
 
 }

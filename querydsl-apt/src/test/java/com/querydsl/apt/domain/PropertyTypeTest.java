@@ -33,6 +33,6 @@ public class PropertyTypeTest {
 
     @Test
     public void numberAsString_like() {
-        QPropertyTypeTest_Entity.entity.numberAsString.like("a");
+        QPropertyTypeTest_Entity.Constants.entity.numberAsString.like("a");
     }
 }

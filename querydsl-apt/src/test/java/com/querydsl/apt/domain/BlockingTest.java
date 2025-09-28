@@ -48,7 +48,7 @@ public class BlockingTest extends AbstractTest {
 
     @Test
     public void entity_fields_are_available() {
-        start(QBlockingTest_Entity.class, QBlockingTest_Entity.entity);
+        start(QBlockingTest_Entity.class, QBlockingTest_Entity.Constants.entity);
         assertPresent("field1");
         assertMissing("blockedField");
     }

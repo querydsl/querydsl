@@ -10,7 +10,7 @@ public class NullSafetyTest extends AbstractQueryTest {
 
     @Test
     public void filters() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         CollQuery<Cat> query = CollQueryFactory.<Cat> from(cat, Arrays.<Cat> asList(new Cat(), new Cat("Bob")));
         assertEquals(1L, query.where(cat.name.eq("Bob")).fetchCount());
     }
@@ -23,7 +23,7 @@ public class NullSafetyTest extends AbstractQueryTest {
         cat1.setKittens(Arrays.asList(kitten1, kitten2));
         Cat cat2 = new Cat();
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QCat kitten = new QCat("kitten");
         CollQuery<Cat> query = CollQueryFactory.<Cat> from(cat, Arrays.<Cat> asList(cat1, cat2)).innerJoin(cat.kittens, kitten);
         assertEquals(1, query.where(kitten.name.eq("Bob")).fetchCount());

@@ -32,7 +32,7 @@ import com.querydsl.jpa.testutil.JPATestRunner;
 @RunWith(JPATestRunner.class)
 public class SerializationBase implements JPATest {
 
-    private QCat cat = QCat.cat;
+    private QCat cat = QCat.Constants.cat;
 
     private EntityManager entityManager;
 

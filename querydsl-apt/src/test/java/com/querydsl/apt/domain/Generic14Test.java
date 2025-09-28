@@ -60,16 +60,16 @@ public class Generic14Test extends AbstractTest {
 
     @Test
     public void test() throws IllegalAccessException, NoSuchFieldException {
-        assertNotNull(QGeneric14Test_AbstractPersistable.abstractPersistable);
+        assertNotNull(QGeneric14Test_AbstractPersistable.Constants.abstractPersistable);
 
-        start(QGeneric14Test_BasePersistable.class, QGeneric14Test_BasePersistable.basePersistable);
+        start(QGeneric14Test_BasePersistable.class, QGeneric14Test_BasePersistable.Constants.basePersistable);
         matchType(Serializable.class, "id");
 
-        start(QGeneric14Test_BaseReferencablePersistable.class, QGeneric14Test_BaseReferencablePersistable.baseReferencablePersistable);
+        start(QGeneric14Test_BaseReferencablePersistable.class, QGeneric14Test_BaseReferencablePersistable.Constants.baseReferencablePersistable);
         matchType(Class.class, "entityClass");
         matchType(Serializable.class, "id");
 
-        start(QGeneric14Test_UserAccount.class, QGeneric14Test_UserAccount.userAccount);
+        start(QGeneric14Test_UserAccount.class, QGeneric14Test_UserAccount.Constants.userAccount);
         matchType(Long.class, "id");
     }
 }

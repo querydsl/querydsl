@@ -28,7 +28,7 @@ import com.querydsl.core.types.*;
  * e.g.
  *
  * <pre>{@code
- * QCustomer c = QCustomer.customer;
+ * QCustomer c = QCustomer.Constants.customer;
  * Expression<Integer> cases = c.annualSpending
  *     .when(1000l).then(1)
  *     .when(2000l).then(2)

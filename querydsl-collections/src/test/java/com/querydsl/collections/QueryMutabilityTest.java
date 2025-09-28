@@ -27,7 +27,7 @@ public class QueryMutabilityTest {
     public void test() throws SecurityException, IllegalArgumentException,
             NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, IOException {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         CollQuery<?> query = new CollQuery<Void>();
         query.from(cat, Collections.<Cat> emptyList());
         new QueryMutability(query).test(cat.id, cat.name);

@@ -121,14 +121,14 @@ public class GenericTest extends AbstractTest {
 
     @Test
     public void test() throws NoSuchFieldException, IllegalAccessException {
-        assertNotNull(QGenericTest_ItemType.itemType);
-        assertNotNull(QGenericTest_GenericType.genericType);
-        assertNotNull(QGenericTest_GenericType2.genericType2);
+        assertNotNull(QGenericTest_ItemType.Constants.itemType);
+        assertNotNull(QGenericTest_GenericType.Constants.genericType);
+        assertNotNull(QGenericTest_GenericType2.Constants.genericType2);
 
-        start(QGenericTest_GenericType.class, QGenericTest_GenericType.genericType);
+        start(QGenericTest_GenericType.class, QGenericTest_GenericType.Constants.genericType);
         matchType(ItemType.class, "itemType");
 
-        start(QGenericTest_GenericType2.class, QGenericTest_GenericType2.genericType2);
+        start(QGenericTest_GenericType2.class, QGenericTest_GenericType2.Constants.genericType2);
         matchType(ItemType.class, "itemType");
         matchType(GenericSimpleType.class, "prop1");
         matchType(GenericSimpleType.class, "prop2");

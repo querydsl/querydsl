@@ -31,9 +31,10 @@ import com.querydsl.sql.RelationalPathBase;
 //@Table("EMPLOYEE")
 public class QEmployee extends RelationalPathBase<Employee> {
 
+    public static final class Constants {
+        public static final QEmployee employee = new QEmployee("EMPLOYEE");
+    }
     private static final long serialVersionUID = 1394463749655231079L;
-
-    public static final QEmployee employee = new QEmployee("EMPLOYEE");
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 

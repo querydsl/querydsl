@@ -358,7 +358,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void count_without_pK() {
-        assertEquals(10, query().from(QEmployeeNoPK.employee).fetchCount());
+        assertEquals(10, query().from(QEmployeeNoPK.Constants.employee).fetchCount());
     }
 
     @Test
@@ -391,7 +391,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void count_distinct_without_pK() {
-        assertEquals(10, query().from(QEmployeeNoPK.employee).distinct().fetchCount());
+        assertEquals(10, query().from(QEmployeeNoPK.Constants.employee).distinct().fetchCount());
     }
 
     @Test
@@ -1317,7 +1317,7 @@ public class SelectBase extends AbstractBaseTest {
     @Test
     @ExcludeIn({DERBY, FIREBIRD, POSTGRESQL})
     public void number_as_boolean() {
-        QNumberTest numberTest = QNumberTest.numberTest;
+        QNumberTest numberTest = QNumberTest.Constants.numberTest;
         delete(numberTest).execute();
         insert(numberTest).set(numberTest.col1Boolean, true).execute();
         insert(numberTest).set(numberTest.col1Number, (byte) 1).execute();
@@ -1327,7 +1327,7 @@ public class SelectBase extends AbstractBaseTest {
 
     @Test
     public void number_as_boolean_Null() {
-        QNumberTest numberTest = QNumberTest.numberTest;
+        QNumberTest numberTest = QNumberTest.Constants.numberTest;
         delete(numberTest).execute();
         insert(numberTest).setNull(numberTest.col1Boolean).execute();
         insert(numberTest).setNull(numberTest.col1Number).execute();

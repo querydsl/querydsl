@@ -24,7 +24,9 @@ import com.querydsl.core.types.dsl.*;
 @SuppressWarnings("serial")
 public class QProduct extends EntityPathBase<com.querydsl.jdo.test.domain.Product> {
 
-    public static final QProduct product = new QProduct("product");
+    public static final class Constants {
+        public static final QProduct product = new QProduct("product");
+    }
 
     public final StringPath description = createString("description");
 

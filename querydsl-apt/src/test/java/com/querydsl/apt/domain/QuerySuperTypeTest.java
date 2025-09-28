@@ -25,7 +25,7 @@ public class QuerySuperTypeTest {
     @Test
     public void jdoEntity() {
         assertEquals(QQuerySuperTypeTest_Supertype.class,
-                QQuerySuperTypeTest_JdoEntity.jdoEntity.references.any().getClass());
+                QQuerySuperTypeTest_JdoEntity.Constants.jdoEntity.references.any().getClass());
     }
 
 }

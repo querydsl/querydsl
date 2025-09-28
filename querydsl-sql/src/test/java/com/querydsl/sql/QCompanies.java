@@ -16,9 +16,10 @@ import com.querydsl.core.types.dsl.StringPath;
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
 public class QCompanies extends com.querydsl.sql.RelationalPathBase<QCompanies> {
 
+    public static class Constants {
+        public static final QCompanies companies = new QCompanies("COMPANIES");
+    }
     private static final long serialVersionUID = 1808918375;
-
-    public static final QCompanies companies = new QCompanies("COMPANIES");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

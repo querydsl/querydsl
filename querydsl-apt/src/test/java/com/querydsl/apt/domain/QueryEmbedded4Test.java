@@ -65,22 +65,22 @@ public class QueryEmbedded4Test {
 
     @Test
     public void user_address_city() {
-        assertNotNull(QQueryEmbedded4Test_User.user.address.city);
+        assertNotNull(QQueryEmbedded4Test_User.Constants.user.address.city);
     }
 
     @Test
     public void user_address_name() {
-        assertNotNull(QQueryEmbedded4Test_User.user.address.name);
+        assertNotNull(QQueryEmbedded4Test_User.Constants.user.address.name);
     }
 
     @Test
     public void user_address_city_name() {
-        assertNotNull(QQueryEmbedded4Test_User.user.address.city.name);
+        assertNotNull(QQueryEmbedded4Test_User.Constants.user.address.city.name);
     }
 
     @Test
     public void user_complex_a() {
-        assertNotNull(QQueryEmbedded4Test_User.user.complex.a);
+        assertNotNull(QQueryEmbedded4Test_User.Constants.user.complex.a);
     }
 
 }

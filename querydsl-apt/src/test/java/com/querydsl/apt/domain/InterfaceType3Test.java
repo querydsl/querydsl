@@ -25,9 +25,9 @@ public class InterfaceType3Test {
 
     @Test
     public void test() {
-        assertNotNull(QInterfaceType3Test_C.c1.a);
-        assertNotNull(QInterfaceType3Test_C.c1.b);
-        assertNotNull(QInterfaceType3Test_C.c1.c);
+        assertNotNull(QInterfaceType3Test_C.Constants.c1.a);
+        assertNotNull(QInterfaceType3Test_C.Constants.c1.b);
+        assertNotNull(QInterfaceType3Test_C.Constants.c1.c);
     }
 
 }

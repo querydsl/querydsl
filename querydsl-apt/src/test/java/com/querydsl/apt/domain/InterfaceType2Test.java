@@ -101,7 +101,7 @@ public class InterfaceType2Test {
     public void test() {
         Assert.assertEquals(
                 QInterfaceType2Test_PartyImpl.class,
-                QInterfaceType2Test_UserImpl.userImpl.party.getClass());
+                QInterfaceType2Test_UserImpl.Constants.userImpl.party.getClass());
     }
 
 }

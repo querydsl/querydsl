@@ -34,7 +34,7 @@ public class Generic15Test extends AbstractTest {
 
     @Test
     public void test() throws IllegalAccessException, NoSuchFieldException {
-        start(QGeneric15Test_MyContainable.class, QGeneric15Test_MyContainable.myContainable);
+        start(QGeneric15Test_MyContainable.class, QGeneric15Test_MyContainable.Constants.myContainable);
         match(QGeneric15Test_MyCompound.class, "compound");
         matchType(MyCompound.class, "compound");
     }

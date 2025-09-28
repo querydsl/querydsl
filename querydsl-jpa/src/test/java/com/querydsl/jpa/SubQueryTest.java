@@ -51,8 +51,8 @@ public class SubQueryTest extends AbstractQueryTest {
 
     @Test
     public void innerJoin2() {
-        QEmployee employee = QEmployee.employee;
-        QUser user = QUser.user;
+        QEmployee employee = QEmployee.Constants.employee;
+        QUser user = QUser.Constants.user;
         assertEquals("select employee\nfrom Employee employee\n  inner join employee.user as user",
                 selectFrom(employee).innerJoin(employee.user, user).toString());
     }

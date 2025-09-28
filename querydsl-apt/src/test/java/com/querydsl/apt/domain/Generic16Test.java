@@ -42,9 +42,9 @@ public class Generic16Test extends AbstractTest {
 
     @Test
     public void test() {
-        assertNotNull(QGeneric16Test_HidaBez.hidaBez);
-        assertNotNull(QGeneric4Test_HidaBezGruppe.hidaBezGruppe);
-        assertTrue(QGeneric16Test_HidaBezGruppe.hidaBezGruppe.bez.getElementType().equals(HidaBez.class));
+        assertNotNull(QGeneric16Test_HidaBez.Constants.hidaBez);
+        assertNotNull(QGeneric4Test_HidaBezGruppe.Constants.hidaBezGruppe);
+        assertTrue(QGeneric16Test_HidaBezGruppe.Constants.hidaBezGruppe.bez.getElementType().equals(HidaBez.class));
     }
 
 }

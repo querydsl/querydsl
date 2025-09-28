@@ -30,7 +30,7 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class SQLSubQueryTest {
 
-    private static final QEmployee employee = QEmployee.employee;
+    private static final QEmployee employee = QEmployee.Constants.employee;
 
     @Test(expected = IllegalArgumentException.class)
     public void unknownOperator() {
@@ -78,7 +78,7 @@ public class SQLSubQueryTest {
     @Test
     public void in() {
         SubQueryExpression<Integer> ints = select(employee.id).from(employee);
-        QEmployee.employee.id.in(ints);
+        QEmployee.Constants.employee.id.in(ints);
     }
 
     @SuppressWarnings("unchecked")
@@ -86,7 +86,7 @@ public class SQLSubQueryTest {
     public void in_union() {
         SubQueryExpression<Integer> ints1 = select(employee.id).from(employee);
         SubQueryExpression<Integer> ints2 = select(employee.id).from(employee);
-        QEmployee.employee.id.in(union(ints1, ints2));
+        QEmployee.Constants.employee.id.in(union(ints1, ints2));
     }
 
     @SuppressWarnings("unchecked")
@@ -94,7 +94,7 @@ public class SQLSubQueryTest {
     public void in_union2() {
         SubQueryExpression<Integer> ints1 = select(employee.id).from(employee);
         SubQueryExpression<Integer> ints2 = select(employee.id).from(employee);
-        QEmployee.employee.id.in(union(ints1, ints2));
+        QEmployee.Constants.employee.id.in(union(ints1, ints2));
     }
 
     @SuppressWarnings("unchecked")
@@ -147,7 +147,7 @@ public class SQLSubQueryTest {
     @SuppressWarnings("unchecked")
     @Test
     public void union1() {
-        QSurvey survey = QSurvey.survey;
+        QSurvey survey = QSurvey.Constants.survey;
         SubQueryExpression<Integer> q1 = select(survey.id).from(survey);
         SubQueryExpression<Integer> q2 = select(survey.id).from(survey);
         union(q1, q2);

@@ -41,7 +41,7 @@ public class QueryPerformanceTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void benchmark1() {
         // 15857
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         CollQueryFactory.from(cat, cats).where(cat.id.eq(ThreadLocalRandom.current().nextInt(100) % size)).select(cat).fetch();
     }
 

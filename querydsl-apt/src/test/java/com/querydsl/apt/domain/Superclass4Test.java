@@ -36,13 +36,13 @@ public class Superclass4Test {
 
     @Test
     public void superClass_properties() {
-        assertNotNull(QSuperclass4Test_SuperClass.superClass.superClassProperty);
+        assertNotNull(QSuperclass4Test_SuperClass.Constants.superClass.superClassProperty);
     }
 
     @Test
     public void entity_properties() {
-        assertNotNull(QSuperclass4Test_Entity.entity.entityProperty);
-        assertNotNull(QSuperclass4Test_Entity.entity.superClassProperty);
+        assertNotNull(QSuperclass4Test_Entity.Constants.entity.entityProperty);
+        assertNotNull(QSuperclass4Test_Entity.Constants.entity.superClassProperty);
     }
 
 }

@@ -30,7 +30,7 @@ import com.querydsl.jdo.test.domain.QProduct;
 
 public class OrderingTest extends AbstractJDOTest {
 
-    private QProduct product = QProduct.product;
+    private QProduct product = QProduct.Constants.product;
 
     @Test
     public void order_asc() {

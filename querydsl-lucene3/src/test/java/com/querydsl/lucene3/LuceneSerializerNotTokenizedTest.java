@@ -13,7 +13,7 @@
  */
 package com.querydsl.lucene3;
 
-import static com.querydsl.lucene3.QPerson.person;
+import static com.querydsl.lucene3.QPerson.Constants.person;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;

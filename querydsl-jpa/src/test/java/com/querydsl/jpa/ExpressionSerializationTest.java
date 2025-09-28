@@ -15,7 +15,7 @@ public class ExpressionSerializationTest {
 
     @Test
     public void serialize1() throws Exception {
-        Expression<?> expr = QCat.cat.name.eq("test");
+        Expression<?> expr = QCat.Constants.cat.name.eq("test");
         Expression<?> expr2 = serialize(expr);
 
         assertEquals(expr, expr2);
@@ -24,7 +24,7 @@ public class ExpressionSerializationTest {
 
     @Test
     public void query() throws ClassNotFoundException, IOException {
-        selectFrom(QCat.cat).where(serialize(QCat.cat.name.eq("test")));
+        selectFrom(QCat.Constants.cat).where(serialize(QCat.Constants.cat.name.eq("test")));
     }
 
 }

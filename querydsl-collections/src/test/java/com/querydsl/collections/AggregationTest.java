@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class AggregationTest extends AbstractQueryTest {
 
-    private static final QCat cat = QCat.cat;
+    private static final QCat cat = QCat.Constants.cat;
 
     private CollQuery<?> query;
 

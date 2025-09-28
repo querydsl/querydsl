@@ -29,14 +29,14 @@ public class QueryMutabilityTest extends AbstractJDOTest {
     public void queryMutability() throws IOException, SecurityException,
             IllegalArgumentException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException {
-        QProduct product = QProduct.product;
+        QProduct product = QProduct.Constants.product;
         JDOQuery<?> query = query().from(product);
         new QueryMutability(query).test(product.name, product.description);
     }
 
     @Test
     public void clone_() {
-        QProduct product = QProduct.product;
+        QProduct product = QProduct.Constants.product;
         JDOQuery<?> query = new JDOQuery<Void>().from(product).where(product.name.isNotNull());
         JDOQuery<?> query2 = query.clone(pm);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());

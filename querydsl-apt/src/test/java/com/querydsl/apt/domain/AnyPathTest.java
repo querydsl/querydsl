@@ -48,8 +48,8 @@ public class AnyPathTest {
     }
 
     private BooleanExpression authorFilter(Student student) {
-        //return QFoo.foo.bars.any().key.student.eq(Student student);
-        return QAnyPathTest_Foo.foo.bars.any().key.student.eq(student);
+        //return QFoo.Constants.foo.bars.any().key.student.eq(Student student);
+        return QAnyPathTest_Foo.Constants.foo.bars.any().key.student.eq(student);
     }
 
     @Test

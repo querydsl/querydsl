@@ -26,7 +26,7 @@ import com.querydsl.jdo.test.domain.QProduct;
 
 public class GroupByTest extends AbstractJDOTest {
 
-    private QProduct product = QProduct.product;
+    private QProduct product = QProduct.Constants.product;
 
     @Test
     public void distinct() {

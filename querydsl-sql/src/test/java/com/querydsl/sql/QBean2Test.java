@@ -29,8 +29,11 @@ public class QBean2Test {
 
 //    @Table("PERSON")
     public static class QPerson extends RelationalPathBase<QPerson> {
+
+        public static class Constants {
+            public static final QPerson person = new QPerson("PERSON");
+        }
         private static final long serialVersionUID = 609527362;
-        public static final QPerson person = new QPerson("PERSON");
         public final StringPath firstName = createString("firstName");
         public final NumberPath<Integer> id = createNumber("id", Integer.class);
         public final StringPath lastName = createString("lastName");
@@ -85,7 +88,7 @@ public class QBean2Test {
 
     @Test
     public void newInstance() {
-        QPerson p = QPerson.person;
+        QPerson p = QPerson.Constants.person;
         QBean<Person> projection = Projections.bean(Person.class, p.id, p.firstName.as("firstName"), p.lastName.as("lastName"));
 
         Person person = projection.newInstance(3, "John", "Doe");

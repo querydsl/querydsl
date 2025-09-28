@@ -23,7 +23,7 @@ import com.querydsl.sql.SQLQuery;
 
 public class SpatialBase extends AbstractBaseTest {
 
-    private static final QShapes shapes = QShapes.shapes;
+    private static final QShapes shapes = QShapes.Constants.shapes;
 
     // point 1-5
     // linestring 6-7
@@ -59,7 +59,7 @@ public class SpatialBase extends AbstractBaseTest {
     @Test
     @IncludeIn(POSTGRESQL)
     public void spatialRefSys() {
-        QSpatialRefSys spatialRefSys = QSpatialRefSys.spatialRefSys;
+        QSpatialRefSys spatialRefSys = QSpatialRefSys.Constants.spatialRefSys;
         query().from(spatialRefSys).select(spatialRefSys).fetch();
     }
 
@@ -109,7 +109,7 @@ public class SpatialBase extends AbstractBaseTest {
     @Test
     @ExcludeIn(MYSQL)
     public void point_distance() {
-        QShapes shapes1 = QShapes.shapes;
+        QShapes shapes1 = QShapes.Constants.shapes;
         QShapes shapes2 = new QShapes("shapes2");
         for (Tuple tuple : query().from(shapes1, shapes2)
                     .where(shapes1.id.loe(5), shapes2.id.loe(5))
@@ -240,7 +240,7 @@ public class SpatialBase extends AbstractBaseTest {
 
     @Test
     public void point_methods2() {
-        QShapes shapes1 = QShapes.shapes;
+        QShapes shapes1 = QShapes.Constants.shapes;
         QShapes shapes2 = new QShapes("shapes2");
 
         List<Expression<?>> expressions = new ArrayList<>();

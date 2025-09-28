@@ -32,7 +32,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         List<Cat> kittens = CollQueryFactory.<Cat> from(cat, Arrays.<Cat> asList(a,b)).<Cat> select(cat.kittens.any()).fetch();
         assertEquals(Arrays.asList(aa,ab,ac,ba,bb), kittens);
     }
@@ -50,7 +50,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         List<String> kittens = CollQueryFactory.<Cat> from(cat, Arrays.<Cat> asList(a,b))
                 .select(cat.kittens.any().name).fetch();
         assertEquals(Arrays.asList("aa","ab","ac","ba","bb"), kittens);
@@ -69,7 +69,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         List<Cat> kittens = CollQueryFactory.<Cat> from(cat, Arrays.<Cat> asList(a,b))
                 .where(cat.kittens.any().name.startsWith("a"))
                 .select(cat.kittens.any()).fetch();
@@ -90,7 +90,7 @@ public class CollectionAnyTest extends AbstractQueryTest {
         Cat bb = new Cat("bb");
         b.setKittens(Arrays.asList(ba, bb));
 
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         List<String> kittens = CollQueryFactory.<Cat> from(cat, Arrays.<Cat> asList(a,b))
                 .where(cat.kittens.any().name.startsWith("a"))
                 .select(cat.kittens.any().name).fetch();

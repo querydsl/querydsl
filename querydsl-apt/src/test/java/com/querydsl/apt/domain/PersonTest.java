@@ -21,7 +21,7 @@ public class PersonTest {
 
     @Test
     public void test() {
-        assertNotNull(QPerson.person2.person);
+        assertNotNull(QPerson.Constants.person2.person);
     }
 
 }

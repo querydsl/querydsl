@@ -42,7 +42,7 @@ public class JPQLSerializerTest {
     @Test
     public void and_or() {
         //A.a.id.eq(theId).and(B.b.on.eq(false).or(B.b.id.eq(otherId)));
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         Predicate pred = cat.id.eq(1).and(cat.name.eq("Kitty").or(cat.name.eq("Boris")));
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.handle(pred);
@@ -52,7 +52,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void case1() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
         Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(2)
                 .when(cat.toes.eq(3)).then(3)
@@ -63,7 +63,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void case1_hibernate() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(2)
                 .when(cat.toes.eq(3)).then(3)
@@ -74,7 +74,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void case2() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
         Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
@@ -85,7 +85,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void case2_hibernate() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         Expression<?> expr = Expressions.cases().when(cat.toes.eq(2)).then(cat.id.multiply(2))
                 .when(cat.toes.eq(3)).then(cat.id.multiply(3))
@@ -96,7 +96,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void count() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
         md.setProjection(cat.mate.countDistinct());
@@ -123,7 +123,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void join_with() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
@@ -147,7 +147,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void delete_clause_uses_dELETE_fROM() {
-        QEmployee employee = QEmployee.employee;
+        QEmployee employee = QEmployee.Constants.employee;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, employee);
@@ -158,7 +158,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void delete_with_subQuery() {
-        QCat parent = QCat.cat;
+        QCat parent = QCat.Constants.cat;
         QCat child = new QCat("kitten");
 
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
@@ -208,14 +208,14 @@ public class JPQLSerializerTest {
     @Test
     public void substring() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         serializer.handle(cat.name.substring(cat.name.length().subtract(1), 1));
         assertEquals("substring(cat.name,length(cat.name) + ?1,?2 - (length(cat.name) - ?3))", serializer.toString());
     }
 
     @Test
     public void nullsFirst() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
@@ -228,7 +228,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void nullsLast() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
@@ -242,12 +242,12 @@ public class JPQLSerializerTest {
     @SuppressWarnings("unchecked")
     @Test
     public void treat() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
-        md.addJoin(JoinType.JOIN, cat.mate.as((Path) QDomesticCat.domesticCat));
-        md.setProjection(QDomesticCat.domesticCat);
+        md.addJoin(JoinType.JOIN, cat.mate.as((Path) QDomesticCat.Constants.domesticCat));
+        md.setProjection(QDomesticCat.Constants.domesticCat);
         serializer.serialize(md, false, null);
         assertEquals("select domesticCat\n" +
                 "from Cat cat\n" +
@@ -256,7 +256,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void treated_path() {
-        QAnimal animal = QAnimal.animal;
+        QAnimal animal = QAnimal.Constants.animal;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, animal);
@@ -271,7 +271,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void openJPA_variables() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(OpenJPATemplates.DEFAULT);
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, cat);
@@ -312,7 +312,7 @@ public class JPQLSerializerTest {
 
     @Test
     public void substring_indexOf() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         cat.name.substring(cat.name.indexOf("")).accept(serializer, null);
         assertEquals("substring(cat.name,locate(?1,cat.name)-1 + ?2)", serializer.toString());

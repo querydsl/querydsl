@@ -44,9 +44,9 @@ public class Generic8Test {
 
     @Test
     public void test() {
-        Assert.assertEquals(String.class, QGeneric8Test_Entity.entity.values.getElementType());
-        Assert.assertEquals(Integer.class, QGeneric8Test_Entity2.entity2.values.getElementType());
-        Assert.assertEquals(String.class, QGeneric8Test_Entity3.entity3.values.getElementType());
+        Assert.assertEquals(String.class, QGeneric8Test_Entity.Constants.entity.values.getElementType());
+        Assert.assertEquals(Integer.class, QGeneric8Test_Entity2.Constants.entity2.values.getElementType());
+        Assert.assertEquals(String.class, QGeneric8Test_Entity3.Constants.entity3.values.getElementType());
     }
 
 }

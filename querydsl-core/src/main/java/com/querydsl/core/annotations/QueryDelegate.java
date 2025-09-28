@@ -46,7 +46,7 @@ import java.lang.annotation.Target;
  * User user = new User();
  * user.setFirstName("John");
  * user.setLastName("Doe");
- * Predicate predicate = QUser.user.like(user);
+ * Predicate predicate = QUser.Constants.user.like(user);
  * </pre>
  *
  * @author tiwe

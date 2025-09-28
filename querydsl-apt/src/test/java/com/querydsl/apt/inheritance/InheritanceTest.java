@@ -84,14 +84,14 @@ public class InheritanceTest {
 
     @Test
     public void test() {
-        assertNotNull(QInheritanceTest_BobbinGenOperation.bobbinGenOperation);
-        assertNotNull(QInheritanceTest_Entity.entity);
-        assertNotNull(QInheritanceTest_FlexPlastic.flexPlastic);
-        assertNotNull(QInheritanceTest_FlexPlasticFilm.flexPlasticFilm);
-        assertNotNull(QInheritanceTest_Merchandise.merchandise);
-        assertNotNull(QInheritanceTest_Operation.operation);
-        assertNotNull(QInheritanceTest_Party.party);
-        assertNotNull(QInheritanceTest_Person.person);
+        assertNotNull(QInheritanceTest_BobbinGenOperation.Constants.bobbinGenOperation);
+        assertNotNull(QInheritanceTest_Entity.Constants.entity);
+        assertNotNull(QInheritanceTest_FlexPlastic.Constants.flexPlastic);
+        assertNotNull(QInheritanceTest_FlexPlasticFilm.Constants.flexPlasticFilm);
+        assertNotNull(QInheritanceTest_Merchandise.Constants.merchandise);
+        assertNotNull(QInheritanceTest_Operation.Constants.operation);
+        assertNotNull(QInheritanceTest_Party.Constants.party);
+        assertNotNull(QInheritanceTest_Person.Constants.person);
 
     }
 

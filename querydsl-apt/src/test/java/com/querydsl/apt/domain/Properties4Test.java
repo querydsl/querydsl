@@ -17,6 +17,6 @@ public class Properties4Test extends AbstractTest {
 
     @Test
     public void test() {
-        assertEquals("8FRecord", QProperties4Test_Naming.naming._8FRecord.getMetadata().getName());
+        assertEquals("8FRecord", QProperties4Test_Naming.Constants.naming._8FRecord.getMetadata().getName());
     }
 }

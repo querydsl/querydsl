@@ -43,11 +43,11 @@ public class GroupByTest {
             new Comment(5, "Comment 5", users.get(1), posts.get(2)),
             new Comment(6, "Comment 6", users.get(2), posts.get(2)));
 
-    private static final QUser user = QUser.user;
+    private static final QUser user = QUser.Constants.user;
 
-    private static final QComment comment = QComment.comment;
+    private static final QComment comment = QComment.Constants.comment;
 
-    private static final QPost post = QPost.post;
+    private static final QPost post = QPost.Constants.post;
 
     private static final ConstructorExpression<Comment> qComment = QComment.create(comment.id, comment.text);
 

@@ -43,8 +43,8 @@ public class TransientTest {
 
     @Test
     public void test() {
-        assertNotNull(QTransientTest_ExampleEntity.exampleEntity.property1);
-        assertNotNull(QTransientTest_ExampleEntity.exampleEntity.property3);
+        assertNotNull(QTransientTest_ExampleEntity.Constants.exampleEntity.property1);
+        assertNotNull(QTransientTest_ExampleEntity.Constants.exampleEntity.property3);
     }
 
 }

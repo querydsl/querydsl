@@ -20,9 +20,11 @@ import com.querydsl.sql.RelationalPathBase;
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
 public class QXmlTest extends RelationalPathBase<QXmlTest> {
 
-    private static final long serialVersionUID = 574759316;
+    public static final class Constants {
+        public static final QXmlTest xmlTest = new QXmlTest("XML_TEST");
+    }
 
-    public static final QXmlTest xmlTest = new QXmlTest("XML_TEST");
+    private static final long serialVersionUID = 574759316;
 
     public final StringPath col = createString("COL");
 

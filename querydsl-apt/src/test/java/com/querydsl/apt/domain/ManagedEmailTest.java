@@ -35,8 +35,8 @@ public class ManagedEmailTest {
 
     @Test
     public void test() {
-        Assert.assertEquals(EmailType.class, QManagedEmailTest_ManagedEmails.managedEmails.emails.getKeyType());
-        assertEquals(ManagedEmailImpl.class, QManagedEmailTest_ManagedEmails.managedEmails.emails.getValueType());
+        Assert.assertEquals(EmailType.class, QManagedEmailTest_ManagedEmails.Constants.managedEmails.emails.getKeyType());
+        assertEquals(ManagedEmailImpl.class, QManagedEmailTest_ManagedEmails.Constants.managedEmails.emails.getValueType());
     }
 
 }

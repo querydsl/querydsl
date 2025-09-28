@@ -19,7 +19,7 @@ public class EntityWithLongIdTest {
 
     @Test
     public void simpleEquals() {
-        QEntityWithLongId root = QEntityWithLongId.entityWithLongId;
+        QEntityWithLongId root = QEntityWithLongId.Constants.entityWithLongId;
         CollQuery<?> query = new CollQuery<Void>().from(root, entities);
         query.where(root.id.eq(1000L));
 

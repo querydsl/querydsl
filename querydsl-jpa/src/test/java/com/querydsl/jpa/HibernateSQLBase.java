@@ -73,7 +73,7 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
     @Test
     public void entityQueries_createQuery() {
         SAnimal cat = new SAnimal("cat");
-        QCat catEntity = QCat.cat;
+        QCat catEntity = QCat.Constants.cat;
 
         Query query = query().from(cat).select(catEntity).createQuery();
         assertEquals(6, query.list().size());
@@ -83,7 +83,7 @@ public class HibernateSQLBase extends AbstractSQLTest implements HibernateTest {
     @ExcludeIn(Target.MYSQL)
     public void entityQueries_createQuery2() {
         SAnimal cat = new SAnimal("CAT");
-        QCat catEntity = QCat.cat;
+        QCat catEntity = QCat.Constants.cat;
 
         Query query = query().from(cat).select(catEntity).createQuery();
         assertEquals(6, query.list().size());

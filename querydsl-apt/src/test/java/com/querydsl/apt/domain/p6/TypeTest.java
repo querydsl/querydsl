@@ -21,8 +21,8 @@ public class TypeTest {
 
     @Test
     public void test() {
-        QType1 type1 = QType1.type1;
-        QType2 type2 = QType2.type2;
+        QType1 type1 = QType1.Constants.type1;
+        QType2 type2 = QType2.Constants.type2;
         assertEquals(type2.getType(), type1.property.getType());
         assertEquals(type2.getClass(), type1.property.getClass());
     }

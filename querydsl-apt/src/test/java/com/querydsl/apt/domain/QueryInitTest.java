@@ -23,9 +23,9 @@ import com.querydsl.core.annotations.QueryInit;
 
 public class QueryInitTest {
 
-    private static final QQueryInitTest_PEntity e1 = QQueryInitTest_PEntity.pEntity;
+    private static final QQueryInitTest_PEntity e1 = QQueryInitTest_PEntity.Constants.pEntity;
 
-    private static final QQueryInitTest_PEntity2 e2 = QQueryInitTest_PEntity2.pEntity2;
+    private static final QQueryInitTest_PEntity2 e2 = QQueryInitTest_PEntity2.Constants.pEntity2;
 
     @QueryEntity
     public static class PEntity {

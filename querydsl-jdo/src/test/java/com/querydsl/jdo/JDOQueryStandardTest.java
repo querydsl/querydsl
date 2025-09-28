@@ -98,11 +98,11 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
         }
     };
 
-    private final QProduct product = QProduct.product;
+    private final QProduct product = QProduct.Constants.product;
 
     private final QProduct otherProduct = new QProduct("otherProduct");
 
-    private final QStore store = QStore.store;
+    private final QStore store = QStore.Constants.store;
 
     private final QStore otherStore = new QStore("otherStore");
 
@@ -190,7 +190,7 @@ public class JDOQueryStandardTest extends AbstractJDOTest {
     @Test
     public void detatchCollection() {
         new JDOQuery<Book>(pm, true)
-                .select(QBook.book).from(QBook.book)
+                .select(QBook.Constants.book).from(QBook.Constants.book)
                 .fetch();
     }
 }

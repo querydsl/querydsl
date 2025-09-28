@@ -42,7 +42,7 @@ public class QueryEmbedded2Test {
 
     @Test
     public void test() {
-        assertNotNull(QQueryEmbedded2Test_Parent.parent.child.childProperty);
+        assertNotNull(QQueryEmbedded2Test_Parent.Constants.parent.child.childProperty);
     }
 
 }

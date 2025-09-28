@@ -27,8 +27,8 @@ public class TemporalTest {
 
     @Test
     public void test() {
-        assertEquals(DatePath.class, QTemporalTest_MyEntity.myEntity.date.getClass());
-        assertEquals(TimePath.class, QTemporalTest_MyEntity.myEntity.time.getClass());
+        assertEquals(DatePath.class, QTemporalTest_MyEntity.Constants.myEntity.date.getClass());
+        assertEquals(TimePath.class, QTemporalTest_MyEntity.Constants.myEntity.time.getClass());
     }
 
 }

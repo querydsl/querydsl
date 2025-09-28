@@ -8,7 +8,7 @@ public class PathTest {
 
     @Test
     public void test() {
-        assertEquals(Path.class, QPath.path.getType());
+        assertEquals(Path.class, QPath.Constants.path.getType());
     }
 
 }

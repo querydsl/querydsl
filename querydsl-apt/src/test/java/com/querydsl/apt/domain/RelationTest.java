@@ -107,7 +107,7 @@ public class RelationTest extends AbstractTest {
 
     @Test
     public void test() throws SecurityException, NoSuchFieldException {
-        start(QRelationTest_RelationType.class, QRelationTest_RelationType.relationType);
+        start(QRelationTest_RelationType.class, QRelationTest_RelationType.Constants.relationType);
         match(EnumPath.class, "enumProperty");
         match(ListPath.class, "enumList");
         match(MapPath.class, "enumMap1");
@@ -148,11 +148,11 @@ public class RelationTest extends AbstractTest {
     @Test
     public void list_usage() {
         String expected = "relationType.list.get(0).set";
-        assertEquals(expected, QRelationTest_RelationType.relationType.list.get(0).set.toString());
-//        assertEquals(expected, QRelationTest_RelationType.relationType.getList(0).set.toString());
+        assertEquals(expected, QRelationTest_RelationType.Constants.relationType.list.get(0).set.toString());
+//        assertEquals(expected, QRelationTest_RelationType.Constants.relationType.getList(0).set.toString());
 
-        assertEquals(List.class, QRelationTest_RelationType.relationType.list.getType());
-        assertEquals(Set.class,  QRelationTest_RelationType.relationType.set.getType());
+        assertEquals(List.class, QRelationTest_RelationType.Constants.relationType.list.getType());
+        assertEquals(Set.class,  QRelationTest_RelationType.Constants.relationType.set.getType());
     }
 
 }

@@ -44,7 +44,7 @@ import java.lang.annotation.Target;
  *
  * <pre>
  * {@code
- * QUser user = QUser.user;
+ * QUser user = QUser.Constants.user;
  * List <UserInfo> result = querydsl.from(user)
  *     .where(user.valid.eq(true))
  *     .select(new QUserInfo(user.firstName, user.lastName))

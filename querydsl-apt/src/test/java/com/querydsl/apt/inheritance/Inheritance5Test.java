@@ -63,7 +63,7 @@ public class Inheritance5Test {
 
     @Test
     public void test() {
-        assertEquals(NumberPath.class, QInheritance5Test_Entity.entity.id.getClass());
+        assertEquals(NumberPath.class, QInheritance5Test_Entity.Constants.entity.id.getClass());
     }
 
 }

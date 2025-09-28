@@ -26,7 +26,7 @@ import com.querydsl.jdo.test.domain.QProduct;
 
 public class AggregateTest extends AbstractJDOTest {
 
-    private final QProduct product = QProduct.product;
+    private final QProduct product = QProduct.Constants.product;
 
     @Test
     public void unique() {

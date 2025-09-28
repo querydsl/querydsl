@@ -90,7 +90,7 @@ public class MongodbDocumentSerializerTest {
 
     @Test
     public void paths() {
-        QUser user = QUser.user;
+        QUser user = QUser.Constants.user;
         assertEquals("user", serializer.visit(user, null));
         assertEquals("addresses", serializer.visit(user.addresses, null));
         assertEquals("addresses", serializer.visit(user.addresses.any(), null));
@@ -100,13 +100,13 @@ public class MongodbDocumentSerializerTest {
 
     @Test
     public void indexedAccess() {
-        QUser user = QUser.user;
+        QUser user = QUser.Constants.user;
         assertEquals("addresses.0.street", serializer.visit(user.addresses.get(0).street, null));
     }
 
     @Test
     public void collectionAny() {
-        QUser user = QUser.user;
+        QUser user = QUser.Constants.user;
         assertQuery(user.addresses.any().street.eq("Aakatu"), document("addresses.street","Aakatu"));
     }
 
@@ -117,7 +117,7 @@ public class MongodbDocumentSerializerTest {
                 document("addresses", Collections.emptyList()),
                 document("addresses",
                     document("$exists", false))));
-        assertQuery(QUser.user.addresses.isEmpty(), expected);
+        assertQuery(QUser.Constants.user.addresses.isEmpty(), expected);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class MongodbDocumentSerializerTest {
                 document("addresses", Collections.emptyList()),
                 document("addresses",
                     document("$exists", false))));
-        assertQuery(QUser.user.addresses.isNotEmpty(), expected);
+        assertQuery(QUser.Constants.user.addresses.isNotEmpty(), expected);
     }
 
     @Test
@@ -269,14 +269,14 @@ public class MongodbDocumentSerializerTest {
     @Test
     public void objectId() {
         ObjectId id = new ObjectId();
-        QPerson person = QPerson.person;
+        QPerson person = QPerson.Constants.person;
         assertQuery(person.id.eq(id), document("id",id));
         assertQuery(person.addressId.eq(id), document("addressId",id));
     }
 
     @Test
     public void path() {
-        QUser user = QUser.user;
+        QUser user = QUser.Constants.user;
         assertEquals("firstName", serializer.visit(user.firstName, null));
         assertEquals("firstName", serializer.visit(user.as(QUser.class).firstName, null));
         assertEquals("mainAddress.street", serializer.visit(user.mainAddress().street, null));

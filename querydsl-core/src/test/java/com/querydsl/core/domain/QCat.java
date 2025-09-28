@@ -27,11 +27,13 @@ import com.querydsl.core.types.dsl.*;
  */
 public class QCat extends EntityPathBase<Cat> {
 
+    public static final class Constants {
+        public static final QCat cat = new QCat("cat");
+    }
+
     private static final long serialVersionUID = -528210988;
 
     private static final PathInits INITS = PathInits.DIRECT;
-
-    public static final QCat cat = new QCat("cat");
 
     public final QAnimal _super = new QAnimal(this);
 

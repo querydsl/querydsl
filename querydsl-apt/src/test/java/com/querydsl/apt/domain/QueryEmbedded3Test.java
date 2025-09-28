@@ -45,8 +45,8 @@ public class QueryEmbedded3Test {
 
     @Test
     public void test() {
-        assertNotNull(QQueryEmbedded3Test_Parent.parent.child.childProperty);
-        assertNotNull(QQueryEmbedded3Test_Parent.parent.children.any().childProperty);
+        assertNotNull(QQueryEmbedded3Test_Parent.Constants.parent.child.childProperty);
+        assertNotNull(QQueryEmbedded3Test_Parent.Constants.parent.children.any().childProperty);
     }
 
 }

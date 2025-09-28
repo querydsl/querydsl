@@ -23,13 +23,13 @@ import com.querydsl.jdo.models.company.QEmployee;
 
 public class SubqueriesTest extends AbstractTest {
 
-    private QDepartment department = QDepartment.department;
+    private QDepartment department = QDepartment.Constants.department;
 
     private QDepartment d = new QDepartment("d");
 
     private QEmployee e = new QEmployee("e");
 
-    private QEmployee employee = QEmployee.employee;
+    private QEmployee employee = QEmployee.Constants.employee;
 
 /*  "SELECT FROM " + Department.class.getName() + " WHERE this.employees.size() == " +
  *  "(SELECT MAX(d.employees.size()) FROM " + Department.class.getName() + " d)"; */

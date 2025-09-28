@@ -45,58 +45,58 @@ public class MySQLQueryFactoryTest {
 
     @Test
     public void from() {
-        assertNotNull(queryFactory.from(QSurvey.survey));
+        assertNotNull(queryFactory.from(QSurvey.Constants.survey));
     }
 
     @Test
     public void delete() {
-        assertNotNull(queryFactory.delete(QSurvey.survey));
+        assertNotNull(queryFactory.delete(QSurvey.Constants.survey));
     }
 
     @Test
     public void insert() {
-        assertNotNull(queryFactory.insert(QSurvey.survey));
+        assertNotNull(queryFactory.insert(QSurvey.Constants.survey));
     }
 
     @Test
     public void insertIgnore() {
-        SQLInsertClause clause = queryFactory.insertIgnore(QSurvey.survey);
+        SQLInsertClause clause = queryFactory.insertIgnore(QSurvey.Constants.survey);
         assertEquals("insert ignore into SURVEY\nvalues ()", clause.toString());
     }
 
     @Test
     public void insertOnDuplicateKeyUpdate() {
-        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey, "c = c+1");
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.Constants.survey, "c = c+1");
         assertEquals("insert into SURVEY\nvalues () on duplicate key update c = c+1", clause.toString());
     }
 
     @Test
     public void insertOnDuplicateKeyUpdate2() {
-        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey, QSurvey.survey.id.eq(2));
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.Constants.survey, QSurvey.Constants.survey.id.eq(2));
         assertEquals("insert into SURVEY\nvalues () on duplicate key update SURVEY.ID = ?", clause.toString());
     }
 
     @Test
     public void insertOnDuplicateKeyUpdate_multiple() {
-        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
-                SQLExpressions.set(QSurvey.survey.id, 2),
-                SQLExpressions.set(QSurvey.survey.name, "B"));
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.Constants.survey,
+                SQLExpressions.set(QSurvey.Constants.survey.id, 2),
+                SQLExpressions.set(QSurvey.Constants.survey.name, "B"));
         assertEquals("insert into SURVEY\n" +
                 "values () on duplicate key update SURVEY.ID = ?, SURVEY.NAME = ?", clause.toString());
     }
 
     @Test
     public void insertOnDuplicateKeyUpdate_values() {
-        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
-                SQLExpressions.set(QSurvey.survey.name, QSurvey.survey.name));
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.Constants.survey,
+                SQLExpressions.set(QSurvey.Constants.survey.name, QSurvey.Constants.survey.name));
         assertEquals("insert into SURVEY\n" +
                 "values () on duplicate key update SURVEY.NAME = values(SURVEY.NAME)", clause.toString());
     }
 
     @Test
     public void insertOnDuplicateKeyUpdate_null() {
-        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey,
-                SQLExpressions.set(QSurvey.survey.name, (String) null));
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.Constants.survey,
+                SQLExpressions.set(QSurvey.Constants.survey.name, (String) null));
         assertEquals("insert into SURVEY\n" +
                 "values () on duplicate key update SURVEY.NAME = null", clause.toString());
     }
@@ -104,17 +104,17 @@ public class MySQLQueryFactoryTest {
 
     @Test
     public void replace() {
-        assertNotNull(queryFactory.replace(QSurvey.survey));
+        assertNotNull(queryFactory.replace(QSurvey.Constants.survey));
     }
 
     @Test
     public void update() {
-        assertNotNull(queryFactory.update(QSurvey.survey));
+        assertNotNull(queryFactory.update(QSurvey.Constants.survey));
     }
 
     @Test
     public void merge() {
-        assertNotNull(queryFactory.merge(QSurvey.survey));
+        assertNotNull(queryFactory.merge(QSurvey.Constants.survey));
     }
 
 }

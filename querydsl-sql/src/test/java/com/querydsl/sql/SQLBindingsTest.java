@@ -13,7 +13,7 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class SQLBindingsTest {
 
-    private QSurvey survey = QSurvey.survey;
+    private QSurvey survey = QSurvey.Constants.survey;
 
     private SQLQuery<?> query = new SQLQuery<Void>();
 

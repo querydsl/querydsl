@@ -13,7 +13,7 @@
  */
 package com.querydsl.jpa;
 
-import static com.querydsl.jpa.domain.QCat.cat;
+import static com.querydsl.jpa.domain.QCat.Constants.cat;
 import static org.junit.Assert.assertEquals;
 
 import org.hibernate.Session;

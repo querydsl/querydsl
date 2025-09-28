@@ -26,7 +26,7 @@ import com.querydsl.jdo.test.domain.QStore;
 
 public class CollectionTest extends AbstractJDOTest {
 
-    private final QStore store = QStore.store;
+    private final QStore store = QStore.Constants.store;
 
     @Test
     public void contains_key() {
@@ -35,7 +35,7 @@ public class CollectionTest extends AbstractJDOTest {
 
     @Test
     public void contains_value() {
-        Product product = query().from(QProduct.product).select(QProduct.product).fetch().get(0);
+        Product product = query().from(QProduct.Constants.product).select(QProduct.Constants.product).fetch().get(0);
         query(store, store.productsByName.containsValue(product));
     }
 

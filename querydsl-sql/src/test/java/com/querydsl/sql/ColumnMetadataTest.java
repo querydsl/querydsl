@@ -33,13 +33,13 @@ public class ColumnMetadataTest {
 
     @Test
     public void extractFromRelationalPath() {
-        ColumnMetadata column = ColumnMetadata.getColumnMetadata(QEmployee.employee.id);
+        ColumnMetadata column = ColumnMetadata.getColumnMetadata(QEmployee.Constants.employee.id);
         assertEquals("ID", column.getName());
     }
 
     @Test
     public void fallBackToDefaultWhenMissing() {
-        ColumnMetadata column = ColumnMetadata.getColumnMetadata(QEmployee.employee.salary);
+        ColumnMetadata column = ColumnMetadata.getColumnMetadata(QEmployee.Constants.employee.salary);
         assertEquals("SALARY", column.getName());
     }
 }

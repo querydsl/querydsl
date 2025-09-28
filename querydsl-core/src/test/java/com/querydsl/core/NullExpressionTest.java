@@ -29,14 +29,14 @@ public class NullExpressionTest {
 
     @Test
     public void withConstructor() {
-        Cat cat = Projections.constructor(Cat.class, Expressions.nullExpression(String.class), QCat.cat.id, QCat.cat.bodyWeight).newInstance(null, 1, 2.5);
+        Cat cat = Projections.constructor(Cat.class, Expressions.nullExpression(String.class), QCat.Constants.cat.id, QCat.Constants.cat.bodyWeight).newInstance(null, 1, 2.5);
         assertNotNull(cat);
     }
 
 
     @Test(expected = ExpressionException.class)
     public void withoutConstructor() {
-        Cat cat = Projections.constructor(Cat.class, Expressions.nullExpression(String.class), QCat.cat.id, QCat.cat.birthdate).newInstance(null, 1, LocalDate.now());
+        Cat cat = Projections.constructor(Cat.class, Expressions.nullExpression(String.class), QCat.Constants.cat.id, QCat.Constants.cat.birthdate).newInstance(null, 1, LocalDate.now());
         assertNotNull(cat);
     }
 }

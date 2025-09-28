@@ -39,9 +39,9 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class SQLSerializerTest {
 
-    private static final QEmployee employee = QEmployee.employee;
+    private static final QEmployee employee = QEmployee.Constants.employee;
 
-    private static final QSurvey survey = QSurvey.survey;
+    private static final QSurvey survey = QSurvey.Constants.survey;
 
     @Test
     public void count() {
@@ -54,7 +54,7 @@ public class SQLSerializerTest {
     public void countDistinct() {
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         SQLQuery<?> query = new SQLQuery<Void>();
-        query.from(QEmployeeNoPK.employee);
+        query.from(QEmployeeNoPK.Constants.employee);
         query.distinct();
         serializer.serializeForQuery(query.getMetadata(), true);
         assertEquals("select count(*)\n" +
@@ -68,7 +68,7 @@ public class SQLSerializerTest {
         Configuration postgresql = new Configuration(new PostgreSQLTemplates());
         SQLSerializer serializer = new SQLSerializer(postgresql);
         SQLQuery<?> query = new SQLQuery<Void>();
-        query.from(QEmployeeNoPK.employee);
+        query.from(QEmployeeNoPK.Constants.employee);
         query.distinct();
         serializer.serializeForQuery(query.getMetadata(), true);
         assertEquals("select count(" +
@@ -344,7 +344,7 @@ public class SQLSerializerTest {
             where employee.superior_id = sub.id)
         select * from sub;*/
 
-        QEmployee e = QEmployee.employee;
+        QEmployee e = QEmployee.Constants.employee;
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
         SQLQuery<?> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         query.withRecursive(sub,
@@ -379,7 +379,7 @@ public class SQLSerializerTest {
             where employee.superior_id = sub.id)
         select * from sub;*/
 
-        QEmployee e = QEmployee.employee;
+        QEmployee e = QEmployee.Constants.employee;
         PathBuilder<Tuple> sub = new PathBuilder<Tuple>(Tuple.class, "sub");
         SQLQuery<?> query = new SQLQuery<Void>(SQLTemplates.DEFAULT);
         query.withRecursive(sub, sub.get(e.id), sub.get(e.firstname), sub.get(e.superiorId)).as(
@@ -429,7 +429,7 @@ public class SQLSerializerTest {
         Configuration defaultWithPrintSchema = new Configuration(new SQLTemplates(Keywords.DEFAULT, "\"", '\\', false, false));
         defaultWithPrintSchema.getTemplates().setPrintSchema(true);
 
-        QEmployee e = QEmployee.employee;
+        QEmployee e = QEmployee.Constants.employee;
         SQLDeleteClause delete = new SQLDeleteClause(EasyMock.<Connection> createNiceMock(Connection.class), defaultWithPrintSchema, e);
         delete.where(e.id.gt(100));
 
@@ -441,7 +441,7 @@ public class SQLSerializerTest {
     public void schemaInWhere() {
         Configuration derbyWithPrintSchema = new Configuration(DerbyTemplates.builder().printSchema().build());
 
-        QEmployee e = QEmployee.employee;
+        QEmployee e = QEmployee.Constants.employee;
         SQLDeleteClause delete = new SQLDeleteClause(EasyMock.<Connection> createNiceMock(Connection.class), derbyWithPrintSchema, e);
         delete.where(e.id.gt(100));
 

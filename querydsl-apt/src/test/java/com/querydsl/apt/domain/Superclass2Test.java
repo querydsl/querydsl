@@ -50,12 +50,12 @@ public class Superclass2Test {
 
     @Test
     public void defaultInstance() {
-        assertNotNull(QSuperclass2Test_CommonPersistence.commonPersistence);
+        assertNotNull(QSuperclass2Test_CommonPersistence.Constants.commonPersistence);
     }
 
     @Test
     public void test() {
-        assertNotNull(QSuperclass2Test_Subtype.subtype.createdOn);
+        assertNotNull(QSuperclass2Test_Subtype.Constants.subtype.createdOn);
     }
 
 

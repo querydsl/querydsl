@@ -25,7 +25,7 @@ public class CollDeleteClauseTest {
 
     @Test
     public void execute() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         List<Cat> cats = new ArrayList<Cat>(Arrays.asList(new Cat("Ann"), new Cat("Bob"), new Cat("John"), new Cat("Carl")));
 
         CollDeleteClause<Cat> deleteClause = new CollDeleteClause<Cat>(cat, cats);

@@ -26,6 +26,6 @@ public class OneToOneTest {
 
     @Test
     public void test() {
-        Assert.assertEquals(PhoneNumberImpl.class, QOneToOneTest_Person.person.phone.getType());
+        Assert.assertEquals(PhoneNumberImpl.class, QOneToOneTest_Person.Constants.person.phone.getType());
     }
 }

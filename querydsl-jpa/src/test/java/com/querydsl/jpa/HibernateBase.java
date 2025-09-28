@@ -46,7 +46,7 @@ import com.querydsl.jpa.testutil.HibernateTestRunner;
 @RunWith(HibernateTestRunner.class)
 public class HibernateBase extends AbstractJPATest implements HibernateTest {
 
-    private static final QCat cat = QCat.cat;
+    private static final QCat cat = QCat.Constants.cat;
 
     @Rule
     @ClassRule
@@ -97,7 +97,7 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
 
     @Test
     public void delete() {
-        assertEquals(0, delete(QGroup.group).execute());
+        assertEquals(0, delete(QGroup.Constants.group).execute());
     }
 
     @Test

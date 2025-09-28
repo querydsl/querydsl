@@ -34,12 +34,12 @@ public class Inheritance8Test {
 
     @Test
     public void simple_subclass_should_contain_fields_from_external_superclass() {
-        assertEquals(NumberPath.class, QInheritance8Test_SimpleSubclass.simpleSubclass.version.getClass());
+        assertEquals(NumberPath.class, QInheritance8Test_SimpleSubclass.Constants.simpleSubclass.version.getClass());
     }
 
     @Test
     public void generic_subclass_should_contain_fields_from_external_superclass() {
-        assertEquals(NumberPath.class, QInheritance8Test_GenericSubclass.genericSubclass.version.getClass());
+        assertEquals(NumberPath.class, QInheritance8Test_GenericSubclass.Constants.genericSubclass.version.getClass());
     }
 
 }

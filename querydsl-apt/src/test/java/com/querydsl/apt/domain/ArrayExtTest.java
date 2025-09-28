@@ -25,7 +25,7 @@ import com.querydsl.core.types.dsl.*;
 
 public class ArrayExtTest {
 
-    private static final QArrayExtTest_BinaryFile binaryFile = QArrayExtTest_BinaryFile.binaryFile;
+    private static final QArrayExtTest_BinaryFile binaryFile = QArrayExtTest_BinaryFile.Constants.binaryFile;
 
     @QueryEntity
     public static class BinaryFile {

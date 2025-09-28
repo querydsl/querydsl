@@ -43,7 +43,7 @@ public class QueryPerformanceTest implements JPATest {
 
     @Before
     public void setUp() {
-        if (query().from(QCat.cat).fetchCount() == 0) {
+        if (query().from(QCat.Constants.cat).fetchCount() == 0) {
             for (int i = 0; i < iterations; i++) {
                 entityManager.persist(new Cat(String.valueOf(i), i + 100));
             }
@@ -66,7 +66,7 @@ public class QueryPerformanceTest implements JPATest {
     public void byId_qdsl() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            QCat cat = QCat.cat;
+            QCat cat = QCat.Constants.cat;
             Cat c = query().from(cat).where(cat.id.eq(i + 100)).select(cat).fetchOne();
             assertNotNull(c);
         }
@@ -89,7 +89,7 @@ public class QueryPerformanceTest implements JPATest {
     public void byId_twoCols_qdsl() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < iterations; i++) {
-            QCat cat = QCat.cat;
+            QCat cat = QCat.Constants.cat;
             Tuple row = query().from(cat).where(cat.id.eq(i + 100)).select(cat.id, cat.name).fetchOne();
             assertNotNull(row);
         }

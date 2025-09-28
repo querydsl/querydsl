@@ -47,10 +47,10 @@ public class KeywordsTest {
 
     @Test
     public void test() {
-        assertEquals("order1", QKeywordsTest_Order.order.toString());
-        assertEquals("from1", QKeywordsTest_From.from.toString());
-        assertEquals("nonKeyword", QKeywordsTest_NonKeyword.nonKeyword.toString());
-        assertEquals("distinct1", QKeywordsTest_Distinct.distinct1.toString());
+        assertEquals("order1", QKeywordsTest_Order.Constants.order.toString());
+        assertEquals("from1", QKeywordsTest_From.Constants.from.toString());
+        assertEquals("nonKeyword", QKeywordsTest_NonKeyword.Constants.nonKeyword.toString());
+        assertEquals("distinct1", QKeywordsTest_Distinct.Constants.distinct1.toString());
     }
 
 }

@@ -42,27 +42,27 @@ public class OracleQueryFactoryTest {
 
     @Test
     public void from() {
-        assertNotNull(queryFactory.from(QSurvey.survey));
+        assertNotNull(queryFactory.from(QSurvey.Constants.survey));
     }
 
     @Test
     public void delete() {
-        assertNotNull(queryFactory.delete(QSurvey.survey));
+        assertNotNull(queryFactory.delete(QSurvey.Constants.survey));
     }
 
     @Test
     public void insert() {
-        assertNotNull(queryFactory.insert(QSurvey.survey));
+        assertNotNull(queryFactory.insert(QSurvey.Constants.survey));
     }
 
     @Test
     public void update() {
-        assertNotNull(queryFactory.update(QSurvey.survey));
+        assertNotNull(queryFactory.update(QSurvey.Constants.survey));
     }
 
     @Test
     public void merge() {
-        assertNotNull(queryFactory.merge(QSurvey.survey));
+        assertNotNull(queryFactory.merge(QSurvey.Constants.survey));
     }
 
 }

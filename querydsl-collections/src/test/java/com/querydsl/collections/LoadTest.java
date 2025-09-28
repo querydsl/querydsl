@@ -30,7 +30,7 @@ import com.querydsl.core.testutil.Performance;
 @Category(Performance.class)
 public class LoadTest {
 
-    private QCat cat = QCat.cat;
+    private QCat cat = QCat.Constants.cat;
 
     private DefaultEvaluatorFactory evaluatorFactory = new DefaultEvaluatorFactory(CollQueryTemplates.DEFAULT);
 

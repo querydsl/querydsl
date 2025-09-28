@@ -13,7 +13,7 @@ public class JodaMoneyTest {
 
     @Test
     public void test() {
-        NumberExpression<BigDecimal> sum = QMoney.money.sum();
+        NumberExpression<BigDecimal> sum = QMoney.Constants.money.sum();
         assertNotNull(sum);
     }
 }

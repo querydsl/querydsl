@@ -27,9 +27,9 @@ import com.querydsl.jdo.test.domain.QStore;
 
 public class JDOQLMethodsTest extends AbstractJDOTest {
 
-    private QProduct product = QProduct.product;
+    private QProduct product = QProduct.Constants.product;
 
-    private QStore store = QStore.store;
+    private QStore store = QStore.Constants.store;
 
     @Test
     public void test() {

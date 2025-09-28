@@ -45,10 +45,10 @@ public class Inheritance9Test {
 
     @Test
     public void test() {
-        assertNotNull(QInheritance9Test_Entity1.entity1.id);
-        assertNotNull(QInheritance9Test_Entity1.entity1.version);
-        assertNotNull(QInheritance9Test_Entity2.entity2.id);
-        assertNotNull(QInheritance9Test_Entity2.entity2.version);
+        assertNotNull(QInheritance9Test_Entity1.Constants.entity1.id);
+        assertNotNull(QInheritance9Test_Entity1.Constants.entity1.version);
+        assertNotNull(QInheritance9Test_Entity2.Constants.entity2.id);
+        assertNotNull(QInheritance9Test_Entity2.Constants.entity2.version);
     }
 
 }

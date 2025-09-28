@@ -24,6 +24,6 @@ public class GenericStackOverflowTest extends AbstractTest {
 
     @Test
     public void test() {
-        assertNotNull(QGenericStackOverflowTest_AbstractEntity.abstractEntity);
+        assertNotNull(QGenericStackOverflowTest_AbstractEntity.Constants.abstractEntity);
     }
 }

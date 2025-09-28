@@ -21,9 +21,10 @@ import com.querydsl.sql.RelationalPathBase;
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
 public class QNumberTest extends RelationalPathBase<QNumberTest> {
 
+    public static final class Constants {
+        public static final QNumberTest numberTest = new QNumberTest("NUMBER_TEST");
+    }
     private static final long serialVersionUID = 291758928;
-
-    public static final QNumberTest numberTest = new QNumberTest("NUMBER_TEST");
 
     public final BooleanPath col1Boolean = createBoolean("col1");
 

@@ -61,7 +61,7 @@ public class AbstractProperties3Test {
 
     @Test
     public void test() {
-        QAbstractProperties3Test_CompoundContainer.compoundContainer.containable.compound.name.isNotNull();
+        QAbstractProperties3Test_CompoundContainer.Constants.compoundContainer.containable.compound.name.isNotNull();
     }
 
 }

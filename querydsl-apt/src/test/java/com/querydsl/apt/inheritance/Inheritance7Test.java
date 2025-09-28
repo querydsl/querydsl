@@ -75,18 +75,18 @@ public class Inheritance7Test {
     @Ignore
     public void parent() {
         // FIXME
-        assertEquals(Category.class, QInheritance7Test_Category.category.parent.getType());
-        assertEquals(SubCategory.class, QInheritance7Test_SubCategory.subCategory.parent.getType());
-        assertEquals(SubCategory2.class, QInheritance7Test_SubCategory2.subCategory2.parent.getType());
+        assertEquals(Category.class, QInheritance7Test_Category.Constants.category.parent.getType());
+        assertEquals(SubCategory.class, QInheritance7Test_SubCategory.Constants.subCategory.parent.getType());
+        assertEquals(SubCategory2.class, QInheritance7Test_SubCategory2.Constants.subCategory2.parent.getType());
     }
 
     @Test
     @Ignore
     public void children() {
         // FIXME
-        assertEquals(Category.class, QInheritance7Test_Category.category.children.getElementType());
-        assertEquals(SubCategory.class, QInheritance7Test_SubCategory.subCategory.children.getElementType());
-        assertEquals(SubCategory2.class, QInheritance7Test_SubCategory2.subCategory2.children.getElementType());
+        assertEquals(Category.class, QInheritance7Test_Category.Constants.category.children.getElementType());
+        assertEquals(SubCategory.class, QInheritance7Test_SubCategory.Constants.subCategory.children.getElementType());
+        assertEquals(SubCategory2.class, QInheritance7Test_SubCategory2.Constants.subCategory2.children.getElementType());
     }
 
 }

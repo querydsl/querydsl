@@ -239,24 +239,24 @@ public class SimpleTypesTest extends AbstractTest {
     @Test
     public void list_access() {
         // date / time
-        QSimpleTypesTest_SimpleTypes.simpleTypes.dateList.get(0).after(new Date());
-        QSimpleTypesTest_SimpleTypes.simpleTypes.timeList.get(0).after(new Time(0L));
-        QSimpleTypesTest_SimpleTypes.simpleTypes.calendarList.get(0).before(Calendar.getInstance());
+        QSimpleTypesTest_SimpleTypes.Constants.simpleTypes.dateList.get(0).after(new Date());
+        QSimpleTypesTest_SimpleTypes.Constants.simpleTypes.timeList.get(0).after(new Time(0L));
+        QSimpleTypesTest_SimpleTypes.Constants.simpleTypes.calendarList.get(0).before(Calendar.getInstance());
 
         // numeric
-        QSimpleTypesTest_SimpleTypes.simpleTypes.bbyteList.get(0).abs();
+        QSimpleTypesTest_SimpleTypes.Constants.simpleTypes.bbyteList.get(0).abs();
 
         // string
-        QSimpleTypesTest_SimpleTypes.simpleTypes.sstringList.get(0).toLowerCase();
+        QSimpleTypesTest_SimpleTypes.Constants.simpleTypes.sstringList.get(0).toLowerCase();
 
         // boolean
-//        QSimpleTypes.simpleTypes.b
+//        QSimpleTypes.Constants.simpleTypes.b
 
     }
 
     @Test
     public void simple_types() throws IllegalAccessException, NoSuchFieldException {
-        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.Constants.simpleTypes);
         match(NumberPath.class, "id");
         matchType(Long.class, "id");
         match(NumberPath.class, "bigDecimal");
@@ -320,41 +320,41 @@ public class SimpleTypesTest extends AbstractTest {
 
     @Test
     public void custom_literal() throws IllegalAccessException, NoSuchFieldException {
-        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.Constants.simpleTypes);
         match(SimplePath.class, "customLiteral");
         matchType(CustomLiteral.class, "customLiteral");
     }
 
     @Test
     public void custom_comparableLiteral() throws IllegalAccessException, NoSuchFieldException {
-        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.Constants.simpleTypes);
         match(ComparablePath.class, "customComparableLiteral");
         matchType(CustomComparableLiteral.class, "customComparableLiteral");
     }
 
     @Test
     public void custom_number() throws IllegalAccessException, NoSuchFieldException {
-        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.Constants.simpleTypes);
         match(SimplePath.class, "customNumber");
         matchType(CustomNumber.class, "customNumber");
     }
 
     @Test
     public void custom_comparableNumber() throws IllegalAccessException, NoSuchFieldException {
-        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.Constants.simpleTypes);
         match(NumberPath.class, "customComparableNumber");
         matchType(CustomComparableNumber.class, "customComparableNumber");
     }
 
     @Test
     public void skipped_field1() {
-        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.Constants.simpleTypes);
         assertMissing("skipMe");
     }
 
     @Test
     public void skipped_field2() {
-        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.simpleTypes);
+        start(QSimpleTypesTest_SimpleTypes.class, QSimpleTypesTest_SimpleTypes.Constants.simpleTypes);
         assertMissing("test");
     }
 

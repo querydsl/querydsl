@@ -24,7 +24,7 @@ public class MathTest extends AbstractQueryTest {
 
     @Test
     public void test() {
-        NumberPath<Double> path = QCat.cat.bodyWeight;
+        NumberPath<Double> path = QCat.Constants.cat.bodyWeight;
         assertToString("(cat.bodyWeight - sum(cat.bodyWeight)) * cat.bodyWeight", path.subtract(path.sum()).multiply(path));
     }
 

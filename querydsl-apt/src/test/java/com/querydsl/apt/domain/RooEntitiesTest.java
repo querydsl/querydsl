@@ -8,12 +8,12 @@ public class RooEntitiesTest {
 
     @Test
     public void rooJpaEntity() {
-        assertNotNull(QRooEntities_MyEntity.myEntity);
+        assertNotNull(QRooEntities_MyEntity.Constants.myEntity);
     }
 
     @Test
     public void rooJpaActiveRecord() {
-        assertNotNull(QRooEntities_MyEntity2.myEntity2);
+        assertNotNull(QRooEntities_MyEntity2.Constants.myEntity2);
     }
 
 }

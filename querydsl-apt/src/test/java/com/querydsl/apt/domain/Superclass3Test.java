@@ -30,6 +30,6 @@ public class Superclass3Test {
 
     @Test
     public void test() {
-        Assert.assertNotNull(QSuperclass3Test_Subtype.subtype.distinct);
+        Assert.assertNotNull(QSuperclass3Test_Subtype.Constants.subtype.distinct);
     }
 }

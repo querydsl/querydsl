@@ -24,7 +24,7 @@ import com.querydsl.jdo.models.fitness.Wardrobe;
 
 public class ContainerTest extends AbstractTest {
 
-    private QGym gym = QGym.gym1;
+    private QGym gym = QGym.Constants.gym1;
 
     private Wardrobe wrd = new Wardrobe(), wrd1 = new Wardrobe(), wrd2 = new Wardrobe();
 

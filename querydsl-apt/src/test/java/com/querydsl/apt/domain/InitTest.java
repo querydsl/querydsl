@@ -42,7 +42,7 @@ public class InitTest {
 
     @Test
     public void test() {
-        assertNotNull(QInitTest_User.user.address.city);
+        assertNotNull(QInitTest_User.Constants.user.address.city);
     }
 
 

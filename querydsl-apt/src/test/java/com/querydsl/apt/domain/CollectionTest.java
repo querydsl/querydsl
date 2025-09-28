@@ -80,20 +80,20 @@ public class CollectionTest {
 
     @Test
     public void test() {
-//        assertEquals(String.class, QMapWithUndefinedValueTest_Person.person.appData.getParameter(1));
-//        assertEquals(Object.class, QMapWithUndefinedValueTest_Person.person.appData.getParameter(1));
+//        assertEquals(String.class, QMapWithUndefinedValueTest_Person.Constants.person.appData.getParameter(1));
+//        assertEquals(Object.class, QMapWithUndefinedValueTest_Person.Constants.person.appData.getParameter(1));
 
-        Assert.assertEquals(MapPath.class, QCollectionTest_Classes.classes.map1.getClass());
-        assertEquals(MapPath.class, QCollectionTest_Classes.classes.map2.getClass());
-        assertEquals(MapPath.class, QCollectionTest_Classes.classes.map3.getClass());
+        Assert.assertEquals(MapPath.class, QCollectionTest_Classes.Constants.classes.map1.getClass());
+        assertEquals(MapPath.class, QCollectionTest_Classes.Constants.classes.map2.getClass());
+        assertEquals(MapPath.class, QCollectionTest_Classes.Constants.classes.map3.getClass());
 
-        assertEquals(ListPath.class, QCollectionTest_Classes.classes.list1.getClass());
-        assertEquals(ListPath.class, QCollectionTest_Classes.classes.list2.getClass());
-        assertEquals(ListPath.class, QCollectionTest_Classes.classes.list3.getClass());
+        assertEquals(ListPath.class, QCollectionTest_Classes.Constants.classes.list1.getClass());
+        assertEquals(ListPath.class, QCollectionTest_Classes.Constants.classes.list2.getClass());
+        assertEquals(ListPath.class, QCollectionTest_Classes.Constants.classes.list3.getClass());
 
-        assertEquals(SetPath.class, QCollectionTest_Classes.classes.set1.getClass());
-        assertEquals(SetPath.class, QCollectionTest_Classes.classes.set2.getClass());
-        assertEquals(SetPath.class, QCollectionTest_Classes.classes.set3.getClass());
+        assertEquals(SetPath.class, QCollectionTest_Classes.Constants.classes.set1.getClass());
+        assertEquals(SetPath.class, QCollectionTest_Classes.Constants.classes.set2.getClass());
+        assertEquals(SetPath.class, QCollectionTest_Classes.Constants.classes.set3.getClass());
 
     }
 

@@ -37,9 +37,9 @@ public class GroupBy3Test {
 
     @Test
     public void nested_expressions() {
-        QGroupBy3Test_RiskAnalysis riskAnalysis = QGroupBy3Test_RiskAnalysis.riskAnalysis;
-        QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.assetThreat;
-        QGroupBy3Test_Threat threat = QGroupBy3Test_Threat.threat;
+        QGroupBy3Test_RiskAnalysis riskAnalysis = QGroupBy3Test_RiskAnalysis.Constants.riskAnalysis;
+        QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.Constants.assetThreat;
+        QGroupBy3Test_Threat threat = QGroupBy3Test_Threat.Constants.threat;
 
         ResultTransformer<Map<String,RiskAnalysis>> transformer =
                 groupBy(riskAnalysis.id)
@@ -69,9 +69,9 @@ public class GroupBy3Test {
 
     @Test
     public void alias_usage() {
-        QGroupBy3Test_RiskAnalysis riskAnalysis = QGroupBy3Test_RiskAnalysis.riskAnalysis;
-        QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.assetThreat;
-        QGroupBy3Test_Threat threat = QGroupBy3Test_Threat.threat;
+        QGroupBy3Test_RiskAnalysis riskAnalysis = QGroupBy3Test_RiskAnalysis.Constants.riskAnalysis;
+        QGroupBy3Test_AssetThreat assetThreat = QGroupBy3Test_AssetThreat.Constants.assetThreat;
+        QGroupBy3Test_Threat threat = QGroupBy3Test_Threat.Constants.threat;
 
         ResultTransformer<Map<String,Group>> transformer =
                 groupBy(riskAnalysis.id)

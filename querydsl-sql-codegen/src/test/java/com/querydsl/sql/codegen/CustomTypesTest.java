@@ -83,7 +83,7 @@ public class CustomTypesTest extends AbstractJDBCTest {
 
     @Test
     public void insert_query_update() {
-        QPerson person = QPerson.person;
+        QPerson person = QPerson.Constants.person;
 
         // insert
         SQLInsertClause insert = new SQLInsertClause(connection, configuration, person);

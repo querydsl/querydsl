@@ -47,14 +47,14 @@ public class HibernateQueryMutabilityTest implements HibernateTest {
     public void test() throws SecurityException, IllegalArgumentException,
             NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, IOException {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         HibernateQuery<?> query = query().from(cat);
         new QueryMutability(query).test(cat, cat.name);
     }
 
     @Test
     public void clone_() {
-        QCat cat = QCat.cat;
+        QCat cat = QCat.Constants.cat;
         HibernateQuery<?> query = query().from(cat).where(cat.name.isNotNull());
         HibernateQuery<?> query2 = query.clone(session);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());

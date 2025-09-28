@@ -11,7 +11,7 @@ public class GroupByTest extends AbstractTest {
 
     @Test
     public void groupBy() {
-        QEmployee employee = QEmployee.employee;
+        QEmployee employee = QEmployee.Constants.employee;
         assertEquals(
                 "SELECT FROM com.querydsl.jdo.models.company.Employee " +
                 "PARAMETERS java.lang.String a1 " +

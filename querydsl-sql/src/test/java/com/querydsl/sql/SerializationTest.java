@@ -33,7 +33,7 @@ import com.querydsl.sql.domain.QSurvey;
 
 public class SerializationTest {
 
-    private static final QSurvey survey = QSurvey.survey;
+    private static final QSurvey survey = QSurvey.Constants.survey;
 
     private final Connection connection = EasyMock.createMock(Connection.class);
 
@@ -104,7 +104,7 @@ public class SerializationTest {
 
     @Test
     public void nextval() {
-        SubQueryExpression<?> sq = select(SQLExpressions.nextval("myseq")).from(QSurvey.survey);
+        SubQueryExpression<?> sq = select(SQLExpressions.nextval("myseq")).from(QSurvey.Constants.survey);
         SQLSerializer serializer = new SQLSerializer(Configuration.DEFAULT);
         serializer.serialize(sq.getMetadata(), false);
         assertEquals("select nextval('myseq')\nfrom SURVEY SURVEY", serializer.toString());

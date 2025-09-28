@@ -60,7 +60,7 @@ public class GroupBy4Test {
         data.add(new Table("3", "abc", "555"));
         data.add(new Table("3", "pqr", "666"));
 
-        QGroupBy4Test_Table table = QGroupBy4Test_Table.table;
+        QGroupBy4Test_Table table = QGroupBy4Test_Table.Constants.table;
         Map<String, Map<String, String>> grouped = CollQueryFactory
                 .from(table, data)
                 .transform(groupBy(table.col1).as(map(table.col2, table.col3)));
@@ -81,7 +81,7 @@ public class GroupBy4Test {
         data.add(new Table("3", "abc", "555"));
         data.add(new Table("3", "pqr", "666"));
 
-        QGroupBy4Test_Table table = QGroupBy4Test_Table.table;
+        QGroupBy4Test_Table table = QGroupBy4Test_Table.Constants.table;
         Multimap<String, String> transform = CollQueryFactory
                 .from(table, data)
                 .transform(groupBy(table.col1).asMultimap(table.col2));
@@ -106,7 +106,7 @@ public class GroupBy4Test {
         data.add(new Table("3", "abc", "555"));
         data.add(new Table("3", "pqr", "666"));
 
-        QGroupBy4Test_Table table = QGroupBy4Test_Table.table;
+        QGroupBy4Test_Table table = QGroupBy4Test_Table.Constants.table;
         Multimap<String, Map<String, String>> transform = CollQueryFactory
                 .from(table, data)
                 .transform(groupBy(table.col1).asMultimap(
@@ -134,7 +134,7 @@ public class GroupBy4Test {
         data.add(new Table("3", "pqr", "666"));
 
 
-        QGroupBy4Test_Table table = QGroupBy4Test_Table.table;
+        QGroupBy4Test_Table table = QGroupBy4Test_Table.Constants.table;
         com.google.common.collect.Table<String, String, String> transform = CollQueryFactory
                 .from(table, data)
                 .transform(groupBy(table.col1).asTable(table.col2, table.col3));
@@ -163,7 +163,7 @@ public class GroupBy4Test {
         data.add(new Table("3", "pqr", "777"));
 
 
-        QGroupBy4Test_Table table = QGroupBy4Test_Table.table;
+        QGroupBy4Test_Table table = QGroupBy4Test_Table.Constants.table;
         com.google.common.collect.Table<String, String, List<String>> transform = CollQueryFactory
                 .from(table, data)
                 .transform(groupBy(table.col1).asTable(table.col2, list(table.col3)));
@@ -192,7 +192,7 @@ public class GroupBy4Test {
         data.add(new Table("3", "pqr", "777"));
 
 
-        QGroupBy4Test_Table table = QGroupBy4Test_Table.table;
+        QGroupBy4Test_Table table = QGroupBy4Test_Table.Constants.table;
         Map<String, Multimap<String, String>> transform = CollQueryFactory
                 .from(table, data)
                 .transform(groupBy(table.col1).as(GuavaGroupBy.multimap(table.col2, table.col3)));
@@ -217,7 +217,7 @@ public class GroupBy4Test {
         data.add(new Table("3", "pqr", "666"));
         data.add(new Table("3", "pqr", "777"));
 
-        QGroupBy4Test_Table table = QGroupBy4Test_Table.table;
+        QGroupBy4Test_Table table = QGroupBy4Test_Table.Constants.table;
         Map<String, com.google.common.collect.Table<String, String, Map<String, List<String>>>> transform = CollQueryFactory
                 .from(table, data)
                 .transform(groupBy(table.col1).as(GuavaGroupBy.table(
@@ -253,7 +253,7 @@ public class GroupBy4Test {
         data.add(new Table("3", "pqr", "666"));
         data.add(new Table("3", "pqr", "777"));
 
-        QGroupBy4Test_Table table = QGroupBy4Test_Table.table;
+        QGroupBy4Test_Table table = QGroupBy4Test_Table.Constants.table;
         com.google.common.collect.Table<String, Map<String, String>, List<String>> transform = CollQueryFactory
                 .from(table, data)
                 .transform(groupBy(table.col1).asTable(map(table.col1, table.col2), GuavaGroupBy.list(table.col3)));

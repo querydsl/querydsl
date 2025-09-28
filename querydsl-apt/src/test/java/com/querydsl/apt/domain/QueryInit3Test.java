@@ -41,7 +41,7 @@ public class QueryInit3Test {
 
     @Test
     public void test() {
-        assertEquals("entity.prop1.prop2.prop1", QQueryInit3Test_Entity.entity.prop1.prop2.prop1.toString());
+        assertEquals("entity.prop1.prop2.prop1", QQueryInit3Test_Entity.Constants.entity.prop1.prop2.prop1.toString());
     }
 
 }

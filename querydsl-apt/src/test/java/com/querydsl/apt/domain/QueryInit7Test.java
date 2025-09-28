@@ -126,16 +126,16 @@ public class QueryInit7Test {
 
     @Test
     public void test1DefaultCase() {
-        assertNotNull(QQueryInit7Test_SourceToTarget1.sourceToTarget1.id.source);
+        assertNotNull(QQueryInit7Test_SourceToTarget1.Constants.sourceToTarget1.id.source);
     }
 
     @Test
     public void test2AtQueryInitAndEmptyClass() {
-        assertNotNull(QQueryInit7Test_SourceToTarget2.sourceToTarget2.id.source);
+        assertNotNull(QQueryInit7Test_SourceToTarget2.Constants.sourceToTarget2.id.source);
     }
 
     @Test
     public void test3AtQueryInitAndNonEmptyClass() {
-        assertNotNull(QQueryInit7Test_SourceToTarget3.sourceToTarget3.id.source);
+        assertNotNull(QQueryInit7Test_SourceToTarget3.Constants.sourceToTarget3.id.source);
     }
 }

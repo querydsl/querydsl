@@ -70,7 +70,7 @@ public class MongodbSerializerTest {
 
     @Test
     public void paths() {
-        QUser user = QUser.user;
+        QUser user = QUser.Constants.user;
         assertEquals("user", serializer.visit(user, null));
         assertEquals("addresses", serializer.visit(user.addresses, null));
         assertEquals("addresses", serializer.visit(user.addresses.any(), null));
@@ -80,19 +80,19 @@ public class MongodbSerializerTest {
 
     @Test
     public void propertyAnnotation() {
-        QDummyEntity entity = QDummyEntity.dummyEntity;
+        QDummyEntity entity = QDummyEntity.Constants.dummyEntity;
         assertEquals("prop", serializer.visit(entity.property, null));
     }
 
     @Test
     public void indexedAccess() {
-        QUser user = QUser.user;
+        QUser user = QUser.Constants.user;
         assertEquals("addresses.0.street", serializer.visit(user.addresses.get(0).street, null));
     }
 
     @Test
     public void collectionAny() {
-        QUser user = QUser.user;
+        QUser user = QUser.Constants.user;
         assertQuery(user.addresses.any().street.eq("Aakatu"), dbo("addresses.street", "Aakatu"));
     }
 
@@ -103,7 +103,7 @@ public class MongodbSerializerTest {
                         dbo("addresses", dblist()),
                         dbo("addresses",
                                 dbo("$exists", false))));
-        assertQuery(QUser.user.addresses.isEmpty(), expected);
+        assertQuery(QUser.Constants.user.addresses.isEmpty(), expected);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class MongodbSerializerTest {
                         dbo("addresses", dblist()),
                         dbo("addresses",
                                 dbo("$exists", false))));
-        assertQuery(QUser.user.addresses.isNotEmpty(), expected);
+        assertQuery(QUser.Constants.user.addresses.isNotEmpty(), expected);
     }
 
     @Test
@@ -247,7 +247,7 @@ public class MongodbSerializerTest {
 
     @Test
     public void all() {
-        QItem item = QItem.item;
+        QItem item = QItem.Constants.item;
         List<ObjectId> objectIds = new ArrayList<>();
         ObjectId objectId1 = new ObjectId();
         ObjectId objectId2 = new ObjectId();
@@ -273,14 +273,14 @@ public class MongodbSerializerTest {
     @Test
     public void objectId() {
         ObjectId id = new ObjectId();
-        QPerson person = QPerson.person;
+        QPerson person = QPerson.Constants.person;
         assertQuery(person.id.eq(id), dbo("_id", id));
         assertQuery(person.addressId.eq(id), dbo("addressId", id));
     }
 
     @Test
     public void path() {
-        QUser user = QUser.user;
+        QUser user = QUser.Constants.user;
         assertEquals("firstName", serializer.visit(user.firstName, null));
         assertEquals("firstName", serializer.visit(user.as(QUser.class).firstName, null));
         assertEquals("mainAddress.street", serializer.visit(user.mainAddress().street, null));

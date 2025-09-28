@@ -28,7 +28,7 @@ public class ManyToManyTest {
 
     @Test
     public void test() {
-        Assert.assertEquals(PhoneNumberImpl.class, QManyToManyTest_Person.person.phones.getElementType());
+        Assert.assertEquals(PhoneNumberImpl.class, QManyToManyTest_Person.Constants.person.phones.getElementType());
     }
 
 }

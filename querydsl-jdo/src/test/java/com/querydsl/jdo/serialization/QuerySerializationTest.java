@@ -23,7 +23,7 @@ import com.querydsl.jdo.test.domain.QProduct;
 
 public class QuerySerializationTest extends AbstractTest {
 
-    private QProduct product = QProduct.product;
+    private QProduct product = QProduct.Constants.product;
 
     private QProduct other = new QProduct("other");
 

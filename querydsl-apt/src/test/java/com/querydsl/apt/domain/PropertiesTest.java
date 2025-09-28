@@ -100,15 +100,15 @@ public class PropertiesTest {
 
     @Test
     public void customer() {
-        assertNotNull(QPropertiesTest_Customer.customer.name);
-        assertNotNull(QPropertiesTest_Customer.customer.pizzas);
+        assertNotNull(QPropertiesTest_Customer.Constants.customer.name);
+        assertNotNull(QPropertiesTest_Customer.Constants.customer.pizzas);
     }
 
     @Test
     public void pizza() {
-        assertNotNull(QPropertiesTest_Pizza.pizza.orderTime);
-        assertNotNull(QPropertiesTest_Pizza.pizza.customer);
-        assertNotNull(QPropertiesTest_Pizza.pizza.toppings);
+        assertNotNull(QPropertiesTest_Pizza.Constants.pizza.orderTime);
+        assertNotNull(QPropertiesTest_Pizza.Constants.pizza.customer);
+        assertNotNull(QPropertiesTest_Pizza.Constants.pizza.toppings);
     }
 
 }

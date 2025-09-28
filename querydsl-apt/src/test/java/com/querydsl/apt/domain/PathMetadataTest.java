@@ -31,10 +31,10 @@ public class PathMetadataTest {
 
     @Before
     public void setUp() {
-        assertNotNull(QAnimalTest_Animal.animal);
-        assertNotNull(QAnimalTest_Cat.cat);
-        assertNotNull(QConstructorTest_Category.category);
-        assertNotNull(QSimpleTypesTest_SimpleTypes.simpleTypes);
+        assertNotNull(QAnimalTest_Animal.Constants.animal);
+        assertNotNull(QAnimalTest_Cat.Constants.cat);
+        assertNotNull(QConstructorTest_Category.Constants.category);
+        assertNotNull(QSimpleTypesTest_SimpleTypes.Constants.simpleTypes);
     }
 
     @SuppressWarnings("unchecked")

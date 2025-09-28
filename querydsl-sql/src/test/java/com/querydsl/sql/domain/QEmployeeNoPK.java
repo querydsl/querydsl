@@ -13,8 +13,6 @@
  */
 package com.querydsl.sql.domain;
 
-import java.math.BigDecimal;
-
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.PathMetadataFactory;
 import com.querydsl.core.types.dsl.DatePath;
@@ -25,9 +23,15 @@ import com.querydsl.sql.ColumnMetadata;
 import com.querydsl.sql.ForeignKey;
 import com.querydsl.sql.RelationalPathBase;
 
+import java.math.BigDecimal;
+
 //@Schema("PUBLIC")
 //@Table("EMPLOYEE")
 public class QEmployeeNoPK extends RelationalPathBase<Employee> {
+
+    public static final class Constants {
+        public static final QEmployeeNoPK employee = new QEmployeeNoPK("EMPLOYEE");
+    }
 
     private static final long serialVersionUID = 1394463749655231079L;
 

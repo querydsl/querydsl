@@ -59,12 +59,12 @@ public class MongodbQueryTest {
     private final Datastore ds;
 
     private final String dbname = "testdb";
-    private final QUser user = QUser.user;
-    private final QItem item = QItem.item;
-    private final QAddress address = QAddress.address;
-    private final QMapEntity mapEntity = QMapEntity.mapEntity;
-    private final QDates dates = QDates.dates;
-    private final QCountry country = QCountry.country;
+    private final QUser user = QUser.Constants.user;
+    private final QItem item = QItem.Constants.item;
+    private final QAddress address = QAddress.Constants.address;
+    private final QMapEntity mapEntity = QMapEntity.Constants.mapEntity;
+    private final QDates dates = QDates.Constants.dates;
+    private final QCountry country = QCountry.Constants.country;
 
     List<User> users = new ArrayList<>();
     List<Document> userDocuments = new ArrayList<>();

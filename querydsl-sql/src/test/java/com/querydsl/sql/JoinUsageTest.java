@@ -25,7 +25,7 @@ public class JoinUsageTest {
     @Test(expected = IllegalStateException.class)
     @Ignore
     public void join_already_declared() {
-        QSurvey survey = QSurvey.survey;
+        QSurvey survey = QSurvey.Constants.survey;
         selectFrom(survey).fullJoin(survey);
     }
 
