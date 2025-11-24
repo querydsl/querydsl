@@ -165,4 +165,75 @@ public class HibernateBase extends AbstractJPATest implements HibernateTest {
         }
     }
 
+    @Test
+    public void subQueryWithLimitAndOffset() {
+        QCat kitten = new QCat("kitten");
+
+        List<Integer> allIds = query().from(kitten).orderBy(kitten.id.asc()).select(kitten.id).fetch();
+
+        List<Integer> expectedIds = allIds.subList(1, 4);
+
+        List<Cat> results =
+            query()
+                .from(cat)
+                .where(
+                    cat.id.in(
+                        JPAExpressions.select(kitten.id)
+                            .from(kitten)
+                            .orderBy(kitten.id.asc())
+                            .limit(3)
+                            .offset(1)))
+                .orderBy(cat.id.asc())
+                .select(cat)
+                .fetch();
+
+        assertEquals(results.size(), 3);
+        assertEquals(results.stream().map(Cat::getId).toList(), expectedIds);
+    }
+
+    @Test
+    public void subQueryWithLimitInSelectClause() {
+        Cat firstCat = query().from(cat).orderBy(cat.id.asc()).select(cat).fetchFirst();
+        QCat mate = new QCat("mate");
+
+        Integer result =
+            query()
+                .from(cat)
+                .where(cat.id.eq(firstCat.getId()))
+                .select(
+                    JPAExpressions.select(mate.id)
+                        .from(mate)
+                        .where(mate.name.eq(firstCat.getName()))
+                        .orderBy(mate.id.asc())
+                        .limit(1))
+                .fetchFirst();
+
+        assertEquals(result, (Integer) firstCat.getId());
+    }
+
+    @Test
+    public void subQueryWithOffsetOnly() {
+        QCat kitten = new QCat("kitten");
+
+        List<Integer> allIds = query().from(kitten).orderBy(kitten.id.asc()).select(kitten.id).fetch();
+
+        List<Integer> expectedIds = allIds.subList(2, allIds.size());
+
+        List<Cat> results =
+            query()
+                .from(cat)
+                .where(
+                    cat.id.in(
+                        JPAExpressions.select(kitten.id)
+                            .from(kitten)
+                            .orderBy(kitten.id.asc())
+                            .offset(2)))
+                .orderBy(cat.id.asc())
+                .select(cat)
+                .fetch();
+
+        assertEquals(results.size(), expectedIds.size());
+        assertEquals(results.stream().map(Cat::getId).toList(), expectedIds);
+    }
+
 }

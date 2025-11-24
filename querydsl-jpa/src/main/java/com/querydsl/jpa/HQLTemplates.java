@@ -120,4 +120,9 @@ public class HQLTemplates extends JPQLTemplates {
         return true;
     }
 
+    @Override
+    public boolean isSubQueryModifiersSupported() {
+        return true;
+    }
+
 }
