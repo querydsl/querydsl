@@ -231,4 +231,8 @@ public class JPQLTemplates extends Templates {
         }
         return builder.toString();
     }
+
+    public boolean isSubQueryModifiersSupported() {
+        return false;
+    }
 }

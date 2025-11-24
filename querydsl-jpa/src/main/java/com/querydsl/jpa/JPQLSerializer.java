@@ -24,6 +24,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import com.querydsl.core.JoinExpression;
 import com.querydsl.core.JoinType;
 import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.support.SerializerBase;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.Expressions;
@@ -54,6 +55,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private static final String HAVING = "\nhaving ";
 
     private static final String ORDER_BY = "\norder by ";
+
+    private static final String LIMIT = "\nlimit ";
+
+    private static final String OFFSET = "\noffset ";
 
     private static final String SELECT = "select ";
 
@@ -398,8 +403,21 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     @Override
     public Void visit(SubQueryExpression<?> query, Void context) {
+        QueryMetadata metadata = query.getMetadata();
+        QueryModifiers modifiers = metadata.getModifiers();
         append("(");
-        serialize(query.getMetadata(), false, null);
+        serialize(metadata, false, null);
+
+        if (modifiers != null
+            && modifiers.isRestricting()
+            && templates.isSubQueryModifiersSupported()) {
+            if (modifiers.getLimit() != null) {
+                append(LIMIT).handle(modifiers.getLimit());
+            }
+            if (modifiers.getOffset() != null) {
+                append(OFFSET).handle(modifiers.getOffset());
+            }
+        }
         append(")");
         return null;
     }

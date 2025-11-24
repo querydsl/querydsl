@@ -29,6 +29,7 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.SubQueryExpression;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -316,5 +317,224 @@ public class JPQLSerializerTest {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         cat.name.substring(cat.name.indexOf("")).accept(serializer, null);
         assertEquals("substring(cat.name,locate(?1,cat.name)-1 + ?2)", serializer.toString());
+    }
+
+    @Test
+    public void visit_subQueryExpression_with_limit_jpql() {
+        QCat cat = QCat.cat;
+        JPQLQuery<Integer> subQuery = JPAExpressions.select(cat.id).from(cat).limit(5);
+        JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+        serializer.visit(subQuery, null);
+
+        assertEquals("(select cat.id\nfrom Cat cat)", serializer.toString());
+        assertEquals(0, serializer.getConstants().size());
+    }
+
+    @Test
+    public void visit_subQueryExpression_with_limit_hql() {
+        QCat cat = QCat.cat;
+        JPQLQuery<Integer> subQuery = JPAExpressions.select(cat.id).from(cat).limit(5);
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visit(subQuery, null);
+
+        assertEquals("(select cat.id\nfrom Cat cat\nlimit ?1)", serializer.toString());
+        assertEquals(1, serializer.getConstants().size());
+        assertEquals(5L, serializer.getConstants().get(0));
+    }
+
+    @Test
+    public void visit_subQueryExpression_with_offset_jpql() {
+        QCat cat = QCat.cat;
+        JPQLQuery<Integer> subQuery = JPAExpressions.select(cat.id).from(cat).offset(10);
+        JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+        serializer.visit(subQuery, null);
+
+        assertEquals("(select cat.id\nfrom Cat cat)", serializer.toString());
+        assertEquals(0, serializer.getConstants().size());
+    }
+
+    @Test
+    public void visit_subQueryExpression_with_offset_hql() {
+        QCat cat = QCat.cat;
+        JPQLQuery<Integer> subQuery = JPAExpressions.select(cat.id).from(cat).offset(10);
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visit(subQuery, null);
+
+        assertEquals("(select cat.id\nfrom Cat cat\noffset ?1)", serializer.toString());
+        assertEquals(1, serializer.getConstants().size());
+        assertEquals(10L, serializer.getConstants().get(0));
+    }
+
+    @Test
+    public void visit_subQueryExpression_with_limit_and_offset_jpql() {
+        QCat cat = QCat.cat;
+        JPQLQuery<Integer> subQuery = JPAExpressions.select(cat.id).from(cat).limit(5).offset(10);
+        JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+        serializer.visit(subQuery, null);
+
+        assertEquals("(select cat.id\nfrom Cat cat)", serializer.toString());
+        assertEquals(0, serializer.getConstants().size());
+    }
+
+    @Test
+    public void visit_subQueryExpression_with_limit_and_offset_hql() {
+        QCat cat = QCat.cat;
+        JPQLQuery<Integer> subQuery = JPAExpressions.select(cat.id).from(cat).limit(5).offset(10);
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visit(subQuery, null);
+
+        assertEquals("(select cat.id\nfrom Cat cat\nlimit ?1\noffset ?2)", serializer.toString());
+        assertEquals(2, serializer.getConstants().size());
+        assertEquals(5L, serializer.getConstants().get(0));
+        assertEquals(10L, serializer.getConstants().get(1));
+    }
+
+    @Test
+    public void visit_nested_subQueryExpression_with_modifiers_hql() {
+        QCat cat = QCat.cat;
+        QCat mate = new QCat("mate");
+
+        JPQLQuery<Integer> innerSubQuery = JPAExpressions.select(mate.id).from(mate).limit(3);
+
+        JPQLQuery<Integer> outerSubQuery =
+            JPAExpressions.select(cat.id).from(cat).where(cat.id.in(innerSubQuery)).limit(5);
+
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.visit(outerSubQuery, null);
+
+        assertEquals(
+                "(select cat.id\n" +
+                "from Cat cat\n" +
+                "where cat.id in (select mate.id\n" +
+                "from Cat mate\n" +
+                "limit ?1)\n" +
+                "limit ?2)", serializer.toString());
+        assertEquals(2, serializer.getConstants().size());
+        assertEquals(3L, serializer.getConstants().get(0));
+        assertEquals(5L, serializer.getConstants().get(1));
+    }
+
+    @Test
+    public void subquery_in_where_clause_with_modifiers_jpql() {
+        QCat cat = QCat.cat;
+        QCat kitten = new QCat("kitten");
+
+        QueryMetadata mainQuery = new DefaultQueryMetadata();
+        mainQuery.addJoin(JoinType.DEFAULT, cat);
+
+        SubQueryExpression<Integer> subQuery =
+            JPAExpressions.select(kitten.id)
+                .from(kitten)
+                .where(kitten.name.isNotNull())
+                .limit(5)
+                .offset(10);
+
+        mainQuery.addWhere(cat.id.in(subQuery));
+        mainQuery.setProjection(cat);
+
+        JPQLSerializer jpqlSerializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+        jpqlSerializer.serialize(mainQuery, false, null);
+
+        assertEquals(
+                "select cat\n" +
+                "from Cat cat\n" +
+                "where cat.id in (select kitten.id\n" +
+                "from Cat kitten\n" +
+                "where kitten.name is not null)", jpqlSerializer.toString());
+        assertEquals(0, jpqlSerializer.getConstants().size());
+    }
+
+    @Test
+    public void subquery_in_where_clause_with_modifiers_hql() {
+        QCat cat = QCat.cat;
+        QCat kitten = new QCat("kitten");
+
+        QueryMetadata mainQuery = new DefaultQueryMetadata();
+        mainQuery.addJoin(JoinType.DEFAULT, cat);
+
+        SubQueryExpression<Integer> subQuery =
+            JPAExpressions.select(kitten.id)
+                .from(kitten)
+                .where(kitten.name.isNotNull())
+                .limit(5)
+                .offset(10);
+
+        mainQuery.addWhere(cat.id.in(subQuery));
+        mainQuery.setProjection(cat);
+
+        JPQLSerializer hqlSerializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        hqlSerializer.serialize(mainQuery, false, null);
+
+        assertEquals(
+                "select cat\n" +
+                "from Cat cat\n" +
+                "where cat.id in (select kitten.id\n" +
+                "from Cat kitten\n" +
+                "where kitten.name is not null\n" +
+                "limit ?1\n" +
+                "offset ?2)", hqlSerializer.toString());
+        assertEquals(2, hqlSerializer.getConstants().size());
+        assertEquals(5L, hqlSerializer.getConstants().get(0));
+        assertEquals(10L, hqlSerializer.getConstants().get(1));
+    }
+
+    @Test
+    public void subquery_in_select_clause_with_modifiers_jpql() {
+        QCat cat = QCat.cat;
+        QCat mate = new QCat("mate");
+
+        QueryMetadata mainQuery = new DefaultQueryMetadata();
+        mainQuery.addJoin(JoinType.DEFAULT, cat);
+
+        SubQueryExpression<Integer> subQuery =
+            JPAExpressions.select(mate.weight.max())
+                .from(mate)
+                .where(mate.name.eq(cat.name))
+                .limit(1)
+                .offset(2);
+
+        mainQuery.setProjection(subQuery);
+
+        JPQLSerializer jpqlSerializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+        jpqlSerializer.serialize(mainQuery, false, null);
+
+        assertEquals(
+                "select (select max(mate.weight)\n" +
+                "from Cat mate\n" +
+                "where mate.name = cat.name)\n" +
+                "from Cat cat", jpqlSerializer.toString());
+        assertEquals(0, jpqlSerializer.getConstants().size());
+    }
+
+    @Test
+    public void subquery_in_select_clause_with_modifiers_hql() {
+        QCat cat = QCat.cat;
+        QCat mate = new QCat("mate");
+
+        QueryMetadata mainQuery = new DefaultQueryMetadata();
+        mainQuery.addJoin(JoinType.DEFAULT, cat);
+
+        SubQueryExpression<Integer> subQuery =
+            JPAExpressions.select(mate.weight.max())
+                .from(mate)
+                .where(mate.name.eq(cat.name))
+                .limit(1)
+                .offset(2);
+
+        mainQuery.setProjection(subQuery);
+
+        JPQLSerializer hqlSerializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        hqlSerializer.serialize(mainQuery, false, null);
+
+        assertEquals(
+                "select (select max(mate.weight)\n" +
+                "from Cat mate\n" +
+                "where mate.name = cat.name\n" +
+                "limit ?1\n" +
+                "offset ?2)\n" +
+                "from Cat cat", hqlSerializer.toString());
+        assertEquals(2, hqlSerializer.getConstants().size());
+        assertEquals(1L, hqlSerializer.getConstants().get(0));
+        assertEquals(2L, hqlSerializer.getConstants().get(1));
     }
 }
