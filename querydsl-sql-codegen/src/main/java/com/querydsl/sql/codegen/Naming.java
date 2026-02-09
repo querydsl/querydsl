@@ -24,7 +24,7 @@ import static javax.lang.model.SourceVersion.isKeyword;
 public final class Naming {
 
     public static String normalize(String s, String reservedSuffix) {
-        if (isKeyword(s)) {
+        if (isKeyword(s) || isKeyword(s.toLowerCase())) {
             return s + reservedSuffix;
         } else {
             StringBuilder sb = new StringBuilder(s.length() + 1);
