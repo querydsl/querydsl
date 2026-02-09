@@ -47,6 +47,21 @@ public class DefaultNamingStrategyTest {
     }
 
     @Test
+    public void getClassName_with_java_keywords() {
+        // Test that Java keywords are escaped to avoid conflicts
+        assertEquals("ClassCol", namingStrategy.getClassName("class"));
+        assertEquals("ClassCol", namingStrategy.getClassName("Class"));
+        assertEquals("IntCol", namingStrategy.getClassName("int"));
+        assertEquals("IntCol", namingStrategy.getClassName("Int"));
+        assertEquals("ReturnCol", namingStrategy.getClassName("return"));
+        assertEquals("ReturnCol", namingStrategy.getClassName("Return"));
+        assertEquals("WhileCol", namingStrategy.getClassName("while"));
+        assertEquals("WhileCol", namingStrategy.getClassName("While"));
+        assertEquals("PublicCol", namingStrategy.getClassName("public"));
+        assertEquals("PublicCol", namingStrategy.getClassName("Public"));
+    }
+
+    @Test
     public void getPropertyName() {
         assertEquals("a", namingStrategy.getPropertyName("a", entityModel));
         assertEquals("whileCol", namingStrategy.getPropertyName("while", entityModel));
