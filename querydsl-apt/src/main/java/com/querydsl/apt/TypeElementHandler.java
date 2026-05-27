@@ -184,6 +184,9 @@ public class TypeElementHandler {
 
     private Type getType(VariableElement element) {
         Type rv = typeFactory.getType(element.asType(), true);
+        if (rv == null) {
+            return null;
+        }
         if (element.getAnnotation(QueryType.class) != null) {
             QueryType qt = element.getAnnotation(QueryType.class);
             if (qt.value() != PropertyType.NONE) {
