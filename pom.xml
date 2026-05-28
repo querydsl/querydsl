@@ -181,7 +181,7 @@
       <dependency>
         <groupId>io.github.classgraph</groupId>
         <artifactId>classgraph</artifactId>
-        <version>4.8.146</version>
+        <version>4.8.184</version>
         <exclusions>
           <exclusion>
             <groupId>org.javassist</groupId>
