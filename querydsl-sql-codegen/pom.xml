@@ -16,7 +16,7 @@
   <packaging>jar</packaging>
 
   <properties>
-    <ant.version>1.10.12</ant.version>
+    <ant.version>1.10.18</ant.version>
   </properties>
 
   <dependencies>
